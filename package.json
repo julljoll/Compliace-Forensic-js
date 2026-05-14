@@ -41,7 +41,7 @@
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
     "concurrently": "^9.2.1",
-    "electron": "^41.3.0",
+    "electron": "^42.0.1",
     "electron-builder": "^26.8.1",
     "electron-rebuild": "^3.2.9",
     "postcss": "^8.5.12",
@@ -102,6 +102,14 @@
         "nsis"
       ],
       "icon": "public/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SHA256 Peritaje WhatsApp"
     },
     "mac": {
       "target": [
