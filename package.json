@@ -90,7 +90,7 @@
     },
     "win": {
       "target": ["nsis"],
-      "icon": "public/icon.ico"
+      "icon": "public/icon.png"
     },
     "mac": {
       "target": ["dmg"],

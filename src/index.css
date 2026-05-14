@@ -104,6 +104,33 @@ body {
   }
 }
 
+  /* ── CMS Compliance Components ── */
+  .cms-card {
+    @apply bg-cms-card border border-cms-border rounded-2xl shadow-cms;
+  }
+
+  .cms-btn {
+    @apply px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-150 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-cms-accent;
+  }
+
+  .cms-btn-primary {
+    @apply bg-cms-accent text-white hover:bg-cms-accent/90 shadow-sm;
+  }
+
+  .cms-btn-secondary {
+    @apply bg-cms-surface border border-cms-border text-cms-text hover:bg-cms-surface/80;
+  }
+
+  .cms-input {
+    @apply w-full text-sm bg-cms-surface border border-cms-border rounded-xl py-2.5 px-3
+      focus:border-cms-accent focus:ring-1 focus:ring-cms-accent/30 outline-none
+      text-cms-text placeholder:text-cms-textMuted transition-all;
+  }
+
+  .cms-label {
+    @apply block text-[10px] font-bold uppercase tracking-widest text-cms-textMuted mb-1.5;
+  }
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
