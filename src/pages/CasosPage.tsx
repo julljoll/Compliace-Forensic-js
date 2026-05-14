@@ -3,7 +3,7 @@ import { useCMSStore, CasoCMS, EstadoCaso, PrioridadCaso, NivelCumplimiento } fr
 import { Link } from 'react-router-dom';
 import {
   Plus, Search, Filter, FolderOpen, Calendar, User,
-  ShieldCheck, AlertTriangle, CheckCircle2, Clock, ChevronRight, Trash2
+  AlertTriangle, CheckCircle2, Clock, ChevronRight, Trash2
 } from 'lucide-react';
 
 const ESTADOS: { value: EstadoCaso | 'todos'; label: string }[] = [
@@ -157,7 +157,7 @@ export default function CasosPage() {
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2 shrink-0">
-                <CumplIcon size={16} className={cumplConf.color} title={cumplConf.label} />
+                <CumplIcon size={16} className={cumplConf.color} aria-label={cumplConf.label} />
                 <div className="w-24">
                   <div className="flex justify-between text-[10px] text-cms-textMuted mb-0.5">
                     <span>Progreso</span>

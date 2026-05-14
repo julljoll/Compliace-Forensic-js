@@ -1,5 +1,4 @@
-import { BookOpen, Smartphone, Mic, Image as ImageIcon, ShieldCheck, CheckCircle2, AlertTriangle, ChevronRight } from 'lucide-react';
-import { useCMSStore } from '../../store/cmsStore';
+import { BookOpen, Smartphone, Mic, Image as ImageIcon, ShieldCheck, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 export default function ManualAvillaPage() {
   return (
