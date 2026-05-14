@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Scale
+  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone
 } from 'lucide-react';
 import { useCMSStore } from '../store/cmsStore';
 
@@ -11,6 +11,7 @@ const menuItems = [
   { path: '/compliance',       label: 'Compliance',       icon: ShieldCheck,     group: 'Control' },
   { path: '/tareas',           label: 'Tareas & Fases',   icon: ClipboardList,   group: 'Control' },
   { path: '/normativas',       label: 'Normativas',       icon: BookOpen,        group: 'Referencia' },
+  { path: '/manual-avilla',    label: 'Manual Avilla',    icon: Smartphone,      group: 'Referencia' },
   { path: '/personal',         label: 'Personal',         icon: Users,           group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',        icon: Activity,        group: 'Sistema' },
 ];

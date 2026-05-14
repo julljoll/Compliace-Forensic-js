@@ -6,6 +6,7 @@ import CasosPage from './pages/CasosPage';
 import CompliancePage from './pages/CompliancePage';
 import NormativasPage from './pages/NormativasPage';
 import AuditoriaPage from './pages/AuditoriaPage';
+import ManualAvillaPage from './pages/ManualAvillaPage';
 
 // ── Módulos forenses existentes (mantenidos sin alterar) ────────────────────
 import Layout from './components/Layout';
@@ -28,6 +29,7 @@ function App() {
         <Route path="compliance" element={<CompliancePage />} />
         <Route path="normativas" element={<NormativasPage />} />
         <Route path="auditoria" element={<AuditoriaPage />} />
+        <Route path="manual-avilla" element={<ManualAvillaPage />} />
         {/* Páginas simples stub para el CMS (a expandir) */}
         <Route path="tareas" element={<div className="cms-card p-8 text-cms-textMuted text-center">Módulo Tareas &amp; Fases — en construcción</div>} />
         <Route path="personal" element={<div className="cms-card p-8 text-cms-textMuted text-center">Módulo Personal — en construcción</div>} />
