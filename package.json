@@ -1,7 +1,7 @@
 {
-  "name": "forense-android-electron",
+  "name": "sha256-peritaje-whatsapp",
   "version": "1.0.0",
-  "description": "Sistema de Gestión Forense para Dispositivos Android - React + Vite + Electron + PWA",
+  "description": "SHA256.US — Sistema de Peritaje Digital WhatsApp · Contratos Digitales · Civil/Mercantil",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
@@ -10,30 +10,32 @@
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:build": "tsc && vite build && electron-builder",
     "electron:build:deb": "tsc && vite build && electron-builder --linux deb",
-    "electron:build:all": "tsc && vite build && electron-builder --linux --windows --mac"
+    "electron:build:win": "tsc && vite build && electron-builder --win nsis",
+    "electron:build:all": "tsc && vite build && electron-builder --linux deb --win nsis"
   },
   "keywords": [
+    "peritaje",
+    "whatsapp",
     "forense",
-    "android",
-    "electron",
-    "cadena-custodia",
-    "andriller",
-    "aleapp",
-    "pwa"
+    "contratos-digitales",
+    "firmas-electronicas",
+    "civil-mercantil"
   ],
-  "author": "Laboratorio Forense",
+  "author": "Perito Privado Digital",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.15.2",
+    "better-sqlite3": "^12.10.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^1.11.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2",
-    "zustand": "^5.0.12",
-    "axios": "^1.15.2",
-    "date-fns": "^4.1.0",
-    "lucide-react": "^1.11.0",
-    "workbox-window": "^7.4.0"
+    "workbox-window": "^7.4.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
@@ -41,6 +43,7 @@
     "concurrently": "^9.2.1",
     "electron": "^41.3.0",
     "electron-builder": "^26.8.1",
+    "electron-rebuild": "^3.2.9",
     "postcss": "^8.5.12",
     "tailwindcss": "^3.4.17",
     "typescript": "^6.0.3",
@@ -55,45 +58,55 @@
     }
   },
   "build": {
-    "appId": "com.forense.android",
-    "productName": "Forense Android",
+    "appId": "com.sha256.peritaje",
+    "productName": "SHA256 Peritaje WhatsApp",
     "directories": {
       "output": "dist-electron"
     },
     "files": [
       "dist/**/*",
-      "electron/**/*"
+      "electron/**/*",
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/bindings/**/*",
+      "node_modules/file-uri-to-path/**/*",
+      "node_modules/prebuild-install/**/*"
     ],
     "extraResources": [
       "public/**/*"
     ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
     "linux": {
-      "target": ["deb"],
+      "target": [
+        "deb"
+      ],
       "category": "Utility",
-      "maintainer": "Laboratorio Forense <forense@ejemplo.gob.ve>",
+      "maintainer": "Perito Digital <admin@sha256.us>",
       "icon": "public/icon.png",
       "desktop": {
         "entry": {
-          "Name": "Forense Android",
-          "Comment": "Sistema de Gestión Forense para Dispositivos Android",
+          "Name": "SHA256 Peritaje WhatsApp",
+          "Comment": "Sistema de Peritaje Digital para Contratos WhatsApp",
           "Categories": "Utility;System;"
         }
       }
     },
     "deb": {
-      "depends": [
-        "python3 (>= 3.11)",
-        "andriller",
-        "aleapp"
-      ],
+      "depends": [],
       "priority": "optional"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "public/icon.png"
     },
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "icon": "public/icon.icns",
       "category": "public.app-category.utilities"
     }

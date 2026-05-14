@@ -1,9 +1,10 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone
+  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone, LogOut
 } from 'lucide-react';
 import { useCMSStore } from '../store/cmsStore';
+import { useAuthStore } from '../store/authStore';
 
 const menuItems = [
   { path: '/',                 label: 'Dashboard',       icon: LayoutDashboard,  group: 'Principal' },
@@ -21,6 +22,7 @@ const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
 export default function CMSLayout() {
   const location = useLocation();
   const { casos, getEstadisticas } = useCMSStore();
+  const { user, logout } = useAuthStore();
   const stats = getEstadisticas();
 
   const getBreadcrumb = () => {
@@ -42,7 +44,7 @@ export default function CMSLayout() {
             </div>
             <div>
               <h1 className="font-black text-sm tracking-widest text-white uppercase">SHA256.US</h1>
-              <p className="text-[9px] text-cms-textMuted uppercase tracking-widest">Compliance CMS</p>
+              <p className="text-[9px] text-cms-textMuted uppercase tracking-widest">Peritaje WhatsApp</p>
             </div>
           </div>
         </div>
@@ -95,14 +97,17 @@ export default function CMSLayout() {
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="p-4 border-t border-cms-border">
+        <div className="p-4 border-t border-cms-border space-y-2">
           <div className="flex items-center gap-2 p-2 rounded-lg bg-cms-surface">
             <ShieldCheck size={14} className="text-cms-accent shrink-0" />
-            <div>
-              <p className="text-[10px] font-bold text-white">Compliance Officer</p>
-              <p className="text-[9px] text-cms-textMuted">ISO 27037 · MUCC-2017</p>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-bold text-white truncate">{user?.nombre || 'Perito'}</p>
+              <p className="text-[9px] text-cms-textMuted">Peritaje Privado</p>
             </div>
+            <button onClick={logout} title="Cerrar sesión"
+              className="p-1.5 rounded-lg hover:bg-red-500/20 text-cms-textMuted hover:text-red-400 transition-colors">
+              <LogOut size={14} />
+            </button>
           </div>
         </div>
       </aside>

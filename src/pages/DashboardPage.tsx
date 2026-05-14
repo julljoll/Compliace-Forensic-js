@@ -59,9 +59,9 @@ export default function DashboardPage() {
 
       {/* ── Encabezado ─────────────────────────────────── */}
       <div>
-        <h1 className="text-2xl font-black text-white mb-1">Panel de Compliance Forense</h1>
+        <h1 className="text-2xl font-black text-white mb-1">Panel de Peritaje WhatsApp</h1>
         <p className="text-sm text-cms-textMuted">
-          Supervisión y control del proceso técnico-forense · Normativas ISO 27037 / MUCC-2017 / NIST 800-101
+          Supervisión y control del proceso técnico · Contratos Digitales · Normativas ISO / MUCC-2017
         </p>
       </div>
 
@@ -191,9 +191,9 @@ export default function DashboardPage() {
       {casos.length === 0 && (
         <div className="cms-card p-12 text-center">
           <Gavel size={40} className="text-cms-accent mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-bold text-white mb-2">Bienvenido al CMS Forense</h3>
+          <h3 className="text-xl font-bold text-white mb-2">Bienvenido al CMS de Peritaje</h3>
           <p className="text-cms-textMuted text-sm mb-6 max-w-md mx-auto">
-            Este sistema permite gestionar el ciclo completo del proceso forense bajo las normativas ISO 27037,
+            Este sistema permite gestionar peritajes privados sobre dispositivos consignados bajo normativas legales,
             MUCC-2017 y NIST SP 800-101. Comienza creando tu primer caso.
           </p>
           <Link to="/casos" className="cms-btn cms-btn-primary inline-flex items-center gap-2">

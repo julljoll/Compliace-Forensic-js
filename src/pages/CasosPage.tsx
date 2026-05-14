@@ -233,8 +233,8 @@ export default function CasosPage() {
                     onChange={e => setForm(f => ({ ...f, pertiLider: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="cms-label">Fiscal</label>
-                  <input className="cms-input" placeholder="Nombre del fiscal" value={form.fiscal || ''}
+                  <label className="cms-label">Abogado Solicitante</label>
+                  <input className="cms-input" placeholder="Nombre del abogado" value={form.fiscal || ''}
                     onChange={e => setForm(f => ({ ...f, fiscal: e.target.value }))} />
                 </div>
               </div>
@@ -245,8 +245,8 @@ export default function CasosPage() {
                     onChange={e => setForm(f => ({ ...f, organismoOrdenante: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="cms-label">Despacho Fiscal</label>
-                  <input className="cms-input" placeholder="Despacho..." value={form.despachoFiscal || ''}
+                  <label className="cms-label">Despacho Legal</label>
+                  <input className="cms-input" placeholder="Despacho o Firma..." value={form.despachoFiscal || ''}
                     onChange={e => setForm(f => ({ ...f, despachoFiscal: e.target.value }))} />
                 </div>
               </div>

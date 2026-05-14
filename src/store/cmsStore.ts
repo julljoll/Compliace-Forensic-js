@@ -153,6 +153,16 @@ export interface CasoCMS {
   notas: string;
 }
 
+// ─── Compliance Checklist por Normativa ────────────────────────────────────────
+
+export interface ComplianceCheckItem {
+  stageId: string;       // e.g. "n1__identificacion"
+  normativaId: string;   // e.g. "n1"
+  checked: boolean;
+  fechaCheck?: string;
+  observacion?: string;
+}
+
 // ─── Estado Global del CMS ────────────────────────────────────────────────────
 
 interface CMSState {
@@ -164,6 +174,7 @@ interface CMSState {
   personal: Personal[];
   normativas: Normativa[];
   auditLogs: AuditLog[];
+  complianceChecklist: ComplianceCheckItem[];
   
   // Estado UI
   casoSeleccionado: string | null;
@@ -200,6 +211,11 @@ interface CMSState {
   
   // Acciones - Audit
   addAuditLog: (log: Omit<AuditLog, 'id' | 'timestamp'>) => void;
+  
+  // Acciones - Compliance Checklist
+  toggleComplianceCheck: (stageId: string, normativaId: string) => void;
+  setComplianceObservacion: (stageId: string, observacion: string) => void;
+  getComplianceByNormativa: (normativaId: string) => ComplianceCheckItem[];
   
   // Acciones - Filtros UI
   setFiltroEstado: (estado: EstadoCaso | 'todos') => void;
@@ -270,8 +286,8 @@ const NORMATIVAS_INICIALES: Normativa[] = [
   },
   {
     id: 'n8', codigo: 'COPP', tipo: 'LEY',
-    nombre: 'Código Orgánico Procesal Penal',
-    descripcion: 'Marco procesal penal de Venezuela aplicable a la evidencia digital.',
+    nombre: 'Código Orgánico Procesal Penal (Aplicación Supletoria)',
+    descripcion: 'Marco procesal de Venezuela aplicable a la cadena de custodia y licitud de la prueba digital.',
     version: '2021', fechaVigencia: '2021-09-17', activa: true,
   },
   {
@@ -299,6 +315,7 @@ export const useCMSStore = create<CMSState>()(
       personal: [],
       normativas: NORMATIVAS_INICIALES,
       auditLogs: [],
+      complianceChecklist: [],
       casoSeleccionado: null,
       filtroEstado: 'todos',
       filtroPrioridad: 'todos',
@@ -376,6 +393,38 @@ export const useCMSStore = create<CMSState>()(
         set(s => ({
           auditLogs: [{ ...log, id: uid(), timestamp: now() }, ...s.auditLogs].slice(0, 500)
         }));
+      },
+
+      // ── Compliance Checklist ──
+      toggleComplianceCheck: (stageId, normativaId) => {
+        set(s => {
+          const existing = s.complianceChecklist.find(c => c.stageId === stageId);
+          if (existing) {
+            return {
+              complianceChecklist: s.complianceChecklist.map(c =>
+                c.stageId === stageId
+                  ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
+                  : c
+              ),
+            };
+          }
+          return {
+            complianceChecklist: [
+              ...s.complianceChecklist,
+              { stageId, normativaId, checked: true, fechaCheck: new Date().toISOString(), observacion: '' },
+            ],
+          };
+        });
+      },
+      setComplianceObservacion: (stageId, observacion) => {
+        set(s => ({
+          complianceChecklist: s.complianceChecklist.map(c =>
+            c.stageId === stageId ? { ...c, observacion } : c
+          ),
+        }));
+      },
+      getComplianceByNormativa: (normativaId) => {
+        return get().complianceChecklist.filter(c => c.normativaId === normativaId);
       },
 
       // ── Filtros ──

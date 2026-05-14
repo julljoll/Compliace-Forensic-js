@@ -13,7 +13,7 @@ export default function HomePage() {
     { 
       icon: <Smartphone className="w-10 h-10 text-fluent-accent" />, 
       title: 'Adquisición', 
-      desc: 'Extracción forense con Andriller en modo solo lectura para garantizar integridad del dispositivo.',
+      desc: 'Extracción de datos en modo solo lectura para garantizar integridad del dispositivo consignado.',
       path: '/adquisicion'
     },
     { 
@@ -36,7 +36,7 @@ export default function HomePage() {
       <div className="relative overflow-hidden rounded-fluent-card p-12 bg-gradient-to-br from-fluent-accent/10 to-transparent border border-fluent-border">
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-4xl font-extrabold text-fluent-text mb-4 tracking-tight">
-            Sistema de Gestión <span className="text-fluent-accent">Forense Android</span>
+            Sistema de Peritaje <span className="text-fluent-accent">Digital WhatsApp</span>
           </h1>
           <p className="text-lg text-fluent-textSecondary mb-8 leading-relaxed">
             Plataforma integral para el tratamiento técnico-científico de evidencias digitales móviles, 
