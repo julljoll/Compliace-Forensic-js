@@ -1,144 +1,188 @@
-# 🔬 Sistema Forense Android - Cadena de Custodia
+# ⚖️ SHA256.US — CMS Forense para Compliance Officer
 
-> **Aplicación de escritorio eletrónica para gestión forense de dispositivos Android con cadena de custodia según Manual Único Venezolano (2017)**
+> **Plataforma de gestión de cumplimiento normativo para el proceso técnico-forense en dispositivos móviles Android.**  
+> Desarrollada bajo estricto apego al Manual Único de Cadena de Custodia (Venezuela, 2017), ISO/IEC 27037, NIST SP 800-101 y estándares internacionales.
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-Sistema integral de gestión forense para dispositivos Android que implementa fielmente el **Manual Único de Cadena de Custodia de Evidencias Físicas (Versión Final 29SEP17)**. Incluye extracción con Andriller, análisis con ALEAPP y generación de dictámenes periciales.
+SHA256.US es un **Content Management System (CMS)** diseñado para el rol de **Compliance Officer** en laboratorios de informática forense. Permite:
 
-**Actualización:** Unificación completada - Archivos `.md` redundantes eliminados, Fluent Design integrado al YAML maestro.
+- 📊 **Supervisar** el ciclo completo del proceso forense (desde la obtención hasta la disposición final)
+- ✅ **Controlar** el cumplimiento normativo caso por caso con métricas en tiempo real
+- 🔍 **Auditar** cada acción del proceso con trazabilidad inmutable
+- 📱 **Integrar** metodologías de herramientas como **Avilla Forensics**, **Andriller** y **ALEAPP**
+- 📚 **Referenciar** el marco normativo completo (9 instrumentos legales precargados)
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-### Frontend
-```yaml
-• React 18.2.0
-• TypeScript 5.3.3
-• Vite 5.0.8
-• TailwindCSS 3.4.0
-• Zustand 4.4.7 (State Management)
-• Lucide React (Iconos)
-```
-
-### Desktop
-```yaml
-• Electron 28.0.0
-• Electron Builder 24.9.1
-```
-
-### Herramientas Forenses
-```yaml
-• Andriller v3.6.2+ (Extracción forense)
-• ALEAPP v2.1.0+ (Análisis de artefactos)
-```
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| **Frontend** | React + TypeScript | 18.2.0 / 5.3.3 |
+| **Bundler** | Vite | 5.0.8 |
+| **Estilos** | TailwindCSS (Dark Theme) | 3.4.0 |
+| **Estado** | Zustand (con persistencia localStorage) | 4.4.7 |
+| **Iconos** | Lucide React | — |
+| **Desktop** | Electron + Electron Builder | 28.0.0 |
+| **Forense** | Andriller / ALEAPP / Avilla Forensics | — |
 
 ---
 
-## 📁 Estructura del Proyecto (Actualizada)
+## 📁 Estructura del Proyecto
 
 ```
-SHA256.deb/
-├── RAG/                              # Base de conocimiento unificada
-│   ├── manual_unico_unificado.yaml    # ✅ YAML MAESTRO (INCLUYE Fluent Design)
+SHA256.US/
+├── RAG/                               # 📖 Base de conocimiento (INTACTA)
+│   ├── manual_unico_unificado.yaml    # YAML maestro + Fluent Design
 │   ├── arquitectura_cadena_custodia.yaml
 │   ├── proceso-desarrollo-forense.yaml
-│   ├── manual-procedimiento.yaml
-│   ├── arquitectura_sitio.yaml
-│   └── *.pdf                         # 16 documentos fuente (PDFs)
+│   ├── Formato_Planilla_PRCC.yaml
+│   ├── Formato_acta_consignacion.yaml
+│   ├── Skill_electron.yaml
+│   ├── skill_claude.json
+│   └── *.pdf                          # 16 documentos normativos fuente
 │
-├── componente/                        # ✅ Componentes modulares (7 creados)
+├── componente/                         # Componentes YAML modulares (7)
 │   ├── fase_inicial/
-│   │   └── fase_inicial.yaml
 │   ├── fase_laboratorio/
-│   │   └── fase_laboratorio.yaml
 │   ├── fase_disposicion_judicial/
-│   │   └── fase_disposicion_judicial.yaml
 │   ├── fase_disposicion_final/
-│   │   └── fase_disposicion_final.yaml
 │   ├── resguardo/
-│   │   └── resguardo.yaml
 │   ├── herramientas/
-│   │   └── herramientas.yaml
 │   └── traslado/
-│       └── traslado.yaml
 │
-├── electron/                          # Proceso Electron
-│   ├── main.js                     # Proceso principal
-│   └── preload.js                   # Bridge seguro
+├── src/                                # 🖥️ Código React (CMS + Forense)
+│   ├── components/
+│   │   ├── CMSLayout.tsx               # ⭐ Layout principal CMS
+│   │   ├── Layout.tsx                  # Layout original (Fluent)
+│   │   ├── Laboratorio/
+│   │   ├── MarcoLegal/
+│   │   ├── Obtencion/
+│   │   ├── Prcc/
+│   │   ├── DisposicionJudicial/
+│   │   └── DisposicionFinal/
+│   │
+│   ├── pages/
+│   │   ├── DashboardPage.tsx           # ⭐ Panel de mando Compliance
+│   │   ├── CasosPage.tsx              # ⭐ Gestión de casos
+│   │   ├── CompliancePage.tsx         # ⭐ Control de cumplimiento
+│   │   ├── NormativasPage.tsx         # ⭐ Marco normativo
+│   │   ├── AuditoriaPage.tsx          # ⭐ Log de auditoría
+│   │   ├── ManualAvillaPage.tsx       # ⭐ Manual Avilla Forensics
+│   │   ├── HomePage.tsx               # Dashboard forense original
+│   │   ├── ConsignacionPage.tsx
+│   │   ├── PrccPage.tsx
+│   │   ├── AdquisicionPage.tsx
+│   │   ├── AnalisisPage.tsx
+│   │   ├── InformePage.tsx
+│   │   ├── DisposicionJudicialPage.tsx
+│   │   └── DisposicionFinalPage.tsx
+│   │
+│   ├── store/
+│   │   ├── cmsStore.ts                # ⭐ Estado CMS (Zustand + persist)
+│   │   └── forenseStore.ts            # Estado forense original
+│   │
+│   ├── index.css                      # Diseño (Fluent + CMS tokens)
+│   ├── App.tsx                        # Router principal
+│   └── main.tsx                       # Entry point
 │
-├── src/                              # Código React
-│   ├── components/                  # Componentes reutilizables
-│   ├── pages/                      # Páginas principales
-│   ├── store/                      # Estado global (Zustand)
-│   ├── services/                   # Servicios
-│   ├── hooks/                      # Custom hooks
-│   ├── types/                      # Definiciones TS
-│   └── utils/                      # Funciones auxiliares
+├── electron/                           # Proceso Electron
+│   ├── main.js
+│   └── preload.js
 │
-├── public/                           # Recursos estáticos
-├── dist/                             # Build Vite
-├── dist-electron/                     # Paquetes .deb
-├── map_arquitectura.md              # ✅ Mapa actualizado
-└── README.md                        # Este archivo
+├── skill_avilla.md                    # 🔬 Skill Avilla Forensics
+├── map_arquitectura.md                # 🗺️ Mapa de arquitectura
+├── tailwind.config.js                 # Tokens CMS + Fluent
+├── package.json
+└── README.md                          # 📄 Este archivo
 ```
 
-### 🎨 Cambios Recientes (27/Abr/2026)
-- ✅ **Unificación completada**: Todos los `.md` de RAG/ fusionados en `manual_unico_unificado.yaml`
-- ✅ **Eliminados 8 archivos**: `manual-procedimiento.md`, `IMPLEMENTACION_CADENA_CUSTODIA.md`, `arquitectura_sitio.md`, `IMPLEMENTACION.md`, `arquitectura_cadena_custodia.md`, `proceso-desarrollo-forense.md`, `fluent-design-system.md`, `CAMBIOS_REALIZADOS.md`
-- ✅ **Fluet Design integrado**: Ahora en `manual_unico_unificado.yaml` (no archivo separado)
-- ✅ **7 Componentes YAML creados** en `/componente/`
-- ✅ **map_arquitectura.md** actualizado con todos los cambios
+---
+
+## 🖥️ Módulos del CMS Compliance
+
+### Interfaz Principal (`/`)
+
+| Ruta | Página | Función |
+|------|--------|---------|
+| `/` | **Dashboard** | KPIs: casos activos, % cumplimiento, tareas pendientes, logs recientes |
+| `/casos` | **Gestión de Casos** | CRUD completo con filtros por estado, prioridad y búsqueda |
+| `/compliance` | **Panel de Compliance** | Distribución visual conforme/parcial/no-conforme + cobertura por normativa |
+| `/normativas` | **Marco Normativo** | 9 instrumentos legales agrupados por tipo (ISO, NIST, LEY, MANUAL) |
+| `/auditoria` | **Auditoría** | Log cronológico de todas las acciones del sistema |
+| `/manual-avilla` | **Manual Avilla** | Guía operativa de extracción Android, WhatsApp y validación de integridad |
+| `/tareas` | **Tareas & Fases** | Gestión de tareas por caso *(en desarrollo)* |
+| `/personal` | **Personal** | Registro de peritos y roles *(en desarrollo)* |
+
+### Módulos Forenses Originales (`/forense/...`)
+
+| Ruta | Función |
+|------|---------|
+| `/forense` | Dashboard forense Android |
+| `/forense/consignacion` | Registro de evidencia por entrega voluntaria |
+| `/forense/prcc` | Planilla de Registro de Cadena de Custodia |
+| `/forense/adquisicion` | Extracción forense con Andriller |
+| `/forense/analisis` | Procesamiento con ALEAPP |
+| `/forense/informe` | Generación de Dictamen Pericial |
+| `/forense/disposicion-judicial` | Resguardo judicial y exhibición |
+| `/forense/disposicion-final` | Devolución / destrucción / cierre |
 
 ---
 
-## 🎨 Fluent Design System (Integrado)
+## 📊 Sistema de Compliance
 
-El proyecto usa **Microsoft Fluent Design** para consistencia visual moderna:
+### Entidades del CMS
 
-| Elemento | Configuración |
-|---------|---------------|
-| **Fuente** | Segoe UI Variable, system-ui, sans-serif |
-| **Tema** | Dark (`#202020`) |
-| **Color Primario** | `#0078D4` (Azul Fluent) |
-| **Color Acento** | `#60CDFF` (Windows 11 Dark) |
-| **Border Radius** | Botones/Inputs: `4px`, Cards: `12px` |
-| **Sombras** | `0 4px 8px rgba(0,0,0,0.2)` |
-| **Motion** | `167ms` cúbico-bezier |
+| Entidad | Descripción |
+|---------|-------------|
+| **CasoCMS** | Caso forense con número, prioridad, estado, normativas aplicadas, progreso |
+| **Evidencia** | Dispositivo o artefacto con hash, sellado, etiquetado, cadena de custodia |
+| **TareaForense** | Actividad asignada con fecha límite, normativas relacionadas |
+| **FaseForense** | Etapa del proceso con checklist de cumplimiento |
+| **Normativa** | Instrumento legal con código, tipo, versión y vigencia |
+| **ChecklistItem** | Requisito verificable con nivel de cumplimiento |
+| **Personal** | Perito, fiscal o compliance officer con rol asignado |
+| **AuditLog** | Registro inmutable de acciones con timestamp y nivel |
 
-**Archivo:** `RAG/manual_unico_unificado.yaml` (sección `fluent_design_system`)
+### Niveles de Cumplimiento
+
+| Nivel | Significado | Indicador |
+|-------|-------------|-----------|
+| 🟢 **Conforme** | Todos los requisitos cumplidos | CheckCircle |
+| 🟡 **Parcial** | Requisitos parcialmente cumplidos | AlertTriangle |
+| 🔴 **No Conforme** | Incumplimiento detectado | AlertTriangle |
+| ⚪ **No Aplica** | Normativa no evaluada aún | Clock |
+
+### Normativas Precargadas (RAG)
+
+| Código | Tipo | Nombre |
+|--------|------|--------|
+| ISO/IEC 27037:2012 | ISO | Identificación, recopilación, adquisición y preservación de evidencia digital |
+| ISO/IEC 27042:2015 | ISO | Análisis e interpretación de evidencia digital |
+| NIST SP 800-101 r1 | NIST | Guidelines on Mobile Device Forensics |
+| MUCC-2017 | MANUAL | Manual Único de Cadena de Custodia de Evidencias |
+| ACPO-v5 | MANUAL | ACPO Good Practice Guide for Digital Evidence v5 |
+| LEDI-2001 | LEY | Ley Especial de Delitos Informáticos |
+| LMDF-1999 | LEY | Ley sobre Mensajes de Datos y Firmas Electrónicas |
+| COPP | LEY | Código Orgánico Procesal Penal |
+| CENIF-2012 | REGLAMENTO | Creación del Centro Nacional de Informática Forense |
 
 ---
 
-## 📍 Fases del Sistema
+## 🔬 Integración con Avilla Forensics
 
-### 1️⃣ Fase Inicial - Obtención
-- Obtención Técnica (Protección, Observación, Fijación, Colección)
-- Obtención por Consignación ⭐ **PRIORIDAD**
-- Obtención por Aseguramiento
-- Obtención por Derivación
+El CMS integra documentación operativa de [Avilla Forensics](https://github.com/AvillaDaniel/AvillaForensics) para:
 
-### 2️⃣ Fase de Laboratorio - Peritación
-- Recepción en Laboratorio
-- Designación de Perito
-- Peritaje (Andriller + ALEAPP)
-- Remisión de Resultados
+- **APK Downgrade**: Extracción de datos de apps sin Root (>400 apps soportadas)
+- **WhatsApp Parser**: Parseo de chats con schema nuevo y antiguo de `msgstore.db`
+- **Transcripción .opus**: Conversión masiva de audios de WhatsApp a texto
+- **Image Finder**: Recuperación de imágenes con metadata EXIF y geolocalización KML
+- **Validación de Integridad**: Sistema de hashes SHA-256 + logs cifrados AES-256 (.avilla) + firma HMAC
 
-### 3️⃣ Fase de Disposición Judicial
-- Resguardo Judicial
-- Exhibición en Audiencia
-
-### 4️⃣ Fase de Disposición Final
-- Devolución / Entrega / Destrucción
-- Cierre de PRCC
-
-### 🔄 Procesos Continuos
-- Resguardo (Ingreso → Depósito → Egreso)
-- Traslado
-- Transferencia
+📖 Ver guía completa: [`skill_avilla.md`](skill_avilla.md)
 
 ---
 
@@ -147,9 +191,7 @@ El proyecto usa **Microsoft Fluent Design** para consistencia visual moderna:
 ### Requisitos
 - Node.js >= 18.x
 - npm >= 9.x
-- Python >= 3.11
-- Andriller instalado
-- ALEAPP instalado
+- Python >= 3.11 (para herramientas forenses)
 
 ### Comandos
 
@@ -157,48 +199,41 @@ El proyecto usa **Microsoft Fluent Design** para consistencia visual moderna:
 # Instalación
 npm install
 
-# Desarrollo
-npm run dev              # Vite dev server
-npm run electron:dev     # Electron + Vite hot reload
+# Desarrollo (Vite dev server)
+npm run dev
+
+# Desarrollo con Electron
+npm run electron:dev
 
 # Build Web
-npm run build            # Build estándar
+npm run build
 
-# Build Electron
-npm run electron:build:deb    # Solo .deb (Linux)
-npm run electron:build:all    # Todas las plataformas
+# Build Electron Windows
+npm run electron:build
 ```
 
 ---
 
-## 📦 Empaquetado .deb
+## 🎨 Sistema de Diseño
 
-```bash
-# Generar paquete
-npm run electron:build:deb
+El proyecto utiliza dos sistemas de diseño complementarios:
 
-# El paquete se genera en:
-dist-electron/forense-android_1.0.0_amd64.deb
+### CMS Compliance (Principal)
+| Token | Valor |
+|-------|-------|
+| Background | `#0f1117` |
+| Sidebar | `#141721` |
+| Card | `#1a1f2e` |
+| Accent | `#4f8ef7` |
+| Accent 2 | `#7c4dff` |
+| Border Radius | `16px` (cards), `12px` (buttons) |
 
-# Instalar en Debian/Ubuntu
-sudo dpkg -i dist-electron/forense-android_1.0.0_amd64.deb
-
-# Corregir dependencias si es necesario
-sudo apt-get install -f
-```
-
-### Dependencias del Sistema
-```bash
-# Python 3 (requerido para Andriller y ALEAPP)
-sudo apt install python3 python3-pip
-
-# Dependencias de Electron
-sudo apt install libgtk-3-0 libnotify4 libnss3 libxtst6
-
-# Instalar herramientas forenses
-pip3 install andriller
-pip3 install aleapp
-```
+### Fluent UI (Forense Original)
+| Token | Valor |
+|-------|-------|
+| Background | `#202020` (Mica) |
+| Accent | `#0078D4` |
+| Motion | `167ms` cubic-bezier |
 
 ---
 
@@ -220,72 +255,38 @@ pip3 install aleapp
 
 ---
 
+## 🔐 Seguridad
+
+- ✅ Context Isolation + Preload script seguro (Electron)
+- ✅ IPC validado entre frontend y backend
+- ✅ Persistencia local (localStorage) con versionado de store
+- ✅ Cálculo de hashes SHA-256 / MD5 para integridad
+- ✅ Registro de auditoría automático (hasta 500 eventos)
+
+---
+
 ## 📄 Documentación
 
 | Archivo | Descripción |
 |---------|-------------|
-| `RAG/manual_unico_unificado.yaml` | ✅ YAML maestro unificado + Fluent Design |
-| `map_arquitectura.md` | ✅ Mapa completo de arquitectura |
-| `componente/*/ *.yaml` | ✅ 7 componentes modulares |
-| `README.md` | ✅ Este archivo actualizado |
-
-### PDFs en RAG/ (16 documentos)
-1. MANUAL_ÚNICO_DE_CADENA_DE_CUSTODIA...pdf *(Fuente principal)*
-2. Ley Especial de Delitos Informáticos (2001).pdf
-3. Ley de Infogobierno.pdf
-4. Ley sobre Mensajes de Datos y Firmas Electrónicas.pdf
-5. Código Penal.pdf
-6. Código Orgánico Procesal Penal.pdf
-7. Constitución Nacional.pdf
-8. ISO IEC 27037-2012.pdf
-9. ISO-IEC 27042 2015.pdf
-10. NIST SP 800-101.pdf
-11. ACPO Good Practice Guide v5.pdf
-12. El Peritaje Informático.pdf
-13. La Criminología Una Ciencia Dinámica.pdf
-14. Normalización Economía Digital.pdf
-15. cyb_ecu_delitos_inform.pdf
-16. Creación del CENIF (2012).pdf
-
----
-
-## 🔐 Seguridad
-
-### Electron
-- ✅ Context Isolation: `true`
-- ✅ Node Integration: `false`
-- ✅ Preload script seguro con `contextBridge`
-- ✅ IPC: Comunicación validada entre procesos
-
-### Integridad de Datos
-- ✅ Cálculo de hashes SHA-256 y MD5
-- ✅ Verificación de coincidencia de hashes
-- ✅ Registro de auditoría inmutable
-- ✅ Modo solo lectura en herramientas forenses
-
----
-
-## 📱 Páginas Principales
-
-| Página | Archivo | Función |
-|--------|---------|---------|
-| **HomePage** | `src/pages/HomePage.tsx` | Dashboard inicial |
-| **ConsignacionPage** | `src/pages/ConsignacionPage.tsx` | Registro de evidencia |
-| **AdquisicionPage** | `src/pages/AdquisicionPage.tsx` | Extracción con Andriller |
-| **AnalisisPage** | `src/pages/AnalisisPage.tsx` | Procesamiento con ALEAPP |
-| **InformePage** | `src/pages/InformePage.tsx` | Generación de dictamen |
+| `README.md` | Este archivo — visión general del proyecto |
+| `skill_avilla.md` | Referencia técnica de Avilla Forensics para desarrollo |
+| `map_arquitectura.md` | Mapa completo de arquitectura del sistema |
+| `RAG/manual_unico_unificado.yaml` | YAML maestro unificado + Fluent Design |
+| `componente/*/` | 7 componentes YAML modulares por fase forense |
 
 ---
 
 ## 🎯 Próximos Pasos
 
-- [ ] Backend Integration: Conectar a PostgreSQL
-- [ ] Autenticación: Implementar login por rol
-- [ ] Firma Digital: Integrar firma electrónica para PRCC
-- [ ] QR Codes: Generar códigos QR para tracking
-- [ ] PDF Generation: Crear PDFs oficiales
-- [ ] Audit Trail: Log de todas las operaciones
-- [ ] Offline Mode: PWA para trabajo sin conexión
+- [ ] Módulo **Tareas & Fases**: Gestión de actividades por caso con checklist normativo
+- [ ] Módulo **Personal**: Registro de peritos, fiscales y roles con asignación a casos
+- [ ] **Backend PostgreSQL**: Persistencia en base de datos relacional
+- [ ] **Autenticación por Rol**: Login con perfiles Compliance Officer / Perito / Fiscal
+- [ ] **Firma Digital**: Integrar firma electrónica para PRCC
+- [ ] **Generación PDF**: Dictámenes y reportes oficiales automatizados
+- [ ] **QR Codes**: Seguimiento de evidencias físicas
+- [ ] **PWA Offline**: Modo sin conexión para trabajo de campo
 
 ---
 
@@ -297,10 +298,10 @@ MIT
 
 ## 👥 Autor
 
-Laboratorio Forense
+Laboratorio de Informática Forense y Ciberseguridad
 
 ---
 
-*Última actualización: 27/Abr/2026 - Unificación completada + Fluent Design integrado*
-*Versión: 1.0.0*
-*Basado en: Manual Único de Cadena de Custodia (Versión Final 29SEP17)*\n\n<!-- Forensic Optimization v1.1 -->
+*Última actualización: 14/May/2026 — Conversión a CMS Compliance Officer + Manual Avilla Forensics*  
+*Versión: 2.0.0*  
+*Basado en: Manual Único de Cadena de Custodia (Venezuela, 2017) · ISO/IEC 27037 · NIST SP 800-101*

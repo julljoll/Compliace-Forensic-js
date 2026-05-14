@@ -308,33 +308,58 @@ SHA-256, SHA-1, SHA-384, SHA-512, MD5
 
 ---
 
-## 🎯 Contexto de Desarrollo para SHA256.US
+## 🎯 Contexto de Desarrollo para SHA256.US (CMS Compliance Officer)
 
-### Principio de Diseño a Seguir
+### Estado Actual del Proyecto (v2.0.0 — 14/May/2026)
+> SHA256.US ha sido transformado en un **CMS para Compliance Officer** que gestiona el cumplimiento
+> normativo del proceso forense. El contenido de la carpeta `RAG/` permanece intacto.
+
+### Arquitectura Actual
+SHA256.US opera en **dos capas de enrutamiento**:
+- **CMS Compliance** (`/`): Dashboard, Casos, Compliance, Normativas, Auditoría, Manual Avilla
+- **Módulos Forenses** (`/forense/...`): Consignación, PRCC, Adquisición, Análisis, Informe, Disposición
+
+### Principio de Diseño
 > Avilla Forensics **NO reemplaza** las herramientas existentes, las **complementa**.  
 > El módulo más importante es **APK Downgrade** — acceso a datos de apps sin Root.
 
-### Estructura Lógica de Módulos a Implementar
-Al crear nuevos módulos en SHA256.US, seguir esta estructura por módulo:
+### Páginas CMS Implementadas
+| Ruta | Página | Estado |
+|------|--------|--------|
+| `/` | Dashboard Compliance | ✅ Implementado |
+| `/casos` | Gestión de Casos (CRUD + filtros) | ✅ Implementado |
+| `/compliance` | Panel de cumplimiento normativo | ✅ Implementado |
+| `/normativas` | Marco normativo (9 instrumentos) | ✅ Implementado |
+| `/auditoria` | Log de trazabilidad | ✅ Implementado |
+| `/manual-avilla` | Manual de uso Avilla Forensics | ✅ Implementado |
+| `/tareas` | Tareas & Fases | 🔄 Stub |
+| `/personal` | Registro de personal | 🔄 Stub |
 
+### Store del CMS (cmsStore.ts)
+Zustand con persistencia localStorage. Entidades: `CasoCMS`, `Evidencia`, `TareaForense`, `FaseForense`, `Normativa`, `ChecklistItem`, `Personal`, `AuditLog`.
+
+### Estructura de Archivos CMS
 ```
 src/
 ├── components/
-│   └── [NombreModulo]/
-│       ├── [NombreModulo].tsx      # Componente React principal
-│       ├── [NombreModulo].types.ts # Tipos TypeScript
-│       └── hooks/
-│           └── use[NombreModulo].ts # Lógica de negocio
-├── services/
-│   └── [nombre-modulo].service.ts  # Llamadas IPC a Electron
-└── electron/
-    └── handlers/
-        └── [nombre-modulo].handler.ts # Handler IPC en main process
+│   ├── CMSLayout.tsx              # Layout CMS con sidebar y stats
+│   └── Layout.tsx                 # Layout Fluent original
+├── pages/
+│   ├── DashboardPage.tsx          # KPIs y panel de mando
+│   ├── CasosPage.tsx             # CRUD de casos
+│   ├── CompliancePage.tsx        # Evaluación de cumplimiento
+│   ├── NormativasPage.tsx        # Normativas agrupadas por tipo
+│   ├── AuditoriaPage.tsx         # Log de auditoría
+│   └── ManualAvillaPage.tsx      # Guía operativa Avilla
+└── store/
+    ├── cmsStore.ts               # Estado CMS (persist)
+    └── forenseStore.ts           # Estado forense original
 ```
 
 ### Mapeo de Módulos Avilla → SHA256.US
 | Módulo Avilla | Componente SHA256.US | Estado |
 |---------------|---------------------|--------|
+| Manual Uso Completo | `ManualAvillaPage.tsx` | ✅ Implementado |
 | Backup ADB | `FormADB` → `AdbBackupModule` | 🔄 Por crear |
 | APK Downgrade | `FormAPK` → `ApkDowngradeModule` | 🔄 Por crear |
 | WhatsApp Parser | `WhatsParser` → `WhatsParserModule` | 🔄 Por crear |
@@ -362,6 +387,7 @@ Z:\bin\                              # Drive virtual herramientas
 ## 📚 Referencias y Recursos
 
 - **Repositorio oficial**: https://github.com/AvillaDaniel/AvillaForensics
+- **Proyecto SHA256.US**: https://github.com/julljoll/SHA256.deb.git
 - **Academia de Forense Digital (AFD)**: https://academiadeforensedigital.com.br
 - **Certificación oficial**: https://loja.academiadeforensedigital.com.br
 - **LinkedIn autor**: https://www.linkedin.com/in/daniel-a-avilla-0987/
@@ -382,10 +408,13 @@ GNU General Public License v3.0 (Copyleft © 2025 – Daniel Hubscher Avilla)
 ## 📝 Notas de Desarrollo
 
 > [!IMPORTANT]
-> Avilla Forensics está escrito en **C# / Windows Forms**. El proyecto SHA256.US usa **React + Electron**. Al replicar funcionalidades, implementar la lógica en el **main process de Electron** (`electron/main.js`) usando IPC, y la UI en React.
+> SHA256.US v2.0.0 es ahora un **CMS para Compliance Officer**. La interfaz principal (`/`) muestra el panel de
+> cumplimiento. Los módulos forenses operativos están bajo `/forense/...`. El contenido RAG permanece intacto.
 
 > [!TIP]
-> Prioridad de módulos: APK Downgrade → WhatsApp Parser → Hash Calculator → Integridad de Evidencia → Colectas ADB.
+> Prioridad de módulos pendientes: APK Downgrade → WhatsApp Parser → Integridad de Evidencia → Colectas ADB.
+> Para implementar, crear componente en `src/pages/` y registrarlo en `App.tsx` + `CMSLayout.tsx`.
 
 > [!NOTE]
-> Los archivos `.avilla` (cifrado AES-256 + HMAC) son el diferenciador clave de Avilla Forensics en términos de cadena de custodia. Implementar un sistema similar en SHA256.US es una prioridad alta.
+> Los archivos `.avilla` (cifrado AES-256 + HMAC) son el diferenciador clave de Avilla Forensics en términos
+> de cadena de custodia. El ManualAvillaPage ya documenta este sistema de validación de autenticidad.
