@@ -29,7 +29,11 @@ const CUMPLIMIENTO_CONFIG: Record<string, { icon: typeof CheckCircle2; color: st
 };
 
 export default function DashboardPage() {
-  const { casos, tareas, normativas, auditLogs, getEstadisticas } = useCMSStore();
+  const casos = useCMSStore(state => state.casos);
+  const tareas = useCMSStore(state => state.tareas);
+  const normativas = useCMSStore(state => state.normativas);
+  const auditLogs = useCMSStore(state => state.auditLogs);
+  const getEstadisticas = useCMSStore(state => state.getEstadisticas);
   const stats = getEstadisticas();
 
   const recientes = [...casos].sort((a, b) =>

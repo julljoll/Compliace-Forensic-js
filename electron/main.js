@@ -40,9 +40,9 @@ function createWindow() {
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-app.whenReady().then(() => {
-  // Inicializar DB con ruta de datos del usuario
-  initDatabase(app.getPath('userData'));
+app.whenReady().then(async () => {
+  // Inicializar DB con Neon PostgreSQL Serverless
+  await initDatabase();
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -58,19 +58,19 @@ app.on('window-all-closed', () => {
 // ============================================
 
 ipcMain.handle('auth:login', async (event, { username, password }) => {
-  const result = authenticateUser(username, password);
+  const result = await authenticateUser(username, password);
   if (result) return { success: true, user: result };
   return { success: false, message: 'Usuario o contraseña incorrectos' };
 });
 
 ipcMain.handle('auth:validate', async (event, token) => {
-  const user = validateSession(token);
+  const user = await validateSession(token);
   if (user) return { success: true, user };
   return { success: false };
 });
 
 ipcMain.handle('auth:logout', async (event, token) => {
-  logout(token);
+  await logout(token);
   return { success: true };
 });
 
@@ -164,22 +164,67 @@ ipcMain.handle('hash:calculate', async (event, filePath, algorithm = 'sha256') =
 // ============================================
 
 ipcMain.handle('db:getCasos', async (event, userId) => {
-  const db = getDb();
-  if (!db) return [];
-  return db.prepare('SELECT * FROM casos WHERE user_id = ? ORDER BY updated_at DESC').all(userId);
+  const sql = getDb();
+  if (!sql) return [];
+  try {
+    const casos = await sql`SELECT * FROM casos WHERE user_id = ${userId} ORDER BY updated_at DESC`;
+    return casos;
+  } catch (err) {
+    console.error('[DB] Error getCasos:', err);
+    return [];
+  }
 });
 
 ipcMain.handle('db:addCaso', async (event, caso) => {
-  const db = getDb();
-  if (!db) return { success: false };
+  const sql = getDb();
+  if (!sql) return { success: false };
   try {
-    const result = db.prepare(
-      `INSERT INTO casos (numero_caso, titulo, descripcion, estado, tipo, solicitante_nombre, solicitante_ci,
-       dispositivo_marca, dispositivo_modelo, dispositivo_imei, user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).run(caso.numero_caso, caso.titulo, caso.descripcion || '', caso.estado || 'iniciado',
-      caso.tipo || 'whatsapp', caso.solicitante_nombre || '', caso.solicitante_ci || '',
-      caso.dispositivo_marca || '', caso.dispositivo_modelo || '', caso.dispositivo_imei || '', caso.user_id);
-    return { success: true, id: result.lastInsertRowid };
-  } catch (e) { return { success: false, error: e.message }; }
+    const result = await sql`
+      INSERT INTO casos (
+        numero_caso, titulo, descripcion, estado, tipo, 
+        solicitante_nombre, solicitante_ci, dispositivo_marca, 
+        dispositivo_modelo, dispositivo_imei, user_id
+      )
+      VALUES (
+        ${caso.numero_caso}, ${caso.titulo}, ${caso.descripcion || ''}, 
+        ${caso.estado || 'iniciado'}, ${caso.tipo || 'whatsapp'}, 
+        ${caso.solicitante_nombre || ''}, ${caso.solicitante_ci || ''},
+        ${caso.dispositivo_marca || ''}, ${caso.dispositivo_modelo || ''}, 
+        ${caso.dispositivo_imei || ''}, ${caso.user_id}
+      )
+      RETURNING id
+    `;
+    return { success: true, id: result[0].id };
+  } catch (e) { 
+    console.error('[DB] Error addCaso:', e);
+    return { success: false, error: e.message }; 
+  }
+});
+
+ipcMain.handle('db:saveState', async (event, userId, state) => {
+  const sql = getDb();
+  if (!sql) return { success: false };
+  try {
+    await sql`
+      INSERT INTO cms_state (user_id, state) 
+      VALUES (${userId}, ${state})
+      ON CONFLICT (user_id) DO UPDATE SET state = EXCLUDED.state, updated_at = CURRENT_TIMESTAMP
+    `;
+    return { success: true };
+  } catch (e) {
+    console.error('[DB] Error saveState:', e);
+    return { success: false, error: e.message }; 
+  }
+});
+
+ipcMain.handle('db:loadState', async (event, userId) => {
+  const sql = getDb();
+  if (!sql) return null;
+  try {
+    const rows = await sql`SELECT state FROM cms_state WHERE user_id = ${userId}`;
+    return rows.length > 0 ? rows[0].state : null;
+  } catch (e) {
+    console.error('[DB] Error loadState:', e);
+    return null; 
+  }
 });

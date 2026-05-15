@@ -37,42 +37,29 @@ export const useAuthStore = create<AuthState>()(
       login: async (username, password) => {
         set({ isLoading: true, error: null });
 
-        // Verificar si estamos en Electron
-        const electronAPI = (window as any).electronAPI;
-        if (electronAPI?.auth) {
+        if (window.electronAPI?.auth) {
           try {
-            const result = await electronAPI.auth.login({ username, password });
+            const result = await window.electronAPI.auth.login({ username, password });
             if (result.success) {
               set({ user: result.user, isAuthenticated: true, isLoading: false });
               return true;
             }
             set({ error: result.message || 'Credenciales incorrectas', isLoading: false });
             return false;
-          } catch {
-            set({ error: 'Error de conexión con la base de datos', isLoading: false });
+          } catch (error) {
+            set({ error: 'Error de conexión con la base de datos Neon', isLoading: false });
             return false;
           }
         }
 
-        // Modo web/dev — auth local simple
-        await new Promise(r => setTimeout(r, 500)); // Simular latencia
-        if (username === 'admin' && password === 'julljoll') {
-          const user: AuthUser = {
-            id: 1, username: 'admin', nombre: 'Administrador',
-            rol: 'perito_lider', token: `dev-${Date.now()}`
-          };
-          set({ user, isAuthenticated: true, isLoading: false });
-          return true;
-        }
-        set({ error: 'Usuario o contraseña incorrectos', isLoading: false });
+        set({ error: 'API de Electron no disponible', isLoading: false });
         return false;
       },
 
-      logout: () => {
+      logout: async () => {
         const { user } = get();
-        const electronAPI = (window as any).electronAPI;
-        if (electronAPI?.auth && user?.token) {
-          electronAPI.auth.logout(user.token);
+        if (window.electronAPI?.auth && user?.token) {
+          await window.electronAPI.auth.logout(user.token);
         }
         set({ user: null, isAuthenticated: false, error: null });
       },
@@ -81,14 +68,12 @@ export const useAuthStore = create<AuthState>()(
         const { user } = get();
         if (!user?.token) { set({ isAuthenticated: false }); return false; }
 
-        const electronAPI = (window as any).electronAPI;
-        if (electronAPI?.auth) {
-          const result = await electronAPI.auth.validate(user.token);
+        if (window.electronAPI?.auth) {
+          const result = await window.electronAPI.auth.validate(user.token);
           if (!result.success) { set({ user: null, isAuthenticated: false }); return false; }
           return true;
         }
-        // En modo dev, siempre válido si hay token
-        return true;
+        return false;
       },
 
       clearError: () => set({ error: null }),

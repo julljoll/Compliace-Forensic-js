@@ -69,22 +69,36 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
 };
 
 export default function CasosPage() {
-  const { getCasosFiltrados, filtroEstado, filtroPrioridad, busqueda, setFiltroEstado, setFiltroPrioridad, setBusqueda, addCaso, deleteCaso, normativas } = useCMSStore();
+  const getCasosFiltrados = useCMSStore(state => state.getCasosFiltrados);
+  const filtroEstado = useCMSStore(state => state.filtroEstado);
+  const filtroPrioridad = useCMSStore(state => state.filtroPrioridad);
+  const busqueda = useCMSStore(state => state.busqueda);
+  const setFiltroEstado = useCMSStore(state => state.setFiltroEstado);
+  const setFiltroPrioridad = useCMSStore(state => state.setFiltroPrioridad);
+  const setBusqueda = useCMSStore(state => state.setBusqueda);
+  const addCaso = useCMSStore(state => state.addCaso);
+  const deleteCaso = useCMSStore(state => state.deleteCaso);
+  const normativas = useCMSStore(state => state.normativas);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ ...FORM_INICIAL });
   const [saving, setSaving] = useState(false);
 
   const casos = getCasosFiltrados();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    setTimeout(() => {
-      addCaso(form);
-      setForm({ ...FORM_INICIAL });
-      setShowForm(false);
+    try {
+      const id = await addCaso(form);
+      if (id) {
+        setForm({ ...FORM_INICIAL });
+        setShowForm(false);
+      } else {
+        alert('Error al registrar el caso en la base de datos remota.');
+      }
+    } finally {
       setSaving(false);
-    }, 300);
+    }
   };
 
   return (

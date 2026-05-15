@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
@@ -21,9 +22,15 @@ const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
 
 export default function CMSLayout() {
   const location = useLocation();
-  const { casos, getEstadisticas } = useCMSStore();
+  const casos = useCMSStore(state => state.casos);
+  const getEstadisticas = useCMSStore(state => state.getEstadisticas);
+  const fetchCasos = useCMSStore(state => state.fetchCasos);
   const { user, logout } = useAuthStore();
   const stats = getEstadisticas();
+
+  useEffect(() => {
+    fetchCasos();
+  }, [fetchCasos]);
 
   const getBreadcrumb = () => {
     const item = menuItems.find(m => m.path === location.pathname || location.pathname.startsWith(m.path + '/'));
@@ -138,7 +145,7 @@ export default function CMSLayout() {
 
         {/* Content */}
         <main className="flex-1 overflow-y-auto bg-cms-bg">
-          <div className="max-w-7xl mx-auto p-6 animate-fadeUp">
+          <div className="max-w-7xl mx-auto p-6 animate-fade-in">
             <Outlet />
           </div>
         </main>

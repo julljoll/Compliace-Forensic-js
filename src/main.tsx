@@ -31,6 +31,17 @@ declare global {
       hash: {
         calculate: (filePath: string, algorithm?: string) => Promise<any>;
       };
+      db: {
+        getCasos: (userId: number) => Promise<any>;
+        addCaso: (caso: any) => Promise<any>;
+        saveState: (userId: number, state: string) => Promise<any>;
+        loadState: (userId: number) => Promise<any>;
+      };
+      auth: {
+        login: (credentials: any) => Promise<any>;
+        validate: (token: string) => Promise<any>;
+        logout: (token: string) => Promise<any>;
+      };
       platform: string;
     };
   }

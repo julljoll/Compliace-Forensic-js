@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 // ─── Enumeraciones ────────────────────────────────────────────────────────────
 
@@ -183,7 +183,8 @@ interface CMSState {
   busqueda: string;
   
   // Acciones - Casos
-  addCaso: (caso: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'>) => string;
+  fetchCasos: () => Promise<void>;
+  addCaso: (caso: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'>) => Promise<string | null>;
   updateCaso: (id: string, datos: Partial<CasoCMS>) => void;
   deleteCaso: (id: string) => void;
   seleccionarCaso: (id: string | null) => void;
@@ -303,6 +304,21 @@ const NORMATIVAS_INICIALES: Normativa[] = [
 const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const now = () => new Date().toISOString();
 
+const neonStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    // Aquí idealmente usaríamos el ID del usuario real autenticado.
+    const state = await window.electronAPI.db.loadState(1);
+    return state ? JSON.stringify(state) : null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    // Almacena todo el estado global en PostgreSQL en background
+    await window.electronAPI.db.saveState(1, JSON.parse(value));
+  },
+  removeItem: async (name: string): Promise<void> => {
+    // No implementado
+  },
+};
+
 // ─── Store ────────────────────────────────────────────────────────────────────
 
 export const useCMSStore = create<CMSState>()(
@@ -322,17 +338,73 @@ export const useCMSStore = create<CMSState>()(
       busqueda: '',
 
       // ── Casos ──
-      addCaso: (caso) => {
-        const id = uid();
-        const nuevo: CasoCMS = {
-          ...caso,
-          id,
-          fechaCreacion: now(),
-          fechaUltimaActualizacion: now(),
-        };
-        set(s => ({ casos: [...s.casos, nuevo] }));
-        get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado`, nivel: 'success', casoId: id, usuario: caso.pertiLider });
-        return id;
+      fetchCasos: async () => {
+        // Obtenemos el userId simulado o del store de auth real (hardcode a 1 por ahora si no hay session)
+        // Lo ideal sería pasarlo o leerlo del authStore
+        try {
+            const casosDB = await window.electronAPI.db.getCasos(1);
+            if (casosDB && casosDB.length > 0) {
+                // Mapear de db a UI
+                const mapeados: CasoCMS[] = casosDB.map((c: any) => ({
+                    id: c.id.toString(),
+                    numeroCaso: c.numero_caso,
+                    titulo: c.titulo,
+                    descripcion: c.descripcion,
+                    estado: c.estado,
+                    prioridad: 'media',
+                    fechaCreacion: c.created_at,
+                    fechaUltimaActualizacion: c.updated_at,
+                    pertiLider: 'Perito',
+                    normativasAplicadas: [],
+                    fasesCompletadas: 0,
+                    totalFases: 6,
+                    porcentajeCompletado: 0,
+                    totalEvidencias: 0,
+                    nivelCumplimientoGeneral: 'no_aplica',
+                    etiquetas: [],
+                    notas: ''
+                }));
+                set({ casos: mapeados });
+            }
+        } catch (err) {
+            console.error('Error fetching casos', err);
+        }
+      },
+      addCaso: async (caso) => {
+        try {
+            const payload = {
+                numero_caso: caso.numeroCaso,
+                titulo: caso.titulo,
+                descripcion: caso.descripcion,
+                estado: caso.estado,
+                tipo: 'whatsapp',
+                solicitante_nombre: caso.fiscal,
+                solicitante_ci: '',
+                dispositivo_marca: '',
+                dispositivo_modelo: '',
+                dispositivo_imei: '',
+                user_id: 1 // Por defecto admin
+            };
+            const result = await window.electronAPI.db.addCaso(payload);
+            
+            if (result && result.success) {
+                const id = result.id.toString();
+                const nuevo: CasoCMS = {
+                  ...caso,
+                  id,
+                  fechaCreacion: now(),
+                  fechaUltimaActualizacion: now(),
+                };
+                set(s => ({ casos: [...s.casos, nuevo] }));
+                get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.pertiLider });
+                return id;
+            }
+            throw new Error(result?.error || 'Error desconocido al guardar en DB');
+        } catch (e) {
+            console.error('Error addCaso DB:', e);
+            get().addAuditLog({ accion: 'CASO_ERROR', detalle: `Error guardando en base de datos Neon`, nivel: 'error', casoId: undefined, usuario: caso.pertiLider });
+            return null;
+        }
       },
       updateCaso: (id, datos) => {
         set(s => ({
@@ -466,6 +538,10 @@ export const useCMSStore = create<CMSState>()(
         };
       },
     }),
-    { name: 'cms-forense-store', version: 1 }
+    {
+      name: 'cms-neon-storage',
+      storage: createJSONStorage(() => neonStorage),
+      partialize: (state) => ({ ...state, casos: [] }), // Ignoramos 'casos' porque ya los obtenemos explícitamente con fetchCasos para que no haya colisiones
+    }
   )
 );

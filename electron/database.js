@@ -1,145 +1,182 @@
 /**
- * Base de datos SQLite local — SHA256.US Peritaje Privado
- * Motor: better-sqlite3 (sin servidor, archivo local)
+ * Base de datos PostgreSQL Serverless — SHA256.US Peritaje Privado
+ * Motor: Neon Database (@neondatabase/serverless)
  */
-const Database = require('better-sqlite3');
-const path = require('path');
+require('dotenv').config();
+const { neon } = require('@neondatabase/serverless');
 const crypto = require('crypto');
 
-let db = null;
+let sql = null;
 
-/** Hash SHA-256 para passwords */
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-/** Inicializar base de datos en userData del sistema */
-function initDatabase(userDataPath) {
-  const dbPath = path.join(userDataPath, 'sha256_peritaje.db');
-  db = new Database(dbPath);
-
-  // WAL mode para mejor rendimiento
-  db.pragma('journal_mode = WAL');
-
-  // ── Tabla de usuarios ──
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE NOT NULL,
-      password_hash TEXT NOT NULL,
-      nombre TEXT DEFAULT '',
-      rol TEXT DEFAULT 'perito',
-      activo INTEGER DEFAULT 1,
-      created_at TEXT DEFAULT (datetime('now')),
-      last_login TEXT
-    )
-  `);
-
-  // ── Tabla de sesiones ──
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS sessions (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      token TEXT UNIQUE NOT NULL,
-      created_at TEXT DEFAULT (datetime('now')),
-      expires_at TEXT,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // ── Tabla de casos / expedientes ──
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS casos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      numero_caso TEXT UNIQUE NOT NULL,
-      titulo TEXT NOT NULL,
-      descripcion TEXT DEFAULT '',
-      estado TEXT DEFAULT 'iniciado',
-      tipo TEXT DEFAULT 'whatsapp',
-      solicitante_nombre TEXT DEFAULT '',
-      solicitante_ci TEXT DEFAULT '',
-      dispositivo_marca TEXT DEFAULT '',
-      dispositivo_modelo TEXT DEFAULT '',
-      dispositivo_imei TEXT DEFAULT '',
-      created_at TEXT DEFAULT (datetime('now')),
-      updated_at TEXT DEFAULT (datetime('now')),
-      user_id INTEGER,
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // ── Tabla de log de auditoría ──
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS audit_log (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER,
-      accion TEXT NOT NULL,
-      detalle TEXT DEFAULT '',
-      timestamp TEXT DEFAULT (datetime('now')),
-      FOREIGN KEY (user_id) REFERENCES users(id)
-    )
-  `);
-
-  // ── Insertar usuario admin si no existe ──
-  const adminExists = db.prepare('SELECT id FROM users WHERE username = ?').get('admin');
-  if (!adminExists) {
-    db.prepare(
-      'INSERT INTO users (username, password_hash, nombre, rol) VALUES (?, ?, ?, ?)'
-    ).run('admin', hashPassword('julljoll'), 'Administrador', 'perito_lider');
+/** Inicializar base de datos en Neon */
+async function initDatabase() {
+  if (!process.env.DATABASE_URL) {
+    console.error('[DB] Error: No DATABASE_URL found in .env');
+    return null;
   }
+  
+  sql = neon(process.env.DATABASE_URL);
+  
+  try {
+    // ── Tabla de usuarios ──
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        nombre VARCHAR(255) DEFAULT '',
+        rol VARCHAR(50) DEFAULT 'perito',
+        activo INTEGER DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login TIMESTAMP
+      )
+    `;
 
-  console.log('[DB] Base de datos inicializada en:', dbPath);
-  return db;
+    // ── Tabla de sesiones ──
+    await sql`
+      CREATE TABLE IF NOT EXISTS sessions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id),
+        token VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMP
+      )
+    `;
+
+    // ── Tabla de casos / expedientes ──
+    await sql`
+      CREATE TABLE IF NOT EXISTS casos (
+        id SERIAL PRIMARY KEY,
+        numero_caso VARCHAR(255) UNIQUE NOT NULL,
+        titulo VARCHAR(255) NOT NULL,
+        descripcion TEXT DEFAULT '',
+        estado VARCHAR(50) DEFAULT 'iniciado',
+        tipo VARCHAR(50) DEFAULT 'whatsapp',
+        solicitante_nombre VARCHAR(255) DEFAULT '',
+        solicitante_ci VARCHAR(255) DEFAULT '',
+        dispositivo_marca VARCHAR(255) DEFAULT '',
+        dispositivo_modelo VARCHAR(255) DEFAULT '',
+        dispositivo_imei VARCHAR(255) DEFAULT '',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        user_id INTEGER REFERENCES users(id)
+      )
+    `;
+
+    // ── Tabla de log de auditoría ──
+    await sql`
+      CREATE TABLE IF NOT EXISTS audit_log (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id),
+        accion VARCHAR(255) NOT NULL,
+        detalle TEXT DEFAULT '',
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // ── Tabla de Estado Global CMS (Persistencia Remota Zustand) ──
+    await sql`
+      CREATE TABLE IF NOT EXISTS cms_state (
+        user_id INTEGER PRIMARY KEY REFERENCES users(id),
+        state JSONB NOT NULL,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // ── Insertar usuario admin si no existe ──
+    const existingAdmins = await sql`SELECT id FROM users WHERE username = 'admin'`;
+    if (existingAdmins.length === 0) {
+      await sql`
+        INSERT INTO users (username, password_hash, nombre, rol) 
+        VALUES ('admin', ${hashPassword('julljoll')}, 'Administrador', 'perito_lider')
+      `;
+    }
+
+    console.log('[DB] Conexión a Neon PostgreSQL inicializada exitosamente.');
+    return sql;
+  } catch (error) {
+    console.error('[DB] Error inicializando Neon:', error);
+    return null;
+  }
 }
 
 /** Verificar credenciales */
-function authenticateUser(username, password) {
-  if (!db) return null;
-  const user = db.prepare(
-    'SELECT * FROM users WHERE username = ? AND password_hash = ? AND activo = 1'
-  ).get(username, hashPassword(password));
+async function authenticateUser(username, password) {
+  if (!sql) return null;
+  
+  try {
+    const users = await sql`
+      SELECT * FROM users 
+      WHERE username = ${username} AND password_hash = ${hashPassword(password)} AND activo = 1
+    `;
+    
+    if (users.length > 0) {
+      const user = users[0];
+      
+      // Actualizar last_login
+      await sql`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ${user.id}`;
+      
+      // Generar token de sesión
+      const token = crypto.randomBytes(32).toString('hex');
+      await sql`
+        INSERT INTO sessions (user_id, token, expires_at) 
+        VALUES (${user.id}, ${token}, CURRENT_TIMESTAMP + INTERVAL '7 days')
+      `;
+      
+      // Log
+      await sql`
+        INSERT INTO audit_log (user_id, accion, detalle) 
+        VALUES (${user.id}, 'LOGIN', ${'Inicio de sesión: ' + username})
+      `;
 
-  if (user) {
-    // Actualizar last_login
-    db.prepare('UPDATE users SET last_login = datetime("now") WHERE id = ?').run(user.id);
-    // Generar token de sesión
-    const token = crypto.randomBytes(32).toString('hex');
-    db.prepare(
-      'INSERT INTO sessions (user_id, token, expires_at) VALUES (?, ?, datetime("now", "+7 days"))'
-    ).run(user.id, token);
-    // Log
-    db.prepare(
-      'INSERT INTO audit_log (user_id, accion, detalle) VALUES (?, ?, ?)'
-    ).run(user.id, 'LOGIN', `Inicio de sesión: ${username}`);
-
-    return { id: user.id, username: user.username, nombre: user.nombre, rol: user.rol, token };
+      return { id: user.id, username: user.username, nombre: user.nombre, rol: user.rol, token };
+    }
+    return null;
+  } catch (err) {
+    console.error('[DB] Error auth:', err);
+    return null;
   }
-  return null;
 }
 
 /** Validar token de sesión */
-function validateSession(token) {
-  if (!db) return null;
-  const session = db.prepare(
-    `SELECT s.*, u.username, u.nombre, u.rol FROM sessions s
-     JOIN users u ON s.user_id = u.id
-     WHERE s.token = ? AND s.expires_at > datetime('now')`
-  ).get(token);
-  if (session) {
-    return { id: session.user_id, username: session.username, nombre: session.nombre, rol: session.rol };
+async function validateSession(token) {
+  if (!sql) return null;
+  
+  try {
+    const sessions = await sql`
+      SELECT s.*, u.username, u.nombre, u.rol 
+      FROM sessions s
+      JOIN users u ON s.user_id = u.id
+      WHERE s.token = ${token} AND s.expires_at > CURRENT_TIMESTAMP
+    `;
+    
+    if (sessions.length > 0) {
+      const session = sessions[0];
+      return { id: session.user_id, username: session.username, nombre: session.nombre, rol: session.rol };
+    }
+    return null;
+  } catch (err) {
+    return null;
   }
-  return null;
 }
 
 /** Cerrar sesión */
-function logout(token) {
-  if (!db) return;
-  db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+async function logout(token) {
+  if (!sql) return;
+  try {
+    await sql`DELETE FROM sessions WHERE token = ${token}`;
+  } catch (err) {
+    console.error('[DB] Error logout:', err);
+  }
 }
 
-/** Obtener instancia de la base de datos */
+/** Obtener instancia de la base de datos (neon tag) */
 function getDb() {
-  return db;
+  return sql;
 }
 
 module.exports = {
