@@ -11,7 +11,20 @@ export default defineConfig({
     modulePreload: false,
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: true
+    sourcemap: false, // Disabled in production to save space and hide source
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          state: ['zustand'],
+          icons: ['lucide-react']
+        }
+      }
+    }
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
   },
   resolve: {
     alias: {
