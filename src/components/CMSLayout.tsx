@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone, LogOut
+  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone, LogOut, Menu, X
 } from 'lucide-react';
 import { useCMSStore } from '../store/cmsStore';
 import { useAuthStore } from '../store/authStore';
@@ -26,6 +26,7 @@ export default function CMSLayout() {
   const getEstadisticas = useCMSStore(state => state.getEstadisticas);
   const fetchCasos = useCMSStore(state => state.fetchCasos);
   const { user, logout } = useAuthStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const stats = getEstadisticas();
 
   useEffect(() => {
@@ -40,11 +41,23 @@ export default function CMSLayout() {
   return (
     <div className="flex h-screen bg-cms-bg font-sans text-cms-text overflow-hidden">
 
-      {/* ── Sidebar ────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex w-64 flex-col shrink-0 bg-cms-sidebar border-r border-cms-border z-20 shadow-xl">
+      {/* ── Overlay Móvil ── */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
 
-        {/* Logo */}
-        <div className="p-6 pb-4 border-b border-cms-border">
+      {/* ── Sidebar ────────────────────────────────────────────────────── */}
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-cms-sidebar border-r border-cms-border shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        md:relative md:translate-x-0
+      `}>
+
+        {/* Logo and Mobile Close Button */}
+        <div className="p-6 pb-4 border-b border-cms-border flex items-center justify-between">
           <div className="flex items-center gap-3 mb-1">
             <div className="w-8 h-8 bg-gradient-to-br from-cms-accent to-cms-accent2 rounded-lg flex items-center justify-center shadow-lg">
               <Scale size={16} className="text-white" />
@@ -54,6 +67,12 @@ export default function CMSLayout() {
               <p className="text-[9px] text-cms-textMuted uppercase tracking-widest">Peritaje WhatsApp</p>
             </div>
           </div>
+          <button 
+            className="md:hidden text-cms-textMuted hover:text-white"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Stats rápidas */}
@@ -87,6 +106,7 @@ export default function CMSLayout() {
                       <Link
                         key={item.path}
                         to={item.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 ${
                           isActive
                             ? 'bg-cms-accent/15 text-cms-accent font-semibold border-l-2 border-cms-accent'
@@ -123,16 +143,24 @@ export default function CMSLayout() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Header */}
-        <header className="h-14 border-b border-cms-border flex items-center justify-between px-6 bg-cms-bg/80 backdrop-blur-md z-10 shrink-0">
-          <nav className="flex items-center gap-2 text-xs text-cms-textMuted">
-            <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
-            {location.pathname !== '/' && (
-              <>
-                <ChevronRight size={12} />
-                <span className="text-white font-semibold">{getBreadcrumb()}</span>
-              </>
-            )}
-          </nav>
+        <header className="h-14 border-b border-cms-border flex items-center justify-between px-4 md:px-6 bg-cms-bg/80 backdrop-blur-md z-10 shrink-0">
+          <div className="flex items-center gap-3">
+            <button 
+              className="md:hidden p-1.5 text-cms-textMuted hover:text-white hover:bg-cms-surface rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+            <nav className="hidden md:flex items-center gap-2 text-xs text-cms-textMuted">
+              <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
+              {location.pathname !== '/' && (
+                <>
+                  <ChevronRight size={12} />
+                  <span className="text-white font-semibold">{getBreadcrumb()}</span>
+                </>
+              )}
+            </nav>
+          </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-xs text-cms-textMuted">
               <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -145,7 +173,7 @@ export default function CMSLayout() {
 
         {/* Content */}
         <main className="flex-1 overflow-y-auto bg-cms-bg">
-          <div className="max-w-7xl mx-auto p-6 animate-fade-in">
+          <div className="max-w-7xl mx-auto p-4 md:p-6 animate-fade-in">
             <Outlet />
           </div>
         </main>

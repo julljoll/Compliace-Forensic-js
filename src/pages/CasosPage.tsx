@@ -151,9 +151,9 @@ export default function CasosPage() {
           const cumplConf = CUMPLIMIENTO_ICON[caso.nivelCumplimientoGeneral];
           const CumplIcon = cumplConf.icon;
           return (
-            <div key={caso.id} className="cms-card p-5 flex items-center gap-5 hover:border-cms-accent/30 transition-colors group">
-              <div className={`w-1 h-16 rounded-full ${PRIORIDAD_COLORS[caso.prioridad]} shrink-0`} />
-              <div className="flex-1 min-w-0">
+            <div key={caso.id} className="cms-card p-5 flex flex-col sm:flex-row items-start sm:items-center gap-5 hover:border-cms-accent/30 transition-colors group">
+              <div className={`hidden sm:block w-1 h-16 rounded-full ${PRIORIDAD_COLORS[caso.prioridad]} shrink-0`} />
+              <div className="flex-1 min-w-0 w-full">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="font-mono font-black text-cms-accent text-sm">{caso.numeroCaso}</span>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold ${estadoConf}`}>
@@ -170,9 +170,12 @@ export default function CasosPage() {
                   <span>{caso.totalEvidencias} evidencias</span>
                 </div>
               </div>
-              <div className="flex flex-col items-end gap-2 shrink-0">
-                <CumplIcon size={16} className={cumplConf.color} aria-label={cumplConf.label} />
-                <div className="w-24">
+              <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2 shrink-0 border-t border-cms-border sm:border-0 pt-3 sm:pt-0">
+                <div className="flex items-center gap-2">
+                  <CumplIcon size={16} className={cumplConf.color} aria-label={cumplConf.label} />
+                  <span className="text-xs text-cms-textMuted sm:hidden">{cumplConf.label}</span>
+                </div>
+                <div className="w-32 sm:w-24">
                   <div className="flex justify-between text-[10px] text-cms-textMuted mb-0.5">
                     <span>Progreso</span>
                     <span>{caso.porcentajeCompletado}%</span>
@@ -182,12 +185,22 @@ export default function CasosPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="hidden sm:flex items-center gap-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Link to={`/casos/${caso.id}`} className="p-2 rounded-lg bg-cms-accent/10 text-cms-accent hover:bg-cms-accent/20 transition-colors">
                   <ChevronRight size={16} />
                 </Link>
                 <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
                   <Trash2 size={14} />
+                </button>
+              </div>
+              {/* Mobile Actions */}
+              <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
+                <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center py-2 rounded-lg bg-cms-accent/10 text-cms-accent hover:bg-cms-accent/20 transition-colors">
+                  <span className="text-xs font-bold mr-1">Ver Caso</span>
+                  <ChevronRight size={16} />
+                </Link>
+                <button onClick={() => deleteCaso(caso.id)} className="p-2 px-4 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors">
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
@@ -204,7 +217,7 @@ export default function CasosPage() {
               <button onClick={() => setShowForm(false)} className="text-cms-textMuted hover:text-white">✕</button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="cms-label">Número de Caso *</label>
                   <input required className="cms-input" placeholder="EJ-2025-001" value={form.numeroCaso}
@@ -226,7 +239,7 @@ export default function CasosPage() {
                 <textarea className="cms-input min-h-[80px] resize-none" placeholder="Contexto y antecedentes del caso..." value={form.descripcion}
                   onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="cms-label">Estado</label>
                   <select className="cms-input" value={form.estado} onChange={e => setForm(f => ({ ...f, estado: e.target.value as EstadoCaso }))}>
@@ -240,7 +253,7 @@ export default function CasosPage() {
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="cms-label">Perito Líder *</label>
                   <input required className="cms-input" placeholder="Nombre del perito" value={form.pertiLider}
@@ -252,7 +265,7 @@ export default function CasosPage() {
                     onChange={e => setForm(f => ({ ...f, fiscal: e.target.value }))} />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="cms-label">Organismo Ordenante</label>
                   <input className="cms-input" placeholder="MP / CICPC / ..." value={form.organismoOrdenante || ''}
@@ -266,7 +279,7 @@ export default function CasosPage() {
               </div>
               <div>
                 <label className="cms-label">Normativas Aplicables</label>
-                <div className="grid grid-cols-2 gap-2 mt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                   {normativas.filter(n => n.activa).map(n => (
                     <label key={n.id} className="flex items-center gap-2 text-xs text-cms-textMuted cursor-pointer hover:text-white">
                       <input type="checkbox" className="accent-cms-accent"

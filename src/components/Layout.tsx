@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
   Smartphone, 
@@ -7,7 +8,9 @@ import {
   Home,
   Shield,
   ChevronRight,
-  Info
+  Info,
+  Menu,
+  X
 } from 'lucide-react';
 import { useForenseStore } from '../store/forenseStore';
 
@@ -23,6 +26,7 @@ const menuItems = [
 export default function Layout() {
   const location = useLocation();
   const { casoActual, dispositivoActual } = useForenseStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const getBreadcrumb = () => {
     const item = menuItems.find(m => m.path === location.pathname);
@@ -31,17 +35,39 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden relative">
+
+      {/* ── Overlay Móvil ── */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside 
-        className="hidden md:flex w-72 acrylic-panel flex-col shrink-0 relative z-20 shadow-2xl print:hidden"
+        className={`
+          fixed inset-y-0 left-0 z-50 w-72 acrylic-panel flex-col shrink-0 shadow-2xl print:hidden
+          transform transition-transform duration-300 ease-in-out flex
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:relative md:translate-x-0
+        `}
         aria-label="Navegación principal"
       >
         <div className="p-8 pb-4">
-          <div className="flex items-center gap-3 mb-2">
-            <img src="./favicon.svg" alt="SHA256.US Logo" className="w-9 h-9" />
-            <div>
-              <h1 className="font-bold text-2xl tracking-widest text-fluent-text print:hidden uppercase">SHA256.US</h1>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <img src="./favicon.svg" alt="SHA256.US Logo" className="w-9 h-9" />
+              <div>
+                <h1 className="font-bold text-2xl tracking-widest text-fluent-text print:hidden uppercase">SHA256.US</h1>
+              </div>
             </div>
+            <button 
+              className="md:hidden text-white/40 hover:text-white"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <X size={24} />
+            </button>
           </div>
           <p className="text-[10px] uppercase font-semibold tracking-widest text-fluent-accent-light/80 mb-10 leading-relaxed max-w-[200px]">
             Laboratorio de Informática Forense y Ciberseguridad
@@ -57,6 +83,7 @@ export default function Layout() {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -85,19 +112,27 @@ export default function Layout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
+        {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header / Breadcrumbs */}
-        <header className="h-16 border-b border-fluent-border flex items-center justify-between px-8 bg-fluent-bg/50 backdrop-blur-md z-10 print:hidden">
-          <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
-            <Link to="/" className="breadcrumb-item">Inicio</Link>
-            {location.pathname !== '/' && (
-              <>
-                <ChevronRight size={14} className="text-white/20" />
-                <span className="breadcrumb-item-active">{getBreadcrumb()}</span>
-              </>
-            )}
-          </nav>
+        <header className="h-16 border-b border-fluent-border flex items-center justify-between px-4 md:px-8 bg-fluent-bg/50 backdrop-blur-md z-10 print:hidden shrink-0">
+          <div className="flex items-center gap-4">
+            <button 
+              className="md:hidden p-2 text-white/40 hover:text-white hover:bg-white/5 rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+            <nav className="hidden md:flex items-center gap-2 text-sm" aria-label="Breadcrumb">
+              <Link to="/" className="breadcrumb-item">Inicio</Link>
+              {location.pathname !== '/' && (
+                <>
+                  <ChevronRight size={14} className="text-white/20" />
+                  <span className="breadcrumb-item-active">{getBreadcrumb()}</span>
+                </>
+              )}
+            </nav>
+          </div>
 
           {/* Current Context Indicator */}
           {casoActual && (

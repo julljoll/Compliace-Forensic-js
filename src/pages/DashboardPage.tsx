@@ -70,7 +70,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── KPIs ───────────────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard title="Total Casos" value={stats.totalCasos} sub={`${stats.casosActivos} activos`} icon={FolderOpen} />
         <KpiCard title="Casos Activos" value={stats.casosActivos} sub="En seguimiento" icon={TrendingUp} color="text-blue-400" />
         <KpiCard title="Cumplimiento" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} conformes`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'} />

@@ -84,7 +84,7 @@ export default function CompliancePage() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: 'Progreso Global', value: `${globalStats.pct}%`, color: globalStats.pct >= 80 ? 'text-green-400' : globalStats.pct >= 50 ? 'text-yellow-400' : 'text-red-400', icon: ShieldCheck },
           { label: 'Etapas Completadas', value: globalStats.checkedStages, color: 'text-green-400', icon: CheckCircle2 },
