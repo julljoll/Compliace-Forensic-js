@@ -23,21 +23,21 @@ module.exports = {
           },
           acrylic: 'rgba(32, 32, 32, 0.7)',
         },
-        // ── CMS Compliance (nuevo) ──
+        // ── CMS Compliance (Corporativo) ──
         cms: {
-          bg:         '#0f1117',
-          sidebar:    '#141721',
-          card:       '#1a1f2e',
-          surface:    '#1e2436',
+          bg:         '#0B0F19',
+          sidebar:    '#111827',
+          card:       '#1F2937',
+          surface:    '#374151',
           border:     'rgba(255,255,255,0.07)',
-          text:       '#e8eaf0',
-          textMuted:  '#5a6478',
-          accent:     '#4f8ef7',
-          accent2:    '#7c4dff',
+          text:       '#F9FAFB',
+          textMuted:  '#9CA3AF',
+          accent:     '#2563EB',
+          accent2:    '#3B82F6',
         },
       },
       fontFamily: {
-        sans: ['"Segoe UI Variable"', 'Segoe UI', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       borderRadius: {
         'fluent-btn': '4px',
