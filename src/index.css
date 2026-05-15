@@ -5,13 +5,26 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  /* Fluent UI Dark Theme Colors */
+  --fluent-bg: #202020;
+  --fluent-bg-secondary: #2c2c2c;
+  --fluent-surface: rgba(255, 255, 255, 0.05);
+  --fluent-surface-hover: rgba(255, 255, 255, 0.08);
+  --fluent-surface-active: rgba(255, 255, 255, 0.03);
+  --fluent-border: rgba(255, 255, 255, 0.08);
+  --fluent-border-strong: rgba(255, 255, 255, 0.2);
+  --fluent-accent: #0078d4;
+  --fluent-accent-light: #479ef5;
+  --fluent-text: #ffffff;
+  --fluent-text-muted: rgba(255, 255, 255, 0.7);
+
+  font-family: "Segoe UI Variable", "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: dark;
-  color: #ffffff;
-  background-color: #202020; /* Mica Background */
+  color: var(--fluent-text);
+  background-color: var(--fluent-bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,7 +36,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #202020;
+  background-color: var(--fluent-bg);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 120, 212, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0, 120, 212, 0.03) 0%, transparent 40%);
 }
 
 #root {
@@ -37,8 +53,8 @@ body {
 
 /* Scrollbar Fluent Style */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -46,101 +62,100 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Fluent UI Components */
 @layer components {
-  .forensic-card {
-    @apply bg-fluent-surface backdrop-blur-fluent border border-fluent-border rounded-fluent-card shadow-fluent transition-all duration-167 ease-in-out;
-  }
-  
-  .forensic-card:hover {
-    @apply bg-fluent-surfaceHover shadow-fluent-elevated;
+  /* Fluent UI Components */
+  .fluent-mica {
+    @apply bg-fluent-bg/80 backdrop-blur-[50px] border border-fluent-border relative overflow-hidden;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
   }
 
-  .forensic-btn {
-    @apply px-4 py-2 rounded-fluent-btn font-semibold transition-all duration-167 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-fluent-accent focus-visible:ring-offset-2 focus-visible:ring-offset-fluent-bg;
+  .fluent-acrylic {
+    @apply bg-fluent-surface backdrop-blur-[30px] border border-fluent-border shadow-fluent;
   }
 
-  .forensic-btn-primary {
-    @apply bg-fluent-accent hover:bg-fluent-accent-light active:bg-fluent-accent-dark text-white shadow-sm disabled:opacity-50 disabled:cursor-not-allowed;
+  .fluent-card {
+    @apply bg-fluent-surface/40 backdrop-blur-[10px] border border-fluent-border rounded-lg transition-all duration-150 ease-out hover:bg-fluent-surface/60 hover:border-fluent-border-strong;
   }
 
-  .forensic-btn-secondary {
-    @apply bg-fluent-surface border border-fluent-border text-fluent-text hover:bg-fluent-surfaceHover active:bg-fluent-surfaceActive disabled:opacity-50;
+  .fluent-btn {
+    @apply px-4 py-1.5 rounded-[4px] font-medium text-sm transition-all duration-150 active:scale-[0.98] outline-none flex items-center justify-center gap-2;
   }
 
-  .forensic-input {
-    @apply w-full text-sm bg-fluent-surface border border-fluent-border border-b-white/20 rounded-fluent-btn py-2.5 px-3 focus:bg-fluent-surfaceActive focus:border-b-fluent-accent focus:ring-0 hover:bg-fluent-surfaceHover outline-none transition-all text-fluent-text placeholder:text-white/40 focus-visible:ring-1 focus-visible:ring-fluent-accent/50;
+  .fluent-btn-primary {
+    @apply bg-fluent-accent text-white hover:bg-fluent-accent-light border border-white/10 shadow-[0_2px_4px_rgba(0,0,0,0.2)];
   }
 
-  .forensic-label {
-    @apply block text-[11px] font-bold uppercase tracking-wider text-white/80 mb-1.5;
+  .fluent-btn-secondary {
+    @apply bg-fluent-surface border border-fluent-border text-fluent-text hover:bg-fluent-surfaceHover;
   }
 
-  .acrylic-panel {
-    @apply bg-fluent-acrylic backdrop-blur-fluent border-r border-fluent-border;
+  .fluent-input {
+    @apply w-full text-sm bg-fluent-surface/60 border border-fluent-border border-b-white/40 rounded-[4px] py-2 px-3 focus:bg-fluent-bg-secondary focus:border-b-fluent-accent focus:ring-0 hover:bg-fluent-surface transition-all outline-none;
   }
 
-  .nav-item {
-    @apply flex items-center gap-3 px-4 py-2.5 rounded-fluent-btn transition-all duration-167 text-white/60 hover:bg-fluent-surfaceHover hover:text-white focus-visible:bg-fluent-surfaceHover focus-visible:text-white outline-none;
+  .fluent-label {
+    @apply block text-xs font-semibold text-fluent-text-muted mb-1.5;
   }
 
-  .nav-item-active {
-    @apply bg-fluent-surface text-white border-l-4 border-fluent-accent font-bold;
+  .fluent-sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative;
   }
 
-  /* Breadcrumb helper */
-  .breadcrumb-item {
-    @apply flex items-center text-xs text-white/50 hover:text-white transition-colors;
+  .fluent-sidebar-item-active {
+    @apply bg-fluent-surface text-fluent-text font-semibold before:content-[''] before:absolute before:left-[-4px] before:top-2.5 before:bottom-2.5 before:w-1 before:bg-fluent-accent before:rounded-full;
   }
-  
-  .breadcrumb-item-active {
-    @apply text-white font-bold;
-  }
-}
 
-  /* ── CMS Compliance Components ── */
+  /* ── CMS Custom Styles ── */
   .cms-card {
-    @apply bg-cms-card border border-cms-border rounded-xl shadow-cms;
+    @apply fluent-card p-5;
   }
 
   .cms-btn {
-    @apply px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-150 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-cms-accent;
+    @apply fluent-btn;
   }
 
   .cms-btn-primary {
-    @apply bg-cms-accent text-white hover:bg-cms-accent/90 shadow-sm;
+    @apply fluent-btn-primary;
   }
 
   .cms-btn-secondary {
-    @apply bg-cms-surface border border-cms-border text-cms-text hover:bg-cms-surface/80;
+    @apply fluent-btn-secondary;
   }
 
   .cms-input {
-    @apply w-full text-sm bg-cms-surface border border-cms-border rounded-lg py-2.5 px-3
-      focus:border-cms-accent focus:ring-1 focus:ring-cms-accent/30 outline-none
-      text-cms-text placeholder:text-cms-textMuted transition-all;
+    @apply fluent-input;
   }
 
   .cms-label {
-    @apply block text-[10px] font-bold uppercase tracking-widest text-cms-textMuted mb-1.5;
+    @apply fluent-label;
   }
+}
 
 /* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeUp 0.3s cubic-bezier(0, 0, 0, 1) forwards;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.15; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s infinite ease-in-out;
 }
 
 /* Print Styles */
@@ -152,20 +167,10 @@ body {
   .print\:hidden {
     display: none !important;
   }
-  .forensic-card {
+  .cms-card {
     border: 1px solid #ddd !important;
     box-shadow: none !important;
     background: white !important;
-    color: black !important;
-  }
-  .forensic-btn, .nav-item {
-    display: none !important;
-  }
-  input, select, textarea {
-    border: none !important;
-    border-bottom: 1px solid #000 !important;
-    border-radius: 0 !important;
-    padding-left: 0 !important;
     color: black !important;
   }
 }

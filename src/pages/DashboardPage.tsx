@@ -50,16 +50,16 @@ export default function DashboardPage() {
       {/* ── Encabezado ─────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight">Panel de Control Forense</h1>
-          <p className="text-sm text-cms-textMuted font-medium max-w-lg">
-            Supervisión técnica de dispositivos consignados bajo normativas <span className="text-cms-accent">ISO 27037</span> y <span className="text-cms-accent">MUCC-2017</span>.
+          <h1 className="text-4xl font-bold text-white tracking-tight">Control Center</h1>
+          <p className="text-sm text-fluent-text-muted font-medium max-w-lg mt-1">
+            Forensic monitoring of consigned devices under <span className="text-fluent-accent">ISO 27037</span> and <span className="text-fluent-accent">MUCC-2017</span> normative frameworks.
           </p>
         </div>
         <div className="flex items-center gap-3">
            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-bold text-cms-textMuted uppercase tracking-wider">Estado Global</span>
+              <span className="text-[10px] font-bold text-fluent-text-muted uppercase tracking-[0.2em]">System Status</span>
               <span className="text-sm font-black text-green-400 flex items-center gap-1.5">
-                <Activity size={14} className="animate-pulse" /> SISTEMA OPERATIVO
+                <Activity size={14} className="animate-pulse" /> ONLINE
               </span>
            </div>
         </div>
@@ -67,29 +67,29 @@ export default function DashboardPage() {
 
       {/* ── KPIs ───────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Total Casos" value={stats.totalCasos} sub={`${stats.casosActivos} activos actualmente`} icon={FolderOpen} />
-        <KpiCard title="Casos Activos" value={stats.casosActivos} sub="En fase de procesamiento" icon={TrendingUp} color="text-blue-400" />
-        <KpiCard title="Nivel Compliance" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} casos validados`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'} />
-        <KpiCard title="Alertas" value={stats.tareasPendientes} sub="Requieren atención inmediata" icon={AlertTriangle} color="text-orange-400" />
+        <KpiCard title="Total Cases" value={stats.totalCasos} sub={`${stats.casosActivos} active records`} icon={FolderOpen} />
+        <KpiCard title="Processing" value={stats.casosActivos} sub="In technical phase" icon={TrendingUp} color="text-blue-400" />
+        <KpiCard title="Compliance" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} validated`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'} />
+        <KpiCard title="Security Alerts" value={stats.tareasPendientes} sub="Immediate action required" icon={AlertTriangle} color="text-orange-400" />
       </div>
 
       {/* ── Cuerpo ─────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Casos Recientes */}
-        <div className="lg:col-span-2 cms-card overflow-hidden bg-cms-sidebar/20">
-          <div className="p-5 border-b border-cms-border flex items-center justify-between bg-cms-surface/10">
+        <div className="lg:col-span-2 fluent-mica rounded-xl overflow-hidden shadow-2xl">
+          <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
             <h2 className="font-bold text-white flex items-center gap-2">
-              <FileSearch size={18} className="text-cms-accent" />
-              Últimas Actualizaciones de Casos
+              <FileSearch size={18} className="text-fluent-accent" />
+              Recent Case Updates
             </h2>
-            <Link to="/casos" className="text-xs font-bold text-cms-accent hover:text-cms-accent2 transition-colors uppercase tracking-wider">Ver todos</Link>
+            <Link to="/casos" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">View Directory</Link>
           </div>
-          <div className="divide-y divide-cms-border/30">
+          <div className="divide-y divide-white/5">
             {recientes.length === 0 ? (
-              <div className="p-12 text-center">
-                <FolderOpen size={40} className="text-cms-textMuted mx-auto mb-3 opacity-20" />
-                <p className="text-sm text-cms-textMuted">No hay registros recientes.</p>
+              <div className="p-16 text-center">
+                <FolderOpen size={40} className="text-fluent-text-muted mx-auto mb-4 opacity-20" />
+                <p className="text-sm text-fluent-text-muted">No recent activity detected.</p>
               </div>
             ) : recientes.map(caso => {
               const estado = ESTADO_LABEL[caso.estado] || ESTADO_LABEL.iniciado;
@@ -97,21 +97,21 @@ export default function DashboardPage() {
               const CumplIcon = cumpl.icon;
               return (
                 <Link to={`/casos/${caso.id}`} key={caso.id}
-                  className="flex items-center gap-4 px-5 py-4 hover:bg-cms-accent/5 transition-all group">
-                  <div className={`w-1.5 h-10 rounded-full ${PRIORIDAD_COLOR[caso.prioridad]} shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.3)]`} />
+                  className="flex items-center gap-4 px-6 py-5 hover:bg-white/[0.03] transition-all group">
+                  <div className={`w-1.5 h-10 rounded-full ${PRIORIDAD_COLOR[caso.prioridad]} shrink-0 shadow-lg`} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-xs font-black text-cms-accent group-hover:text-cms-accent2 transition-colors">{caso.numeroCaso}</span>
-                      <span className={`text-[9px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-tighter ${estado.color}`}>{estado.label}</span>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="font-mono text-xs font-black text-fluent-accent tracking-tighter uppercase">{caso.numeroCaso}</span>
+                      <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>{estado.label}</span>
                     </div>
-                    <p className="text-sm font-bold text-white truncate group-hover:translate-x-1 transition-transform">{caso.titulo}</p>
-                    <p className="text-xs text-cms-textMuted font-medium italic">{caso.pertiLider}</p>
+                    <p className="text-sm font-bold text-white truncate group-hover:translate-x-1 transition-transform duration-300">{caso.titulo}</p>
+                    <p className="text-[11px] text-fluent-text-muted font-medium">{caso.pertiLider}</p>
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
-                    <div className={`p-1.5 rounded-lg ${cumpl.color.replace('text', 'bg')}/10`}>
+                    <div className={`p-1.5 rounded-md ${cumpl.color.replace('text', 'bg')}/10`}>
                       <CumplIcon size={14} className={cumpl.color} />
                     </div>
-                    <div className="text-[10px] font-mono font-bold text-cms-textMuted">{caso.porcentajeCompletado}%</div>
+                    <div className="text-[10px] font-mono font-bold text-fluent-text-muted opacity-50">{caso.porcentajeCompletado}%</div>
                   </div>
                 </Link>
               );
@@ -123,24 +123,24 @@ export default function DashboardPage() {
         <div className="space-y-6">
 
           {/* Normativas Activas */}
-          <div className="cms-card p-6 bg-cms-sidebar/30 border-cms-accent/5">
-            <h3 className="font-bold text-white text-sm flex items-center gap-2 mb-5">
-              <Scale size={16} className="text-cms-accent" />
-              Marco Normativo Vigente
+          <div className="fluent-mica p-6 rounded-xl shadow-xl">
+            <h3 className="font-bold text-white text-sm flex items-center gap-2 mb-6">
+              <Scale size={16} className="text-fluent-accent" />
+              Active Frameworks
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {normativas.filter(n => n.activa).slice(0, 5).map(n => (
                 <div key={n.id} className="flex items-center justify-between group">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-cms-accent/40 group-hover:bg-cms-accent transition-colors" />
-                    <span className="text-xs font-bold text-cms-textMuted group-hover:text-white transition-colors truncate">{n.codigo}</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-fluent-accent/40 group-hover:bg-fluent-accent transition-colors shadow-[0_0_8px_rgba(0,120,212,0.4)]" />
+                    <span className="text-xs font-bold text-fluent-text-muted group-hover:text-white transition-colors truncate">{n.codigo}</span>
                   </div>
-                  <span className="text-[9px] font-black px-2 py-0.5 rounded bg-cms-bg text-cms-textMuted border border-cms-border group-hover:border-cms-accent/30 transition-colors uppercase tracking-widest">{n.tipo}</span>
+                  <span className="text-[8px] font-black px-2 py-0.5 rounded bg-white/[0.05] text-fluent-text-muted border border-white/5 group-hover:border-fluent-accent/30 transition-colors uppercase tracking-[0.2em]">{n.tipo}</span>
                 </div>
               ))}
-              <div className="pt-4 border-t border-cms-border/30 mt-4">
-                <Link to="/normativas" className="block text-center text-[10px] font-black text-cms-accent hover:text-cms-accent2 transition-colors uppercase tracking-widest">
-                  Ver {normativas.length} Normativas
+              <div className="pt-6 border-t border-white/5 mt-4">
+                <Link to="/normativas" className="block text-center text-[10px] font-black text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.2em]">
+                  Compliance Library
                 </Link>
               </div>
             </div>
@@ -148,18 +148,19 @@ export default function DashboardPage() {
 
           {/* Tareas Críticas */}
           {tareasUrgentes.length > 0 && (
-            <div className="cms-card p-6 border-red-500/30 bg-red-500/5 animate-pulse-slow">
-              <h3 className="font-bold text-red-400 text-sm flex items-center gap-2 mb-5">
+            <div className="fluent-mica p-6 rounded-xl border-red-500/20 bg-red-500/[0.02] relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-red-500/30 animate-pulse" />
+              <h3 className="font-bold text-red-400 text-sm flex items-center gap-2 mb-6">
                 <AlertTriangle size={16} />
-                Acciones Requeridas
+                Critical Actions
               </h3>
               <div className="space-y-3">
                 {tareasUrgentes.map(t => (
-                  <div key={t.id} className="text-xs p-3 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/15 transition-colors">
-                    <p className="text-white font-bold truncate mb-1">{t.titulo}</p>
+                  <div key={t.id} className="text-xs p-4 rounded-lg bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-colors">
+                    <p className="text-white font-bold truncate mb-1.5">{t.titulo}</p>
                     <div className="flex justify-between items-center">
-                       <span className="text-red-300/80 font-medium">{t.asignadoA}</span>
-                       <span className="text-[9px] font-black uppercase text-red-400">CRÍTICO</span>
+                       <span className="text-red-300 font-medium opacity-80">{t.asignadoA}</span>
+                       <span className="text-[8px] font-black uppercase text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded-[2px] tracking-[0.1em]">Priority</span>
                     </div>
                   </div>
                 ))}
@@ -171,27 +172,27 @@ export default function DashboardPage() {
 
       {/* ── Log de Auditoría ───────────────────────────── */}
       {logsRecientes.length > 0 && (
-        <div className="cms-card overflow-hidden bg-cms-sidebar/10">
-          <div className="p-5 border-b border-cms-border flex items-center justify-between bg-cms-surface/5">
+        <div className="fluent-mica rounded-xl overflow-hidden shadow-2xl">
+          <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
             <h2 className="font-bold text-white flex items-center gap-2">
-              <Activity size={18} className="text-cms-accent" />
-              Trazabilidad y Auditoría (Live)
+              <Activity size={18} className="text-fluent-accent" />
+              Traceability Audit (LIVE)
             </h2>
-            <Link to="/auditoria" className="text-xs font-bold text-cms-accent hover:text-cms-accent2 transition-colors uppercase tracking-wider">Historial completo</Link>
+            <Link to="/auditoria" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">Log History</Link>
           </div>
-          <div className="divide-y divide-cms-border/30">
+          <div className="divide-y divide-white/5">
             {logsRecientes.map(log => (
-              <div key={log.id} className="flex items-center gap-4 px-5 py-3 hover:bg-cms-surface/20 transition-colors">
-                <div className={`w-2 h-2 rounded-full shrink-0 shadow-sm ${
+              <div key={log.id} className="flex items-center gap-4 px-6 py-4 hover:bg-white/[0.02] transition-colors">
+                <div className={`w-2 h-2 rounded-full shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.5)] ${
                   log.nivel === 'success' ? 'bg-green-400 shadow-green-400/20' :
                   log.nivel === 'warning' ? 'bg-yellow-400 shadow-yellow-400/20' :
-                  log.nivel === 'error' ? 'bg-red-400 shadow-red-400/20' : 'bg-cms-accent shadow-cms-accent/20'
+                  log.nivel === 'error' ? 'bg-red-400 shadow-red-400/20' : 'bg-fluent-accent shadow-fluent-accent/20'
                 }`} />
-                <div className="w-40 shrink-0">
-                   <span className="font-mono text-[10px] font-black text-cms-accent uppercase tracking-tighter">{log.accion}</span>
+                <div className="w-44 shrink-0">
+                   <span className="font-mono text-[10px] font-black text-fluent-accent uppercase tracking-tight">{log.accion}</span>
                 </div>
-                <span className="text-xs text-cms-textMuted flex-1 truncate font-medium">{log.detalle}</span>
-                <span className="text-[10px] font-mono text-cms-textMuted/60 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
+                <span className="text-[11px] text-fluent-text-muted flex-1 truncate font-medium opacity-80">{log.detalle}</span>
+                <span className="text-[10px] font-mono text-fluent-text-muted/40 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
               </div>
             ))}
           </div>
@@ -200,18 +201,20 @@ export default function DashboardPage() {
 
       {/* ── Estado sin datos ───────────────────────────── */}
       {casos.length === 0 && (
-        <div className="cms-card p-16 text-center border-dashed border-2 border-cms-border bg-cms-accent/5">
-          <div className="w-20 h-20 bg-cms-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Gavel size={40} className="text-cms-accent" />
+        <div className="fluent-mica p-20 rounded-2xl text-center border-dashed border-white/10 relative overflow-hidden">
+          <div className="absolute top-[-50%] left-[-20%] w-[50%] h-[100%] bg-fluent-accent/5 rounded-full blur-[120px]" />
+          
+          <div className="w-24 h-24 bg-fluent-accent/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner border border-fluent-accent/20">
+            <Gavel size={48} className="text-fluent-accent" />
           </div>
-          <h3 className="text-2xl font-black text-white mb-3 tracking-tight">Bienvenido al Sistema de Compliance Forense</h3>
-          <p className="text-cms-textMuted text-sm mb-8 max-w-lg mx-auto leading-relaxed">
-            Plataforma centralizada para la gestión de peritajes digitales, control de cadena de custodia 
-            y cumplimiento normativo <span className="font-bold text-cms-text">ISO/IEC</span>. Comience registrando un nuevo caso para iniciar el flujo técnico.
+          <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">System Initialization Complete</h3>
+          <p className="text-fluent-text-muted text-sm mb-10 max-w-xl mx-auto leading-relaxed font-medium">
+            Centralized platform for digital peritaje management, custody chain control 
+            and <span className="font-bold text-white underline decoration-fluent-accent/50 underline-offset-4">ISO/IEC</span> compliance monitoring. Please initiate a new record to begin the technical workflow.
           </p>
-          <Link to="/casos" className="cms-btn cms-btn-primary px-10 py-3 inline-flex items-center gap-3 shadow-xl shadow-cms-accent/30 hover:scale-105 transition-transform">
+          <Link to="/casos" className="fluent-btn fluent-btn-primary px-12 py-3 rounded-md text-sm font-bold shadow-2xl hover:translate-y-[-2px] transition-all">
             <FolderOpen size={18} strokeWidth={2.5} />
-            Iniciar Nueva Gestión
+            Initialize Record Management
           </Link>
         </div>
       )}

@@ -15,18 +15,21 @@ export default function KpiCard({
   sub, 
   icon: Icon, 
   accent = false, 
-  color = 'text-cms-accent' 
+  color = 'text-fluent-accent' 
 }: KpiCardProps) {
   return (
-    <div className={`cms-card p-6 transition-all hover:scale-[1.02] duration-300 ${accent ? 'border-cms-accent/40 bg-cms-accent/5' : ''} dark:bg-cms-sidebar/40`}>
+    <div className={`fluent-card p-5 group relative overflow-hidden ${accent ? 'border-fluent-accent/30 bg-fluent-accent/[0.03]' : ''}`}>
       <div className="flex items-start justify-between mb-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cms-textMuted">{title}</p>
-        <div className={`p-2 rounded-lg ${color.replace('text', 'bg')}/10`}>
-          <Icon size={18} className={color} />
+        <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-fluent-text-muted">{title}</p>
+        <div className={`p-2 rounded-md ${color.replace('text', 'bg')}/10 transition-transform group-hover:scale-110`}>
+          <Icon size={16} className={color} strokeWidth={2.5} />
         </div>
       </div>
-      <div className={`text-4xl font-black mb-1 tracking-tighter ${color}`}>{value}</div>
-      {sub && <p className="text-xs text-cms-textMuted font-medium italic opacity-80">{sub}</p>}
+      <div className={`text-2xl font-black mb-1 tracking-tight ${color}`}>{value}</div>
+      {sub && <p className="text-[11px] text-fluent-text-muted font-medium opacity-60">{sub}</p>}
+      
+      {/* Fluent Hover Effect Accent Line */}
+      <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-fluent-accent group-hover:w-full transition-all duration-300" />
     </div>
   );
 }

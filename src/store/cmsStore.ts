@@ -305,16 +305,16 @@ const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const now = () => new Date().toISOString();
 
 const neonStorage = {
-  getItem: async (name: string): Promise<string | null> => {
+  getItem: async (_name: string): Promise<string | null> => {
     // Aquí idealmente usaríamos el ID del usuario real autenticado.
     const state = await window.electronAPI.db.loadState(1);
     return state ? JSON.stringify(state) : null;
   },
-  setItem: async (name: string, value: string): Promise<void> => {
+  setItem: async (_name: string, value: string): Promise<void> => {
     // Almacena todo el estado global en PostgreSQL en background
     await window.electronAPI.db.saveState(1, JSON.parse(value));
   },
-  removeItem: async (name: string): Promise<void> => {
+  removeItem: async (_name: string): Promise<void> => {
     // No implementado
   },
 };

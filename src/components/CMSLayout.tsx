@@ -22,7 +22,6 @@ const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
 
 export default function CMSLayout() {
   const location = useLocation();
-  const casos = useCMSStore(state => state.casos);
   const getEstadisticas = useCMSStore(state => state.getEstadisticas);
   const fetchCasos = useCMSStore(state => state.fetchCasos);
   const { user, logout } = useAuthStore();
@@ -39,65 +38,49 @@ export default function CMSLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-cms-bg font-sans text-cms-text overflow-hidden">
+    <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden selection:bg-fluent-accent/30 selection:text-white">
 
       {/* ── Overlay Móvil ── */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-cms-sidebar border-r border-cms-border shadow-xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
+        fixed inset-y-0 left-0 z-50 w-[260px] fluent-mica border-r border-white/5 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
 
-        {/* Logo and Mobile Close Button */}
-        <div className="p-6 pb-4 border-b border-cms-border flex items-center justify-between">
-          <div className="flex items-center gap-3 mb-1">
-            <div className="w-8 h-8 bg-gradient-to-br from-cms-accent to-cms-accent2 rounded-lg flex items-center justify-center shadow-lg">
-              <Scale size={16} className="text-white" />
+        {/* Branding */}
+        <div className="p-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-fluent-accent to-fluent-accent-light rounded-[4px] flex items-center justify-center shadow-lg transform rotate-[-2deg]">
+              <Scale size={16} className="text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="font-black text-sm tracking-widest text-white uppercase">SHA256.US</h1>
-              <p className="text-[9px] text-cms-textMuted uppercase tracking-widest">Peritaje WhatsApp</p>
+              <h1 className="font-black text-sm tracking-tight text-white leading-none">SHA256.US</h1>
+              <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">Forensics CMS</p>
             </div>
           </div>
           <button 
-            className="md:hidden text-cms-textMuted hover:text-white"
+            className="md:hidden text-fluent-text-muted hover:text-white p-1 rounded-md hover:bg-white/5"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
-        {/* Stats rápidas */}
-        <div className="px-4 py-3 border-b border-cms-border">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-cms-surface rounded-lg p-2 text-center">
-              <div className="text-lg font-black text-cms-accent">{stats.casosActivos}</div>
-              <div className="text-[9px] text-cms-textMuted uppercase">Activos</div>
-            </div>
-            <div className="bg-cms-surface rounded-lg p-2 text-center">
-              <div className={`text-lg font-black ${stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'}`}>
-                {stats.cumplimientoGeneral}%
-              </div>
-              <div className="text-[9px] text-cms-textMuted uppercase">Cumpl.</div>
-            </div>
-          </div>
-        </div>
-
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-5">
+        <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-6 custom-scrollbar">
           {groups.map(group => {
             const items = menuItems.filter(m => m.group === group);
             return (
-              <div key={group}>
-                <p className="text-[9px] font-bold uppercase tracking-widest text-cms-textMuted px-3 mb-1.5">{group}</p>
+              <div key={group} className="space-y-1">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-fluent-text-muted/50 px-3 py-2">{group}</p>
                 <div className="space-y-0.5">
                   {items.map(item => {
                     const Icon = item.icon;
@@ -107,14 +90,11 @@ export default function CMSLayout() {
                         key={item.path}
                         to={item.path}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 ${
-                          isActive
-                            ? 'bg-cms-accent/15 text-cms-accent font-semibold border-l-2 border-cms-accent'
-                            : 'text-cms-textMuted hover:text-white hover:bg-cms-surface'
-                        }`}
+                        className={`fluent-sidebar-item ${isActive ? 'fluent-sidebar-item-active' : ''}`}
                       >
-                        <Icon size={15} />
-                        <span>{item.label}</span>
+                        <Icon size={16} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-fluent-accent' : 'text-fluent-text-muted'} />
+                        <span className="text-sm">{item.label}</span>
+                        {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-fluent-accent" />}
                       </Link>
                     );
                   })}
@@ -124,15 +104,29 @@ export default function CMSLayout() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-cms-border space-y-2">
-          <div className="flex items-center gap-2 p-2 rounded-lg bg-cms-surface">
-            <ShieldCheck size={14} className="text-cms-accent shrink-0" />
+        {/* Stats and User */}
+        <div className="p-4 border-t border-white/5 bg-white/[0.02] space-y-4">
+           <div className="grid grid-cols-2 gap-2">
+              <div className="p-2 rounded-md bg-white/[0.03] border border-white/5">
+                 <p className="text-[9px] font-bold text-fluent-text-muted/50 uppercase">Activos</p>
+                 <p className="text-sm font-black text-fluent-accent">{stats.casosActivos}</p>
+              </div>
+              <div className="p-2 rounded-md bg-white/[0.03] border border-white/5">
+                 <p className="text-[9px] font-bold text-fluent-text-muted/50 uppercase">Cumpl.</p>
+                 <p className="text-sm font-black text-green-400">{stats.cumplimientoGeneral}%</p>
+              </div>
+           </div>
+
+          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
+            <div className="w-8 h-8 rounded-full bg-fluent-accent/10 border border-fluent-accent/20 flex items-center justify-center text-fluent-accent font-black text-xs">
+               {user?.nombre?.charAt(0) || 'P'}
+            </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-bold text-white truncate">{user?.nombre || 'Perito'}</p>
-              <p className="text-[9px] text-cms-textMuted">Peritaje Privado</p>
+              <p className="text-[11px] font-bold text-white truncate">{user?.nombre || 'Perito Judicial'}</p>
+              <p className="text-[9px] text-fluent-text-muted">ID: PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
             </div>
             <button onClick={logout} title="Cerrar sesión"
-              className="p-1.5 rounded-lg hover:bg-red-500/20 text-cms-textMuted hover:text-red-400 transition-colors">
+              className="p-1.5 rounded-md hover:bg-red-500/10 text-fluent-text-muted hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
               <LogOut size={14} />
             </button>
           </div>
@@ -140,40 +134,42 @@ export default function CMSLayout() {
       </aside>
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-fluent-bg">
 
         {/* Header */}
-        <header className="h-14 border-b border-cms-border flex items-center justify-between px-4 md:px-6 bg-cms-bg/80 backdrop-blur-md z-10 shrink-0">
-          <div className="flex items-center gap-3">
+        <header className="h-[48px] border-b border-white/5 flex items-center justify-between px-6 bg-fluent-bg/60 backdrop-blur-xl z-10 shrink-0">
+          <div className="flex items-center gap-4">
             <button 
-              className="md:hidden p-1.5 text-cms-textMuted hover:text-white hover:bg-cms-surface rounded-md transition-colors"
+              className="md:hidden p-1.5 text-fluent-text-muted hover:text-white hover:bg-white/5 rounded-md transition-colors"
               onClick={() => setIsMobileMenuOpen(true)}
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
-            <nav className="hidden md:flex items-center gap-2 text-xs text-cms-textMuted">
-              <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
+            <nav className="hidden md:flex items-center gap-2 text-[11px] text-fluent-text-muted font-medium">
+              <Link to="/" className="hover:text-fluent-text transition-colors">SHA256.US</Link>
               {location.pathname !== '/' && (
                 <>
-                  <ChevronRight size={12} />
-                  <span className="text-white font-semibold">{getBreadcrumb()}</span>
+                  <ChevronRight size={10} className="opacity-40" />
+                  <span className="text-fluent-text font-semibold">{getBreadcrumb()}</span>
                 </>
               )}
             </nav>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-cms-textMuted">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span>{stats.tareasPendientes} tareas pendientes</span>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-[11px] font-semibold text-fluent-text-muted">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.4)]" />
+              <span>Sincronizado</span>
             </div>
-            <div className="h-5 w-px bg-cms-border" />
-            <span className="text-xs font-mono text-cms-accent font-bold">{casos.length} casos</span>
+            <div className="flex items-center gap-1 text-[11px] font-bold bg-fluent-accent/10 text-fluent-accent px-2 py-0.5 rounded-[4px] border border-fluent-accent/20">
+               <Activity size={12} />
+               <span>LIVE</span>
+            </div>
           </div>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto bg-cms-bg">
-          <div className="max-w-7xl mx-auto p-4 md:p-6 animate-fade-in">
+        {/* Content Area */}
+        <main className="flex-1 overflow-y-auto custom-scrollbar">
+          <div className="max-w-6xl mx-auto p-6 md:p-10 animate-fade-in">
             <Outlet />
           </div>
         </main>

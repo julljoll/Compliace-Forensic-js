@@ -81,17 +81,19 @@ export default function CasosPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight">Gestión de Casos</h1>
-          <p className="text-sm text-cms-textMuted font-medium">{casos.length} casos registrados en el sistema</p>
+          <h1 className="text-4xl font-bold text-white tracking-tight">Case Records</h1>
+          <p className="text-sm text-fluent-text-muted font-medium mt-1">
+            <span className="text-fluent-accent font-bold">{casos.length}</span> active investigations in technical processing.
+          </p>
         </div>
         <button 
           onClick={() => setShowForm(true)} 
-          className="cms-btn cms-btn-primary flex items-center gap-2 shadow-lg shadow-cms-accent/20"
+          className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all"
         >
           <Plus size={18} strokeWidth={3} />
-          Nuevo Caso
+          New Management
         </button>
       </div>
 
@@ -106,12 +108,16 @@ export default function CasosPage() {
         prioridades={PRIORIDADES}
       />
 
-      <div className="space-y-3">
+      <div className="space-y-4 mt-8">
         {casos.length === 0 ? (
-          <div className="cms-card p-16 text-center border-dashed border-2 border-cms-border">
-            <FolderOpen size={48} className="text-cms-accent mx-auto mb-4 opacity-20" />
-            <h3 className="text-lg font-bold text-white mb-1">Sin resultados</h3>
-            <p className="text-cms-textMuted max-w-xs mx-auto">No hay casos que coincidan con los filtros aplicados actualmente.</p>
+          <div className="fluent-mica p-20 text-center rounded-2xl border-dashed border-white/10">
+            <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
+               <FolderOpen size={40} className="text-fluent-text-muted opacity-20" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">No Records Detected</h3>
+            <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+               Search criteria yielded no technical matches in the forensic database.
+            </p>
           </div>
         ) : (
           casos.map(caso => (
@@ -120,7 +126,6 @@ export default function CasosPage() {
               caso={caso}
               deleteCaso={deleteCaso}
               estados={ESTADOS}
-              prioridades={PRIORIDADES}
               estadoColors={ESTADO_COLORS}
               prioridadColors={PRIORIDAD_COLORS}
               cumplimientoIcon={CUMPLIMIENTO_ICON}
@@ -128,6 +133,7 @@ export default function CasosPage() {
           ))
         )}
       </div>
+
 
       {showForm && (
         <NuevoCasoModal 

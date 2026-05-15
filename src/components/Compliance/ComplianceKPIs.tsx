@@ -12,27 +12,27 @@ interface ComplianceKPIsProps {
 export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPIsProps) {
   const kpis = [
     { 
-      label: 'Progreso Global', 
+      label: 'Global Progress', 
       value: `${stats.pct}%`, 
-      color: stats.pct >= 80 ? 'text-green-400' : stats.pct >= 50 ? 'text-yellow-400' : 'text-red-400', 
+      color: stats.pct >= 80 ? 'text-green-400' : stats.pct >= 50 ? 'text-fluent-accent' : 'text-red-400', 
       icon: ShieldCheck 
     },
     { 
-      label: 'Etapas Completadas', 
+      label: 'Verified Stages', 
       value: stats.checkedStages, 
       color: 'text-green-400', 
       icon: CheckCircle2 
     },
     { 
-      label: 'Etapas Pendientes', 
+      label: 'Pending Baseline', 
       value: stats.totalStages - stats.checkedStages, 
       color: 'text-yellow-400', 
       icon: Clock 
     },
     { 
-      label: 'Total Normativas', 
+      label: 'Active Frameworks', 
       value: totalNormativas, 
-      color: 'text-cms-accent', 
+      color: 'text-fluent-accent', 
       icon: ListChecks 
     },
   ];
@@ -42,14 +42,17 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
       {kpis.map(kpi => {
         const Icon = kpi.icon;
         return (
-          <div key={kpi.label} className="cms-card p-5 hover:bg-cms-surface/10 transition-colors group">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-cms-textMuted group-hover:text-white transition-colors">{kpi.label}</p>
-              <div className={`p-2 rounded-lg ${kpi.color.replace('text', 'bg')}/10`}>
-                <Icon size={16} className={kpi.color} />
+          <div key={kpi.label} className="fluent-card p-5 group relative overflow-hidden">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-fluent-text-muted group-hover:text-white transition-colors">{kpi.label}</p>
+              <div className={`p-2 rounded-[4px] ${kpi.color.replace('text', 'bg')}/10 transition-transform group-hover:scale-110`}>
+                <Icon size={16} className={kpi.color} strokeWidth={2.5} />
               </div>
             </div>
             <div className={`text-3xl font-black tracking-tight ${kpi.color}`}>{kpi.value}</div>
+            
+            {/* Accent Line */}
+            <div className={`absolute bottom-0 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${kpi.color.replace('text', 'bg')}`} />
           </div>
         );
       })}

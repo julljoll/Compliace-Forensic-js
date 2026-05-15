@@ -23,32 +23,34 @@ export default function CasosFilters({
   prioridades,
 }: CasosFiltersProps) {
   return (
-    <div className="cms-card p-4 flex flex-wrap items-center gap-4 dark:bg-cms-sidebar/50">
-      <div className="flex items-center gap-2 flex-1 min-w-48 bg-cms-surface rounded-lg px-3 py-2 border border-cms-border focus-within:border-cms-accent/50 transition-colors">
-        <Search size={14} className="text-cms-textMuted shrink-0" />
+    <div className="fluent-mica p-4 rounded-lg flex flex-wrap items-center gap-4">
+      <div className="flex items-center gap-3 flex-1 min-w-[240px] bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 focus-within:bg-white/[0.05] focus-within:border-b-fluent-accent transition-all">
+        <Search size={14} className="text-fluent-text-muted shrink-0" />
         <input
           type="text"
-          placeholder="Buscar por número, título..."
+          placeholder="Filter by case ID, title or perito..."
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
-          className="bg-transparent text-sm text-white placeholder:text-cms-textMuted outline-none flex-1"
+          className="bg-transparent text-sm text-white placeholder:text-fluent-text-muted/40 outline-none flex-1 font-medium"
         />
       </div>
-      <div className="flex items-center gap-2">
-        <Filter size={14} className="text-cms-textMuted" />
-        <select 
-          value={filtroEstado} 
-          onChange={e => setFiltroEstado(e.target.value as any)}
-          className="bg-cms-surface border border-cms-border rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-cms-accent/50 transition-colors"
-        >
-          {estados.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
-        </select>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+           <Filter size={12} className="text-fluent-text-muted/50 uppercase" strokeWidth={3} />
+           <select 
+             value={filtroEstado} 
+             onChange={e => setFiltroEstado(e.target.value as any)}
+             className="bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-fluent-accent hover:bg-white/[0.05] transition-all cursor-pointer"
+           >
+             {estados.map(e => <option key={e.value} value={e.value} className="bg-fluent-bg">{e.label}</option>)}
+           </select>
+        </div>
         <select 
           value={filtroPrioridad} 
           onChange={e => setFiltroPrioridad(e.target.value as any)}
-          className="bg-cms-surface border border-cms-border rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-cms-accent/50 transition-colors"
+          className="bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-fluent-accent hover:bg-white/[0.05] transition-all cursor-pointer"
         >
-          {prioridades.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
+          {prioridades.map(p => <option key={p.value} value={p.value} className="bg-fluent-bg">{p.label}</option>)}
         </select>
       </div>
     </div>
