@@ -20,13 +20,13 @@ export default function LoginPage() {
       {/* Background glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cms-accent/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cms-accent2/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="relative w-full max-w-md animate-fade-in">
         {/* Logo / Branding */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cms-accent to-purple-600 shadow-lg shadow-cms-accent/20 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-cms-accent to-cms-accent2 shadow-lg shadow-cms-accent/20 mb-4">
             <ShieldCheck size={32} className="text-white" />
           </div>
           <h1 className="text-2xl font-black text-white tracking-wider">SHA256.US</h1>

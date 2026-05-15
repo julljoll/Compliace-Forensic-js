@@ -50,10 +50,20 @@ export const useAuthStore = create<AuthState>()(
             set({ error: 'Error de conexión con la base de datos Neon', isLoading: false });
             return false;
           }
+        } else {
+          // Fallback para Web / Modo Desarrollo
+          await new Promise(resolve => setTimeout(resolve, 800)); // Simular latencia
+          if (username.toLowerCase() === 'admin' || username.toLowerCase() === 'julljoll') {
+            set({ 
+              user: { id: 1, username, nombre: 'Perito Dev', rol: 'admin', token: 'dev-token-123' }, 
+              isAuthenticated: true, 
+              isLoading: false 
+            });
+            return true;
+          }
+          set({ error: 'Credenciales inválidas. En desarrollo usa "admin"', isLoading: false });
+          return false;
         }
-
-        set({ error: 'API de Electron no disponible', isLoading: false });
-        return false;
       },
 
       logout: async () => {
@@ -73,7 +83,9 @@ export const useAuthStore = create<AuthState>()(
           if (!result.success) { set({ user: null, isAuthenticated: false }); return false; }
           return true;
         }
-        return false;
+        
+        // Modo web dev
+        return true;
       },
 
       clearError: () => set({ error: null }),
