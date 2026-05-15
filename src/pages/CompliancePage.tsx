@@ -1,11 +1,11 @@
-import { useCMSStore } from '../store/cmsStore';
+import { useCMSStore, TipoNormativa } from '../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
-import {
-  ShieldCheck, CheckCircle2, Clock,
-  ChevronDown, ChevronRight, BookOpen, Filter, Check, ListChecks,
-} from 'lucide-react';
+import { ShieldCheck, BookOpen, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
-import type { TipoNormativa } from '../store/cmsStore';
+
+// ── Componentes Modulares ───────────────────────────────────────────────────
+import ComplianceKPIs from '../components/Compliance/ComplianceKPIs';
+import NormativaAccordion from '../components/Compliance/NormativaAccordion';
 
 /* ── Config visual ─────────────────────────────────────────────── */
 const TIPOS: (TipoNormativa | 'todos')[] = ['todos', 'ISO', 'NIST', 'LEY', 'MANUAL', 'REGLAMENTO'];
@@ -18,7 +18,6 @@ const TIPO_COLORS: Record<string, string> = {
   REGLAMENTO: 'from-green-500/20 to-green-600/5 border-green-500/30',
 };
 
-/* ── Componente Principal ──────────────────────────────────────── */
 export default function CompliancePage() {
   const { normativas, complianceChecklist, toggleComplianceCheck } = useCMSStore();
   const [tipoFiltro, setTipoFiltro] = useState<TipoNormativa | 'todos'>('todos');
@@ -71,191 +70,100 @@ export default function CompliancePage() {
   const getCheckDate = (stageId: string) => complianceChecklist.find(c => c.stageId === stageId)?.fechaCheck;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-black text-white mb-1 flex items-center gap-3">
-          <ShieldCheck className="text-cms-accent" size={24} />
-          Panel de Compliance
-        </h1>
-        <p className="text-sm text-cms-textMuted">
-          Seguimiento etapa por etapa de cada normativa · Marca cada etapa completada
-        </p>
-      </div>
-
-      {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Progreso Global', value: `${globalStats.pct}%`, color: globalStats.pct >= 80 ? 'text-green-400' : globalStats.pct >= 50 ? 'text-yellow-400' : 'text-red-400', icon: ShieldCheck },
-          { label: 'Etapas Completadas', value: globalStats.checkedStages, color: 'text-green-400', icon: CheckCircle2 },
-          { label: 'Etapas Pendientes', value: globalStats.totalStages - globalStats.checkedStages, color: 'text-yellow-400', icon: Clock },
-          { label: 'Total Normativas', value: normativas.filter(n => n.activa).length, color: 'text-cms-accent', icon: ListChecks },
-        ].map(kpi => {
-          const Icon = kpi.icon;
-          return (
-            <div key={kpi.label} className="cms-card p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-cms-textMuted">{kpi.label}</p>
-                <Icon size={16} className={kpi.color} />
-              </div>
-              <div className={`text-3xl font-black ${kpi.color}`}>{kpi.value}</div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Barra de progreso global */}
-      <div className="cms-card p-6">
-        <h3 className="font-bold text-white mb-4 text-sm">Progreso Global de Compliance — {globalStats.checkedStages}/{globalStats.totalStages} etapas</h3>
-        <div className="w-full h-3 bg-cms-surface rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{
-              width: `${globalStats.pct}%`,
-              background: globalStats.pct >= 80 ? 'linear-gradient(90deg, #22c55e, #4ade80)' : globalStats.pct >= 50 ? 'linear-gradient(90deg, #eab308, #facc15)' : 'linear-gradient(90deg, #ef4444, #f87171)',
-            }}
-          />
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <ShieldCheck className="text-cms-accent" size={32} />
+            Panel de Compliance
+          </h1>
+          <p className="text-sm text-cms-textMuted font-medium max-w-lg">
+            Seguimiento de cumplimiento normativo basado en estándares internacionales y marcos legales vigentes.
+          </p>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Filter size={14} className="text-cms-textMuted" />
+          {TIPOS.map(t => (
+            <button key={t} onClick={() => setTipoFiltro(t)}
+              className={`text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition-all ${tipoFiltro === t ? 'bg-cms-accent text-white shadow-lg shadow-cms-accent/20' : 'bg-cms-surface/50 text-cms-textMuted hover:text-white border border-cms-border hover:bg-cms-surface'}`}>
+              {t}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Filtro por tipo */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <Filter size={14} className="text-cms-textMuted" />
-        {TIPOS.map(t => (
-          <button key={t} onClick={() => setTipoFiltro(t)}
-            className={`text-[10px] px-3 py-1.5 rounded-lg font-bold uppercase transition-colors ${tipoFiltro === t ? 'bg-cms-accent text-white' : 'bg-cms-surface text-cms-textMuted hover:text-white border border-cms-border'}`}>
-            {t}
-          </button>
-        ))}
+      <ComplianceKPIs stats={globalStats} totalNormativas={normativas.filter(n => n.activa).length} />
+
+      {/* Barra de progreso global */}
+      <div className="cms-card p-6 bg-cms-sidebar/40 border-cms-accent/10">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-bold text-white text-sm">Estado General de Implementación</h3>
+          <span className="text-xs font-mono font-bold text-cms-accent bg-cms-accent/10 px-2 py-0.5 rounded-full">
+            {globalStats.checkedStages} / {globalStats.totalStages} ETAPAS
+          </span>
+        </div>
+        <div className="w-full h-4 bg-cms-bg rounded-full overflow-hidden border border-white/5 shadow-inner">
+          <div
+            className="h-full rounded-full transition-all duration-1000 ease-in-out relative"
+            style={{
+              width: `${globalStats.pct}%`,
+              background: globalStats.pct >= 80 
+                ? 'linear-gradient(90deg, #22c55e, #4ade80)' 
+                : globalStats.pct >= 50 
+                  ? 'linear-gradient(90deg, #3b82f6, #60cdff)' 
+                  : 'linear-gradient(90deg, #ef4444, #f87171)',
+            }}
+          >
+             <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50" />
+          </div>
+        </div>
       </div>
 
       {/* Normativas con Etapas */}
       <div className="space-y-4">
-        {normativasFiltradas.map(norm => {
+        {normativasFiltradas.length === 0 ? (
+          <div className="cms-card p-12 text-center">
+             <p className="text-cms-textMuted font-medium">No se encontraron normativas activas para el filtro seleccionado.</p>
+          </div>
+        ) : normativasFiltradas.map(norm => {
           const ne = NORMATIVAS_ETAPAS.find(x => x.normativaId === norm.id);
           const progress = getNormProgress(norm.id);
           const isExpanded = expandedNorm === norm.id;
           const tipoColor = TIPO_COLORS[norm.tipo] || 'from-gray-500/20 to-gray-600/5 border-gray-500/30';
 
           return (
-            <div key={norm.id} className={`cms-card overflow-hidden border ${isExpanded ? 'border-cms-accent/40' : 'border-cms-border'} transition-all`}>
-              {/* Header de normativa */}
-              <button
-                onClick={() => setExpandedNorm(isExpanded ? null : norm.id)}
-                className={`w-full p-5 flex items-center gap-4 text-left transition-colors hover:bg-cms-surface/50 bg-gradient-to-r ${tipoColor}`}
-              >
-                <div className="shrink-0">
-                  {isExpanded ? <ChevronDown size={18} className="text-cms-accent" /> : <ChevronRight size={18} className="text-cms-textMuted" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="font-mono font-black text-cms-accent text-sm">{norm.codigo}</span>
-                    <span className="text-[9px] px-2 py-0.5 rounded bg-cms-bg/50 border border-cms-border text-cms-textMuted">{norm.tipo}</span>
-                    {progress.pct === 100 && <span className="text-[9px] px-2 py-0.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 font-bold flex items-center gap-1"><Check size={8} />COMPLETO</span>}
-                  </div>
-                  <p className="text-xs text-white font-semibold truncate">{norm.nombre}</p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <div className="flex items-center gap-2">
-                    <div className="w-24 h-2 bg-cms-bg/50 rounded-full overflow-hidden">
-                      <div className="h-full bg-cms-accent rounded-full transition-all duration-500" style={{ width: `${progress.pct}%` }} />
-                    </div>
-                    <span className={`text-xs font-black ${progress.pct === 100 ? 'text-green-400' : progress.pct > 0 ? 'text-yellow-400' : 'text-cms-textMuted'}`}>
-                      {progress.checked}/{progress.total}
-                    </span>
-                  </div>
-                </div>
-              </button>
-
-              {/* Etapas expandidas */}
-              {isExpanded && ne && (
-                <div className="border-t border-cms-border divide-y divide-cms-border/50">
-                  {ne.etapas.map((etapa) => (
-                    <div key={etapa.id} className="bg-cms-bg/30">
-                      {/* Etapa principal */}
-                      {etapa.subetapas ? (
-                        <div className="px-5 py-3 bg-cms-surface/30">
-                          <div className="flex items-center gap-2">
-                            <BookOpen size={14} className="text-cms-accent shrink-0" />
-                            <span className="text-sm font-bold text-white">{etapa.nombre}</span>
-                          </div>
-                          <p className="text-[11px] text-cms-textMuted mt-1 ml-6">{etapa.descripcion}</p>
-                        </div>
-                      ) : (
-                        <label className="flex items-start gap-3 px-5 py-3 cursor-pointer hover:bg-cms-surface/40 transition-colors group">
-                          <div className="pt-0.5 shrink-0">
-                            <div
-                              onClick={(e) => { e.preventDefault(); toggleComplianceCheck(etapa.id, norm.id); }}
-                              className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all cursor-pointer ${
-                                isChecked(etapa.id)
-                                  ? 'bg-green-500 border-green-500 shadow-lg shadow-green-500/20'
-                                  : 'border-cms-border group-hover:border-cms-accent/50'
-                              }`}
-                            >
-                              {isChecked(etapa.id) && <Check size={12} className="text-white" strokeWidth={3} />}
-                            </div>
-                          </div>
-                          <div className="flex-1">
-                            <span className={`text-sm font-semibold ${isChecked(etapa.id) ? 'text-green-300 line-through opacity-80' : 'text-white'}`}>
-                              {etapa.nombre}
-                            </span>
-                            <p className="text-[11px] text-cms-textMuted mt-0.5">{etapa.descripcion}</p>
-                            {isChecked(etapa.id) && getCheckDate(etapa.id) && (
-                              <p className="text-[9px] text-green-400/70 mt-1">✓ Verificado: {new Date(getCheckDate(etapa.id)!).toLocaleString('es')}</p>
-                            )}
-                          </div>
-                        </label>
-                      )}
-
-                      {/* Sub-etapas */}
-                      {etapa.subetapas && (
-                        <div className="ml-6 border-l-2 border-cms-border/30">
-                          {etapa.subetapas.map(sub => (
-                            <label key={sub.id} className="flex items-start gap-3 px-5 py-2.5 cursor-pointer hover:bg-cms-surface/30 transition-colors group">
-                              <div className="pt-0.5 shrink-0">
-                                <div
-                                  onClick={(e) => { e.preventDefault(); toggleComplianceCheck(sub.id, norm.id); }}
-                                  className={`w-4.5 h-4.5 w-[18px] h-[18px] rounded border-2 flex items-center justify-center transition-all cursor-pointer ${
-                                    isChecked(sub.id)
-                                      ? 'bg-green-500 border-green-500 shadow-lg shadow-green-500/20'
-                                      : 'border-cms-border group-hover:border-cms-accent/50'
-                                  }`}
-                                >
-                                  {isChecked(sub.id) && <Check size={10} className="text-white" strokeWidth={3} />}
-                                </div>
-                              </div>
-                              <div className="flex-1">
-                                <span className={`text-xs font-semibold ${isChecked(sub.id) ? 'text-green-300 line-through opacity-80' : 'text-white'}`}>
-                                  {sub.nombre}
-                                </span>
-                                <p className="text-[10px] text-cms-textMuted mt-0.5">{sub.descripcion}</p>
-                                {isChecked(sub.id) && getCheckDate(sub.id) && (
-                                  <p className="text-[9px] text-green-400/70 mt-0.5">✓ {new Date(getCheckDate(sub.id)!).toLocaleString('es')}</p>
-                                )}
-                              </div>
-                            </label>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <NormativaAccordion 
+              key={norm.id}
+              norm={norm}
+              isExpanded={isExpanded}
+              onToggle={setExpandedNorm}
+              progress={progress}
+              tipoColor={tipoColor}
+              ne={ne}
+              isChecked={isChecked}
+              getCheckDate={getCheckDate}
+              toggleCheck={toggleComplianceCheck}
+            />
           );
         })}
       </div>
 
       {/* Nota RAG */}
-      <div className="cms-card p-5 border-cms-accent/20 bg-cms-accent/5">
-        <div className="flex items-start gap-3">
-          <BookOpen size={18} className="text-cms-accent shrink-0 mt-0.5" />
+      <div className="cms-card p-6 border-cms-accent/30 bg-cms-accent/5 backdrop-blur-sm relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <ShieldCheck size={80} className="text-cms-accent" />
+        </div>
+        <div className="flex items-start gap-4 relative z-10">
+          <div className="p-3 bg-cms-accent/10 rounded-xl text-cms-accent">
+            <BookOpen size={20} />
+          </div>
           <div>
-            <h3 className="font-bold text-white text-sm mb-1">Contenido extraído de RAG/</h3>
-            <p className="text-xs text-cms-textMuted leading-relaxed">
-              Las etapas mostradas fueron extraídas de los documentos normativos en la carpeta <code className="font-mono text-cms-accent bg-cms-surface px-1 py-0.5 rounded">RAG/</code>: 
-              ISO 27037, ISO 27042, NIST 800-101, MUCC-2017, ACPO v5, LEDI, LMDF, COPP y CENIF.
-              El progreso se persiste localmente y puede consultarse en cualquier momento.
+            <h3 className="font-black text-white text-base mb-1 tracking-tight">Base de Conocimiento Normativa (RAG)</h3>
+            <p className="text-xs text-cms-textMuted leading-relaxed max-w-3xl">
+              Las directrices y etapas técnicas presentadas han sido sintetizadas a partir de los marcos de referencia almacenados en el módulo <code className="font-mono text-cms-accent bg-cms-bg px-1.5 py-0.5 rounded border border-cms-accent/20">/RAG</code>, incluyendo 
+              ISO 27037/27042, NIST SP 800-101, MUCC-2017 y la legislación venezolana vigente (LEDI, LMDF, COPP). 
+              Este sistema garantiza que cada actuación pericial sea trazable a un estándar de calidad reconocido.
             </p>
           </div>
         </div>
