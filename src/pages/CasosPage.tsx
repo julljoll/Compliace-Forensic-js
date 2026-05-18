@@ -81,16 +81,16 @@ export default function CasosPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-bold text-white tracking-tight">Case Records</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Case Records</h1>
           <p className="text-sm text-fluent-text-muted font-medium mt-1">
             <span className="text-fluent-accent font-bold">{casos.length}</span> active investigations in technical processing.
           </p>
         </div>
         <button 
           onClick={() => setShowForm(true)} 
-          className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all"
+          className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start sm:self-auto"
         >
           <Plus size={18} strokeWidth={3} />
           New Management

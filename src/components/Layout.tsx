@@ -156,7 +156,7 @@ export default function Layout() {
 
         {/* Scrollable Content */}
         <main className="flex-1 overflow-y-auto relative outline-none" tabIndex={-1}>
-          <div className="max-w-6xl mx-auto p-6 md:p-12 lg:p-16 text-fluent-text animate-fade-in">
+          <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-12 lg:p-16 text-fluent-text animate-fade-in">
             <Outlet />
           </div>
         </main>

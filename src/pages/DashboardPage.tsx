@@ -50,8 +50,8 @@ export default function DashboardPage() {
       {/* ── Encabezado ─────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-white tracking-tight">Control Center</h1>
-          <p className="text-sm text-fluent-text-muted font-medium max-w-lg mt-1">
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Control Center</h1>
+          <p className="text-xs md:text-sm text-fluent-text-muted font-medium max-w-lg mt-1">
             Forensic monitoring of consigned devices under <span className="text-fluent-accent">ISO 27037</span> and <span className="text-fluent-accent">MUCC-2017</span> normative frameworks.
           </p>
         </div>
@@ -182,17 +182,22 @@ export default function DashboardPage() {
           </div>
           <div className="divide-y divide-white/5">
             {logsRecientes.map(log => (
-              <div key={log.id} className="flex items-center gap-4 px-6 py-4 hover:bg-white/[0.02] transition-colors">
-                <div className={`w-2 h-2 rounded-full shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.5)] ${
+              <div key={log.id} className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 px-4 sm:px-6 py-4 hover:bg-white/[0.02] transition-colors">
+                <div className={`w-2 h-2 rounded-full shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.5)] hidden sm:block ${
                   log.nivel === 'success' ? 'bg-green-400 shadow-green-400/20' :
                   log.nivel === 'warning' ? 'bg-yellow-400 shadow-yellow-400/20' :
                   log.nivel === 'error' ? 'bg-red-400 shadow-red-400/20' : 'bg-fluent-accent shadow-fluent-accent/20'
                 }`} />
-                <div className="w-44 shrink-0">
-                   <span className="font-mono text-[10px] font-black text-fluent-accent uppercase tracking-tight">{log.accion}</span>
+                <div className="w-full sm:w-44 shrink-0 flex items-center gap-2">
+                   <div className={`w-1.5 h-1.5 rounded-full shrink-0 sm:hidden ${
+                     log.nivel === 'success' ? 'bg-green-400' :
+                     log.nivel === 'warning' ? 'bg-yellow-400' :
+                     log.nivel === 'error' ? 'bg-red-400' : 'bg-fluent-accent'
+                   }`} />
+                   <span className="font-mono text-[10px] font-black text-fluent-accent uppercase tracking-tight truncate">{log.accion}</span>
                 </div>
                 <span className="text-[11px] text-fluent-text-muted flex-1 truncate font-medium opacity-80">{log.detalle}</span>
-                <span className="text-[10px] font-mono text-fluent-text-muted/40 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
+                <span className="hidden sm:block text-[10px] font-mono text-fluent-text-muted/40 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
               </div>
             ))}
           </div>

@@ -4,9 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1, h1 * {
+    color: #FECF06 !important;
+  }
+  h2, h2 * {
+    color: #00FF41 !important;
+  }
+}
+
 :root {
   /* Fluent UI Dark Theme Colors */
-  --fluent-bg: #202020;
+  --fluent-bg: #181818;
   --fluent-bg-secondary: #2c2c2c;
   --fluent-surface: rgba(255, 255, 255, 0.05);
   --fluent-surface-hover: rgba(255, 255, 255, 0.08);
@@ -82,11 +91,11 @@ body {
   }
 
   .fluent-card {
-    @apply bg-fluent-surface/40 backdrop-blur-[10px] border border-fluent-border rounded-lg transition-all duration-150 ease-out hover:bg-fluent-surface/60 hover:border-fluent-border-strong;
+    @apply bg-fluent-surface backdrop-blur-[10px] border border-fluent-border rounded-lg transition-all duration-150 ease-out hover:bg-fluent-surfaceHover hover:border-white/20;
   }
 
   .fluent-btn {
-    @apply px-4 py-1.5 rounded-[4px] font-medium text-sm transition-all duration-150 active:scale-[0.98] outline-none flex items-center justify-center gap-2;
+    @apply px-4 py-2.5 md:py-1.5 rounded-[4px] font-medium text-sm transition-all duration-150 active:scale-[0.98] outline-none flex items-center justify-center gap-2;
   }
 
   .fluent-btn-primary {
@@ -98,7 +107,11 @@ body {
   }
 
   .fluent-input {
-    @apply w-full text-sm bg-fluent-surface/60 border border-fluent-border border-b-white/40 rounded-[4px] py-2 px-3 focus:bg-fluent-bg-secondary focus:border-b-fluent-accent focus:ring-0 hover:bg-fluent-surface transition-all outline-none;
+    @apply w-full text-sm bg-fluent-surfaceActive border border-fluent-border border-b-white/40 rounded-[4px] py-2.5 md:py-2 px-3 hover:bg-fluent-surface transition-all outline-none;
+  }
+  .fluent-input:focus {
+    background-color: #2c2c2c;
+    border-bottom-color: #0078D4;
   }
 
   .fluent-label {
@@ -106,7 +119,7 @@ body {
   }
 
   .fluent-sidebar-item {
-    @apply flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative;
+    @apply flex items-center gap-3 px-3 py-3 md:py-2 rounded-md transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative;
   }
 
   .fluent-sidebar-item-active {
@@ -115,7 +128,7 @@ body {
 
   /* ── CMS Custom Styles ── */
   .cms-card {
-    @apply fluent-card p-5;
+    @apply fluent-card p-4 md:p-5;
   }
 
   .cms-btn {
@@ -136,6 +149,39 @@ body {
 
   .cms-label {
     @apply fluent-label;
+  }
+
+  /* ── Forensic Module Styles (Layout.tsx / HomePage.tsx) ── */
+  .forensic-card {
+    @apply bg-fluent-surface backdrop-blur-[10px] border border-fluent-border rounded-xl transition-all duration-150 ease-out hover:bg-fluent-surfaceHover hover:border-white/20;
+  }
+
+  .forensic-btn {
+    @apply px-4 py-2.5 rounded-[4px] font-semibold text-sm transition-all duration-150 active:scale-[0.98] outline-none inline-flex items-center justify-center gap-2;
+  }
+
+  .forensic-btn-primary {
+    @apply bg-fluent-accent text-white hover:bg-fluent-accent-light border border-white/10 shadow-[0_2px_4px_rgba(0,0,0,0.2)];
+  }
+
+  .acrylic-panel {
+    @apply bg-fluent-acrylic backdrop-blur-[30px] border-r border-fluent-border;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-3 rounded-md transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative text-sm font-medium;
+  }
+
+  .nav-item-active {
+    @apply bg-fluent-surface text-fluent-text font-semibold;
+  }
+
+  .breadcrumb-item {
+    @apply text-fluent-text-muted hover:text-fluent-text transition-colors font-medium;
+  }
+
+  .breadcrumb-item-active {
+    @apply text-fluent-text font-semibold;
   }
 }
 

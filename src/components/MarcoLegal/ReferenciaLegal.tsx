@@ -3,13 +3,13 @@ import { Scale, Book, Shield } from 'lucide-react';
 export default function ReferenciaLegal() {
   return (
     <div className="space-y-6">
-      <div className="forensic-card p-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="forensic-card p-6 md:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <h2 className="text-xl font-bold text-fluent-text flex items-center gap-3">
-            <Scale className="w-6 h-6 text-fluent-accent" />
+            <Scale className="w-6 h-6 text-fluent-accent shrink-0" />
             Marco Legal y Estándares Internacionales
           </h2>
-          <span className="text-[10px] font-bold bg-fluent-accent/10 text-fluent-accent px-2 py-1 rounded uppercase tracking-widest">
+          <span className="text-[10px] font-bold bg-fluent-accent/10 text-fluent-accent px-2 py-1 rounded uppercase tracking-widest self-start sm:self-auto">
             Vigente 2024
           </span>
         </div>

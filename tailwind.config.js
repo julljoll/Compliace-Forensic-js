@@ -10,13 +10,18 @@ module.exports = {
       colors: {
         // ── Fluent UI (original) ──
         fluent: {
-          bg: '#202020', // Mica background
+          bg: {
+            DEFAULT: '#181818',
+            secondary: '#2c2c2c',
+          },
           surface: 'rgba(255, 255, 255, 0.05)',
           surfaceHover: 'rgba(255, 255, 255, 0.08)',
           surfaceActive: 'rgba(255, 255, 255, 0.03)',
           border: 'rgba(255, 255, 255, 0.08)',
-          text: '#ffffff',
-          textSecondary: 'rgba(255, 255, 255, 0.7)',
+          text: {
+            DEFAULT: '#ffffff',
+            muted: 'rgba(255, 255, 255, 0.7)',
+          },
           accent: {
             DEFAULT: '#0078D4',
             light: '#60CDFF',

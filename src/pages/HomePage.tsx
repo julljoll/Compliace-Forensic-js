@@ -33,12 +33,12 @@ export default function HomePage() {
   return (
     <div className="space-y-12 animate-in fade-in duration-700">
       {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-fluent-card p-12 bg-gradient-to-br from-fluent-accent/10 to-transparent border border-fluent-border">
+      <div className="relative overflow-hidden rounded-fluent-card p-6 sm:p-8 md:p-12 bg-gradient-to-br from-fluent-accent/10 to-transparent border border-fluent-border">
         <div className="relative z-10 max-w-2xl">
-          <h1 className="text-4xl font-extrabold text-fluent-text mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-fluent-text mb-4 tracking-tight">
             Sistema de Peritaje <span className="text-fluent-accent">Digital WhatsApp</span>
           </h1>
-          <p className="text-lg text-fluent-textSecondary mb-8 leading-relaxed">
+          <p className="text-base md:text-lg text-fluent-textSecondary mb-8 leading-relaxed">
             Plataforma integral para el tratamiento técnico-científico de evidencias digitales móviles, 
             diseñada bajo el estricto cumplimiento del Manual Único de Cadena de Custodia.
           </p>
