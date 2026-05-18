@@ -23,9 +23,10 @@ module.exports = {
             muted: 'rgba(255, 255, 255, 0.7)',
           },
           accent: {
-            DEFAULT: '#0078D4',
-            light: '#60CDFF',
-            dark: '#005FB8',
+            DEFAULT: '#FECF06',
+            light: '#FFE46B',
+            dark: '#524000',
+            fg: '#524000',
           },
           acrylic: 'rgba(32, 32, 32, 0.7)',
         },
