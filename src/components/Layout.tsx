@@ -57,7 +57,7 @@ export default function Layout() {
         <div className="p-8 pb-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
-              <img src="./favicon.svg" alt="SHA256.US Logo" className="w-9 h-9" />
+              <img src="/favicon.svg" alt="SHA256.US Logo" className="w-9 h-9 drop-shadow-lg" />
               <div>
                 <h1 className="font-bold text-2xl tracking-widest text-fluent-text print:hidden uppercase">SHA256.US</h1>
               </div>
