@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Scale, Smartphone, LogOut, Menu, X
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Menu, X
 } from 'lucide-react';
 import { useCMSStore } from '../store/cmsStore';
 import { useAuthStore } from '../store/authStore';
