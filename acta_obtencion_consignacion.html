@@ -33,8 +33,8 @@
         }
 
         .page {
-            width: 210mm;
-            min-height: 297mm;
+            width: 216mm; /* Legal width approx */
+            min-height: 356mm; /* Legal height approx */
             padding: 12mm;
             margin: 0 auto;
             background: var(--bg-page);
@@ -46,6 +46,7 @@
         }
 
         @media print {
+            @page { size: legal; margin: 10mm; }
             body { background: white !important; color: black !important; padding: 0; }
             .page { margin: 0; box-shadow: none; width: 100%; border: none; background: white !important; color: black !important; border-radius: 0; }
             .no-print { display: none; }
@@ -365,7 +366,7 @@
 
     <div class="no-print" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
         <button onclick="window.print()" style="padding: 10px 20px; background: #FECF06; color: #181818; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-            🖨️ Imprimir Acta PDF
+            🖨️ Imprimir Acta PDF (Tamaño Oficio)
         </button>
     </div>
 </body>

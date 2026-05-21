@@ -31,8 +31,8 @@
         }
 
         .page {
-            width: 210mm;
-            min-height: 297mm;
+            width: 216mm; /* Legal width approx */
+            min-height: 356mm; /* Legal height approx */
             padding: 12mm;
             margin: 0 auto;
             background: var(--bg-page);
@@ -44,6 +44,7 @@
         }
 
         @media print {
+            @page { size: legal; margin: 10mm; }
             body { background: white !important; color: black !important; padding: 0; }
             .page { margin: 0; box-shadow: none; width: 100%; border: none; background: white !important; color: black !important; border-radius: 0; }
             .no-print { display: none; }
@@ -239,8 +240,8 @@
             Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) | SHA256 Forensic Lab
         </footer>
 
-        <div style="text-align: center; margin-top: 20px;" class="no-print">
-            <button onclick="window.print()">🖨️ IMPRIMIR PLANILLA (A4)</button>
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;" class="no-print">
+            <button onclick="window.print()">🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
         </div>
     </div>
 </body>
