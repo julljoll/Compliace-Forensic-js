@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { 
   Key, User, Camera, Star, UserPlus, Shield, Award, 
-  Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, Trash2, ShieldOff
+  Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff
 } from 'lucide-react';
 
 const ROLES = [

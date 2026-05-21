@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useCMSStore } from '../store/cmsStore';
+import { useEffect, useState } from 'react';
 import { Activity, CheckCircle2, AlertTriangle, Info, AlertOctagon } from 'lucide-react';
 
 const NIVEL_CONFIG = {
@@ -10,7 +9,6 @@ const NIVEL_CONFIG = {
 };
 
 export default function AuditoriaPage() {
-  const { casos } = useCMSStore();
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 

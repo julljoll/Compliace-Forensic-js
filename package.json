@@ -2,17 +2,10 @@
   "name": "sha256-peritaje-whatsapp",
   "version": "1.0.0",
   "description": "SHA256.US — Sistema de Peritaje Digital WhatsApp · Contratos Digitales · Civil/Mercantil",
-  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "electron:build": "tsc && vite build && electron-builder",
-    "electron:build:deb": "tsc && vite build && electron-builder --linux deb",
-    "electron:build:linux": "tsc && vite build && electron-builder --linux tar.gz",
-    "electron:build:win": "tsc && vite build && electron-builder --win nsis",
-    "electron:build:all": "tsc && vite build && electron-builder --linux tar.gz --win nsis"
+    "preview": "vite preview"
   },
   "keywords": [
     "peritaje",
@@ -41,78 +34,15 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
-    "concurrently": "^9.2.1",
-    "electron": "^42.0.1",
-    "electron-builder": "^26.8.1",
-    "electron-rebuild": "^3.2.9",
     "postcss": "^8.5.12",
     "tailwindcss": "^3.4.17",
     "typescript": "^6.0.3",
     "vite": "^8.0.10",
-    "vite-plugin-electron": "^0.29.1",
-    "vite-plugin-pwa": "^1.2.0",
-    "wait-on": "^9.0.5"
+    "vite-plugin-pwa": "^1.2.0"
   },
   "overrides": {
     "vite-plugin-pwa": {
       "vite": "$vite"
-    }
-  },
-  "build": {
-    "appId": "com.sha256.peritaje",
-    "productName": "SHA256 Peritaje WhatsApp",
-    "directories": {
-      "output": "dist-electron"
-    },
-    "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "package.json"
-    ],
-    "extraResources": [
-      "public/**/*"
-    ],
-    "asar": true,
-    "linux": {
-      "target": [
-        "deb",
-        "tar.gz"
-      ],
-      "category": "Utility",
-      "maintainer": "Perito Digital <admin@sha256.us>",
-      "icon": "public/icon.png",
-      "desktop": {
-        "entry": {
-          "Name": "SHA256 Peritaje WhatsApp",
-          "Comment": "Sistema de Peritaje Digital para Contratos WhatsApp",
-          "Categories": "Utility;System;"
-        }
-      }
-    },
-    "deb": {
-      "depends": [],
-      "priority": "optional"
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "public/icon.png"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "perMachine": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "SHA256 Peritaje WhatsApp"
-    },
-    "mac": {
-      "target": [
-        "dmg"
-      ],
-      "icon": "public/icon.icns",
-      "category": "public.app-category.utilities"
     }
   }
 }
