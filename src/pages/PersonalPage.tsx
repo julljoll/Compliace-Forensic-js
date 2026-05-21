@@ -203,17 +203,11 @@ export default function PersonalPage() {
             </div>
 
             <div className="relative group w-32 h-32 mb-6">
-              {user?.profileImage ? (
-                <img 
-                  src={user.profileImage} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover rounded-full border-4 border-fluent-border"
-                />
-              ) : (
-                <div className="w-full h-full rounded-full bg-white/[0.03] border-4 border-dashed border-fluent-border flex items-center justify-center text-fluent-text-muted">
-                  <User size={48} className="opacity-30" />
-                </div>
-              )}
+              <img 
+                src={user?.profileImage || "https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png"} 
+                alt="Profile" 
+                className="w-full h-full object-cover rounded-full border-4 border-fluent-border bg-white/[0.03]"
+              />
               
               <button 
                 onClick={() => fileInputRef.current?.click()}

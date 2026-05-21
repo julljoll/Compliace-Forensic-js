@@ -116,17 +116,11 @@ export default function CMSLayout() {
            </div>
 
           <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
-            {user?.profileImage ? (
-              <img 
-                src={user.profileImage} 
-                alt="Profile" 
-                className="w-8 h-8 rounded-full object-cover border border-fluent-accent/20"
-              />
-            ) : (
-              <div className="w-8 h-8 rounded-full bg-fluent-accent/10 border border-fluent-accent/20 flex items-center justify-center text-fluent-accent font-black text-xs">
-                 {user?.nombre?.charAt(0) || 'P'}
-              </div>
-            )}
+            <img 
+              src={user?.profileImage || "https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png"} 
+              alt="Profile" 
+              className="w-8 h-8 rounded-full object-cover border border-fluent-accent/20 bg-white/[0.03]"
+            />
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-bold text-white truncate">{user?.nombre || 'Perito Judicial'}</p>
               <p className="text-[9px] text-fluent-text-muted">ID: PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
