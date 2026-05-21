@@ -8,25 +8,25 @@ export default function HomePage() {
       icon: <FileText className="w-10 h-10 text-fluent-accent" />, 
       title: 'Consignación', 
       desc: 'Registro de evidencia recibida por entrega voluntaria con fijación fotográfica técnica.',
-      path: '/consignacion'
+      path: '/forense/consignacion'
     },
     { 
       icon: <Smartphone className="w-10 h-10 text-fluent-accent" />, 
       title: 'Adquisición', 
       desc: 'Extracción de datos en modo solo lectura para garantizar integridad del dispositivo consignado.',
-      path: '/adquisicion'
+      path: '/forense/adquisicion'
     },
     { 
       icon: <Microscope className="w-10 h-10 text-fluent-accent" />, 
       title: 'Análisis', 
       desc: 'Procesamiento con ALEAPP para parseo de bases de datos SQLite, Protobuf y eventos del sistema.',
-      path: '/analisis'
+      path: '/forense/analisis'
     },
     { 
       icon: <Shield className="w-10 h-10 text-fluent-accent" />, 
       title: 'Informe Técnico', 
       desc: 'Generación automatizada del Dictamen Pericial conforme a la normativa legal venezolana.',
-      path: '/informe'
+      path: '/forense/informe'
     },
   ];
 
@@ -43,7 +43,7 @@ export default function HomePage() {
             diseñada bajo el estricto cumplimiento del Manual Único de Cadena de Custodia.
           </p>
           <div className="flex gap-4">
-            <Link to="/consignacion" className="forensic-btn forensic-btn-primary flex items-center gap-2 px-6">
+            <Link to="/forense/consignacion" className="forensic-btn forensic-btn-primary flex items-center gap-2 px-6">
               Iniciar Nuevo Caso <ChevronRight size={18} />
             </Link>
           </div>

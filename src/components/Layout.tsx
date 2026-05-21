@@ -10,17 +10,18 @@ import {
   ChevronRight,
   Info,
   Menu,
-  X
+  X,
+  ArrowLeft
 } from 'lucide-react';
 import { useForenseStore } from '../store/forenseStore';
 
 const menuItems = [
-  { path: '/', label: 'Inicio', icon: Home },
-  { path: '/consignacion', label: '1. Fase Inicial', icon: FileText },
-  { path: '/prcc', label: '2. Cadena de Custodia', icon: Shield },
-  { path: '/adquisicion', label: '3. Adquisición Forense', icon: Smartphone },
-  { path: '/analisis', label: '4. Fase Laboratorio', icon: Microscope },
-  { path: '/informe', label: '5. Dictamen e Informe', icon: FileCheck },
+  { path: '/forense', label: 'Inicio', icon: Home },
+  { path: '/forense/consignacion', label: '1. Fase Inicial', icon: FileText },
+  { path: '/forense/prcc', label: '2. Cadena de Custodia', icon: Shield },
+  { path: '/forense/adquisicion', label: '3. Adquisición Forense', icon: Smartphone },
+  { path: '/forense/analisis', label: '4. Fase Laboratorio', icon: Microscope },
+  { path: '/forense/informe', label: '5. Dictamen e Informe', icon: FileCheck },
 ];
 
 export default function Layout() {
@@ -93,6 +94,17 @@ export default function Layout() {
               );
             })}
           </nav>
+          
+          <div className="mt-6 pt-4 border-t border-fluent-border">
+            <Link
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="nav-item border border-dashed border-white/10 hover:border-fluent-accent/50 text-fluent-accent-light hover:text-white transition-all bg-white/[0.02]"
+            >
+              <ArrowLeft className="w-5 h-5 text-fluent-accent-light" />
+              <span className="font-bold">Regresar al CMS</span>
+            </Link>
+          </div>
         </div>
 
         <div className="mt-auto p-8 border-t border-fluent-border flex flex-col gap-6">
@@ -124,8 +136,8 @@ export default function Layout() {
               <Menu size={20} />
             </button>
             <nav className="hidden md:flex items-center gap-2 text-sm" aria-label="Breadcrumb">
-              <Link to="/" className="breadcrumb-item">Inicio</Link>
-              {location.pathname !== '/' && (
+              <Link to="/forense" className="breadcrumb-item">Inicio</Link>
+              {location.pathname !== '/forense' && (
                 <>
                   <ChevronRight size={14} className="text-white/20" />
                   <span className="breadcrumb-item-active">{getBreadcrumb()}</span>

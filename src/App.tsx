@@ -12,6 +12,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 // ── CMS Compliance ──────────────────────────────────────────────────────────
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const CasosPage = lazy(() => import('./pages/CasosPage'));
+const CasoDetailPage = lazy(() => import('./pages/CasoDetailPage'));
 const CompliancePage = lazy(() => import('./pages/CompliancePage'));
 const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
@@ -58,6 +59,7 @@ function App() {
         <Route path="/" element={<AuthGuard><CMSLayout /></AuthGuard>}>
           <Route index element={<Suspense fallback={<PageLoader />}><DashboardPage /></Suspense>} />
           <Route path="casos" element={<Suspense fallback={<PageLoader />}><CasosPage /></Suspense>} />
+          <Route path="casos/:id" element={<Suspense fallback={<PageLoader />}><CasoDetailPage /></Suspense>} />
           <Route path="compliance" element={<Suspense fallback={<PageLoader />}><CompliancePage /></Suspense>} />
           <Route path="normativas" element={<Suspense fallback={<PageLoader />}><NormativasPage /></Suspense>} />
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
