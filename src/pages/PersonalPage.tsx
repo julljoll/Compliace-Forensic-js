@@ -1,12 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { useCMSStore, RolPersonal } from '../store/cmsStore';
 import { 
   Key, User, Camera, Star, UserPlus, Shield, Award, 
-  Trophy, Mail, Phone, Briefcase, Check, AlertCircle 
+  Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, Trash2, ShieldOff
 } from 'lucide-react';
 
-const ROLES: { value: RolPersonal; label: string }[] = [
+const ROLES = [
   { value: 'perito_lider', label: 'Perito Líder' },
   { value: 'perito_asistente', label: 'Perito Asistente' },
   { value: 'fiscal', label: 'Fiscal Adscrito' },
@@ -18,10 +17,9 @@ export default function PersonalPage() {
   // Auth Store
   const { user, changePassword, updateProfileImage } = useAuthStore();
   
-  // CMS Store
-  const personal = useCMSStore(state => state.personal);
-  const addPersonal = useCMSStore(state => state.addPersonal);
-  const updatePersonal = useCMSStore(state => state.updatePersonal);
+  // Local States para DB
+  const [personal, setPersonal] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // States
   const [activeTab, setActiveTab] = useState<'profile' | 'collaborators'>('profile');
@@ -33,41 +31,64 @@ export default function PersonalPage() {
   const [passSuccess, setPassSuccess] = useState<string | null>(null);
   const [changingPass, setChangingPass] = useState(false);
 
-  // New Collaborator State
+  // Form State (Crear/Editar)
+  const [isEditing, setIsEditing] = useState<number | null>(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [ci, setCi] = useState('');
   const [cargo, setCargo] = useState('');
-  const [rol, setRol] = useState<RolPersonal>('perito_asistente');
-  const [organismo, setOrganismo] = useState('SHA256.US');
+  const [rol, setRol] = useState('perito_asistente');
   const [despacho, setDespacho] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [username, setUsername] = useState('');
+  const [passwordColab, setPasswordColab] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Handle profile image upload (base64 conversion)
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const loadUsers = async () => {
+    try {
+      if (window.electronAPI?.db?.getUsers) {
+        const users = await window.electronAPI.db.getUsers();
+        // Filtrar administradores si no queremos listarlos con los colaboradores (opcional)
+        setPersonal(users.filter((u: any) => u.username !== 'admin'));
+      } else {
+        // Fallback local dev
+        setPersonal([]);
+      }
+    } catch (e) {
+      console.error('Error loading users:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
       alert('La imagen no debe superar los 2MB');
       return;
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       if (typeof reader.result === 'string') {
         updateProfileImage(reader.result);
+        if (window.electronAPI?.db?.updateUser && user?.id) {
+           await window.electronAPI.db.updateUser(user.id, user.id, { profile_image: reader.result });
+        }
       }
     };
     reader.readAsDataURL(file);
   };
 
-  // Handle password change
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setPassError(null);
@@ -105,54 +126,84 @@ export default function PersonalPage() {
     }
   };
 
-  // Handle add collaborator
-  const handleAddCollaborator = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!nombre || !apellido || !ci || !cargo || !email) {
-      alert('Por favor completa los campos obligatorios');
-      return;
-    }
-
-    addPersonal({
-      nombre,
-      apellido,
-      ci,
-      cargo,
-      rol,
-      organismo,
-      despacho,
-      email,
-      telefono,
-      activo: true,
-      ranking: 1, // Start with 1 star
-      profileImage: ''
-    });
-
-    // Reset Form
+  const resetForm = () => {
     setNombre('');
     setApellido('');
     setCi('');
     setCargo('');
     setRol('perito_asistente');
-    setOrganismo('SHA256.US');
     setDespacho('');
     setEmail('');
     setTelefono('');
+    setUsername('');
+    setPasswordColab('');
+    setIsEditing(null);
     setShowAddForm(false);
   };
 
-  // Handle star rating change
-  const handleSetRanking = (id: string, stars: number) => {
-    updatePersonal(id, { ranking: stars });
+  const handleAddCollaborator = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!nombre || !apellido || !ci || !cargo || !email || (!isEditing && (!username || !passwordColab))) {
+      alert('Por favor completa los campos obligatorios');
+      return;
+    }
+
+    const userData: any = {
+      nombre, apellido, ci, cargo, rol, despacho, email, telefono, username, 
+    };
+    
+    if (passwordColab) {
+      userData.password = passwordColab;
+    }
+
+    if (window.electronAPI?.db) {
+      if (isEditing) {
+        await window.electronAPI.db.updateUser(user?.id || 0, isEditing, userData);
+      } else {
+        const res = await window.electronAPI.db.addUser(user?.id || 0, userData);
+        if (!res.success) {
+          alert('Error: ' + res.error);
+          return;
+        }
+      }
+      await loadUsers();
+    }
+    
+    resetForm();
   };
 
-  // Find the top-rated collaborator
-  const getTopCollaborator = () => {
-    if (!personal || personal.length === 0) return null;
-    return [...personal].sort((a, b) => (b.ranking || 0) - (a.ranking || 0))[0];
+  const handleEditClick = (colab: any) => {
+    setIsEditing(colab.id);
+    setNombre(colab.nombre || '');
+    setApellido(colab.apellido || '');
+    setCi(colab.ci || '');
+    setCargo(colab.cargo || '');
+    setRol(colab.rol || 'perito_asistente');
+    setDespacho(colab.despacho || '');
+    setEmail(colab.email || '');
+    setTelefono(colab.telefono || '');
+    setUsername(colab.username || '');
+    setPasswordColab('');
+    setShowAddForm(true);
   };
 
-  const topCollaborator = getTopCollaborator();
+  const handleToggleActive = async (id: number, currentStatus: number) => {
+    if (window.electronAPI?.db?.updateUser && user?.id) {
+      await window.electronAPI.db.updateUser(user.id, id, { activo: currentStatus === 1 ? 0 : 1 });
+      await loadUsers();
+    }
+  };
+
+  const handleSetRanking = async (id: number, stars: number) => {
+    if (window.electronAPI?.db?.updateUser && user?.id) {
+      await window.electronAPI.db.updateUser(user.id, id, { ranking: stars });
+      await loadUsers();
+    }
+  };
+
+  const topCollaborator = personal.length > 0 
+    ? [...personal].sort((a, b) => (b.ranking || 0) - (a.ranking || 0))[0] 
+    : null;
 
   return (
     <div className="space-y-6 animate-fade-in pb-10">
@@ -196,10 +247,9 @@ export default function PersonalPage() {
       {activeTab === 'profile' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Card: Profile Avatar & Details */}
           <div className="fluent-mica p-6 rounded-xl border border-fluent-border lg:col-span-1 flex flex-col items-center text-center justify-center relative">
             <div className="absolute top-4 right-4 bg-fluent-accent/15 border border-fluent-accent/30 text-fluent-accent px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
-              Superusuario
+              {user?.rol || 'Usuario'}
             </div>
 
             <div className="relative group w-32 h-32 mb-6">
@@ -226,24 +276,18 @@ export default function PersonalPage() {
               />
             </div>
 
-            <h2 className="text-xl font-bold text-white">{user?.nombre || 'Administrador Principal'}</h2>
+            <h2 className="text-xl font-bold text-white">{user?.nombre || 'Usuario'}</h2>
             <p className="text-xs text-fluent-text-muted font-mono mt-1">@{user?.username || 'admin'}</p>
             
             <div className="w-full border-t border-fluent-border mt-6 pt-4 text-left space-y-3">
               <div className="flex items-center gap-2.5 text-xs">
                 <Shield size={14} className="text-fluent-accent" />
                 <span className="font-semibold text-white">Rol del Sistema:</span>
-                <span className="text-fluent-text-muted font-mono">{user?.rol || 'Administrador'}</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-xs">
-                <Award size={14} className="text-fluent-accent" />
-                <span className="font-semibold text-white">Jerarquía:</span>
-                <span className="text-fluent-text-muted">Superusuario Único</span>
+                <span className="text-fluent-text-muted font-mono">{ROLES.find(r => r.value === user?.rol)?.label || user?.rol || 'Administrador'}</span>
               </div>
             </div>
           </div>
 
-          {/* Card: Change Password Form */}
           <div className="fluent-mica p-6 rounded-xl border border-fluent-border lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3 border-b border-fluent-border pb-4">
               <div className="w-8 h-8 rounded-lg bg-fluent-accent/10 border border-fluent-accent/20 flex items-center justify-center text-fluent-accent">
@@ -311,10 +355,8 @@ export default function PersonalPage() {
       {activeTab === 'collaborators' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Left Block: Top Rating & Creator */}
           <div className="space-y-6 lg:col-span-1">
             
-            {/* Featured Collaborator (Trophy Panel) */}
             {topCollaborator ? (
               <div className="fluent-mica p-6 rounded-xl border border-fluent-accent/30 relative overflow-hidden bg-gradient-to-br from-fluent-bg to-fluent-accent/5">
                 <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-fluent-accent/5 rounded-full blur-xl"></div>
@@ -328,7 +370,7 @@ export default function PersonalPage() {
                 
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-14 h-14 rounded-full bg-white/[0.03] border-2 border-fluent-accent flex items-center justify-center font-bold text-white text-lg">
-                    {topCollaborator.nombre.charAt(0)}{topCollaborator.apellido.charAt(0)}
+                    {topCollaborator.nombre?.charAt(0)}{topCollaborator.apellido?.charAt(0)}
                   </div>
                   <div>
                     <h5 className="font-bold text-white text-base leading-tight">
@@ -360,7 +402,6 @@ export default function PersonalPage() {
               </div>
             )}
 
-            {/* Add Collaborator Button / Form Trigger */}
             {!showAddForm ? (
               <button 
                 onClick={() => setShowAddForm(true)}
@@ -372,9 +413,9 @@ export default function PersonalPage() {
             ) : (
               <div className="fluent-mica p-5 rounded-xl border border-fluent-border space-y-4">
                 <div className="flex justify-between items-center border-b border-fluent-border pb-3">
-                  <h4 className="font-bold text-sm text-white">Nuevo Colaborador</h4>
+                  <h4 className="font-bold text-sm text-white">{isEditing ? 'Editar Colaborador' : 'Nuevo Colaborador'}</h4>
                   <button 
-                    onClick={() => setShowAddForm(false)}
+                    onClick={resetForm}
                     className="text-xs text-fluent-text-muted hover:text-white"
                   >
                     Cancelar
@@ -407,7 +448,7 @@ export default function PersonalPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="fluent-label">Cédula Identidad (CI) *</label>
+                      <label className="fluent-label">Cédula Identidad *</label>
                       <input 
                         type="text"
                         required
@@ -430,10 +471,35 @@ export default function PersonalPage() {
                   </div>
 
                   <div className="space-y-1">
+                    <label className="fluent-label">Usuario *</label>
+                    <input 
+                      type="text"
+                      required
+                      placeholder="Nombre de usuario"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      disabled={isEditing !== null}
+                      className="fluent-input py-1.5 disabled:opacity-50"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="fluent-label">{isEditing ? 'Contraseña (dejar en blanco para no cambiar)' : 'Contraseña *'}</label>
+                    <input 
+                      type="password"
+                      required={!isEditing}
+                      placeholder="Clave de acceso"
+                      value={passwordColab}
+                      onChange={(e) => setPasswordColab(e.target.value)}
+                      className="fluent-input py-1.5"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
                     <label className="fluent-label">Rol del Sistema</label>
                     <select 
                       value={rol}
-                      onChange={(e) => setRol(e.target.value as RolPersonal)}
+                      onChange={(e) => setRol(e.target.value)}
                       className="fluent-input py-1.5 select-arrow bg-fluent-surfaceActive"
                     >
                       {ROLES.map(r => (
@@ -453,32 +519,33 @@ export default function PersonalPage() {
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="fluent-label">Teléfono</label>
-                    <input 
-                      type="text"
-                      value={telefono}
-                      onChange={(e) => setTelefono(e.target.value)}
-                      className="fluent-input py-1.5"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="fluent-label">Despacho / Fiscalía Oficina</label>
-                    <input 
-                      type="text"
-                      placeholder="Ej. Laboratorio 3"
-                      value={despacho}
-                      onChange={(e) => setDespacho(e.target.value)}
-                      className="fluent-input py-1.5"
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="fluent-label">Teléfono</label>
+                      <input 
+                        type="text"
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
+                        className="fluent-input py-1.5"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="fluent-label">Despacho / Fiscalía</label>
+                      <input 
+                        type="text"
+                        placeholder="Ej. Laboratorio 3"
+                        value={despacho}
+                        onChange={(e) => setDespacho(e.target.value)}
+                        className="fluent-input py-1.5"
+                      />
+                    </div>
                   </div>
 
                   <button 
                     type="submit"
-                    className="w-full fluent-btn fluent-btn-primary py-2.5 text-xs font-bold"
+                    className="w-full fluent-btn fluent-btn-primary py-2.5 text-xs font-bold mt-2"
                   >
-                    Guardar Colaborador
+                    {isEditing ? 'Actualizar Colaborador' : 'Guardar Colaborador'}
                   </button>
                 </form>
               </div>
@@ -486,13 +553,14 @@ export default function PersonalPage() {
 
           </div>
 
-          {/* Right Block: Collaborators List & Star Rating */}
           <div className="lg:col-span-2 space-y-4">
             
             <div className="fluent-mica p-6 rounded-xl border border-fluent-border">
-              <h3 className="text-lg font-bold text-white mb-4">Directorio de Colaboradores</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Directorio de Colaboradores (Base de Datos)</h3>
               
-              {personal.length === 0 ? (
+              {loading ? (
+                 <div className="text-center py-10 text-fluent-text-muted">Cargando...</div>
+              ) : personal.length === 0 ? (
                 <div className="text-center py-10 text-fluent-text-muted">
                   <User size={40} className="mx-auto mb-3 opacity-20" />
                   <p className="text-sm font-medium">No se han registrado colaboradores técnicos en el CMS.</p>
@@ -502,32 +570,45 @@ export default function PersonalPage() {
                   {personal.map(p => (
                     <div 
                       key={p.id} 
-                      className="fluent-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-fluent-border rounded-lg bg-fluent-surface/40 hover:bg-fluent-surface"
+                      className={`fluent-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-fluent-border rounded-lg bg-fluent-surface/40 hover:bg-fluent-surface ${!p.activo ? 'opacity-50' : ''}`}
                     >
                       <div className="flex items-start gap-3.5">
-                        <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-fluent-border flex items-center justify-center font-bold text-fluent-accent text-sm self-start md:self-auto">
-                          {p.nombre.charAt(0)}{p.apellido.charAt(0)}
+                        <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-fluent-border flex items-center justify-center font-bold text-fluent-accent text-sm self-start md:self-auto overflow-hidden">
+                          {p.profile_image ? (
+                             <img src={p.profile_image} alt={p.nombre} className="w-full h-full object-cover" />
+                          ) : (
+                             <>{p.nombre?.charAt(0)}{p.apellido?.charAt(0)}</>
+                          )}
                         </div>
                         
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-white text-sm">{p.nombre} {p.apellido}</span>
+                            <span className="font-bold text-white text-sm">{p.nombre} {p.apellido} <span className="text-xs text-fluent-text-muted font-normal">(@{p.username})</span></span>
                             <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded text-fluent-text-muted uppercase font-semibold">
                               {ROLES.find(r => r.value === p.rol)?.label || p.rol}
                             </span>
+                            {p.activo === 0 && (
+                              <span className="text-[9px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded uppercase font-semibold">Inactivo</span>
+                            )}
                           </div>
                           
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-fluent-text-muted">
-                            <span className="flex items-center gap-1"><Briefcase size={12} /> {p.cargo}</span>
-                            <span className="flex items-center gap-1"><Mail size={12} /> {p.email}</span>
+                            {p.cargo && <span className="flex items-center gap-1"><Briefcase size={12} /> {p.cargo}</span>}
+                            {p.email && <span className="flex items-center gap-1"><Mail size={12} /> {p.email}</span>}
                             {p.telefono && <span className="flex items-center gap-1"><Phone size={12} /> {p.telefono}</span>}
                           </div>
                         </div>
                       </div>
 
-                      {/* Stars Rating Component */}
-                      <div className="flex flex-col items-start md:items-end justify-center gap-1">
-                        <span className="text-[10px] font-bold text-fluent-text-muted uppercase tracking-wider">Valoración Pericial</span>
+                      <div className="flex flex-col items-start md:items-end justify-center gap-2">
+                        <div className="flex items-center gap-2">
+                           <button onClick={() => handleEditClick(p)} className="text-fluent-text-muted hover:text-white p-1 rounded transition-colors" title="Editar">
+                              <Edit size={16} />
+                           </button>
+                           <button onClick={() => handleToggleActive(p.id, p.activo)} className="text-fluent-text-muted hover:text-red-400 p-1 rounded transition-colors" title={p.activo ? 'Desactivar' : 'Activar'}>
+                              {p.activo ? <ShieldOff size={16} /> : <Check size={16} />}
+                           </button>
+                        </div>
                         <div className="flex items-center gap-0.5 text-fluent-accent">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <button
@@ -537,7 +618,7 @@ export default function PersonalPage() {
                               className="hover:scale-115 transition-transform"
                             >
                               <Star 
-                                size={16} 
+                                size={14} 
                                 fill={i < (p.ranking || 0) ? "currentColor" : "none"} 
                                 className="cursor-pointer"
                               />

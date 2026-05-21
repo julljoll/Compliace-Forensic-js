@@ -8,7 +8,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const crypto = require('crypto');
-const { initDatabase, authenticateUser, validateSession, logout, getCasos, addCaso, saveState, loadState, changePassword } = require('./database');
+const { initDatabase, authenticateUser, validateSession, logout, getCasos, addCaso, saveState, loadState, changePassword, getUsers, addUser, updateUser, getAuditLogs } = require('./database');
 
 let mainWindow;
 
@@ -181,3 +181,24 @@ ipcMain.handle('db:saveState', async (event, userId, state) => {
 ipcMain.handle('db:loadState', async (event, userId) => {
   return loadState(userId);
 });
+
+// ============================================
+// IPC — User Management & Audit
+// ============================================
+
+ipcMain.handle('db:getUsers', async (event) => {
+  return getUsers();
+});
+
+ipcMain.handle('db:addUser', async (event, userIdMaker, user) => {
+  return addUser(userIdMaker, user);
+});
+
+ipcMain.handle('db:updateUser', async (event, userIdMaker, userId, data) => {
+  return updateUser(userIdMaker, userId, data);
+});
+
+ipcMain.handle('db:getAuditLogs', async (event) => {
+  return getAuditLogs();
+});
+

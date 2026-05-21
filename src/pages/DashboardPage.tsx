@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useCMSStore } from '../store/cmsStore';
 import {
   FolderOpen, ShieldCheck, AlertTriangle, Clock,
@@ -33,9 +34,18 @@ export default function DashboardPage() {
   const casos = useCMSStore(state => state.casos);
   const tareas = useCMSStore(state => state.tareas);
   const normativas = useCMSStore(state => state.normativas);
-  const auditLogs = useCMSStore(state => state.auditLogs);
+  
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
   const getEstadisticas = useCMSStore(state => state.getEstadisticas);
   const stats = getEstadisticas();
+
+  useEffect(() => {
+    if (window.electronAPI?.db?.getAuditLogs) {
+      window.electronAPI.db.getAuditLogs().then((logs: any) => {
+        setAuditLogs(logs);
+      });
+    }
+  }, []);
 
   const recientes = [...casos].sort((a, b) =>
     new Date(b.fechaUltimaActualizacion).getTime() - new Date(a.fechaUltimaActualizacion).getTime()
@@ -50,16 +60,16 @@ export default function DashboardPage() {
       {/* ── Encabezado ─────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Control Center</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Centro de Control</h1>
           <p className="text-xs md:text-sm text-fluent-text-muted font-medium max-w-lg mt-1">
-            Forensic monitoring of consigned devices under <span className="text-fluent-accent">ISO 27037</span> and <span className="text-fluent-accent">MUCC-2017</span> normative frameworks.
+            Monitoreo forense de dispositivos consignados bajo los marcos normativos <span className="text-fluent-accent">ISO 27037</span> y <span className="text-fluent-accent">MUCC-2017</span>.
           </p>
         </div>
         <div className="flex items-center gap-3">
            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-bold text-fluent-text-muted uppercase tracking-[0.2em]">System Status</span>
+              <span className="text-[10px] font-bold text-fluent-text-muted uppercase tracking-[0.2em]">Estado del Sistema</span>
               <span className="text-sm font-black text-green-400 flex items-center gap-1.5">
-                <Activity size={14} className="animate-pulse" /> ONLINE
+                <Activity size={14} className="animate-pulse" /> EN LÍNEA
               </span>
            </div>
         </div>
@@ -67,10 +77,10 @@ export default function DashboardPage() {
 
       {/* ── KPIs ───────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Total Cases" value={stats.totalCasos} sub={`${stats.casosActivos} active records`} icon={FolderOpen} />
-        <KpiCard title="Processing" value={stats.casosActivos} sub="In technical phase" icon={TrendingUp} color="text-blue-400" />
-        <KpiCard title="Compliance" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} validated`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'} />
-        <KpiCard title="Security Alerts" value={stats.tareasPendientes} sub="Immediate action required" icon={AlertTriangle} color="text-orange-400" />
+        <KpiCard title="Total de Casos" value={stats.totalCasos} sub={`${stats.casosActivos} registros activos`} icon={FolderOpen} />
+        <KpiCard title="Procesando" value={stats.casosActivos} sub="En fase técnica" icon={TrendingUp} color="text-blue-400" />
+        <KpiCard title="Cumplimiento" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} validados`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-green-400' : stats.cumplimientoGeneral >= 50 ? 'text-yellow-400' : 'text-red-400'} />
+        <KpiCard title="Alertas" value={stats.tareasPendientes} sub="Requieren acción inmediata" icon={AlertTriangle} color="text-orange-400" />
       </div>
 
       {/* ── Cuerpo ─────────────────────────────────────── */}
@@ -81,15 +91,15 @@ export default function DashboardPage() {
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
             <h2 className="font-bold text-white flex items-center gap-2">
               <FileSearch size={18} className="text-fluent-accent" />
-              Recent Case Updates
+              Actualizaciones Recientes
             </h2>
-            <Link to="/casos" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">View Directory</Link>
+            <Link to="/casos" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">Ver Directorio</Link>
           </div>
           <div className="divide-y divide-white/5">
             {recientes.length === 0 ? (
               <div className="p-16 text-center">
                 <FolderOpen size={40} className="text-fluent-text-muted mx-auto mb-4 opacity-20" />
-                <p className="text-sm text-fluent-text-muted">No recent activity detected.</p>
+                <p className="text-sm text-fluent-text-muted">No se ha detectado actividad reciente.</p>
               </div>
             ) : recientes.map(caso => {
               const estado = ESTADO_LABEL[caso.estado] || ESTADO_LABEL.iniciado;
@@ -126,7 +136,7 @@ export default function DashboardPage() {
           <div className="fluent-mica p-6 rounded-xl shadow-xl">
             <h3 className="font-bold text-white text-sm flex items-center gap-2 mb-6">
               <Scale size={16} className="text-fluent-accent" />
-              Active Frameworks
+              Marcos Normativos
             </h3>
             <div className="space-y-4">
               {normativas.filter(n => n.activa).slice(0, 5).map(n => (
@@ -140,7 +150,7 @@ export default function DashboardPage() {
               ))}
               <div className="pt-6 border-t border-white/5 mt-4">
                 <Link to="/normativas" className="block text-center text-[10px] font-black text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.2em]">
-                  Compliance Library
+                  Biblioteca de Normativas
                 </Link>
               </div>
             </div>
@@ -152,7 +162,7 @@ export default function DashboardPage() {
               <div className="absolute top-0 left-0 w-full h-[2px] bg-red-500/30 animate-pulse" />
               <h3 className="font-bold text-red-400 text-sm flex items-center gap-2 mb-6">
                 <AlertTriangle size={16} />
-                Critical Actions
+                Acciones Críticas
               </h3>
               <div className="space-y-3">
                 {tareasUrgentes.map(t => (
@@ -160,7 +170,7 @@ export default function DashboardPage() {
                     <p className="text-white font-bold truncate mb-1.5">{t.titulo}</p>
                     <div className="flex justify-between items-center">
                        <span className="text-red-300 font-medium opacity-80">{t.asignadoA}</span>
-                       <span className="text-[8px] font-black uppercase text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded-[2px] tracking-[0.1em]">Priority</span>
+                       <span className="text-[8px] font-black uppercase text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded-[2px] tracking-[0.1em]">Prioridad</span>
                     </div>
                   </div>
                 ))}
@@ -176,23 +186,23 @@ export default function DashboardPage() {
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
             <h2 className="font-bold text-white flex items-center gap-2">
               <Activity size={18} className="text-fluent-accent" />
-              Traceability Audit (LIVE)
+              Auditoría y Trazabilidad (EN VIVO)
             </h2>
-            <Link to="/auditoria" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">Log History</Link>
+            <Link to="/auditoria" className="text-[10px] font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em]">Historial de Logs</Link>
           </div>
           <div className="divide-y divide-white/5">
-            {logsRecientes.map(log => (
+            {logsRecientes.map((log: any) => (
               <div key={log.id} className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 px-4 sm:px-6 py-4 hover:bg-white/[0.02] transition-colors">
                 <div className={`w-2 h-2 rounded-full shrink-0 shadow-[0_0_8px_rgba(0,0,0,0.5)] hidden sm:block ${
-                  log.nivel === 'success' ? 'bg-green-400 shadow-green-400/20' :
-                  log.nivel === 'warning' ? 'bg-yellow-400 shadow-yellow-400/20' :
-                  log.nivel === 'error' ? 'bg-red-400 shadow-red-400/20' : 'bg-fluent-accent shadow-fluent-accent/20'
+                  log.accion.includes('ERROR') ? 'bg-red-400 shadow-red-400/20' :
+                  log.accion.includes('ELIMINAD') ? 'bg-yellow-400 shadow-yellow-400/20' :
+                  'bg-fluent-accent shadow-fluent-accent/20'
                 }`} />
                 <div className="w-full sm:w-44 shrink-0 flex items-center gap-2">
                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 sm:hidden ${
-                     log.nivel === 'success' ? 'bg-green-400' :
-                     log.nivel === 'warning' ? 'bg-yellow-400' :
-                     log.nivel === 'error' ? 'bg-red-400' : 'bg-fluent-accent'
+                     log.accion.includes('ERROR') ? 'bg-red-400' :
+                     log.accion.includes('ELIMINAD') ? 'bg-yellow-400' :
+                     'bg-fluent-accent'
                    }`} />
                    <span className="font-mono text-[10px] font-black text-fluent-accent uppercase tracking-tight truncate">{log.accion}</span>
                 </div>
@@ -212,14 +222,14 @@ export default function DashboardPage() {
           <div className="w-24 h-24 bg-fluent-accent/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner border border-fluent-accent/20">
             <Gavel size={48} className="text-fluent-accent" />
           </div>
-          <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">System Initialization Complete</h3>
+          <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">Inicialización del Sistema Completa</h3>
           <p className="text-fluent-text-muted text-sm mb-10 max-w-xl mx-auto leading-relaxed font-medium">
-            Centralized platform for digital peritaje management, custody chain control 
-            and <span className="font-bold text-white underline decoration-fluent-accent/50 underline-offset-4">ISO/IEC</span> compliance monitoring. Please initiate a new record to begin the technical workflow.
+            Plataforma centralizada para gestión pericial digital, control de cadena de custodia 
+            y monitoreo de cumplimiento <span className="font-bold text-white underline decoration-fluent-accent/50 underline-offset-4">ISO/IEC</span>. Por favor inicia un nuevo registro para comenzar el flujo técnico.
           </p>
           <Link to="/casos" className="fluent-btn fluent-btn-primary px-12 py-3 rounded-md text-sm font-bold shadow-2xl hover:translate-y-[-2px] transition-all">
             <FolderOpen size={18} strokeWidth={2.5} />
-            Initialize Record Management
+            Iniciar Gestión de Registros
           </Link>
         </div>
       )}

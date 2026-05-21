@@ -766,7 +766,7 @@ function NuevaTareaModal({
           {/* Actions */}
           <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
             <button type="button" onClick={onClose} className="fluent-btn fluent-btn-secondary text-sm">
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"

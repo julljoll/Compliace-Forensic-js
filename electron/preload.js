@@ -48,6 +48,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     addCaso: (caso) => ipcRenderer.invoke('db:addCaso', caso),
     saveState: (userId, state) => ipcRenderer.invoke('db:saveState', userId, state),
     loadState: (userId) => ipcRenderer.invoke('db:loadState', userId),
+    getUsers: () => ipcRenderer.invoke('db:getUsers'),
+    addUser: (userIdMaker, user) => ipcRenderer.invoke('db:addUser', userIdMaker, user),
+    updateUser: (userIdMaker, userId, data) => ipcRenderer.invoke('db:updateUser', userIdMaker, userId, data),
+    getAuditLogs: () => ipcRenderer.invoke('db:getAuditLogs'),
   },
 
   // Platform

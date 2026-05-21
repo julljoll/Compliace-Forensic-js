@@ -36,6 +36,10 @@ declare global {
         addCaso: (caso: any) => Promise<any>;
         saveState: (userId: number, state: string) => Promise<any>;
         loadState: (userId: number) => Promise<any>;
+        getUsers: () => Promise<any>;
+        addUser: (userIdMaker: number, user: any) => Promise<any>;
+        updateUser: (userIdMaker: number, userId: number, data: any) => Promise<any>;
+        getAuditLogs: () => Promise<any>;
       };
       auth: {
         login: (credentials: any) => Promise<any>;

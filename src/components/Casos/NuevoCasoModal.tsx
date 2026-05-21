@@ -136,18 +136,20 @@ export default function NuevoCasoModal({
           <div className="space-y-2">
             <label className="fluent-label">Preliminary Evidence Notes</label>
             <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Observations..." value={form.notas}
+            <label className="fluent-label">Notas Preliminares de Evidencia</label>
+            <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Observaciones..." value={form.notas}
               onChange={e => setForm(f => ({ ...f, notas: e.target.value }))} />
           </div>
         </form>
 
         {/* Modal Footer */}
         <div className="p-5 border-t border-white/5 flex justify-end gap-3 bg-white/[0.02]">
-          <button type="button" onClick={onClose} className="fluent-btn fluent-btn-secondary px-6 font-bold">Cancel</button>
+          <button type="button" onClick={onClose} className="fluent-btn fluent-btn-secondary px-6 font-bold">Cancelar</button>
           <button type="submit" onClick={handleSubmit} disabled={saving} className="fluent-btn fluent-btn-primary px-8 flex items-center gap-2 shadow-xl">
             {saving ? (
               <>
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Processing...
+                Procesando...
               </>
             ) : 'Initialize Case'}
           </button>

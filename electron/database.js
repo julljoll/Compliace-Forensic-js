@@ -78,8 +78,16 @@ function initLocalDatabase() {
         username TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         nombre TEXT DEFAULT '',
-        rol TEXT DEFAULT 'perito',
+        apellido TEXT DEFAULT '',
+        rol TEXT DEFAULT 'perito_asistente',
         activo INTEGER DEFAULT 1,
+        ci TEXT DEFAULT '',
+        cargo TEXT DEFAULT '',
+        email TEXT DEFAULT '',
+        telefono TEXT DEFAULT '',
+        despacho TEXT DEFAULT '',
+        ranking INTEGER DEFAULT 0,
+        profile_image TEXT DEFAULT '',
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         last_login TEXT
       );
@@ -133,8 +141,8 @@ function initLocalDatabase() {
     const admin = localDb.prepare("SELECT id FROM users WHERE username = 'admin'").get();
     if (!admin) {
       localDb.prepare(`
-        INSERT INTO users (username, password_hash, nombre, rol) 
-        VALUES ('admin', ?, 'Administrador Local', 'perito_lider')
+        INSERT INTO users (username, password_hash, nombre, apellido, rol, cargo, email, activo) 
+        VALUES ('admin', ?, 'Administrador', 'Local', 'perito_lider', 'Superusuario', 'admin@sha256.us', 1)
       `).run(hashPassword('julljoll'));
     }
 
@@ -166,8 +174,16 @@ async function initDatabase() {
           username VARCHAR(255) UNIQUE NOT NULL,
           password_hash VARCHAR(255) NOT NULL,
           nombre VARCHAR(255) DEFAULT '',
-          rol VARCHAR(50) DEFAULT 'perito',
+          apellido VARCHAR(255) DEFAULT '',
+          rol VARCHAR(50) DEFAULT 'perito_asistente',
           activo INTEGER DEFAULT 1,
+          ci VARCHAR(50) DEFAULT '',
+          cargo VARCHAR(255) DEFAULT '',
+          email VARCHAR(255) DEFAULT '',
+          telefono VARCHAR(50) DEFAULT '',
+          despacho VARCHAR(255) DEFAULT '',
+          ranking INTEGER DEFAULT 0,
+          profile_image TEXT DEFAULT '',
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           last_login TIMESTAMP
         )
@@ -220,8 +236,8 @@ async function initDatabase() {
       const existingAdmins = await sql`SELECT id FROM users WHERE username = 'admin'`;
       if (existingAdmins.length === 0) {
         await sql`
-          INSERT INTO users (username, password_hash, nombre, rol) 
-          VALUES ('admin', ${hashPassword('julljoll')}, 'Administrador', 'perito_lider')
+          INSERT INTO users (username, password_hash, nombre, apellido, rol, cargo, email) 
+          VALUES ('admin', ${hashPassword('julljoll')}, 'Administrador', 'Principal', 'perito_lider', 'Superusuario', 'admin@sha256.us')
         `;
       }
       console.log('[Remote DB] Neon PostgreSQL inicializado exitosamente.');
@@ -252,17 +268,25 @@ async function syncData() {
 
   try {
     // 1. Sincronizar usuarios (Descargar de la nube para login offline)
-    const remoteUsers = await sql`SELECT id, username, password_hash, nombre, rol, activo FROM users`;
+    const remoteUsers = await sql`SELECT id, username, password_hash, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image FROM users`;
     for (const rUser of remoteUsers) {
       localDb.prepare(`
-        INSERT INTO users (id, username, password_hash, nombre, rol, activo)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO users (id, username, password_hash, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(username) DO UPDATE SET
           password_hash = excluded.password_hash,
           nombre = excluded.nombre,
+          apellido = excluded.apellido,
           rol = excluded.rol,
-          activo = excluded.activo
-      `).run(rUser.id, rUser.username, rUser.password_hash, rUser.nombre, rUser.rol, rUser.activo);
+          activo = excluded.activo,
+          ci = excluded.ci,
+          cargo = excluded.cargo,
+          email = excluded.email,
+          telefono = excluded.telefono,
+          despacho = excluded.despacho,
+          ranking = excluded.ranking,
+          profile_image = excluded.profile_image
+      `).run(rUser.id, rUser.username, rUser.password_hash, rUser.nombre, rUser.apellido, rUser.rol, rUser.activo, rUser.ci, rUser.cargo, rUser.email, rUser.telefono, rUser.despacho, rUser.ranking, rUser.profile_image);
     }
 
     // 2. Subir casos nuevos creados localmente mientras se estaba offline
@@ -448,10 +472,10 @@ async function authenticateUser(username, password) {
         
         // Cachear localmente
         localDb.prepare(`
-          INSERT INTO users (id, username, password_hash, nombre, rol, activo, last_login)
-          VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+          INSERT INTO users (id, username, password_hash, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image, last_login)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
           ON CONFLICT(username) DO UPDATE SET last_login = datetime('now')
-        `).run(user.id, user.username, user.password_hash, user.nombre, user.rol, user.activo);
+        `).run(user.id, user.username, user.password_hash, user.nombre, user.apellido || '', user.rol, user.activo, user.ci || '', user.cargo || '', user.email || '', user.telefono || '', user.despacho || '', user.ranking || 0, user.profile_image || '');
         
         localDb.prepare(`
           INSERT INTO sessions (user_id, token, expires_at)
@@ -730,6 +754,138 @@ async function changePassword(userId, newPassword) {
   }
 }
 
+async function getUsers() {
+  try {
+    const users = localDb.prepare("SELECT id, username, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image, created_at, last_login FROM users ORDER BY created_at DESC").all();
+    return users;
+  } catch (err) {
+    console.error('[DB] Error leyendo usuarios locales:', err);
+    return [];
+  }
+}
+
+async function addUser(userIdMaker, user) {
+  const hash = hashPassword(user.password || '123456');
+  try {
+    // Local
+    const stmt = localDb.prepare(`
+      INSERT INTO users (
+        username, password_hash, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const info = stmt.run(
+      user.username, hash, user.nombre, user.apellido, user.rol, 1, 
+      user.ci, user.cargo, user.email, user.telefono, user.despacho, user.ranking || 0, user.profile_image || ''
+    );
+    const localId = info.lastInsertRowid;
+
+    if (isOnline && sql) {
+      try {
+        const res = await sql`
+          INSERT INTO users (
+            username, password_hash, nombre, apellido, rol, activo, ci, cargo, email, telefono, despacho, ranking, profile_image
+          ) VALUES (
+            ${user.username}, ${hash}, ${user.nombre}, ${user.apellido}, ${user.rol}, 1,
+            ${user.ci}, ${user.cargo}, ${user.email}, ${user.telefono}, ${user.despacho}, ${user.ranking || 0}, ${user.profile_image || ''}
+          ) RETURNING id
+        `;
+        if (res && res.length > 0) {
+           await addAuditLog(userIdMaker, 'USUARIO_CREADO', \`Usuario \${user.username} creado exitosamente.\`);
+           // Note: In a real advanced sync, we'd wait for next sync to get ID or update SQLite ID,
+           // but since our sqlite and remote IDs might diverge slightly on first insert without explicit sync,
+           // we just return the remote ID if online. Sincronizacion bidireccional de users ya actualiza on conflict username.
+           return { success: true, id: res[0].id };
+        }
+      } catch (err) {
+        console.error('[DB] Error insertando usuario en remoto:', err.message);
+      }
+    }
+    
+    await addAuditLog(userIdMaker, 'USUARIO_CREADO_LOCAL', \`Usuario \${user.username} creado offline.\`);
+    return { success: true, id: localId };
+  } catch(err) {
+    console.error('[DB] Error creando usuario:', err);
+    return { success: false, error: err.message };
+  }
+}
+
+async function updateUser(userIdMaker, userId, data) {
+  try {
+    // Si la data incluye password, lo manejamos aparte si queremos
+    let setsLocal = [];
+    let paramsLocal = [];
+    let updatesNeon = {};
+    
+    const fields = ['nombre', 'apellido', 'rol', 'activo', 'ci', 'cargo', 'email', 'telefono', 'despacho', 'ranking', 'profile_image'];
+    for(let f of fields) {
+      if(data[f] !== undefined) {
+        setsLocal.push(\`\${f} = ?\`);
+        paramsLocal.push(data[f]);
+        updatesNeon[f] = data[f];
+      }
+    }
+    
+    if(data.password) {
+       const hash = hashPassword(data.password);
+       setsLocal.push('password_hash = ?');
+       paramsLocal.push(hash);
+       updatesNeon['password_hash'] = hash;
+    }
+
+    if (setsLocal.length > 0) {
+      paramsLocal.push(userId);
+      localDb.prepare(\`UPDATE users SET \${setsLocal.join(', ')} WHERE id = ?\`).run(...paramsLocal);
+      
+      if(isOnline && sql) {
+         try {
+           // We do individual sets using Neon.js dynamic query or standard mapped
+           // Since Neon serverless `sql` tag doesn't easily do dynamic updates out of the box nicely like Prisma,
+           // we can do a workaround or just update the explicit fields:
+           await sql\`
+              UPDATE users SET
+                nombre = COALESCE(\${updatesNeon.nombre}, nombre),
+                apellido = COALESCE(\${updatesNeon.apellido}, apellido),
+                rol = COALESCE(\${updatesNeon.rol}, rol),
+                activo = COALESCE(\${updatesNeon.activo}, activo),
+                ci = COALESCE(\${updatesNeon.ci}, ci),
+                cargo = COALESCE(\${updatesNeon.cargo}, cargo),
+                email = COALESCE(\${updatesNeon.email}, email),
+                telefono = COALESCE(\${updatesNeon.telefono}, telefono),
+                despacho = COALESCE(\${updatesNeon.despacho}, despacho),
+                ranking = COALESCE(\${updatesNeon.ranking}, ranking),
+                profile_image = COALESCE(\${updatesNeon.profile_image}, profile_image),
+                password_hash = COALESCE(\${updatesNeon.password_hash}, password_hash)
+              WHERE id = \${userId}
+           \`;
+         } catch(err) {
+            console.error('[DB] Error actualizando usuario remoto:', err.message);
+         }
+      }
+    }
+
+    await addAuditLog(userIdMaker, 'USUARIO_ACTUALIZADO', \`El usuario con ID \${userId} fue modificado.\`);
+    return { success: true };
+  } catch (err) {
+    console.error('[DB] Error actualizando usuario:', err);
+    return { success: false, error: err.message };
+  }
+}
+
+async function getAuditLogs() {
+  try {
+    return localDb.prepare(\`
+      SELECT a.*, u.nombre, u.apellido, u.username
+      FROM audit_log a
+      LEFT JOIN users u ON a.user_id = u.id
+      ORDER BY a.timestamp DESC
+      LIMIT 100
+    \`).all();
+  } catch (err) {
+    console.error('[DB] Error obteniendo audit logs:', err);
+    return [];
+  }
+}
+
 module.exports = {
   initDatabase,
   authenticateUser,
@@ -741,4 +897,8 @@ module.exports = {
   saveState,
   loadState,
   changePassword,
+  getUsers,
+  addUser,
+  updateUser,
+  getAuditLogs,
 };

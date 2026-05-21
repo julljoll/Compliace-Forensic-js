@@ -8,7 +8,7 @@ import { useCMSStore } from '../store/cmsStore';
 import { useAuthStore } from '../store/authStore';
 
 const menuItems = [
-  { path: '/',                 label: 'Dashboard',       icon: LayoutDashboard,  group: 'Principal' },
+  { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
   { path: '/casos',            label: 'Gestión de Casos', icon: FolderOpen,      group: 'Principal' },
   { path: '/compliance',       label: 'Compliance',       icon: ShieldCheck,     group: 'Control' },
   { path: '/tareas',           label: 'Tareas & Fases',   icon: ClipboardList,   group: 'Control' },
@@ -34,7 +34,7 @@ export default function CMSLayout() {
 
   const getBreadcrumb = () => {
     const item = menuItems.find(m => m.path === location.pathname || location.pathname.startsWith(m.path + '/'));
-    return item ? item.label : 'Dashboard';
+    return item ? item.label : 'Panel Principal';
   };
 
   return (
