@@ -16,12 +16,12 @@ const menuItems = [
   { path: '/manual-avilla',    label: 'Manual Avilla',    icon: Smartphone,      group: 'Referencia' },
   { path: '/personal',         label: 'Personal',         icon: Users,           group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',        icon: Activity,        group: 'Sistema' },
-  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Planillas' },
-  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Planillas' },
-  { path: '/planillas/seguimiento', label: 'Seguimiento Forense', icon: ClipboardList, group: 'Planillas' },
+  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
+  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
+  { path: '/planillas/seguimiento', label: 'Seguimiento Forense', icon: ClipboardList, group: 'Plantillas Oficiales' },
 ];
 
-const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Planillas'];
+const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];
 
 export default function CMSLayout() {
   const location = useLocation();

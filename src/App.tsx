@@ -86,6 +86,9 @@ function App() {
           <Route path="informe" element={<Suspense fallback={<PageLoader />}><InformePage /></Suspense>} />
           <Route path="disposicion-judicial" element={<Suspense fallback={<PageLoader />}><DisposicionJudicialPage /></Suspense>} />
           <Route path="disposicion-final" element={<Suspense fallback={<PageLoader />}><DisposicionFinalPage /></Suspense>} />
+          <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
+          <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
+          <Route path="planillas/seguimiento" element={<Suspense fallback={<PageLoader />}><SeguimientoPage /></Suspense>} />
         </Route>
 
         {/* Fallback */}

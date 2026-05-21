@@ -85,6 +85,11 @@ interface ForenseState {
   
   // Reset completo
   resetAll: () => void;
+
+  // Seguimiento de pasos completed
+  completedSteps: Record<string, boolean>;
+  setStepCompleted: (stepId: string, completed: boolean) => void;
+  loadCompletedSteps: () => void;
 }
 
 export const useForenseStore = create<ForenseState>((set) => ({
@@ -94,6 +99,14 @@ export const useForenseStore = create<ForenseState>((set) => ({
   prccActual: null,
   adquisicionAndriller: null,
   adquisicionAleapp: null,
+  completedSteps: (() => {
+    try {
+      const stored = localStorage.getItem('sha256_completed_steps');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  })(),
   
   // Acciones Caso
   setCaso: (caso) => set({ casoActual: caso }),
@@ -118,5 +131,28 @@ export const useForenseStore = create<ForenseState>((set) => ({
     prccActual: null,
     adquisicionAndriller: null,
     adquisicionAleapp: null,
+    completedSteps: {},
   }),
+
+  // Acciones para Seguimiento
+  setStepCompleted: (stepId, completed) => set((state) => {
+    const next = { ...state.completedSteps, [stepId]: completed };
+    try {
+      localStorage.setItem('sha256_completed_steps', JSON.stringify(next));
+    } catch (e) {
+      console.error('Error saving completed steps to localStorage', e);
+    }
+    return { completedSteps: next };
+  }),
+
+  loadCompletedSteps: () => {
+    try {
+      const stored = localStorage.getItem('sha256_completed_steps');
+      if (stored) {
+        set({ completedSteps: JSON.parse(stored) });
+      }
+    } catch (e) {
+      console.error('Error loading completed steps from localStorage', e);
+    }
+  },
 }));

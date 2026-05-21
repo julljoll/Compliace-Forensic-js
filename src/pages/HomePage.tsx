@@ -73,24 +73,39 @@ export default function HomePage() {
         <div className="lg:col-span-2">
           <ReferenciaLegal />
         </div>
-        <div className="forensic-card p-8 bg-fluent-surfaceActive/30">
-          <h3 className="text-lg font-bold text-fluent-text mb-4 flex items-center gap-2">
-            <Shield size={20} className="text-fluent-accent" />
-            Cumplimiento Estándar
-          </h3>
-          <ul className="space-y-4">
-            {[
-              'ISO/IEC 27037:2012',
-              'ISO/IEC 27042:2015',
-              'NIST SP 800-101 r1',
-              'Manual Único de Cadena de Custodia (2017)'
-            ].map(std => (
-              <li key={std} className="flex items-center gap-3 text-sm text-fluent-textSecondary">
-                <div className="w-1.5 h-1.5 rounded-full bg-fluent-accent"></div>
-                {std}
-              </li>
-            ))}
-          </ul>
+        <div className="forensic-card p-8 bg-fluent-surfaceActive/30 flex flex-col justify-between gap-6">
+          <div>
+            <h3 className="text-lg font-bold text-fluent-text mb-4 flex items-center gap-2">
+              <Shield size={20} className="text-fluent-accent" />
+              Cumplimiento Estándar
+            </h3>
+            <ul className="space-y-4">
+              {[
+                'ISO/IEC 27037:2012',
+                'ISO/IEC 27042:2015',
+                'NIST SP 800-101 r1',
+                'Manual Único de Cadena de Custodia (2017)'
+              ].map(std => (
+                <li key={std} className="flex items-center gap-3 text-sm text-fluent-textSecondary">
+                  <div className="w-1.5 h-1.5 rounded-full bg-fluent-accent"></div>
+                  {std}
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="pt-6 border-t border-fluent-border space-y-4">
+            <h4 className="text-xs font-bold text-white uppercase tracking-wider">Protocolo de 9 Pasos</h4>
+            <p className="text-[11px] text-fluent-textSecondary leading-relaxed">
+              Consulte la guía interactiva oficial de seguimiento para garantizar cero riesgos de nulidad en la cadena de custodia de evidencias digitales.
+            </p>
+            <Link 
+              to="/forense/planillas/seguimiento" 
+              className="forensic-btn forensic-btn-secondary flex items-center justify-center gap-2 text-xs w-full py-2.5 font-bold uppercase tracking-wider"
+            >
+              Ver Seguimiento Forense
+            </Link>
+          </div>
         </div>
       </div>
     </div>

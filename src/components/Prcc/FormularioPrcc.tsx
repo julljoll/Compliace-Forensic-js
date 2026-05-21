@@ -1,6 +1,7 @@
 import { useState, memo, useId } from 'react';
+import { Link } from 'react-router-dom';
 import { useForenseStore, type PRCC } from '../../store/forenseStore';
-import { ClipboardList, FileText, User, MapPin, Printer } from 'lucide-react';
+import { ClipboardList, FileText, User, MapPin, Printer, Info } from 'lucide-react';
 
 const InputField = memo(({ label, value, onChange, placeholder, type = 'text' }: any) => {
   const id = useId();
@@ -37,6 +38,28 @@ export default function FormularioPrcc() {
 
   return (
     <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-20">
+      {/* Banner de Formato Oficial Limpio para Llenado Manual */}
+      <div className="forensic-card p-6 bg-fluent-accent/5 border border-fluent-accent/25 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg shadow-fluent-accent/5">
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-fluent-accent/15 rounded-lg text-fluent-accent mt-0.5 shrink-0">
+            <Info size={20} />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Planilla de Cadena de Custodia (PRCC)</h4>
+            <p className="text-xs text-white/50 leading-relaxed mt-1">
+              La trazabilidad in situ de la evidencia física y digital requiere el llenado manual y firma dactilar en la planilla física. Imprima el formato oficial en limpio.
+            </p>
+          </div>
+        </div>
+        <Link 
+          to="/forense/planillas/prcc-derivacion" 
+          target="_blank" 
+          className="forensic-btn forensic-btn-primary flex items-center gap-2 text-xs py-2.5 px-6 font-bold shadow-md shadow-fluent-accent/10 hover:shadow-fluent-accent/20 transition-all shrink-0 uppercase tracking-wider"
+        >
+          <Printer size={15} /> Imprimir PRCC Limpia
+        </Link>
+      </div>
+
       <div className="forensic-card p-8">
         <div className="flex items-center justify-between mb-8 border-b border-fluent-border pb-6">
           <div className="flex items-center gap-4">

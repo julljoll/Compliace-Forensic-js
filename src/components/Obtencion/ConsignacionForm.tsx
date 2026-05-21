@@ -1,4 +1,5 @@
 import { useState, memo, useId } from 'react';
+import { Link } from 'react-router-dom';
 import { useForenseStore, type PRCC } from '../../store/forenseStore';
 import { FileText, Printer, CheckCircle2, ShieldCheck, Smartphone, Info } from 'lucide-react';
 
@@ -95,6 +96,28 @@ export default function ConsignacionForm() {
              </div>
           </div>
         </div>
+      </div>
+
+      {/* Banner de Formato Oficial Limpio para Llenado Manual */}
+      <div className="forensic-card p-6 bg-fluent-accent/5 border border-fluent-accent/25 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg shadow-fluent-accent/5">
+        <div className="flex items-start gap-4">
+          <div className="p-2 bg-fluent-accent/15 rounded-lg text-fluent-accent mt-0.5 shrink-0">
+            <Info size={20} />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">Llenado Manual Obligatorio (MUCC 2017)</h4>
+            <p className="text-xs text-white/50 leading-relaxed mt-1">
+              De acuerdo con las normativas legales de cadena de custodia, el acta oficial de recepción debe ser cumplimentada de forma manuscrita. Acceda e imprima el formato oficial vacío.
+            </p>
+          </div>
+        </div>
+        <Link 
+          to="/forense/planillas/acta-obtencion" 
+          target="_blank" 
+          className="forensic-btn forensic-btn-primary flex items-center gap-2 text-xs py-2.5 px-6 font-bold shadow-md shadow-fluent-accent/10 hover:shadow-fluent-accent/20 transition-all shrink-0 uppercase tracking-wider"
+        >
+          <Printer size={15} /> Imprimir Acta Limpia
+        </Link>
       </div>
 
       <div className="forensic-card p-10 space-y-12">
