@@ -26,3 +26,5 @@ node_modules/
 # Original rules preserved
 *.log
 dist-electron/
+# Local SQLite database
+*.db

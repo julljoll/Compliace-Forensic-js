@@ -10,8 +10,9 @@
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:build": "tsc && vite build && electron-builder",
     "electron:build:deb": "tsc && vite build && electron-builder --linux deb",
+    "electron:build:linux": "tsc && vite build && electron-builder --linux tar.gz",
     "electron:build:win": "tsc && vite build && electron-builder --win nsis",
-    "electron:build:all": "tsc && vite build && electron-builder --linux deb --win nsis"
+    "electron:build:all": "tsc && vite build && electron-builder --linux tar.gz --win nsis"
   },
   "keywords": [
     "peritaje",
@@ -26,7 +27,6 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "axios": "^1.15.2",
-    "better-sqlite3": "^12.10.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.11.0",
@@ -37,7 +37,6 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
@@ -68,21 +67,16 @@
     "files": [
       "dist/**/*",
       "electron/**/*",
-      "node_modules/better-sqlite3/**/*",
-      "node_modules/bindings/**/*",
-      "node_modules/file-uri-to-path/**/*",
-      "node_modules/prebuild-install/**/*"
+      "package.json"
     ],
     "extraResources": [
       "public/**/*"
     ],
     "asar": true,
-    "asarUnpack": [
-      "node_modules/better-sqlite3/**/*"
-    ],
     "linux": {
       "target": [
-        "deb"
+        "deb",
+        "tar.gz"
       ],
       "category": "Utility",
       "maintainer": "Perito Digital <admin@sha256.us>",
