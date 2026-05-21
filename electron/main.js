@@ -8,7 +8,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const crypto = require('crypto');
-const { initDatabase, authenticateUser, validateSession, logout, getCasos, addCaso, saveState, loadState } = require('./database');
+const { initDatabase, authenticateUser, validateSession, logout, getCasos, addCaso, saveState, loadState, changePassword } = require('./database');
 
 let mainWindow;
 
@@ -72,6 +72,10 @@ ipcMain.handle('auth:validate', async (event, token) => {
 ipcMain.handle('auth:logout', async (event, token) => {
   await logout(token);
   return { success: true };
+});
+
+ipcMain.handle('auth:changePassword', async (event, { userId, newPassword }) => {
+  return changePassword(userId, newPassword);
 });
 
 // ============================================

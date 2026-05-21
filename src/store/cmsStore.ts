@@ -25,6 +25,8 @@ export interface Personal {
   email: string;
   telefono: string;
   activo: boolean;
+  ranking?: number;
+  profileImage?: string;
 }
 
 export interface Normativa {

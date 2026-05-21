@@ -711,6 +711,25 @@ function getDb() {
   return sql;
 }
 
+async function changePassword(userId, newPassword) {
+  const hash = hashPassword(newPassword);
+  try {
+    localDb.prepare("UPDATE users SET password_hash = ? WHERE id = ?").run(hash, userId);
+    if (isOnline && sql) {
+      try {
+        await sql`UPDATE users SET password_hash = ${hash} WHERE id = ${userId}`;
+      } catch (err) {
+        console.error('[DB] Error actualizando contraseña remota:', err.message);
+      }
+    }
+    await addAuditLog(userId, 'CONTRASENA_CAMBIADA', `El usuario ID ${userId} cambió su contraseña.`);
+    return { success: true };
+  } catch (err) {
+    console.error('[DB] Error cambiando contraseña:', err);
+    return { success: false, error: err.message };
+  }
+}
+
 module.exports = {
   initDatabase,
   authenticateUser,
@@ -721,4 +740,5 @@ module.exports = {
   addCaso,
   saveState,
   loadState,
+  changePassword,
 };

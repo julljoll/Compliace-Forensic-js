@@ -41,6 +41,7 @@ declare global {
         login: (credentials: any) => Promise<any>;
         validate: (token: string) => Promise<any>;
         logout: (token: string) => Promise<any>;
+        changePassword: (userId: number, newPassword: string) => Promise<any>;
       };
       platform: string;
     };

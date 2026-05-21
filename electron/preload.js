@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     login: (credentials) => ipcRenderer.invoke('auth:login', credentials),
     validate: (token) => ipcRenderer.invoke('auth:validate', token),
     logout: (token) => ipcRenderer.invoke('auth:logout', token),
+    changePassword: (userId, newPassword) => ipcRenderer.invoke('auth:changePassword', { userId, newPassword }),
   },
 
   // Andriller

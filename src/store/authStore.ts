@@ -7,6 +7,7 @@ export interface AuthUser {
   nombre: string;
   rol: string;
   token: string;
+  profileImage?: string;
 }
 
 interface AuthState {
@@ -19,6 +20,8 @@ interface AuthState {
   logout: () => void;
   validateSession: () => Promise<boolean>;
   clearError: () => void;
+  changePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
+  updateProfileImage: (imgBase64: string) => void;
 }
 
 /**
@@ -89,6 +92,32 @@ export const useAuthStore = create<AuthState>()(
       },
 
       clearError: () => set({ error: null }),
+
+      changePassword: async (newPassword) => {
+        const { user } = get();
+        if (!user) return { success: false, error: 'No hay usuario autenticado' };
+        
+        if (window.electronAPI?.auth?.changePassword) {
+          try {
+            const result = await window.electronAPI.auth.changePassword(user.id, newPassword);
+            return result;
+          } catch (e: any) {
+            console.error('[AuthStore] Error cambiando clave:', e);
+            return { success: false, error: e.message || 'Error de comunicación' };
+          }
+        } else {
+          // Modo web dev
+          console.log('[AuthStore] Contraseña cambiada en modo Web/Dev a:', newPassword);
+          return { success: true };
+        }
+      },
+
+      updateProfileImage: (imgBase64) => {
+        const { user } = get();
+        if (user) {
+          set({ user: { ...user, profileImage: imgBase64 } });
+        }
+      },
     }),
     { name: 'sha256-auth', version: 1 }
   )
