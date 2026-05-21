@@ -26,8 +26,8 @@ interface AuthState {
 
 /**
  * Auth store — funciona en dos modos:
- * 1. Electron: usa IPC para autenticar contra SQLite
- * 2. Web/Dev: usa auth local simple (admin/julljoll)
+ * 1. Electron: usa IPC para autenticar contra SQLite/Neon
+ * 2. Web/PWA: usa auth local con contraseñas hasheadas (SHA-256)
  */
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -40,31 +40,20 @@ export const useAuthStore = create<AuthState>()(
       login: async (username, password) => {
         set({ isLoading: true, error: null });
 
-        if (window.electronAPI?.auth) {
-          try {
-            const result = await window.electronAPI.auth.login({ username, password });
-            if (result.success) {
-              set({ user: result.user, isAuthenticated: true, isLoading: false });
-              return true;
-            }
-            set({ error: result.message || 'Credenciales incorrectas', isLoading: false });
-            return false;
-          } catch (error) {
-            set({ error: 'Error de conexión con la base de datos Neon', isLoading: false });
-            return false;
-          }
-        } else {
-          // Fallback para Web / Modo Desarrollo
-          await new Promise(resolve => setTimeout(resolve, 800)); // Simular latencia
-          if (username.toLowerCase() === 'admin' || username.toLowerCase() === 'julljoll') {
-            set({ 
-              user: { id: 1, username, nombre: 'Perito Dev', rol: 'admin', token: 'dev-token-123' }, 
-              isAuthenticated: true, 
-              isLoading: false 
-            });
+        if (!window.electronAPI?.auth) {
+          set({ error: 'Sistema de autenticación no disponible', isLoading: false });
+          return false;
+        }
+        try {
+          const result = await window.electronAPI.auth.login({ username, password });
+          if (result.success) {
+            set({ user: result.user, isAuthenticated: true, isLoading: false });
             return true;
           }
-          set({ error: 'Credenciales inválidas. En desarrollo usa "admin"', isLoading: false });
+          set({ error: result.message || 'Credenciales incorrectas', isLoading: false });
+          return false;
+        } catch (error) {
+          set({ error: 'Error de conexión con el sistema de autenticación', isLoading: false });
           return false;
         }
       },

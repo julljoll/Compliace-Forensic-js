@@ -13,7 +13,9 @@ import {
   X,
   ArrowLeft,
   Lock,
-  CheckCircle2
+  CheckCircle2,
+  Activity,
+  Mail
 } from 'lucide-react';
 import { useForenseStore } from '../store/forenseStore';
 
@@ -176,6 +178,14 @@ export default function Layout() {
               <Smartphone className="w-5 h-5 text-fluent-accent" />
               <span>3. Seguimiento Forense</span>
             </Link>
+            <Link
+              to="/forense/correo-forense"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
+            >
+              <Mail className="w-5 h-5 text-fluent-accent" />
+              <span>4. Correo Electrónico</span>
+            </Link>
           </nav>
           
           <div className="mt-6 pt-4 border-t border-fluent-border">
@@ -230,23 +240,33 @@ export default function Layout() {
           </div>
 
           {/* Current Context Indicator */}
-          {casoActual && (
-            <div className="flex items-center gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
-              <div className="h-8 w-px bg-fluent-border"></div>
-              <div className="flex flex-col items-end">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-wider">Caso Activo:</span>
-                  <span className="text-xs font-mono font-bold text-white">{casoActual.numeroCaso}</span>
+          <div className="flex items-center gap-3">
+            {casoActual && (
+              <div className="flex items-center gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
+                <div className="h-8 w-px bg-fluent-border"></div>
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-wider">Caso Activo:</span>
+                    <span className="text-xs font-mono font-bold text-white">{casoActual.numeroCaso}</span>
+                  </div>
+                  {dispositivoActual && (
+                    <span className="text-[10px] text-white/40">{dispositivoActual.marca} {dispositivoActual.modelo}</span>
+                  )}
                 </div>
-                {dispositivoActual && (
-                  <span className="text-[10px] text-white/40">{dispositivoActual.marca} {dispositivoActual.modelo}</span>
-                )}
+                <div className="p-1.5 bg-fluent-accent/10 rounded-full text-fluent-accent">
+                  <Info size={14} />
+                </div>
               </div>
-              <div className="p-1.5 bg-fluent-accent/10 rounded-full text-fluent-accent">
-                <Info size={14} />
-              </div>
+            )}
+            <div id="operation-mode-badge" className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border ${
+              (window as any).electronAPI?.operationMode === 'production'
+                ? 'bg-green-500/10 text-green-400 border-green-500/30'
+                : 'bg-red-500/10 text-red-400 border-red-500/30'
+            }`}>
+               <Activity size={12} />
+               <span>{(window as any).electronAPI?.operationMode === 'production' ? 'PRODUCCIÓN' : 'SIMULACIÓN'}</span>
             </div>
-          )}
+          </div>
         </header>
 
         {/* Scrollable Content */}

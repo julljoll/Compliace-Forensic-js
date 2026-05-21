@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Menu, X
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Menu, X, Mail
 } from 'lucide-react';
 import { useCMSStore } from '../store/cmsStore';
 import { useAuthStore } from '../store/authStore';
@@ -18,6 +18,7 @@ const menuItems = [
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
   { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
+  { path: '/correo-forense', label: 'Correo Corporativo', icon: Mail, group: 'Control' },
 ];
 
 const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];
@@ -63,7 +64,7 @@ export default function CMSLayout() {
             <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256 Logo" className="w-8 h-8 drop-shadow-lg" />
             <div>
               <h1 className="font-black text-sm tracking-tight text-white leading-none">SHA256.US</h1>
-              <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">Forensics CMS</p>
+              <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">CMS Forense</p>
             </div>
           </div>
           <button 
@@ -157,14 +158,18 @@ export default function CMSLayout() {
               )}
             </nav>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-[11px] font-semibold text-fluent-text-muted">
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.4)]" />
               <span>Sincronizado</span>
             </div>
-            <div className="flex items-center gap-1 text-[11px] font-bold bg-fluent-accent/10 text-fluent-accent px-2 py-0.5 rounded-[4px] border border-fluent-accent/20">
+            <div id="operation-mode-badge" className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border ${
+              window.electronAPI?.operationMode === 'production'
+                ? 'bg-green-500/10 text-green-400 border-green-500/30'
+                : 'bg-red-500/10 text-red-400 border-red-500/30'
+            }`}>
                <Activity size={12} />
-               <span>LIVE</span>
+               <span>{window.electronAPI?.operationMode === 'production' ? 'PRODUCCIÓN' : 'SIMULACIÓN'}</span>
             </div>
           </div>
         </header>

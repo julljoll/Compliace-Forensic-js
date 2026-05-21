@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
+import { ErrorBoundary } from './components/Shared/ErrorBoundary';
 
 // ── Layouts ─────────────────────────────────────────────────────────────────
 import CMSLayout from './components/CMSLayout';
@@ -33,6 +34,7 @@ const AnalisisPage = lazy(() => import('./pages/AnalisisPage'));
 const InformePage = lazy(() => import('./pages/InformePage'));
 const DisposicionJudicialPage = lazy(() => import('./pages/DisposicionJudicialPage'));
 const DisposicionFinalPage = lazy(() => import('./pages/DisposicionFinalPage'));
+const CorreoForensePage = lazy(() => import('./pages/CorreoForensePage'));
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -60,7 +62,7 @@ function App() {
         } />
 
         {/* ── CMS Compliance Officer (protegido) ── */}
-        <Route path="/" element={<AuthGuard><CMSLayout /></AuthGuard>}>
+        <Route path="/" element={<AuthGuard><ErrorBoundary><CMSLayout /></ErrorBoundary></AuthGuard>}>
           <Route index element={<Suspense fallback={<PageLoader />}><DashboardPage /></Suspense>} />
           <Route path="casos" element={<Suspense fallback={<PageLoader />}><CasosPage /></Suspense>} />
           <Route path="casos/:id" element={<Suspense fallback={<PageLoader />}><CasoDetailPage /></Suspense>} />
@@ -74,6 +76,7 @@ function App() {
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
+          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
         </Route>
 
         {/* ── Módulos Forenses (protegido, prefijo /forense) ── */}
@@ -86,6 +89,7 @@ function App() {
           <Route path="informe" element={<Suspense fallback={<PageLoader />}><InformePage /></Suspense>} />
           <Route path="disposicion-judicial" element={<Suspense fallback={<PageLoader />}><DisposicionJudicialPage /></Suspense>} />
           <Route path="disposicion-final" element={<Suspense fallback={<PageLoader />}><DisposicionFinalPage /></Suspense>} />
+          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />

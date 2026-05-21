@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useCMSStore } from '../../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../../data/normativasEtapas';
+import { ETAPAS_FORENSES, ForensicStep } from '../../data/etapasForenses';
 import {
   ShieldCheck, Calendar, User, Info,
   CheckCircle2, Circle, ChevronDown, ChevronUp, Terminal,
@@ -9,43 +10,6 @@ import {
   Scale, Archive, Briefcase, PlusCircle
 } from 'lucide-react';
 import '../Planillas/Planillas.css';
-
-// ── CONSTANTES Y TIPOS ─────────────────────────────────────────────────────────────
-
-type NormativaColor = 'cyan' | 'green' | 'yellow' | 'red' | 'purple';
-
-interface NormativaTag {
-  label: string;
-  color: NormativaColor;
-}
-
-interface Advertencia {
-  titulo: string;
-  cuerpo: string;
-  nivel: 'warning' | 'critical' | 'info';
-}
-
-interface CodeSnippet {
-  lang: string;
-  contenido: string;
-}
-
-interface Step {
-  id: string;
-  num: number;
-  phase: string;
-  title: string;
-  action: string;
-  docs: string[];
-  guide: string;
-  tasks: string[];
-  iconoName: string;
-  normativas?: NormativaTag[];
-  advertencias?: Advertencia[];
-  codigo?: CodeSnippet[];
-  // IDs de cumplimiento vinculados
-  complianceIds: string[];
-}
 
 const iconMap: Record<string, any> = {
   FileText,
@@ -61,293 +25,16 @@ const iconMap: Record<string, any> = {
   Fingerprint
 };
 
-const stepsData: Step[] = [
-  {
-    id: 'step1',
-    num: 1,
-    phase: 'Fase 1: Obtención',
-    title: 'Recepción, Entrevista y Consignación',
-    action: 'Recibir el dispositivo y levantar actas preliminares.',
-    docs: ['Acta de Entrevista', 'Acta de Obtención por Consignación'],
-    guide: 'Deben redactarse en tercera persona, tiempo presente, de manera clara, secuencial y precisa. Indicar circunstancias de modo, tiempo y lugar. Firmadas por el consignatario y funcionario receptor (MUCCEF 2017).',
-    tasks: [
-      'Realiza una entrevista estructurada (preguntas básicas, intermedias y finales) a quien entrega el equipo.',
-      'Levanta el Acta de Entrevista para dejar constancia de cómo obtuvo los chats/audios.',
-      'Levanta el Acta de Obtención por Consignación recibiendo formalmente la evidencia.'
-    ],
-    iconoName: 'FileText',
-    normativas: [
-      { label: 'Art. 187 COPP', color: 'cyan' },
-      { label: 'MUCCEF 2017', color: 'green' },
-      { label: 'LMDyFE Art. 4', color: 'cyan' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Redacción en Tercera Persona',
-        cuerpo: 'Las actas deben redactarse strictly en tercera persona, tiempo presente, indicando de forma detallada las circunstancias de modo, tiempo y lugar del acto.',
-        nivel: 'info'
-      },
-      {
-        titulo: 'Firma e Impresión Dactilar Obligatorias',
-        cuerpo: 'La falta de firma o impresión dactilar del consignante y del funcionario receptor en las actas de entrevista y consignación puede acarrear la nulidad absoluta de la evidencia.',
-        nivel: 'critical'
-      }
-    ],
-    complianceIds: ['n8__187', 'n4__prcc', 'n7__eficacia']
-  },
-  {
-    id: 'step2',
-    num: 2,
-    phase: 'Fase 1: Obtención',
-    title: 'Fijación In Situ y Aislamiento',
-    action: 'Fijar fotográficamente el dispositivo en vivo y aislarlo de la red.',
-    docs: ['Fijación fotográfica (Reseñada en Acta de Obtención)'],
-    guide: 'En el Acta de Obtención se debe describir minuciosamente el dispositivo: marca, modelo, IMEI, SIMCard, estado físico general y estado de la pantalla (apagada/encendida).',
-    tasks: [
-      'Fija fotográficamente la pantalla mostrando la actividad "sin intervenir en su funcionalidad" (no tocar botones).',
-      'Aísla el equipo poniéndolo en Modo Avión o usando Bolsa de Faraday para evitar borrado remoto e interferencia de red.',
-      'Documenta de manera exacta los datos individualizantes del móvil.'
-    ],
-    iconoName: 'Smartphone',
-    normativas: [
-      { label: 'ISO/IEC 27037', color: 'purple' },
-      { label: 'MUCCEF 2017', color: 'green' },
-      { label: 'NIST SP 800-101', color: 'purple' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Aislamiento Inmediato de Redes',
-        cuerpo: 'Active el Modo Avión en el dispositivo de forma inmediata tras recibirlo. La conexión a cualquier red inalámbrica (datos móviles, Wi-Fi, Bluetooth) puede alterar metadatos críticos o permitir un borrado remoto (remote wipe).',
-        nivel: 'critical'
-      },
-      {
-        titulo: 'Registro de Datos Identificativos',
-        cuerpo: 'Describa minuciosamente marca, modelo, IMEI, SIM, estado físico general y estado de la pantalla (apagada/encendida) en el acta.',
-        nivel: 'warning'
-      }
-    ],
-    complianceIds: ['n1__identificacion', 'n1__recopilacion', 'n4__fijacion', 'n4__proteccion', 'n3__preservacion']
-  },
-  {
-    id: 'step3',
-    num: 3,
-    phase: 'Fase 1: Obtención',
-    title: 'Adquisición Digital Forense',
-    action: 'Extracción física/lógica y sellado hash.',
-    docs: ['Documentación de Extracción para el Dictamen'],
-    guide: 'Anotar las versiones exactas del software (Andriller) y los algoritmos Hash utilizados (SHA-256) garantizando la inalterabilidad desde la recolección.',
-    tasks: [
-      'Conecta el dispositivo asegurando inalterabilidad (mediante bloqueadores de escritura/aislamiento).',
-      'Ejecuta "Andriller" para realizar una adquisición de solo lectura, no destructiva.',
-      'Calcula inmediatamente el Hash (SHA-256) de la imagen extraída para sellar la integridad de la data.'
-    ],
-    iconoName: 'Terminal',
-    normativas: [
-      { label: 'ISO/IEC 27037', color: 'purple' },
-      { label: 'LMDyFE Art. 7', color: 'cyan' },
-      { label: 'NIST SP 800-101', color: 'purple' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Integridad de la Extracción',
-        cuerpo: 'La adquisición forense debe realizarse de forma no destructiva (de solo lectura) garantizando que no se modifique el almacenamiento del dispositivo bajo ninguna circunstancia.',
-        nivel: 'critical'
-      }
-    ],
-    codigo: [
-      {
-        lang: 'bash',
-        contenido: `# Verificar dispositivos conectados por ADB\nadb devices -l\n\n# Calcular el hash SHA-256 de la imagen lógica generada\nsha256sum backup_logical_extraccion.ab`
-      }
-    ],
-    complianceIds: ['n1__adquisicion', 'n3__adquisicion', 'n7__firma']
-  },
-  {
-    id: 'step4',
-    num: 4,
-    phase: 'Fase 1: Obtención',
-    title: 'Apertura de Cadena de Custodia, Embalaje y Rotulado',
-    action: 'Ingresar la evidencia matriz al sistema de protección.',
-    docs: ['Planilla de Registro de Cadena de Custodia (PRCC)', 'Rótulo de Evidencia'],
-    guide: 'PRCC: Utilizar tinta negra/azul, letra de molde, firma manuscrita e impresión dactilar del pulgar derecho. RÓTULO: Tinta indeleble. Incluir Oficina, Expediente, PRCC, descripción detallada y observaciones.',
-    tasks: [
-      'Abre la PRCC y completa la Fase de Obtención con los datos técnicos del móvil.',
-      'Embala el dispositivo usando bolsa antiestática o papel sellado y coloca precintos de seguridad físicos autoadhesivos.',
-      'Fija el Rótulo con la información correspondiente de forma visible sobre el embalaje.'
-    ],
-    iconoName: 'Package',
-    normativas: [
-      { label: 'COPP Art. 187', color: 'cyan' },
-      { label: 'MUCCEF 2017', color: 'green' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Llenado Riguroso del Formulario PRCC',
-        cuerpo: 'Utilice tinta indeleble (azul o negra), letra de molde legible y estampe la impresión dactilar del pulgar derecho del perito en el renglón correspondiente.',
-        nivel: 'critical'
-      },
-      {
-        titulo: 'Precintado de Seguridad Inviolable',
-        cuerpo: 'El embalaje debe ser sellado con cinta o precinto de seguridad autoadhesivo numerado. Cualquier apertura del sobre debe dejar en evidencia la ruptura física del precinto.',
-        nivel: 'warning'
-      }
-    ],
-    complianceIds: ['n4__embalaje', 'n8__188']
-  },
-  {
-    id: 'step5',
-    num: 5,
-    phase: 'Fase 2: Peritaje',
-    title: 'Recepción en Laboratorio, Verificación y Designación',
-    action: 'Ingreso al laboratorio forense y asignación de perito.',
-    docs: ['PRCC (Renglón Transferencia: Recibe)', 'Libro de Registro Interno de Laboratorio'],
-    guide: 'PRCC: Firma y pulgar derecho tras verificar minuciosamente que los precintos no muestren signos de alteración. LIBRO: Libro foliado y sellado, asentar fecha, hora y datos del perito que acepta el caso.',
-    tasks: [
-      'Comprueba la integridad física del embalaje y correspondencia de rótulos.',
-      'Recalcula el Hash de la copia de trabajo y compáralo con el de la extracción original (Art. 7 LMDyFE).',
-      'El perito firma los controles internos y asienta la designación formal de la experticia.'
-    ],
-    iconoName: 'Shield',
-    normativas: [
-      { label: 'COPP Art. 223', color: 'cyan' },
-      { label: 'MUCCEF 2017', color: 'green' },
-      { label: 'LMDyFE Art. 7', color: 'cyan' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Verificación de Integridad de Precintos',
-        cuerpo: 'El perito receptor en laboratorio debe inspeccionar visualmente que los precintos no muestren signos de alteración antes de abrir el paquete. Si hay anomalías, detenga el proceso y notifique al superior.',
-        nivel: 'critical'
-      }
-    ],
-    codigo: [
-      {
-        lang: 'bash',
-        contenido: `# Validar la integridad del archivo de imagen copiado contra el hash original\nsha256sum -c HASH_ORIGINAL.sha256`
-      }
-    ],
-    complianceIds: ['n4__recepcion_lab', 'n4__designacion', 'n2__preparacion']
-  },
-  {
-    id: 'step6',
-    num: 6,
-    phase: 'Fase 2: Peritaje',
-    title: 'Procesamiento Estructurado con ALEAPP',
-    action: 'Parsear logs y bases de datos SQLite.',
-    docs: ['Logs y Reportes de salida de ALEAPP'],
-    guide: 'Garantizar que el reporte de salida liste nombres nativos de bases de datos, marcas de tiempo Unix convertidas a UTC, rutas lógicas y Hashes de archivos exportados (ISO 27042).',
-    tasks: [
-      'Carga la imagen forense previamente adquirida en el software ALEAPP.',
-      'Procesa msgstore.db (WhatsApp), archivos de audios (.opus), registros de llamadas y screenshots correspondientes.',
-      'Reconstruye el Timeline cronológico consolidado de la mensajería.'
-    ],
-    iconoName: 'Database',
-    normativas: [
-      { label: 'ISO/IEC 27042', color: 'purple' },
-      { label: 'ISO/IEC 27041', color: 'purple' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Ajuste de Zona Horaria (VET)',
-        cuerpo: 'Las marcas de tiempo de las bases de datos de WhatsApp (msgstore.db) están almacenadas en formato UNIX (UTC). Deben ser convertidas al huso horario oficial de Venezuela (UTC-4) para la presentación de los reportes.',
-        nivel: 'warning'
-      }
-    ],
-    codigo: [
-      {
-        lang: 'sql',
-        contenido: `-- Consulta para extraer mensajes de chat con conversión a hora legal de Venezuela\nSELECT \n  _id, \n  key_remote_jid,\n  datetime(timestamp/1000, 'unixepoch', '-4 hours') AS fecha_hora_VET,\n  data\nFROM messages\nWHERE key_remote_jid LIKE '%@s.whatsapp.net'\nORDER BY timestamp ASC;`
-      }
-    ],
-    complianceIds: ['n2__examen', 'n2__analisis', 'n3__examen']
-  },
-  {
-    id: 'step7',
-    num: 7,
-    phase: 'Fase 2: Peritaje',
-    title: 'Obtención por Derivación (Nueva Evidencia)',
-    action: 'Aislar chats, audios o archivos clave detectados.',
-    docs: ['NUEVA PRCC (Para data derivada)', 'Acta de Obtención por Derivación'],
-    guide: 'NUEVA PRCC: Propio número correlativo, tinta negra/azul, firma y huella. ACTA: Indicar la ruta específica de aislamiento desde la evidencia digital original (evitando contamination).',
-    tasks: [
-      'Aísla las transcripciones, imágenes y audios relevantes detectados durante el análisis.',
-      'Genera el Acta de Obtención por Derivación detallando la correspondencia del Hash de los nuevos archivos.',
-      'Abre la nueva PRCC describiendo los archivos y sus hashes individuales.'
-    ],
-    iconoName: 'Archive',
-    normativas: [
-      { label: 'MUCCEF 2017', color: 'green' },
-      { label: 'COPP Art. 187', color: 'cyan' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Control de la Evidencia Derivada',
-        cuerpo: 'Cualquier archivo de audio (.opus), imagen (.jpg) o transcripción aislada del dispositivo original constituye una nueva evidencia digital y requiere su propia planilla PRCC independiente con un nuevo correlativo.',
-        nivel: 'critical'
-      }
-    ],
-    complianceIds: ['n4__peritaje']
-  },
-  {
-    id: 'step8',
-    num: 8,
-    phase: 'Fase 3: Dictamen & Cierre',
-    title: 'Elaboración del Dictamen Pericial',
-    action: 'Estructuración y blindaje legal de los resultados.',
-    docs: ['Dictamen Pericial Oficial'],
-    guide: 'Estructura formal: Motivo de la experticia, Descripción del material recibido, Exámenes aplicados, Resultados, Conclusiones y Anexos. Firmado por los peritos designados (Art. 223/224 COPP).',
-    tasks: [
-      'Redacta los resultados periciales incluyendo una tabla con: Nombre de archivo, fecha de mensaje, ruta, tamaño y Hash SHA-256.',
-      'Fundamenta jurídicamente la inalterabilidad conforme a la Ley sobre Mensajes de Datos (Art. 4, 7 y 8).',
-      'Declara formalmente que la evidencia original no fue consumida ni alterada durante la fase de laboratorio.'
-    ],
-    iconoName: 'Scale',
-    normativas: [
-      { label: 'COPP Art. 225', color: 'cyan' },
-      { label: 'LMDyFE Art. 4, 7 y 8', color: 'cyan' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Blindaje Técnico-Jurídico',
-        cuerpo: 'El informe técnico debe describir de forma clara e inteligible las operaciones ejecutadas, emitir conclusiones categóricas y listar de manera exhaustiva las sumas hash SHA-256 de todos los archivos considerados como evidencia.',
-        nivel: 'critical'
-      }
-    ],
-    complianceIds: ['n3__reporte', 'n2__interpretacion', 'n7__igualdad']
-  },
-  {
-    id: 'step9',
-    num: 9,
-    phase: 'Fase 3: Dictamen & Cierre',
-    title: 'Re-embalaje y Remisión a Resguardo',
-    action: 'Preparar el dispositivo y la data para su salida oficial.',
-    docs: ['PRCC (Renglón Transferencia: Entrega)', 'Oficio de Remisión'],
-    guide: 'Renglón "Entrega" en PRCC, indicando el motivo: "Traslado a Resguardo" o "Devolución a Despacho Fiscal". Firma y huella dactilar del perito remitente.',
-    tasks: [
-      'Coloca el dispositivo móvil en su embalaje de seguridad original o uno nuevo si el original fue degradado.',
-      'Aplica nuevos precintos de seguridad oficiales del laboratorio y rotula adecuadamente.',
-      'Remite formalmente el dispositivo y la copia digital firmada a la oficina de Resguardo Judicial o despacho fiscal.'
-    ],
-    iconoName: 'Lock',
-    normativas: [
-      { label: 'MUCCEF 2017', color: 'green' },
-      { label: 'ISO/IEC 27037', color: 'purple' }
-    ],
-    advertencias: [
-      {
-        titulo: 'Precintado Final',
-        cuerpo: 'Al finalizar la pericia, el dispositivo móvil debe ser re-embalado aplicando nuevos precintos físicos. El número de estos nuevos precintos debe quedar asentado en la PRCC de egreso.',
-        nivel: 'warning'
-      }
-    ],
-    complianceIds: ['n1__preservacion', 'n4__remision']
-  }
-];
+const stepsData: ForensicStep[] = ETAPAS_FORENSES;
+
+// Helper types for UI rendering
+interface NormativaTag { label: string; color: string; }
+interface Advertencia { titulo: string; cuerpo: string; nivel: string; }
 
 // Helper components
 
 function BadgeNormativa({ tag }: { tag: NormativaTag }) {
-  const colors: Record<NormativaTag['color'], string> = {
+  const colors: Record<string, string> = {
     cyan:   'bg-cyan-500/10 border-cyan-500/25 text-cyan-400',
     green:  'bg-green-500/10 border-green-500/25 text-green-400',
     yellow: 'bg-yellow-500/10 border-yellow-500/25 text-yellow-400',
@@ -362,7 +49,7 @@ function BadgeNormativa({ tag }: { tag: NormativaTag }) {
 }
 
 function AlertaForense({ adv }: { adv: Advertencia }) {
-  const cfg = {
+  const configs: Record<string, { wrapper: string; icon: string; titulo: string; cuerpo: string; Icon: any }> = {
     critical: {
       wrapper: 'bg-red-500/[0.06] border-red-500/25',
       icon:    'text-red-400',
@@ -384,7 +71,8 @@ function AlertaForense({ adv }: { adv: Advertencia }) {
       cuerpo:  'text-blue-300/70',
       Icon:    Info,
     },
-  }[adv.nivel];
+  };
+  const cfg = configs[adv.nivel] || configs.info;
 
   return (
     <div className={`flex items-start gap-3 p-4 rounded-lg border ${cfg.wrapper}`}>

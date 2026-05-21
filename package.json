@@ -1,7 +1,7 @@
 {
-  "name": "sha256-peritaje-whatsapp",
-  "version": "1.0.0",
-  "description": "SHA256.US — Sistema de Peritaje Digital WhatsApp · Contratos Digitales · Civil/Mercantil",
+  "name": "sha256-cms-cumplimiento-forense",
+  "version": "2.0.0",
+  "description": "SHA256.US — CMS de Cumplimiento Forense. Gestión de casos, control normativo, auditoría inmutable y generación de planillas imprimibles para peritaje digital.",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -9,13 +9,19 @@
   },
   "keywords": [
     "peritaje",
-    "whatsapp",
     "forense",
-    "contratos-digitales",
-    "firmas-electronicas",
-    "civil-mercantil"
+    "cms",
+    "compliance",
+    "cadena-de-custodia",
+    "evidencia-digital",
+    "auditoria",
+    "planillas",
+    "iso-27037",
+    "copp",
+    "venezuela",
+    "pwa"
   ],
-  "author": "Perito Privado Digital",
+  "author": "Laboratorio de Informática Forense",
   "license": "MIT",
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

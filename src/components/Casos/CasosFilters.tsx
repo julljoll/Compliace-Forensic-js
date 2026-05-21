@@ -28,7 +28,7 @@ export default function CasosFilters({
         <Search size={14} className="text-fluent-text-muted shrink-0" />
         <input
           type="text"
-          placeholder="Filter by case ID, title or perito..."
+          placeholder="Filtrar por ID de caso, título o perito..."
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
           className="bg-transparent text-sm text-white placeholder:text-fluent-text-muted/40 outline-none flex-1 font-medium"

@@ -51,7 +51,7 @@ export default function CasoCard({
         </div>
         <div className="w-full sm:w-28">
           <div className="flex justify-between text-[9px] font-bold text-fluent-text-muted mb-1 uppercase tracking-tighter">
-            <span>Progress</span>
+            <span>Progreso</span>
             <span>{caso.porcentajeCompletado}%</span>
           </div>
           <div className="h-1 bg-white/5 rounded-full overflow-hidden">
@@ -72,7 +72,7 @@ export default function CasoCard({
       {/* Mobile Actions */}
       <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
         <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-fluent-accent text-white font-bold text-xs uppercase tracking-widest shadow-lg">
-          Open Record
+          Abrir Registro
           <ChevronRight size={14} className="ml-1" strokeWidth={3} />
         </Link>
         <button onClick={() => deleteCaso(caso.id)} className="p-2 px-4 rounded-[4px] bg-red-500/10 text-red-400 border border-red-500/20">

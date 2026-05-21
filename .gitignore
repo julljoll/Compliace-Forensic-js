@@ -1,30 +1,14 @@
-# Examples 1:
-
-# Example 2 (Project with artifacts):
-# Compiled and build artifacts
-*.pyc
-pycache/
-*.o
-*.obj
-dist/
-build/
-# Dependencies
-.venv/
-venv/
 node_modules/
-# Logs and temp files
+dist/
+dist-electron/
+build/
 *.log
 *.tmp
 *.swp
-# Environment
 .env
 .env.local
-.env.
-# Editors
+.env.*
 .vscode/
 .idea/
-# Original rules preserved
-*.log
-dist-electron/
-# Local SQLite database
 *.db
+*.sqlite

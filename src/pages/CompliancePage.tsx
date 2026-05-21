@@ -70,16 +70,16 @@ export default function CompliancePage() {
             <div className="p-2 rounded-[4px] bg-fluent-accent/10 border border-fluent-accent/20">
                <ShieldCheck className="text-fluent-accent" size={28} strokeWidth={2.5} />
             </div>
-            Compliance Control
+            Control de Cumplimiento
           </h1>
           <p className="text-sm text-fluent-text-muted font-medium max-w-lg mt-2 leading-relaxed">
-            Technical monitoring of regulatory compliance based on international standards and current forensic legal frameworks.
+            Monitoreo técnico del cumplimiento regulatorio basado en estándares internacionales y marcos legales forenses vigentes.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <div className="flex items-center gap-2 mr-2 text-fluent-text-muted/40 uppercase font-black text-[9px] tracking-widest">
              <Filter size={12} strokeWidth={3} />
-             <span>Filter</span>
+              <span>Filtrar</span>
           </div>
           {TIPOS.map(t => (
             <button key={t} onClick={() => setTipoFiltro(t)}
@@ -96,9 +96,9 @@ export default function CompliancePage() {
       <div className="fluent-mica p-6 rounded-xl border-white/5 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-fluent-accent/30 to-transparent" />
         <div className="flex justify-between items-center mb-5">
-          <h3 className="font-bold text-white text-sm tracking-tight">Global Implementation Status</h3>
+          <h3 className="font-bold text-white text-sm tracking-tight">Estado de Implementación Global</h3>
           <span className="text-[10px] font-black font-mono text-fluent-accent bg-fluent-accent/10 px-3 py-1 rounded-[4px] border border-fluent-accent/20 uppercase tracking-widest">
-            {globalStats.checkedStages} / {globalStats.totalStages} Stages Verified
+            {globalStats.checkedStages} / {globalStats.totalStages} Etapas Verificadas
           </span>
         </div>
         <div className="w-full h-2.5 bg-white/[0.03] rounded-full overflow-hidden border border-white/5 p-[1px]">
@@ -117,8 +117,8 @@ export default function CompliancePage() {
           </div>
         </div>
         <div className="mt-3 flex justify-between text-[10px] font-black text-fluent-text-muted/40 uppercase tracking-[0.2em]">
-           <span>Technical Baseline</span>
-           <span className="text-fluent-text font-black">{globalStats.pct}% Complete</span>
+           <span>Línea Base Técnica</span>
+            <span className="text-fluent-text font-black">{globalStats.pct}% Completado</span>
         </div>
       </div>
 
@@ -126,7 +126,7 @@ export default function CompliancePage() {
       <div className="space-y-4 mt-10">
         {normativasFiltradas.length === 0 ? (
           <div className="fluent-mica p-16 text-center rounded-xl">
-             <p className="text-fluent-text-muted font-bold uppercase text-xs tracking-widest opacity-40">No active frameworks detected for this filter.</p>
+              <p className="text-fluent-text-muted font-bold uppercase text-xs tracking-widest opacity-40">No se detectaron marcos activos para este filtro.</p>
           </div>
         ) : normativasFiltradas.map(norm => {
           const ne = NORMATIVAS_ETAPAS.find(x => x.normativaId === norm.id);
@@ -159,11 +159,11 @@ export default function CompliancePage() {
             <BookOpen size={24} strokeWidth={2.5} />
           </div>
           <div>
-            <h3 className="font-bold text-white text-lg mb-2 tracking-tight">Regulatory Knowledge Base (RAG)</h3>
+            <h3 className="font-bold text-white text-lg mb-2 tracking-tight">Base de Conocimiento Regulatorio (RAG)</h3>
             <p className="text-sm text-fluent-text-muted leading-relaxed max-w-4xl font-medium opacity-80">
-              The technical guidelines and stages presented have been synthesized from reference frameworks stored in the <code className="font-mono text-fluent-accent bg-black/40 px-2 py-0.5 rounded border border-fluent-accent/20">/RAG</code> module. 
-              This includes ISO 27037/27042, NIST SP 800-101, MUCC-2017, and Venezuelan legislation (LEDI, LMDF, COPP). 
-              The system ensures every forensic action remains traceable to recognized quality standards.
+              Las guías técnicas y etapas presentadas han sido sintetizadas desde marcos de referencia almacenados en el módulo <code className="font-mono text-fluent-accent bg-black/40 px-2 py-0.5 rounded border border-fluent-accent/20">/RAG</code>. 
+              Esto incluye ISO 27037/27042, NIST SP 800-101, MUCC-2017 y legislación venezolana (LEDI, LMDF, COPP). 
+              El sistema garantiza que toda acción forense permanezca trazable hasta estándares de calidad reconocidos.
             </p>
           </div>
         </div>

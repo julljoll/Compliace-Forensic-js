@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Eye, EyeOff, AlertCircle, User } from 'lucide-react';
+import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale, Activity } from 'lucide-react';
 
 export default function LoginPage() {
   const { login, isLoading, error, clearError } = useAuthStore();
@@ -15,28 +15,33 @@ export default function LoginPage() {
     await login(username.trim(), password);
   };
 
+  const isSimulation = (window as any).electronAPI?.operationMode !== 'production';
+
   return (
     <div className="min-h-screen bg-fluent-bg flex items-center justify-center p-4 font-sans selection:bg-fluent-accent/30 overflow-hidden">
-      {/* Dynamic Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-fluent-accent/5 rounded-full blur-[140px] animate-pulse-slow" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/5 rounded-full blur-[120px] animate-pulse-slow" />
       </div>
 
       <div className="relative w-full max-w-[400px] flex flex-col items-center animate-fade-in">
-        {/* Windows 11 User Avatar Circle */}
+        {isSimulation && (
+          <div className="w-full mb-4 p-2 rounded-md bg-red-500/10 border border-red-500/30 text-red-300 text-[10px] font-bold text-center uppercase tracking-wider flex items-center justify-center gap-2">
+            <Activity size={12} /> Modo Simulación — Los hashes no son verificables
+          </div>
+        )}
+
         <div className="w-24 h-24 rounded-full bg-fluent-surface border border-white/10 flex items-center justify-center mb-8 shadow-2xl overflow-hidden group">
           <div className="w-full h-full bg-gradient-to-br from-fluent-accent/20 to-fluent-accent-light/20 flex items-center justify-center transition-transform group-hover:scale-110">
-            <User size={48} className="text-fluent-text opacity-80" strokeWidth={1.5} />
+            <Scale size={48} className="text-fluent-text opacity-80" strokeWidth={1.5} />
           </div>
         </div>
 
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white tracking-tight mb-1">SHA256.US CMS</h1>
-          <p className="text-xs text-fluent-text-muted font-medium uppercase tracking-[0.2em]">Compliance Officer Login</p>
+          <h1 className="text-3xl font-bold text-white tracking-tight mb-1">SHA256.US</h1>
+          <p className="text-xs text-fluent-text-muted font-medium uppercase tracking-[0.2em]">Sistema de Peritaje Forense Digital</p>
         </div>
 
-        {/* Login Container (Fluent Acrylic) */}
         <div className="w-full fluent-mica p-8 rounded-xl border border-white/5 shadow-[0_32px_64px_rgba(0,0,0,0.4)] relative">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           
@@ -49,14 +54,14 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <label className="fluent-label ml-1">Account</label>
+              <label className="fluent-label ml-1">Usuario</label>
               <div className="relative group">
                 <input
                   id="login-username"
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
-                  placeholder="Username"
+                  placeholder="Nombre de usuario"
                   className="fluent-input bg-white/[0.03] focus:bg-white/[0.05]"
                   autoFocus
                   autoComplete="username"
@@ -65,14 +70,14 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="fluent-label ml-1">Security Key</label>
+              <label className="fluent-label ml-1">Contraseña</label>
               <div className="relative group">
                 <input
                   id="login-password"
                   type={showPass ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder="Contraseña"
                   className="fluent-input bg-white/[0.03] focus:bg-white/[0.05] pr-10"
                   autoComplete="current-password"
                 />
@@ -95,29 +100,26 @@ export default function LoginPage() {
                 ) : (
                   <>
                     <ShieldCheck size={16} strokeWidth={2.5} />
-                    Sign In
+                    Iniciar Sesión
                   </>
                 )}
               </button>
             </div>
           </form>
-
-          <div className="mt-8 flex items-center justify-between gap-4">
-             <button type="button" className="text-[11px] text-fluent-accent hover:underline font-semibold transition-all">I forgot my password</button>
-             <button type="button" className="text-[11px] text-fluent-text-muted hover:text-white font-medium transition-all">Sign-in options</button>
-          </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 text-center">
-           <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-1.5 h-1.5 rounded-full bg-fluent-accent" />
-              <div className="w-1.5 h-1.5 rounded-full bg-fluent-text-muted/30" />
-              <div className="w-1.5 h-1.5 rounded-full bg-fluent-text-muted/30" />
-           </div>
-           <p className="text-[10px] text-fluent-text-muted font-bold tracking-[0.2em] uppercase opacity-40">
-              Microsoft Azure AD · Secured by Avilla
-           </p>
+        <div className="mt-8 text-center space-y-3">
+          <p className="text-[10px] text-fluent-text-muted/60 leading-relaxed max-w-xs mx-auto">
+            El acceso no autorizado será registrado conforme al Art. 187 COPP y la Ley de Mensajes de Datos y Firmas Electrónicas.
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-fluent-accent" />
+            <div className="w-1.5 h-1.5 rounded-full bg-fluent-text-muted/30" />
+            <div className="w-1.5 h-1.5 rounded-full bg-fluent-text-muted/30" />
+          </div>
+          <p className="text-[10px] text-fluent-text-muted font-bold tracking-[0.2em] uppercase opacity-40">
+            SHA256.US v1.0 · Laboratorio de Informática Forense
+          </p>
         </div>
       </div>
     </div>
