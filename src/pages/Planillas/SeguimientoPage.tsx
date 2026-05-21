@@ -35,7 +35,6 @@ const SeguimientoPage = () => {
                 <span className="nav-title">Fase 3: Dictamen & Cierre</span>
                 <a href="#step8" className="nav-item" id="nav-step8"><span className="step-num">8</span> <span>Elaboración Dictamen</span></a>
                 <a href="#step9" className="nav-item" id="nav-step9"><span className="step-num">9</span> <span>Remisión</span></a>
-                <a href="#step10" className="nav-item" id="nav-step10"><span className="step-num">10</span> <span>Cierre Final</span></a>
             </div>
         </aside>
 
@@ -269,30 +268,7 @@ const SeguimientoPage = () => {
                 </div>
             </section>
 
-            {/*  STEP 10  */}
-            <section id="step10" className="step-card">
-                <div className="card-header">
-                    <h2 className="card-title">Paso 10: Formalidades de Cierre y Disposición Final</h2>
-                    <span className="step-action">Acción: Culminación del ciclo de la cadena de custodia.</span>
-                </div>
-                <div className="doc-box">
-                    <span className="doc-title">Documentación Obligatoria</span>
-                    <ul className="doc-list">
-                        <li>Acta de Disposición Final de Evidencias</li>
-                        <li>PRCC (Observaciones)</li>
-                    </ul>
-                    <div className="doc-filling"><strong>Cómo llenarlas:</strong> PRCC: Observaciones con forma de cierre (Devolución/Destrucción). ACTA: Detallar número de oficio del tribunal.</div>
-                </div>
-                <ul className="tutorial-list">
-                    <li className="tutorial-item">Recibe la orden judicial de cierre.</li>
-                    <li className="tutorial-item">Llena el Acta de Disposición Final.</li>
-                    <li className="tutorial-item">Cierra definitivamente la PRCC en Observaciones.</li>
-                </ul>
-                <div className="checkbox-container" onClick={() => { window.print() }}>
-                    <input type="checkbox" id="check10" onChange={() => { }} />
-                    <label className="checkbox-label">Protocolo Finalizado</label>
-                </div>
-            </section>
+
 
             <div className="footer-info">
                 SHA256 Forensic Laboratory | Protocolo MUCCEF 2017 | Ley sobre Mensajes de Datos y Firmas Electrónicas
