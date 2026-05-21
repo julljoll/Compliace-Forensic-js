@@ -134,8 +134,6 @@ export default function NuevoCasoModal({
           </div>
 
           <div className="space-y-2">
-            <label className="fluent-label">Preliminary Evidence Notes</label>
-            <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Observations..." value={form.notas}
             <label className="fluent-label">Notas Preliminares de Evidencia</label>
             <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Observaciones..." value={form.notas}
               onChange={e => setForm(f => ({ ...f, notas: e.target.value }))} />

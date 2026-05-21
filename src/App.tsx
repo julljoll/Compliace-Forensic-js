@@ -20,6 +20,11 @@ const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
 const TareasPage = lazy(() => import('./pages/TareasPage'));
 
+// ── Planillas React ────────────────────────────────────────────────────────
+const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
+const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage'));
+const SeguimientoPage = lazy(() => import('./pages/Planillas/SeguimientoPage'));
+
 // ── Módulos forenses ────────────────────────────────────────────────────────
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ConsignacionPage = lazy(() => import('./pages/ConsignacionPage'));
@@ -66,6 +71,9 @@ function App() {
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
           <Route path="tareas" element={<Suspense fallback={<PageLoader />}><TareasPage /></Suspense>} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
+          <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
+          <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
+          <Route path="planillas/seguimiento" element={<Suspense fallback={<PageLoader />}><SeguimientoPage /></Suspense>} />
         </Route>
 
         {/* ── Módulos Forenses (protegido, prefijo /forense) ── */}

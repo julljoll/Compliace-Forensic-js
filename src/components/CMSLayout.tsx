@@ -16,9 +16,12 @@ const menuItems = [
   { path: '/manual-avilla',    label: 'Manual Avilla',    icon: Smartphone,      group: 'Referencia' },
   { path: '/personal',         label: 'Personal',         icon: Users,           group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',        icon: Activity,        group: 'Sistema' },
+  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Planillas' },
+  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Planillas' },
+  { path: '/planillas/seguimiento', label: 'Seguimiento Forense', icon: ClipboardList, group: 'Planillas' },
 ];
 
-const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
+const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Planillas'];
 
 export default function CMSLayout() {
   const location = useLocation();
@@ -50,7 +53,7 @@ export default function CMSLayout() {
 
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-[260px] fluent-mica border-r border-white/5 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
+        print:hidden fixed inset-y-0 left-0 z-50 w-[260px] fluent-mica border-r border-white/5 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
         md:relative md:translate-x-0
       `}>
@@ -134,10 +137,10 @@ export default function CMSLayout() {
       </aside>
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-fluent-bg">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-fluent-bg print:bg-white print:overflow-visible">
 
         {/* Header */}
-        <header className="h-[48px] border-b border-white/5 flex items-center justify-between px-6 bg-fluent-bg/60 backdrop-blur-xl z-10 shrink-0">
+        <header className="print:hidden h-[48px] border-b border-white/5 flex items-center justify-between px-6 bg-fluent-bg/60 backdrop-blur-xl z-10 shrink-0">
           <div className="flex items-center gap-4">
             <button 
               className="md:hidden p-1.5 text-fluent-text-muted hover:text-white hover:bg-white/5 rounded-md transition-colors"
@@ -168,8 +171,8 @@ export default function CMSLayout() {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar">
-          <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-10 animate-fade-in">
+        <main className="flex-1 overflow-y-auto custom-scrollbar print:overflow-visible print:m-0 print:p-0">
+          <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-10 animate-fade-in print:max-w-none print:m-0 print:p-0">
             <Outlet />
           </div>
         </main>
