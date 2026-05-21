@@ -47,15 +47,13 @@
 
         @media print {
             @page { size: legal; margin: 10mm; }
-            body { background: white !important; color: black !important; padding: 0; }
-            .page { margin: 0; box-shadow: none; width: 100%; border: none; background: white !important; color: black !important; border-radius: 0; }
-            .no-print { display: none; }
-            .section-title { background-color: #f0f0f0 !important; color: black !important; border-left-color: #FECF06 !important; }
-            .form-group, .evidence-table td, .box-inline, .legal-text { border-color: #ccc !important; color: black !important; }
-            .label { color: #333 !important; }
+            body, .page { background: white !important; padding: 0; margin: 0; box-shadow: none; width: 100%; border: none; border-radius: 0; }
+            * { color: black !important; opacity: 1 !important; text-shadow: none !important; }
+            .no-print { display: none !important; }
+            .section-title { background-color: #f0f0f0 !important; border-left-color: #FECF06 !important; }
+            .form-group, .evidence-table td, .box-inline, .legal-text { border-color: #ccc !important; }
             .evidence-table td:first-child { background-color: #fafafa !important; }
-            .logo-text { color: #FECF06 !important; }
-            .acta-title { color: #FECF06 !important; }
+            .logo-text, .acta-title { color: #FECF06 !important; }
         }
 
         header {
