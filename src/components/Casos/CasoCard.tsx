@@ -37,7 +37,7 @@ export default function CasoCard({
         </div>
         <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-fluent-accent transition-colors">{caso.titulo}</h3>
         <div className="flex items-center gap-4 text-[11px] text-fluent-text-muted font-medium">
-          <span className="flex items-center gap-1.5"><User size={12} className="opacity-50" />{caso.pertiLider}</span>
+          <span className="flex items-center gap-1.5"><User size={12} className="opacity-50" />{caso.peritoLider}</span>
           <span className="flex items-center gap-1.5"><Calendar size={12} className="opacity-50" />{new Date(caso.fechaCreacion).toLocaleDateString('es')}</span>
         </div>
       </div>

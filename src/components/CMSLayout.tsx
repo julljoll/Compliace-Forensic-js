@@ -58,7 +58,7 @@ export default function CMSLayout() {
         {/* Branding */}
         <div className="p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/favicon.svg" alt="SHA256 Logo" className="w-8 h-8 drop-shadow-lg" />
+            <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256 Logo" className="w-8 h-8 drop-shadow-lg" />
             <div>
               <h1 className="font-black text-sm tracking-tight text-white leading-none">SHA256.US</h1>
               <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">Forensics CMS</p>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acta de Obtención por Consignación - SHA256.US</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0078D4;
+            --text-color: #1a1a1a;
+            --border-color: #333;
+            --bg-white: #ffffff;
+            --gray-light: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.3;
+            color: var(--text-color);
+            background-color: #d1d1d1;
+            margin: 0;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 12mm;
+            margin: 0 auto;
+            background: var(--bg-white);
+            position: relative;
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .page { margin: 0; box-shadow: none; width: 100%; }
+            .no-print { display: none; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .logo-subtext {
+            font-size: 9px;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            margin: 2px 0;
+        }
+
+        .address-text {
+            font-size: 8px;
+            color: #666;
+            max-width: 350px;
+            line-height: 1.2;
+        }
+
+        .acta-header {
+            text-align: right;
+        }
+
+        .acta-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            color: var(--primary-color);
+        }
+
+        .acta-nro {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            background-color: var(--gray-light);
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .form-group {
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 3px;
+            margin-bottom: 4px;
+        }
+
+        .label {
+            font-size: 8px;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 13px;
+            min-height: 25px;
+            border-bottom: 1px dotted #eee; /* Guía sutil para escribir */
+        }
+
+        .box-inline {
+            display: inline-block;
+            border: 1px solid #ccc;
+            min-width: 60px;
+            height: 25px;
+            background: #fafafa;
+            vertical-align: middle;
+            margin: 0 4px;
+            border-radius: 2px;
+        }
+
+        .legal-text {
+            font-size: 10px;
+            text-align: justify;
+            background-color: #fcfcfc;
+            padding: 8px;
+            border: 1px solid #eee;
+            margin: 8px 0;
+        }
+
+        .evidence-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .evidence-table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            font-size: 11px;
+            height: 35px; /* Altura cómoda para escribir */
+        }
+
+        .evidence-table td:first-child {
+            width: 30%;
+            font-weight: 600;
+            background-color: #fafafa;
+            text-transform: uppercase;
+            font-size: 9px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+        }
+
+        .box {
+            width: 15px;
+            height: 15px;
+            border: 1.5px solid #333;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .signature-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30mm;
+            margin-top: 15mm;
+        }
+
+        .sig-box {
+            text-align: center;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+        }
+
+        .sig-label { font-weight: 700; font-size: 10px; }
+        .sig-sub { font-size: 9px; color: #666; margin-top: 2px; }
+
+        .footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 12mm;
+            right: 12mm;
+            text-align: center;
+            font-size: 8px;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="logo-container">
+                <span class="logo-text">SHA256.US</span>
+                <span class="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
+                <span class="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
+            </div>
+            <div class="acta-header">
+                <h1 class="acta-title">Acta de Obtención por Consignación</h1>
+                <div class="acta-nro">N° EXPEDIENTE: <span class="box-inline" style="min-width: 80px;"></span></div>
+            </div>
+        </header>
+
+        <!-- I. IDENTIFICACIÓN -->
+        <div class="section">
+            <div class="section-title">I. Datos del Consignante (Propietario/Poseedor)</div>
+            <div class="grid-container">
+                <div class="form-group"><div class="label">Apellidos y Nombres</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Cédula de Identidad</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Teléfono</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Dirección</div><div class="value"></div></div>
+            </div>
+        </div>
+
+        <!-- II. DESCRIPCIÓN DEL DISPOSITIVO -->
+        <div class="section">
+            <div class="section-title">II. Descripción Técnica del Dispositivo (Android)</div>
+            <table class="evidence-table">
+                <tr><td>Marca / Modelo</td><td></td></tr>
+                <tr><td>IMEI 1 / Serial</td><td></td></tr>
+                <tr><td>IMEI 2</td><td></td></tr>
+                <tr><td>Nro. de Línea / Operadora</td><td></td></tr>
+                <tr>
+                    <td>Estado Físico</td>
+                    <td>
+                        <div class="checkbox-group">
+                            <div class="check-item"><div class="box"></div> Operativo</div>
+                            <div class="check-item"><div class="box"></div> Daños Pantalla</div>
+                            <div class="check-item"><div class="box"></div> Sin Batería</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr><td>Nivel Batería (%)</td><td><span class="box-inline"></span> %</td></tr>
+            </table>
+        </div>
+
+        <!-- III. AUTORIZACIÓN Y ALCANCE -->
+        <div class="section">
+            <div class="section-title">III. Autorización y Alcance de la Consignación</div>
+            <div class="legal-text">
+                Yo, el arriba identificado, en pleno uso de mis facultades, hago entrega material voluntaria del dispositivo descrito (Obtención por Consignación) según el <strong>Manual Único de Cadena de Custodia (2017)</strong>. 
+                <strong>AUTORIZO EXPRESA Y VOLUNTARIAMENTE</strong> al experto informático de SHA256 para que aplique herramientas forenses (Andriller, ALEAPP o similares) con el fin de realizar la extracción lógica/física de "Mensajes de Datos" (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), renunciando temporalmente a la privacidad de las comunicaciones (Art. 48 CRBV) bajo los límites de esta autorización:
+            </div>
+            <div class="form-group">
+                <div class="label">Alcance de la Autorización (Marque uno)</div>
+                <div class="checkbox-group" style="margin: 5px 0;">
+                    <div class="check-item"><div class="box"></div> <strong>ANÁLISIS TÉCNICO COMPLETO</strong> (Todo el contenido del dispositivo)</div>
+                </div>
+                <div class="checkbox-group" style="margin: 5px 0;">
+                    <div class="check-item"><div class="box"></div> <strong>ANÁLISIS DELIMITADO</strong> (Únicamente archivos/chats de <strong>WHATSAPP</strong>)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IV. REQUERIMIENTOS DE ACCESO -->
+        <div class="section">
+            <div class="section-title">IV. Requerimientos de Acceso y Preservación</div>
+            <div class="grid-container">
+                <div class="form-group">
+                    <div class="label">Bloqueo de Pantalla</div>
+                    <div class="checkbox-group">
+                        <div class="check-item"><div class="box"></div> PIN / Patrón: ________</div>
+                        <div class="check-item"><div class="box"></div> Sin Bloqueo</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">Estado de Conexión</div>
+                    <div class="checkbox-group">
+                        <div class="check-item"><div class="box"></div> Modo Avión Activado</div>
+                        <div class="check-item"><div class="box"></div> WiFi/Datos Desactivados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- V. MOTIVO -->
+        <div class="section">
+            <div class="section-title">V. Motivo de la Consignación</div>
+            <div class="form-group" style="height: 40px;"></div>
+        </div>
+
+        <!-- VI. FIRMAS -->
+        <div class="signature-section">
+            <div class="sig-box">
+                <div class="sig-label">EL CONSIGNANTE</div>
+                <div class="sig-sub">Nombre: ____________________</div>
+                <div class="sig-sub">C.I.: <span class="box-inline" style="min-width: 100px;"></span></div>
+            </div>
+            <div class="sig-box">
+                <div class="sig-label">PERITO RECEPTOR</div>
+                <div class="sig-sub">SHA256 Forensic Lab</div>
+                <div class="sig-sub">Credencial: <span class="box-inline" style="min-width: 100px;"></span></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) <br>
+            SHA256 Forensic Lab - Tecnología al servicio de la justicia.
+        </div>
+    </div>
+
+    <div class="no-print" style="text-align: center; margin-top: 10px;">
+        <button onclick="window.print()" style="padding: 8px 16px; background: var(--primary-color); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+            🖨️ Generar Acta PDF
+        </button>
+    </div>
+</body>
+</html>

@@ -128,7 +128,7 @@ export interface CasoCMS {
   fechaCierre?: string;
   
   // Equipo
-  pertiLider: string;
+  peritoLider: string;
   fiscal?: string;
   compliance?: string;
   
@@ -307,17 +307,28 @@ const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const now = () => new Date().toISOString();
 
 const neonStorage = {
-  getItem: async (_name: string): Promise<string | null> => {
-    // Aquí idealmente usaríamos el ID del usuario real autenticado.
-    const state = await window.electronAPI.db.loadState(1);
-    return state ? JSON.stringify(state) : null;
+  getItem: async (name: string): Promise<string | null> => {
+    if (window.electronAPI?.db) {
+      // Aquí idealmente usaríamos el ID del usuario real autenticado.
+      const state = await window.electronAPI.db.loadState(1);
+      return state ? JSON.stringify(state) : null;
+    }
+    return localStorage.getItem(name);
   },
-  setItem: async (_name: string, value: string): Promise<void> => {
-    // Almacena todo el estado global en PostgreSQL en background
-    await window.electronAPI.db.saveState(1, JSON.parse(value));
+  setItem: async (name: string, value: string): Promise<void> => {
+    if (window.electronAPI?.db) {
+      // Almacena todo el estado global en PostgreSQL en background
+      await window.electronAPI.db.saveState(1, JSON.parse(value));
+    } else {
+      localStorage.setItem(name, value);
+    }
   },
-  removeItem: async (_name: string): Promise<void> => {
-    // No implementado
+  removeItem: async (name: string): Promise<void> => {
+    if (window.electronAPI?.db) {
+      // No implementado
+    } else {
+      localStorage.removeItem(name);
+    }
   },
 };
 
@@ -344,7 +355,7 @@ export const useCMSStore = create<CMSState>()(
         // Obtenemos el userId simulado o del store de auth real (hardcode a 1 por ahora si no hay session)
         // Lo ideal sería pasarlo o leerlo del authStore
         try {
-            const casosDB = await window.electronAPI.db.getCasos(1);
+            const casosDB = window.electronAPI?.db ? await window.electronAPI.db.getCasos(1) : null;
             if (casosDB && casosDB.length > 0) {
                 // Mapear de db a UI
                 const mapeados: CasoCMS[] = casosDB.map((c: any) => ({
@@ -356,7 +367,7 @@ export const useCMSStore = create<CMSState>()(
                     prioridad: 'media',
                     fechaCreacion: c.created_at,
                     fechaUltimaActualizacion: c.updated_at,
-                    pertiLider: 'Perito',
+                    peritoLider: 'Perito',
                     normativasAplicadas: [],
                     fasesCompletadas: 0,
                     totalFases: 6,
@@ -387,7 +398,7 @@ export const useCMSStore = create<CMSState>()(
                 dispositivo_imei: '',
                 user_id: 1 // Por defecto admin
             };
-            const result = await window.electronAPI.db.addCaso(payload);
+            const result = window.electronAPI?.db ? await window.electronAPI.db.addCaso(payload) : null;
             
             if (result && result.success) {
                 const id = result.id.toString();
@@ -398,13 +409,13 @@ export const useCMSStore = create<CMSState>()(
                   fechaUltimaActualizacion: now(),
                 };
                 set(s => ({ casos: [...s.casos, nuevo] }));
-                get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.pertiLider });
+                get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.peritoLider });
                 return id;
             }
             throw new Error(result?.error || 'Error desconocido al guardar en DB');
         } catch (e) {
             console.error('Error addCaso DB:', e);
-            get().addAuditLog({ accion: 'CASO_ERROR', detalle: `Error guardando en base de datos Neon`, nivel: 'error', casoId: undefined, usuario: caso.pertiLider });
+            get().addAuditLog({ accion: 'CASO_ERROR', detalle: `Error guardando en base de datos Neon`, nivel: 'error', casoId: undefined, usuario: caso.peritoLider });
             return null;
         }
       },

@@ -17,6 +17,7 @@ const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
+const TareasPage = lazy(() => import('./pages/TareasPage'));
 
 // ── Módulos forenses ────────────────────────────────────────────────────────
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -61,7 +62,7 @@ function App() {
           <Route path="normativas" element={<Suspense fallback={<PageLoader />}><NormativasPage /></Suspense>} />
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
-          <Route path="tareas" element={<div className="cms-card p-8 text-cms-textMuted text-center">Módulo Tareas &amp; Fases — en construcción</div>} />
+          <Route path="tareas" element={<Suspense fallback={<PageLoader />}><TareasPage /></Suspense>} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
         </Route>
 

@@ -16,7 +16,7 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
   descripcion: '',
   estado: 'iniciado',
   prioridad: 'media',
-  pertiLider: '',
+  peritoLider: '',
   fiscal: '',
   compliance: '',
   despachoFiscal: '',
@@ -96,7 +96,7 @@ export default function NuevoCasoModal({
             </div>
             <div className="space-y-2">
               <label className="fluent-label">Investigation Priority</label>
-              <select className="fluent-input bg-white/[0.02]" value={form.prioridad} onChange={e => setForm(f => ({ ...f, priority: e.target.value as PrioridadCaso }))}>
+              <select className="fluent-input bg-white/[0.02]" value={form.prioridad} onChange={e => setForm(f => ({ ...f, prioridad: e.target.value as PrioridadCaso }))}>
                 {prioridades.filter(p => p.value !== 'todos').map(p => <option key={p.value} value={p.value} className="bg-fluent-bg">{p.label}</option>)}
               </select>
             </div>
@@ -105,8 +105,8 @@ export default function NuevoCasoModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="fluent-label">Lead Compliance Officer *</label>
-              <input required className="fluent-input bg-white/[0.02]" placeholder="Assigned perito" value={form.pertiLider}
-                onChange={e => setForm(f => ({ ...f, pertiLider: e.target.value }))} />
+              <input required className="fluent-input bg-white/[0.02]" placeholder="Assigned perito" value={form.peritoLider}
+                onChange={e => setForm(f => ({ ...f, peritoLider: e.target.value }))} />
             </div>
             <div className="space-y-2">
               <label className="fluent-label">Requesting Attorney</label>

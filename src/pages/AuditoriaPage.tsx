@@ -39,7 +39,7 @@ export default function AuditoriaPage() {
               const caso = log.casoId ? casos.find(c => c.id === log.casoId) : null;
               return (
                 <div key={log.id} className="flex items-start gap-5 px-6 py-5 hover:bg-white/[0.02] transition-all group">
-                  <div className={`p-2 rounded-[4px] ${conf.bg.replace('border-', 'border-')} shrink-0 mt-0.5 shadow-lg`}>
+                  <div className={`p-2 rounded-[4px] ${conf.bg} shrink-0 mt-0.5 shadow-lg`}>
                     <Icon size={14} className={conf.color} strokeWidth={3} />
                   </div>
                   <div className="flex-1 min-w-0">

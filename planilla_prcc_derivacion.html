@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRCC - Obtención por Derivación - SHA256.US</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0078D4;
+            --text-color: #1a1a1a;
+            --border-color: #333;
+            --bg-white: #ffffff;
+            --gray-light: #f8f9fa;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.3;
+            color: var(--text-color);
+            background-color: #d1d1d1;
+            margin: 0;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 12mm;
+            margin: 0 auto;
+            background: var(--bg-white);
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            body { background: none; padding: 0; }
+            .page { margin: 0; box-shadow: none; width: 100%; }
+            .no-print { display: none; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .logo-container { display: flex; flex-direction: column; }
+        .logo-text { font-size: 20px; font-weight: 800; color: var(--primary-color); text-transform: uppercase; line-height: 1; }
+        .logo-subtext { font-size: 9px; font-weight: 700; color: #444; text-transform: uppercase; margin: 2px 0; }
+        .address-text { font-size: 8px; color: #666; max-width: 350px; line-height: 1.2; }
+
+        .form-header-info { text-align: right; }
+        .form-title-main { font-size: 14px; font-weight: 700; margin: 0; text-transform: uppercase; color: var(--primary-color); }
+        .form-nro { font-family: 'Roboto Mono', monospace; font-size: 13px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; }
+
+        .section { margin-bottom: 12px; }
+        .section-title { background-color: var(--gray-light); padding: 6px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; border-left: 4px solid var(--primary-color); margin-bottom: 8px; }
+
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .form-group { border: 1px solid #ddd; padding: 6px; border-radius: 3px; margin-bottom: 2px; }
+        .label { font-size: 7px; font-weight: 700; color: #666; text-transform: uppercase; margin-bottom: 4px; }
+        .value { font-size: 12px; min-height: 24px; border-bottom: 1px dotted #eee; }
+
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 4px; }
+        .check-item { display: flex; align-items: center; gap: 6px; font-size: 9px; font-weight: 600; }
+        .box { width: 14px; height: 14px; border: 1.5px solid #333; display: inline-block; text-align: center; line-height: 12px; font-weight: 800; font-size: 10px; }
+
+        .signature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 5px; }
+        .sig-card { border: 1px solid #ddd; padding: 8px; border-radius: 4px; }
+        .sig-row { display: flex; gap: 10px; margin-top: 8px; }
+        .sig-box { flex: 1; height: 50px; border: 1px dashed #ccc; position: relative; display: flex; align-items: center; justify-content: center; }
+        .thumb-box { width: 45px; height: 55px; border: 1px dashed #bbb; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #999; text-align: center; }
+        .sig-label { position: absolute; bottom: 2px; font-size: 6px; color: #aaa; text-transform: uppercase; }
+
+        .transfer-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        .transfer-table td { border: 1px solid #ddd; padding: 6px; font-size: 10px; vertical-align: top; }
+        .transfer-header { background-color: #fafafa; font-weight: 700; font-size: 8px; text-transform: uppercase; }
+
+        .anexo-derivacion { border: 2px solid var(--primary-color); padding: 10px; border-radius: 6px; margin-top: 15px; background: #fdfdfd; }
+        .anexo-header { font-weight: 800; font-size: 11px; color: var(--primary-color); border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 8px; text-transform: uppercase; }
+
+        .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(0, 120, 212, 0.03); font-weight: 900; pointer-events: none; z-index: 0; }
+
+        footer { text-align: center; font-size: 8px; color: #888; margin-top: 15px; border-top: 1px solid #eee; padding-top: 8px; }
+
+        button { background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="watermark">DERIVACIÓN</div>
+
+        <header>
+            <div class="logo-container">
+                <span class="logo-text">SHA256.US</span>
+                <span class="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
+                <span class="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
+            </div>
+            <div class="form-header-info">
+                <h1 class="form-title-main">Planilla de Cadena de Custodia</h1>
+                <div class="form-nro">N° PRCC: <span style="margin-left: 8px; border-bottom: 1px solid #333; min-width: 100px; display: inline-block;"></span></div>
+            </div>
+        </header>
+
+        <!-- SECCIÓN I -->
+        <div class="section">
+            <div class="section-title">I. Datos Generales (Obtención por Derivación)</div>
+            <div class="grid-container">
+                <div class="form-group"><div class="label">N° de Expediente / Causa</div><div class="value"></div></div>
+                <div class="form-group" style="background: #fff9f0;"><div class="label">Nueva PRCC (Correlativo Derivado)</div><div class="value"></div></div>
+                <div class="form-group" colspan="2"><div class="label">Organismo / Despacho que Instruye</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Despacho que inicia custodia</div><div class="value">LAB. FORENSE SHA256.US</div></div>
+                <div class="form-group"><div class="label">Fecha de Obtención</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Hora de Obtención</div><div class="value"></div></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN II -->
+        <div class="section">
+            <div class="section-title">II. Forma de Obtención</div>
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <div class="check-item"><span class="box"></span> TÉCNICA</div>
+                    <div class="check-item"><span class="box"></span> ASEGURAMIENTO</div>
+                    <div class="check-item"><span class="box"></span> CONSIGNACIÓN</div>
+                    <div class="check-item"><span class="box" style="background: #eef6ff; color: var(--primary-color);">X</span> <u>DERIVACIÓN</u></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN III -->
+        <div class="section">
+            <div class="section-title">III. Operarios (Perito Informático)</div>
+            <div class="signature-grid">
+                <div class="sig-card">
+                    <div class="label">A. Fijación (Nombre y Credencial)</div>
+                    <div class="value" style="min-height: 18px;"></div>
+                    <div class="sig-row">
+                        <div class="sig-box"><span class="sig-label">FIRMA</span></div>
+                        <div class="thumb-box">PULGAR<br>DER.</div>
+                    </div>
+                </div>
+                <div class="sig-card">
+                    <div class="label">B. Colección (Nombre y Credencial)</div>
+                    <div class="value" style="min-height: 18px;"></div>
+                    <div class="sig-row">
+                        <div class="sig-box"><span class="sig-label">FIRMA</span></div>
+                        <div class="thumb-box">PULGAR<br>DER.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN IV -->
+        <div class="section">
+            <div class="section-title">IV. Descripción de la Evidencia Digital Derivada</div>
+            <div class="form-group">
+                <div class="value" style="min-height: 80px; font-size: 11px; color: #999;">
+                    Indicar: Nombre nativo, Ruta lógica (ALEAPP/Andriller), Tamaño y Hash SHA-256...
+                </div>
+                <div style="text-align: right; margin-top: 5px; font-size: 9px;">
+                    ¿Continúa en Anexo A? <span class="box"></span> SI <span class="box">X</span> NO
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN V -->
+        <div class="section">
+            <div class="section-title">V. Transferencia de la Evidencia</div>
+            <table class="transfer-table">
+                <tr>
+                    <td style="width: 30%;">
+                        <div class="label">Motivo</div>
+                        <div class="checkbox-group" style="flex-direction: column; gap: 4px; font-size: 8px;">
+                            <div class="check-item"><span class="box"></span> TRASLADO</div>
+                            <div class="check-item"><span class="box"></span> PERITAJE</div>
+                            <div class="check-item"><span class="box"></span> RESGUARDO</div>
+                        </div>
+                    </td>
+                    <td style="width: 35%;">
+                        <div class="label">Entrega</div>
+                        <div style="font-size: 9px; margin-bottom: 4px;">Nombre/C.I.:</div>
+                        <div class="sig-row" style="margin-top: 0;">
+                            <div class="sig-box" style="height: 35px;"><span class="sig-label">FIRMA</span></div>
+                            <div class="thumb-box" style="height: 45px; width: 35px; font-size: 5px;">HUELLA</div>
+                        </div>
+                    </td>
+                    <td style="width: 35%;">
+                        <div class="label">Recibe</div>
+                        <div style="font-size: 9px; margin-bottom: 4px;">Nombre/C.I.:</div>
+                        <div class="sig-row" style="margin-top: 0;">
+                            <div class="sig-box" style="height: 35px;"><span class="sig-label">FIRMA</span></div>
+                            <div class="thumb-box" style="height: 45px; width: 35px; font-size: 5px;">HUELLA</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ANEXO B -->
+        <div class="anexo-derivacion">
+            <div class="anexo-header">Anexo B: Trazabilidad de Derivación Forense</div>
+            <div class="grid-container" style="grid-template-columns: 2fr 1fr 1.5fr;">
+                <div class="form-group"><div class="label">Forense que deriva</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">Fecha/Hora</div><div class="value"></div></div>
+                <div class="form-group"><div class="label">N° Dictamen Pericial Origen</div><div class="value"></div></div>
+            </div>
+            <div class="form-group" style="margin-top: 8px;">
+                <div class="label">Relación de Archivos y Hashes (Derivados del Matriz)</div>
+                <div class="value" style="min-height: 50px;"></div>
+            </div>
+            <p style="font-size: 7px; color: #666; text-align: justify; margin-top: 5px; line-height: 1.1;">
+                Se deja constancia de que la data digital aquí descrita es producto de una extracción técnica validada, manteniendo la integridad inalterable del dispositivo de origen y cumpliendo con el Manual Único de Cadena de Custodia (2017).
+            </p>
+        </div>
+
+        <footer>
+            Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) | SHA256 Forensic Lab
+        </footer>
+
+        <div style="text-align: center; margin-top: 20px;" class="no-print">
+            <button onclick="window.print()">🖨️ IMPRIMIR PLANILLA (A4)</button>
+        </div>
+    </div>
+</body>
+</html>

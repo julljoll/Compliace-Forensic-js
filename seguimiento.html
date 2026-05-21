@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo Forense Android (Cero Riesgo de Nulidad) - SHA256.US</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #58a6ff;
+            --accent: #1f6feb;
+            --success: #238636;
+            --warning: #d83b01;
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-sidebar: #010409;
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            --text-bright: #ffffff;
+            --border: #30363d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .app-container { display: flex; min-height: 100vh; }
+
+        /* --- Sidebar --- */
+        aside {
+            width: 350px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo { display: flex; flex-direction: column; margin-bottom: 2rem; }
+        .logo-text { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+        .logo-subtext { font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); }
+
+        .nav-section { margin-bottom: 1.5rem; }
+        .nav-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 0.8rem; display: block; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 12px;
+            margin-bottom: 0.3rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover { background-color: var(--bg-card); color: var(--text-bright); }
+        .nav-item.active { background-color: rgba(31, 111, 235, 0.1); color: var(--primary); border-color: rgba(31, 111, 235, 0.3); }
+
+        .step-num {
+            width: 18px;
+            height: 18px;
+            background: var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .nav-item.active .step-num { background: var(--accent); color: white; }
+        .nav-item.completed .step-num { background: var(--success); color: white; }
+
+        /* --- Main Content --- */
+        main {
+            margin-left: 350px;
+            flex: 1;
+            padding: 2.5rem 4rem;
+            max-width: 1100px;
+        }
+
+        header { margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        h1 { font-size: 28px; font-weight: 800; color: var(--text-bright); margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+        .header-meta { color: var(--text-dim); font-size: 13px; display: flex; flex-wrap: wrap; gap: 15px; }
+        .phase-badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; background: var(--accent); color: white; }
+
+        .step-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            scroll-margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card.active { border-left: 4px solid var(--accent); }
+
+        .card-header { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+        .card-title { font-size: 20px; font-weight: 700; color: var(--text-bright); }
+        .step-action { font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 4px; display: block; }
+
+        /* --- Doc Box --- */
+        .doc-box {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .doc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 800; margin-bottom: 0.8rem; display: block; }
+        .doc-list { list-style: none; font-size: 13px; margin-bottom: 1rem; }
+        .doc-list li { padding: 2px 0; display: flex; align-items: center; gap: 8px; }
+        .doc-list li::before { content: "📋"; font-size: 10px; }
+
+        .doc-filling { font-size: 13px; color: var(--text-main); background: rgba(0,0,0,0.2); padding: 0.8rem; border-radius: 4px; line-height: 1.4; border-left: 2px solid var(--primary); }
+
+        /* --- Tutorial List --- */
+        .tutorial-list { list-style: none; counter-reset: tut-counter; margin-top: 1.5rem; }
+        .tutorial-item {
+            position: relative;
+            padding: 1rem 1.2rem 1rem 3rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            margin-bottom: 0.8rem;
+            font-size: 14px;
+        }
+
+        .tutorial-item::before {
+            counter-increment: tut-counter;
+            content: counter(tut-counter);
+            position: absolute; left: 1rem; top: 1rem;
+            width: 20px; height: 20px;
+            background: var(--border);
+            color: var(--text-dim);
+            border-radius: 3px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 800;
+        }
+
+        .checkbox-container {
+            display: flex; align-items: center;
+            margin-top: 2rem; padding: 1rem;
+            background: rgba(35, 134, 54, 0.05);
+            border: 1px solid rgba(35, 134, 54, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .checkbox-container input { width: 18px; height: 18px; cursor: pointer; margin-right: 12px; accent-color: var(--success); }
+        .checkbox-label { font-weight: 700; font-size: 12px; color: var(--text-bright); text-transform: uppercase; }
+
+        .footer-info { text-align: center; padding: 3rem 0; border-top: 1px solid var(--border); margin-top: 3rem; font-size: 11px; color: var(--text-dim); }
+
+        @media (max-width: 1024px) {
+            aside { width: 70px; padding: 1.5rem 0.5rem; }
+            .nav-item span:not(.step-num) { display: none; }
+            .logo, .nav-title { display: none; }
+            main { margin-left: 70px; padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside>
+            <div class="logo">
+                <span class="logo-text">SHA256.US</span>
+                <span class="logo-subtext">Cero Riesgo de Nulidad</span>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-title">Fase 1: Obtención</span>
+                <a href="#step1" class="nav-item active" id="nav-step1"><span class="step-num">1</span> <span>Recepción</span></a>
+                <a href="#step2" class="nav-item" id="nav-step2"><span class="step-num">2</span> <span>Fijación In Situ</span></a>
+                <a href="#step3" class="nav-item" id="nav-step3"><span class="step-num">3</span> <span>Adquisición</span></a>
+                <a href="#step4" class="nav-item" id="nav-step4"><span class="step-num">4</span> <span>PRCC & Embalaje</span></a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-title">Fase 2: Peritaje</span>
+                <a href="#step5" class="nav-item" id="nav-step5"><span class="step-num">5</span> <span>Recepción Lab</span></a>
+                <a href="#step6" class="nav-item" id="nav-step6"><span class="step-num">6</span> <span>Procesamiento</span></a>
+                <a href="#step7" class="nav-item" id="nav-step7"><span class="step-num">7</span> <span>Derivación</span></a>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-title">Fase 3: Dictamen & Cierre</span>
+                <a href="#step8" class="nav-item" id="nav-step8"><span class="step-num">8</span> <span>Elaboración Dictamen</span></a>
+                <a href="#step9" class="nav-item" id="nav-step9"><span class="step-num">9</span> <span>Remisión</span></a>
+                <a href="#step10" class="nav-item" id="nav-step10"><span class="step-num">10</span> <span>Cierre Final</span></a>
+            </div>
+        </aside>
+
+        <main>
+            <header>
+                <div class="phase-badge">República Bolivariana de Venezuela</div>
+                <h1>Protocolo de Peritaje Forense Android</h1>
+                <div class="header-meta">
+                    <span><strong>Objetivo:</strong> Análisis con Cero Riesgo de Nulidad</span>
+                    <span><strong>Normas:</strong> MUCCEF 2017, ISO 27037/27042</span>
+                </div>
+            </header>
+
+            <!-- STEP 1 -->
+            <section id="step1" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 1: Recepción, Entrevista y Consignación</h2>
+                    <span class="step-action">Acción: Recibir el dispositivo y levantar actas preliminares.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Acta de Entrevista</li>
+                        <li>Acta de Obtención por Consignación</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> Deben redactarse en tercera persona, tiempo presente, de manera clara, secuencial y precisa. Indicar circunstancias de modo, tiempo y lugar. Firmadas por el consignatario y funcionario receptor.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Realiza una entrevista estructurada (preguntas básicas, intermedias y finales) a quien entrega el equipo.</li>
+                    <li class="tutorial-item">Levanta el Acta de Entrevista para dejar constancia de cómo obtuvo los chats/audios.</li>
+                    <li class="tutorial-item">Levanta el Acta de Obtención por Consignación recibiendo formalmente la evidencia.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check1').click();">
+                    <input type="checkbox" id="check1" onchange="toggleStep(1)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 2 -->
+            <section id="step2" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 2: Fijación In Situ y Aislamiento</h2>
+                    <span class="step-action">Acción: Fijar fotográficamente el dispositivo en vivo y aislarlo de la red.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Fijación fotográfica (Reseñada en Acta de Obtención)</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> En el Acta de Obtención se debe describir el dispositivo: marca, modelo, IMEI, SIMCard, y estado de la pantalla.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Fija fotográficamente la pantalla mostrando la actividad "sin intervenir en su funcionalidad" (no tocar botones).</li>
+                    <li class="tutorial-item">Aísla el equipo poniéndolo en Modo Avión o usando Bolsa de Faraday para evitar borrado remoto.</li>
+                    <li class="tutorial-item">Documenta los datos individualizantes del móvil.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check2').click();">
+                    <input type="checkbox" id="check2" onchange="toggleStep(2)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 3 -->
+            <section id="step3" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 3: Adquisición Digital Forense</h2>
+                    <span class="step-action">Acción: Extracción física/lógica y sellado hash.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Documentación para el Dictamen Pericial</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> Anotar las versiones exactas del software (Andriller) y los algoritmos Hash utilizados.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Conecta el dispositivo asegurando inalterabilidad (write-blockers).</li>
+                    <li class="tutorial-item">Ejecuta "Andriller" para realizar una adquisición de solo lectura, no destructiva.</li>
+                    <li class="tutorial-item">Calcula inmediatamente el Hash (SHA-256 o MD5) de la imagen extraída para sellar la data.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check3').click();">
+                    <input type="checkbox" id="check3" onchange="toggleStep(3)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 4 -->
+            <section id="step4" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 4: Apertura de Cadena de Custodia, Embalaje y Rotulado</h2>
+                    <span class="step-action">Acción: Ingresar la evidencia matriz al sistema de protección.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Planilla de Registro de Cadena de Custodia (PRCC)</li>
+                        <li>Rótulo de Evidencia</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> PRCC: Tinta negra/azul, letra de molde, firma manuscrita e impresión dactilar del pulgar derecho. RÓTULO: Tinta indeleble. Incluir Oficina, Expediente, PRCC, descripción y observaciones.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Abre la PRCC y completa la Fase de Obtención con los datos del móvil.</li>
+                    <li class="tutorial-item">Embala el dispositivo usando bolsa antiestática o papel y coloca precintos de seguridad físicos.</li>
+                    <li class="tutorial-item">Fija el Rótulo con la información correspondiente.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check4').click();">
+                    <input type="checkbox" id="check4" onchange="toggleStep(4)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 5 -->
+            <section id="step5" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 5: Recepción, Verificación y Designación</h2>
+                    <span class="step-action">Acción: Ingreso al laboratorio forense y asignación de perito.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>PRCC (Transferencia: Recibe)</li>
+                        <li>Libro de Registro Interno de Laboratorio</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> PRCC: Firma y pulgar derecho tras verificar precintos. LIBRO: Foliado, asentar fecha, hora y datos del perito que acepta el caso.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Comprueba la integridad del embalaje y rótulos.</li>
+                    <li class="tutorial-item">Recalcula el Hash de la imagen y compáralo con el de extracción (Art. 7 Ley Mensajes de Datos).</li>
+                    <li class="tutorial-item">El perito firma los controles internos aceptando formalmente el caso.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check5').click();">
+                    <input type="checkbox" id="check5" onchange="toggleStep(5)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 6 -->
+            <section id="step6" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 6: Procesamiento Estructurado con ALEAPP</h2>
+                    <span class="step-action">Acción: Parsear logs y bases de datos SQLite.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Logs y Tablas de salida de ALEAPP</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> Garantizar que el reporte liste nombres nativos, fechas, rutas y Hashes individuales.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Carga la imagen forense en ALEAPP.</li>
+                    <li class="tutorial-item">Procesa msgstore.db (WhatsApp), audios (.opus) y screenshots.</li>
+                    <li class="tutorial-item">Reconstruye el Timeline (ISO 27042).</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check6').click();">
+                    <input type="checkbox" id="check6" onchange="toggleStep(6)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 7 -->
+            <section id="step7" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 7: Obtención por Derivación (Nueva Evidencia)</h2>
+                    <span class="step-action">Acción: Aislar chats, audios o archivos clave detectados.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>NUEVA PRCC (Para data derivada)</li>
+                        <li>Acta de Obtención por Derivación</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> NUEVA PRCC: Propio número correlativo, tinta negra/azul, firma y huella. ACTA: Indicar ruta específica de aislamiento desde la evidencia principal.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Aísla las transcripciones, imágenes y audios relevantes.</li>
+                    <li class="tutorial-item">Genera el Acta de Obtención por Derivación.</li>
+                    <li class="tutorial-item">Abre la Nueva PRCC describiendo archivos y sus hashes.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check7').click();">
+                    <input type="checkbox" id="check7" onchange="toggleStep(7)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 8 -->
+            <section id="step8" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 8: Elaboración del Dictamen Pericial</h2>
+                    <span class="step-action">Acción: Estructuración y blindaje legal de los resultados.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Dictamen Pericial</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> Estructura: Motivo, Descripción, Exámenes, Resultados, Conclusiones y Consumo. Firmado y sellado.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Redacta resultados con tabla de: Nombre, fechas, ruta, tamaño y Hash.</li>
+                    <li class="tutorial-item">Fundamenta con Ley de Mensajes de Datos (Art. 4 y 8).</li>
+                    <li class="tutorial-item">Declara que la evidencia original no fue consumida ni alterada.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check8').click();">
+                    <input type="checkbox" id="check8" onchange="toggleStep(8)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 9 -->
+            <section id="step9" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 9: Re-embalaje y Remisión</h2>
+                    <span class="step-action">Acción: Preparar el dispositivo y la data para su salida.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>PRCC (Transferencia: Entrega)</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> Renglón "Entrega", Motivo: "Traslado" o "Resguardo". Firma y huella del perito.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Coloca el dispositivo en su embalaje original (o nuevo si se dañó).</li>
+                    <li class="tutorial-item">Coloca nuevos precintos de seguridad del laboratorio.</li>
+                    <li class="tutorial-item">Remite a Resguardo Judicial o despacho fiscal.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check9').click();">
+                    <input type="checkbox" id="check9" onchange="toggleStep(9)">
+                    <label class="checkbox-label">Paso Completado</label>
+                </div>
+            </section>
+
+            <!-- STEP 10 -->
+            <section id="step10" class="step-card">
+                <div class="card-header">
+                    <h2 class="card-title">Paso 10: Formalidades de Cierre y Disposición Final</h2>
+                    <span class="step-action">Acción: Culminación del ciclo de la cadena de custodia.</span>
+                </div>
+                <div class="doc-box">
+                    <span class="doc-title">Documentación Obligatoria</span>
+                    <ul class="doc-list">
+                        <li>Acta de Disposición Final de Evidencias</li>
+                        <li>PRCC (Observaciones)</li>
+                    </ul>
+                    <div class="doc-filling"><strong>Cómo llenarlas:</strong> PRCC: Observaciones con forma de cierre (Devolución/Destrucción). ACTA: Detallar número de oficio del tribunal.</div>
+                </div>
+                <ul class="tutorial-list">
+                    <li class="tutorial-item">Recibe la orden judicial de cierre.</li>
+                    <li class="tutorial-item">Llena el Acta de Disposición Final.</li>
+                    <li class="tutorial-item">Cierra definitivamente la PRCC en Observaciones.</li>
+                </ul>
+                <div class="checkbox-container" onclick="document.getElementById('check10').click();">
+                    <input type="checkbox" id="check10" onchange="toggleStep(10)">
+                    <label class="checkbox-label">Protocolo Finalizado</label>
+                </div>
+            </section>
+
+            <div class="footer-info">
+                SHA256 Forensic Laboratory | Protocolo MUCCEF 2017 | Ley sobre Mensajes de Datos y Firmas Electrónicas
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleStep(stepNum) {
+            const navItem = document.getElementById(`nav-step${stepNum}`);
+            const checkbox = document.getElementById(`check${stepNum}`);
+            if (checkbox.checked) { navItem.classList.add('completed'); } else { navItem.classList.remove('completed'); }
+            if (checkbox.checked && stepNum < 10) {
+                const nextStep = document.getElementById(`step${stepNum + 1}`);
+                if(nextStep) nextStep.scrollIntoView({ behavior: 'smooth' });
+                updateActiveNav(stepNum + 1);
+            }
+        }
+
+        function updateActiveNav(stepNum) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const activeItem = document.getElementById(`nav-step${stepNum}`);
+            if(activeItem) activeItem.classList.add('active');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stepNum = entry.target.id.replace('step', '');
+                    updateActiveNav(parseInt(stepNum));
+                    entry.target.classList.add('active');
+                } else { entry.target.classList.remove('active'); }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.step-card').forEach(section => { observer.observe(section); });
+    </script>
+</body>
+</html>

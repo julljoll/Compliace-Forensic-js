@@ -105,7 +105,7 @@ export default function DashboardPage() {
                       <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>{estado.label}</span>
                     </div>
                     <p className="text-sm font-bold text-white truncate group-hover:translate-x-1 transition-transform duration-300">{caso.titulo}</p>
-                    <p className="text-[11px] text-fluent-text-muted font-medium">{caso.pertiLider}</p>
+                    <p className="text-[11px] text-fluent-text-muted font-medium">{caso.peritoLider}</p>
                   </div>
                   <div className="flex flex-col items-end gap-2 shrink-0">
                     <div className={`p-1.5 rounded-md ${cumpl.color.replace('text', 'bg')}/10`}>
