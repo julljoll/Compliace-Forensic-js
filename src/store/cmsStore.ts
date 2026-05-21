@@ -153,6 +153,24 @@ export interface CasoCMS {
   // Tags
   etiquetas: string[];
   notas: string;
+
+  // Seguimiento Forense y Compliance
+  completed_steps?: Record<string, boolean>;
+  step_metadata?: Record<string, { fecha?: string; responsable?: string; observaciones?: string }>;
+  compliance_checklist?: { stageId: string; normativaId: string; checked: boolean; fechaCheck?: string; observacion?: string }[];
+
+  // Dispositivo Details
+  dispositivo_marca?: string;
+  dispositivo_modelo?: string;
+  dispositivo_imei?: string;
+  dispositivo_imei2?: string;
+  dispositivo_sim_card?: string;
+  dispositivo_numero_tel?: string;
+  dispositivo_estado_fisico?: string;
+  dispositivo_modo_aislamiento?: string;
+  dispositivo_danos_visibles?: string;
+  dispositivo_bateria_estado?: string;
+  dispositivo_pantalla_estado?: string;
 }
 
 // ─── Compliance Checklist por Normativa ────────────────────────────────────────
@@ -187,9 +205,11 @@ interface CMSState {
   // Acciones - Casos
   fetchCasos: () => Promise<void>;
   addCaso: (caso: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'>) => Promise<string | null>;
-  updateCaso: (id: string, datos: Partial<CasoCMS>) => void;
-  deleteCaso: (id: string) => void;
+  updateCaso: (id: string, datos: Partial<CasoCMS>) => Promise<void>;
+  deleteCaso: (id: string) => Promise<void>;
   seleccionarCaso: (id: string | null) => void;
+  setStepCompleted: (stepId: string, completed: boolean) => void;
+  setStepMetadata: (stepId: string, metadata: { fecha?: string; responsable?: string; observaciones?: string }) => void;
   
   // Acciones - Evidencias
   addEvidencia: (evidencia: Omit<Evidencia, 'id'>) => void;
@@ -352,32 +372,64 @@ export const useCMSStore = create<CMSState>()(
 
       // ── Casos ──
       fetchCasos: async () => {
-        // Obtenemos el userId simulado o del store de auth real (hardcode a 1 por ahora si no hay session)
-        // Lo ideal sería pasarlo o leerlo del authStore
         try {
             const casosDB = window.electronAPI?.db ? await window.electronAPI.db.getCasos(1) : null;
             if (casosDB && casosDB.length > 0) {
-                // Mapear de db a UI
-                const mapeados: CasoCMS[] = casosDB.map((c: any) => ({
-                    id: c.id.toString(),
-                    numeroCaso: c.numero_caso,
-                    titulo: c.titulo,
-                    descripcion: c.descripcion,
-                    estado: c.estado,
-                    prioridad: 'media',
-                    fechaCreacion: c.created_at,
-                    fechaUltimaActualizacion: c.updated_at,
-                    peritoLider: 'Perito',
-                    normativasAplicadas: [],
-                    fasesCompletadas: 0,
-                    totalFases: 6,
-                    porcentajeCompletado: 0,
-                    totalEvidencias: 0,
-                    nivelCumplimientoGeneral: 'no_aplica',
-                    etiquetas: [],
-                    notas: ''
-                }));
+                const mapeados: CasoCMS[] = casosDB.map((c: any) => {
+                    let completed = {};
+                    let metadata = {};
+                    let compliance = [];
+                    try {
+                        completed = typeof c.completed_steps === 'string' ? JSON.parse(c.completed_steps) : (c.completed_steps || {});
+                    } catch (e) { console.error('Error parsing completed_steps', e); }
+                    try {
+                        metadata = typeof c.step_metadata === 'string' ? JSON.parse(c.step_metadata) : (c.step_metadata || {});
+                    } catch (e) { console.error('Error parsing step_metadata', e); }
+                    try {
+                        compliance = typeof c.compliance_checklist === 'string' ? JSON.parse(c.compliance_checklist) : (c.compliance_checklist || []);
+                    } catch (e) { console.error('Error parsing compliance_checklist', e); }
+
+                    const completedCount = Object.values(completed).filter(Boolean).length;
+                    const pct = Math.round((completedCount / 9) * 100);
+
+                    return {
+                        id: c.id.toString(),
+                        numeroCaso: c.numero_caso,
+                        titulo: c.titulo,
+                        descripcion: c.descripcion,
+                        estado: c.estado,
+                        prioridad: c.prioridad || 'media',
+                        fechaCreacion: c.created_at,
+                        fechaUltimaActualizacion: c.updated_at,
+                        peritoLider: 'Perito',
+                        fiscal: c.fiscal,
+                        normativasAplicadas: [],
+                        fasesCompletadas: completedCount,
+                        totalFases: 9,
+                        porcentajeCompletado: pct,
+                        totalEvidencias: 0,
+                        nivelCumplimientoGeneral: 'no_aplica',
+                        etiquetas: [],
+                        notas: '',
+                        completed_steps: completed,
+                        step_metadata: metadata,
+                        compliance_checklist: compliance,
+                        dispositivo_marca: c.dispositivo_marca,
+                        dispositivo_modelo: c.dispositivo_modelo,
+                        dispositivo_imei: c.dispositivo_imei,
+                        dispositivo_imei2: c.dispositivo_imei2,
+                        dispositivo_sim_card: c.dispositivo_sim_card,
+                        dispositivo_numero_tel: c.dispositivo_numero_tel,
+                        dispositivo_estado_fisico: c.dispositivo_estado_fisico,
+                        dispositivo_modo_aislamiento: c.dispositivo_modo_aislamiento,
+                        dispositivo_danos_visibles: c.dispositivo_danos_visibles,
+                        dispositivo_bateria_estado: c.dispositivo_bateria_estado,
+                        dispositivo_pantalla_estado: c.dispositivo_pantalla_estado,
+                    };
+                });
                 set({ casos: mapeados });
+            } else {
+                set({ casos: [] });
             }
         } catch (err) {
             console.error('Error fetching casos', err);
@@ -386,17 +438,28 @@ export const useCMSStore = create<CMSState>()(
       addCaso: async (caso) => {
         try {
             const payload = {
+                id: (caso as any).id || uid(),
                 numero_caso: caso.numeroCaso,
                 titulo: caso.titulo,
                 descripcion: caso.descripcion,
                 estado: caso.estado,
-                tipo: 'whatsapp',
-                solicitante_nombre: caso.fiscal,
-                solicitante_ci: '',
-                dispositivo_marca: '',
-                dispositivo_modelo: '',
-                dispositivo_imei: '',
-                user_id: 1 // Por defecto admin
+                prioridad: caso.prioridad || 'media',
+                fiscal: caso.fiscal || '',
+                dispositivo_marca: caso.dispositivo_marca || '',
+                dispositivo_modelo: caso.dispositivo_modelo || '',
+                dispositivo_imei: caso.dispositivo_imei || '',
+                dispositivo_imei2: caso.dispositivo_imei2 || '',
+                dispositivo_sim_card: caso.dispositivo_sim_card || '',
+                dispositivo_numero_tel: caso.dispositivo_numero_tel || '',
+                dispositivo_estado_fisico: caso.dispositivo_estado_fisico || '',
+                dispositivo_modo_aislamiento: caso.dispositivo_modo_aislamiento || '',
+                dispositivo_danos_visibles: caso.dispositivo_danos_visibles || '',
+                dispositivo_bateria_estado: caso.dispositivo_bateria_estado || '',
+                dispositivo_pantalla_estado: caso.dispositivo_pantalla_estado || '',
+                completed_steps: caso.completed_steps || {},
+                step_metadata: caso.step_metadata || {},
+                compliance_checklist: caso.compliance_checklist || [],
+                user_id: 1
             };
             const result = window.electronAPI?.db ? await window.electronAPI.db.addCaso(payload) : null;
             
@@ -407,6 +470,20 @@ export const useCMSStore = create<CMSState>()(
                   id,
                   fechaCreacion: now(),
                   fechaUltimaActualizacion: now(),
+                  completed_steps: payload.completed_steps,
+                  step_metadata: payload.step_metadata,
+                  compliance_checklist: payload.compliance_checklist,
+                  dispositivo_marca: payload.dispositivo_marca,
+                  dispositivo_modelo: payload.dispositivo_modelo,
+                  dispositivo_imei: payload.dispositivo_imei,
+                  dispositivo_imei2: payload.dispositivo_imei2,
+                  dispositivo_sim_card: payload.dispositivo_sim_card,
+                  dispositivo_numero_tel: payload.dispositivo_numero_tel,
+                  dispositivo_estado_fisico: payload.dispositivo_estado_fisico,
+                  dispositivo_modo_aislamiento: payload.dispositivo_modo_aislamiento,
+                  dispositivo_danos_visibles: payload.dispositivo_danos_visibles,
+                  dispositivo_bateria_estado: payload.dispositivo_bateria_estado,
+                  dispositivo_pantalla_estado: payload.dispositivo_pantalla_estado,
                 };
                 set(s => ({ casos: [...s.casos, nuevo] }));
                 get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.peritoLider });
@@ -419,16 +496,98 @@ export const useCMSStore = create<CMSState>()(
             return null;
         }
       },
-      updateCaso: (id, datos) => {
+      updateCaso: async (id, datos) => {
         set(s => ({
           casos: s.casos.map(c => c.id === id ? { ...c, ...datos, fechaUltimaActualizacion: now() } : c)
         }));
+        try {
+          if (window.electronAPI?.db) {
+            const mappedData: any = { ...datos };
+            if (datos.numeroCaso !== undefined) mappedData.numero_caso = datos.numeroCaso;
+            if (datos.dispositivo_marca !== undefined) mappedData.dispositivo_marca = datos.dispositivo_marca;
+            if (datos.dispositivo_modelo !== undefined) mappedData.dispositivo_modelo = datos.dispositivo_modelo;
+            if (datos.dispositivo_imei !== undefined) mappedData.dispositivo_imei = datos.dispositivo_imei;
+            if (datos.dispositivo_imei2 !== undefined) mappedData.dispositivo_imei2 = datos.dispositivo_imei2;
+            if (datos.dispositivo_sim_card !== undefined) mappedData.dispositivo_sim_card = datos.dispositivo_sim_card;
+            if (datos.dispositivo_numero_tel !== undefined) mappedData.dispositivo_numero_tel = datos.dispositivo_numero_tel;
+            if (datos.dispositivo_estado_fisico !== undefined) mappedData.dispositivo_estado_fisico = datos.dispositivo_estado_fisico;
+            if (datos.dispositivo_modo_aislamiento !== undefined) mappedData.dispositivo_modo_aislamiento = datos.dispositivo_modo_aislamiento;
+            if (datos.dispositivo_danos_visibles !== undefined) mappedData.dispositivo_danos_visibles = datos.dispositivo_danos_visibles;
+            if (datos.dispositivo_bateria_estado !== undefined) mappedData.dispositivo_bateria_estado = datos.dispositivo_bateria_estado;
+            if (datos.dispositivo_pantalla_estado !== undefined) mappedData.dispositivo_pantalla_estado = datos.dispositivo_pantalla_estado;
+            await window.electronAPI.db.updateCaso(id, mappedData);
+          }
+        } catch (e) {
+          console.error('Error al actualizar caso en DB:', e);
+        }
         get().addAuditLog({ accion: 'CASO_ACTUALIZADO', detalle: `Caso ${id} actualizado`, nivel: 'info', casoId: id, usuario: 'sistema' });
       },
-      deleteCaso: (id) => {
+      deleteCaso: async (id) => {
         set(s => ({ casos: s.casos.filter(c => c.id !== id) }));
+        try {
+          if (window.electronAPI?.db) {
+            await window.electronAPI.db.deleteCaso(id);
+          }
+        } catch (e) {
+          console.error('Error al eliminar caso en DB:', e);
+        }
+        get().addAuditLog({ accion: 'CASO_ELIMINADO', detalle: `Caso ${id} eliminado`, nivel: 'warning', casoId: id, usuario: 'sistema' });
       },
-      seleccionarCaso: (id) => set({ casoSeleccionado: id }),
+      seleccionarCaso: (id) => {
+        set({ casoSeleccionado: id });
+        if (id) {
+          const caso = get().casos.find(c => c.id === id);
+          if (caso) {
+            set({ complianceChecklist: caso.compliance_checklist || [] });
+          }
+        } else {
+          set({ complianceChecklist: [] });
+        }
+      },
+      setStepCompleted: (stepId, completed) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso) return;
+
+        const completed_steps = { ...(caso.completed_steps || {}), [stepId]: completed };
+
+        let step_metadata = { ...(caso.step_metadata || {}) };
+        if (completed && !step_metadata[stepId]) {
+          const nowTime = new Date();
+          const offset = nowTime.getTimezoneOffset() * 60000;
+          const localISOTime = (new Date(nowTime.getTime() - offset)).toISOString().slice(0, 16);
+          step_metadata[stepId] = {
+            fecha: localISOTime,
+            responsable: caso.fiscal || 'Perito de Guardia',
+            observaciones: ''
+          };
+        }
+
+        const stepsArray = Object.keys(completed_steps).filter(k => completed_steps[k]);
+        const porcentajeCompletado = Math.round((stepsArray.length / 9) * 100);
+
+        get().updateCaso(casoSeleccionado, {
+          completed_steps,
+          step_metadata,
+          porcentajeCompletado,
+          fasesCompletadas: stepsArray.length,
+          totalFases: 9
+        });
+      },
+      setStepMetadata: (stepId, metadata) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso) return;
+
+        const step_metadata = {
+          ...(caso.step_metadata || {}),
+          [stepId]: { ...(caso.step_metadata?.[stepId] || {}), ...metadata }
+        };
+
+        get().updateCaso(casoSeleccionado, { step_metadata });
+      },
 
       // ── Evidencias ──
       addEvidencia: (evidencia) => {
@@ -480,33 +639,71 @@ export const useCMSStore = create<CMSState>()(
         }));
       },
 
-      // ── Compliance Checklist ──
       toggleComplianceCheck: (stageId, normativaId) => {
         set(s => {
+          let updatedChecklist: ComplianceCheckItem[] = [];
           const existing = s.complianceChecklist.find(c => c.stageId === stageId);
           if (existing) {
-            return {
-              complianceChecklist: s.complianceChecklist.map(c =>
-                c.stageId === stageId
-                  ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
-                  : c
-              ),
-            };
-          }
-          return {
-            complianceChecklist: [
+            updatedChecklist = s.complianceChecklist.map(c =>
+              c.stageId === stageId
+                ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
+                : c
+            );
+          } else {
+            updatedChecklist = [
               ...s.complianceChecklist,
               { stageId, normativaId, checked: true, fechaCheck: new Date().toISOString(), observacion: '' },
-            ],
-          };
+            ];
+          }
+
+          if (s.casoSeleccionado) {
+            const casoAct = s.casos.find(c => c.id === s.casoSeleccionado);
+            if (casoAct) {
+              const currentChecklist = casoAct.compliance_checklist || [];
+              let nextChecklist: any[] = [];
+              const cExisting = currentChecklist.find(c => c.stageId === stageId);
+              if (cExisting) {
+                nextChecklist = currentChecklist.map(c =>
+                  c.stageId === stageId
+                    ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
+                    : c
+                );
+              } else {
+                nextChecklist = [
+                  ...currentChecklist,
+                  { stageId, normativaId, checked: true, fechaCheck: new Date().toISOString(), observacion: '' }
+                ];
+              }
+              setTimeout(() => {
+                get().updateCaso(s.casoSeleccionado!, { compliance_checklist: nextChecklist });
+              }, 0);
+            }
+          }
+
+          return { complianceChecklist: updatedChecklist };
         });
       },
       setComplianceObservacion: (stageId, observacion) => {
-        set(s => ({
-          complianceChecklist: s.complianceChecklist.map(c =>
+        set(s => {
+          const updatedChecklist = s.complianceChecklist.map(c =>
             c.stageId === stageId ? { ...c, observacion } : c
-          ),
-        }));
+          );
+
+          if (s.casoSeleccionado) {
+            const casoAct = s.casos.find(c => c.id === s.casoSeleccionado);
+            if (casoAct) {
+              const currentChecklist = casoAct.compliance_checklist || [];
+              const nextChecklist = currentChecklist.map(c =>
+                c.stageId === stageId ? { ...c, observacion } : c
+              );
+              setTimeout(() => {
+                get().updateCaso(s.casoSeleccionado!, { compliance_checklist: nextChecklist });
+              }, 0);
+            }
+          }
+
+          return { complianceChecklist: updatedChecklist };
+        });
       },
       getComplianceByNormativa: (normativaId) => {
         return get().complianceChecklist.filter(c => c.normativaId === normativaId);

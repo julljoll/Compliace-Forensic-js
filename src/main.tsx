@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import {
+  initDatabase,
+  getCasosDB,
+  addCasoDB,
+  updateCasoDB,
+  deleteCasoDB,
+  getAuditLogsDB,
+  addAuditLogDB
+} from './db/neonClient';
+
+// Inicializar la base de datos de Neon Serverless
+initDatabase().catch(err => console.error('Error al inicializar la base de datos Neon:', err));
 
 // Declaración de tipos para la API de Electron
 declare global {
@@ -34,12 +46,15 @@ declare global {
       db: {
         getCasos: (userId: number) => Promise<any>;
         addCaso: (caso: any) => Promise<any>;
+        updateCaso: (id: string, data: any) => Promise<boolean>;
+        deleteCaso: (id: string) => Promise<boolean>;
         saveState: (userId: number, state: string) => Promise<any>;
         loadState: (userId: number) => Promise<any>;
         getUsers: () => Promise<any>;
         addUser: (userIdMaker: number, user: any) => Promise<any>;
         updateUser: (userIdMaker: number, userId: number, data: any) => Promise<any>;
         getAuditLogs: () => Promise<any>;
+        addAuditLog: (log: any) => Promise<boolean>;
       };
       auth: {
         login: (credentials: any) => Promise<any>;
@@ -238,47 +253,17 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
       }
     },
     db: {
-      getCasos: async () => {
-        return getStorage('sha256_pwa_casos', INITIAL_CASOS);
+      getCasos: async (userId: number) => {
+        return getCasosDB(userId);
       },
-      addCaso: async (caso) => {
-        const casos = getStorage<any[]>('sha256_pwa_casos', INITIAL_CASOS);
-        const newId = Date.now();
-        const nuevo = {
-          id: newId,
-          numero_caso: caso.numero_caso,
-          titulo: caso.titulo,
-          descripcion: caso.descripcion,
-          estado: caso.estado,
-          tipo: caso.tipo || 'whatsapp',
-          solicitante_nombre: caso.solicitante_nombre,
-          solicitante_ci: caso.solicitante_ci || '',
-          dispositivo_marca: caso.dispositivo_marca || '',
-          dispositivo_modelo: caso.dispositivo_modelo || '',
-          dispositivo_imei: caso.dispositivo_imei || '',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_id: caso.user_id || 1
-        };
-        casos.push(nuevo);
-        setStorage('sha256_pwa_casos', casos);
-
-        const logs = getStorage<any[]>('sha256_pwa_audit_logs', INITIAL_LOGS);
-        const users = getStorage<any[]>('sha256_pwa_users', INITIAL_USERS);
-        const user = users.find(u => u.id === (caso.user_id || 1)) || users[0];
-        logs.unshift({
-          id: Date.now().toString(),
-          user_id: user.id,
-          accion: 'CASO_CREADO',
-          detalle: `Caso ${caso.numero_caso} creado exitosamente en base de datos local PWA`,
-          timestamp: new Date().toISOString(),
-          nombre: user.nombre,
-          apellido: user.apellido,
-          username: user.username
-        });
-        setStorage('sha256_pwa_audit_logs', logs);
-
-        return { success: true, id: newId };
+      addCaso: async (caso: any) => {
+        return addCasoDB(caso);
+      },
+      updateCaso: async (id: string, data: any) => {
+        return updateCasoDB(id, data);
+      },
+      deleteCaso: async (id: string) => {
+        return deleteCasoDB(id);
       },
       saveState: async (userId, state) => {
         setStorage(`sha256_pwa_state_${userId}`, state);
@@ -317,19 +302,18 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
         users.push(nuevo);
         setStorage('sha256_pwa_users', users);
 
-        const logs = getStorage<any[]>('sha256_pwa_audit_logs', INITIAL_LOGS);
         const adminUser = users.find(u => u.id === userIdMaker) || users[0];
-        logs.unshift({
+        const logDetail = `Usuario ${user.username} creado exitosamente en modo PWA por ${adminUser.username}`;
+        await addAuditLogDB({
           id: Date.now().toString(),
           user_id: adminUser.id,
           accion: 'USUARIO_CREADO',
-          detalle: `Usuario ${user.username} creado exitosamente en modo PWA por ${adminUser.username}`,
+          detalle: logDetail,
           timestamp: new Date().toISOString(),
           nombre: adminUser.nombre,
-          apellido: adminUser.username,
+          apellido: adminUser.apellido,
           username: adminUser.username
         });
-        setStorage('sha256_pwa_audit_logs', logs);
 
         return { success: true, id: newId };
       },
@@ -340,25 +324,27 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
           users[idx] = { ...users[idx], ...data };
           setStorage('sha256_pwa_users', users);
           
-          const logs = getStorage<any[]>('sha256_pwa_audit_logs', INITIAL_LOGS);
           const adminUser = users.find(u => u.id === userIdMaker) || users[0];
-          logs.unshift({
+          const logDetail = `Usuario ID ${userId} actualizado en base de datos local PWA`;
+          await addAuditLogDB({
             id: Date.now().toString(),
             user_id: adminUser.id,
             accion: 'USUARIO_ACTUALIZADO',
-            detalle: `Usuario ID ${userId} actualizado en base de datos local PWA`,
+            detalle: logDetail,
             timestamp: new Date().toISOString(),
             nombre: adminUser.nombre,
             apellido: adminUser.apellido,
             username: adminUser.username
           });
-          setStorage('sha256_pwa_audit_logs', logs);
           return { success: true };
         }
         return { success: false, error: 'Usuario no encontrado' };
       },
       getAuditLogs: async () => {
-        return getStorage('sha256_pwa_audit_logs', INITIAL_LOGS);
+        return getAuditLogsDB();
+      },
+      addAuditLog: async (log) => {
+        return addAuditLogDB(log);
       }
     },
     auth: {

@@ -9,16 +9,15 @@ import { useAuthStore } from '../store/authStore';
 
 const menuItems = [
   { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
-  { path: '/casos',            label: 'Gestión de Casos', icon: FolderOpen,      group: 'Principal' },
-  { path: '/compliance',       label: 'Compliance',       icon: ShieldCheck,     group: 'Control' },
-  { path: '/tareas',           label: 'Tareas & Fases',   icon: ClipboardList,   group: 'Control' },
-  { path: '/normativas',       label: 'Normativas',       icon: BookOpen,        group: 'Referencia' },
-  { path: '/manual-avilla',    label: 'Manual Avilla',    icon: Smartphone,      group: 'Referencia' },
-  { path: '/personal',         label: 'Personal',         icon: Users,           group: 'Referencia' },
-  { path: '/auditoria',        label: 'Auditoría',        icon: Activity,        group: 'Sistema' },
+  { path: '/casos',            label: 'Gestión de Casos',      icon: FolderOpen,       group: 'Principal' },
+  { path: '/control/seguimiento-compliance', label: 'Seguimiento & Compliance', icon: ShieldCheck, group: 'Control' },
+  { path: '/tareas',           label: 'Tareas & Fases',        icon: ClipboardList,    group: 'Control' },
+  { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Referencia' },
+  { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
+  { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Referencia' },
+  { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
   { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/planillas/seguimiento', label: 'Seguimiento Forense', icon: ClipboardList, group: 'Plantillas Oficiales' },
 ];
 
 const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];

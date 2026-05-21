@@ -13,7 +13,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const CasosPage = lazy(() => import('./pages/CasosPage'));
 const CasoDetailPage = lazy(() => import('./pages/CasoDetailPage'));
-const CompliancePage = lazy(() => import('./pages/CompliancePage'));
+const SeguimientoCompliancePage = lazy(() => import('./pages/Control/SeguimientoCompliancePage'));
 const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
@@ -23,7 +23,6 @@ const TareasPage = lazy(() => import('./pages/TareasPage'));
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
 const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage'));
-const SeguimientoPage = lazy(() => import('./pages/Planillas/SeguimientoPage'));
 
 // ── Módulos forenses ────────────────────────────────────────────────────────
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -65,7 +64,8 @@ function App() {
           <Route index element={<Suspense fallback={<PageLoader />}><DashboardPage /></Suspense>} />
           <Route path="casos" element={<Suspense fallback={<PageLoader />}><CasosPage /></Suspense>} />
           <Route path="casos/:id" element={<Suspense fallback={<PageLoader />}><CasoDetailPage /></Suspense>} />
-          <Route path="compliance" element={<Suspense fallback={<PageLoader />}><CompliancePage /></Suspense>} />
+          <Route path="control/seguimiento-compliance" element={<Suspense fallback={<PageLoader />}><SeguimientoCompliancePage /></Suspense>} />
+          <Route path="compliance" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="normativas" element={<Suspense fallback={<PageLoader />}><NormativasPage /></Suspense>} />
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
@@ -73,7 +73,7 @@ function App() {
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
-          <Route path="planillas/seguimiento" element={<Suspense fallback={<PageLoader />}><SeguimientoPage /></Suspense>} />
+          <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
         </Route>
 
         {/* ── Módulos Forenses (protegido, prefijo /forense) ── */}
@@ -88,7 +88,7 @@ function App() {
           <Route path="disposicion-final" element={<Suspense fallback={<PageLoader />}><DisposicionFinalPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
-          <Route path="planillas/seguimiento" element={<Suspense fallback={<PageLoader />}><SeguimientoPage /></Suspense>} />
+          <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
         </Route>
 
         {/* Fallback */}

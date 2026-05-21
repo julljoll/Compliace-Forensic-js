@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useCMSStore } from '../store/cmsStore';
 import { 
   Key, User, Camera, Star, UserPlus, Shield, Award, 
-  Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff
+  Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff,
+  FolderOpen, Trash2, Database, ShieldCheck
 } from 'lucide-react';
 
 const ROLES = [
@@ -22,7 +24,10 @@ export default function PersonalPage() {
   const [loading, setLoading] = useState(true);
 
   // States
-  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'projects'>('profile');
+  
+  // CMS Store for Projects Tab
+  const { casos, deleteCaso } = useCMSStore();
   
   // Password Change State
   const [newPassword, setNewPassword] = useState('');
@@ -240,6 +245,17 @@ export default function PersonalPage() {
           >
             <UserPlus size={14} />
             Colaboradores ({personal.length})
+          </button>
+          <button 
+            onClick={() => setActiveTab('projects')}
+            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${
+              activeTab === 'projects' 
+                ? 'bg-[#FECF06] text-black shadow-md' 
+                : 'text-fluent-text-muted hover:text-white'
+            }`}
+          >
+            <FolderOpen size={14} />
+            Mis Proyectos ({casos.length})
           </button>
         </div>
       </div>
@@ -634,6 +650,123 @@ export default function PersonalPage() {
 
           </div>
 
+        </div>
+      )}
+
+      {activeTab === 'projects' && (
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-bold text-white">Mis Proyectos Forenses</h3>
+              <p className="text-xs text-fluent-text-muted mt-0.5">Control de procesos activos e inalterabilidad de la evidencia digital.</p>
+            </div>
+            <span className="text-[10px] font-black font-mono text-[#FECF06] bg-[#FECF06]/10 px-2.5 py-1 rounded border border-[#FECF06]/20 uppercase tracking-widest">
+              Total: {casos.length} Proyectos
+            </span>
+          </div>
+
+          {casos.length === 0 ? (
+            <div className="fluent-mica p-16 text-center rounded-xl border border-fluent-border">
+              <FolderOpen size={48} className="mx-auto mb-4 text-fluent-text-muted opacity-25" />
+              <p className="text-fluent-text-muted font-bold text-xs uppercase tracking-wider">No hay proyectos activos en el servidor Neon Serverless</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {casos.map((caso) => {
+                const stepCount = Object.keys(caso.completed_steps || {}).filter(k => caso.completed_steps?.[k]).length;
+                const stepPct = Math.round((stepCount / 9) * 100);
+                
+                // Calculate compliance rate based on checked requirements (out of 25)
+                const complianceChecklist = caso.compliance_checklist || [];
+                const checkedCount = complianceChecklist.filter(c => c.checked).length;
+                const compliancePct = Math.min(100, Math.round((checkedCount / 25) * 100));
+
+                return (
+                  <div key={caso.id} className="fluent-mica p-5 rounded-xl border border-white/5 bg-[#0b1f13]/15 hover:border-[#FECF06]/30 transition-all flex flex-col justify-between h-[255px] relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[#FECF06]/5 rounded-full blur-xl group-hover:bg-[#FECF06]/10 transition-colors"></div>
+                    
+                    <div>
+                      {/* Cabecera del caso */}
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="min-w-0">
+                          <span className="font-mono text-[9px] font-black text-[#FECF06] uppercase tracking-wider block">
+                            {caso.numeroCaso}
+                          </span>
+                          <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-[#FECF06] transition-all">
+                            {caso.titulo}
+                          </h4>
+                        </div>
+                        <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded border shrink-0 ${
+                          caso.estado === 'cerrado' || caso.estado === 'archivado'
+                            ? 'bg-white/5 border-white/10 text-fluent-text-muted'
+                            : 'bg-green-500/10 border-green-500/20 text-green-400'
+                        }`}>
+                          {caso.estado}
+                        </span>
+                      </div>
+
+                      {/* Info adicional */}
+                      <div className="grid grid-cols-2 gap-2 mb-4 text-[10px] text-fluent-text-muted">
+                        <div>
+                          <span className="text-[8px] uppercase tracking-wider block opacity-50">Perito Líder</span>
+                          <span className="font-bold text-white/80">{caso.peritoLider || 'Sin asignar'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[8px] uppercase tracking-wider block opacity-50">Fiscalía</span>
+                          <span className="font-bold text-white/80 truncate block">{caso.fiscal || 'Sin asignar'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Gauges y Barras de progreso */}
+                    <div className="space-y-3">
+                      {/* Progreso Forense */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-[9px] font-bold">
+                          <span className="text-white/60 flex items-center gap-1">
+                            <Database size={10} className="text-cyan-400" /> Pasos Forenses
+                          </span>
+                          <span className="text-cyan-400 font-mono">{stepCount}/9 ({stepPct}%)</span>
+                        </div>
+                        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                          <div className="h-full bg-cyan-400 rounded-full" style={{ width: `${stepPct}%` }} />
+                        </div>
+                      </div>
+
+                      {/* Progreso Compliance */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-[9px] font-bold">
+                          <span className="text-white/60 flex items-center gap-1">
+                            <ShieldCheck size={10} className="text-[#00FF41]" /> Compliance Rate
+                          </span>
+                          <span className="text-[#00FF41] font-mono">{compliancePct}%</span>
+                        </div>
+                        <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                          <div className="h-full bg-[#00FF41] rounded-full" style={{ width: `${compliancePct}%` }} />
+                        </div>
+                      </div>
+
+                      {/* Botón de eliminación */}
+                      <div className="flex justify-end pt-2 border-t border-white/5">
+                        <button
+                          onClick={() => {
+                            if (window.confirm(`¿Estás seguro de que deseas eliminar permanentemente el proyecto "${caso.titulo}"? Esta acción no se puede deshacer y eliminará todos los registros en Neon Serverless.`)) {
+                              deleteCaso(caso.id);
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[9px] font-black uppercase tracking-wider border border-red-500/20 hover:border-red-500/40 transition-all cursor-pointer"
+                        >
+                          <Trash2 size={10} />
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
