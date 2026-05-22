@@ -4,7 +4,7 @@ import { useForenseStore } from '../../store/forenseStore';
 import { FileCheck, Save, Printer, Award, Gavel, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function InformeTecnico() {
-  const { adquisicionAndriller, adquisicionAleapp, dispositivoActual, casoActual } = useForenseStore();
+  const { adquisicionAndriller, adquisicionAleapp, dispositivoActual, casoActual, markCmsStepComplete } = useForenseStore();
   const [isSaved, setIsSaved] = useState(false);
   const idBase = useId();
   
@@ -21,6 +21,7 @@ export default function InformeTecnico() {
   });
 
   const handleGuardar = () => {
+    markCmsStepComplete(6);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3000);
   };

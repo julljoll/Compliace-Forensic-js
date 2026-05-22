@@ -75,7 +75,29 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
     localStorage.setItem(key, JSON.stringify(value));
   };
 
-  const INITIAL_USERS: any[] = [];
+  // ── Migración de datos entre versiones ──
+  const DATA_VERSION = 3;
+  const storedVersion = getStorage<number>('sha256_data_version', 0);
+  if (storedVersion < DATA_VERSION) {
+    // De v1 a v2: reset completo (destructivo)
+    if (storedVersion < 2) {
+      const keysToRemove = [
+        'sha256_pwa_casos', 'sha256_pwa_audit_logs', 'sha256_pwa_state_1',
+        'sha256_completed_steps', 'sha256_completed_steps_metadata',
+        'cms-neon-storage', 'sha256-auth', 'sha256-forense-storage'
+      ];
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      try {
+        const req = indexedDB.deleteDatabase('sha256_forense');
+        req.onsuccess = () => console.log('IndexedDB limpiada');
+        req.onerror = () => console.warn('No se pudo limpiar IndexedDB');
+      } catch {}
+    }
+    // De v2 a v3: la migración de completed_steps → steps se hace en cmsStore.migrateStepsData()
+    // No destructivo — preserva datos existentes
+    
+    setStorage('sha256_data_version', DATA_VERSION);
+  }
 
   async function seedInitialUsers() {
     const existing = getStorage<any[]>('sha256_pwa_users', []);
@@ -87,23 +109,13 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
     setStorage('sha256_pwa_users', users);
   }
 
-  const INITIAL_CASOS = [
-    { id: 101, numero_caso: 'EXP-2026-WA-001', titulo: 'Auditoría Forense WhatsApp', descripcion: 'Análisis de integridad y extracción lógica de evidencias digitales', estado: 'en_proceso', created_at: new Date().toISOString(), updated_at: new Date().toISOString(), user_id: 1 }
-  ];
-
-  const INITIAL_LOGS = [
-    { id: '1', user_id: 1, accion: 'SISTEMA_INICIADO', detalle: 'Sistema de Compliance Forense SHA256.US iniciado en el navegador (PWA)', timestamp: new Date().toISOString(), nombre: 'Sistema', apellido: 'PWA', username: 'system' }
-  ];
-
   seedInitialUsers();
-  if (!localStorage.getItem('sha256_pwa_casos')) setStorage('sha256_pwa_casos', INITIAL_CASOS);
-  if (!localStorage.getItem('sha256_pwa_audit_logs')) setStorage('sha256_pwa_audit_logs', INITIAL_LOGS);
 
   const selectedFilesMap = new Map<string, File>();
 
   window.electronAPI = {
     platform: 'browser',
-    operationMode: 'simulation',
+    operationMode: 'production',
     dialog: {
       selectFile: async (filters) => {
         return new Promise((resolve) => {
@@ -154,7 +166,7 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
             return { success: false, hash: '', algorithm, verified: false, error: 'Error al calcular hash con Web Crypto' };
           }
         }
-        return { success: false, hash: '', algorithm, verified: false, error: 'Modo simulación: no se encontró el archivo real. El hash no es verificable.' };
+        return { success: false, hash: '', algorithm, verified: false, error: 'Archivo no disponible para cálculo de hash.' };
       }
     },
     db: {
@@ -223,7 +235,7 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
         return { success: true, id: newId };
       },
       updateUser: async (userIdMaker, userId, data) => {
-        const users = getStorage<any[]>('sha256_pwa_users', INITIAL_USERS);
+        const users = getStorage<any[]>('sha256_pwa_users', []);
         const idx = users.findIndex(u => u.id === userId);
         if (idx !== -1) {
           users[idx] = { ...users[idx], ...data };
@@ -274,19 +286,6 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
         };
         setStorage('sha256_active_session', sessionUser);
         
-        const logs = getStorage<any[]>('sha256_pwa_audit_logs', INITIAL_LOGS);
-        logs.unshift({
-          id: Date.now().toString(),
-          user_id: user.id,
-          accion: 'INICIO_SESION',
-          detalle: `Usuario ${user.username} inició sesión en el sistema PWA`,
-          timestamp: new Date().toISOString(),
-          nombre: user.nombre,
-          apellido: user.apellido,
-          username: user.username
-        });
-        setStorage('sha256_pwa_audit_logs', logs);
-        
         return { success: true, user: sessionUser };
       },
       validate: async (token) => {
@@ -301,7 +300,7 @@ if (typeof window !== 'undefined' && !window.electronAPI) {
         return { success: true };
       },
       changePassword: async (userId, newPassword) => {
-        const users = getStorage<any[]>('sha256_pwa_users', INITIAL_USERS);
+        const users = getStorage<any[]>('sha256_pwa_users', []);
         const idx = users.findIndex(u => u.id === userId);
         if (idx !== -1) {
           const hashNew = await sha256Local(newPassword);

@@ -5,7 +5,7 @@ import { useForenseStore } from '../store/forenseStore';
 import { 
   ArrowLeft, Calendar, User, Shield, Plus, Clock, 
   Smartphone, History, ListTodo, ShieldCheck, 
-  Trash2, PlusCircle, CheckSquare, Square, Fingerprint
+  Trash2, PlusCircle, CheckSquare, Square, Fingerprint, AlertTriangle
 } from 'lucide-react';
 
 const ESTADO_OPCIONES: { value: EstadoCaso; label: string; color: string }[] = [
@@ -64,11 +64,13 @@ export default function CasoDetailPage() {
   // Zustand Store Forense
   const setCasoForense = useForenseStore(state => state.setCaso);
   const setDispositivoForense = useForenseStore(state => state.setDispositivo);
+  const setCmsCasoId = useForenseStore(state => state.setCmsCasoId);
 
   // Local States
   const [caso, setCaso] = useState<CasoCMS | null>(null);
   const [showEvidenciaModal, setShowEvidenciaModal] = useState(false);
   const [showTareaModal, setShowTareaModal] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<{ message: string; onConfirm: () => void } | null>(null);
 
   // Modal Evidencia Form
   const [evidenciaForm, setEvidenciaForm] = useState({
@@ -163,12 +165,15 @@ export default function CasoDetailPage() {
     };
     addEvidencia(nuevaEvidencia);
 
-    // Actualizar conteo en el caso y recalcular avance
-    const nuevoTotal = evidenciasCaso.length + 1;
-    const nuevoPorcentaje = Math.min(100, caso.porcentajeCompletado + 15);
+    const nuevoTotalEvidencias = evidenciasCaso.length + 1;
+    const tareasCasoActual = tareas.filter(t => t.casoId === caso.id);
+    const tareasCompletadas = tareasCasoActual.filter(t => t.estado === 'completada').length;
+    const totalItems = nuevoTotalEvidencias + tareasCasoActual.length;
+    const completados = Math.min(nuevoTotalEvidencias, 1) + tareasCompletadas;
+    const nuevoPorcentaje = totalItems > 0 ? Math.round((completados / (totalItems > 0 ? totalItems * 2 : 1)) * 100) : 0;
     updateCaso(caso.id, { 
-      totalEvidencias: nuevoTotal, 
-      porcentajeCompletado: nuevoPorcentaje 
+      totalEvidencias: nuevoTotalEvidencias, 
+      porcentajeCompletado: Math.min(100, Math.max(caso.porcentajeCompletado, nuevoPorcentaje))
     });
 
     addAuditLog({
@@ -198,19 +203,23 @@ export default function CasoDetailPage() {
   };
 
   const handleEliminarEvidencia = (evidId: string, evidNumero: string) => {
-    if (confirm(`¿Está seguro de eliminar la evidencia ${evidNumero}?`)) {
-      deleteEvidencia(evidId);
-      const nuevoTotal = Math.max(0, evidenciasCaso.length - 1);
-      updateCaso(caso.id, { totalEvidencias: nuevoTotal });
-      
-      addAuditLog({
-        accion: 'EVIDENCIA_ELIMINADA',
-        detalle: `Evidencia ${evidNumero} removida físicamente del expediente.`,
-        nivel: 'error',
-        casoId: caso.id,
-        usuario: caso.peritoLider || 'Perito'
-      });
-    }
+    setConfirmDialog({
+      message: `¿Está seguro de eliminar la evidencia ${evidNumero}?`,
+      onConfirm: () => {
+        deleteEvidencia(evidId);
+        const nuevoTotal = Math.max(0, evidenciasCaso.length - 1);
+        updateCaso(caso.id, { totalEvidencias: nuevoTotal });
+        
+        addAuditLog({
+          accion: 'EVIDENCIA_ELIMINADA',
+          detalle: `Evidencia ${evidNumero} removida físicamente del expediente.`,
+          nivel: 'error',
+          casoId: caso.id,
+          usuario: caso.peritoLider || 'Perito'
+        });
+        setConfirmDialog(null);
+      }
+    });
   };
 
   // Handlers Tarea
@@ -269,16 +278,20 @@ export default function CasoDetailPage() {
   };
 
   const handleEliminarTarea = (tareaId: string, titulo: string) => {
-    if (confirm(`¿Está seguro de eliminar la tarea: "${titulo}"?`)) {
-      deleteTarea(tareaId);
-      addAuditLog({
-        accion: 'TAREA_ELIMINADA',
-        detalle: `Tarea "${titulo}" eliminada del checklist.`,
-        nivel: 'error',
-        casoId: caso.id,
-        usuario: 'Coordinador Forense'
-      });
-    }
+    setConfirmDialog({
+      message: `¿Está seguro de eliminar la tarea: "${titulo}"?`,
+      onConfirm: () => {
+        deleteTarea(tareaId);
+        addAuditLog({
+          accion: 'TAREA_ELIMINADA',
+          detalle: `Tarea "${titulo}" eliminada del checklist.`,
+          nivel: 'error',
+          casoId: caso.id,
+          usuario: 'Coordinador Forense'
+        });
+        setConfirmDialog(null);
+      }
+    });
   };
 
   // Botón para iniciar peritaje guiado en el Laboratorio Forense
@@ -317,6 +330,9 @@ export default function CasoDetailPage() {
       casoId: caso.id,
       usuario: caso.peritoLider || 'Perito'
     });
+
+    // Vincular con el CMS para sync automático en Seguimiento & Compliance
+    setCmsCasoId(caso.id);
 
     // Redirigir al primer paso del flujo forense
     navigate('/forense/consignacion');
@@ -730,7 +746,7 @@ export default function CasoDetailPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                 <div>
                   <label className="fluent-label">Marca</label>
                   <input 
@@ -752,12 +768,22 @@ export default function CasoDetailPage() {
                   />
                 </div>
                 <div>
-                  <label className="fluent-label">Número de Serial / IMEI</label>
+                  <label className="fluent-label">Serial</label>
                   <input 
                     type="text" 
-                    placeholder="Serial único o IMEI"
+                    placeholder="Serial único del dispositivo"
                     value={evidenciaForm.serial}
-                    onChange={e => setEvidenciaForm({ ...evidenciaForm, serial: e.target.value, imei: e.target.value })}
+                    onChange={e => setEvidenciaForm({ ...evidenciaForm, serial: e.target.value })}
+                    className="fluent-input"
+                  />
+                </div>
+                <div>
+                  <label className="fluent-label">IMEI</label>
+                  <input 
+                    type="text" 
+                    placeholder="IMEI del dispositivo"
+                    value={evidenciaForm.imei}
+                    onChange={e => setEvidenciaForm({ ...evidenciaForm, imei: e.target.value })}
                     className="fluent-input"
                   />
                 </div>
@@ -936,6 +962,33 @@ export default function CasoDetailPage() {
               </div>
             </form>
 
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: CONFIRMACIÓN ─────────────────────────────────────────── */}
+      {confirmDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setConfirmDialog(null)} />
+          <div className="relative w-full max-w-md bg-[#1c1c1c] border border-fluent-border rounded-xl shadow-2xl overflow-hidden animate-fade-in z-10 p-6 text-center">
+            <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle size={28} className="text-red-400" />
+            </div>
+            <p className="text-white font-bold text-sm mb-6">{confirmDialog.message}</p>
+            <div className="flex justify-center gap-3">
+              <button 
+                onClick={() => setConfirmDialog(null)}
+                className="fluent-btn bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded px-6"
+              >
+                Cancelar
+              </button>
+              <button 
+                onClick={confirmDialog.onConfirm}
+                className="fluent-btn bg-red-500 hover:bg-red-600 text-white font-bold px-6 rounded"
+              >
+                Confirmar
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { CasoCMS, EstadoCaso, PrioridadCaso, Normativa } from '../../store/cmsStore';
+import { getTiposProyecto, getPasosPorTipo, getFasesPorTipo } from '../../data/tiposProyecto';
 
 interface NuevoCasoModalProps {
   onClose: () => void;
@@ -10,7 +11,9 @@ interface NuevoCasoModalProps {
   prioridades: { value: PrioridadCaso | 'todos'; label: string }[];
 }
 
+const TIPOS = getTiposProyecto();
 const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'> = {
+  tipoProyecto: 'forense_whatsapp',
   numeroCaso: '',
   titulo: '',
   descripcion: '',
@@ -21,14 +24,25 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
   compliance: '',
   despachoFiscal: '',
   organismoOrdenante: '',
-  normativasAplicadas: ['n1', 'n2', 'n3', 'n4'],
+  normativasAplicadas: ['n1', 'n4', 'n8', 'n7'],
   fasesCompletadas: 0,
-  totalFases: 6,
+  totalFases: 9,
   porcentajeCompletado: 0,
   totalEvidencias: 0,
   nivelCumplimientoGeneral: 'no_aplica',
   etiquetas: [],
   notas: '',
+  dispositivo_marca: '',
+  dispositivo_modelo: '',
+  dispositivo_imei: '',
+  dispositivo_imei2: '',
+  dispositivo_sim_card: '',
+  dispositivo_numero_tel: '',
+  dispositivo_estado_fisico: '',
+  dispositivo_modo_aislamiento: '',
+  dispositivo_danos_visibles: '',
+  dispositivo_bateria_estado: '',
+  dispositivo_pantalla_estado: '',
 };
 
 export default function NuevoCasoModal({
@@ -40,6 +54,17 @@ export default function NuevoCasoModal({
   prioridades,
 }: NuevoCasoModalProps) {
   const [form, setForm] = useState({ ...FORM_INICIAL });
+
+  const handleTipoChange = (tipo: typeof TIPOS[0]) => {
+    const pasos = getPasosPorTipo(tipo.id);
+    const fases = getFasesPorTipo(tipo.id);
+    setForm(f => ({
+      ...f,
+      tipoProyecto: tipo.id,
+      totalFases: fases.length,
+      normativasAplicadas: pasos.flatMap(p => p.complianceIds.map(c => c.split('__')[0])).filter((v, i, a) => a.indexOf(v) === i),
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +87,36 @@ export default function NuevoCasoModal({
 
         {/* Modal Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto flex-1">
+          {/* Selector de Tipo de Proyecto */}
+          <div className="space-y-3">
+            <label className="fluent-label">Tipo de Proyecto Forense *</label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {TIPOS.map(t => {
+                const Icon = t.icon;
+                const selected = form.tipoProyecto === t.id;
+                return (
+                  <button type="button" key={t.id} onClick={() => handleTipoChange(t)}
+                    className={`relative flex flex-col items-center gap-3 p-4 rounded-lg border-2 transition-all cursor-pointer text-center ${
+                      selected
+                        ? 'border-fluent-accent bg-fluent-accent/10 shadow-lg shadow-fluent-accent/20'
+                        : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
+                    }`}>
+                    <Icon size={28} className={selected ? 'text-fluent-accent' : 'text-white/40'} />
+                    <div>
+                      <p className={`text-xs font-bold ${selected ? 'text-white' : 'text-white/60'}`}>{t.label}</p>
+                      <p className="text-[9px] text-fluent-text-muted mt-0.5 leading-relaxed">{t.descripcion.slice(0, 100)}...</p>
+                    </div>
+                    {selected && (
+                      <div className="absolute top-2 right-2 w-5 h-5 bg-fluent-accent rounded-full flex items-center justify-center">
+                        <span className="text-black text-[10px] font-black">✓</span>
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="fluent-label">Identificador del Caso *</label>
@@ -85,6 +140,60 @@ export default function NuevoCasoModal({
             <label className="fluent-label">Contexto Operacional</label>
             <textarea className="fluent-input bg-white/[0.02] min-h-[80px] resize-none" placeholder="Antecedentes y alcance forense..." value={form.descripcion}
               onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} />
+          </div>
+
+          {/* Datos del Dispositivo */}
+          <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5">
+            <label className="fluent-label block mb-4 text-[#FECF06]">Datos del Dispositivo</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Marca</label>
+                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_marca: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Modelo</label>
+                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Galaxy A54" value={form.dispositivo_modelo || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_modelo: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">IMEI 1</label>
+                <input className="fluent-input bg-white/[0.02] font-mono" placeholder="000000000000000" value={form.dispositivo_imei || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_imei: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">IMEI 2</label>
+                <input className="fluent-input bg-white/[0.02] font-mono" placeholder="000000000000000" value={form.dispositivo_imei2 || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_imei2: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Número de Línea</label>
+                <input className="fluent-input bg-white/[0.02]" placeholder="0424-0000000" value={form.dispositivo_numero_tel || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_numero_tel: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Operadora (SIM)</label>
+                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Movistar" value={form.dispositivo_sim_card || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_sim_card: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Estado Físico</label>
+                <select className="fluent-input bg-white/[0.02]" value={form.dispositivo_estado_fisico || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_estado_fisico: e.target.value }))}>
+                  <option value="" className="bg-fluent-bg">Seleccione...</option>
+                  <option value="operativo" className="bg-fluent-bg">Operativo</option>
+                  <option value="danos_pantalla" className="bg-fluent-bg">Daños en Pantalla</option>
+                  <option value="sin_bateria" className="bg-fluent-bg">Sin Batería</option>
+                  <option value="golpe_agua" className="bg-fluent-bg">Golpe de Agua</option>
+                  <option value="multiple_danos" className="bg-fluent-bg">Múltiples Daños</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="fluent-label text-[10px]">Daños Visibles</label>
+                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Rayadura en pantalla" value={form.dispositivo_danos_visibles || ''}
+                  onChange={e => setForm(f => ({ ...f, dispositivo_danos_visibles: e.target.value }))} />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -149,7 +258,7 @@ export default function NuevoCasoModal({
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Procesando...
               </>
-            ) : 'Inicializar Caso'}
+            ) : `Crear ${TIPOS.find(t => t.id === form.tipoProyecto)?.label || 'Caso'}`}
           </button>
         </div>
       </div>

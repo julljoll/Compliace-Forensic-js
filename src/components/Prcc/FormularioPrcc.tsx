@@ -21,7 +21,7 @@ const InputField = memo(({ label, value, onChange, placeholder, type = 'text' }:
 });
 
 export default function FormularioPrcc() {
-  const { prccActual: storePrcc, setPRCC, casoActual, dispositivoActual } = useForenseStore();
+  const { prccActual: storePrcc, setPRCC, markCmsStepComplete, casoActual, dispositivoActual } = useForenseStore();
   const [prcc, setPrcCLocal] = useState<PRCC>(storePrcc || {
     expediente: '', prcc: '', despachoInstruye: '', organismoInstruye: '', despachoInicia: '', organismoInicia: '',
     direccion: '', fechaHora: '', formaObtencion: 'Consignación',
@@ -33,6 +33,7 @@ export default function FormularioPrcc() {
 
   const handlePrint = () => {
     setPRCC(prcc);
+    markCmsStepComplete(1);
     setTimeout(() => window.print(), 100);
   };
 

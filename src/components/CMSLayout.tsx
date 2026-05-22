@@ -163,13 +163,9 @@ export default function CMSLayout() {
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.4)]" />
               <span>Sincronizado</span>
             </div>
-            <div id="operation-mode-badge" className={`flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border ${
-              window.electronAPI?.operationMode === 'production'
-                ? 'bg-green-500/10 text-green-400 border-green-500/30'
-                : 'bg-red-500/10 text-red-400 border-red-500/30'
-            }`}>
+            <div id="operation-mode-badge" className="flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border bg-green-500/10 text-green-400 border-green-500/30">
                <Activity size={12} />
-               <span>{window.electronAPI?.operationMode === 'production' ? 'PRODUCCIÓN' : 'SIMULACIÓN'}</span>
+               <span>PRODUCCIÓN</span>
             </div>
           </div>
         </header>

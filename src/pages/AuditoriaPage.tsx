@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useCMSStore } from '../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
+import { getPasosPorTipo } from '../data/tiposProyecto';
 import { 
   Activity, CheckCircle2, AlertTriangle, Info, AlertOctagon, 
   Printer, User, Clock, FileText
@@ -13,18 +14,6 @@ const NIVEL_CONFIG = {
   error:   { icon: AlertOctagon,  color: 'text-red-400',   bg: 'bg-red-500/10 border-red-500/20'   },
 };
 
-const STEPS = [
-  { id: 'step1', num: 1, title: 'Recepción, Entrevista y Consignación', complianceIds: ['n8__187', 'n4__prcc', 'n7__eficacia'] },
-  { id: 'step2', num: 2, title: 'Fijación In Situ y Aislamiento', complianceIds: ['n1__identificacion', 'n1__recopilacion', 'n4__fijacion', 'n4__proteccion', 'n3__preservacion'] },
-  { id: 'step3', num: 3, title: 'Adquisición Digital Forense', complianceIds: ['n1__adquisicion', 'n3__adquisicion', 'n7__firma'] },
-  { id: 'step4', num: 4, title: 'Apertura de Cadena de Custodia, Embalaje y Rotulado', complianceIds: ['n4__embalaje', 'n8__188'] },
-  { id: 'step5', num: 5, title: 'Recepción en Laboratorio, Verificación y Designación', complianceIds: ['n4__recepcion_lab', 'n4__designacion', 'n2__preparacion'] },
-  { id: 'step6', num: 6, title: 'Procesamiento Estructurado con ALEAPP', complianceIds: ['n2__examen', 'n2__analisis', 'n3__examen'] },
-  { id: 'step7', num: 7, title: 'Obtención por Derivación (Nueva Evidencia)', complianceIds: ['n4__peritaje'] },
-  { id: 'step8', num: 8, title: 'Elaboración del Dictamen Pericial', complianceIds: ['n3__reporte', 'n2__interpretacion', 'n7__igualdad'] },
-  { id: 'step9', num: 9, title: 'Re-embalaje y Remisión a Resguardo', complianceIds: ['n1__preservacion', 'n4__remision'] }
-];
-
 export default function AuditoriaPage() {
   const { casos } = useCMSStore();
   const [casoSeleccionado, setCasoSeleccionado] = useState<string | null>(null);
@@ -35,11 +24,14 @@ export default function AuditoriaPage() {
     loadLogs();
   }, []);
 
+  const SESSION_ACTIONS = new Set(['INICIO_SESION', 'SISTEMA_INICIADO', 'SESION_CERRADA']);
+
   const loadLogs = async () => {
     if (window.electronAPI?.db?.getAuditLogs) {
       try {
         const logs = await window.electronAPI.db.getAuditLogs();
-        setAuditLogs(logs);
+        const filtered = logs.filter((l: any) => !SESSION_ACTIONS.has(l.accion));
+        setAuditLogs(filtered);
       } catch (err) {
         console.error('Error cargando audit logs:', err);
       }
@@ -52,6 +44,16 @@ export default function AuditoriaPage() {
     if (!casoSeleccionado) return null;
     return casos.find(c => c.id === casoSeleccionado) || null;
   }, [casos, casoSeleccionado]);
+
+  const STEPS = useMemo(() => {
+    if (!activeCaso?.tipoProyecto) return [];
+    return getPasosPorTipo(activeCaso.tipoProyecto).map(p => ({
+      id: p.id,
+      num: p.num,
+      title: p.titulo,
+      complianceIds: p.complianceIds,
+    }));
+  }, [activeCaso]);
 
   // Formateador de requisito
   const getRequisitoDetails = (id: string) => {
@@ -227,8 +229,12 @@ export default function AuditoriaPage() {
           {/* Hitos del Timeline */}
           <div className="space-y-6 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-[2px] before:bg-white/5 print:before:bg-black/10">
             {STEPS.map((step) => {
-              const completed = !!activeCaso.completed_steps?.[step.id];
-              const meta = activeCaso.step_metadata?.[step.id] || {};
+              // Leer estado desde steps (nuevo) o completed_steps (legacy)
+              const stepState = activeCaso.steps?.[step.id];
+              const completed = stepState?.estado === 'completado' || !!activeCaso.completed_steps?.[step.id];
+              const meta = stepState 
+                ? { fecha: stepState.fechaCompletado || stepState.fechaInicio || '', responsable: stepState.responsable || '', observaciones: stepState.observaciones || '' }
+                : (activeCaso.step_metadata?.[step.id] || {});
               const complianceChecklist = activeCaso.compliance_checklist || [];
 
               // Requisitos del paso
@@ -265,7 +271,7 @@ export default function AuditoriaPage() {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
                       <div>
                         <span className="text-[9px] font-black uppercase text-fluent-text-muted/40 tracking-widest block">
-                          PASO {step.num} DE 9 · TRAZABILIDAD
+                          PASO {step.num} DE {STEPS.length} · TRAZABILIDAD
                         </span>
                         <h3 className={`text-sm font-bold ${completed ? 'text-white print:text-black' : 'text-white/40 print:text-black/40'}`}>
                           {step.title}

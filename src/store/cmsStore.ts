@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { useAuditStore } from './auditStore';
+import { getPasosPorTipo } from '../data/tiposProyecto';
 
 // ─── Enumeraciones ────────────────────────────────────────────────────────────
 
@@ -10,6 +12,16 @@ export type TipoNormativa = 'ISO' | 'NIST' | 'LEY' | 'MANUAL' | 'REGLAMENTO';
 export type NivelCumplimiento = 'conforme' | 'parcial' | 'no_conforme' | 'no_aplica';
 export type TipoEvidencia = 'dispositivo_movil' | 'computador' | 'memoria' | 'imagen_forense' | 'documento' | 'otro';
 export type RolPersonal = 'perito_lider' | 'perito_asistente' | 'fiscal' | 'compliance_officer' | 'coordinador';
+export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro';
+export type EstadoPaso = 'bloqueado' | 'disponible' | 'en_progreso' | 'completado';
+
+export interface StepState {
+  estado: EstadoPaso;
+  fechaInicio?: string;
+  fechaCompletado?: string;
+  responsable?: string;
+  observaciones?: string;
+}
 
 // ─── Interfaces de Entidades ──────────────────────────────────────────────────
 
@@ -77,6 +89,7 @@ export interface Evidencia {
 export interface TareaForense {
   id: string;
   casoId: string;
+  pasoId?: string;
   titulo: string;
   descripcion: string;
   asignadoA: string;
@@ -95,6 +108,7 @@ export interface FaseForense {
   casoId: string;
   nombre: string;
   orden: number;
+  pasoIds: string[];
   estado: EstadoTarea;
   responsable: string;
   fechaInicio?: string;
@@ -116,6 +130,7 @@ export interface AuditLog {
 
 export interface CasoCMS {
   id: string;
+  tipoProyecto: TipoProyecto;
   numeroCaso: string;
   numeroPRCC?: string;
   expediente?: string;
@@ -155,6 +170,7 @@ export interface CasoCMS {
   notas: string;
 
   // Seguimiento Forense y Compliance
+  steps?: Record<string, StepState>;
   completed_steps?: Record<string, boolean>;
   step_metadata?: Record<string, { fecha?: string; responsable?: string; observaciones?: string }>;
   compliance_checklist?: { stageId: string; normativaId: string; checked: boolean; fechaCheck?: string; observacion?: string }[];
@@ -210,6 +226,18 @@ interface CMSState {
   seleccionarCaso: (id: string | null) => void;
   setStepCompleted: (stepId: string, completed: boolean) => void;
   setStepMetadata: (stepId: string, metadata: { fecha?: string; responsable?: string; observaciones?: string }) => void;
+  
+  // Nuevo sistema de pasos con estado enriquecido y gating secuencial
+  initSteps: (casoId: string) => void;
+  startStep: (stepId: string) => void;
+  verifyStepCompletion: (stepId: string) => { canComplete: boolean; missing: string[] };
+  completeStep: (stepId: string) => void;
+  unlockNextStep: (stepId: string) => void;
+  getStepState: (stepId: string) => EstadoPaso | undefined;
+  
+  // Migración
+  migrateStepsData: () => void;
+  _dataMigrated: boolean;
   
   // Acciones - Evidencias
   addEvidencia: (evidencia: Omit<Evidencia, 'id'>) => void;
@@ -369,6 +397,7 @@ export const useCMSStore = create<CMSState>()(
       filtroEstado: 'todos',
       filtroPrioridad: 'todos',
       busqueda: '',
+      _dataMigrated: false,
 
       // ── Casos ──
       fetchCasos: async () => {
@@ -379,6 +408,7 @@ export const useCMSStore = create<CMSState>()(
                     let completed = {};
                     let metadata = {};
                     let compliance = [];
+                    let steps = {};
                     try {
                         completed = typeof c.completed_steps === 'string' ? JSON.parse(c.completed_steps) : (c.completed_steps || {});
                     } catch (e) { console.error('Error parsing completed_steps', e); }
@@ -388,12 +418,20 @@ export const useCMSStore = create<CMSState>()(
                     try {
                         compliance = typeof c.compliance_checklist === 'string' ? JSON.parse(c.compliance_checklist) : (c.compliance_checklist || []);
                     } catch (e) { console.error('Error parsing compliance_checklist', e); }
+                    try {
+                        steps = typeof c.steps === 'string' ? JSON.parse(c.steps) : (c.steps || {});
+                    } catch (e) { console.error('Error parsing steps', e); }
 
-                    const completedCount = Object.values(completed).filter(Boolean).length;
-                    const pct = Math.round((completedCount / 9) * 100);
+                    const hasNewSteps = Object.keys(steps).length > 0;
+                    const totalSteps = c.tipo_proyecto ? getPasosPorTipo(c.tipo_proyecto).length : 9;
+                    const completedCount = hasNewSteps
+                      ? Object.values(steps as Record<string, StepState>).filter(s => s.estado === 'completado').length
+                      : Object.values(completed).filter(Boolean).length;
+                    const pct = Math.round((completedCount / Math.max(totalSteps, 1)) * 100);
 
                     return {
                         id: c.id.toString(),
+                        tipoProyecto: c.tipo_proyecto || 'forense_whatsapp',
                         numeroCaso: c.numero_caso,
                         titulo: c.titulo,
                         descripcion: c.descripcion,
@@ -411,8 +449,9 @@ export const useCMSStore = create<CMSState>()(
                         nivelCumplimientoGeneral: 'no_aplica',
                         etiquetas: [],
                         notas: '',
-                        completed_steps: completed,
-                        step_metadata: metadata,
+                        steps: Object.keys(steps).length > 0 ? steps as Record<string, StepState> : undefined,
+                        completed_steps: !hasNewSteps ? completed : undefined,
+                        step_metadata: !hasNewSteps ? metadata : undefined,
                         compliance_checklist: compliance,
                         dispositivo_marca: c.dispositivo_marca,
                         dispositivo_modelo: c.dispositivo_modelo,
@@ -439,6 +478,7 @@ export const useCMSStore = create<CMSState>()(
         try {
             const payload = {
                 id: (caso as any).id || uid(),
+                tipo_proyecto: caso.tipoProyecto || 'forense_whatsapp',
                 numero_caso: caso.numeroCaso,
                 titulo: caso.titulo,
                 descripcion: caso.descripcion,
@@ -456,8 +496,9 @@ export const useCMSStore = create<CMSState>()(
                 dispositivo_danos_visibles: caso.dispositivo_danos_visibles || '',
                 dispositivo_bateria_estado: caso.dispositivo_bateria_estado || '',
                 dispositivo_pantalla_estado: caso.dispositivo_pantalla_estado || '',
-                completed_steps: caso.completed_steps || {},
-                step_metadata: caso.step_metadata || {},
+                steps: caso.steps || {},
+                completed_steps: caso.steps ? undefined : (caso.completed_steps || {}),
+                step_metadata: caso.steps ? undefined : (caso.step_metadata || {}),
                 compliance_checklist: caso.compliance_checklist || [],
                 user_id: 1
             };
@@ -467,9 +508,11 @@ export const useCMSStore = create<CMSState>()(
                 const id = result.id.toString();
                 const nuevo: CasoCMS = {
                   ...caso,
+                  tipoProyecto: caso.tipoProyecto || 'forense_whatsapp',
                   id,
                   fechaCreacion: now(),
                   fechaUltimaActualizacion: now(),
+                  steps: payload.steps,
                   completed_steps: payload.completed_steps,
                   step_metadata: payload.step_metadata,
                   compliance_checklist: payload.compliance_checklist,
@@ -487,6 +530,13 @@ export const useCMSStore = create<CMSState>()(
                 };
                 set(s => ({ casos: [...s.casos, nuevo] }));
                 get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.peritoLider });
+                useAuditStore.getState().addEntry({
+                  accion: 'CASO_CREADO',
+                  detalle: `Caso ${caso.numeroCaso} — ${caso.titulo}`,
+                  usuario: caso.peritoLider,
+                  nivel: 'success',
+                  casoId: id,
+                });
                 return id;
             }
             throw new Error(result?.error || 'Error desconocido al guardar en DB');
@@ -515,6 +565,9 @@ export const useCMSStore = create<CMSState>()(
             if (datos.dispositivo_danos_visibles !== undefined) mappedData.dispositivo_danos_visibles = datos.dispositivo_danos_visibles;
             if (datos.dispositivo_bateria_estado !== undefined) mappedData.dispositivo_bateria_estado = datos.dispositivo_bateria_estado;
             if (datos.dispositivo_pantalla_estado !== undefined) mappedData.dispositivo_pantalla_estado = datos.dispositivo_pantalla_estado;
+            if (datos.steps !== undefined) mappedData.steps = datos.steps;
+            if (datos.completed_steps !== undefined) mappedData.completed_steps = datos.completed_steps;
+            if (datos.step_metadata !== undefined) mappedData.step_metadata = datos.step_metadata;
             await window.electronAPI.db.updateCaso(id, mappedData);
           }
         } catch (e) {
@@ -550,6 +603,29 @@ export const useCMSStore = create<CMSState>()(
         const caso = casos.find(c => c.id === casoSeleccionado);
         if (!caso) return;
 
+        // Si el caso ya tiene steps (nuevo sistema), usar completeStep
+        if (caso.steps) {
+          if (completed) {
+            get().completeStep(stepId);
+          } else {
+            // Permitir desmarcar (solo si está completado)
+            const current = caso.steps[stepId];
+            if (current?.estado === 'completado') {
+              const steps = {
+                ...(caso.steps || {}),
+                [stepId]: {
+                  ...current,
+                  estado: 'disponible' as EstadoPaso,
+                  fechaCompletado: undefined,
+                },
+              };
+              get().updateCaso(casoSeleccionado, { steps });
+            }
+          }
+          return;
+        }
+
+        // Sistema legacy (completed_steps boolean)
         const completed_steps = { ...(caso.completed_steps || {}), [stepId]: completed };
 
         let step_metadata = { ...(caso.step_metadata || {}) };
@@ -564,16 +640,30 @@ export const useCMSStore = create<CMSState>()(
           };
         }
 
+        const totalSteps = caso.tipoProyecto
+          ? getPasosPorTipo(caso.tipoProyecto).length
+          : 9;
+
         const stepsArray = Object.keys(completed_steps).filter(k => completed_steps[k]);
-        const porcentajeCompletado = Math.round((stepsArray.length / 9) * 100);
+        const porcentajeCompletado = Math.round((stepsArray.length / Math.max(totalSteps, 1)) * 100);
 
         get().updateCaso(casoSeleccionado, {
           completed_steps,
           step_metadata,
           porcentajeCompletado,
           fasesCompletadas: stepsArray.length,
-          totalFases: 9
+          totalFases: totalSteps
         });
+        const stepNum = stepId.replace('step', '');
+        if (completed) {
+          useAuditStore.getState().addEntry({
+            accion: 'PASO_COMPLETADO',
+            detalle: `Paso ${stepNum} completado — ${caso.titulo}`,
+            usuario: caso.peritoLider,
+            nivel: 'success',
+            casoId: casoSeleccionado,
+          });
+        }
       },
       setStepMetadata: (stepId, metadata) => {
         const { casoSeleccionado, casos } = get();
@@ -581,12 +671,257 @@ export const useCMSStore = create<CMSState>()(
         const caso = casos.find(c => c.id === casoSeleccionado);
         if (!caso) return;
 
+        // Nuevo sistema: steps
+        if (caso.steps) {
+          const steps = {
+            ...(caso.steps || {}),
+            [stepId]: {
+              ...(caso.steps?.[stepId] || { estado: 'disponible' as EstadoPaso }),
+              ...metadata,
+            },
+          };
+          get().updateCaso(casoSeleccionado, { steps });
+          useAuditStore.getState().addEntry({
+            accion: 'METADATA_ACTUALIZADA',
+            detalle: `Paso ${stepId} — responsable/observaciones actualizados`,
+            usuario: caso.fiscal || 'Perito de Guardia',
+            nivel: 'info',
+            casoId: casoSeleccionado,
+          });
+          return;
+        }
+
+        // Sistema legacy
         const step_metadata = {
           ...(caso.step_metadata || {}),
           [stepId]: { ...(caso.step_metadata?.[stepId] || {}), ...metadata }
         };
 
         get().updateCaso(casoSeleccionado, { step_metadata });
+        const stepNum = stepId.replace('step', '');
+        useAuditStore.getState().addEntry({
+          accion: 'METADATA_ACTUALIZADA',
+          detalle: `Paso ${stepNum} — responsable/observaciones actualizados en caso`,
+          usuario: caso.fiscal || 'Perito de Guardia',
+          nivel: 'info',
+          casoId: casoSeleccionado,
+        });
+      },
+
+      // ── Migración: completed_steps + step_metadata → steps ──
+      migrateStepsData: () => {
+        const { casos, _dataMigrated } = get();
+        if (_dataMigrated || casos.length === 0) return;
+
+        let needsUpdate = false;
+        const migratedCasos = casos.map(caso => {
+          if (caso.steps) return caso; // Ya migrado
+
+          const oldCompleted = caso.completed_steps || {};
+          const oldMetadata = caso.step_metadata || {};
+          const pasos = caso.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto) : [];
+          const steps: Record<string, StepState> = {};
+
+          pasos.forEach((paso, idx) => {
+            const wasCompleted = !!oldCompleted[paso.id];
+            const meta = oldMetadata[paso.id] || {};
+
+            if (wasCompleted) {
+              steps[paso.id] = {
+                estado: 'completado',
+                fechaInicio: meta.fecha || undefined,
+                fechaCompletado: meta.fecha || undefined,
+                responsable: meta.responsable || '',
+                observaciones: meta.observaciones || '',
+              };
+            } else {
+              // El paso está disponible si el anterior está completado, o si es el primero
+              const prevCompleted = idx === 0 || pasos.slice(0, idx).every(p => !!oldCompleted[p.id]);
+              steps[paso.id] = {
+                estado: prevCompleted ? 'disponible' : 'bloqueado',
+              };
+            }
+          });
+
+          needsUpdate = true;
+          return {
+            ...caso,
+            steps,
+            completed_steps: undefined,
+            step_metadata: undefined,
+          };
+        });
+
+        if (needsUpdate) {
+          set({ casos: migratedCasos as CasoCMS[], _dataMigrated: true });
+        } else {
+          set({ _dataMigrated: true });
+        }
+      },
+
+      // ── Inicializar pasos para un caso ──
+      initSteps: (casoId) => {
+        const { casos } = get();
+        const caso = casos.find(c => c.id === casoId);
+        if (!caso) return;
+        if (caso.steps) return; // Ya inicializado
+
+        const pasos = caso.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto) : [];
+        const steps: Record<string, StepState> = {};
+
+        pasos.forEach((paso, idx) => {
+          steps[paso.id] = {
+            estado: idx === 0 ? 'disponible' : 'bloqueado',
+          };
+        });
+
+        get().updateCaso(casoId, { steps });
+      },
+
+      // ── Iniciar paso (disponible → en_progreso) ──
+      startStep: (stepId) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso) return;
+
+        const currentState = caso.steps?.[stepId]?.estado;
+        if (currentState !== 'disponible') return;
+
+        const steps = {
+          ...(caso.steps || {}),
+          [stepId]: {
+            ...(caso.steps?.[stepId] || {}),
+            estado: 'en_progreso' as EstadoPaso,
+            fechaInicio: new Date().toISOString(),
+          },
+        };
+
+        get().updateCaso(casoSeleccionado, { steps });
+        useAuditStore.getState().addEntry({
+          accion: 'PASO_INICIADO',
+          detalle: `Paso ${stepId} iniciado`,
+          usuario: caso.peritoLider,
+          nivel: 'info',
+          casoId: casoSeleccionado,
+        });
+      },
+
+      // ── Verificar si un paso puede completarse ──
+      verifyStepCompletion: (stepId) => {
+        const { casoSeleccionado, casos, tareas } = get();
+        if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'] };
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso) return { canComplete: false, missing: ['Caso no encontrado'] };
+        if (!caso.tipoProyecto) return { canComplete: false, missing: ['Tipo de proyecto no definido'] };
+
+        const pasos = getPasosPorTipo(caso.tipoProyecto);
+        const paso = pasos.find(p => p.id === stepId);
+        if (!paso) return { canComplete: false, missing: ['Paso no encontrado'] };
+
+        const missing: string[] = [];
+
+        // 1. Verificar tareas del paso
+        const tareasPaso = tareas.filter(t => t.casoId === casoSeleccionado && t.pasoId === stepId);
+        const tareasPendientes = tareasPaso.filter(t => t.estado !== 'completada');
+        tareasPendientes.forEach(t => missing.push(`Tarea pendiente: ${t.titulo}`));
+
+        // 2. Verificar compliance
+        const complianceList = caso.compliance_checklist || [];
+        paso.complianceIds.forEach(reqId => {
+          const item = complianceList.find(c => c.stageId === reqId);
+          if (!item?.checked) {
+          missing.push(`Compliance pendiente: ${reqId}`);
+          }
+        });
+
+        return { canComplete: missing.length === 0, missing };
+      },
+
+      // ── Completar paso (con validación) ──
+      completeStep: (stepId) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso) return;
+
+        const currentState = caso.steps?.[stepId]?.estado;
+        if (currentState !== 'en_progreso' && currentState !== 'disponible') return;
+
+        const { canComplete, missing } = get().verifyStepCompletion(stepId);
+        if (!canComplete) {
+          useAuditStore.getState().addEntry({
+            accion: 'PASO_BLOQUEADO',
+            detalle: `Paso ${stepId} no puede completarse. Pendientes: ${missing.join(', ')}`,
+            usuario: caso.peritoLider,
+            nivel: 'warning',
+            casoId: casoSeleccionado,
+          });
+          return;
+        }
+
+        const now = new Date();
+        const offset = now.getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(now.getTime() - offset)).toISOString().slice(0, 16);
+
+        const steps = {
+          ...(caso.steps || {}),
+          [stepId]: {
+            ...(caso.steps?.[stepId] || {}),
+            estado: 'completado' as EstadoPaso,
+            fechaCompletado: localISOTime,
+            responsable: caso.fiscal || 'Perito de Guardia',
+          },
+        };
+
+        // Recalcular porcentaje global
+        const totalPasoCount = getPasosPorTipo(caso.tipoProyecto).length;
+        const completedCount = Object.values(steps).filter(s => s.estado === 'completado').length;
+        const porcentajeCompletado = Math.round((completedCount / Math.max(totalPasoCount, 1)) * 100);
+
+        get().updateCaso(casoSeleccionado, { steps, porcentajeCompletado, fasesCompletadas: completedCount, totalFases: totalPasoCount });
+
+        // Desbloquear siguiente paso
+        get().unlockNextStep(stepId);
+
+        useAuditStore.getState().addEntry({
+          accion: 'PASO_COMPLETADO',
+          detalle: `Paso ${stepId} completado — ${caso.titulo}`,
+          usuario: caso.peritoLider,
+          nivel: 'success',
+          casoId: casoSeleccionado,
+        });
+      },
+
+      // ── Desbloquear siguiente paso ──
+      unlockNextStep: (stepId) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        if (!caso || !caso.tipoProyecto) return;
+
+        const pasos = getPasosPorTipo(caso.tipoProyecto);
+        const currentIdx = pasos.findIndex(p => p.id === stepId);
+        if (currentIdx === -1 || currentIdx >= pasos.length - 1) return;
+
+        const nextPaso = pasos[currentIdx + 1];
+        const steps = {
+          ...(caso.steps || {}),
+          [nextPaso.id]: {
+            ...(caso.steps?.[nextPaso.id] || {}),
+            estado: 'disponible' as EstadoPaso,
+          },
+        };
+
+        get().updateCaso(casoSeleccionado, { steps });
+      },
+
+      // ── Obtener estado de un paso ──
+      getStepState: (stepId) => {
+        const { casoSeleccionado, casos } = get();
+        if (!casoSeleccionado) return undefined;
+        const caso = casos.find(c => c.id === casoSeleccionado);
+        return caso?.steps?.[stepId]?.estado;
       },
 
       // ── Evidencias ──
@@ -640,6 +975,10 @@ export const useCMSStore = create<CMSState>()(
       },
 
       toggleComplianceCheck: (stageId, normativaId) => {
+        const stateBefore = get();
+        const existingBefore = stateBefore.complianceChecklist.find(c => c.stageId === stageId);
+        const newChecked = existingBefore ? !existingBefore.checked : true;
+
         set(s => {
           let updatedChecklist: ComplianceCheckItem[] = [];
           const existing = s.complianceChecklist.find(c => c.stageId === stageId);
@@ -682,6 +1021,16 @@ export const useCMSStore = create<CMSState>()(
 
           return { complianceChecklist: updatedChecklist };
         });
+
+        setTimeout(() => {
+          useAuditStore.getState().addEntry({
+            accion: newChecked ? 'CUMPLIMIENTO_VERIFICADO' : 'CUMPLIMIENTO_DESVERIFICADO',
+            detalle: `Requisito ${stageId} (normativa ${normativaId}) ${newChecked ? 'verificado' : 'desmarcado'}`,
+            usuario: 'Perito de Guardia',
+            nivel: newChecked ? 'success' : 'info',
+            casoId: stateBefore.casoSeleccionado || undefined,
+          });
+        }, 100);
       },
       setComplianceObservacion: (stageId, observacion) => {
         set(s => {
@@ -751,7 +1100,7 @@ export const useCMSStore = create<CMSState>()(
     {
       name: 'cms-neon-storage',
       storage: createJSONStorage(() => neonStorage),
-      partialize: (state) => ({ ...state, casos: [] }), // Ignoramos 'casos' porque ya los obtenemos explícitamente con fetchCasos para que no haya colisiones
+      partialize: (state) => state, // Persistimos todo el estado, incluidos casos
     }
   )
 );

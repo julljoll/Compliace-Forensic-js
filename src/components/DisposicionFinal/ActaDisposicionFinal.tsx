@@ -3,6 +3,7 @@ import {
   Archive, RotateCcw, Trash2, User, MapPin, FileText,
   Printer, Gavel, AlertTriangle, CheckCircle2, Lock
 } from 'lucide-react';
+import { useForenseStore } from '../../store/forenseStore';
 
 type DestinoFinal = 'devolucion' | 'destruccion' | 'archivo_fiscal' | 'tribunal';
 
@@ -127,6 +128,8 @@ export default function ActaDisposicionFinal() {
 
   const handlePrint = () => {
     setImprimiendo(true);
+    const fn = useForenseStore.getState().markCmsStepComplete;
+    if (fn) fn(8);
     setTimeout(() => { window.print(); setImprimiendo(false); }, 200);
   };
 

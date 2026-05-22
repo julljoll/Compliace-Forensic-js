@@ -10,7 +10,7 @@ const PlanillaPRCCPage = () => {
     <div className="planilla-container">
 
     <div className="page">
-        <div className="watermark">DERIVACIÓN</div>
+        <div className="watermark">CONSIGNACIÓN</div>
 
         <header>
             <div className="logo-container">
@@ -19,21 +19,21 @@ const PlanillaPRCCPage = () => {
                 <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
             </div>
             <div className="form-header-info">
-                <h1 className="form-title-main">Planilla de Cadena de Custodia</h1>
+                <h1 className="form-title-main">Planilla de Registro de Cadena de Custodia (PRCC)</h1>
                 <div className="form-nro">N° PRCC: <span style={{ 'marginLeft': '8px', 'borderBottom': '1px solid var(--border-color)', 'minWidth': '100px', 'display': 'inline-block' }}></span></div>
             </div>
         </header>
 
         {/*  SECCIÓN I  */}
         <div className="section">
-            <div className="section-title">I. Datos Generales (Obtención por Derivación)</div>
+            <div className="section-title">I. Datos del Consignante y del Caso</div>
             <div className="grid-container">
-                <div className="form-group"><div className="label">N° de Expediente / Causa</div><div className="value"></div></div>
-                <div className="form-group" style={{ 'background': 'rgba(254, 207, 6, 0.05)' }}><div className="label" style={{ 'color': 'var(--primary-color)' }}>Nueva PRCC (Correlativo Derivado)</div><div className="value"></div></div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}><div className="label">Organismo / Despacho que Instruye</div><div className="value"></div></div>
-                <div className="form-group"><div className="label">Despacho que inicia custodia</div><div className="value"></div></div>
-                <div className="form-group"><div className="label">Fecha de Obtención</div><div className="value"></div></div>
-                <div className="form-group"><div className="label">Hora de Obtención</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">Apellidos y Nombres del Consignante</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">Cédula de Identidad</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">Teléfono de Contacto</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">N° de Expediente / Caso</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">Fecha de Recepción</div><div className="value"></div></div>
+                <div className="form-group"><div className="label">Hora de Recepción</div><div className="value"></div></div>
             </div>
         </div>
 
@@ -42,10 +42,9 @@ const PlanillaPRCCPage = () => {
             <div className="section-title">II. Forma de Obtención</div>
             <div className="form-group">
                 <div className="checkbox-group">
+                    <div className="check-item"><span className="box" style={{ 'background': 'rgba(254, 207, 6, 0.1)', 'color': 'var(--primary-color)' }}></span> <u>CONSIGNACIÓN</u></div>
                     <div className="check-item"><span className="box"></span> TÉCNICA</div>
                     <div className="check-item"><span className="box"></span> ASEGURAMIENTO</div>
-                    <div className="check-item"><span className="box"></span> CONSIGNACIÓN</div>
-                    <div className="check-item"><span className="box" style={{ 'background': 'rgba(254, 207, 6, 0.1)', 'color': 'var(--primary-color)' }}></span> <u>DERIVACIÓN</u></div>
                 </div>
             </div>
         </div>
@@ -75,31 +74,45 @@ const PlanillaPRCCPage = () => {
 
         {/*  SECCIÓN IV  */}
         <div className="section">
-            <div className="section-title">IV. Descripción de la Evidencia Digital Derivada</div>
-            <div className="form-group">
-                <div className="value" style={{ 'minHeight': '80px', 'fontSize': '11px', 'color': 'var(--text-muted)' }}>
-                </div>
-                <div style={{ 'textAlign': 'right', 'marginTop': '5px', 'fontSize': '9px' }}>
-                    ¿Continúa en Anexo A? <span className="box"></span> SI <span className="box"></span> NO
-                </div>
+            <div className="section-title">IV. Descripción de la Evidencia Digital Consignada</div>
+            <table className="evidence-table">
+                <tr><td>Tipo de Dispositivo</td><td><div className="checkbox-group" style={{ 'flexDirection': 'row', 'gap': '15px', 'fontSize': '9px' }}>
+                    <div className="check-item"><span className="box"></span> Teléfono Móvil</div>
+                    <div className="check-item"><span className="box"></span> Computador</div>
+                    <div className="check-item"><span className="box"></span> Tableta</div>
+                    <div className="check-item"><span className="box"></span> Otro</div>
+                </div></td></tr>
+                <tr><td>Marca / Modelo</td><td></td></tr>
+                <tr><td>IMEI / Serial</td><td></td></tr>
+                <tr><td>Estado Físico</td><td>
+                    <div className="checkbox-group" style={{ 'flexDirection': 'row', 'gap': '10px', 'fontSize': '9px' }}>
+                        <div className="check-item"><div className="box"></div> Operativo</div>
+                        <div className="check-item"><div className="box"></div> Daños Pantalla</div>
+                        <div className="check-item"><div className="box"></div> Sin Batería</div>
+                        <div className="check-item"><div className="box"></div> Golpe de Agua</div>
+                    </div>
+                </td></tr>
+                <tr><td>Accesorios Incluidos</td><td></td></tr>
+            </table>
+            <div style={{ 'textAlign': 'right', 'marginTop': '5px', 'fontSize': '9px' }}>
+                ¿Continúa en Anexo A? <span className="box"></span> SI <span className="box"></span> NO
             </div>
         </div>
 
         {/*  SECCIÓN V  */}
         <div className="section">
-            <div className="section-title">V. Transferencia de la Evidencia</div>
+            <div className="section-title">V. Recepción de la Evidencia (Consignación Voluntaria)</div>
             <table className="transfer-table">
                 <tr>
                     <td style={{ 'width': '30%' }}>
                         <div className="label">Motivo</div>
                         <div className="checkbox-group" style={{ 'flexDirection': 'column', 'gap': '4px', 'fontSize': '8px' }}>
-                            <div className="check-item"><span className="box"></span> TRASLADO</div>
-                            <div className="check-item"><span className="box"></span> PERITAJE</div>
+                            <div className="check-item"><span className="box" style={{ 'background': 'rgba(254, 207, 6, 0.1)' }}></span> PERITAJE</div>
                             <div className="check-item"><span className="box"></span> RESGUARDO</div>
                         </div>
                     </td>
                     <td style={{ 'width': '35%' }}>
-                        <div className="label">Entrega</div>
+                        <div className="label">Entrega (Consignante)</div>
                         <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre/C.I.:</div>
                         <div className="sig-row" style={{ 'marginTop': '0' }}>
                             <div className="sig-box" style={{ 'height': '35px' }}><span className="sig-label">FIRMA</span></div>
@@ -107,31 +120,24 @@ const PlanillaPRCCPage = () => {
                         </div>
                     </td>
                     <td style={{ 'width': '35%' }}>
-                        <div className="label">Recibe</div>
-                        <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre/C.I.:</div>
+                        <div className="label">Recibe (Perito)</div>
+                        <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre/Credencial:</div>
                         <div className="sig-row" style={{ 'marginTop': '0' }}>
                             <div className="sig-box" style={{ 'height': '35px' }}><span className="sig-label">FIRMA</span></div>
-                            <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>HUELLA</div>
+                            <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>SELLO</div>
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        {/*  ANEXO B  */}
-        <div className="anexo-derivacion">
-            <div className="anexo-header">Anexo B: Trazabilidad de Derivación Forense</div>
-            <div className="grid-container" style={{ 'gridTemplateColumns': '2fr 1fr 1.5fr' }}>
-                <div className="form-group"><div className="label">Forense que deriva</div><div className="value"></div></div>
-                <div className="form-group"><div className="label">Fecha/Hora</div><div className="value"></div></div>
-                <div className="form-group"><div className="label">N° Dictamen Pericial Origen</div><div className="value"></div></div>
-            </div>
-            <div className="form-group" style={{ 'marginTop': '8px' }}>
-                <div className="label">Relación de Archivos y Hashes (Derivados del Matriz)</div>
-                <div className="value" style={{ 'minHeight': '50px' }}></div>
-            </div>
-            <p style={{ 'fontSize': '7px', 'color': 'var(--text-muted)', 'textAlign': 'justify', 'marginTop': '5px', 'lineHeight': '1.1' }}>
-                Se deja constancia de que la data digital aquí descrita es producto de una extracción técnica validada, manteniendo la integridad inalterable del dispositivo de origen y cumpliendo con el Manual Único de Cadena de Custodia (2017).
+        {/*  DECLARACIÓN  */}
+        <div className="section">
+            <p style={{ 'fontSize': '7px', 'color': 'var(--text-muted)', 'textAlign': 'justify', 'marginTop': '5px', 'lineHeight': '1.2' }}>
+                Yo, el consignante arriba identificado, declaro que hago entrega voluntaria del dispositivo descrito para su revisión técnica forense. 
+                Autorizo al Laboratorio SHA256.US a realizar las pruebas técnicas necesarias sobre el equipo y su contenido digital, 
+                conforme al <strong>Manual Único de Cadena de Custodia de Evidencias (2017)</strong> y el <strong>Art. 187 del COPP</strong>. 
+                Me comprometo a retirar el equipo una vez finalizado el peritaje, en un plazo no mayor a treinta (30) días continuos.
             </p>
         </div>
 

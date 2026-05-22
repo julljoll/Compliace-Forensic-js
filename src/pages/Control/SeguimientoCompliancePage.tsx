@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useCMSStore } from '../../store/cmsStore';
+import { Link } from 'react-router-dom';
+import { useCMSStore, EstadoPaso } from '../../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../../data/normativasEtapas';
-import { ETAPAS_FORENSES, ForensicStep } from '../../data/etapasForenses';
+import { getPasosPorTipo } from '../../data/tiposProyecto';
 import {
   ShieldCheck, Calendar, User, Info,
-  CheckCircle2, Circle, ChevronDown, ChevronUp, Terminal,
+  CheckCircle2, ChevronDown, ChevronUp, Terminal,
   Shield, Lock, Camera, Smartphone, Database, FileText,
   AlertTriangle, Copy, CheckCheck, Fingerprint, Package,
-  Scale, Archive, Briefcase, PlusCircle
+  Scale, Archive, Briefcase, PlusCircle, Printer, Play,
+  AlertOctagon
 } from 'lucide-react';
 import '../Planillas/Planillas.css';
 
@@ -25,7 +27,17 @@ const iconMap: Record<string, any> = {
   Fingerprint
 };
 
-const stepsData: ForensicStep[] = ETAPAS_FORENSES;
+const PLANILLA_ROUTES: Record<string, string> = {
+  step1: '/planillas/acta-obtencion',
+  step2: '/planillas/prcc-derivacion',
+  step3: '',
+  step4: '/planillas/prcc-derivacion',
+  step5: '',
+  step6: '',
+  step7: '/planillas/dictamen',
+  step8: '/planillas/entrega-resultados',
+  step9: '/planillas/entrega-resultados',
+};
 
 // Helper types for UI rendering
 interface NormativaTag { label: string; color: string; }
@@ -141,7 +153,12 @@ export default function SeguimientoCompliancePage() {
     setStepCompleted,
     setStepMetadata,
     toggleComplianceCheck,
-    setComplianceObservacion
+    setComplianceObservacion,
+    initSteps,
+    startStep,
+    completeStep,
+    tareas,
+    updateTarea
   } = useCMSStore();
 
   const [expandedStep, setExpandedStep] = useState<string | null>(null);
@@ -158,12 +175,35 @@ export default function SeguimientoCompliancePage() {
     }
   }, [casos, casoSeleccionado, seleccionarCaso]);
 
-  // Obtener estado de completado e información del paso
+  // Inicializar pasos cuando un caso se selecciona (si no tiene steps aún)
+  useEffect(() => {
+    if (activeCaso && !activeCaso.steps && !activeCaso.completed_steps) {
+      initSteps(activeCaso.id);
+    }
+  }, [activeCaso, initSteps]);
+
+  // Obtener estado de completado e información del paso (nuevo sistema + legacy)
   const getStepStatus = (stepId: string) => {
-    if (!activeCaso) return { completado: false, metadata: {} };
+    if (!activeCaso) return { completado: false, metadata: {}, estado: 'bloqueado' as EstadoPaso };
+    
+    // Nuevo sistema: steps con estado enriquecido
+    if (activeCaso.steps?.[stepId]) {
+      const step = activeCaso.steps[stepId]!;
+      return {
+        completado: step.estado === 'completado',
+        metadata: {
+          fecha: step.fechaCompletado || step.fechaInicio || '',
+          responsable: step.responsable || '',
+          observaciones: step.observaciones || ''
+        },
+        estado: step.estado
+      };
+    }
+    
+    // Sistema legacy
     const completado = !!activeCaso.completed_steps?.[stepId];
     const metadata = activeCaso.step_metadata?.[stepId] || { fecha: '', responsable: '', observaciones: '' };
-    return { completado, metadata };
+    return { completado, metadata, estado: completado ? 'completado' as EstadoPaso : 'disponible' as EstadoPaso };
   };
 
   // Obtener todos los requisitos reglamentarios para un paso
@@ -224,17 +264,24 @@ export default function SeguimientoCompliancePage() {
 
   // Cálculos de métricas para el caso activo
   const metrics = useMemo(() => {
-    if (!activeCaso) return { stepPct: 0, compliancePct: 0, completedStepsCount: 0 };
+    if (!activeCaso) return { stepPct: 0, compliancePct: 0, completedStepsCount: 0, pasos: [] as any[], totalSteps: 0 };
     
-    // Progreso de pasos forenses
-    const completedStepsCount = Object.keys(activeCaso.completed_steps || {}).filter(k => activeCaso.completed_steps?.[k]).length;
-    const stepPct = Math.round((completedStepsCount / 9) * 100);
+    // Progreso de pasos forenses (nuevo sistema + legacy)
+    let completedStepsCount = 0;
+    if (activeCaso.steps) {
+      completedStepsCount = Object.values(activeCaso.steps).filter(s => s.estado === 'completado').length;
+    } else {
+      completedStepsCount = Object.keys(activeCaso.completed_steps || {}).filter(k => activeCaso.completed_steps?.[k]).length;
+    }
+    const pasos = activeCaso.tipoProyecto ? getPasosPorTipo(activeCaso.tipoProyecto) : [];
+    const totalSteps = pasos.length || 9;
+    const stepPct = Math.round((completedStepsCount / Math.max(totalSteps, 1)) * 100);
 
-    // Progreso de compliance: total de requisitos vinculados a los 9 pasos
+    // Progreso de compliance: total de requisitos vinculados a los pasos
     let totalReqs = 0;
     let checkedReqs = 0;
-    
-    stepsData.forEach(step => {
+
+    pasos.forEach(step => {
       const reqs = getRequisitosForPaso(step.complianceIds);
       totalReqs += reqs.length;
       reqs.forEach(r => {
@@ -246,7 +293,7 @@ export default function SeguimientoCompliancePage() {
 
     const compliancePct = totalReqs > 0 ? Math.round((checkedReqs / totalReqs) * 100) : 0;
 
-    return { stepPct, compliancePct, completedStepsCount };
+    return { stepPct, compliancePct, completedStepsCount, pasos, totalSteps };
   }, [activeCaso, getRequisitosForPaso, isComplianceChecked]);
 
   if (casos.length === 0) {
@@ -337,7 +384,7 @@ export default function SeguimientoCompliancePage() {
                   Progreso de Pasos Forenses
                 </h3>
                 <span className="text-[10px] font-black font-mono text-cyan-400 bg-cyan-400/10 px-2.5 py-1 rounded-[4px] border border-cyan-400/20 uppercase tracking-widest">
-                  {metrics.completedStepsCount} / 9 Pasos
+                  {metrics.completedStepsCount} / {metrics.totalSteps} Pasos
                 </span>
               </div>
               <div className="w-full h-2.5 bg-white/[0.03] rounded-full overflow-hidden border border-white/5 p-[1px]">
@@ -385,66 +432,109 @@ export default function SeguimientoCompliancePage() {
 
           {/* Accordion de los 9 Pasos Forenses */}
           <div className="space-y-4">
-            {stepsData.map((step) => {
-              const { completado, metadata } = getStepStatus(step.id);
+            {(metrics.pasos || []).map((step: any) => {
+              const { completado, metadata, estado } = getStepStatus(step.id);
               const isExpanded = expandedStep === step.id;
               const Icon = iconMap[step.iconoName] || Shield;
               const requisitos = getRequisitosForPaso(step.complianceIds);
+              
+              // Obtener tareas vinculadas a este paso
+              const tareasPaso = tareas.filter(t => 
+                t.casoId === activeCaso?.id && t.pasoId === step.id
+              );
+              const tareasCompletadas = tareasPaso.filter(t => t.estado === 'completada').length;
+
+              // Verificar gating: paso anterior debe estar completado
+              const isLocked = estado === 'bloqueado';
+              const isDisponible = estado === 'disponible';
+              const isEnProgreso = estado === 'en_progreso';
+
+              const stateColors: Record<string, string> = {
+                completado: 'border-green-500/20 bg-green-500/[0.03]',
+                en_progreso: 'border-blue-500/20 bg-blue-500/[0.03]',
+                disponible: 'border-white/10 bg-white/[0.02]',
+                bloqueado: 'border-white/[0.03] bg-white/[0.005] opacity-50',
+              };
 
               return (
                 <div
                   key={step.id}
-                  className={`rounded-xl border transition-all duration-300 overflow-hidden ${
-                    completado
-                      ? 'border-green-500/20 bg-green-500/[0.03]'
-                      : isExpanded
-                      ? 'border-white/10 bg-white/[0.02]'
-                      : 'border-white/[0.05] bg-white/[0.01] hover:bg-white/[0.02]'
-                  }`}
+                  className={`rounded-xl border transition-all duration-300 overflow-hidden ${stateColors[estado] || 'border-white/[0.05] bg-white/[0.01]'}`}
                 >
                   {/* Cabecera del paso */}
                   <button
                     className="w-full flex items-center gap-4 px-5 py-4 text-left group"
-                    onClick={() => setExpandedStep(isExpanded ? null : step.id)}
+                    onClick={() => !isLocked && setExpandedStep(isExpanded ? null : step.id)}
+                    disabled={isLocked}
                   >
                     <span className="text-[10px] font-black text-white/20 font-mono shrink-0 w-8 tabular-nums">
                       {step.num.toString().padStart(2, '0')}
                     </span>
                     <div className={`p-2 rounded-lg shrink-0 transition-all ${
-                      completado ? 'bg-green-500/15' : 'bg-white/[0.04] group-hover:bg-white/[0.07]'
+                      completado ? 'bg-green-500/15' 
+                        : isEnProgreso ? 'bg-blue-500/15'
+                        : isDisponible ? 'bg-white/[0.04] group-hover:bg-white/[0.07]'
+                        : 'bg-white/[0.02]'
                     }`}>
-                      <Icon size={14} className={completado ? 'text-green-400' : 'text-white/30'} />
+                      {isLocked ? (
+                        <Lock size={14} className="text-white/20" />
+                      ) : (
+                        <Icon size={14} className={
+                          completado ? 'text-green-400' 
+                            : isEnProgreso ? 'text-blue-400'
+                            : 'text-white/30'
+                        } />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className={`text-[11px] font-black uppercase tracking-wide block ${
-                        completado ? 'text-green-400/80' : 'text-white/60 group-hover:text-white/80'
+                        completado ? 'text-green-400/80' 
+                          : isEnProgreso ? 'text-blue-400/80'
+                          : isLocked ? 'text-white/20'
+                          : 'text-white/60 group-hover:text-white/80'
                       }`}>
-                        {step.title}
+                        {step.titulo}
                       </span>
                       <span className="text-[9px] text-fluent-text-muted/40 uppercase font-bold tracking-wider block mt-0.5">
-                        {step.phase}
+                        {step.fase}
                       </span>
                     </div>
 
-                    {!isExpanded && step.normativas && (
+                    {!isExpanded && step.normativas && !isLocked && (
                       <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
-                        {step.normativas.slice(0, 2).map(n => (
+                        {step.normativas.slice(0, 2).map((n: any) => (
                           <BadgeNormativa key={n.label} tag={n} />
                         ))}
                       </div>
                     )}
 
-                    <span className={`timeline-status-badge ${completado ? 'completed' : 'pending'} ml-4`}>
-                      {completado ? 'Completado' : 'Pendiente'}
+                    {/* Badge de estado */}
+                    <span className={`text-[8px] font-black uppercase tracking-[0.15em] px-2 py-1 rounded border shrink-0 ${
+                      completado
+                        ? 'bg-green-500/10 border-green-500/25 text-green-400'
+                        : isEnProgreso
+                        ? 'bg-blue-500/10 border-blue-500/25 text-blue-400'
+                        : isDisponible
+                        ? 'bg-yellow-500/10 border-yellow-500/25 text-yellow-400'
+                        : 'bg-white/[0.03] border-white/[0.08] text-white/20'
+                    }`}>
+                      {completado ? 'Completado' 
+                        : isEnProgreso ? 'En Progreso'
+                        : isDisponible ? 'Disponible'
+                        : 'Bloqueado'} 🔒
                     </span>
 
-                    {isExpanded
-                      ? <ChevronUp size={14} className="text-white/25 shrink-0 ml-2" />
-                      : <ChevronDown size={14} className="text-white/20 shrink-0 ml-2" />}
+                    {isLocked ? (
+                      <Lock size={14} className="text-white/10 shrink-0 ml-2" />
+                    ) : isExpanded ? (
+                      <ChevronUp size={14} className="text-white/25 shrink-0 ml-2" />
+                    ) : (
+                      <ChevronDown size={14} className="text-white/20 shrink-0 ml-2" />
+                    )}
                   </button>
 
-                  {/* Contenido expandido */}
-                  {isExpanded && (
+                  {/* Contenido expandido (solo disponible, en_progreso, completado) */}
+                  {isExpanded && !isLocked && (
                     <div className="border-t border-white/5 bg-black/10 p-6 space-y-6">
                       
                       {/* Grid de 2 Columnas (Técnico vs Compliance) */}
@@ -465,7 +555,7 @@ export default function SeguimientoCompliancePage() {
                             <div>
                               <span className="text-[9px] font-black text-white/30 uppercase tracking-widest block mb-1.5">Actas y Documentos</span>
                               <div className="flex flex-wrap gap-2">
-                                {step.docs.map((doc, idx) => (
+                                {step.docs.map((doc: any, idx: number) => (
                                   <span key={idx} className="bg-white/5 border border-white/10 rounded-full px-2.5 py-0.5 text-[9px] text-white/60 uppercase tracking-wider font-semibold">
                                     📄 {doc}
                                   </span>
@@ -479,21 +569,55 @@ export default function SeguimientoCompliancePage() {
                             <p className="text-xs text-white/70 leading-relaxed mb-3">{step.guide}</p>
                             
                             <h5 className="text-[9px] font-bold text-white uppercase tracking-wider mb-2">Checklist Operativo:</h5>
-                            <ul className="space-y-1.5 text-xs text-white/80">
-                              {step.tasks.map((task, tIdx) => (
-                                <li key={tIdx} className="flex items-start gap-2">
-                                  <span className="text-fluent-accent">•</span>
-                                  <span>{task}</span>
-                                </li>
-                              ))}
-                            </ul>
+                            
+                            {/* Tareas del paso con checkboxes (si en_progreso) o lista estática */}
+                            {(step.tareas || []).map((task: string, tIdx: number) => {
+                              const tareaObj = tareasPaso[tIdx];
+                              const isCompleted = tareaObj?.estado === 'completada';
+                              return (
+                                <div key={tIdx} className="flex items-start gap-2 py-1">
+                                  {isEnProgreso && tareaObj ? (
+                                    <button
+                                      onClick={() => updateTarea(tareaObj.id, { 
+                                        estado: isCompleted ? 'pendiente' : 'completada',
+                                        fechaCompletada: isCompleted ? undefined : new Date().toISOString(),
+                                        porcentaje: isCompleted ? 0 : 100,
+                                      })}
+                                      className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                                        isCompleted
+                                          ? 'bg-cyan-400 border-cyan-400 text-black'
+                                          : 'border-white/20 hover:border-cyan-400/50'
+                                      }`}
+                                    >
+                                      {isCompleted && <CheckCheck size={10} strokeWidth={3} />}
+                                    </button>
+                                  ) : completado && tareaObj ? (
+                                    <span className="w-4 h-4 rounded border-2 border-green-500/40 bg-green-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                                      <CheckCheck size={10} className="text-green-400" />
+                                    </span>
+                                  ) : (
+                                    <span className="w-4 h-4 rounded border-2 border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                                    </span>
+                                  )}
+                                  <span className={`text-xs ${isCompleted || completado ? 'text-green-400/70 line-through' : 'text-white/80'}`}>
+                                    {task}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                            {tareasPaso.length > 0 && (
+                              <div className="mt-2 text-[9px] text-fluent-text-muted/40 font-mono">
+                                Tareas: {tareasCompletadas}/{tareasPaso.length} completadas
+                              </div>
+                            )}
                           </div>
 
-                          {step.codigo?.map((c, i) => (
+                          {step.codigo?.map((c: any, i: number) => (
                             <BloqueCode key={i} lang={c.lang} contenido={c.contenido} />
                           ))}
 
-                          {step.advertencias?.map((adv, i) => (
+                          {step.advertencias?.map((adv: any, i: number) => (
                             <AlertaForense key={i} adv={adv} />
                           ))}
                         </div>
@@ -515,10 +639,13 @@ export default function SeguimientoCompliancePage() {
                                   <div className="flex items-start gap-3">
                                     <button
                                       onClick={() => toggleComplianceCheck(req.id, req.normativaId)}
+                                      disabled={!isEnProgreso && !isDisponible}
                                       className={`w-[18px] h-[18px] rounded-[4px] border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
                                         checked
                                           ? 'bg-[#00FF41] border-[#00FF41] text-black shadow-lg shadow-[#00FF41]/20'
-                                          : 'border-white/20 hover:border-[#00FF41]/50'
+                                          : isEnProgreso || isDisponible
+                                            ? 'border-white/20 hover:border-[#00FF41]/50'
+                                            : 'border-white/10 opacity-40 cursor-not-allowed'
                                       }`}
                                     >
                                       {checked && <CheckCheck size={12} strokeWidth={3} />}
@@ -544,14 +671,14 @@ export default function SeguimientoCompliancePage() {
                                     </div>
                                   </div>
 
-                                  {/* Caja de observaciones de compliance */}
                                   <div className="pl-7">
                                     <input
                                       type="text"
                                       placeholder="Observación de cumplimiento / Evidencia RAG..."
                                       value={obsValue}
                                       onChange={(e) => setComplianceObservacion(req.id, e.target.value)}
-                                      className="w-full bg-black/40 border border-white/10 rounded px-2.5 py-1 text-[11px] text-white/70 placeholder-white/25 focus:border-[#00FF41] outline-none transition-all"
+                                      disabled={!isEnProgreso && !isDisponible}
+                                      className="w-full bg-black/40 border border-white/10 rounded px-2.5 py-1 text-[11px] text-white/70 placeholder-white/25 focus:border-[#00FF41] outline-none transition-all disabled:opacity-30"
                                     />
                                   </div>
                                 </div>
@@ -607,32 +734,79 @@ export default function SeguimientoCompliancePage() {
                         </div>
                       )}
 
-                      {/* Acciones del paso */}
+                      {/* Planilla del paso */}
+                      {PLANILLA_ROUTES[step.id] && (
+                        <div className="pt-4 border-t border-white/[0.05] flex items-center justify-between">
+                          <span className="text-[10px] text-white/30 italic">
+                            Genere la planilla oficial correspondiente a esta etapa:
+                          </span>
+                          <Link
+                            to={PLANILLA_ROUTES[step.id]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-[#FECF06]/10 border border-[#FECF06]/25 text-[#FECF06] hover:bg-[#FECF06]/20"
+                          >
+                            <Printer size={12} />
+                            <span>Imprimir Planilla</span>
+                          </Link>
+                        </div>
+                      )}
+
+                      {/* Acciones del paso según estado */}
                       <div className="pt-4 border-t border-white/[0.05] flex items-center justify-between">
-                        <span className="text-[10px] text-white/30 italic">
-                          {completado ? '✓ Hito guardado en Neon Serverless' : 'Asegure el checklist reglamentario antes de marcar'}
+                        {/* Mensaje contextual */}
+                        <span className="text-[10px] text-white/30 italic max-w-[50%]">
+                          {completado && '✓ Hito registrado en el sistema'}
+                          {isEnProgreso && 'Complete todas las tareas y compliance para finalizar el paso'}
+                          {isDisponible && 'Inicie el paso para comenzar las tareas técnicas'}
                         </span>
-                        <button
-                          onClick={() => setStepCompleted(step.id, !completado)}
-                          className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 ${
-                            completado
-                              ? 'bg-green-500/15 border border-green-500/25 text-green-400 hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-400'
-                              : 'bg-white/[0.04] border border-white/[0.08] text-white/35 hover:bg-green-500/10 hover:border-green-500/20 hover:text-green-400'
-                          }`}
-                        >
-                          {completado ? (
-                            <>
-                              <CheckCircle2 size={12} />
-                              <span>Desmarcar Hito</span>
-                            </>
-                          ) : (
-                            <>
-                              <Circle size={12} />
-                              <span>Marcar Completado</span>
-                            </>
+
+                        <div className="flex items-center gap-3">
+                          {/* Botón: Iniciar Paso */}
+                          {isDisponible && (
+                            <button
+                              onClick={() => startStep(step.id)}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-blue-500/15 border border-blue-500/25 text-blue-400 hover:bg-blue-500/25"
+                            >
+                              <Play size={12} />
+                              <span>Iniciar Paso</span>
+                            </button>
                           )}
-                        </button>
+
+                          {/* Botón: Completar Paso (con validación) */}
+                          {isEnProgreso && (
+                            <button
+                              onClick={() => completeStep(step.id)}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-green-500/15 border border-green-500/25 text-green-400 hover:bg-green-500/25"
+                              title="Verifica tareas y compliance antes de completar"
+                            >
+                              <CheckCircle2 size={12} />
+                              <span>Completar Paso</span>
+                            </button>
+                          )}
+
+                          {/* Botón: Desmarcar (solo completado, para sistema legacy) */}
+                          {completado && !activeCaso?.steps && (
+                            <button
+                              onClick={() => setStepCompleted(step.id, false)}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20"
+                            >
+                              <AlertOctagon size={12} />
+                              <span>Desmarcar Hito</span>
+                            </button>
+                          )}
+                        </div>
                       </div>
+
+                      {/* Mensaje de paso bloqueado (entre estados) */}
+                      {isLocked && (
+                        <div className="flex items-center gap-3 p-4 rounded-lg bg-yellow-500/[0.06] border border-yellow-500/20">
+                          <Lock size={14} className="text-yellow-400 shrink-0" />
+                          <span className="text-[10px] text-yellow-300/70 font-medium">
+                            Complete el paso anterior para desbloquear esta etapa.
+                          </span>
+                        </div>
+                      )}
 
                     </div>
                   )}

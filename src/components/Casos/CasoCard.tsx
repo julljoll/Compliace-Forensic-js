@@ -1,6 +1,24 @@
 import { Link } from 'react-router-dom';
-import { User, Calendar, ChevronRight, Trash2 } from 'lucide-react';
-import { CasoCMS, EstadoCaso, NivelCumplimiento } from '../../store/cmsStore';
+import { User, Calendar, ChevronRight, Trash2, Smartphone, Mail, HardDrive } from 'lucide-react';
+import { CasoCMS, EstadoCaso, NivelCumplimiento, TipoProyecto } from '../../store/cmsStore';
+
+const TIPO_ICONOS: Record<TipoProyecto, any> = {
+  forense_whatsapp: Smartphone,
+  forense_email: Mail,
+  forense_discoduro: HardDrive,
+};
+
+const TIPO_BADGE: Record<TipoProyecto, string> = {
+  forense_whatsapp: 'bg-green-500/10 text-green-400 border-green-500/20',
+  forense_email: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  forense_discoduro: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+};
+
+const TIPO_LABEL: Record<TipoProyecto, string> = {
+  forense_whatsapp: 'WhatsApp',
+  forense_email: 'Email',
+  forense_discoduro: 'Disco Duro',
+};
 
 interface CasoCardProps {
   caso: CasoCMS;
@@ -22,6 +40,7 @@ export default function CasoCard({
   const estadoConf = estadoColors[caso.estado] || estadoColors.iniciado;
   const cumplConf = cumplimientoIcon[caso.nivelCumplimientoGeneral];
   const CumplIcon = cumplConf.icon;
+  const TipoIcon = TIPO_ICONOS[caso.tipoProyecto] || Smartphone;
 
   return (
     <div className="fluent-card p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:translate-y-[-2px] group">
@@ -29,10 +48,14 @@ export default function CasoCard({
       <div className={`w-1.5 h-10 rounded-full ${prioridadColors[caso.prioridad]} shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]`} />
       
       <div className="flex-1 min-w-0 w-full">
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex flex-wrap items-center gap-1.5 mb-1">
           <span className="font-mono font-black text-fluent-accent text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
           <div className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estadoConf}`}>
             {estados.find(e => e.value === caso.estado)?.label}
+          </div>
+          <div className={`flex items-center gap-1 text-[8px] px-1.5 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${TIPO_BADGE[caso.tipoProyecto] || TIPO_BADGE.forense_whatsapp}`}>
+            <TipoIcon size={10} />
+            {TIPO_LABEL[caso.tipoProyecto] || 'WhatsApp'}
           </div>
         </div>
         <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-fluent-accent transition-colors">{caso.titulo}</h3>

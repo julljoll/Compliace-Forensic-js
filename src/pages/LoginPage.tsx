@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale, Activity } from 'lucide-react';
+import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale } from 'lucide-react';
 
 export default function LoginPage() {
   const { login, isLoading, error, clearError } = useAuthStore();
@@ -15,8 +15,6 @@ export default function LoginPage() {
     await login(username.trim(), password);
   };
 
-  const isSimulation = (window as any).electronAPI?.operationMode !== 'production';
-
   return (
     <div className="min-h-screen bg-fluent-bg flex items-center justify-center p-4 font-sans selection:bg-fluent-accent/30 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -25,12 +23,6 @@ export default function LoginPage() {
       </div>
 
       <div className="relative w-full max-w-[400px] flex flex-col items-center animate-fade-in">
-        {isSimulation && (
-          <div className="w-full mb-4 p-2 rounded-md bg-red-500/10 border border-red-500/30 text-red-300 text-[10px] font-bold text-center uppercase tracking-wider flex items-center justify-center gap-2">
-            <Activity size={12} /> Modo Simulación — Los hashes no son verificables
-          </div>
-        )}
-
         <div className="w-24 h-24 rounded-full bg-fluent-surface border border-white/10 flex items-center justify-center mb-8 shadow-2xl overflow-hidden group">
           <div className="w-full h-full bg-gradient-to-br from-fluent-accent/20 to-fluent-accent-light/20 flex items-center justify-center transition-transform group-hover:scale-110">
             <Scale size={48} className="text-fluent-text opacity-80" strokeWidth={1.5} />

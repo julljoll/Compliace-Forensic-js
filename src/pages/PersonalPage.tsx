@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useCMSStore } from '../store/cmsStore';
+import { getPasosPorTipo } from '../data/tiposProyecto';
 import { 
   Key, User, Camera, Star, UserPlus, Shield, Award, 
   Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff,
@@ -673,8 +674,11 @@ export default function PersonalPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {casos.map((caso) => {
-                const stepCount = Object.keys(caso.completed_steps || {}).filter(k => caso.completed_steps?.[k]).length;
-                const stepPct = Math.round((stepCount / 9) * 100);
+                const stepCount = caso.steps
+                  ? Object.values(caso.steps).filter(s => s.estado === 'completado').length
+                  : Object.keys(caso.completed_steps || {}).filter(k => caso.completed_steps?.[k]).length;
+                const totalStepCount = caso.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto).length : 9;
+                const stepPct = Math.round((stepCount / Math.max(totalStepCount, 1)) * 100);
                 
                 // Calculate compliance rate based on checked requirements (out of 25)
                 const complianceChecklist = caso.compliance_checklist || [];

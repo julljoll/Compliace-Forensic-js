@@ -1,8 +1,18 @@
-import { useId } from 'react';
-import { Shield, Gavel, MapPin, Printer } from 'lucide-react';
+import { useState, useId } from 'react';
+import { Shield, Gavel, MapPin, Printer, CheckCircle2 } from 'lucide-react';
+import { useForenseStore } from '../../store/forenseStore';
 
 export default function ResguardoJudicial() {
+  const { markCmsStepComplete } = useForenseStore();
+  const [isSaved, setIsSaved] = useState(false);
   const idBase = useId();
+
+  const handlePrint = () => {
+    markCmsStepComplete(7);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
+    setTimeout(() => window.print(), 100);
+  };
 
   return (
     <div className="space-y-8 animate-fade-in max-w-5xl mx-auto">
@@ -17,12 +27,15 @@ export default function ResguardoJudicial() {
               <p className="text-xs text-white/40 font-semibold uppercase tracking-widest mt-1">Custodia y Exhibición en Juicio</p>
             </div>
           </div>
-          <button 
-            onClick={() => window.print()} 
-            className="forensic-btn forensic-btn-primary flex items-center gap-2 px-8 print:hidden"
-          >
-            <Printer size={18} /> Acta de Exhibición
-          </button>
+          <div className="flex items-center gap-2 print:hidden">
+            <button 
+              onClick={handlePrint} 
+              className="forensic-btn forensic-btn-primary flex items-center gap-2 px-8"
+            >
+              {isSaved ? <CheckCircle2 size={18} /> : <Printer size={18} />}
+              {isSaved ? 'Sincronizado' : 'Acta de Exhibición'}
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

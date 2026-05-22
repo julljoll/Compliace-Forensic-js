@@ -4,7 +4,7 @@ import { useForenseStore, type Adquisicion } from '../../store/forenseStore';
 import { Smartphone, Save, ShieldCheck, Database, FileCode, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export default function AdquisicionTecnica() {
-  const { dispositivoActual: dispositivo, adquisicionAndriller: storeAdquisicion, setAdquisicionAndriller } = useForenseStore();
+  const { dispositivoActual: dispositivo, adquisicionAndriller: storeAdquisicion, setAdquisicionAndriller, markCmsStepComplete } = useForenseStore();
   const [isSaved, setIsSaved] = useState(false);
   const idBase = useId();
   
@@ -23,6 +23,7 @@ export default function AdquisicionTecnica() {
 
   const handleGuardar = () => {
     setAdquisicionAndriller(adquisicion);
+    markCmsStepComplete(2);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3000);
   };

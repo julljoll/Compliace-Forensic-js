@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCMSStore, EstadoCaso, PrioridadCaso, NivelCumplimiento } from '../store/cmsStore';
 import { Plus, FolderOpen, CheckCircle2, AlertTriangle, Clock } from 'lucide-react';
+import { getTareasPorDefecto } from '../data/tiposProyecto';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────
 import CasosFilters from '../components/Casos/CasosFilters';
@@ -58,6 +59,8 @@ export default function CasosPage() {
   const setBusqueda = useCMSStore(state => state.setBusqueda);
   const addCaso = useCMSStore(state => state.addCaso);
   const deleteCaso = useCMSStore(state => state.deleteCaso);
+  const initSteps = useCMSStore(state => state.initSteps);
+  const addTarea = useCMSStore(state => state.addTarea);
   const normativas = useCMSStore(state => state.normativas);
   
   const [showForm, setShowForm] = useState(false);
@@ -70,6 +73,29 @@ export default function CasosPage() {
     try {
       const id = await addCaso(formData);
       if (id) {
+        const tipo = formData.tipoProyecto || 'forense_whatsapp';
+        const tareasDefecto = getTareasPorDefecto(tipo);
+
+        // Inicializar pasos con gating secuencial (primer paso disponible, resto bloqueado)
+        initSteps(id);
+
+        // Crear tareas por defecto del tipo de proyecto
+        tareasDefecto.forEach(t => {
+          addTarea({
+            casoId: id,
+            pasoId: t.pasoId,
+            titulo: t.titulo,
+            descripcion: '',
+            asignadoA: formData.peritoLider || '',
+            estado: 'pendiente',
+            prioridad: 'media',
+            fechaVencimiento: undefined,
+            normativasRelacionadas: [],
+            observaciones: '',
+            porcentaje: 0,
+          });
+        });
+
         setShowForm(false);
       } else {
         alert('Error al registrar el caso.');
@@ -83,9 +109,9 @@ export default function CasosPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Case Records</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Gestión de Casos</h1>
           <p className="text-sm text-fluent-text-muted font-medium mt-1">
-            <span className="text-fluent-accent font-bold">{casos.length}</span> active investigations in technical processing.
+            <span className="text-fluent-accent font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
           </p>
         </div>
         <button 
@@ -93,7 +119,7 @@ export default function CasosPage() {
           className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start sm:self-auto"
         >
           <Plus size={18} strokeWidth={3} />
-          New Management
+          Nuevo Caso
         </button>
       </div>
 
@@ -114,9 +140,9 @@ export default function CasosPage() {
             <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
                <FolderOpen size={40} className="text-fluent-text-muted opacity-20" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">No Records Detected</h3>
+            <h3 className="text-xl font-bold text-white mb-2">Sin Registros</h3>
             <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
-               Search criteria yielded no technical matches in the forensic database.
+               No se encontraron casos con los criterios de búsqueda actuales.
             </p>
           </div>
         ) : (

@@ -26,7 +26,7 @@ const InputField = memo(({ label, value, onChange, placeholder, type = 'text', r
 });
 
 export default function ConsignacionForm() {
-  const { setCaso, setDispositivo, setPRCC } = useForenseStore();
+  const { setCaso, setDispositivo, setPRCC, markCmsStepComplete } = useForenseStore();
   const [isSaved, setIsSaved] = useState(false);
   
   const [caso, setCasoLocal] = useState<any>({
@@ -63,6 +63,7 @@ export default function ConsignacionForm() {
     setCaso(caso);
     setDispositivo(dispositivo);
     setPRCC(prcc);
+    markCmsStepComplete(0);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3000);
   };

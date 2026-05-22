@@ -76,8 +76,16 @@ export const useAuthStore = create<AuthState>()(
           return true;
         }
         
-        // Modo web dev
-        return true;
+        try {
+          const stored = localStorage.getItem('sha256_active_session');
+          if (!stored) { set({ user: null, isAuthenticated: false }); return false; }
+          const session = JSON.parse(stored);
+          if (session.token !== user.token) { set({ user: null, isAuthenticated: false }); return false; }
+          return true;
+        } catch {
+          set({ user: null, isAuthenticated: false });
+          return false;
+        }
       },
 
       clearError: () => set({ error: null }),
@@ -95,8 +103,6 @@ export const useAuthStore = create<AuthState>()(
             return { success: false, error: e.message || 'Error de comunicación' };
           }
         } else {
-          // Modo web dev
-          console.log('[AuthStore] Contraseña cambiada en modo Web/Dev a:', newPassword);
           return { success: true };
         }
       },

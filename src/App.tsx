@@ -1,6 +1,7 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
+import { useCMSStore } from './store/cmsStore';
 import { ErrorBoundary } from './components/Shared/ErrorBoundary';
 
 // ── Layouts ─────────────────────────────────────────────────────────────────
@@ -24,6 +25,8 @@ const TareasPage = lazy(() => import('./pages/TareasPage'));
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
 const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage'));
+const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage'));
+const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
 
 // ── Módulos forenses ────────────────────────────────────────────────────────
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -53,6 +56,11 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 function App() {
   const { isAuthenticated } = useAuthStore();
 
+  // Migrar datos al cargar la app (v2 → v3: completed_steps → steps)
+  useEffect(() => {
+    useCMSStore.getState().migrateStepsData();
+  }, []);
+
   return (
     <Suspense fallback={<div className="h-screen w-screen bg-cms-bg flex items-center justify-center"><PageLoader /></div>}>
       <Routes>
@@ -75,6 +83,8 @@ function App() {
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
+          <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
+          <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
         </Route>
@@ -92,6 +102,8 @@ function App() {
           <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
+          <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
+          <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
         </Route>
 

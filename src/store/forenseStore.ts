@@ -1,4 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { useCMSStore } from './cmsStore';
+import { getPasosPorTipo } from '../data/tiposProyecto';
 
 export interface Caso {
   id?: number;
@@ -67,9 +70,15 @@ interface ForenseState {
   adquisicionAndriller: Adquisicion | null;
   adquisicionAleapp: Adquisicion | null;
   
+  // ID del caso CMS vinculado (para sync con Seguimiento & Compliance)
+  cmsCasoId: string | null;
+
   // Acciones para Caso
   setCaso: (caso: Caso) => void;
   clearCaso: () => void;
+
+  // Vinculación con CMS
+  setCmsCasoId: (id: string | null) => void;
   
   // Acciones para Dispositivo
   setDispositivo: (dispositivo: Dispositivo) => void;
@@ -92,112 +101,105 @@ interface ForenseState {
   setStepCompleted: (stepId: string, completed: boolean) => void;
   setStepMetadata: (stepId: string, metadata: { fecha?: string; responsable?: string; observaciones?: string }) => void;
   loadCompletedSteps: () => void;
+
+  // Sincronizar paso completado con cmsStore (Seguimiento & Compliance)
+  markCmsStepComplete: (stepIndex: number) => void;
 }
 
-export const useForenseStore = create<ForenseState>((set) => ({
-  // Estado inicial
-  casoActual: null,
-  dispositivoActual: null,
-  prccActual: null,
-  adquisicionAndriller: null,
-  adquisicionAleapp: null,
-  completedSteps: (() => {
-    try {
-      const stored = localStorage.getItem('sha256_completed_steps');
-      return stored ? JSON.parse(stored) : {};
-    } catch {
-      return {};
-    }
-  })(),
-  stepMetadata: (() => {
-    try {
-      const stored = localStorage.getItem('sha256_completed_steps_metadata');
-      return stored ? JSON.parse(stored) : {};
-    } catch {
-      return {};
-    }
-  })(),
-  
-  // Acciones Caso
-  setCaso: (caso) => set({ casoActual: caso }),
-  clearCaso: () => set({ casoActual: null }),
-  
-  // Acciones Dispositivo
-  setDispositivo: (dispositivo) => set({ dispositivoActual: dispositivo }),
-  clearDispositivo: () => set({ dispositivoActual: null }),
-  
-  // Acciones PRCC
-  setPRCC: (prcc) => set({ prccActual: prcc }),
-  clearPRCC: () => set({ prccActual: null }),
-  
-  // Acciones Adquisiciones
-  setAdquisicionAndriller: (adquisicion) => set({ adquisicionAndriller: adquisicion }),
-  setAdquisicionAleapp: (adquisicion) => set({ adquisicionAleapp: adquisicion }),
-  
-  // Reset
-  resetAll: () => set({
-    casoActual: null,
-    dispositivoActual: null,
-    prccActual: null,
-    adquisicionAndriller: null,
-    adquisicionAleapp: null,
-    completedSteps: {},
-    stepMetadata: {},
-  }),
+export const useForenseStore = create<ForenseState>()(
+  persist(
+    (set, get) => ({
+      casoActual: null,
+      dispositivoActual: null,
+      prccActual: null,
+      adquisicionAndriller: null,
+      adquisicionAleapp: null,
+      cmsCasoId: null,
+      completedSteps: {},
+      stepMetadata: {},
 
-  // Acciones para Seguimiento
-  setStepCompleted: (stepId, completed) => set((state) => {
-    const next = { ...state.completedSteps, [stepId]: completed };
-    
-    // Auto-completar metadatos si se marca como completado y no existen metadatos aún
-    let nextMetadata = { ...state.stepMetadata };
-    if (completed && !nextMetadata[stepId]) {
-      const now = new Date();
-      const offset = now.getTimezoneOffset() * 60000;
-      const localISOTime = (new Date(now.getTime() - offset)).toISOString().slice(0, 16);
-      nextMetadata[stepId] = {
-        fecha: localISOTime,
-        responsable: state.casoActual?.fiscal || 'Perito de Guardia',
-        observaciones: ''
-      };
-      try {
-        localStorage.setItem('sha256_completed_steps_metadata', JSON.stringify(nextMetadata));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    
-    try {
-      localStorage.setItem('sha256_completed_steps', JSON.stringify(next));
-    } catch (e) {
-      console.error('Error saving completed steps to localStorage', e);
-    }
-    return { completedSteps: next, stepMetadata: nextMetadata };
-  }),
+      setCaso: (caso) => set({ casoActual: caso }),
+      clearCaso: () => set({ casoActual: null }),
+      setCmsCasoId: (id) => set({ cmsCasoId: id }),
 
-  setStepMetadata: (stepId, metadata) => set((state) => {
-    const nextMetadata = { 
-      ...state.stepMetadata, 
-      [stepId]: { ...state.stepMetadata[stepId], ...metadata } 
-    };
-    try {
-      localStorage.setItem('sha256_completed_steps_metadata', JSON.stringify(nextMetadata));
-    } catch (e) {
-      console.error('Error saving step metadata to localStorage', e);
-    }
-    return { stepMetadata: nextMetadata };
-  }),
+      setDispositivo: (dispositivo) => set({ dispositivoActual: dispositivo }),
+      clearDispositivo: () => set({ dispositivoActual: null }),
 
-  loadCompletedSteps: () => {
-    try {
-      const stored = localStorage.getItem('sha256_completed_steps');
-      const storedMetadata = localStorage.getItem('sha256_completed_steps_metadata');
-      set({ 
-        completedSteps: stored ? JSON.parse(stored) : {},
-        stepMetadata: storedMetadata ? JSON.parse(storedMetadata) : {}
-      });
-    } catch (e) {
-      console.error('Error loading completed steps from localStorage', e);
+      setPRCC: (prcc) => set({ prccActual: prcc }),
+      clearPRCC: () => set({ prccActual: null }),
+
+      setAdquisicionAndriller: (adquisicion) => set({ adquisicionAndriller: adquisicion }),
+      setAdquisicionAleapp: (adquisicion) => set({ adquisicionAleapp: adquisicion }),
+
+      resetAll: () => set({
+        casoActual: null,
+        dispositivoActual: null,
+        prccActual: null,
+        adquisicionAndriller: null,
+        adquisicionAleapp: null,
+        cmsCasoId: null,
+        completedSteps: {},
+        stepMetadata: {},
+      }),
+
+      markCmsStepComplete: (stepIndex) => {
+        const { cmsCasoId } = get();
+        if (!cmsCasoId) return;
+        const cmsStore = useCMSStore.getState();
+        const caso = cmsStore.casos.find(c => c.id === cmsCasoId);
+        if (!caso) return;
+        const pasos = getPasosPorTipo(caso.tipoProyecto);
+        const paso = pasos[stepIndex];
+        if (!paso) return;
+
+        // Usar nuevo sistema si steps existe, legacy como fallback
+        if (caso.steps) {
+          const stepState = caso.steps[paso.id];
+          if (stepState?.estado === 'disponible' || stepState?.estado === 'en_progreso') {
+            cmsStore.completeStep(paso.id);
+          }
+        } else {
+          cmsStore.setStepCompleted(paso.id, true);
+        }
+      },
+
+      setStepCompleted: (stepId, completed) => set((state) => {
+        const next = { ...state.completedSteps, [stepId]: completed };
+
+        let nextMetadata = { ...state.stepMetadata };
+        if (completed && !nextMetadata[stepId]) {
+          const now = new Date();
+          const offset = now.getTimezoneOffset() * 60000;
+          const localISOTime = (new Date(now.getTime() - offset)).toISOString().slice(0, 16);
+          nextMetadata[stepId] = {
+            fecha: localISOTime,
+            responsable: state.casoActual?.fiscal || 'Perito de Guardia',
+            observaciones: ''
+          };
+        }
+
+        return { completedSteps: next, stepMetadata: nextMetadata };
+      }),
+
+      setStepMetadata: (stepId, metadata) => set((state) => {
+        const nextMetadata = {
+          ...state.stepMetadata,
+          [stepId]: { ...state.stepMetadata[stepId], ...metadata }
+        };
+        return { stepMetadata: nextMetadata };
+      }),
+
+      loadCompletedSteps: () => {
+        const state = get();
+        set({
+          completedSteps: state.completedSteps || {},
+          stepMetadata: state.stepMetadata || {}
+        });
+      },
+    }),
+    {
+      name: 'sha256-forense-storage',
+      version: 1,
     }
-  },
-}));
+  )
+);

@@ -4,7 +4,7 @@ import { useForenseStore, type Adquisicion } from '../../store/forenseStore';
 import { Microscope, Save, Activity, FileJson, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function AnalisisForense() {
-  const { adquisicionAndriller, adquisicionAleapp: storeAnalisis, setAdquisicionAleapp } = useForenseStore();
+  const { adquisicionAndriller, adquisicionAleapp: storeAnalisis, setAdquisicionAleapp, markCmsStepComplete } = useForenseStore();
   const [isSaved, setIsSaved] = useState(false);
   const idBase = useId();
   
@@ -23,6 +23,8 @@ export default function AnalisisForense() {
 
   const handleGuardar = () => {
     setAdquisicionAleapp(analisis);
+    markCmsStepComplete(4);
+    markCmsStepComplete(5);
     setIsSaved(true);
     setTimeout(() => setIsSaved(false), 3000);
   };

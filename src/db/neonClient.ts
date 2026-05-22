@@ -1,7 +1,8 @@
 import { neon } from '@neondatabase/serverless';
 
-// URL de conexión desde .env o fallback hardcoded
-const DATABASE_URL = 'postgresql://neondb_owner:npg_ihDl8tNV2WfU@ep-snowy-queen-aiztzvtv-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+// URL de conexión desde variable de entorno
+// En producción, definir VITE_DATABASE_URL en .env
+const DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';
 
 // Inicializar el cliente Neon si fetch está disponible (entorno navegador)
 let sqlClient: any = null;
@@ -141,49 +142,52 @@ export async function updateCasoDB(id: string, data: any): Promise<boolean> {
     return true;
   }
   try {
-    // Determinar qué campos se van a actualizar dinámicamente o hacer una actualización completa
-    const current = await sqlClient('SELECT * FROM casos WHERE id = $1', [id]);
-    if (current.length === 0) return false;
-
-    const row = current[0];
-    const merged = {
-      titulo: data.titulo !== undefined ? data.titulo : row.titulo,
-      descripcion: data.descripcion !== undefined ? data.descripcion : row.descripcion,
-      estado: data.estado !== undefined ? data.estado : row.estado,
-      prioridad: data.prioridad !== undefined ? data.prioridad : row.prioridad,
-      fiscal: data.fiscal !== undefined ? data.fiscal : row.fiscal,
-      dispositivo_marca: data.dispositivo_marca !== undefined ? data.dispositivo_marca : row.dispositivo_marca,
-      dispositivo_modelo: data.dispositivo_modelo !== undefined ? data.dispositivo_modelo : row.dispositivo_modelo,
-      dispositivo_imei: data.dispositivo_imei !== undefined ? data.dispositivo_imei : row.dispositivo_imei,
-      dispositivo_imei2: data.dispositivo_ime2 !== undefined ? data.dispositivo_ime2 : row.dispositivo_imei2,
-      dispositivo_sim_card: data.dispositivo_sim_card !== undefined ? data.dispositivo_sim_card : row.dispositivo_sim_card,
-      dispositivo_numero_tel: data.dispositivo_numero_tel !== undefined ? data.dispositivo_numero_tel : row.dispositivo_numero_tel,
-      dispositivo_estado_fisico: data.dispositivo_estado_fisico !== undefined ? data.dispositivo_estado_fisico : row.dispositivo_estado_fisico,
-      dispositivo_modo_aislamiento: data.dispositivo_modo_aislamiento !== undefined ? data.dispositivo_modo_aislamiento : row.dispositivo_modo_aislamiento,
-      dispositivo_danos_visibles: data.dispositivo_danos_visibles !== undefined ? data.dispositivo_danos_visibles : row.dispositivo_danos_visibles,
-      dispositivo_bateria_estado: data.dispositivo_bateria_estado !== undefined ? data.dispositivo_bateria_estado : row.dispositivo_bateria_estado,
-      dispositivo_pantalla_estado: data.dispositivo_pantalla_estado !== undefined ? data.dispositivo_pantalla_estado : row.dispositivo_pantalla_estado,
-      completed_steps: data.completed_steps !== undefined ? JSON.stringify(data.completed_steps) : row.completed_steps,
-      step_metadata: data.step_metadata !== undefined ? JSON.stringify(data.step_metadata) : row.step_metadata,
-      compliance_checklist: data.compliance_checklist !== undefined ? JSON.stringify(data.compliance_checklist) : row.compliance_checklist,
-    };
-
-    await sqlClient(`
+    const updated = await sqlClient(`
       UPDATE casos SET
-        titulo = $1, descripcion = $2, estado = $3, prioridad = $4, fiscal = $5,
-        dispositivo_marca = $6, dispositivo_modelo = $7, dispositivo_imei = $8, dispositivo_imei2 = $9,
-        dispositivo_sim_card = $10, dispositivo_numero_tel = $11, dispositivo_estado_fisico = $12,
-        dispositivo_modo_aislamiento = $13, dispositivo_danos_visibles = $14, dispositivo_bateria_estado = $15,
-        dispositivo_pantalla_estado = $16, completed_steps = $17, step_metadata = $18, compliance_checklist = $19, updated_at = CURRENT_TIMESTAMP
+        titulo = COALESCE($1, titulo),
+        descripcion = COALESCE($2, descripcion),
+        estado = COALESCE($3, estado),
+        prioridad = COALESCE($4, prioridad),
+        fiscal = COALESCE($5, fiscal),
+        dispositivo_marca = COALESCE($6, dispositivo_marca),
+        dispositivo_modelo = COALESCE($7, dispositivo_modelo),
+        dispositivo_imei = COALESCE($8, dispositivo_imei),
+        dispositivo_imei2 = COALESCE($9, dispositivo_imei2),
+        dispositivo_sim_card = COALESCE($10, dispositivo_sim_card),
+        dispositivo_numero_tel = COALESCE($11, dispositivo_numero_tel),
+        dispositivo_estado_fisico = COALESCE($12, dispositivo_estado_fisico),
+        dispositivo_modo_aislamiento = COALESCE($13, dispositivo_modo_aislamiento),
+        dispositivo_danos_visibles = COALESCE($14, dispositivo_danos_visibles),
+        dispositivo_bateria_estado = COALESCE($15, dispositivo_bateria_estado),
+        dispositivo_pantalla_estado = COALESCE($16, dispositivo_pantalla_estado),
+        completed_steps = COALESCE($17, completed_steps),
+        step_metadata = COALESCE($18, step_metadata),
+        compliance_checklist = COALESCE($19, compliance_checklist),
+        updated_at = CURRENT_TIMESTAMP
       WHERE id = $20
     `, [
-      merged.titulo, merged.descripcion, merged.estado, merged.prioridad, merged.fiscal,
-      merged.dispositivo_marca, merged.dispositivo_modelo, merged.dispositivo_imei, merged.dispositivo_imei2,
-      merged.dispositivo_sim_card, merged.dispositivo_numero_tel, merged.dispositivo_estado_fisico,
-      merged.dispositivo_modo_aislamiento, merged.dispositivo_danos_visibles, merged.dispositivo_bateria_estado,
-      merged.dispositivo_pantalla_estado, merged.completed_steps, merged.step_metadata, merged.compliance_checklist, id
+      data.titulo ?? null,
+      data.descripcion ?? null,
+      data.estado ?? null,
+      data.prioridad ?? null,
+      data.fiscal ?? null,
+      data.dispositivo_marca ?? null,
+      data.dispositivo_modelo ?? null,
+      data.dispositivo_imei ?? null,
+      data.dispositivo_imei2 ?? null,
+      data.dispositivo_sim_card ?? null,
+      data.dispositivo_numero_tel ?? null,
+      data.dispositivo_estado_fisico ?? null,
+      data.dispositivo_modo_aislamiento ?? null,
+      data.dispositivo_danos_visibles ?? null,
+      data.dispositivo_bateria_estado ?? null,
+      data.dispositivo_pantalla_estado ?? null,
+      data.completed_steps !== undefined ? JSON.stringify(data.completed_steps) : null,
+      data.step_metadata !== undefined ? JSON.stringify(data.step_metadata) : null,
+      data.compliance_checklist !== undefined ? JSON.stringify(data.compliance_checklist) : null,
+      id
     ]);
-    return true;
+    return (updated?.length ?? 0) > 0;
   } catch (e) {
     console.error('Error al actualizar caso en Neon:', e);
     updateCasoLocal(id, data);

@@ -1,16 +1,17 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import {
   useCMSStore,
   type TareaForense,
   type PrioridadCaso,
   type EstadoTarea,
-  type FaseForense,
 } from '../store/cmsStore';
+import { getPasosPorTipo } from '../data/tiposProyecto';
 import {
   ClipboardList, Plus, Search, CheckCircle2, Clock,
-  AlertTriangle, Pause, ChevronDown, ChevronRight, Trash2, X,
-  ListChecks, TrendingUp, Layers, Calendar, User,
-  BookOpen, BarChart3
+  AlertTriangle, Pause, Trash2, X,
+  TrendingUp, Calendar, User,
+  BookOpen, BarChart3, ExternalLink
 } from 'lucide-react';
 import KpiCard from '../components/Shared/KpiCard';
 
@@ -30,27 +31,15 @@ const PRIORIDAD_CONFIG: Record<PrioridadCaso, { label: string; dot: string; bg: 
   baja:    { label: 'Baja',    dot: 'bg-green-500',   bg: 'bg-green-500/10 text-green-300 border-green-500/20' },
 };
 
-const FASES_FORENSES = [
-  { orden: 1, nombre: 'Consignación / Obtención',     normativas: ['n4', 'n1'] },
-  { orden: 2, nombre: 'Registro Cadena de Custodia',   normativas: ['n4', 'n8'] },
-  { orden: 3, nombre: 'Adquisición / Extracción',      normativas: ['n1', 'n3'] },
-  { orden: 4, nombre: 'Análisis Forense',              normativas: ['n2', 'n3'] },
-  { orden: 5, nombre: 'Informe / Dictamen Pericial',   normativas: ['n8', 'n5'] },
-  { orden: 6, nombre: 'Disposición Judicial / Final',   normativas: ['n4', 'n8'] },
-];
-
 // ── Componente Principal ────────────────────────────────────────────────────
 
 export default function TareasPage() {
   const casos = useCMSStore(s => s.casos);
   const tareas = useCMSStore(s => s.tareas);
-  const fases = useCMSStore(s => s.fases);
   const normativas = useCMSStore(s => s.normativas);
   const addTarea = useCMSStore(s => s.addTarea);
   const updateTarea = useCMSStore(s => s.updateTarea);
   const deleteTarea = useCMSStore(s => s.deleteTarea);
-  const addFase = useCMSStore(s => s.addFase);
-  const updateFase = useCMSStore(s => s.updateFase);
   const addAuditLog = useCMSStore(s => s.addAuditLog);
 
   // ── Estado UI ──
@@ -59,8 +48,6 @@ export default function TareasPage() {
   const [filtroPrioridad, setFiltroPrioridad] = useState<PrioridadCaso | 'todos'>('todos');
   const [filtroCaso, setFiltroCaso] = useState<string>('todos');
   const [showModal, setShowModal] = useState(false);
-  const [expandedCasos, setExpandedCasos] = useState<Set<string>>(new Set());
-  const [vistaActiva, setVistaActiva] = useState<'tareas' | 'fases'>('tareas');
 
   // ── Filtrado ──
   const tareasFiltradas = useMemo(() => {
@@ -86,25 +73,6 @@ export default function TareasPage() {
     const progreso = total > 0 ? Math.round((completadas / total) * 100) : 0;
     return { total, pendientes, enProgreso, completadas, bloqueadas, progreso };
   }, [tareas]);
-
-  // ── Fases por caso ──
-  const fasesPorCaso = useMemo(() => {
-    const map: Record<string, FaseForense[]> = {};
-    fases.forEach(f => {
-      if (!map[f.casoId]) map[f.casoId] = [];
-      map[f.casoId].push(f);
-    });
-    Object.values(map).forEach(arr => arr.sort((a, b) => a.orden - b.orden));
-    return map;
-  }, [fases]);
-
-  const toggleExpand = (casoId: string) => {
-    setExpandedCasos(prev => {
-      const next = new Set(prev);
-      next.has(casoId) ? next.delete(casoId) : next.add(casoId);
-      return next;
-    });
-  };
 
   // ── Handlers ──
   const handleStatusChange = (tarea: TareaForense, nuevoEstado: EstadoTarea) => {
@@ -133,40 +101,6 @@ export default function TareasPage() {
     });
   };
 
-  const handleGenerarFases = (casoId: string) => {
-    const existentes = fases.filter(f => f.casoId === casoId);
-    if (existentes.length > 0) {
-      if (!confirm('Este caso ya tiene fases registradas. ¿Desea regenerarlas?')) return;
-    }
-    FASES_FORENSES.forEach(fase => {
-      addFase({
-        casoId,
-        nombre: fase.nombre,
-        orden: fase.orden,
-        estado: 'pendiente',
-        responsable: '',
-        normativasAplicadas: fase.normativas,
-        checklist: [],
-        notas: '',
-      });
-    });
-    addAuditLog({
-      accion: 'FASES_GENERADAS',
-      detalle: `6 fases forenses estándar generadas para caso`,
-      nivel: 'success',
-      casoId,
-      usuario: 'sistema',
-    });
-  };
-
-  const handleFaseStatusChange = (faseId: string, estado: EstadoTarea) => {
-    updateFase(faseId, {
-      estado,
-      ...(estado === 'en_progreso' ? { fechaInicio: new Date().toISOString() } : {}),
-      ...(estado === 'completada' ? { fechaFin: new Date().toISOString() } : {}),
-    });
-  };
-
   // ── Caso label helper ──
   const getCasoLabel = (casoId: string) => {
     const caso = casos.find(c => c.id === casoId);
@@ -184,13 +118,22 @@ export default function TareasPage() {
             Forensic workflow management under <span className="text-fluent-accent">MUCC-2017</span> and <span className="text-fluent-accent">ISO 27037</span> phase-tracking methodology.
           </p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start md:self-auto"
-        >
-          <Plus size={18} strokeWidth={3} />
-          New Task
-        </button>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/control/seguimiento-compliance"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 hover:bg-cyan-500/20"
+          >
+            <ExternalLink size={12} />
+            <span>Ver Flujo Unificado</span>
+          </Link>
+          <button
+            onClick={() => setShowModal(true)}
+            className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start md:self-auto"
+          >
+            <Plus size={18} strokeWidth={3} />
+            New Task
+          </button>
+        </div>
       </div>
 
       {/* ── KPIs ───────────────────────────────────────── */}
@@ -201,351 +144,169 @@ export default function TareasPage() {
         <KpiCard title="Blocked" value={kpis.bloqueadas} sub="Requires attention" icon={AlertTriangle} color="text-red-400" />
       </div>
 
-      {/* ── Vista Toggle ───────────────────────────────── */}
-      <div className="flex items-center gap-2 p-1 rounded-md bg-white/[0.03] border border-white/5 w-fit">
-        <button
-          onClick={() => setVistaActiva('tareas')}
-          className={`px-4 py-2 rounded-[4px] text-xs font-bold uppercase tracking-[0.1em] transition-all ${
-            vistaActiva === 'tareas'
-              ? 'bg-fluent-accent text-black shadow-lg'
-              : 'text-fluent-text-muted hover:text-white hover:bg-white/5'
-          }`}
-        >
-          <span className="flex items-center gap-2"><ListChecks size={14} /> Tasks</span>
-        </button>
-        <button
-          onClick={() => setVistaActiva('fases')}
-          className={`px-4 py-2 rounded-[4px] text-xs font-bold uppercase tracking-[0.1em] transition-all ${
-            vistaActiva === 'fases'
-              ? 'bg-fluent-accent text-black shadow-lg'
-              : 'text-fluent-text-muted hover:text-white hover:bg-white/5'
-          }`}
-        >
-          <span className="flex items-center gap-2"><Layers size={14} /> Phases</span>
-        </button>
+      {/* ── Filtros ── */}
+      <div className="fluent-mica rounded-xl p-4 flex flex-col md:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-fluent-text-muted" />
+          <input
+            type="text"
+            placeholder="Search tasks by title, description or assignee..."
+            value={busqueda}
+            onChange={e => setBusqueda(e.target.value)}
+            className="fluent-input pl-9"
+          />
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          <select
+            value={filtroEstado}
+            onChange={e => setFiltroEstado(e.target.value as EstadoTarea | 'todos')}
+            className="fluent-input w-auto min-w-[130px]"
+          >
+            <option value="todos">All Status</option>
+            {Object.entries(ESTADO_TAREA).map(([k, v]) => (
+              <option key={k} value={k}>{v.label}</option>
+            ))}
+          </select>
+          <select
+            value={filtroPrioridad}
+            onChange={e => setFiltroPrioridad(e.target.value as PrioridadCaso | 'todos')}
+            className="fluent-input w-auto min-w-[120px]"
+          >
+            <option value="todos">All Priority</option>
+            {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
+              <option key={k} value={k}>{v.label}</option>
+            ))}
+          </select>
+          <select
+            value={filtroCaso}
+            onChange={e => setFiltroCaso(e.target.value)}
+            className="fluent-input w-auto min-w-[160px]"
+          >
+            <option value="todos">All Cases</option>
+            {casos.map(c => (
+              <option key={c.id} value={c.id}>{c.numeroCaso}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════════════════════ */}
-      {/* ── VISTA TAREAS ─────────────────────────────────────────────────── */}
-      {/* ════════════════════════════════════════════════════════════════════ */}
-      {vistaActiva === 'tareas' && (
-        <>
-          {/* ── Filtros ── */}
-          <div className="fluent-mica rounded-xl p-4 flex flex-col md:flex-row gap-3">
-            <div className="relative flex-1">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-fluent-text-muted" />
-              <input
-                type="text"
-                placeholder="Search tasks by title, description or assignee..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
-                className="fluent-input pl-9"
-              />
+      {/* ── Lista de Tareas ── */}
+      <div className="space-y-3">
+        {tareasFiltradas.length === 0 ? (
+          <div className="fluent-mica p-20 text-center rounded-2xl border-dashed border-white/10">
+            <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
+              <ClipboardList size={40} className="text-fluent-text-muted opacity-20" />
             </div>
-            <div className="flex gap-2 flex-wrap">
-              <select
-                value={filtroEstado}
-                onChange={e => setFiltroEstado(e.target.value as EstadoTarea | 'todos')}
-                className="fluent-input w-auto min-w-[130px]"
-              >
-                <option value="todos">All Status</option>
-                {Object.entries(ESTADO_TAREA).map(([k, v]) => (
-                  <option key={k} value={k}>{v.label}</option>
-                ))}
-              </select>
-              <select
-                value={filtroPrioridad}
-                onChange={e => setFiltroPrioridad(e.target.value as PrioridadCaso | 'todos')}
-                className="fluent-input w-auto min-w-[120px]"
-              >
-                <option value="todos">All Priority</option>
-                {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
-                  <option key={k} value={k}>{v.label}</option>
-                ))}
-              </select>
-              <select
-                value={filtroCaso}
-                onChange={e => setFiltroCaso(e.target.value)}
-                className="fluent-input w-auto min-w-[160px]"
-              >
-                <option value="todos">All Cases</option>
-                {casos.map(c => (
-                  <option key={c.id} value={c.id}>{c.numeroCaso}</option>
-                ))}
-              </select>
-            </div>
+            <h3 className="text-xl font-bold text-white mb-2">No Tasks Found</h3>
+            <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+              No forensic tasks match the current filter criteria. Create a new task to begin workflow tracking.
+            </p>
           </div>
+        ) : (
+          tareasFiltradas.map(tarea => {
+            const estado = ESTADO_TAREA[tarea.estado];
+            const prioridad = PRIORIDAD_CONFIG[tarea.prioridad];
+            const EstadoIcon = estado.icon;
+            return (
+              <div
+                key={tarea.id}
+                className="fluent-card p-0 overflow-hidden group"
+              >
+                <div className="flex items-stretch">
+                  {/* Prioridad bar */}
+                  <div className={`w-1.5 ${prioridad.dot} shrink-0`} />
 
-          {/* ── Lista de Tareas ── */}
-          <div className="space-y-3">
-            {tareasFiltradas.length === 0 ? (
-              <div className="fluent-mica p-20 text-center rounded-2xl border-dashed border-white/10">
-                <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ClipboardList size={40} className="text-fluent-text-muted opacity-20" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">No Tasks Found</h3>
-                <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
-                  No forensic tasks match the current filter criteria. Create a new task to begin workflow tracking.
-                </p>
-              </div>
-            ) : (
-              tareasFiltradas.map(tarea => {
-                const estado = ESTADO_TAREA[tarea.estado];
-                const prioridad = PRIORIDAD_CONFIG[tarea.prioridad];
-                const EstadoIcon = estado.icon;
-                return (
-                  <div
-                    key={tarea.id}
-                    className="fluent-card p-0 overflow-hidden group"
-                  >
-                    <div className="flex items-stretch">
-                      {/* Prioridad bar */}
-                      <div className={`w-1.5 ${prioridad.dot} shrink-0`} />
-
-                      {/* Content */}
-                      <div className="flex-1 p-5 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className={`p-1.5 rounded-md ${estado.color.split(' ')[0]}`}>
-                              <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
-                            </div>
-                            <div className="min-w-0">
-                              <h3 className="text-sm font-bold text-white truncate">{tarea.titulo}</h3>
-                              <p className="text-[10px] text-fluent-text-muted font-mono uppercase tracking-tight">
-                                {getCasoLabel(tarea.casoId)}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>
-                              {estado.label}
-                            </span>
-                            <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${prioridad.bg}`}>
-                              {prioridad.label}
-                            </span>
-                          </div>
+                  {/* Content */}
+                  <div className="flex-1 p-5 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className={`p-1.5 rounded-md ${estado.color.split(' ')[0]}`}>
+                          <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
                         </div>
-
-                        <p className="text-xs text-fluent-text-muted mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
-
-                        {/* Meta row */}
-                        <div className="flex flex-wrap items-center gap-4 text-[10px] text-fluent-text-muted/60 font-medium">
-                          <span className="flex items-center gap-1.5">
-                            <User size={11} /> {tarea.asignadoA || 'Sin asignar'}
-                          </span>
-                          {tarea.fechaVencimiento && (
-                            <span className="flex items-center gap-1.5">
-                              <Calendar size={11} /> {new Date(tarea.fechaVencimiento).toLocaleDateString('es')}
-                            </span>
-                          )}
-                          {tarea.normativasRelacionadas.length > 0 && (
-                            <span className="flex items-center gap-1.5">
-                              <BookOpen size={11} />
-                              {tarea.normativasRelacionadas.map(nId => {
-                                const n = normativas.find(x => x.id === nId);
-                                return n?.codigo || nId;
-                              }).join(', ')}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1.5">
-                            <BarChart3 size={11} /> {tarea.porcentaje}%
-                          </span>
-                        </div>
-
-                        {/* Progress bar */}
-                        <div className="mt-3 w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
-                          <div
-                            className="h-full bg-fluent-accent rounded-full transition-all duration-500"
-                            style={{ width: `${tarea.porcentaje}%` }}
-                          />
+                        <div className="min-w-0">
+                          <h3 className="text-sm font-bold text-white truncate">{tarea.titulo}</h3>
+                          <p className="text-[10px] text-fluent-text-muted font-mono uppercase tracking-tight">
+                            {getCasoLabel(tarea.casoId)}
+                          </p>
                         </div>
                       </div>
-
-                      {/* Actions */}
-                      <div className="flex flex-col gap-1 p-3 border-l border-white/5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                        <select
-                          value={tarea.estado}
-                          onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
-                          className="text-[10px] bg-white/5 border border-white/10 rounded px-1.5 py-1 text-white outline-none cursor-pointer"
-                          title="Cambiar estado"
-                        >
-                          {Object.entries(ESTADO_TAREA).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
-                          ))}
-                        </select>
-                        <button
-                          onClick={() => handleDeleteTarea(tarea)}
-                          className="p-1.5 rounded hover:bg-red-500/10 text-fluent-text-muted hover:text-red-400 transition-colors"
-                          title="Eliminar tarea"
-                        >
-                          <Trash2 size={13} />
-                        </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>
+                          {estado.label}
+                        </span>
+                        <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${prioridad.bg}`}>
+                          {prioridad.label}
+                        </span>
                       </div>
+                    </div>
+
+                    <p className="text-xs text-fluent-text-muted mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
+
+                    {/* Meta row */}
+                    <div className="flex flex-wrap items-center gap-4 text-[10px] text-fluent-text-muted/60 font-medium">
+                      <span className="flex items-center gap-1.5">
+                        <User size={11} /> {tarea.asignadoA || 'Sin asignar'}
+                      </span>
+                      {tarea.fechaVencimiento && (
+                        <span className="flex items-center gap-1.5">
+                          <Calendar size={11} /> {new Date(tarea.fechaVencimiento).toLocaleDateString('es')}
+                        </span>
+                      )}
+                      {tarea.normativasRelacionadas.length > 0 && (
+                        <span className="flex items-center gap-1.5">
+                          <BookOpen size={11} />
+                          {tarea.normativasRelacionadas.map(nId => {
+                            const n = normativas.find(x => x.id === nId);
+                            return n?.codigo || nId;
+                          }).join(', ')}
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1.5">
+                        <BarChart3 size={11} /> {tarea.porcentaje}%
+                      </span>
+                      {tarea.pasoId && (
+                        <span className="flex items-center gap-1.5 text-fluent-accent">
+                          <span className="text-[8px] font-black uppercase tracking-wider">Paso:</span>
+                          {tarea.pasoId}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="mt-3 w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="h-full bg-fluent-accent rounded-full transition-all duration-500"
+                        style={{ width: `${tarea.porcentaje}%` }}
+                      />
                     </div>
                   </div>
-                );
-              })
-            )}
-          </div>
-        </>
-      )}
 
-      {/* ════════════════════════════════════════════════════════════════════ */}
-      {/* ── VISTA FASES ──────────────────────────────────────────────────── */}
-      {/* ════════════════════════════════════════════════════════════════════ */}
-      {vistaActiva === 'fases' && (
-        <div className="space-y-4">
-          {casos.length === 0 ? (
-            <div className="fluent-mica p-20 text-center rounded-2xl border-dashed border-white/10">
-              <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
-                <Layers size={40} className="text-fluent-text-muted opacity-20" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">No Cases Registered</h3>
-              <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60">
-                Create a case first, then generate forensic phases for compliance tracking.
-              </p>
-            </div>
-          ) : (
-            casos.map(caso => {
-              const casoFases = fasesPorCaso[caso.id] || [];
-              const isExpanded = expandedCasos.has(caso.id);
-              const completadas = casoFases.filter(f => f.estado === 'completada').length;
-              const progresoCaso = casoFases.length > 0 ? Math.round((completadas / casoFases.length) * 100) : 0;
-
-              return (
-                <div key={caso.id} className="fluent-mica rounded-xl overflow-hidden shadow-xl">
-                  {/* Caso Header */}
-                  <button
-                    onClick={() => toggleExpand(caso.id)}
-                    className="w-full flex items-center gap-4 p-5 hover:bg-white/[0.02] transition-colors text-left"
-                  >
-                    <div className="p-2 rounded-md bg-fluent-accent/10">
-                      {isExpanded ? <ChevronDown size={16} className="text-fluent-accent" /> : <ChevronRight size={16} className="text-fluent-accent" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="font-mono text-xs font-black text-fluent-accent uppercase tracking-tighter">{caso.numeroCaso}</span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-fluent-text-muted border border-white/5 font-bold uppercase">{caso.estado}</span>
-                      </div>
-                      <p className="text-sm font-bold text-white truncate">{caso.titulo}</p>
-                    </div>
-                    <div className="flex items-center gap-4 shrink-0">
-                      <div className="text-right hidden sm:block">
-                        <p className="text-[10px] font-bold text-fluent-text-muted uppercase tracking-[0.1em]">Phases</p>
-                        <p className="text-sm font-black text-white">{completadas}/{casoFases.length}</p>
-                      </div>
-                      <div className="w-16 bg-white/5 rounded-full h-2 overflow-hidden hidden sm:block">
-                        <div className="h-full bg-fluent-accent rounded-full transition-all duration-500" style={{ width: `${progresoCaso}%` }} />
-                      </div>
-                      {casoFases.length === 0 && (
-                        <button
-                          onClick={(e) => { e.stopPropagation(); handleGenerarFases(caso.id); }}
-                          className="fluent-btn text-[10px] px-3 py-1.5 bg-fluent-accent/10 text-fluent-accent border border-fluent-accent/20 hover:bg-fluent-accent/20 font-bold uppercase tracking-[0.05em]"
-                        >
-                          Generate
-                        </button>
-                      )}
-                    </div>
-                  </button>
-
-                  {/* Fases expandidas */}
-                  {isExpanded && (
-                    <div className="border-t border-white/5">
-                      {casoFases.length === 0 ? (
-                        <div className="p-10 text-center">
-                          <p className="text-sm text-fluent-text-muted mb-4">No forensic phases generated for this case.</p>
-                          <button
-                            onClick={() => handleGenerarFases(caso.id)}
-                            className="fluent-btn fluent-btn-primary text-xs"
-                          >
-                            <Layers size={14} /> Generate Standard Phases (MUCC-2017)
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="p-5 space-y-0">
-                          {/* Timeline vertical */}
-                          {casoFases.map((fase, idx) => {
-                            const isLast = idx === casoFases.length - 1;
-                            const faseEstado = ESTADO_TAREA[fase.estado];
-                            const FaseIcon = faseEstado.icon;
-                            const normsLabels = fase.normativasAplicadas
-                              .map(nId => normativas.find(n => n.id === nId)?.codigo)
-                              .filter(Boolean);
-
-                            return (
-                              <div key={fase.id} className="flex gap-4 group">
-                                {/* Timeline line + dot */}
-                                <div className="flex flex-col items-center shrink-0 w-8">
-                                  <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 shrink-0 transition-colors ${
-                                    fase.estado === 'completada'
-                                      ? 'bg-green-500/20 border-green-500/50'
-                                      : fase.estado === 'en_progreso'
-                                        ? 'bg-blue-500/20 border-blue-500/50'
-                                        : fase.estado === 'bloqueada'
-                                          ? 'bg-red-500/20 border-red-500/50'
-                                          : 'bg-white/5 border-white/10'
-                                  }`}>
-                                    <FaseIcon size={14} className={faseEstado.color.split(' ')[1]} />
-                                  </div>
-                                  {!isLast && (
-                                    <div className={`w-0.5 flex-1 min-h-[40px] transition-colors ${
-                                      fase.estado === 'completada' ? 'bg-green-500/30' : 'bg-white/5'
-                                    }`} />
-                                  )}
-                                </div>
-
-                                {/* Content */}
-                                <div className={`flex-1 pb-6 ${isLast ? '' : ''}`}>
-                                  <div className="fluent-card p-4 group/card">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-[9px] font-black text-fluent-accent bg-fluent-accent/10 px-1.5 py-0.5 rounded tracking-[0.1em]">
-                                          F{fase.orden}
-                                        </span>
-                                        <h4 className="text-sm font-bold text-white">{fase.nombre}</h4>
-                                      </div>
-                                      <select
-                                        value={fase.estado}
-                                        onChange={e => handleFaseStatusChange(fase.id, e.target.value as EstadoTarea)}
-                                        className="text-[10px] bg-white/5 border border-white/10 rounded px-2 py-1 text-white outline-none cursor-pointer w-fit"
-                                      >
-                                        {Object.entries(ESTADO_TAREA).map(([k, v]) => (
-                                          <option key={k} value={k}>{v.label}</option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                    <div className="flex flex-wrap items-center gap-2 text-[10px] text-fluent-text-muted/60">
-                                      {normsLabels.map(code => (
-                                        <span key={code} className="px-1.5 py-0.5 rounded bg-white/5 border border-white/5 font-bold uppercase tracking-[0.05em]">
-                                          {code}
-                                        </span>
-                                      ))}
-                                      {fase.fechaInicio && (
-                                        <span className="flex items-center gap-1">
-                                          <Calendar size={10} /> Inicio: {new Date(fase.fechaInicio).toLocaleDateString('es')}
-                                        </span>
-                                      )}
-                                      {fase.fechaFin && (
-                                        <span className="flex items-center gap-1">
-                                          <CheckCircle2 size={10} /> Fin: {new Date(fase.fechaFin).toLocaleDateString('es')}
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  {/* Actions */}
+                  <div className="flex flex-col gap-1 p-3 border-l border-white/5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                    <select
+                      value={tarea.estado}
+                      onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
+                      className="text-[10px] bg-white/5 border border-white/10 rounded px-1.5 py-1 text-white outline-none cursor-pointer"
+                      title="Cambiar estado"
+                    >
+                      {Object.entries(ESTADO_TAREA).map(([k, v]) => (
+                        <option key={k} value={k}>{v.label}</option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={() => handleDeleteTarea(tarea)}
+                      className="p-1.5 rounded hover:bg-red-500/10 text-fluent-text-muted hover:text-red-400 transition-colors"
+                      title="Eliminar tarea"
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
                 </div>
-              );
-            })
-          )}
-        </div>
-      )}
+              </div>
+            );
+          })
+        )}
+      </div>
 
       {/* ════════════════════════════════════════════════════════════════════ */}
       {/* ── MODAL NUEVA TAREA ────────────────────────────────────────────── */}
@@ -587,6 +348,7 @@ function NuevaTareaModal({
 }) {
   const [form, setForm] = useState({
     casoId: casos[0]?.id || '',
+    pasoId: '',
     titulo: '',
     descripcion: '',
     asignadoA: '',
@@ -597,6 +359,11 @@ function NuevaTareaModal({
     observaciones: '',
     porcentaje: 0,
   });
+
+  const casoSeleccionado = casos.find(c => c.id === form.casoId);
+  const pasosDisponibles = casoSeleccionado
+    ? getPasosPorTipo((casoSeleccionado as any).tipoProyecto || 'forense_whatsapp')
+    : [];
 
   const toggleNormativa = (id: string) => {
     setForm(prev => ({
@@ -612,6 +379,7 @@ function NuevaTareaModal({
     if (!form.casoId || !form.titulo) return;
     onSubmit({
       ...form,
+      pasoId: form.pasoId || undefined,
       fechaVencimiento: form.fechaVencimiento || undefined,
       fechaCompletada: undefined,
     });
@@ -653,6 +421,21 @@ function NuevaTareaModal({
               <option value="">Select a case...</option>
               {casos.map(c => (
                 <option key={c.id} value={c.id}>{c.numeroCaso} — {c.titulo}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Paso / Step */}
+          <div>
+            <label className="fluent-label">Forensic Step</label>
+            <select
+              value={form.pasoId}
+              onChange={e => setForm(p => ({ ...p, pasoId: e.target.value }))}
+              className="fluent-input"
+            >
+              <option value="">-- No vinculado a un paso --</option>
+              {pasosDisponibles.map(p => (
+                <option key={p.id} value={p.id}>Paso {p.num}: {p.titulo}</option>
               ))}
             </select>
           </div>
