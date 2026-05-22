@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CasoCMS, EstadoCaso, PrioridadCaso, Normativa } from '../../store/cmsStore';
-import { getTiposProyecto, getPasosPorTipo, getFasesPorTipo } from '../../data/tiposProyecto';
+import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig } from '../../data/tiposProyecto';
+
 
 interface NuevoCasoModalProps {
   onClose: () => void;
@@ -24,7 +25,7 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
   compliance: '',
   despachoFiscal: '',
   organismoOrdenante: '',
-  normativasAplicadas: ['n1', 'n4', 'n8', 'n7'],
+  normativasAplicadas: getTipoProyectoConfig('forense_whatsapp').normativasPorDefecto,
   fasesCompletadas: 0,
   totalFases: 9,
   porcentajeCompletado: 0,
@@ -43,6 +44,14 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
   dispositivo_danos_visibles: '',
   dispositivo_bateria_estado: '',
   dispositivo_pantalla_estado: '',
+  solicitante_nombre: '',
+  solicitante_cedula: '',
+  correo_investigar: '',
+  correo_proveedor: '',
+  discoduro_serial: '',
+  discoduro_capacidad: '',
+  discoduro_marca: '',
+  discoduro_modelo: '',
 };
 
 export default function NuevoCasoModal({
@@ -56,13 +65,13 @@ export default function NuevoCasoModal({
   const [form, setForm] = useState({ ...FORM_INICIAL });
 
   const handleTipoChange = (tipo: typeof TIPOS[0]) => {
-    const pasos = getPasosPorTipo(tipo.id);
     const fases = getFasesPorTipo(tipo.id);
+    const config = getTipoProyectoConfig(tipo.id);
     setForm(f => ({
       ...f,
       tipoProyecto: tipo.id,
       totalFases: fases.length,
-      normativasAplicadas: pasos.flatMap(p => p.complianceIds.map(c => c.split('__')[0])).filter((v, i, a) => a.indexOf(v) === i),
+      normativasAplicadas: config.normativasPorDefecto,
     }));
   };
 
@@ -142,59 +151,99 @@ export default function NuevoCasoModal({
               onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} />
           </div>
 
-          {/* Datos del Dispositivo */}
-          <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5">
-            <label className="fluent-label block mb-4 text-[#FECF06]">Datos del Dispositivo</label>
+          {/* Datos del Solicitante (Común para todos) */}
+          <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
+            <label className="fluent-label block text-[#FECF06] font-bold">Datos del Solicitante de la Experticia</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Marca</label>
-                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_marca: e.target.value }))} />
+                <label className="fluent-label text-[11px]">Nombre Completo *</label>
+                <input required className="fluent-input bg-white/[0.02]" placeholder="ej. Juan Pérez" value={form.solicitante_nombre || ''}
+                  onChange={e => setForm(f => ({ ...f, solicitante_nombre: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Modelo</label>
-                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Galaxy A54" value={form.dispositivo_modelo || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_modelo: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">IMEI 1</label>
-                <input className="fluent-input bg-white/[0.02] font-mono" placeholder="000000000000000" value={form.dispositivo_imei || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_imei: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">IMEI 2</label>
-                <input className="fluent-input bg-white/[0.02] font-mono" placeholder="000000000000000" value={form.dispositivo_imei2 || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_imei2: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Número de Línea</label>
-                <input className="fluent-input bg-white/[0.02]" placeholder="0424-0000000" value={form.dispositivo_numero_tel || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_numero_tel: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Operadora (SIM)</label>
-                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Movistar" value={form.dispositivo_sim_card || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_sim_card: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Estado Físico</label>
-                <select className="fluent-input bg-white/[0.02]" value={form.dispositivo_estado_fisico || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_estado_fisico: e.target.value }))}>
-                  <option value="" className="bg-fluent-bg">Seleccione...</option>
-                  <option value="operativo" className="bg-fluent-bg">Operativo</option>
-                  <option value="danos_pantalla" className="bg-fluent-bg">Daños en Pantalla</option>
-                  <option value="sin_bateria" className="bg-fluent-bg">Sin Batería</option>
-                  <option value="golpe_agua" className="bg-fluent-bg">Golpe de Agua</option>
-                  <option value="multiple_danos" className="bg-fluent-bg">Múltiples Daños</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="fluent-label text-[10px]">Daños Visibles</label>
-                <input className="fluent-input bg-white/[0.02]" placeholder="ej. Rayadura en pantalla" value={form.dispositivo_danos_visibles || ''}
-                  onChange={e => setForm(f => ({ ...f, dispositivo_danos_visibles: e.target.value }))} />
+                <label className="fluent-label text-[11px]">Cédula de Identidad *</label>
+                <input required className="fluent-input bg-white/[0.02]" placeholder="ej. V-12345678" value={form.solicitante_cedula || ''}
+                  onChange={e => setForm(f => ({ ...f, solicitante_cedula: e.target.value }))} />
               </div>
             </div>
           </div>
+
+          {/* Campos Dinámicos según Tipo de Proyecto */}
+          {form.tipoProyecto === 'forense_whatsapp' && (
+            <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
+              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Dispositivo Móvil (Básico)</label>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Marca</label>
+                  <input className="fluent-input bg-white/[0.02]" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
+                    onChange={e => setForm(f => ({ ...f, dispositivo_marca: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Modelo</label>
+                  <input className="fluent-input bg-white/[0.02]" placeholder="ej. Galaxy S23" value={form.dispositivo_modelo || ''}
+                    onChange={e => setForm(f => ({ ...f, dispositivo_modelo: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Estado Físico</label>
+                  <select className="fluent-input bg-white/[0.02]" value={form.dispositivo_estado_fisico || ''}
+                    onChange={e => setForm(f => ({ ...f, dispositivo_estado_fisico: e.target.value }))}>
+                    <option value="" className="bg-fluent-bg">Seleccione...</option>
+                    <option value="operativo" className="bg-fluent-bg">Operativo</option>
+                    <option value="danos_pantalla" className="bg-fluent-bg">Daños en Pantalla</option>
+                    <option value="sin_bateria" className="bg-fluent-bg">Sin Batería</option>
+                    <option value="golpe_agua" className="bg-fluent-bg">Golpe de Agua</option>
+                    <option value="multiple_danos" className="bg-fluent-bg">Múltiples Daños</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {form.tipoProyecto === 'forense_email' && (
+            <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
+              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Correo Electrónico a Investigar</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Correo a Investigar *</label>
+                  <input required type="email" className="fluent-input bg-white/[0.02]" placeholder="ej. usuario@dominio.com" value={form.correo_investigar || ''}
+                    onChange={e => setForm(f => ({ ...f, correo_investigar: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Proveedor / Servidor de Correo *</label>
+                  <input required className="fluent-input bg-white/[0.02]" placeholder="ej. Gmail, Outlook, Servidor Corporativo" value={form.correo_proveedor || ''}
+                    onChange={e => setForm(f => ({ ...f, correo_proveedor: e.target.value }))} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {form.tipoProyecto === 'forense_discoduro' && (
+            <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
+              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Disco Duro / Unidad de Almacenamiento</label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Marca</label>
+                  <input className="fluent-input bg-white/[0.02]" placeholder="ej. Western Digital" value={form.discoduro_marca || ''}
+                    onChange={e => setForm(f => ({ ...f, discoduro_marca: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Modelo</label>
+                  <input className="fluent-input bg-white/[0.02]" placeholder="ej. Blue WD10EZEX" value={form.discoduro_modelo || ''}
+                    onChange={e => setForm(f => ({ ...f, discoduro_modelo: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Número de Serie *</label>
+                  <input required className="fluent-input bg-white/[0.02] font-mono" placeholder="ej. WCC6Y1234567" value={form.discoduro_serial || ''}
+                    onChange={e => setForm(f => ({ ...f, discoduro_serial: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <label className="fluent-label text-[11px]">Capacidad de Almacenamiento *</label>
+                  <input required className="fluent-input bg-white/[0.02]" placeholder="ej. 1 TB, 500 GB" value={form.discoduro_capacidad || ''}
+                    onChange={e => setForm(f => ({ ...f, discoduro_capacidad: e.target.value }))} />
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">

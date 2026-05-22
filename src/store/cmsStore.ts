@@ -187,6 +187,16 @@ export interface CasoCMS {
   dispositivo_danos_visibles?: string;
   dispositivo_bateria_estado?: string;
   dispositivo_pantalla_estado?: string;
+
+  // Nuevos campos dinámicos
+  solicitante_nombre?: string;
+  solicitante_cedula?: string;
+  correo_investigar?: string;
+  correo_proveedor?: string;
+  discoduro_serial?: string;
+  discoduro_capacidad?: string;
+  discoduro_marca?: string;
+  discoduro_modelo?: string;
 }
 
 // ─── Compliance Checklist por Normativa ────────────────────────────────────────
@@ -464,6 +474,14 @@ export const useCMSStore = create<CMSState>()(
                         dispositivo_danos_visibles: c.dispositivo_danos_visibles,
                         dispositivo_bateria_estado: c.dispositivo_bateria_estado,
                         dispositivo_pantalla_estado: c.dispositivo_pantalla_estado,
+                        solicitante_nombre: c.solicitante_nombre || c.solicitanteNombre || '',
+                        solicitante_cedula: c.solicitante_cedula || c.solicitanteCedula || '',
+                        correo_investigar: c.correo_investigar || c.correoInvestigar || '',
+                        correo_proveedor: c.correo_proveedor || c.correoProveedor || '',
+                        discoduro_serial: c.discoduro_serial || c.discoduroSerial || '',
+                        discoduro_capacidad: c.discoduro_capacidad || c.discoduroCapacidad || '',
+                        discoduro_marca: c.discoduro_marca || c.discoduroMarca || '',
+                        discoduro_modelo: c.discoduro_modelo || c.discoduroModelo || '',
                     };
                 });
                 set({ casos: mapeados });
@@ -500,7 +518,15 @@ export const useCMSStore = create<CMSState>()(
                 completed_steps: caso.steps ? undefined : (caso.completed_steps || {}),
                 step_metadata: caso.steps ? undefined : (caso.step_metadata || {}),
                 compliance_checklist: caso.compliance_checklist || [],
-                user_id: 1
+                user_id: 1,
+                solicitante_nombre: caso.solicitante_nombre || '',
+                solicitante_cedula: caso.solicitante_cedula || '',
+                correo_investigar: caso.correo_investigar || '',
+                correo_proveedor: caso.correo_proveedor || '',
+                discoduro_serial: caso.discoduro_serial || '',
+                discoduro_capacidad: caso.discoduro_capacidad || '',
+                discoduro_marca: caso.discoduro_marca || '',
+                discoduro_modelo: caso.discoduro_modelo || '',
             };
             const result = window.electronAPI?.db ? await window.electronAPI.db.addCaso(payload) : null;
             
@@ -527,6 +553,14 @@ export const useCMSStore = create<CMSState>()(
                   dispositivo_danos_visibles: payload.dispositivo_danos_visibles,
                   dispositivo_bateria_estado: payload.dispositivo_bateria_estado,
                   dispositivo_pantalla_estado: payload.dispositivo_pantalla_estado,
+                  solicitante_nombre: payload.solicitante_nombre,
+                  solicitante_cedula: payload.solicitante_cedula,
+                  correo_investigar: payload.correo_investigar,
+                  correo_proveedor: payload.correo_proveedor,
+                  discoduro_serial: payload.discoduro_serial,
+                  discoduro_capacidad: payload.discoduro_capacidad,
+                  discoduro_marca: payload.discoduro_marca,
+                  discoduro_modelo: payload.discoduro_modelo,
                 };
                 set(s => ({ casos: [...s.casos, nuevo] }));
                 get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.peritoLider });
@@ -565,6 +599,15 @@ export const useCMSStore = create<CMSState>()(
             if (datos.dispositivo_danos_visibles !== undefined) mappedData.dispositivo_danos_visibles = datos.dispositivo_danos_visibles;
             if (datos.dispositivo_bateria_estado !== undefined) mappedData.dispositivo_bateria_estado = datos.dispositivo_bateria_estado;
             if (datos.dispositivo_pantalla_estado !== undefined) mappedData.dispositivo_pantalla_estado = datos.dispositivo_pantalla_estado;
+            if (datos.tipoProyecto !== undefined) mappedData.tipo_proyecto = datos.tipoProyecto;
+            if (datos.solicitante_nombre !== undefined) mappedData.solicitante_nombre = datos.solicitante_nombre;
+            if (datos.solicitante_cedula !== undefined) mappedData.solicitante_cedula = datos.solicitante_cedula;
+            if (datos.correo_investigar !== undefined) mappedData.correo_investigar = datos.correo_investigar;
+            if (datos.correo_proveedor !== undefined) mappedData.correo_proveedor = datos.correo_proveedor;
+            if (datos.discoduro_serial !== undefined) mappedData.discoduro_serial = datos.discoduro_serial;
+            if (datos.discoduro_capacidad !== undefined) mappedData.discoduro_capacidad = datos.discoduro_capacidad;
+            if (datos.discoduro_marca !== undefined) mappedData.discoduro_marca = datos.discoduro_marca;
+            if (datos.discoduro_modelo !== undefined) mappedData.discoduro_modelo = datos.discoduro_modelo;
             if (datos.steps !== undefined) mappedData.steps = datos.steps;
             if (datos.completed_steps !== undefined) mappedData.completed_steps = datos.completed_steps;
             if (datos.step_metadata !== undefined) mappedData.step_metadata = datos.step_metadata;

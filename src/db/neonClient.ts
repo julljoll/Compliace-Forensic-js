@@ -40,13 +40,35 @@ export async function initDatabase() {
         dispositivo_bateria_estado VARCHAR(50),
         dispositivo_pantalla_estado VARCHAR(50),
         user_id INTEGER NOT NULL DEFAULT 1,
-        completed_steps TEXT, -- Almacenará JSON serializado de steps completados
-        step_metadata TEXT,    -- Almacenará JSON serializado de metadatos de steps
-        compliance_checklist TEXT, -- Almacenará JSON serializado del checklist de compliance
+        completed_steps TEXT,
+        step_metadata TEXT,
+        compliance_checklist TEXT,
+        tipo_proyecto VARCHAR(100) DEFAULT 'forense_whatsapp',
+        solicitante_nombre VARCHAR(255),
+        solicitante_cedula VARCHAR(100),
+        correo_investigar VARCHAR(255),
+        correo_proveedor VARCHAR(255),
+        discoduro_serial VARCHAR(255),
+        discoduro_capacidad VARCHAR(255),
+        discoduro_marca VARCHAR(255),
+        discoduro_modelo VARCHAR(255),
+        steps TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Migraciones automáticas mediante ALTER TABLE si la tabla ya existía sin estas columnas
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS tipo_proyecto VARCHAR(100) DEFAULT 'forense_whatsapp'`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS solicitante_nombre VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS solicitante_cedula VARCHAR(100)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS correo_investigar VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS correo_proveedor VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_serial VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_capacidad VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_marca VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_modelo VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS steps TEXT`);
 
     // Tabla de logs de auditoría
     await sqlClient(`
@@ -100,8 +122,10 @@ export async function addCasoDB(caso: any): Promise<{ success: boolean; id: stri
         dispositivo_marca, dispositivo_modelo, dispositivo_imei, dispositivo_imei2,
         dispositivo_sim_card, dispositivo_numero_tel, dispositivo_estado_fisico,
         dispositivo_modo_aislamiento, dispositivo_danos_visibles, dispositivo_bateria_estado,
-        dispositivo_pantalla_estado, user_id, completed_steps, step_metadata, compliance_checklist, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24)
+        dispositivo_pantalla_estado, user_id, completed_steps, step_metadata, compliance_checklist, created_at, updated_at,
+        tipo_proyecto, solicitante_nombre, solicitante_cedula, correo_investigar, correo_proveedor,
+        discoduro_serial, discoduro_capacidad, discoduro_marca, discoduro_modelo, steps
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34)
     `, [
       newId,
       caso.numero_caso || caso.numeroCaso || '',
@@ -126,7 +150,17 @@ export async function addCasoDB(caso: any): Promise<{ success: boolean; id: stri
       caso.step_metadata ? JSON.stringify(caso.step_metadata) : '{}',
       caso.compliance_checklist ? JSON.stringify(caso.compliance_checklist) : '[]',
       caso.created_at || new Date().toISOString(),
-      new Date().toISOString()
+      new Date().toISOString(),
+      caso.tipo_proyecto || caso.tipoProyecto || 'forense_whatsapp',
+      caso.solicitante_nombre || '',
+      caso.solicitante_cedula || '',
+      caso.correo_investigar || '',
+      caso.correo_proveedor || '',
+      caso.discoduro_serial || '',
+      caso.discoduro_capacidad || '',
+      caso.discoduro_marca || '',
+      caso.discoduro_modelo || '',
+      caso.steps ? JSON.stringify(caso.steps) : '{}'
     ]);
     return { success: true, id: newId };
   } catch (e: any) {
@@ -163,8 +197,18 @@ export async function updateCasoDB(id: string, data: any): Promise<boolean> {
         completed_steps = COALESCE($17, completed_steps),
         step_metadata = COALESCE($18, step_metadata),
         compliance_checklist = COALESCE($19, compliance_checklist),
+        tipo_proyecto = COALESCE($20, tipo_proyecto),
+        solicitante_nombre = COALESCE($21, solicitante_nombre),
+        solicitante_cedula = COALESCE($22, solicitante_cedula),
+        correo_investigar = COALESCE($23, correo_investigar),
+        correo_proveedor = COALESCE($24, correo_proveedor),
+        discoduro_serial = COALESCE($25, discoduro_serial),
+        discoduro_capacidad = COALESCE($26, discoduro_capacidad),
+        discoduro_marca = COALESCE($27, discoduro_marca),
+        discoduro_modelo = COALESCE($28, discoduro_modelo),
+        steps = COALESCE($29, steps),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $20
+      WHERE id = $30
     `, [
       data.titulo ?? null,
       data.descripcion ?? null,
@@ -185,6 +229,16 @@ export async function updateCasoDB(id: string, data: any): Promise<boolean> {
       data.completed_steps !== undefined ? JSON.stringify(data.completed_steps) : null,
       data.step_metadata !== undefined ? JSON.stringify(data.step_metadata) : null,
       data.compliance_checklist !== undefined ? JSON.stringify(data.compliance_checklist) : null,
+      data.tipo_proyecto ?? null,
+      data.solicitante_nombre ?? null,
+      data.solicitante_cedula ?? null,
+      data.correo_investigar ?? null,
+      data.correo_proveedor ?? null,
+      data.discoduro_serial ?? null,
+      data.discoduro_capacidad ?? null,
+      data.discoduro_marca ?? null,
+      data.discoduro_modelo ?? null,
+      data.steps !== undefined ? JSON.stringify(data.steps) : null,
       id
     ]);
     return (updated?.length ?? 0) > 0;
