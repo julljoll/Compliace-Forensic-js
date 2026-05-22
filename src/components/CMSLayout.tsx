@@ -10,8 +10,8 @@ import { useAuthStore } from '../store/authStore';
 const menuItems = [
   { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
   { path: '/casos',            label: 'Gestión de Casos',      icon: FolderOpen,       group: 'Principal' },
-  { path: '/control/seguimiento-compliance', label: 'Seguimiento & Compliance', icon: ShieldCheck, group: 'Control' },
-  { path: '/tareas',           label: 'Tareas & Fases',        icon: ClipboardList,    group: 'Control' },
+  { path: '/control/seguimiento-compliance', label: 'Fases, Tareas & Compliance', icon: ShieldCheck, group: 'Control' },
+  { path: '/control/seguimiento-compliance?tab=tareas', label: 'Tablero de Tareas', icon: ClipboardList, group: 'Control' },
   { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Referencia' },
   { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
   { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Referencia' },
@@ -36,8 +36,30 @@ export default function CMSLayout() {
   }, [fetchCasos]);
 
   const getBreadcrumb = () => {
-    const item = menuItems.find(m => m.path === location.pathname || location.pathname.startsWith(m.path + '/'));
-    return item ? item.label : 'Panel Principal';
+    // Intenta encontrar el elemento activo exacto (que coincida con los parámetros de búsqueda si existen)
+    const activeItem = menuItems.find(item => {
+      const [itemPathname, itemSearch] = item.path.split('?');
+      if (itemSearch) {
+        return location.pathname === itemPathname && location.search.includes(itemSearch);
+      } else {
+        if (location.pathname === itemPathname) {
+          const hasSpecificMatch = menuItems.some(m => {
+            const [mPath, mSearch] = m.path.split('?');
+            return m.path !== item.path && mPath === itemPathname && mSearch && location.search.includes(mSearch);
+          });
+          return !hasSpecificMatch;
+        }
+        return false;
+      }
+    });
+    if (activeItem) return activeItem.label;
+
+    // Búsqueda de respaldo por ruta base
+    const fallbackItem = menuItems.find(m => {
+      const [mPath] = m.path.split('?');
+      return mPath === location.pathname || (mPath !== '/' && location.pathname.startsWith(mPath + '/'));
+    });
+    return fallbackItem ? fallbackItem.label : 'Panel Principal';
   };
 
   return (
@@ -85,7 +107,21 @@ export default function CMSLayout() {
                 <div className="space-y-0.5">
                   {items.map(item => {
                     const Icon = item.icon;
-                    const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+                    const isActive = (() => {
+                      const [itemPathname, itemSearch] = item.path.split('?');
+                      if (itemSearch) {
+                        return location.pathname === itemPathname && location.search.includes(itemSearch);
+                      } else {
+                        if (location.pathname === itemPathname) {
+                          const hasSpecificMatch = menuItems.some(m => {
+                            const [mPath, mSearch] = m.path.split('?');
+                            return m.path !== item.path && mPath === itemPathname && mSearch && location.search.includes(mSearch);
+                          });
+                          return !hasSpecificMatch;
+                        }
+                        return itemPathname !== '/' && location.pathname.startsWith(itemPathname);
+                      }
+                    })();
                     return (
                       <Link
                         key={item.path}
