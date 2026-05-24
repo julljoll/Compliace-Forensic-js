@@ -16,12 +16,10 @@ const menuItems = [
   { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
   { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
-  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/correo-forense', label: 'Correo Corporativo', icon: Mail, group: 'Control' },
+  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
 ];
 
-const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];
+const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
 
 export default function CMSLayout() {
   const location = useLocation();
