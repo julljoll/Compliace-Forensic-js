@@ -15,11 +15,11 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 22:50:02",
-      "last_commit": "24e7aa7 - ff (2026-05-26)",
+      "timestamp": "2026-05-26 22:52:37",
+      "last_commit": "e710764 - sss (2026-05-26)",
       "modified_files": [
-        "M  src/App.tsx",
-        "M  src/pages/NormativasPage.tsx"
+        "M  src/pages/AuditoriaPage.tsx",
+        "M  src/pages/PersonalPage.tsx"
       ]
     }
   },
