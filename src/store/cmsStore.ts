@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { useAuditStore } from './auditStore';
 import { getPasosPorTipo } from '../data/tiposProyecto';
+import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
 
 // ─── Enumeraciones ────────────────────────────────────────────────────────────
 
@@ -876,7 +877,7 @@ export const useCMSStore = create<CMSState>()(
 
       // ── Verificar si un paso puede completarse ──
       verifyStepCompletion: (stepId) => {
-        const { casoSeleccionado, casos, tareas, complianceChecklist } = get();
+        const { casoSeleccionado, casos, tareas } = get();
         if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'] };
         const caso = casos.find(c => c.id === casoSeleccionado);
         if (!caso) return { canComplete: false, missing: ['Caso no encontrado'] };
@@ -893,11 +894,29 @@ export const useCMSStore = create<CMSState>()(
         const tareasPendientes = tareasPaso.filter(t => t.estado !== 'completada');
         tareasPendientes.forEach(t => missing.push(`Tarea pendiente: ${t.titulo}`));
 
-        // 2. Verificar compliance — leer del estado global sincronizado (no del caso que se actualiza asíncronamente)
+        // 2. Verificar compliance — Leer del caso directamente (fuente de verdad definitiva)
+        const checklist = caso.compliance_checklist || [];
         paso.complianceIds.forEach(reqId => {
-          const item = complianceChecklist.find(c => c.stageId === reqId);
+          const item = checklist.find(c => c.stageId === reqId);
           if (!item?.checked) {
-            missing.push(`Requisito normativo pendiente: ${reqId}`);
+            // Buscar un nombre legible de la normativa para mostrar una advertencia amigable
+            let nombreLegible = reqId;
+            for (const ne of NORMATIVAS_ETAPAS) {
+              for (const et of ne.etapas) {
+                if (et.id === reqId) {
+                  nombreLegible = `${ne.codigo} — ${et.nombre}`;
+                  break;
+                }
+                if (et.subetapas) {
+                  const sub = et.subetapas.find(s => s.id === reqId);
+                  if (sub) {
+                    nombreLegible = `${ne.codigo} — ${sub.nombre}`;
+                    break;
+                  }
+                }
+              }
+            }
+            missing.push(`Requisito normativo pendiente: ${nombreLegible}`);
           }
         });
 

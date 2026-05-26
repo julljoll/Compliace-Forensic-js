@@ -15,12 +15,10 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-27 00:08:04",
-      "last_commit": "3c9652b - sss (2026-05-26)",
+      "timestamp": "2026-05-27 00:12:48",
+      "last_commit": "01afee6 - 333 (2026-05-27)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  src/data/tiposProyecto.ts",
-        "M  src/pages/Control/SeguimientoCompliancePage.tsx",
         "M  src/store/cmsStore.ts"
       ]
     }
