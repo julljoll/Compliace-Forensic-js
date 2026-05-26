@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database
 } from 'lucide-react';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -16,6 +16,7 @@ const menuItems = [
   { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
   { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Sistema' },
+  { path: '/manual-serverless', label: 'Manual Serverless',    icon: Database,         group: 'Sistema' },
   { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/correo-forense', label: 'Correo Corporativo', icon: Mail, group: 'Control' },

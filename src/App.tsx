@@ -20,6 +20,7 @@ const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
+const ManualServerlessPage = lazy(() => import('./pages/ManualServerlessPage'));
 
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
@@ -80,6 +81,7 @@ function App() {
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
           <Route path="tareas" element={<Navigate to="/control/seguimiento-compliance?tab=tareas" replace />} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
+          <Route path="manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
