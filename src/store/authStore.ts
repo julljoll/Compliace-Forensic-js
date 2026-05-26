@@ -17,6 +17,7 @@ interface AuthState {
   error: string | null;
 
   login: (username: string, password: string) => Promise<boolean>;
+  vercelLogin: (user: AuthUser) => void;
   logout: () => void;
   validateSession: () => Promise<boolean>;
   clearError: () => void;
@@ -56,6 +57,10 @@ export const useAuthStore = create<AuthState>()(
           set({ error: 'Error de conexión con el sistema de autenticación', isLoading: false });
           return false;
         }
+      },
+
+      vercelLogin: (user) => {
+        set({ user, isAuthenticated: true, isLoading: false, error: null });
       },
 
       logout: async () => {

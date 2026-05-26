@@ -91,6 +91,28 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[rgba(0,0,0,0.06)]" />
+            </div>
+            <div className="relative flex justify-center">
+              <span className="px-3 text-[11px] font-medium text-[#86868B] bg-white">O</span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              const apiUrl = import.meta.env.VITE_API_URL || '/api/oauth/vercel';
+              window.location.href = apiUrl;
+            }}
+            className="apple-btn w-full py-2.5 text-[13px] font-semibold border border-[rgba(0,0,0,0.12)] text-[#1D1D1F] hover:bg-[rgba(0,0,0,0.03)]"
+          >
+            <svg viewBox="0 0 24 24" width={15} height={15} fill="#000000" className="shrink-0">
+              <path d="M12 2L22 21H2L12 2Z" />
+            </svg>
+            Iniciar sesión con Vercel
+          </button>
         </div>
 
         <div className="mt-7 text-center space-y-2.5">

@@ -9,6 +9,7 @@ import CMSLayout from './components/templates/CMSLayout';
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 const LoginPage = lazy(() => import('./pages/LoginPage'));
+const VercelCallback = lazy(() => import('./pages/Auth/VercelCallback'));
 
 // ── CMS Compliance ──────────────────────────────────────────────────────────
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -58,6 +59,15 @@ function App() {
         {/* ── Login ── */}
         <Route path="/login" element={
           isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />
+        } />
+        <Route path="/auth/vercel-callback" element={
+          <Suspense fallback={
+            <div className="h-screen bg-[#F5F5F7] flex items-center justify-center">
+              <div className="w-8 h-8 border-2 border-[#0071E3]/30 border-t-[#0071E3] rounded-full animate-spin" />
+            </div>
+          }>
+            <VercelCallback />
+          </Suspense>
         } />
 
         {/* ── CMS Compliance Officer (protegido) ── */}

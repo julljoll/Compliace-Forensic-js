@@ -15,16 +15,16 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 21:46:56",
-      "last_commit": "28f2f9e - dsd (2026-05-26)",
+      "timestamp": "2026-05-26 21:50:59",
+      "last_commit": "dc1d83f - sas (2026-05-26)",
       "modified_files": [
-        "A  \"RAG/analisis forense en android con avilla forensics.pdf\"",
+        "M  .env.example",
         "M  agent_instructions.json",
-        "M  src/components/templates/CMSLayout.tsx",
-        "M  src/db/neonClient.ts",
-        "M  src/index.css",
-        "M  src/pages/Planillas/PlanillaPRCCPage.tsx",
-        "M  src/pages/Planillas/Planillas.css"
+        "A  api/oauth/vercel.ts",
+        "M  src/App.tsx",
+        "A  src/pages/Auth/VercelCallback.tsx",
+        "M  src/pages/LoginPage.tsx",
+        "M  src/store/authStore.ts"
       ]
     }
   },
