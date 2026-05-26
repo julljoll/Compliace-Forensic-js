@@ -80,7 +80,8 @@ function App() {
           <Route path="compliance" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="normativas" element={<Suspense fallback={<PageLoader />}><NormativasPage /></Suspense>} />
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
-          <Route path="sistemas/manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
+          <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
+          <Route path="sistemas/manual-avilla" element={<Navigate to="/manual-avilla" replace />} />
           <Route path="tareas" element={<Navigate to="/control/seguimiento-compliance?tab=tareas" replace />} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
           <Route path="manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
@@ -89,8 +90,9 @@ function App() {
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
+          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
+          <Route path="sistemas/correo-electronico" element={<Navigate to="/correo-forense" replace />} />
           <Route path="sistemas/correo-corporativo" element={<Suspense fallback={<PageLoader />}><CorreoCorporativoManual /></Suspense>} />
-          <Route path="sistemas/correo-electronico" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
         </Route>
 
 
