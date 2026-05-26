@@ -163,8 +163,14 @@ const ActaObtencionPage = () => {
                     Teléfono: <span className="sig-underline">{activeCaso?.dispositivo_numero_tel || ''}</span>
                 </div>
                 <div className="fingerprint-row">
-                    <div className="thumb-box">PULGAR<br />DER.</div>
-                    <div className="thumb-box">PULGAR<br />IZQ.</div>
+                    <div className="thumb-wrapper">
+                        <div className="thumb-box" />
+                        <span className="thumb-label">PULGAR DER.</span>
+                    </div>
+                    <div className="thumb-wrapper">
+                        <div className="thumb-box" />
+                        <span className="thumb-label">PULGAR IZQ.</span>
+                    </div>
                 </div>
             </div>
             <div className="sig-detail-card">
@@ -178,8 +184,14 @@ const ActaObtencionPage = () => {
                     Teléfono: <span className="sig-underline"></span>
                 </div>
                 <div className="fingerprint-row">
-                    <div className="thumb-box">PULGAR<br />DER.</div>
-                    <div className="thumb-box">PULGAR<br />IZQ.</div>
+                    <div className="thumb-wrapper">
+                        <div className="thumb-box" />
+                        <span className="thumb-label">PULGAR DER.</span>
+                    </div>
+                    <div className="thumb-wrapper">
+                        <div className="thumb-box" />
+                        <span className="thumb-label">PULGAR IZQ.</span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -290,16 +290,26 @@
   justify-content: center;
 }
 
+.planilla-container .thumb-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
 .planilla-container .thumb-box {
   width: 32px;
   height: 36px;
   border: 1px dashed var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5px;
+}
+
+.planilla-container .thumb-label {
+  font-size: 6px;
   color: var(--text-dim);
   text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .planilla-container .sig-label {
@@ -668,6 +678,11 @@
     height: 30px !important;
   }
 
+  .planilla-container .thumb-label {
+    color: #444 !important;
+    font-size: 5.5px !important;
+  }
+
   .planilla-container .sig-detail-card {
     border: 1px solid #bbb !important;
     background: #fafafa !important;
@@ -710,6 +725,12 @@
     gap: 6px !important;
     margin-top: 2px !important;
     padding-top: 2px !important;
+  }
+
+  /* ── Print blank: hide auto-filled values, keep form structure ── */
+  .planilla-container .value {
+    color: transparent !important;
+    text-shadow: none !important;
   }
 
   .planilla-container .watermark {

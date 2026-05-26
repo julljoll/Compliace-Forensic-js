@@ -72,7 +72,10 @@ const PlanillaPRCCPage = () => {
                     <div className="value" style={{ 'minHeight': '18px', 'fontWeight': 'bold', 'padding': '2px 5px' }}>{activeCaso?.peritoLider || ''}</div>
                     <div className="sig-row">
                         <div className="sig-box"><span className="sig-label">FIRMA</span></div>
-                        <div className="thumb-box">PULGAR<br />DER.</div>
+                        <div className="thumb-wrapper">
+                            <div className="thumb-box" />
+                            <span className="thumb-label">PULGAR DER.</span>
+                        </div>
                     </div>
                 </div>
                 <div className="sig-card">
@@ -80,7 +83,10 @@ const PlanillaPRCCPage = () => {
                     <div className="value" style={{ 'minHeight': '18px', 'fontWeight': 'bold', 'padding': '2px 5px' }}>{activeCaso?.peritoLider || ''}</div>
                     <div className="sig-row">
                         <div className="sig-box"><span className="sig-label">FIRMA</span></div>
-                        <div className="thumb-box">PULGAR<br />DER.</div>
+                        <div className="thumb-wrapper">
+                            <div className="thumb-box" />
+                            <span className="thumb-label">PULGAR DER.</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -157,8 +163,14 @@ const PlanillaPRCCPage = () => {
                                     Teléfono: <span className="sig-underline" style={{ 'minHeight': '16px' }}>{activeCaso?.dispositivo_numero_tel || ''}</span>
                                 </div>
                                 <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
-                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />DER.</div>
-                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />IZQ.</div>
+                                    <div className="thumb-wrapper">
+                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <span className="thumb-label">PULGAR DER.</span>
+                                    </div>
+                                    <div className="thumb-wrapper">
+                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <span className="thumb-label">PULGAR IZQ.</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -175,8 +187,14 @@ const PlanillaPRCCPage = () => {
                                     Teléfono: <span className="sig-underline" style={{ 'minHeight': '16px' }}></span>
                                 </div>
                                 <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
-                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />DER.</div>
-                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />IZQ.</div>
+                                    <div className="thumb-wrapper">
+                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <span className="thumb-label">PULGAR DER.</span>
+                                    </div>
+                                    <div className="thumb-wrapper">
+                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <span className="thumb-label">PULGAR IZQ.</span>
+                                    </div>
                                 </div>
                             </div>
                         </td>
