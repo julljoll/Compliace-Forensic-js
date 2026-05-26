@@ -62,28 +62,28 @@ export default function CompliancePage() {
   const getCheckDate = (stageId: string) => complianceChecklist.find(c => c.stageId === stageId)?.fechaCheck;
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 apple-fade-in">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <h1 className="text-4xl font-bold text-white tracking-tight flex items-center gap-4">
+          <h1 className="text-4xl font-bold text-apple-text tracking-tight flex items-center gap-4">
             <div className="p-2 rounded-[4px] bg-apple-accent/10 border border-apple-accent/20">
                <ShieldCheck className="text-apple-accent" size={28} strokeWidth={2.5} />
             </div>
             Control de Cumplimiento
           </h1>
-          <p className="text-sm text-fluent-text-muted font-medium max-w-lg mt-2 leading-relaxed">
+          <p className="text-sm text-apple-text-secondary font-medium max-w-lg mt-2 leading-relaxed">
             Monitoreo técnico del cumplimiento regulatorio basado en estándares internacionales y marcos legales forenses vigentes.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center gap-2 mr-2 text-fluent-text-muted/40 uppercase font-black text-[9px] tracking-widest">
+          <div className="flex items-center gap-2 mr-2 text-apple-text-secondary/40 uppercase font-bold text-[9px] tracking-widest">
              <Filter size={12} strokeWidth={3} />
               <span>Filtrar</span>
           </div>
           {TIPOS.map(t => (
             <button key={t} onClick={() => setTipoFiltro(t)}
-              className={`text-[10px] px-4 py-1.5 rounded-[4px] font-black uppercase transition-all tracking-wider ${tipoFiltro === t ? 'bg-apple-accent text-white shadow-lg' : 'bg-white/[0.03] text-fluent-text-muted hover:text-white border border-white/5 hover:bg-white/10'}`}>
+              className={`text-[10px] px-4 py-1.5 rounded-[6px] font-bold uppercase transition-all tracking-wider ${tipoFiltro === t ? 'bg-apple-accent text-white shadow-lg' : 'bg-black/[0.04] text-apple-text-secondary hover:text-apple-text border border-transparent'}`}>
               {t}
             </button>
           ))}
@@ -93,40 +93,40 @@ export default function CompliancePage() {
       <ComplianceKPIs stats={globalStats} totalNormativas={normativas.filter(n => n.activa).length} />
 
       {/* Barra de progreso global */}
-      <div className="fluent-mica p-6 rounded-xl border-white/5 shadow-2xl relative overflow-hidden">
+      <div className="apple-card p-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-apple-accent/30 to-transparent" />
         <div className="flex justify-between items-center mb-5">
-          <h3 className="font-bold text-white text-sm tracking-tight">Estado de Implementación Global</h3>
-          <span className="text-[10px] font-black font-mono text-apple-accent bg-apple-accent/10 px-3 py-1 rounded-[4px] border border-apple-accent/20 uppercase tracking-widest">
+          <h3 className="font-bold text-apple-text text-sm tracking-tight">Estado de Implementación Global</h3>
+          <span className="text-[10px] font-bold font-mono text-apple-accent bg-apple-accent/10 px-3 py-1 rounded-[4px] border border-apple-accent/20 uppercase tracking-widest">
             {globalStats.checkedStages} / {globalStats.totalStages} Etapas Verificadas
           </span>
         </div>
-        <div className="w-full h-2.5 bg-white/[0.03] rounded-full overflow-hidden border border-white/5 p-[1px]">
+        <div className="w-full h-2.5 bg-black/[0.05] rounded-full overflow-hidden p-[1px]">
           <div
             className="h-full rounded-full transition-all duration-1000 ease-in-out relative group"
             style={{
               width: `${globalStats.pct}%`,
               background: globalStats.pct >= 80 
-                ? 'linear-gradient(90deg, #22c55e, #4ade80)' 
+                ? 'linear-gradient(90deg, #34C759, #30b651)' 
                 : globalStats.pct >= 50 
-                  ? 'linear-gradient(90deg, #0078d4, #479ef5)' 
-                  : 'linear-gradient(90deg, #ef4444, #f87171)',
+                  ? 'linear-gradient(90deg, #0071E3, #0077ED)' 
+                  : 'linear-gradient(90deg, #FF3B30, #FF453A)',
             }}
           >
              <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-30 transition-opacity" />
           </div>
         </div>
-        <div className="mt-3 flex justify-between text-[10px] font-black text-fluent-text-muted/40 uppercase tracking-[0.2em]">
+        <div className="mt-3 flex justify-between text-[10px] font-bold text-apple-text-secondary/40 uppercase tracking-[0.2em]">
            <span>Línea Base Técnica</span>
-            <span className="text-fluent-text font-black">{globalStats.pct}% Completado</span>
+            <span className="text-apple-text font-bold">{globalStats.pct}% Completado</span>
         </div>
       </div>
 
       {/* Normativas con Etapas */}
       <div className="space-y-4 mt-10">
         {normativasFiltradas.length === 0 ? (
-          <div className="fluent-mica p-16 text-center rounded-xl">
-              <p className="text-fluent-text-muted font-bold uppercase text-xs tracking-widest opacity-40">No se detectaron marcos activos para este filtro.</p>
+          <div className="apple-card p-16 text-center">
+              <p className="text-apple-text-secondary font-bold uppercase text-xs tracking-widest opacity-40">No se detectaron marcos activos para este filtro.</p>
           </div>
         ) : normativasFiltradas.map(norm => {
           const ne = NORMATIVAS_ETAPAS.find(x => x.normativaId === norm.id);
@@ -150,7 +150,7 @@ export default function CompliancePage() {
       </div>
 
       {/* Nota RAG */}
-      <div className="fluent-mica p-8 border-apple-accent/10 bg-apple-accent/[0.02] rounded-2xl relative overflow-hidden group mt-12">
+      <div className="apple-card !p-8 !border-[#0071E3]/15 bg-[#0071E3]/[0.02] rounded-2xl relative overflow-hidden group mt-12">
         <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
           <ShieldCheck size={120} className="text-apple-accent" />
         </div>
@@ -159,9 +159,9 @@ export default function CompliancePage() {
             <BookOpen size={24} strokeWidth={2.5} />
           </div>
           <div>
-            <h3 className="font-bold text-white text-lg mb-2 tracking-tight">Base de Conocimiento Regulatorio (RAG)</h3>
-            <p className="text-sm text-fluent-text-muted leading-relaxed max-w-4xl font-medium opacity-80">
-              Las guías técnicas y etapas presentadas han sido sintetizadas desde marcos de referencia almacenados en el módulo <code className="font-mono text-apple-accent bg-black/40 px-2 py-0.5 rounded border border-apple-accent/20">/RAG</code>. 
+            <h3 className="font-bold text-apple-text text-lg mb-2 tracking-tight">Base de Conocimiento Regulatorio (RAG)</h3>
+            <p className="text-sm text-apple-text-secondary leading-relaxed max-w-4xl font-medium opacity-80">
+              Las guías técnicas y etapas presentadas han sido sintetizadas desde marcos de referencia almacenados en el módulo <code className="font-mono text-apple-accent bg-black/[0.04] px-2 py-0.5 rounded border border-apple-accent/15">/RAG</code>. 
               Esto incluye ISO 27037/27042, NIST SP 800-101, MUCC-2017 y legislación venezolana (LEDI, LMDF, COPP). 
               El sistema garantiza que toda acción forense permanezca trazable hasta estándares de calidad reconocidos.
             </p>

@@ -14,25 +14,25 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
     { 
       label: 'Global Progress', 
       value: `${stats.pct}%`, 
-      color: stats.pct >= 80 ? 'text-green-400' : stats.pct >= 50 ? 'text-apple-accent' : 'text-red-400', 
+      color: stats.pct >= 80 ? 'text-[#248A3D]' : stats.pct >= 50 ? 'text-[#0071E3]' : 'text-[#BF2D24]', 
       icon: ShieldCheck 
     },
     { 
       label: 'Verified Stages', 
       value: stats.checkedStages, 
-      color: 'text-green-400', 
+      color: 'text-[#248A3D]', 
       icon: CheckCircle2 
     },
     { 
       label: 'Pending Baseline', 
       value: stats.totalStages - stats.checkedStages, 
-      color: 'text-yellow-400', 
+      color: 'text-[#FF9500]', 
       icon: Clock 
     },
     { 
       label: 'Active Frameworks', 
       value: totalNormativas, 
-      color: 'text-apple-accent', 
+      color: 'text-[#0071E3]', 
       icon: ListChecks 
     },
   ];
@@ -42,10 +42,10 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
       {kpis.map(kpi => {
         const Icon = kpi.icon;
         return (
-          <div key={kpi.label} className="fluent-card p-5 group relative overflow-hidden">
+          <div key={kpi.label} className="apple-card p-5 group relative overflow-hidden">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-fluent-text-muted group-hover:text-white transition-colors">{kpi.label}</p>
-              <div className={`p-2 rounded-[4px] ${kpi.color.replace('text', 'bg')}/10 transition-transform group-hover:scale-110`}>
+              <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-apple-text-secondary transition-colors">{kpi.label}</p>
+              <div className={`p-2 rounded-[6px] ${kpi.color.replace('text', 'bg')}/10 transition-transform group-hover:scale-110`}>
                 <Icon size={16} className={kpi.color} strokeWidth={2.5} />
               </div>
             </div>

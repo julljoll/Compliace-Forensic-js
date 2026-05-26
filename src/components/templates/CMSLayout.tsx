@@ -89,15 +89,8 @@ export default function CMSLayout() {
       {/* ── macOS Sidebar ─────────────────────────────────────────────── */}
       <aside className="print:hidden w-[272px] apple-sidebar flex flex-col shrink-0">
 
-        {/* macOS Window Controls */}
-        <div className="apple-window-controls print:hidden">
-          <span className="apple-window-close" />
-          <span className="apple-window-minimize" />
-          <span className="apple-window-zoom" />
-        </div>
-
         {/* Branding */}
-        <div className="px-5 pt-1 pb-3">
+        <div className="px-5 pt-5 pb-3">
           <div className="flex items-center gap-3">
             <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-8 h-8" />
             <div>
@@ -220,6 +213,12 @@ export default function CMSLayout() {
             <div className="apple-badge-green">
               <Activity size={11} />
               <span>PRODUCCIÓN</span>
+            </div>
+            {/* Window Controls */}
+            <div className="flex items-center gap-1.5 ml-2 select-none print:hidden">
+              <span className="apple-window-close" />
+              <span className="apple-window-minimize" />
+              <span className="apple-window-zoom" />
             </div>
           </div>
         </header>

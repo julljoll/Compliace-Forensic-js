@@ -15,15 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 23:16:24",
-      "last_commit": "3356f75 - xdsd (2026-05-26)",
+      "timestamp": "2026-05-26 23:27:07",
+      "last_commit": "2d528e7 - dsd (2026-05-26)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  src/components/organisms/Casos/NuevoCasoModal.tsx",
-        "M  src/index.css",
-        "M  src/pages/CorreoForensePage.tsx",
-        "M  src/pages/ManualAvillaPage.tsx",
-        "M  src/pages/TareasPage.tsx"
+        "M  src/components/organisms/Compliance/ComplianceKPIs.tsx",
+        "M  src/components/templates/CMSLayout.tsx",
+        "M  src/pages/CompliancePage.tsx"
       ]
     }
   },
