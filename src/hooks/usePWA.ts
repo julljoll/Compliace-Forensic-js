@@ -30,10 +30,11 @@ export function usePWA() {
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Escuchar actualizaciones del service worker
+    // Detectar actualización del service worker → recargar para evitar chunk obsoleto
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         setStatus(prev => ({ ...prev, updateAvailable: true }));
+        window.location.reload();
       });
     }
 

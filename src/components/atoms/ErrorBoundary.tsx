@@ -27,9 +27,29 @@ export class ErrorBoundary extends Component<Props, State> {
     this.props.onError?.(error, errorInfo);
   }
 
+  isChunkError(error: Error | null): boolean {
+    if (!error) return false;
+    return error.name === 'ChunkLoadError'
+      || error.message?.includes('Failed to fetch dynamically imported module')
+      || error.message?.includes('Loading chunk')
+      || error.message?.includes('dynamically imported');
+  }
+
   handleReset = () => {
     this.setState({ hasError: false, error: null });
   };
+
+  componentDidMount() {
+    if (this.isChunkError(this.state.error)) {
+      window.location.reload();
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.isChunkError(this.state.error)) {
+      window.location.reload();
+    }
+  }
 
   render() {
     if (this.state.hasError) {
