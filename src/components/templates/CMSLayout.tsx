@@ -13,18 +13,18 @@ const menuItems = [
   { path: '/casos',            label: 'Gestión de Casos',      icon: FolderOpen,       group: 'Principal' },
   { path: '/control/seguimiento-compliance', label: 'Fases, Tareas & Compliance', icon: ShieldCheck, group: 'Control' },
   { path: '/control/seguimiento-compliance?tab=tareas', label: 'Tablero de Tareas', icon: ClipboardList, group: 'Control' },
-  { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Referencia' },
-  { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
-  { path: '/sistemas/correo-corporativo', label: 'Manual Correo', icon: BookOpen,      group: 'Referencia' },
+  { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Sistema' },
+  { path: '/sistemas/correo-corporativo', label: 'Manual Correo', icon: BookOpen,      group: 'Sistema' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
   { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Sistema' },
   { path: '/manual-serverless', label: 'Manual Serverless',    icon: Database,         group: 'Sistema' },
   { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/correo-forense', label: 'Correo Corporativo', icon: Mail, group: 'Control' },
+  { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Plantillas Oficiales' },
+  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
 ];
 
-const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];
+const groups = ['Principal', 'Control', 'Sistema', 'Plantillas Oficiales'];
 
 export default function CMSLayout() {
   const location = useLocation();
