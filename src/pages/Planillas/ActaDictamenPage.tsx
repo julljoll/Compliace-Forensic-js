@@ -147,19 +147,34 @@ const ActaDictamenPage = () => {
         </div>
 
         {/*  IX. FIRMAS  */}
-        <div className="signature-section">
-            <div className="sig-box">
-                <div className="sig-label">EL PERITO FORENSE</div>
-                <div className="sig-sub">SHA256 Forensic Lab</div>
-                <div className="sig-sub">Nombre: {activeCaso?.peritoLider || '____________________'}</div>
-                <div className="sig-sub">Credencial: IPS-SHA256-029</div>
-                <div className="sig-sub" style={{ 'marginTop': '15px', 'fontSize': '8px' }}>Firma y Sello</div>
+        <div className="signature-section" style={{ 'gap': '14mm' }}>
+            <div className="sig-detail-card">
+                <div className="sig-detail-label">PERITO FORENSE</div>
+                <div className="sig-line">Firma</div>
+                <div className="sig-field">
+                    C.I.: <span className="sig-underline"></span>
+                </div>
+                <div className="sig-field">
+                    Teléfono: <span className="sig-underline"></span>
+                </div>
+                <div className="fingerprint-row">
+                    <div className="thumb-box">PULGAR<br />DER.</div>
+                    <div className="thumb-box">PULGAR<br />IZQ.</div>
+                </div>
             </div>
-            <div className="sig-box">
-                <div className="sig-label">EL CONSIGNANTE</div>
-                <div className="sig-sub">Nombre: {activeCaso?.solicitante_nombre || '____________________'}</div>
-                <div className="sig-sub">C.I.: <span className="box-inline" style={{ 'minWidth': '100px', 'textAlign': 'center' }}>{activeCaso?.solicitante_cedula || ''}</span></div>
-                <div className="sig-sub" style={{ 'marginTop': '15px', 'fontSize': '8px' }}>Recibí Conforme</div>
+            <div className="sig-detail-card">
+                <div className="sig-detail-label">EL CONSIGNANTE</div>
+                <div className="sig-line">Firma</div>
+                <div className="sig-field">
+                    C.I.: <span className="sig-underline">{activeCaso?.solicitante_cedula || ''}</span>
+                </div>
+                <div className="sig-field">
+                    Teléfono: <span className="sig-underline">{activeCaso?.dispositivo_numero_tel || ''}</span>
+                </div>
+                <div className="fingerprint-row">
+                    <div className="thumb-box">PULGAR<br />DER.</div>
+                    <div className="thumb-box">PULGAR<br />IZQ.</div>
+                </div>
             </div>
         </div>
 
@@ -170,7 +185,7 @@ const ActaDictamenPage = () => {
     </div>
 
     <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px' }}>
-        <button onClick={() => { window.print() }} style={{ 'padding': '10px 20px', 'background': '#FECF06', 'color': '#181818', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer', 'fontWeight': 'bold', 'fontFamily': '"Inter", sans-serif', 'boxShadow': '0 2px 4px rgba(0,0,0,0.2)' }}>
+        <button onClick={() => { window.print() }} style={{ 'padding': '10px 20px', 'background': '#0071E3', 'color': '#ffffff', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer', 'fontWeight': 'bold', 'fontFamily': '"Inter", sans-serif', 'boxShadow': '0 2px 4px rgba(0,0,0,0.2)' }}>
             🖨️ Imprimir Dictamen (Tamaño Oficio)
         </button>
     </div>

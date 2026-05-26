@@ -111,7 +111,7 @@ export default function CasosPage() {
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Gestión de Casos</h1>
           <p className="text-sm text-fluent-text-muted font-medium mt-1">
-            <span className="text-fluent-accent font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
+            <span className="text-apple-accent font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
           </p>
         </div>
         <button 

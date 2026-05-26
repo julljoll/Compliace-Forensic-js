@@ -115,7 +115,7 @@ export default function TareasPage() {
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Task & Phase Control</h1>
           <p className="text-xs md:text-sm text-fluent-text-muted font-medium max-w-lg mt-1">
-            Forensic workflow management under <span className="text-fluent-accent">MUCC-2017</span> and <span className="text-fluent-accent">ISO 27037</span> phase-tracking methodology.
+            Forensic workflow management under <span className="text-apple-accent">MUCC-2017</span> and <span className="text-apple-accent">ISO 27037</span> phase-tracking methodology.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -265,7 +265,7 @@ export default function TareasPage() {
                         <BarChart3 size={11} /> {tarea.porcentaje}%
                       </span>
                       {tarea.pasoId && (
-                        <span className="flex items-center gap-1.5 text-fluent-accent">
+                        <span className="flex items-center gap-1.5 text-apple-accent">
                           <span className="text-[8px] font-black uppercase tracking-wider">Paso:</span>
                           {tarea.pasoId}
                         </span>
@@ -275,7 +275,7 @@ export default function TareasPage() {
                     {/* Progress bar */}
                     <div className="mt-3 w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
                       <div
-                        className="h-full bg-fluent-accent rounded-full transition-all duration-500"
+                        className="h-full bg-apple-accent rounded-full transition-all duration-500"
                         style={{ width: `${tarea.porcentaje}%` }}
                       />
                     </div>
@@ -394,8 +394,8 @@ function NuevaTareaModal({
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-fluent-accent/10">
-              <ClipboardList size={18} className="text-fluent-accent" />
+            <div className="p-2 rounded-md bg-apple-accent/10">
+              <ClipboardList size={18} className="text-apple-accent" />
             </div>
             <div>
               <h2 className="text-base font-bold text-white">New Forensic Task</h2>
@@ -510,7 +510,7 @@ function NuevaTareaModal({
                   key={n.id}
                   className={`flex items-center gap-2 text-[10px] font-bold p-2 rounded-md border cursor-pointer transition-all ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-fluent-accent/10 border-fluent-accent/30 text-fluent-accent'
+                      ? 'bg-apple-accent/10 border-apple-accent/30 text-apple-accent'
                       : 'bg-white/[0.03] border-white/5 text-fluent-text-muted hover:bg-white/5'
                   }`}
                 >
@@ -522,7 +522,7 @@ function NuevaTareaModal({
                   />
                   <div className={`w-3 h-3 rounded-sm border flex items-center justify-center shrink-0 ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-fluent-accent border-fluent-accent'
+                      ? 'bg-apple-accent border-apple-accent'
                       : 'border-white/20'
                   }`}>
                     {form.normativasRelacionadas.includes(n.id) && (

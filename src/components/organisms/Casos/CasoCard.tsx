@@ -49,7 +49,7 @@ export default function CasoCard({
       
       <div className="flex-1 min-w-0 w-full">
         <div className="flex flex-wrap items-center gap-1.5 mb-1">
-          <span className="font-mono font-black text-fluent-accent text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
+          <span className="font-mono font-black text-apple-accent text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
           <div className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estadoConf}`}>
             {estados.find(e => e.value === caso.estado)?.label}
           </div>
@@ -58,7 +58,7 @@ export default function CasoCard({
             {TIPO_LABEL[caso.tipoProyecto] || 'WhatsApp'}
           </div>
         </div>
-        <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-fluent-accent transition-colors">{caso.titulo}</h3>
+        <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-apple-accent transition-colors">{caso.titulo}</h3>
         <div className="flex items-center gap-4 text-[11px] text-fluent-text-muted font-medium">
           <span className="flex items-center gap-1.5"><User size={12} className="opacity-50" />{caso.peritoLider}</span>
           <span className="flex items-center gap-1.5"><Calendar size={12} className="opacity-50" />{new Date(caso.fechaCreacion).toLocaleDateString('es')}</span>
@@ -78,13 +78,13 @@ export default function CasoCard({
             <span>{caso.porcentajeCompletado}%</span>
           </div>
           <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-fluent-accent rounded-full transition-all duration-700 ease-out" style={{ width: `${caso.porcentajeCompletado}%` }} />
+            <div className="h-full bg-apple-accent rounded-full transition-all duration-700 ease-out" style={{ width: `${caso.porcentajeCompletado}%` }} />
           </div>
         </div>
       </div>
 
       <div className="hidden sm:flex items-center gap-1.5 shrink-0 ml-2">
-        <Link to={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-white/5 text-fluent-text-muted hover:bg-fluent-accent hover:text-white transition-all">
+        <Link to={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-white/5 text-fluent-text-muted hover:bg-apple-accent hover:text-white transition-all">
           <ChevronRight size={16} strokeWidth={2.5} />
         </Link>
         <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-[4px] bg-white/5 text-fluent-text-muted hover:bg-red-500 hover:text-white transition-all">
@@ -94,7 +94,7 @@ export default function CasoCard({
 
       {/* Mobile Actions */}
       <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
-        <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-fluent-accent text-white font-bold text-xs uppercase tracking-widest shadow-lg">
+        <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-apple-accent text-white font-bold text-xs uppercase tracking-widest shadow-lg">
           Abrir Registro
           <ChevronRight size={14} className="ml-1" strokeWidth={3} />
         </Link>

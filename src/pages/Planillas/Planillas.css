@@ -324,6 +324,69 @@
   margin-top: 1px;
 }
 
+/* ═══ DETAILED SIGNATURE CARDS ═══ */
+.planilla-container .sig-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--gray);
+  min-height: 170px;
+}
+
+.planilla-container .sig-detail-card .sig-detail-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+.planilla-container .sig-detail-card .sig-line {
+  border-bottom: 1px solid #999;
+  height: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 8px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.planilla-container .sig-detail-card .sig-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  color: #333;
+}
+
+.planilla-container .sig-detail-card .sig-field .sig-underline {
+  flex: 1;
+  border-bottom: 1px dashed #bbb;
+  min-height: 20px;
+  padding: 0 4px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #111;
+}
+
+.planilla-container .sig-detail-card .fingerprint-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dotted var(--border);
+}
+
 /* ═══ FOOTER ═══ */
 .planilla-container .footer {
   position: absolute;
@@ -517,6 +580,34 @@
 
   .planilla-container .thumb-box {
     border: 1px dashed #666 !important;
+  }
+
+  .planilla-container .sig-detail-card {
+    border: 1px solid #bbb !important;
+    background: #fafafa !important;
+    border-radius: 0 !important;
+  }
+
+  .planilla-container .sig-detail-card .sig-detail-label {
+    color: #000 !important;
+    border-bottom-color: #999 !important;
+  }
+
+  .planilla-container .sig-detail-card .sig-line {
+    border-bottom: 1px solid #666 !important;
+  }
+
+  .planilla-container .sig-detail-card .sig-field {
+    color: #000 !important;
+  }
+
+  .planilla-container .sig-detail-card .sig-field .sig-underline {
+    border-bottom: 1px dotted #999 !important;
+    color: #000 !important;
+  }
+
+  .planilla-container .sig-detail-card .fingerprint-row {
+    border-top-color: #bbb !important;
   }
 
   .planilla-container .watermark {

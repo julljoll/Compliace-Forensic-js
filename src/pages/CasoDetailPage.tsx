@@ -303,7 +303,7 @@ export default function CasoDetailPage() {
       
       {/* ── Volver & Cabecera Superior ────────────────────────────────────────── */}
       <div className="flex flex-col gap-4">
-        <Link to="/casos" className="flex items-center gap-2 text-xs font-bold text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.2em] w-fit">
+        <Link to="/casos" className="flex items-center gap-2 text-xs font-bold text-apple-accent hover:text-apple-accent-light transition-colors uppercase tracking-[0.2em] w-fit">
           <ArrowLeft size={16} />
           Volver a Directorio de Casos
         </Link>
@@ -311,7 +311,7 @@ export default function CasoDetailPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-fluent-surface/40 p-6 sm:p-8 rounded-xl border border-fluent-border">
           <div className="space-y-3 flex-1">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="font-mono text-lg font-black text-fluent-accent tracking-widest">{caso.numeroCaso}</span>
+              <span className="font-mono text-lg font-black text-apple-accent tracking-widest">{caso.numeroCaso}</span>
               <div className="h-4 w-px bg-fluent-border hidden sm:block"></div>
               <span className="text-xs text-white/50 font-medium">PRCC: {caso.numeroPRCC || 'N/A'}</span>
             </div>
@@ -320,19 +320,19 @@ export default function CasoDetailPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 text-xs font-semibold text-white/60">
               <div className="flex items-center gap-2">
-                <User size={14} className="text-fluent-accent" />
+                <User size={14} className="text-apple-accent" />
                 <span>Perito: <strong className="text-white">{caso.peritoLider}</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <Shield size={14} className="text-fluent-accent" />
+                <Shield size={14} className="text-apple-accent" />
                 <span>Fiscal: <strong className="text-white">{caso.fiscal || 'N/A'}</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar size={14} className="text-fluent-accent" />
+                <Calendar size={14} className="text-apple-accent" />
                 <span>Registro: <strong className="text-white">{new Date(caso.fechaCreacion).toLocaleDateString('es')}</strong></span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock size={14} className="text-fluent-accent" />
+                <Clock size={14} className="text-apple-accent" />
                 <span>Modificación: <strong className="text-white">{new Date(caso.fechaUltimaActualizacion).toLocaleDateString('es')}</strong></span>
               </div>
             </div>
@@ -341,7 +341,7 @@ export default function CasoDetailPage() {
           <div className="flex flex-col sm:flex-row lg:flex-col gap-4 min-w-[200px] justify-end">
             <button 
               onClick={handleIniciarFlujoForense}
-              className="fluent-btn bg-fluent-accent text-black font-extrabold hover:bg-fluent-accent-light shadow-[0_0_15px_rgba(254,207,6,0.3)] px-6 py-3 rounded-md text-xs uppercase tracking-widest flex items-center justify-center gap-2.5"
+              className="fluent-btn bg-apple-accent text-white font-extrabold hover:bg-apple-accent-light shadow-[0_0_15px_rgba(0,113,227,0.3)] px-6 py-3 rounded-md text-xs uppercase tracking-widest flex items-center justify-center gap-2.5"
             >
               <ShieldCheck size={18} strokeWidth={2.5} />
               Fases, Tareas &amp; Compliance
@@ -367,14 +367,14 @@ export default function CasoDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         
         {/* KPI 1: Avance */}
-        <div className="fluent-mica p-5 rounded-xl border-l-4 border-fluent-accent flex flex-col justify-between">
+        <div className="fluent-mica p-5 rounded-xl border-l-4 border-apple-accent flex flex-col justify-between">
           <div>
             <span className="text-[10px] uppercase font-bold text-fluent-text-muted tracking-widest">Avance del Caso</span>
             <h3 className="text-3xl font-black text-white mt-1">{caso.porcentajeCompletado}%</h3>
           </div>
           <div className="w-full mt-4">
             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-              <div className="h-full bg-fluent-accent rounded-full transition-all duration-500" style={{ width: `${caso.porcentajeCompletado}%` }} />
+              <div className="h-full bg-apple-accent rounded-full transition-all duration-500" style={{ width: `${caso.porcentajeCompletado}%` }} />
             </div>
           </div>
         </div>
@@ -443,12 +443,12 @@ export default function CasoDetailPage() {
           <div className="fluent-mica rounded-xl overflow-hidden shadow-2xl">
             <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
               <h2 className="font-bold text-white flex items-center gap-2 text-base">
-                <Smartphone size={18} className="text-fluent-accent" />
+                <Smartphone size={18} className="text-apple-accent" />
                 Evidencias en Custodia ({evidenciasCaso.length})
               </h2>
               <button 
                 onClick={() => setShowEvidenciaModal(true)}
-                className="text-[10px] font-black text-fluent-accent hover:text-fluent-accent-light transition-colors uppercase tracking-[0.15em] flex items-center gap-1.5"
+                className="text-[10px] font-black text-apple-accent hover:text-apple-accent-light transition-colors uppercase tracking-[0.15em] flex items-center gap-1.5"
               >
                 <PlusCircle size={14} /> Consignar Evidencia
               </button>
@@ -461,7 +461,7 @@ export default function CasoDetailPage() {
                   <p className="text-sm text-fluent-text-muted">No se han registrado evidencias físicas ni digitales.</p>
                   <button 
                     onClick={() => setShowEvidenciaModal(true)}
-                    className="mt-4 text-xs font-bold text-fluent-accent underline"
+                    className="mt-4 text-xs font-bold text-apple-accent underline"
                   >
                     Registrar la primera evidencia
                   </button>
@@ -481,7 +481,7 @@ export default function CasoDetailPage() {
                     {evidenciasCaso.map(e => (
                       <tr key={e.id} className="hover:bg-white/[0.02] transition-colors">
                         <td className="px-5 py-4">
-                          <span className="font-mono font-bold text-fluent-accent bg-fluent-accent/10 px-2 py-0.5 rounded">
+                          <span className="font-mono font-bold text-apple-accent bg-apple-accent/10 px-2 py-0.5 rounded">
                             {e.numero}
                           </span>
                         </td>
@@ -525,7 +525,7 @@ export default function CasoDetailPage() {
           {/* Marco Normativo Aplicado al Caso */}
           <div className="fluent-mica p-6 rounded-xl space-y-4">
             <h3 className="font-bold text-white text-base flex items-center gap-2">
-              <Shield size={18} className="text-fluent-accent" />
+              <Shield size={18} className="text-apple-accent" />
               Leyes y Estándares de Aplicación (ISO & MUCC)
             </h3>
             <p className="text-xs text-fluent-text-muted leading-relaxed">
@@ -536,9 +536,9 @@ export default function CasoDetailPage() {
                 const aplicado = caso.normativasAplicadas.includes(n.id) || n.id === 'n1' || n.id === 'n4';
                 return (
                   <div key={n.id} className={`p-3 rounded-lg border text-xs flex items-start gap-3 transition-all ${
-                    aplicado ? 'bg-fluent-accent/5 border-fluent-accent/30 text-white' : 'bg-white/[0.01] border-white/5 text-fluent-text-muted opacity-50'
+                    aplicado ? 'bg-apple-accent/5 border-apple-accent/30 text-white' : 'bg-white/[0.01] border-white/5 text-fluent-text-muted opacity-50'
                   }`}>
-                    <ShieldCheck size={16} className={aplicado ? 'text-fluent-accent shrink-0 mt-0.5' : 'text-white/20 shrink-0 mt-0.5'} />
+                    <ShieldCheck size={16} className={aplicado ? 'text-apple-accent shrink-0 mt-0.5' : 'text-white/20 shrink-0 mt-0.5'} />
                     <div>
                       <h4 className="font-bold text-white">{n.codigo}</h4>
                       <p className="text-[10px] text-white/50 leading-snug mt-0.5">{n.nombre}</p>
@@ -558,12 +558,12 @@ export default function CasoDetailPage() {
           <div className="fluent-mica p-6 rounded-xl shadow-xl space-y-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-3">
               <h3 className="font-bold text-white text-sm flex items-center gap-2">
-                <ListTodo size={16} className="text-fluent-accent" />
+                <ListTodo size={16} className="text-apple-accent" />
                 Checklist Forense
               </h3>
               <button 
                 onClick={() => setShowTareaModal(true)}
-                className="text-[9px] font-black text-fluent-accent hover:text-fluent-accent-light uppercase tracking-wider flex items-center gap-1"
+                className="text-[9px] font-black text-apple-accent hover:text-apple-accent-light uppercase tracking-wider flex items-center gap-1"
               >
                 <Plus size={12} /> Agregar Tarea
               </button>
@@ -585,7 +585,7 @@ export default function CasoDetailPage() {
                   >
                     <button 
                       onClick={() => handleToggleTarea(t)}
-                      className="shrink-0 mt-0.5 text-fluent-text hover:text-fluent-accent-light transition-colors"
+                      className="shrink-0 mt-0.5 text-fluent-text hover:text-apple-accent-light transition-colors"
                     >
                       {completada ? (
                         <CheckSquare size={16} className="text-green-400" />
@@ -619,7 +619,7 @@ export default function CasoDetailPage() {
           <div className="fluent-mica p-6 rounded-xl shadow-xl space-y-6">
             <div className="border-b border-white/5 pb-3">
               <h3 className="font-bold text-white text-sm flex items-center gap-2">
-                <History size={16} className="text-fluent-accent" />
+                <History size={16} className="text-apple-accent" />
                 Historial de Trazabilidad (Caso)
               </h3>
             </div>
@@ -634,10 +634,10 @@ export default function CasoDetailPage() {
                   <div className={`absolute left-[-4.5px] top-1.5 w-2 h-2 rounded-full ${
                     log.nivel === 'success' ? 'bg-green-400' :
                     log.nivel === 'warning' ? 'bg-yellow-400' :
-                    log.nivel === 'error' ? 'bg-red-400' : 'bg-fluent-accent'
+                    log.nivel === 'error' ? 'bg-red-400' : 'bg-apple-accent'
                   }`} />
                   <div className="flex justify-between items-center gap-2">
-                    <span className="font-mono text-[9px] font-black text-fluent-accent uppercase tracking-tighter">
+                    <span className="font-mono text-[9px] font-black text-apple-accent uppercase tracking-tighter">
                       {log.accion}
                     </span>
                     <span className="text-[8px] text-white/30 font-mono">
@@ -665,7 +665,7 @@ export default function CasoDetailPage() {
             
             <div className="p-6 border-b border-white/5 bg-white/[0.01]">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Smartphone className="text-fluent-accent" />
+                <Smartphone className="text-apple-accent" />
                 Consignar Dispositivo / Evidencia
               </h2>
               <p className="text-xs text-fluent-text-muted mt-1">Escriba los datos periciales para incorporarlos a la cadena de custodia.</p>
@@ -799,7 +799,7 @@ export default function CasoDetailPage() {
                     id="sellado" 
                     checked={evidenciaForm.sellado}
                     onChange={e => setEvidenciaForm({ ...evidenciaForm, sellado: e.target.checked })}
-                    className="rounded border-fluent-border text-fluent-accent bg-fluent-surfaceActive h-4 w-4"
+                    className="rounded border-fluent-border text-apple-accent bg-fluent-surfaceActive h-4 w-4"
                   />
                   <label htmlFor="sellado" className="text-xs font-semibold text-white/80 select-none">¿Sellado en Bolsa?</label>
                 </div>
@@ -809,7 +809,7 @@ export default function CasoDetailPage() {
                     id="etiquetado" 
                     checked={evidenciaForm.etiquetado}
                     onChange={e => setEvidenciaForm({ ...evidenciaForm, etiquetado: e.target.checked })}
-                    className="rounded border-fluent-border text-fluent-accent bg-fluent-surfaceActive h-4 w-4"
+                    className="rounded border-fluent-border text-apple-accent bg-fluent-surfaceActive h-4 w-4"
                   />
                   <label htmlFor="etiquetado" className="text-xs font-semibold text-white/80 select-none">¿Etiquetado Visible?</label>
                 </div>
@@ -825,7 +825,7 @@ export default function CasoDetailPage() {
                 </button>
                 <button 
                   type="submit" 
-                  className="fluent-btn bg-fluent-accent hover:bg-fluent-accent-light text-black font-extrabold px-6 rounded shadow-lg"
+                  className="fluent-btn bg-apple-accent hover:bg-apple-accent-light text-white font-extrabold px-6 rounded shadow-lg"
                 >
                   Confirmar Consignación
                 </button>
@@ -844,7 +844,7 @@ export default function CasoDetailPage() {
             
             <div className="p-6 border-b border-white/5 bg-white/[0.01]">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <ListTodo className="text-fluent-accent" />
+                <ListTodo className="text-apple-accent" />
                 Registrar Tarea de Cumplimiento
               </h2>
             </div>
@@ -911,7 +911,7 @@ export default function CasoDetailPage() {
                 </button>
                 <button 
                   type="submit" 
-                  className="fluent-btn bg-fluent-accent hover:bg-fluent-accent-light text-black font-extrabold px-6 rounded shadow-lg"
+                  className="fluent-btn bg-apple-accent hover:bg-apple-accent-light text-white font-extrabold px-6 rounded shadow-lg"
                 >
                   Agregar a Checklist
                 </button>

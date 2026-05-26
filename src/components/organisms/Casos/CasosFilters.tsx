@@ -24,7 +24,7 @@ export default function CasosFilters({
 }: CasosFiltersProps) {
   return (
     <div className="fluent-mica p-4 rounded-lg flex flex-wrap items-center gap-4">
-      <div className="flex items-center gap-3 flex-1 min-w-[240px] bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 focus-within:bg-white/[0.05] focus-within:border-b-fluent-accent transition-all">
+      <div className="flex items-center gap-3 flex-1 min-w-[240px] bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 focus-within:bg-white/[0.05] focus-within:border-b-apple-accent transition-all">
         <Search size={14} className="text-fluent-text-muted shrink-0" />
         <input
           type="text"
@@ -40,7 +40,7 @@ export default function CasosFilters({
            <select 
              value={filtroEstado} 
              onChange={e => setFiltroEstado(e.target.value as any)}
-             className="bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-fluent-accent hover:bg-white/[0.05] transition-all cursor-pointer"
+             className="bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-apple-accent hover:bg-white/[0.05] transition-all cursor-pointer"
            >
              {estados.map(e => <option key={e.value} value={e.value} className="bg-fluent-bg">{e.label}</option>)}
            </select>
@@ -48,7 +48,7 @@ export default function CasosFilters({
         <select 
           value={filtroPrioridad} 
           onChange={e => setFiltroPrioridad(e.target.value as any)}
-          className="flex-1 sm:flex-none bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-fluent-accent hover:bg-white/[0.05] transition-all cursor-pointer"
+          className="flex-1 sm:flex-none bg-white/[0.03] border border-white/5 border-b-white/20 rounded-[4px] px-3 py-1.5 text-xs font-bold text-fluent-text-muted outline-none focus:border-b-apple-accent hover:bg-white/[0.05] transition-all cursor-pointer"
         >
           {prioridades.map(p => <option key={p.value} value={p.value} className="bg-fluent-bg">{p.label}</option>)}
         </select>

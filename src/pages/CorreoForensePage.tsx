@@ -225,7 +225,7 @@ export default function CorreoForensePage() {
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight print:text-black">Correo Electrónico Corporativo</h1>
           <p className="text-sm text-fluent-text-muted font-medium mt-1 print:text-gray-600">
             Guía de procedimiento técnico-jurídico paso a paso para el análisis forense de correos electrónicos.
-            <span className="text-fluent-accent ml-1 print:hidden">ISO 27037 · LMDF · COPP · MUCC-2017</span>
+            <span className="text-apple-accent ml-1 print:hidden">ISO 27037 · LMDF · COPP · MUCC-2017</span>
           </p>
         </div>
         {proceso && (
@@ -244,7 +244,7 @@ export default function CorreoForensePage() {
       {!proceso ? (
         <div className="fluent-card p-6 max-w-2xl">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Mail className="text-fluent-accent" size={18} />
+            <Mail className="text-apple-accent" size={18} />
             Iniciar proceso de análisis forense de correo
           </h2>
           <div className="space-y-4">
@@ -297,18 +297,18 @@ export default function CorreoForensePage() {
           <div className="fluent-card p-4 print:p-2">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <Mail className="text-fluent-accent" size={18} />
+                <Mail className="text-apple-accent" size={18} />
                 <div>
                   <span className="text-sm font-bold text-white print:text-black">{formBasico.asunto || '(sin asunto)'}</span>
                   <span className="text-[10px] text-fluent-text-muted ml-3 print:text-gray-600">{proceso.casoRef}</span>
                 </div>
               </div>
-              <div className={`text-xs font-bold px-2 py-1 rounded ${finalizado ? 'bg-green-500/20 text-green-400' : 'bg-fluent-accent/10 text-fluent-accent'}`}>
+              <div className={`text-xs font-bold px-2 py-1 rounded ${finalizado ? 'bg-green-500/20 text-green-400' : 'bg-apple-accent/10 text-apple-accent'}`}>
                 {finalizado ? 'FINALIZADO' : `${completados}/${total} pasos`}
               </div>
             </div>
             <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-              <div className={`h-full rounded-full transition-all duration-500 ${finalizado ? 'bg-green-400' : 'bg-fluent-accent'}`} style={{ width: `${porcentaje}%` }} />
+              <div className={`h-full rounded-full transition-all duration-500 ${finalizado ? 'bg-green-400' : 'bg-apple-accent'}`} style={{ width: `${porcentaje}%` }} />
             </div>
             <div className="flex items-center justify-between mt-1">
               <span className="text-[9px] text-fluent-text-muted print:text-gray-500">{porcentaje}% completado</span>
@@ -331,7 +331,7 @@ export default function CorreoForensePage() {
             {fases.map(fase => (
               <div key={fase.fase} className="fluent-card overflow-hidden print:border print:border-gray-300 print:bg-white">
                 <div className="p-4 pb-3 border-b border-white/5 print:border-gray-200">
-                  <h3 className="text-xs font-black text-fluent-accent uppercase tracking-wider print:text-gray-700">{fase.fase}</h3>
+                  <h3 className="text-xs font-black text-apple-accent uppercase tracking-wider print:text-gray-700">{fase.fase}</h3>
                 </div>
                 <div className="divide-y divide-white/5 print:divide-gray-200">
                   {fase.pasos.map(paso => {
@@ -356,7 +356,7 @@ export default function CorreoForensePage() {
                               </span>
                             </div>
                             <p className="text-[11px] text-fluent-text-muted mt-1 print:text-gray-600">{paso.descripcion}</p>
-                            <p className="text-[9px] text-fluent-accent/60 mt-1 print:text-gray-500 italic">{paso.normativa}</p>
+                            <p className="text-[9px] text-apple-accent/60 mt-1 print:text-gray-500 italic">{paso.normativa}</p>
                             {checked && stepLog?.fecha && (
                               <div className="flex items-center gap-3 mt-1.5 text-[9px] text-fluent-text-muted print:text-gray-400">
                                 <span className="flex items-center gap-1"><Clock size={10} />{new Date(stepLog.fecha).toLocaleString()}</span>
@@ -370,7 +370,7 @@ export default function CorreoForensePage() {
                                   onChange={e => updateObservacion(paso.id, e.target.value)}
                                   placeholder="Agregar observaciones..."
                                   rows={1}
-                                  className="w-full text-[10px] bg-transparent border border-white/5 rounded p-1.5 text-fluent-text-muted placeholder:text-white/20 focus:border-fluent-accent/30 outline-none resize-none"
+                                  className="w-full text-[10px] bg-transparent border border-white/5 rounded p-1.5 text-fluent-text-muted placeholder:text-white/20 focus:border-apple-accent/30 outline-none resize-none"
                                 />
                               </div>
                             )}
@@ -409,7 +409,7 @@ export default function CorreoForensePage() {
                         <p className="text-sm font-bold text-white print:text-black">{paso.titulo}</p>
                         {stepLog?.fecha && <p className="text-[10px] text-fluent-text-muted print:text-gray-500">{new Date(stepLog.fecha).toLocaleString()}</p>}
                         {stepLog?.observaciones && <p className="text-[10px] text-fluent-text-muted mt-1 italic print:text-gray-500">"{stepLog.observaciones}"</p>}
-                        <p className="text-[9px] text-fluent-accent/60 mt-1 print:text-gray-400">{paso.normativa}</p>
+                        <p className="text-[9px] text-apple-accent/60 mt-1 print:text-gray-400">{paso.normativa}</p>
                       </div>
                     </div>
                   );
@@ -461,7 +461,7 @@ function ProcesosExistentes({ casoId, onSelect, onStartNew }: { casoId: string; 
             </span>
           </button>
         ))}
-        <button onClick={onStartNew} className="text-xs text-fluent-accent hover:underline mt-1">+ Iniciar nuevo proceso</button>
+        <button onClick={onStartNew} className="text-xs text-apple-accent hover:underline mt-1">+ Iniciar nuevo proceso</button>
       </div>
     </div>
   );

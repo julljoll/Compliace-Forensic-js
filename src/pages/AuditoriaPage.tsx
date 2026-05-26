@@ -137,8 +137,8 @@ export default function AuditoriaPage() {
       <div className="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6 print:hidden">
         <div>
           <h1 className="text-4xl font-bold text-white tracking-tight flex items-center gap-4">
-            <div className="p-2 rounded-[4px] bg-fluent-accent/10 border border-fluent-accent/20">
-               <Activity className="text-fluent-accent" size={24} strokeWidth={2.5} />
+            <div className="p-2 rounded-[4px] bg-apple-accent/10 border border-apple-accent/20">
+               <Activity className="text-apple-accent" size={24} strokeWidth={2.5} />
             </div>
             Registro de Auditoría y Trazabilidad (Timeline)
           </h1>
@@ -156,7 +156,7 @@ export default function AuditoriaPage() {
             <select
               value={casoSeleccionado || ''}
               onChange={(e) => setCasoSeleccionado(e.target.value || null)}
-              className="bg-[#0b1f13] border border-fluent-accent/20 rounded-lg text-xs font-bold text-fluent-accent px-4 py-2.5 outline-none hover:border-fluent-accent/50 focus:border-fluent-accent transition-all min-w-[220px] cursor-pointer"
+              className="bg-white border border-apple-accent/20 rounded-lg text-xs font-bold text-apple-accent px-4 py-2.5 outline-none hover:border-apple-accent/50 focus:border-apple-accent transition-all min-w-[220px] cursor-pointer"
             >
               <option value="">-- Todos los Eventos (Log General) --</option>
               {casos.map(c => (
@@ -169,7 +169,7 @@ export default function AuditoriaPage() {
 
           <button 
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#FECF06] hover:bg-[#FECF06]/90 text-black font-bold text-xs uppercase tracking-widest rounded-md shadow-lg transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#0071E3] hover:bg-[#0071E3]/90 text-black font-bold text-xs uppercase tracking-widest rounded-md shadow-lg transition-colors cursor-pointer"
           >
             <Printer size={14} /> Imprimir Timeline
           </button>
@@ -181,12 +181,12 @@ export default function AuditoriaPage() {
         <div className="print-container space-y-6">
           
           {/* Ficha de Proyecto en PDF / Impresión */}
-          <div className="print-card p-6 rounded-xl border border-white/5 bg-[#0b1f13]/25 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#FECF06]/5 rounded-full blur-2xl print:hidden"></div>
+          <div className="print-card p-6 rounded-xl border border-white/5 bg-white/25 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#0071E3]/5 rounded-full blur-2xl print:hidden"></div>
             
             <div className="print-header flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-white/5 mb-4 gap-4">
               <div>
-                <span className="font-mono text-xs font-black text-[#FECF06] uppercase tracking-widest">
+                <span className="font-mono text-xs font-black text-[#0071E3] uppercase tracking-widest">
                   DOCUMENTO OFICIAL DE TRAZABILIDAD Y COMPLIANCE FORENSE
                 </span>
                 <h2 className="text-2xl font-bold text-white print:text-black mt-1">
@@ -219,7 +219,7 @@ export default function AuditoriaPage() {
               </div>
               <div className="space-y-1">
                 <span className="text-[9px] font-black uppercase text-fluent-text-muted/40 tracking-wider block print:text-black">IMEI / Nro. Serial</span>
-                <p className="font-mono font-bold text-[#FECF06] print:text-black">
+                <p className="font-mono font-bold text-[#0071E3] print:text-black">
                   {activeCaso.dispositivo_imei || 'N/D'}
                 </p>
               </div>
@@ -256,7 +256,7 @@ export default function AuditoriaPage() {
                   {/* Círculo indicador del timeline */}
                   <div className={`absolute left-3.5 top-1.5 -translate-x-1/2 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                     completed 
-                      ? 'bg-green-500/20 border-[#00FF41] text-[#00FF41] shadow-[0_0_8px_rgba(0,255,65,0.2)]'
+                      ? 'bg-green-500/20 border-[#34C759] text-[#34C759] shadow-[0_0_8px_rgba(0,255,65,0.2)]'
                       : 'bg-black/50 border-white/10 text-white/20'
                   } print:bg-white print:text-black print:border-black`}>
                     {completed ? <CheckCircle2 size={12} strokeWidth={3} /> : <div className="w-1.5 h-1.5 rounded-full bg-white/20 print:bg-black/20" />}
@@ -293,14 +293,14 @@ export default function AuditoriaPage() {
                           <div>
                             <span className="text-[8px] font-black uppercase text-fluent-text-muted/40 tracking-wider block print:text-black">PERITO DE FIRMA</span>
                             <span className="font-bold text-white print:text-black flex items-center gap-1 mt-0.5">
-                              <User size={10} className="text-[#FECF06] print:text-black" />
+                              <User size={10} className="text-[#0071E3] print:text-black" />
                               {meta.responsable || 'No especificado'}
                             </span>
                           </div>
                           <div>
                             <span className="text-[8px] font-black uppercase text-fluent-text-muted/40 tracking-wider block print:text-black">OBSERVACIONES / PRECINTO</span>
                             <span className="font-bold text-white print:text-black flex items-center gap-1 mt-0.5">
-                              <FileText size={10} className="text-[#FECF06] print:text-black" />
+                              <FileText size={10} className="text-[#0071E3] print:text-black" />
                               {meta.observaciones || 'Sin incidencias registradas'}
                             </span>
                           </div>
@@ -308,7 +308,7 @@ export default function AuditoriaPage() {
 
                         {/* Cumplimiento Normativo Asociado */}
                         <div>
-                          <span className="text-[9px] font-black text-[#00FF41] print:text-black uppercase tracking-widest block mb-2">
+                          <span className="text-[9px] font-black text-[#34C759] print:text-black uppercase tracking-widest block mb-2">
                             VERIFICACIÓN DE COMPLIANCE NORMATIVO:
                           </span>
                           <div className="space-y-2">
@@ -318,7 +318,7 @@ export default function AuditoriaPage() {
                                   {r.checked ? '✓' : '✗'}
                                 </span>
                                 <div>
-                                  <span className="font-mono text-[9px] font-black text-[#FECF06] print:text-black uppercase mr-1.5">
+                                  <span className="font-mono text-[9px] font-black text-[#0071E3] print:text-black uppercase mr-1.5">
                                     [{r.codigo}]
                                   </span>
                                   <span className={r.checked ? 'text-white/80 print:text-black' : 'text-white/40 print:text-black/40'}>
@@ -370,7 +370,7 @@ export default function AuditoriaPage() {
         <div className="fluent-mica rounded-xl overflow-hidden shadow-2xl border border-white/5">
           <div className="p-5 border-b border-white/5 bg-white/[0.02] flex justify-between items-center">
             <h2 className="text-xs font-black text-fluent-text-muted uppercase tracking-[0.2em]">Línea de Tiempo Operacional General</h2>
-            <span className="text-[9px] font-black text-fluent-accent bg-fluent-accent/10 px-2 py-0.5 rounded border border-fluent-accent/20 uppercase tracking-widest">
+            <span className="text-[9px] font-black text-apple-accent bg-apple-accent/10 px-2 py-0.5 rounded border border-apple-accent/20 uppercase tracking-widest">
               Seguridad del Sistema
             </span>
           </div>

@@ -448,7 +448,7 @@ export default function SeguimientoCompliancePage() {
   if (casos.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center min-h-[60vh] animate-fade-in">
-        <div className="p-4 rounded-full bg-fluent-accent/10 border border-fluent-accent/20 text-fluent-accent mb-6 animate-pulse">
+        <div className="p-4 rounded-full bg-apple-accent/10 border border-apple-accent/20 text-apple-accent mb-6 animate-pulse">
           <Briefcase size={48} strokeWidth={1.5} />
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">No se detectaron casos creados</h2>
@@ -457,7 +457,7 @@ export default function SeguimientoCompliancePage() {
         </p>
         <Link
           to="/casos"
-          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-fluent-accent hover:bg-fluent-accent/90 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-fluent-accent/20"
+          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-apple-accent hover:bg-apple-accent/90 text-white font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-apple-accent/20"
         >
           <PlusCircle size={16} />
           <span>Crear Primer Caso</span>
@@ -477,8 +477,8 @@ export default function SeguimientoCompliancePage() {
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight flex items-center gap-3">
-            <div className="p-2 rounded-[4px] bg-[#FECF06]/10 border border-[#FECF06]/20">
-              <ShieldCheck className="text-[#FECF06]" size={26} strokeWidth={2.5} />
+            <div className="p-2 rounded-[4px] bg-[#0071E3]/10 border border-[#0071E3]/20">
+              <ShieldCheck className="text-[#0071E3]" size={26} strokeWidth={2.5} />
             </div>
             Fases, Tareas & Compliance
           </h1>
@@ -494,7 +494,7 @@ export default function SeguimientoCompliancePage() {
           <select
             value={casoSeleccionado || ''}
             onChange={(e) => seleccionarCaso(e.target.value)}
-            className="bg-[#0b1f13] border border-fluent-accent/20 rounded-lg text-xs font-bold text-fluent-accent px-4 py-2.5 outline-none hover:border-fluent-accent/50 focus:border-fluent-accent transition-all min-w-[220px]"
+            className="bg-white border border-apple-accent/20 rounded-lg text-xs font-bold text-apple-accent px-4 py-2.5 outline-none hover:border-apple-accent/50 focus:border-apple-accent transition-all min-w-[220px]"
           >
             {casos.map(c => (
               <option key={c.id} value={c.id}>
@@ -508,14 +508,14 @@ export default function SeguimientoCompliancePage() {
       {activeCaso && (
         <>
           {/* Active case device metadata */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl border border-white/5 bg-[#0b1f13]/30">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl border border-white/5 bg-white/30">
             <div className="space-y-0.5">
               <span className="text-[8px] font-black uppercase text-fluent-text-muted/40 tracking-wider block">Dispositivo</span>
               <p className="text-xs font-bold text-white truncate">{activeCaso.dispositivo_marca || 'N/D'} {activeCaso.dispositivo_modelo || ''}</p>
             </div>
             <div className="space-y-0.5">
               <span className="text-[8px] font-black uppercase text-fluent-text-muted/40 tracking-wider block">IMEI</span>
-              <p className="text-xs font-mono text-fluent-accent font-semibold truncate">{activeCaso.dispositivo_imei || 'N/D'}</p>
+              <p className="text-xs font-mono text-apple-accent font-semibold truncate">{activeCaso.dispositivo_imei || 'N/D'}</p>
             </div>
             <div className="space-y-0.5">
               <span className="text-[8px] font-black uppercase text-fluent-text-muted/40 tracking-wider block">Fiscalía</span>
@@ -588,10 +588,10 @@ export default function SeguimientoCompliancePage() {
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent" />
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-bold text-white text-xs tracking-tight flex items-center gap-1.5">
-                  <ClipboardList size={14} className="text-[#FECF06]" />
+                  <ClipboardList size={14} className="text-[#0071E3]" />
                   Resolución de Tareas
                 </h3>
-                <span className="text-[9px] font-black font-mono text-[#FECF06] bg-[#FECF06]/10 px-2 py-0.5 rounded border border-[#FECF06]/20 uppercase tracking-widest">
+                <span className="text-[9px] font-black font-mono text-[#0071E3] bg-[#0071E3]/10 px-2 py-0.5 rounded border border-[#0071E3]/20 uppercase tracking-widest">
                   {metrics.completedTasks} / {metrics.totalTasks} Tareas
                 </span>
               </div>
@@ -600,13 +600,13 @@ export default function SeguimientoCompliancePage() {
                   className="h-full rounded-full transition-all duration-1000"
                   style={{
                     width: `${metrics.tasksPct}%`,
-                    background: 'linear-gradient(90deg, #eab308, #FECF06)'
+                    background: 'linear-gradient(90deg, #FFCC00, #0071E3)'
                   }}
                 />
               </div>
               <div className="mt-2 flex justify-between text-[9px] font-black text-fluent-text-muted/40 uppercase tracking-widest">
                 <span>Tareas Técnicas</span>
-                <span className="text-[#FECF06]">{metrics.tasksPct}% Completadas</span>
+                <span className="text-[#0071E3]">{metrics.tasksPct}% Completadas</span>
               </div>
             </div>
           </div>
@@ -617,7 +617,7 @@ export default function SeguimientoCompliancePage() {
               onClick={() => setTab('trazabilidad')}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider rounded-lg border transition-all ${
                 currentTab !== 'tareas'
-                  ? 'bg-fluent-accent/10 border-fluent-accent/30 text-fluent-accent shadow-lg shadow-fluent-accent/10'
+                  ? 'bg-apple-accent/10 border-apple-accent/30 text-apple-accent shadow-lg shadow-apple-accent/10'
                   : 'border-transparent text-fluent-text-muted hover:text-white hover:bg-white/5'
               }`}
             >
@@ -628,7 +628,7 @@ export default function SeguimientoCompliancePage() {
               onClick={() => setTab('tareas')}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-black uppercase tracking-wider rounded-lg border transition-all ${
                 currentTab === 'tareas'
-                  ? 'bg-fluent-accent/10 border-fluent-accent/30 text-fluent-accent shadow-lg shadow-fluent-accent/10'
+                  ? 'bg-apple-accent/10 border-apple-accent/30 text-apple-accent shadow-lg shadow-apple-accent/10'
                   : 'border-transparent text-fluent-text-muted hover:text-white hover:bg-white/5'
               }`}
             >
@@ -652,18 +652,18 @@ export default function SeguimientoCompliancePage() {
                   const phasePct = Math.round((completedCount / totalCount) * 100);
 
                   return (
-                    <div key={phaseName} className="space-y-2 bg-[#0b1f13]/10 p-3 rounded-lg border border-white/[0.03]">
+                    <div key={phaseName} className="space-y-2 bg-white/10 p-3 rounded-lg border border-white/[0.03]">
                       <div className="flex justify-between items-center px-1">
                         <h4 className="text-[9px] font-black uppercase text-white/50 tracking-wider">
                           {phaseName}
                         </h4>
-                        <span className="text-[9px] font-black font-mono text-fluent-accent">
+                        <span className="text-[9px] font-black font-mono text-apple-accent">
                           {completedCount}/{totalCount}
                         </span>
                       </div>
                       <div className="w-full h-1 bg-white/[0.03] rounded-full overflow-hidden mb-3">
                         <div 
-                          className="h-full bg-fluent-accent rounded-full transition-all duration-500" 
+                          className="h-full bg-apple-accent rounded-full transition-all duration-500" 
                           style={{ width: `${phasePct}%` }}
                         />
                       </div>
@@ -684,7 +684,7 @@ export default function SeguimientoCompliancePage() {
                                 isLocked
                                   ? 'opacity-40 bg-white/[0.01] border-white/[0.02] cursor-not-allowed'
                                   : isSelected
-                                  ? 'bg-[#FECF06]/10 border-[#FECF06]/40 text-white shadow-lg'
+                                  ? 'bg-[#0071E3]/10 border-[#0071E3]/40 text-white shadow-lg'
                                   : completado
                                   ? 'bg-green-500/[0.03] border-green-500/20 hover:border-green-500/40 text-white/90'
                                   : estado === 'en_progreso'
@@ -812,7 +812,7 @@ export default function SeguimientoCompliancePage() {
                             </h4>
                             
                             <div className="border-l-2 border-white/10 pl-4 space-y-1">
-                              <span className="text-[9px] text-fluent-accent font-bold uppercase tracking-wider block">Acción Operativa</span>
+                              <span className="text-[9px] text-apple-accent font-bold uppercase tracking-wider block">Acción Operativa</span>
                               <p className="text-xs text-white/80 font-medium">{selectedStep.action}</p>
                             </div>
 
@@ -829,8 +829,8 @@ export default function SeguimientoCompliancePage() {
                               </div>
                             )}
 
-                            <div className="timeline-guide-panel !m-0 !p-4 !bg-[#0b1f13]/25 !border !border-white/5 !rounded-lg">
-                              <h5 className="text-[9px] font-bold text-fluent-accent uppercase tracking-wider mb-1">Fundamento Metodológico</h5>
+                            <div className="timeline-guide-panel !m-0 !p-4 !bg-white/25 !border !border-white/5 !rounded-lg">
+                              <h5 className="text-[9px] font-bold text-apple-accent uppercase tracking-wider mb-1">Fundamento Metodológico</h5>
                               <p className="text-xs text-white/70 leading-relaxed">{selectedStep.guide}</p>
                             </div>
                           </div>
@@ -838,7 +838,7 @@ export default function SeguimientoCompliancePage() {
                           {/* Dynamic Task List for the step */}
                           <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02] space-y-4">
                             <div className="flex justify-between items-center pb-2 border-b border-white/5">
-                              <h5 className="text-[11px] font-black uppercase text-fluent-accent tracking-widest flex items-center gap-1.5">
+                              <h5 className="text-[11px] font-black uppercase text-apple-accent tracking-widest flex items-center gap-1.5">
                                 <ClipboardList size={13} />
                                 Checklist de Tareas del Paso
                               </h5>
@@ -868,8 +868,8 @@ export default function SeguimientoCompliancePage() {
                                           })}
                                           className={`w-[16px] h-[16px] rounded border flex items-center justify-center shrink-0 transition-all ${
                                             isCompleted
-                                              ? 'bg-fluent-accent border-fluent-accent text-black'
-                                              : 'border-white/20 hover:border-fluent-accent/50'
+                                              ? 'bg-apple-accent border-apple-accent text-black'
+                                              : 'border-white/20 hover:border-apple-accent/50'
                                           }`}
                                         >
                                           {isCompleted && <CheckCheck size={10} strokeWidth={3} />}
@@ -881,7 +881,7 @@ export default function SeguimientoCompliancePage() {
                                               fechaCompletada: isCompleted ? undefined : new Date().toISOString(),
                                               porcentaje: isCompleted ? 0 : 100
                                             })}
-                                            className={`text-xs block cursor-pointer select-none ${isCompleted ? 'text-green-400/60 line-through' : 'text-white hover:text-fluent-accent'}`}
+                                            className={`text-xs block cursor-pointer select-none ${isCompleted ? 'text-green-400/60 line-through' : 'text-white hover:text-apple-accent'}`}
                                           >
                                             {task.titulo}
                                           </span>
@@ -930,7 +930,7 @@ export default function SeguimientoCompliancePage() {
                                     placeholder="Nueva tarea..."
                                     value={inlineTaskTitle}
                                     onChange={(e) => setInlineTaskTitle(e.target.value)}
-                                    className="flex-1 bg-black/40 border border-white/10 rounded px-2.5 py-1 text-xs text-white placeholder-white/20 outline-none focus:border-fluent-accent transition-all"
+                                    className="flex-1 bg-black/40 border border-white/10 rounded px-2.5 py-1 text-xs text-white placeholder-white/20 outline-none focus:border-apple-accent transition-all"
                                     onKeyDown={(e) => {
                                       if (e.key === 'Enter') handleAddInlineTask();
                                     }}
@@ -938,7 +938,7 @@ export default function SeguimientoCompliancePage() {
                                   <select
                                     value={inlineTaskPrioridad}
                                     onChange={(e) => setInlineTaskPrioridad(e.target.value as PrioridadCaso)}
-                                    className="bg-black/40 border border-white/10 rounded px-2 text-[10px] text-white/80 outline-none focus:border-fluent-accent"
+                                    className="bg-black/40 border border-white/10 rounded px-2 text-[10px] text-white/80 outline-none focus:border-apple-accent"
                                   >
                                     <option value="baja">Baja</option>
                                     <option value="media">Media</option>
@@ -950,12 +950,12 @@ export default function SeguimientoCompliancePage() {
                                     placeholder="Perito..."
                                     value={inlineTaskAsignadoA}
                                     onChange={(e) => setInlineTaskAsignadoA(e.target.value)}
-                                    className="w-[85px] bg-black/40 border border-white/10 rounded px-2 py-1 text-[10px] text-white placeholder-white/20 outline-none focus:border-fluent-accent"
+                                    className="w-[85px] bg-black/40 border border-white/10 rounded px-2 py-1 text-[10px] text-white placeholder-white/20 outline-none focus:border-apple-accent"
                                   />
                                   <button
                                     onClick={handleAddInlineTask}
                                     disabled={!inlineTaskTitle.trim()}
-                                    className="px-3 py-1 bg-fluent-accent hover:bg-fluent-accent/90 disabled:bg-white/5 disabled:text-white/20 text-black font-black text-xs rounded transition-all flex items-center justify-center"
+                                    className="px-3 py-1 bg-apple-accent hover:bg-apple-accent/90 disabled:bg-white/5 disabled:text-white/20 text-black font-black text-xs rounded transition-all flex items-center justify-center"
                                   >
                                     <Plus size={14} strokeWidth={2.5} />
                                   </button>
@@ -996,9 +996,9 @@ export default function SeguimientoCompliancePage() {
                                       disabled={isLocked}
                                       className={`w-[18px] h-[18px] rounded-[4px] border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
                                         checked
-                                          ? 'bg-[#00FF41] border-[#00FF41] text-black shadow-lg shadow-[#00FF41]/20'
+                                          ? 'bg-[#34C759] border-[#34C759] text-black shadow-lg shadow-[#34C759]/20'
                                           : !isLocked
-                                            ? 'border-white/20 hover:border-[#00FF41]/50'
+                                            ? 'border-white/20 hover:border-[#34C759]/50'
                                             : 'border-white/10 opacity-40 cursor-not-allowed'
                                       }`}
                                     >
@@ -1007,7 +1007,7 @@ export default function SeguimientoCompliancePage() {
 
                                     <div className="flex-1 min-w-0">
                                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                        <span className="font-mono text-[9px] font-black text-[#FECF06] uppercase tracking-wider">
+                                        <span className="font-mono text-[9px] font-black text-[#0071E3] uppercase tracking-wider">
                                           {req.codigo}
                                         </span>
                                         {checked && checkDate && (
@@ -1032,7 +1032,7 @@ export default function SeguimientoCompliancePage() {
                                       value={obsValue}
                                       onChange={(e) => setComplianceObservacion(req.id, e.target.value)}
                                       disabled={isLocked}
-                                      className="w-full bg-black/40 border border-white/10 rounded px-2.5 py-1 text-[11px] text-white/70 placeholder-white/25 focus:border-[#00FF41] outline-none transition-all disabled:opacity-30"
+                                      className="w-full bg-black/40 border border-white/10 rounded px-2.5 py-1 text-[11px] text-white/70 placeholder-white/25 focus:border-[#34C759] outline-none transition-all disabled:opacity-30"
                                     />
                                   </div>
                                 </div>
@@ -1048,7 +1048,7 @@ export default function SeguimientoCompliancePage() {
                         <div className="timeline-meta-box !mt-6 !p-4 !bg-black/40 !border !border-white/5 !rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="timeline-input-group">
                             <label className="timeline-input-label flex items-center gap-1.5">
-                              <Calendar size={11} className="text-[#FECF06]" />
+                              <Calendar size={11} className="text-[#0071E3]" />
                               <span>Fecha y Hora de Firma</span>
                             </label>
                             <input 
@@ -1061,7 +1061,7 @@ export default function SeguimientoCompliancePage() {
 
                           <div className="timeline-input-group">
                             <label className="timeline-input-label flex items-center gap-1.5">
-                              <User size={11} className="text-[#FECF06]" />
+                              <User size={11} className="text-[#0071E3]" />
                               <span>Responsable / Perito Firmante</span>
                             </label>
                             <input 
@@ -1098,7 +1098,7 @@ export default function SeguimientoCompliancePage() {
                             to={PLANILLA_ROUTES[selectedStep.id]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-[#FECF06]/10 border border-[#FECF06]/25 text-[#FECF06] hover:bg-[#FECF06]/20"
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
                           >
                             <Printer size={12} />
                             <span>Imprimir Planilla Oficial</span>
@@ -1271,7 +1271,7 @@ export default function SeguimientoCompliancePage() {
                                 </span>
                               )}
                               {tarea.pasoId && (
-                                <span className="flex items-center gap-1.5 text-fluent-accent">
+                                <span className="flex items-center gap-1.5 text-apple-accent">
                                   <span className="text-[8px] font-black uppercase tracking-wider">Vinculada a Paso:</span>
                                   {tarea.pasoId}
                                 </span>
@@ -1284,7 +1284,7 @@ export default function SeguimientoCompliancePage() {
                             {/* Progress bar */}
                             <div className="mt-3 w-full bg-white/5 rounded-full h-1 overflow-hidden">
                               <div
-                                className="h-full bg-fluent-accent rounded-full transition-all duration-500"
+                                className="h-full bg-apple-accent rounded-full transition-all duration-500"
                                 style={{ width: `${tarea.porcentaje}%` }}
                               />
                             </div>
@@ -1416,8 +1416,8 @@ function NuevaTareaModal({
       >
         <div className="flex items-center justify-between p-5 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-fluent-accent/10">
-              <ClipboardList size={18} className="text-fluent-accent" />
+            <div className="p-2 rounded-md bg-apple-accent/10">
+              <ClipboardList size={18} className="text-apple-accent" />
             </div>
             <div>
               <h2 className="text-base font-bold text-white">Nueva Tarea Forense</h2>
@@ -1524,7 +1524,7 @@ function NuevaTareaModal({
                   key={n.id}
                   className={`flex items-center gap-2 text-[10px] font-bold p-2 rounded-md border cursor-pointer transition-all ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-fluent-accent/10 border-fluent-accent/30 text-fluent-accent'
+                      ? 'bg-apple-accent/10 border-apple-accent/30 text-apple-accent'
                       : 'bg-white/[0.03] border-white/5 text-fluent-text-muted hover:bg-white/5'
                   }`}
                 >
@@ -1536,7 +1536,7 @@ function NuevaTareaModal({
                   />
                   <div className={`w-3 h-3 rounded-sm border flex items-center justify-center shrink-0 ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-fluent-accent border-fluent-accent'
+                      ? 'bg-apple-accent border-apple-accent'
                       : 'border-white/20'
                   }`}>
                     {form.normativasRelacionadas.includes(n.id) && (

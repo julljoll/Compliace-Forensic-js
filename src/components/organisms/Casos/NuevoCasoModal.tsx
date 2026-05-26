@@ -107,16 +107,16 @@ export default function NuevoCasoModal({
                   <button type="button" key={t.id} onClick={() => handleTipoChange(t)}
                     className={`relative flex flex-col items-center gap-3 p-4 rounded-lg border-2 transition-all cursor-pointer text-center ${
                       selected
-                        ? 'border-fluent-accent bg-fluent-accent/10 shadow-lg shadow-fluent-accent/20'
+                        ? 'border-apple-accent bg-apple-accent/10 shadow-lg shadow-apple-accent/20'
                         : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
                     }`}>
-                    <Icon size={28} className={selected ? 'text-fluent-accent' : 'text-white/40'} />
+                    <Icon size={28} className={selected ? 'text-apple-accent' : 'text-white/40'} />
                     <div>
                       <p className={`text-xs font-bold ${selected ? 'text-white' : 'text-white/60'}`}>{t.label}</p>
                       <p className="text-[9px] text-fluent-text-muted mt-0.5 leading-relaxed">{t.descripcion.slice(0, 100)}...</p>
                     </div>
                     {selected && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-fluent-accent rounded-full flex items-center justify-center">
+                      <div className="absolute top-2 right-2 w-5 h-5 bg-apple-accent rounded-full flex items-center justify-center">
                         <span className="text-black text-[10px] font-black">✓</span>
                       </div>
                     )}
@@ -153,7 +153,7 @@ export default function NuevoCasoModal({
 
           {/* Datos del Solicitante (Común para todos) */}
           <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-            <label className="fluent-label block text-[#FECF06] font-bold">Datos del Solicitante de la Experticia</label>
+            <label className="fluent-label block text-[#0071E3] font-bold">Datos del Solicitante de la Experticia</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="fluent-label text-[11px]">Nombre Completo *</label>
@@ -171,7 +171,7 @@ export default function NuevoCasoModal({
           {/* Campos Dinámicos según Tipo de Proyecto */}
           {form.tipoProyecto === 'forense_whatsapp' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Dispositivo Móvil (Básico)</label>
+              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Dispositivo Móvil (Básico)</label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="fluent-label text-[11px]">Marca</label>
@@ -201,7 +201,7 @@ export default function NuevoCasoModal({
 
           {form.tipoProyecto === 'forense_email' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Correo Electrónico a Investigar</label>
+              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Correo Electrónico a Investigar</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="fluent-label text-[11px]">Correo a Investigar *</label>
@@ -219,7 +219,7 @@ export default function NuevoCasoModal({
 
           {form.tipoProyecto === 'forense_discoduro' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#FECF06] font-bold">Datos del Disco Duro / Unidad de Almacenamiento</label>
+              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Disco Duro / Unidad de Almacenamiento</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="fluent-label text-[11px]">Marca</label>
@@ -278,14 +278,14 @@ export default function NuevoCasoModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 p-5 bg-white/[0.03] rounded-lg border border-white/5">
               {normativas.filter(n => n.activa).map(n => (
                 <label key={n.id} className="flex items-center gap-3 text-xs text-fluent-text-muted cursor-pointer hover:text-white transition-all group">
-                  <input type="checkbox" className="w-4 h-4 accent-fluent-accent rounded-[3px] border-white/20 bg-white/5"
+                  <input type="checkbox" className="w-4 h-4 accent-apple-accent rounded-[3px] border-white/20 bg-white/5"
                     checked={form.normativasAplicadas.includes(n.id)}
                     onChange={e => setForm(f => ({
                       ...f, normativasAplicadas: e.target.checked
                         ? [...f.normativasAplicadas, n.id]
                         : f.normativasAplicadas.filter(id => id !== n.id)
                     }))} />
-                  <span className="font-bold tracking-tight group-hover:text-fluent-accent">{n.codigo}</span>
+                  <span className="font-bold tracking-tight group-hover:text-apple-accent">{n.codigo}</span>
                 </label>
               ))}
             </div>

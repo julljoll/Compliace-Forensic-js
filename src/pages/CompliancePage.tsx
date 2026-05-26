@@ -67,8 +67,8 @@ export default function CompliancePage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
           <h1 className="text-4xl font-bold text-white tracking-tight flex items-center gap-4">
-            <div className="p-2 rounded-[4px] bg-fluent-accent/10 border border-fluent-accent/20">
-               <ShieldCheck className="text-fluent-accent" size={28} strokeWidth={2.5} />
+            <div className="p-2 rounded-[4px] bg-apple-accent/10 border border-apple-accent/20">
+               <ShieldCheck className="text-apple-accent" size={28} strokeWidth={2.5} />
             </div>
             Control de Cumplimiento
           </h1>
@@ -83,7 +83,7 @@ export default function CompliancePage() {
           </div>
           {TIPOS.map(t => (
             <button key={t} onClick={() => setTipoFiltro(t)}
-              className={`text-[10px] px-4 py-1.5 rounded-[4px] font-black uppercase transition-all tracking-wider ${tipoFiltro === t ? 'bg-fluent-accent text-white shadow-lg' : 'bg-white/[0.03] text-fluent-text-muted hover:text-white border border-white/5 hover:bg-white/10'}`}>
+              className={`text-[10px] px-4 py-1.5 rounded-[4px] font-black uppercase transition-all tracking-wider ${tipoFiltro === t ? 'bg-apple-accent text-white shadow-lg' : 'bg-white/[0.03] text-fluent-text-muted hover:text-white border border-white/5 hover:bg-white/10'}`}>
               {t}
             </button>
           ))}
@@ -94,10 +94,10 @@ export default function CompliancePage() {
 
       {/* Barra de progreso global */}
       <div className="fluent-mica p-6 rounded-xl border-white/5 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-fluent-accent/30 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-apple-accent/30 to-transparent" />
         <div className="flex justify-between items-center mb-5">
           <h3 className="font-bold text-white text-sm tracking-tight">Estado de Implementación Global</h3>
-          <span className="text-[10px] font-black font-mono text-fluent-accent bg-fluent-accent/10 px-3 py-1 rounded-[4px] border border-fluent-accent/20 uppercase tracking-widest">
+          <span className="text-[10px] font-black font-mono text-apple-accent bg-apple-accent/10 px-3 py-1 rounded-[4px] border border-apple-accent/20 uppercase tracking-widest">
             {globalStats.checkedStages} / {globalStats.totalStages} Etapas Verificadas
           </span>
         </div>
@@ -150,18 +150,18 @@ export default function CompliancePage() {
       </div>
 
       {/* Nota RAG */}
-      <div className="fluent-mica p-8 border-fluent-accent/10 bg-fluent-accent/[0.02] rounded-2xl relative overflow-hidden group mt-12">
+      <div className="fluent-mica p-8 border-apple-accent/10 bg-apple-accent/[0.02] rounded-2xl relative overflow-hidden group mt-12">
         <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
-          <ShieldCheck size={120} className="text-fluent-accent" />
+          <ShieldCheck size={120} className="text-apple-accent" />
         </div>
         <div className="flex items-start gap-6 relative z-10">
-          <div className="p-4 bg-fluent-accent/10 rounded-[4px] text-fluent-accent shadow-lg shadow-fluent-accent/10">
+          <div className="p-4 bg-apple-accent/10 rounded-[4px] text-apple-accent shadow-lg shadow-apple-accent/10">
             <BookOpen size={24} strokeWidth={2.5} />
           </div>
           <div>
             <h3 className="font-bold text-white text-lg mb-2 tracking-tight">Base de Conocimiento Regulatorio (RAG)</h3>
             <p className="text-sm text-fluent-text-muted leading-relaxed max-w-4xl font-medium opacity-80">
-              Las guías técnicas y etapas presentadas han sido sintetizadas desde marcos de referencia almacenados en el módulo <code className="font-mono text-fluent-accent bg-black/40 px-2 py-0.5 rounded border border-fluent-accent/20">/RAG</code>. 
+              Las guías técnicas y etapas presentadas han sido sintetizadas desde marcos de referencia almacenados en el módulo <code className="font-mono text-apple-accent bg-black/40 px-2 py-0.5 rounded border border-apple-accent/20">/RAG</code>. 
               Esto incluye ISO 27037/27042, NIST SP 800-101, MUCC-2017 y legislación venezolana (LEDI, LMDF, COPP). 
               El sistema garantiza que toda acción forense permanezca trazable hasta estándares de calidad reconocidos.
             </p>

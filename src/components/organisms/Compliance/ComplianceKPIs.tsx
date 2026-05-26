@@ -14,7 +14,7 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
     { 
       label: 'Global Progress', 
       value: `${stats.pct}%`, 
-      color: stats.pct >= 80 ? 'text-green-400' : stats.pct >= 50 ? 'text-fluent-accent' : 'text-red-400', 
+      color: stats.pct >= 80 ? 'text-green-400' : stats.pct >= 50 ? 'text-apple-accent' : 'text-red-400', 
       icon: ShieldCheck 
     },
     { 
@@ -32,7 +32,7 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
     { 
       label: 'Active Frameworks', 
       value: totalNormativas, 
-      color: 'text-fluent-accent', 
+      color: 'text-apple-accent', 
       icon: ListChecks 
     },
   ];

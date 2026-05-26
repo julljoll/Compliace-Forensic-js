@@ -56,7 +56,7 @@ const PlanillaPRCCPage = () => {
             <div className="section-title">II. Forma de Obtención</div>
             <div className="form-group">
                 <div className="checkbox-group">
-                    <div className="check-item"><span className="box" style={{ 'background': 'rgba(254, 207, 6, 0.1)', 'color': 'var(--primary-color)', 'textAlign': 'center', 'lineHeight': '10px' }}>✓</span> <u>CONSIGNACIÓN</u></div>
+                    <div className="check-item"><span className="box" style={{ 'textAlign': 'center', 'lineHeight': '10px' }}>✓</span> <u>CONSIGNACIÓN</u></div>
                     <div className="check-item"><span className="box"></span> TÉCNICA</div>
                     <div className="check-item"><span className="box"></span> ASEGURAMIENTO</div>
                 </div>
@@ -137,27 +137,45 @@ const PlanillaPRCCPage = () => {
             <table className="transfer-table">
                 <tbody>
                     <tr>
-                        <td style={{ 'width': '30%' }}>
+                        <td style={{ 'width': '30%', 'verticalAlign': 'top' }}>
                             <div className="label">Motivo</div>
                             <div className="checkbox-group" style={{ 'flexDirection': 'column', 'gap': '4px', 'fontSize': '8px' }}>
-                                <div className="check-item"><span className="box" style={{ 'background': 'rgba(254, 207, 6, 0.1)', 'textAlign': 'center', 'lineHeight': '10px' }}>✓</span> PERITAJE</div>
+                                <div className="check-item"><span className="box" style={{ 'textAlign': 'center', 'lineHeight': '10px' }}>✓</span> PERITAJE</div>
                                 <div className="check-item"><span className="box"></span> RESGUARDO</div>
                             </div>
                         </td>
-                        <td style={{ 'width': '35%' }}>
-                            <div className="label">Entrega (Consignante)</div>
-                            <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre/C.I.: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.solicitante_nombre || ''} ({activeCaso?.solicitante_cedula || ''})</span></div>
-                            <div className="sig-row" style={{ 'marginTop': '0' }}>
-                                <div className="sig-box" style={{ 'height': '35px' }}><span className="sig-label">FIRMA</span></div>
-                                <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>HUELLA</div>
+                        <td style={{ 'width': '35%', 'verticalAlign': 'top' }}>
+                            <div className="sig-detail-card" style={{ 'minHeight': 'auto', 'border': 'none', 'padding': '0', 'background': 'transparent', 'gap': '4px' }}>
+                                <div className="label">Entrega (Consignante)</div>
+                                <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.solicitante_nombre || '____________________'}</span></div>
+                                <div className="sig-line" style={{ 'height': '24px' }}>Firma</div>
+                                <div className="sig-field" style={{ 'fontSize': '8px' }}>
+                                    C.I.: <span className="sig-underline" style={{ 'minHeight': '16px' }}>{activeCaso?.solicitante_cedula || ''}</span>
+                                </div>
+                                <div className="sig-field" style={{ 'fontSize': '8px' }}>
+                                    Teléfono: <span className="sig-underline" style={{ 'minHeight': '16px' }}>{activeCaso?.dispositivo_numero_tel || ''}</span>
+                                </div>
+                                <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
+                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />DER.</div>
+                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />IZQ.</div>
+                                </div>
                             </div>
                         </td>
-                        <td style={{ 'width': '35%' }}>
-                            <div className="label">Recibe (Perito)</div>
-                            <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre/Credencial: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.peritoLider || ''}</span></div>
-                            <div className="sig-row" style={{ 'marginTop': '0' }}>
-                                <div className="sig-box" style={{ 'height': '35px' }}><span className="sig-label">FIRMA</span></div>
-                                <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>SELLO</div>
+                        <td style={{ 'width': '35%', 'verticalAlign': 'top' }}>
+                            <div className="sig-detail-card" style={{ 'minHeight': 'auto', 'border': 'none', 'padding': '0', 'background': 'transparent', 'gap': '4px' }}>
+                                <div className="label">Recibe (Perito)</div>
+                                <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.peritoLider || '____________________'}</span></div>
+                                <div className="sig-line" style={{ 'height': '24px' }}>Firma</div>
+                                <div className="sig-field" style={{ 'fontSize': '8px' }}>
+                                    C.I.: <span className="sig-underline" style={{ 'minHeight': '16px' }}></span>
+                                </div>
+                                <div className="sig-field" style={{ 'fontSize': '8px' }}>
+                                    Teléfono: <span className="sig-underline" style={{ 'minHeight': '16px' }}></span>
+                                </div>
+                                <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
+                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />DER.</div>
+                                    <div className="thumb-box" style={{ 'height': '45px', 'width': '35px', 'fontSize': '5px' }}>PULGAR<br />IZQ.</div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -180,7 +198,7 @@ const PlanillaPRCCPage = () => {
         </footer>
 
         <div style={{ 'textAlign': 'center', 'marginTop': '20px', 'marginBottom': '20px' }} className="no-print">
-            <button onClick={() => { window.print() }} style={{ 'padding': '10px 20px', 'background': '#FECF06', 'color': '#181818', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer', 'fontWeight': 'bold', 'fontFamily': '"Inter", sans-serif', 'boxShadow': '0 2px 4px rgba(0,0,0,0.2)' }}>🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
+            <button onClick={() => { window.print() }} style={{ 'padding': '10px 20px', 'background': '#0071E3', 'color': '#ffffff', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer', 'fontWeight': 'bold', 'fontFamily': '"Inter", sans-serif', 'boxShadow': '0 2px 4px rgba(0,0,0,0.2)' }}>🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
         </div>
     </div>
 

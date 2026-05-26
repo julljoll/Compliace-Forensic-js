@@ -229,7 +229,7 @@ export default function PersonalPage() {
             onClick={() => setActiveTab('profile')}
             className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${
               activeTab === 'profile' 
-                ? 'bg-fluent-accent text-fluent-accent-fg shadow-md' 
+                ? 'bg-apple-accent text-apple-accent-fg shadow-md' 
                 : 'text-fluent-text-muted hover:text-white'
             }`}
           >
@@ -240,7 +240,7 @@ export default function PersonalPage() {
             onClick={() => setActiveTab('collaborators')}
             className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${
               activeTab === 'collaborators' 
-                ? 'bg-fluent-accent text-fluent-accent-fg shadow-md' 
+                ? 'bg-apple-accent text-apple-accent-fg shadow-md' 
                 : 'text-fluent-text-muted hover:text-white'
             }`}
           >
@@ -251,7 +251,7 @@ export default function PersonalPage() {
             onClick={() => setActiveTab('projects')}
             className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${
               activeTab === 'projects' 
-                ? 'bg-[#FECF06] text-black shadow-md' 
+                ? 'bg-[#0071E3] text-black shadow-md' 
                 : 'text-fluent-text-muted hover:text-white'
             }`}
           >
@@ -265,7 +265,7 @@ export default function PersonalPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           <div className="fluent-mica p-6 rounded-xl border border-fluent-border lg:col-span-1 flex flex-col items-center text-center justify-center relative">
-            <div className="absolute top-4 right-4 bg-fluent-accent/15 border border-fluent-accent/30 text-fluent-accent px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
+            <div className="absolute top-4 right-4 bg-apple-accent/15 border border-apple-accent/30 text-apple-accent px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
               {user?.rol || 'Usuario'}
             </div>
 
@@ -298,7 +298,7 @@ export default function PersonalPage() {
             
             <div className="w-full border-t border-fluent-border mt-6 pt-4 text-left space-y-3">
               <div className="flex items-center gap-2.5 text-xs">
-                <Shield size={14} className="text-fluent-accent" />
+                <Shield size={14} className="text-apple-accent" />
                 <span className="font-semibold text-white">Rol del Sistema:</span>
                 <span className="text-fluent-text-muted font-mono">{ROLES.find(r => r.value === user?.rol)?.label || user?.rol || 'Administrador'}</span>
               </div>
@@ -307,7 +307,7 @@ export default function PersonalPage() {
 
           <div className="fluent-mica p-6 rounded-xl border border-fluent-border lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3 border-b border-fluent-border pb-4">
-              <div className="w-8 h-8 rounded-lg bg-fluent-accent/10 border border-fluent-accent/20 flex items-center justify-center text-fluent-accent">
+              <div className="w-8 h-8 rounded-lg bg-apple-accent/10 border border-apple-accent/20 flex items-center justify-center text-apple-accent">
                 <Key size={16} />
               </div>
               <div>
@@ -375,18 +375,18 @@ export default function PersonalPage() {
           <div className="space-y-6 lg:col-span-1">
             
             {topCollaborator ? (
-              <div className="fluent-mica p-6 rounded-xl border border-fluent-accent/30 relative overflow-hidden bg-gradient-to-br from-fluent-bg to-fluent-accent/5">
-                <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-fluent-accent/5 rounded-full blur-xl"></div>
-                <div className="absolute top-4 right-4 text-fluent-accent">
+              <div className="fluent-mica p-6 rounded-xl border border-apple-accent/30 relative overflow-hidden bg-gradient-to-br from-fluent-bg to-apple-accent/5">
+                <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-apple-accent/5 rounded-full blur-xl"></div>
+                <div className="absolute top-4 right-4 text-apple-accent">
                   <Trophy size={20} strokeWidth={2.5} className="drop-shadow-[0_2px_4px_rgba(254,207,6,0.3)] animate-pulse" />
                 </div>
                 
-                <h4 className="text-xs font-black uppercase text-fluent-accent tracking-wider mb-4 flex items-center gap-1.5">
+                <h4 className="text-xs font-black uppercase text-apple-accent tracking-wider mb-4 flex items-center gap-1.5">
                   Colaborador Destacado
                 </h4>
                 
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 rounded-full bg-white/[0.03] border-2 border-fluent-accent flex items-center justify-center font-bold text-white text-lg">
+                  <div className="w-14 h-14 rounded-full bg-white/[0.03] border-2 border-apple-accent flex items-center justify-center font-bold text-white text-lg">
                     {topCollaborator.nombre?.charAt(0)}{topCollaborator.apellido?.charAt(0)}
                   </div>
                   <div>
@@ -397,7 +397,7 @@ export default function PersonalPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 text-fluent-accent mb-4">
+                <div className="flex items-center gap-1 text-apple-accent mb-4">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star 
                       key={i} 
@@ -590,7 +590,7 @@ export default function PersonalPage() {
                       className={`fluent-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-fluent-border rounded-lg bg-fluent-surface/40 hover:bg-fluent-surface ${!p.activo ? 'opacity-50' : ''}`}
                     >
                       <div className="flex items-start gap-3.5">
-                        <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-fluent-border flex items-center justify-center font-bold text-fluent-accent text-sm self-start md:self-auto overflow-hidden">
+                        <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-fluent-border flex items-center justify-center font-bold text-apple-accent text-sm self-start md:self-auto overflow-hidden">
                           {p.profile_image ? (
                              <img src={p.profile_image} alt={p.nombre} className="w-full h-full object-cover" />
                           ) : (
@@ -626,7 +626,7 @@ export default function PersonalPage() {
                               {p.activo ? <ShieldOff size={16} /> : <Check size={16} />}
                            </button>
                         </div>
-                        <div className="flex items-center gap-0.5 text-fluent-accent">
+                        <div className="flex items-center gap-0.5 text-apple-accent">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <button
                               key={i}
@@ -661,7 +661,7 @@ export default function PersonalPage() {
               <h3 className="text-lg font-bold text-white">Mis Proyectos Forenses</h3>
               <p className="text-xs text-fluent-text-muted mt-0.5">Control de procesos activos e inalterabilidad de la evidencia digital.</p>
             </div>
-            <span className="text-[10px] font-black font-mono text-[#FECF06] bg-[#FECF06]/10 px-2.5 py-1 rounded border border-[#FECF06]/20 uppercase tracking-widest">
+            <span className="text-[10px] font-black font-mono text-[#0071E3] bg-[#0071E3]/10 px-2.5 py-1 rounded border border-[#0071E3]/20 uppercase tracking-widest">
               Total: {casos.length} Proyectos
             </span>
           </div>
@@ -686,17 +686,17 @@ export default function PersonalPage() {
                 const compliancePct = Math.min(100, Math.round((checkedCount / 25) * 100));
 
                 return (
-                  <div key={caso.id} className="fluent-mica p-5 rounded-xl border border-white/5 bg-[#0b1f13]/15 hover:border-[#FECF06]/30 transition-all flex flex-col justify-between h-[255px] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-[#FECF06]/5 rounded-full blur-xl group-hover:bg-[#FECF06]/10 transition-colors"></div>
+                  <div key={caso.id} className="fluent-mica p-5 rounded-xl border border-white/5 bg-white/15 hover:border-[#0071E3]/30 transition-all flex flex-col justify-between h-[255px] relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[#0071E3]/5 rounded-full blur-xl group-hover:bg-[#0071E3]/10 transition-colors"></div>
                     
                     <div>
                       {/* Cabecera del caso */}
                       <div className="flex justify-between items-start mb-3">
                         <div className="min-w-0">
-                          <span className="font-mono text-[9px] font-black text-[#FECF06] uppercase tracking-wider block">
+                          <span className="font-mono text-[9px] font-black text-[#0071E3] uppercase tracking-wider block">
                             {caso.numeroCaso}
                           </span>
-                          <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-[#FECF06] transition-all">
+                          <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-[#0071E3] transition-all">
                             {caso.titulo}
                           </h4>
                         </div>
@@ -741,12 +741,12 @@ export default function PersonalPage() {
                       <div className="space-y-1">
                         <div className="flex justify-between text-[9px] font-bold">
                           <span className="text-white/60 flex items-center gap-1">
-                            <ShieldCheck size={10} className="text-[#00FF41]" /> Compliance Rate
+                            <ShieldCheck size={10} className="text-[#34C759]" /> Compliance Rate
                           </span>
-                          <span className="text-[#00FF41] font-mono">{compliancePct}%</span>
+                          <span className="text-[#34C759] font-mono">{compliancePct}%</span>
                         </div>
                         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                          <div className="h-full bg-[#00FF41] rounded-full" style={{ width: `${compliancePct}%` }} />
+                          <div className="h-full bg-[#34C759] rounded-full" style={{ width: `${compliancePct}%` }} />
                         </div>
                       </div>
 
