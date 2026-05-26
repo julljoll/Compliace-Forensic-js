@@ -234,7 +234,7 @@ const FASES: Fase[] = [
     id: 'f2',
     numero: 2,
     titulo: 'Extracción con Avilla Forensics',
-    subtitulo: 'APK Downgrade, WhatsApp DB, multimedia y almacenamiento interno',
+        subtitulo: 'APK Downgrade multi-app, WhatsApp DB, multimedia y almacenamiento interno',
     icono: Database,
     color: 'text-emerald-400',
     glowColor: 'rgba(52,211,153,0.15)',
@@ -275,18 +275,18 @@ const FASES: Fase[] = [
       {
         id: 'f2p2',
         numero: '2.2',
-        titulo: 'Módulo APK Downgrade para WhatsApp',
+        titulo: 'Módulo APK Downgrade para WhatsApp y otras apps',
         descripcion:
-          'WhatsApp cifra su base de datos local (Crypt15/Crypt14). El módulo APK Downgrade de Avilla instala temporalmente una versión legacy de WhatsApp que permite extraer y descifrar la base de datos sin root.',
+          'Avilla Forensics aplica técnicas de downgrade de APK sobre diversas aplicaciones para extraer datos de sus zonas privadas sin necesidad de root. En WhatsApp, esto permite acceder a la base de datos cifrada (Crypt15/Crypt14) y descifrarla. También es compatible con Telegram, Signal, y otras apps de mensajería.',
         items: [
-          'En Avilla Forensics: seleccionar módulo "APK Downgrade / WhatsApp Extraction"',
-          'El módulo desinstala la versión actual de WhatsApp e instala una versión legacy compatible con ADB Backup',
-          'Extrae la base de datos cifrada: msgstore.db.crypt15 (o .crypt14 en versiones anteriores)',
-          'Extrae el archivo de clave de cifrado: WhatsApp/files/key',
-          'Extrae toda la carpeta de medios: WhatsApp/Media/ (imágenes, videos, audios .opus, documentos)',
-          'Avilla descifra automáticamente la base de datos usando la clave extraída',
-          'Resultado final: msgstore.db (SQLite limpio y legible) + estructura completa de medios',
+          'En Avilla Forensics: seleccionar módulo "APK Downgrade / App Extraction" según la app objetivo',
+          'El módulo desinstala la versión actual de la app e instala una versión legacy compatible con ADB Backup',
+          'WhatsApp: extrae msgstore.db.crypt15 (o .crypt14), clave en WhatsApp/files/key, y medios en WhatsApp/Media/',
+          'Telegram/Signal: extrae bases de datos SQLite de su sandbox en /data/data/ (sin cifrado adicional)',
+          'Avilla descifra automáticamente las bases de datos usando las claves extraídas',
+          'Resultado final: bases de datos SQLite limpias + estructura completa de medios por app',
           'Fotografiar la pantalla de Avilla mostrando "Extracción completada" con el log visible',
+          'IMPORTANTE: sin permisos root, el alcance se limita a apps que soportan ADB Backup — los datos extraídos son menores que con acceso root',
         ],
         normativas: [
           { label: 'ISO 27037', color: 'purple' },
@@ -296,13 +296,19 @@ const FASES: Fase[] = [
           {
             titulo: 'El APK Downgrade requiere consentimiento documentado',
             cuerpo:
-              'El proceso de Downgrade es irreversible para esa instalación — WhatsApp queda en versión legacy hasta que el usuario la actualice manualmente. Debe constar en el Acta de Consignación que el propietario consiente en este procedimiento técnico.',
+              'El proceso de Downgrade es irreversible para esa instalación — la app afectada queda en versión legacy hasta que el usuario la actualice manualmente. Debe constar en el Acta de Consignación que el propietario consiente en este procedimiento técnico.',
             nivel: 'critical',
           },
           {
             titulo: 'Conservar SIEMPRE los archivos cifrados originales',
             cuerpo:
-              'El archivo msgstore.db.crypt15 y el archivo key deben conservarse en carpeta separada "01_Extraccion_Original_Cifrada" y NUNCA eliminarse. Son la prueba de que la extracción partió de datos cifrados auténticos.',
+              'Los archivos cifrados originales (msgstore.db.crypt15, key, etc.) deben conservarse en carpeta separada "01_Extraccion_Original_Cifrada" y NUNCA eliminarse. Son la prueba de que la extracción partió de datos cifrados auténticos.',
+            nivel: 'warning',
+          },
+          {
+            titulo: 'Sin root: alcance limitado',
+            cuerpo:
+              'Sin permisos root en el dispositivo, Avilla solo puede acceder a datos de apps que soportan ADB Backup. Muchas aplicaciones modernas (bancos, algunas versiones de Signal) bloquean ADB Backup. En esos casos, los datos extraídos serán significativamente menores. Documentar siempre el nivel de acceso obtenido.',
             nivel: 'warning',
           },
         ],
@@ -313,7 +319,7 @@ const FASES: Fase[] = [
         numero: '2.3',
         titulo: 'Extracción de Almacenamiento Interno',
         descripcion:
-          'Además de WhatsApp, se extrae el contenido relevante del almacenamiento interno: capturas de pantalla, galería, registros de llamadas y contactos.',
+          'Además de las apps de mensajería, se extrae el contenido relevante del almacenamiento interno: capturas de pantalla, galería, registros de llamadas y contactos. Sin permisos root, el acceso es limitado a rutas accesibles vía ADB (no se puede acceder a /data/data/ directamente).',
         items: [
           'En Avilla Forensics: seleccionar módulo "Internal Storage Extraction"',
           'Extrae capturas de pantalla: DCIM/Screenshots/',
@@ -322,6 +328,7 @@ const FASES: Fase[] = [
           'Tiempo estimado de extracción: 15-45 minutos según volumen de datos',
           'Durante la extracción: NO usar el dispositivo, NO desconectar el cable, NO apagar la pantalla',
           'Monitorear el log de Avilla para detectar errores o archivos omitidos',
+          'Si Avilla no puede acceder a ciertas rutas (sin root), complementar con adb pull manual sobre directorios accesibles',
         ],
         codigo: [
           {
@@ -1239,11 +1246,14 @@ export default function ManualAvillaForensics() {
                   Manual Operativo — Avilla Forensics
                 </h1>
                 <p className="text-xs text-white/40 font-bold uppercase tracking-[0.15em] mt-1">
-                  Consignación Forense de Dispositivo Móvil Android · WhatsApp Evidence
+                  Software libre para adquisición forense Android · Downgrade multi-app · WhatsApp Evidence
+                </p>
+                <p className="text-[9px] text-white/25 leading-relaxed mt-2 max-w-2xl">
+                  Avilla Forensics es una herramienta de software libre (código abierto) para la adquisición forense de dispositivos Android, diseñada como alternativa gratuita a soluciones comerciales como Cellebrite UFED, Oxygen Forensics o MSAB XRY. Permite técnicas de downgrade de APK sobre múltiples aplicaciones (WhatsApp, Telegram, Signal, y otras) para extraer datos de zonas privadas sin necesidad de root, usando ADB Backup desde Windows, Linux o macOS.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
                   {[
-                    'ISO/IEC 27037:2012', 'ISO/IEC 27041:2015', 'ISO/IEC 27042:2015',
+                    'Avilla Forensics v4+', 'ISO/IEC 27037:2012', 'ISO/IEC 27041:2015', 'ISO/IEC 27042:2015',
                     'Art. 187 COPP', 'Art. 225 COPP', 'MUCC-2017',
                   ].map(tag => (
                     <span
