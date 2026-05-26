@@ -15,15 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 20:39:42",
-      "last_commit": "8f28f68 - sefre (2026-05-26)",
+      "timestamp": "2026-05-26 20:47:13",
+      "last_commit": "b05c41f - ooooo (2026-05-26)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  src/pages/Planillas/ActaDictamenPage.tsx",
-        "M  src/pages/Planillas/ActaEntregaResultadosPage.tsx",
-        "M  src/pages/Planillas/ActaObtencionPage.tsx",
-        "M  src/pages/Planillas/PlanillaPRCCPage.tsx",
-        "M  src/pages/Planillas/Planillas.css"
+        "M  src/index.css",
+        "M  src/pages/ManualAvillaPage.tsx"
       ]
     }
   },

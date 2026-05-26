@@ -965,8 +965,8 @@ function BloqueCode({ lang, contenido }: { lang: string; contenido: string }) {
         </button>
       </div>
       {/* Código */}
-      <pre className="overflow-x-auto px-4 py-4 bg-[#0d1f12] text-[11px] leading-relaxed">
-        <code className="text-[#a8ff78] font-mono whitespace-pre">{contenido}</code>
+      <pre className="overflow-x-auto px-4 py-4 bg-[#1D1D1F] text-[11px] leading-relaxed">
+        <code className="text-[#e4e4e7] font-mono whitespace-pre">{contenido}</code>
       </pre>
     </div>
   );
@@ -1221,7 +1221,7 @@ export default function ManualAvillaForensics() {
 
   // ─── RENDER ──────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-6 pb-20 animate-fade-in">
+    <div id="manual-avilla-page" className="space-y-6 pb-20 animate-fade-in">
 
       {/* ── Encabezado principal ─────────────────────────────────── */}
       <div className="fluent-mica rounded-xl border border-white/5 overflow-hidden shadow-2xl relative">

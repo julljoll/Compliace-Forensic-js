@@ -510,10 +510,48 @@
   color: #ffffff !important;
 }
 
-/* macOS Code blocks */
-.bg-\[\#0d1f12\], .bg-\[\#1e1e1e\] {
-  background-color: #F5F5F7 !important;
+/* ── Manual Avilla Page — Fix dark-glass design for Apple light theme ── */
+#manual-avilla-page { color: #1D1D1F; }
+
+/* text-white/N inside glass/card backgrounds → Apple muted text */
+#manual-avilla-page .fluent-mica [class*="text-white/"],
+#manual-avilla-page [class*="bg-white/"] [class*="text-white/"] {
+  color: #86868B !important;
+}
+
+/* Higher opacity (60%+) inside cards → Apple primary text */
+#manual-avilla-page .fluent-mica [class*="text-white/6"],
+#manual-avilla-page .fluent-mica [class*="text-white/7"],
+#manual-avilla-page .fluent-mica [class*="text-white/8"],
+#manual-avilla-page [class*="bg-white/"] [class*="text-white/6"],
+#manual-avilla-page [class*="bg-white/"] [class*="text-white/7"],
+#manual-avilla-page [class*="bg-white/"] [class*="text-white/8"] {
   color: #1D1D1F !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Badge/alert colored text → Apple System Colors for readable contrast */
+#manual-avilla-page [class*="text-cyan-400"] { color: #007AFF !important; }
+#manual-avilla-page [class*="text-green-400"] { color: #34C759 !important; }
+#manual-avilla-page [class*="text-yellow-400"] { color: #FF9500 !important; }
+#manual-avilla-page [class*="text-red-400"] { color: #FF3B30 !important; }
+#manual-avilla-page [class*="text-purple-400"] { color: #AF52DE !important; }
+#manual-avilla-page [class*="text-blue-400"] { color: #007AFF !important; }
+
+/* Alert cuerpo text (red-300/70, yellow-300/70, blue-300/70) → dark readable */
+#manual-avilla-page [class*="text-red-300"],
+#manual-avilla-page [class*="text-yellow-300"],
+#manual-avilla-page [class*="text-blue-300"] {
+  color: #1D1D1F !important;
+}
+
+/* Card borders → subtle Apple border */
+#manual-avilla-page [class*="border-white"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* macOS Code blocks — force Apple dark bg with syntax color preservation */
+.bg-\[\#0d1f12\], .bg-\[\#1e1e1e\] {
+  background-color: #1D1D1F !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   font-family: Menlo, Monaco, Consolas, "SF Mono", "Fira Code", monospace !important;
 }
