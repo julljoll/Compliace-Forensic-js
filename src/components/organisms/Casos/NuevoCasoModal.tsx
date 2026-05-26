@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { Smartphone, HardDrive, BookOpen, Gavel, X, ArrowLeft, Check, User, Search } from '../../atoms/AppleIcon';
 import { CasoCMS, EstadoCaso, PrioridadCaso, Normativa } from '../../../store/cmsStore';
-import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig } from '../../../data/tiposProyecto';
-
+import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig, TipoProyecto } from '../../../data/tiposProyecto';
 
 interface NuevoCasoModalProps {
   onClose: () => void;
@@ -13,6 +13,58 @@ interface NuevoCasoModalProps {
 }
 
 const TIPOS = getTiposProyecto();
+
+const DISPOSITIVOS = [
+  {
+    id: 'forense_whatsapp' as TipoProyecto,
+    titulo: 'Teléfono Android WhatsApp',
+    icon: Smartphone,
+    descripcion: 'Extracción y análisis forense de conversaciones de WhatsApp desde dispositivo móvil Android. Incluye adquisición lógica, parseo de msgstore.db, transcripción de audios .opus y dictamen pericial.',
+    alcance: [
+      'Extracción lógica con Avilla Forensics / Andriller',
+      'Análisis de artefactos Android con ALEAPP',
+      'Parseo de base de datos WhatsApp (msgstore.db)',
+      'Transcripción de audios .opus a texto',
+      'Generación de línea de tiempo de comunicaciones',
+      'Dictamen pericial con metodología forense apegada a la ley',
+    ],
+    marcoLegal: [
+      { codigo: 'Art. 187 COPP', descripcion: 'Licitud de la prueba y cadena de custodia' },
+      { codigo: 'LEDI (2001)', descripcion: 'Ley Especial contra Delitos Informáticos' },
+      { codigo: 'LMDF (1999)', descripcion: 'Ley sobre Mensajes de Datos y Firmas Electrónicas' },
+      { codigo: 'ISO/IEC 27037:2012', descripcion: 'Estándar internacional para identificación, recolección y preservación de evidencia digital' },
+      { codigo: 'NIST SP 800-101 r1', descripcion: 'Guía de forensia de dispositivos móviles' },
+      { codigo: 'MUCCEF 2017', descripcion: 'Manual Único de Cadena de Custodia de Evidencias' },
+    ],
+    enfoque: 'La investigación se centrará en el análisis técnico-forense del dispositivo móvil Android, su contenido WhatsApp, y la documentación de la cadena de custodia conforme al marco legal venezolano y estándares internacionales.',
+  },
+  {
+    id: 'forense_discoduro' as TipoProyecto,
+    titulo: 'Computadora',
+    icon: HardDrive,
+    descripcion: 'Adquisición y análisis forense de discos duros, unidades de almacenamiento y correos electrónicos. Incluye imagen bit-a-bit, recuperación de archivos eliminados, análisis de cabeceras de correo y dictamen pericial.',
+    alcance: [
+      'Adquisición forense bit-a-bit con write-blocker hardware',
+      'Imagen forense DD/E01 con verificación SHA-256',
+      'Análisis de particiones y sistemas de archivos',
+      'Recuperación de archivos eliminados y slack space',
+      'Análisis de metadatos y línea de tiempo de actividad',
+      'Dictamen pericial con metodología apegada a la ley',
+    ],
+    marcoLegal: [
+      { codigo: 'Art. 187 COPP', descripcion: 'Licitud de la prueba y cadena de custodia' },
+      { codigo: 'Art. 188 COPP', descripcion: 'Resguardo de evidencias' },
+      { codigo: 'LEDI (2001)', descripcion: 'Ley Especial contra Delitos Informáticos' },
+      { codigo: 'LMDF (1999)', descripcion: 'Ley sobre Mensajes de Datos y Firmas Electrónicas' },
+      { codigo: 'ISO/IEC 27037:2012', descripcion: 'Estándar internacional para evidencia digital' },
+      { codigo: 'ISO/IEC 27042:2015', descripcion: 'Estándar internacional para análisis forense digital' },
+      { codigo: 'NIST SP 800-101 r1', descripcion: 'Guía de forensia de dispositivos' },
+      { codigo: 'MUCCEF 2017', descripcion: 'Manual Único de Cadena de Custodia de Evidencias' },
+    ],
+    enfoque: 'La investigación se centrará en el análisis técnico-forense del dispositivo de almacenamiento o computadora, la recuperación de evidencia digital, y la documentación de la cadena de custodia conforme al marco legal venezolano y estándares internacionales.',
+  },
+];
+
 const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'> = {
   tipoProyecto: 'forense_whatsapp',
   numeroCaso: '',
@@ -25,7 +77,7 @@ const FORM_INICIAL: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualiza
   compliance: '',
   despachoFiscal: '',
   organismoOrdenante: '',
-  normativasAplicadas: getTipoProyectoConfig('forense_whatsapp').normativasPorDefecto,
+  normativasAplicadas: [],
   fasesCompletadas: 0,
   totalFases: 9,
   porcentajeCompletado: 0,
@@ -62,8 +114,138 @@ export default function NuevoCasoModal({
   estados,
   prioridades,
 }: NuevoCasoModalProps) {
+  const [step, setStep] = useState<'select' | 'form'>('select');
+  const [selectedTipo, setSelectedTipo] = useState<TipoProyecto | null>(null);
   const [form, setForm] = useState({ ...FORM_INICIAL });
 
+  const handleSelectDispositivo = (tipo: TipoProyecto) => {
+    const fases = getFasesPorTipo(tipo);
+    const config = getTipoProyectoConfig(tipo);
+    setSelectedTipo(tipo);
+    setForm(f => ({
+      ...f,
+      tipoProyecto: tipo,
+      totalFases: fases.length,
+      normativasAplicadas: config.normativasPorDefecto,
+    }));
+    setStep('form');
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(form);
+  };
+
+  const dispositivo = DISPOSITIVOS.find(d => d.id === selectedTipo);
+
+  // ── Step 1: Device Selection ──────────────────────────────────────────
+  if (step === 'select') {
+    return (
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-2xl z-50 flex items-center justify-center p-6 animate-in fade-in duration-500">
+        <div className="w-full max-w-5xl mx-auto space-y-8">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-white tracking-tight">Nuevo Caso Forense</h2>
+              <p className="text-sm text-[#86868B] font-medium mt-1">
+                Seleccione el tipo de dispositivo a investigar para iniciar el caso.
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-[#86868B] hover:text-white hover:bg-white/5 transition-all"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* 2 Option Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {DISPOSITIVOS.map(d => {
+              const Icon = d.icon;
+              return (
+                <button
+                  key={d.id}
+                  onClick={() => handleSelectDispositivo(d.id)}
+                  className="group relative flex flex-col text-left bg-white/[0.03] border border-white/[0.06] rounded-2xl p-8 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                >
+                  {/* Icon */}
+                  <div className="w-14 h-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-6 group-hover:bg-[#0071E3]/10 group-hover:scale-105 transition-all">
+                    <Icon size={28} className="text-[#86868B] group-hover:text-[#0071E3] transition-colors" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#0071E3] transition-colors">
+                    {d.titulo}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-[#86868B] leading-relaxed mb-6">
+                    {d.descripcion}
+                  </p>
+
+                  {/* Alcance */}
+                  <div className="mb-6">
+                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#86868B] mb-3 flex items-center gap-2">
+                      <Search size={12} />
+                      Alcance de la Investigación
+                    </h4>
+                    <ul className="space-y-1.5">
+                      {d.alcance.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-xs text-white/60">
+                          <span className="mt-1 w-1 h-1 rounded-full bg-[#0071E3] flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Enfoque */}
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] mb-6">
+                    <p className="text-xs text-white/50 leading-relaxed italic">
+                      {d.enfoque}
+                    </p>
+                  </div>
+
+                  {/* Marco Legal */}
+                  <div className="mt-auto">
+                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#86868B] mb-3 flex items-center gap-2">
+                      <Gavel size={12} />
+                      Marco Legal Aplicable (RAG)
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {d.marcoLegal.map((m, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/[0.04] text-[10px] font-medium text-[#86868B] border border-white/[0.06]"
+                          title={m.descripcion}
+                        >
+                          <BookOpen size={9} />
+                          {m.codigo}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Hover arrow */}
+                  <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-[#0071E3] transition-all -translate-x-2 group-hover:translate-x-0">
+                    <ArrowLeft size={14} className="text-white rotate-180" />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Footer note */}
+          <p className="text-center text-[11px] text-[#86868B]/40 font-medium">
+            Todos los casos se inician bajo el marco legal venezolano — COPP, LEDI, LMDF — y estándares internacionales ISO/IEC y NIST.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Step 2: Case Form ────────────────────────────────────────────────
   const handleTipoChange = (tipo: typeof TIPOS[0]) => {
     const fases = getFasesPorTipo(tipo.id);
     const config = getTipoProyectoConfig(tipo.id);
@@ -75,51 +257,64 @@ export default function NuevoCasoModal({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(form);
-  };
-
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-xl z-50 flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-300 ease-out">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-2xl z-50 flex items-center justify-center p-4 animate-in fade-in duration-500">
       <div className="fluent-mica border border-white/10 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.5)] flex flex-col">
-        {/* Modal Header */}
+        {/* Header */}
         <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
-          <h2 className="font-bold text-white text-lg tracking-tight">Inicialización de Caso Técnico</h2>
-          <button 
-            onClick={onClose} 
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setStep('select')}
+              className="p-1.5 rounded-lg text-[#86868B] hover:text-white hover:bg-white/5 transition-all"
+              title="Volver a selección de dispositivo"
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <div>
+              <h2 className="font-bold text-white text-lg tracking-tight">
+                {dispositivo?.titulo || 'Inicialización de Caso'}
+              </h2>
+              <p className="text-[10px] text-[#86868B] font-medium">Complete los datos del caso</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
             className="text-fluent-text-muted hover:text-white w-8 h-8 flex items-center justify-center rounded-[4px] hover:bg-white/5 transition-all font-bold"
           >
-            ✕
+            <X size={16} />
           </button>
         </div>
 
-        {/* Modal Body */}
+        {/* Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto flex-1">
-          {/* Selector de Tipo de Proyecto */}
-          <div className="space-y-3">
-            <label className="fluent-label">Tipo de Proyecto Forense *</label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {TIPOS.map(t => {
+          {/* Device Type Badge */}
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            {dispositivo && <dispositivo.icon size={20} className="text-[#0071E3]" />}
+            <div>
+              <p className="text-sm font-bold text-white">{dispositivo?.titulo}</p>
+              <p className="text-[10px] text-[#86868B]">Tipo de investigación seleccionado</p>
+            </div>
+          </div>
+
+          {/* Tipo de Proyecto (inline, subtle) */}
+          <div className="space-y-2">
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Variante Técnica</label>
+            <div className="flex gap-2">
+              {TIPOS.filter(t => {
+                if (selectedTipo === 'forense_whatsapp') return t.id === 'forense_whatsapp';
+                return t.id !== 'forense_whatsapp';
+              }).map(t => {
                 const Icon = t.icon;
                 const selected = form.tipoProyecto === t.id;
                 return (
                   <button type="button" key={t.id} onClick={() => handleTipoChange(t)}
-                    className={`relative flex flex-col items-center gap-3 p-4 rounded-lg border-2 transition-all cursor-pointer text-center ${
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-all ${
                       selected
-                        ? 'border-apple-accent bg-apple-accent/10 shadow-lg shadow-apple-accent/20'
-                        : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
+                        ? 'border-[#0071E3] bg-[#0071E3]/10 text-white'
+                        : 'border-white/10 text-[#86868B] hover:border-white/20'
                     }`}>
-                    <Icon size={28} className={selected ? 'text-apple-accent' : 'text-white/40'} />
-                    <div>
-                      <p className={`text-xs font-bold ${selected ? 'text-white' : 'text-white/60'}`}>{t.label}</p>
-                      <p className="text-[9px] text-fluent-text-muted mt-0.5 leading-relaxed">{t.descripcion.slice(0, 100)}...</p>
-                    </div>
-                    {selected && (
-                      <div className="absolute top-2 right-2 w-5 h-5 bg-apple-accent rounded-full flex items-center justify-center">
-                        <span className="text-black text-[10px] font-black">✓</span>
-                      </div>
-                    )}
+                    <Icon size={14} />
+                    {t.label}
                   </button>
                 );
               })}
@@ -128,63 +323,69 @@ export default function NuevoCasoModal({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="fluent-label">Identificador del Caso *</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Identificador del Caso *</label>
               <input required className="fluent-input bg-white/[0.02]" placeholder="ej. SHA-2025-001" value={form.numeroCaso}
                 onChange={e => setForm(f => ({ ...f, numeroCaso: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <label className="fluent-label">PRCC / Registro Judicial</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">PRCC / Registro Judicial</label>
               <input className="fluent-input bg-white/[0.02]" placeholder="ID de Referencia..." value={form.numeroPRCC || ''}
                 onChange={e => setForm(f => ({ ...f, numeroPRCC: e.target.value }))} />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="fluent-label">Título Técnico *</label>
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Título Técnico *</label>
             <input required className="fluent-input bg-white/[0.02]" placeholder="Breve alcance de la investigación" value={form.titulo}
               onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
           </div>
 
           <div className="space-y-2">
-            <label className="fluent-label">Contexto Operacional</label>
-            <textarea className="fluent-input bg-white/[0.02] min-h-[80px] resize-none" placeholder="Antecedentes y alcance forense..." value={form.descripcion}
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Contexto Operacional</label>
+            <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Antecedentes y alcance forense..." value={form.descripcion}
               onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} />
           </div>
 
-          {/* Datos del Solicitante (Común para todos) */}
+          {/* Solicitante */}
           <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-            <label className="fluent-label block text-[#0071E3] font-bold">Datos del Solicitante de la Experticia</label>
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider flex items-center gap-2">
+              <User size={12} />
+              Datos del Solicitante de la Experticia
+            </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="fluent-label text-[11px]">Nombre Completo *</label>
+                <label className="text-[10px] font-bold text-[#86868B]">Nombre Completo *</label>
                 <input required className="fluent-input bg-white/[0.02]" placeholder="ej. Juan Pérez" value={form.solicitante_nombre || ''}
                   onChange={e => setForm(f => ({ ...f, solicitante_nombre: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <label className="fluent-label text-[11px]">Cédula de Identidad *</label>
+                <label className="text-[10px] font-bold text-[#86868B]">Cédula de Identidad *</label>
                 <input required className="fluent-input bg-white/[0.02]" placeholder="ej. V-12345678" value={form.solicitante_cedula || ''}
                   onChange={e => setForm(f => ({ ...f, solicitante_cedula: e.target.value }))} />
               </div>
             </div>
           </div>
 
-          {/* Campos Dinámicos según Tipo de Proyecto */}
+          {/* Device-specific fields */}
           {form.tipoProyecto === 'forense_whatsapp' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Dispositivo Móvil (Básico)</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider flex items-center gap-2">
+                <Smartphone size={12} />
+                Datos del Dispositivo Móvil
+              </label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Marca</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Marca</label>
                   <input className="fluent-input bg-white/[0.02]" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_marca: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Modelo</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Modelo</label>
                   <input className="fluent-input bg-white/[0.02]" placeholder="ej. Galaxy S23" value={form.dispositivo_modelo || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_modelo: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Estado Físico</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Estado Físico</label>
                   <select className="fluent-input bg-white/[0.02]" value={form.dispositivo_estado_fisico || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_estado_fisico: e.target.value }))}>
                     <option value="" className="bg-fluent-bg">Seleccione...</option>
@@ -201,16 +402,16 @@ export default function NuevoCasoModal({
 
           {form.tipoProyecto === 'forense_email' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Correo Electrónico a Investigar</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Datos del Correo Electrónico a Investigar</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Correo a Investigar *</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Correo a Investigar *</label>
                   <input required type="email" className="fluent-input bg-white/[0.02]" placeholder="ej. usuario@dominio.com" value={form.correo_investigar || ''}
                     onChange={e => setForm(f => ({ ...f, correo_investigar: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Proveedor / Servidor de Correo *</label>
-                  <input required className="fluent-input bg-white/[0.02]" placeholder="ej. Gmail, Outlook, Servidor Corporativo" value={form.correo_proveedor || ''}
+                  <label className="text-[10px] font-bold text-[#86868B]">Proveedor / Servidor</label>
+                  <input required className="fluent-input bg-white/[0.02]" placeholder="ej. Gmail, Outlook, Corporativo" value={form.correo_proveedor || ''}
                     onChange={e => setForm(f => ({ ...f, correo_proveedor: e.target.value }))} />
                 </div>
               </div>
@@ -219,25 +420,25 @@ export default function NuevoCasoModal({
 
           {form.tipoProyecto === 'forense_discoduro' && (
             <div className="p-5 bg-white/[0.03] rounded-lg border border-white/5 space-y-4">
-              <label className="fluent-label block text-[#0071E3] font-bold">Datos del Disco Duro / Unidad de Almacenamiento</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Datos del Disco Duro / Unidad</label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Marca</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Marca</label>
                   <input className="fluent-input bg-white/[0.02]" placeholder="ej. Western Digital" value={form.discoduro_marca || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_marca: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Modelo</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Modelo</label>
                   <input className="fluent-input bg-white/[0.02]" placeholder="ej. Blue WD10EZEX" value={form.discoduro_modelo || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_modelo: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Número de Serie *</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Número de Serie *</label>
                   <input required className="fluent-input bg-white/[0.02] font-mono" placeholder="ej. WCC6Y1234567" value={form.discoduro_serial || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_serial: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <label className="fluent-label text-[11px]">Capacidad de Almacenamiento *</label>
+                  <label className="text-[10px] font-bold text-[#86868B]">Capacidad *</label>
                   <input required className="fluent-input bg-white/[0.02]" placeholder="ej. 1 TB, 500 GB" value={form.discoduro_capacidad || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_capacidad: e.target.value }))} />
                 </div>
@@ -247,13 +448,13 @@ export default function NuevoCasoModal({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="fluent-label">Estado del Flujo de Trabajo</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Estado del Flujo de Trabajo</label>
               <select className="fluent-input bg-white/[0.02]" value={form.estado} onChange={e => setForm(f => ({ ...f, estado: e.target.value as EstadoCaso }))}>
                 {estados.filter(e => e.value !== 'todos').map(e => <option key={e.value} value={e.value} className="bg-fluent-bg">{e.label}</option>)}
               </select>
             </div>
             <div className="space-y-2">
-              <label className="fluent-label">Prioridad de Investigación</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Prioridad de Investigación</label>
               <select className="fluent-input bg-white/[0.02]" value={form.prioridad} onChange={e => setForm(f => ({ ...f, prioridad: e.target.value as PrioridadCaso }))}>
                 {prioridades.filter(p => p.value !== 'todos').map(p => <option key={p.value} value={p.value} className="bg-fluent-bg">{p.label}</option>)}
               </select>
@@ -262,19 +463,19 @@ export default function NuevoCasoModal({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label className="fluent-label">Oficial de Cumplimiento Líder *</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Perito Líder *</label>
               <input required className="fluent-input bg-white/[0.02]" placeholder="Perito asignado" value={form.peritoLider}
                 onChange={e => setForm(f => ({ ...f, peritoLider: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <label className="fluent-label">Fiscal Solicitante</label>
+              <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Fiscal Solicitante</label>
               <input className="fluent-input bg-white/[0.02]" placeholder="Nombre completo..." value={form.fiscal || ''}
                 onChange={e => setForm(f => ({ ...f, fiscal: e.target.value }))} />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="fluent-label">Base Legal Aplicable</label>
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Base Legal Aplicable</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 p-5 bg-white/[0.03] rounded-lg border border-white/5">
               {normativas.filter(n => n.activa).map(n => (
                 <label key={n.id} className="flex items-center gap-3 text-xs text-fluent-text-muted cursor-pointer hover:text-white transition-all group">
@@ -292,23 +493,42 @@ export default function NuevoCasoModal({
           </div>
 
           <div className="space-y-2">
-            <label className="fluent-label">Notas Preliminares de Evidencia</label>
-            <textarea className="fluent-input bg-white/[0.02] min-h-[60px] resize-none" placeholder="Observaciones..." value={form.notas}
+            <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Notas Preliminares</label>
+            <textarea className="fluent-input bg-white/[0.02] min-h-[50px] resize-none" placeholder="Observaciones..." value={form.notas}
               onChange={e => setForm(f => ({ ...f, notas: e.target.value }))} />
           </div>
         </form>
 
-        {/* Modal Footer */}
-        <div className="p-5 border-t border-white/5 flex justify-end gap-3 bg-white/[0.02]">
-          <button type="button" onClick={onClose} className="fluent-btn fluent-btn-secondary px-6 font-bold">Cancelar</button>
-          <button type="submit" onClick={handleSubmit} disabled={saving} className="fluent-btn fluent-btn-primary px-8 flex items-center gap-2 shadow-xl">
-            {saving ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Procesando...
-              </>
-            ) : `Crear ${TIPOS.find(t => t.id === form.tipoProyecto)?.label || 'Caso'}`}
+        {/* Footer */}
+        <div className="p-5 border-t border-white/5 flex justify-between items-center bg-white/[0.02]">
+          <button
+            type="button"
+            onClick={() => setStep('select')}
+            className="flex items-center gap-2 text-xs text-[#86868B] hover:text-white transition-all"
+          >
+            <ArrowLeft size={12} />
+            Cambiar dispositivo
           </button>
+          <div className="flex gap-3">
+            <button type="button" onClick={onClose} className="px-5 py-2 rounded-lg text-xs font-bold text-[#86868B] hover:text-white hover:bg-white/5 transition-all">
+              Cancelar
+            </button>
+            <button type="submit" onClick={handleSubmit} disabled={saving}
+              className="px-6 py-2 rounded-lg bg-[#0071E3] text-white text-xs font-bold hover:bg-[#0077ED] disabled:opacity-50 transition-all flex items-center gap-2 shadow-xl"
+            >
+              {saving ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <Check size={14} />
+                  Iniciar Caso
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

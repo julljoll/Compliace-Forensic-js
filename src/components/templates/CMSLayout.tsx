@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -34,6 +34,15 @@ export default function CMSLayout() {
   useEffect(() => {
     fetchCasos();
   }, [fetchCasos]);
+
+  const limpiarDatos = () => {
+    if (!window.confirm('¿Limpiar datos temporales (cookies, localStorage, sesión)? Se cerrará su sesión.')) return;
+    localStorage.clear();
+    document.cookie.split(';').forEach(c => {
+      document.cookie = c.replace(/^ +/, '').replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+    });
+    window.location.reload();
+  };
 
   const getBreadcrumb = () => {
     const activeItem = menuItems.find(item => {
@@ -177,6 +186,13 @@ export default function CMSLayout() {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={limpiarDatos}
+              title="Limpiar datos temporales y cookies"
+              className="p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#FF3B30] transition-all"
+            >
+              <Trash2 size={13} />
+            </button>
             <div className="flex items-center gap-2 text-[12px] font-medium text-[#86868B]">
               <div className="w-2 h-2 rounded-full bg-[#34C759]" />
               <span>Sincronizado</span>
