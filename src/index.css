@@ -566,6 +566,126 @@
   color: rgba(255, 255, 255, 0.35) !important;
 }
 
+/* ── Seguimiento Compliance Page — Fix dark-glass design for Apple light theme ── */
+#seguimiento-compliance-page { color: #1D1D1F; }
+
+#seguimiento-compliance-page .apple-card,
+#seguimiento-compliance-page [class*="bg-white/30"],
+#seguimiento-compliance-page [class*="fluent-mica"],
+#seguimiento-compliance-page [class*="bg-black/40"],
+#seguimiento-compliance-page [class*="bg-black/20"],
+#seguimiento-compliance-page [class*="bg-white/5"],
+#seguimiento-compliance-page [class*="bg-white/10"],
+#seguimiento-compliance-page [class*="bg-white/25"],
+#seguimiento-compliance-page [class*="bg-\[0\.02\]"],
+#seguimiento-compliance-page [class*="bg-\[0\.03\]"],
+#seguimiento-compliance-page [class*="bg-\[0\.04\]"] {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+#seguimiento-compliance-page .apple-card,
+#seguimiento-compliance-page [class*="bg-white/30"] {
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+#seguimiento-compliance-page [class*="bg-white/\[0\.02\]"] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+#seguimiento-compliance-page [class*="bg-white/\[0\.03\]"] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+#seguimiento-compliance-page [class*="bg-white/\[0\.04\]"] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Inputs inside the page */
+#seguimiento-compliance-page [class*="bg-black/40"],
+#seguimiento-compliance-page [class*="bg-black/20"] {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #1D1D1F !important;
+}
+
+/* text-white/N inside glass/card backgrounds → Apple muted text */
+#seguimiento-compliance-page .apple-card [class*="text-white/"],
+#seguimiento-compliance-page [class*="bg-white/"] [class*="text-white/"],
+#seguimiento-compliance-page [class*="bg-black/"] [class*="text-white/"] {
+  color: #86868B !important;
+}
+
+/* Higher opacity (60%+) inside cards → Apple primary text */
+#seguimiento-compliance-page .apple-card [class*="text-white/6"],
+#seguimiento-compliance-page .apple-card [class*="text-white/7"],
+#seguimiento-compliance-page .apple-card [class*="text-white/8"],
+#seguimiento-compliance-page [class*="bg-white/"] [class*="text-white/6"],
+#seguimiento-compliance-page [class*="bg-white/"] [class*="text-white/7"],
+#seguimiento-compliance-page [class*="bg-white/"] [class*="text-white/8"] {
+  color: #1D1D1F !important;
+}
+
+/* Badge/alert colored text → Apple System Colors for readable contrast */
+#seguimiento-compliance-page [class*="text-cyan-400"] { color: #007AFF !important; }
+#seguimiento-compliance-page [class*="text-green-400"] { color: #34C759 !important; }
+#seguimiento-compliance-page [class*="text-yellow-400"] { color: #FF9500 !important; }
+#seguimiento-compliance-page [class*="text-red-400"] { color: #FF3B30 !important; }
+#seguimiento-compliance-page [class*="text-purple-400"] { color: #AF52DE !important; }
+#seguimiento-compliance-page [class*="text-blue-400"] { color: #007AFF !important; }
+
+/* Alert cuerpo text (red-300, yellow-300, blue-300) → dark readable */
+#seguimiento-compliance-page [class*="text-red-300"],
+#seguimiento-compliance-page [class*="text-yellow-300"],
+#seguimiento-compliance-page [class*="text-blue-300"] {
+  color: #1D1D1F !important;
+}
+
+/* Card/panel backgrounds → white */
+#seguimiento-compliance-page .bg-white\/\[0\.02\] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+#seguimiento-compliance-page .bg-white\/\[0\.03\] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Borders → subtle Apple border */
+#seguimiento-compliance-page [class*="border-white"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Step nav panel — subtle light bg */
+#seguimiento-compliance-page [class*="bg-white/10"] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Phase section panels */
+#seguimiento-compliance-page [class*="bg-white/\[0\.03\]"] {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Selected step button — Apple accent */
+#seguimiento-compliance-page [class*="bg-\[#0071E3\]/10"] {
+  background-color: rgba(0, 113, 227, 0.1) !important;
+}
+
+/* Gradient bar backgrounds → light theme gradients */
+#seguimiento-compliance-page [class*="bg-gradient-to-r"] {
+  opacity: 0.3;
+}
+
+/* Task checkbox */
+#seguimiento-compliance-page .w-\[16px\].h-\[16px\] {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Code block header — preserve dim white on dark bg */
+#seguimiento-compliance-page .bg-black\/50 [class*="text-white/"] {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
 /* macOS Code blocks — force Apple dark bg with syntax color preservation */
 .bg-\[\#0d1f12\], .bg-\[\#1e1e1e\] {
   background-color: #1D1D1F !important;
