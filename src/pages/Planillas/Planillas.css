@@ -11,8 +11,8 @@
 
     --primary: #0071E3;
     --accent: #0071E3;
-    --success: #10B981;
-    --warning: #d83b01;
+    --success: #34C759;
+    --warning: #FF9500;
     --bg-dark: #F5F5F7;
     --bg-card: #FFFFFF;
     --bg-sidebar: #FFFFFF;
@@ -212,7 +212,7 @@
 .planilla-container .anexo-derivacion { border: 2px solid var(--primary-color); padding: 10px; border-radius: 6px; margin-top: 15px; background: rgba(0, 0, 0, 0.01); }
 .planilla-container .anexo-header { font-weight: 800; font-size: 11px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 8px; text-transform: uppercase; }
 
-.planilla-container .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(254, 207, 6, 0.05); font-weight: 900; pointer-events: none; z-index: 0; }
+.planilla-container .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(0, 113, 227, 0.04); font-weight: 900; pointer-events: none; z-index: 0; }
 
 .planilla-container footer { text-align: center; font-size: 8px; color: var(--text-muted); margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 8px; }
 

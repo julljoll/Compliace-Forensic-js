@@ -317,7 +317,7 @@ body {
 
     /* Timeline Elements */
     .timeline-header-card {
-      @apply bg-white/[0.02] border border-white/10 rounded-xl p-6 mb-8 backdrop-blur-[10px];
+      @apply bg-white border border-black/5 rounded-xl p-6 mb-8;
     }
 
     .timeline-progress-container {
@@ -325,11 +325,11 @@ body {
     }
 
     .timeline-progress-bar {
-      @apply h-2 bg-white/10 rounded-full overflow-hidden;
+      @apply h-2 bg-black/10 rounded-full overflow-hidden;
     }
 
     .timeline-progress-fill {
-      @apply h-full bg-gradient-to-r from-fluent-accent to-[#00FF41] transition-[width] duration-300 ease-in-out;
+      @apply h-full bg-fluent-accent transition-[width] duration-300 ease-in-out;
     }
 
     .timeline-progress-text {
@@ -557,37 +557,37 @@ body {
   border-color: var(--fluent-border) !important;
 }
 
-/* Premium active green/compliance colors */
+/* Premium active green/compliance colors (macOS System Green) */
 .bg-\[\#0b1f13\], .bg-\[\#0b1f13\]\/10, .bg-\[\#0b1f13\]\/15, .bg-\[\#0b1f13\]\/25, .bg-\[\#0b1f13\]\/30 {
-  background-color: rgba(52, 211, 153, 0.06) !important;
-  border-color: rgba(52, 211, 153, 0.15) !important;
-  color: #065f46 !important;
+  background-color: rgba(52, 199, 89, 0.08) !important;
+  border-color: rgba(52, 199, 89, 0.2) !important;
+  color: #248A3D !important;
 }
 .text-\[\#00FF41\], .text-green-400 {
-  color: #059669 !important;
+  color: #248A3D !important;
 }
 .bg-\[\#00FF41\] {
-  background-color: #10B981 !important;
+  background-color: #34C759 !important;
   color: #ffffff !important;
 }
 
-/* Gold/Warning compliance colors */
-.bg-\[\#FECF06\], .bg-fluent-accent {
-  background-color: var(--fluent-accent) !important;
+/* Gold/Warning compliance colors (macOS System Orange) */
+.bg-\[\#FECF06\] {
+  background-color: #FF9500 !important;
   color: #ffffff !important;
 }
 .bg-\[\#FECF06\]\/10 {
-  background-color: rgba(0, 113, 227, 0.06) !important;
-  border-color: rgba(0, 113, 227, 0.15) !important;
+  background-color: rgba(255, 149, 0, 0.08) !important;
+  border-color: rgba(255, 149, 0, 0.2) !important;
 }
 .bg-\[\#FECF06\]\/5 {
-  background-color: rgba(0, 113, 227, 0.02) !important;
+  background-color: rgba(255, 149, 0, 0.03) !important;
 }
-.text-\[\#FECF06\], .text-fluent-accent {
-  color: var(--fluent-accent) !important;
+.text-\[\#FECF06\] {
+  color: #D86600 !important;
 }
 .border-\[\#FECF06\]\/20, .border-\[\#FECF06\]\/25 {
-  border-color: rgba(0, 113, 227, 0.2) !important;
+  border-color: rgba(255, 149, 0, 0.25) !important;
 }
 
 /* Toast/Alert Contrast Adjustments */
