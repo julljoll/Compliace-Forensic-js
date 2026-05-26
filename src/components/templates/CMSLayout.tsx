@@ -14,7 +14,7 @@ const menuItems = [
   { path: '/control/seguimiento-compliance', label: 'Fases, Tareas & Compliance', icon: ShieldCheck, group: 'Control' },
   { path: '/control/seguimiento-compliance?tab=tareas', label: 'Tablero de Tareas', icon: ClipboardList, group: 'Control' },
   { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Referencia' },
-  { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
+  { path: '/sistemas/manual-avilla', label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
   { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Sistema' },
   { path: '/manual-serverless', label: 'Manual Serverless',    icon: Database,         group: 'Sistema' },
