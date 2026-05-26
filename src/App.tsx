@@ -2,11 +2,11 @@ import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { useCMSStore } from './store/cmsStore';
-import { ErrorBoundary } from './components/Shared/ErrorBoundary';
+import { ErrorBoundary } from './components/atoms/ErrorBoundary';
 
 // ── Layouts ─────────────────────────────────────────────────────────────────
-import CMSLayout from './components/CMSLayout';
-import Layout from './components/Layout';
+import CMSLayout from './components/templates/CMSLayout';
+import Layout from './components/templates/Layout';
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 const LoginPage = lazy(() => import('./pages/LoginPage'));

@@ -1,0 +1,126 @@
+{
+  "project": {
+    "name": "SHA256.US",
+    "description": "CMS de Cumplimiento Normativo para procesos de peritaje digital y control técnico-forense en dispositivos móviles.",
+    "role": "El asistente IA debe comportarse como un Programador Senior y un Diseñador UX/UI Senior de nivel premium.",
+    "design_system": "Atomic Design (atoms, molecules, organisms, templates, pages) y Fluent Design (Microsoft design system).",
+    "tech_stack": {
+      "frontend": "React 19 + TypeScript",
+      "bundler": "Vite",
+      "styles": "TailwindCSS + Vanilla CSS (Mica, Glassmorphism, Bordes sutiles)",
+      "state_management": "Zustand (cmsStore.ts, forenseStore.ts, authStore.ts, auditStore.ts)",
+      "database": "Neon PostgreSQL (sincronización remota) + IndexedDB (almacenamiento local offline-first)",
+      "pwa": "Vite PWA Plugin (operable totalmente sin conexión)"
+    }
+  },
+  "guidelines": {
+    "ux_ui": [
+      "Priorizar estética premium con wow-factor, tema oscuro estricto (fondo #181818, sidebar #141721).",
+      "Aplicar efectos de Glassmorphism (fluent-mica, fluent-acrylic, fluent-card) con bordes suaves de 1px (white/5 o white/10) y gradients discretos.",
+      "Usar iconos consistentes importados de Lucide React.",
+      "Añadir transiciones suaves (fade-in, transformaciones hover rápidas de 100-150ms).",
+      "Mantener tipografía moderna con Segoe UI Variable o Inter.",
+      "Asegurar soporte de impresión ('@media print') limpio, convirtiendo colores a blanco y negro, ocultando elementos del menú (clase no-print) y ajustando layouts a tamaño Carta/Oficio."
+    ],
+    "architecture": [
+      "Adherirse estrictamente a la estructura de Atomic Design en src/components/:",
+      "  - atoms/ (Toast, ErrorBoundary, botones e inputs básicos)",
+      "  - molecules/ (KpiCard, NormativaAccordion, badges enriquecidos)",
+      "  - organisms/ (Casos, Compliance, Laboratorio, Obtencion, Prcc, DisposicionFinal, DisposicionJudicial, MarcoLegal)",
+      "  - templates/ (Layout layouts estructurales globales)",
+      "Las vistas de enrutamiento se ubican en src/pages/ para mantener limpia la resolución de rutas de Vite.",
+      "Toda lógica de almacenamiento local e IndexedDB debe interactuar limpiamente con la simulación PWA (window.electronAPI en src/main.tsx)."
+    ],
+    "business_logic": [
+      "El sistema NO es una herramienta de análisis directo; funciona como un CMS para controlar y auditar el proceso técnico.",
+      "Cadena de custodia inmutable: cada log crítico se registra en auditStore.ts aplicando un Hash Chain SHA-256 (hashActual = sha256(accion|detalle|usuario|timestamp|lastHash)).",
+      "Gating secuencial: un paso forense no puede marcarse como completado si tiene tareas técnicas o requisitos de compliance pendientes (verificado mediante verifyStepCompletion() en cmsStore.ts)."
+    ],
+    "forensic_procedure_venezuela": {
+      "fases": {
+        "1_obtencion": {
+          "nombre": "Fase de Obtención",
+          "modalidades": "Consignación (prioritaria por entrega voluntaria) y Técnica (sitio del suceso).",
+          "acciones": [
+            "Registrar identidad exacta del consignante (Cédula de Identidad y datos de contacto).",
+            "Registrar datos completos del dispositivo (Marca, Modelo, IMEI 1 y 2, número de línea, operadora, accesorios, porcentaje de batería y daños visibles).",
+            "Protección de radiofrecuencias: activar Modo Avión o resguardar en Bolsa Faraday inmediatamente.",
+            "Generar Acta de Obtención por Consignación y reportar fijación fotográfica técnica."
+          ]
+        },
+        "2_peritaje": {
+          "nombre": "Fase de Laboratorio / Peritaje",
+          "acciones": [
+            "Recepción en laboratorio y verificación de precintos.",
+            "Recálculo de hashes originales para validar inalterabilidad.",
+            "Ejecución de extracción y análisis con herramientas forenses (Andriller, ALEAPP).",
+            "Registro riguroso en la Planilla de Registro de Cadena de Custodia (PRCC)."
+          ]
+        },
+        "3_disposicion_judicial": {
+          "nombre": "Fase de Disposición Judicial",
+          "acciones": [
+            "Resguardo en áreas especializadas del Poder Judicial.",
+            "Preparación de Acta de Exhibición de Evidencias en audiencia de juicio."
+          ]
+        },
+        "4_disposicion_final": {
+          "nombre": "Fase de Disposición Final y Cierre",
+          "modalidades": "Devolución (restitución autorizada), Entrega (terceros legales) o Destrucción (inutilización judicial).",
+          "acciones": [
+            "Ejecutar y documentar en Acta de Disposición Final.",
+            "Asentar el cierre final en la Planilla de Cadena de Custodia (PRCC)."
+          ]
+        }
+      },
+      "marco_legal": [
+        "COPP Artículo 187: Establece las formalidades y obligatoriedad del Registro de Cadena de Custodia (PRCC).",
+        "COPP Artículo 188: Regula el resguardo de evidencias físicas y digitales.",
+        "Ley de Mensajes de Datos y Firmas Electrónicas Artículos 4 y 8: Otorga al mensaje de datos la misma eficacia probatoria que a la firma y al documento escrito.",
+        "Ley Especial contra Delitos Informáticos (LEDI-2001): Tipifica los delitos cibernéticos y el acceso indebido a sistemas."
+      ],
+      "estandares_internacionales": [
+        "ISO/IEC 27037:2012: Directrices internacionales para la identificación, recopilación, adquisición y preservación de evidencia digital.",
+        "ISO/IEC 27042:2015: Directrices para el análisis forense e interpretación posterior de datos preservados.",
+        "NIST SP 800-101 r1: Guía metodológica para la preservación forense de dispositivos móviles."
+      ]
+    },
+    "avilla_forensics_integration": {
+      "context": "Avilla Forensics es una herramienta gratuita de forense móvil (Daniel Hubscher Avilla, Policía Civil SP, Feb 2021).",
+      "core_capabilities": {
+        "apk_downgrade": "Degrada aplicaciones (WhatsApp, Telegram, Signal, etc.) en dispositivos Android sin Root para acceder a la base de datos de datos en /data/data.",
+        "whatsapp_parser": {
+          "schemas": {
+            "nuevo_schema": "Tabla 'message' (campos: _id, chat_row_id, timestamp, text_data, message_type, sort_id).",
+            "antiguo_schema": "Tabla 'messages' (campos: _id, key_remote_jid, data, media_url, received_timestamp)."
+          },
+          "db_files": [
+            "msgstore.db (mensajes y chats de WhatsApp decodificados)",
+            "wa.db (contactos de WhatsApp y avatares)",
+            "avatars/ (fotos de contactos)"
+          ]
+        },
+        "opus_audio_transcription": "Transcripción automática de audios de WhatsApp en formato .opus integrados en reportes HTML.",
+        "kml_geopositioning": "Conversión de coordenadas y ubicaciones extraídas a archivos .kml para mapeo en Google Earth/Maps.",
+        "avilla_encryption": "Logs protegidos mediante cifrado AES-256 con firma HMAC bajo extensión '.avilla' para mitigar alteraciones externas."
+      },
+      "system_directories": {
+        "binarios": "C:\\Forensics\\bin\\",
+        "backup_extractor": "C:\\Forensics\\backup_extractor\\",
+        "descarga_free": "C:\\Avilla-Forensics-Free\\down\\",
+        "drive_virtual": "Z:\\bin\\"
+      }
+    }
+  },
+  "routing_rules": [
+    "La interfaz del CMS Compliance corre bajo la raíz '/' (ej: /casos, /control/seguimiento-compliance).",
+    "Los módulos operativos forenses específicos corren bajo '/forense/...' (ej: /forense/consignacion, /forense/prcc).",
+    "La sección de 'Personal' pertenece estrictamente al menú 'Sistema' en la navegación (sidebar) debajo de 'Auditoría'."
+  ],
+  "agent_behavior": [
+    "Actuar como ingeniero y diseñador senior: verificar que las rutas relativas no se rompan tras la estructuración de componentes.",
+    "Nunca almacenar adquisiciones o reportes en el Escritorio (Desktop); siempre usar las rutas locales de almacenamiento estructuradas.",
+    "Asegurar la inmutabilidad física y lógica de los logs de auditoría en IndexedDB.",
+    "Antes de modificar archivos globales de estilo o enrutamiento (index.css, App.tsx), ejecutar 'npm.cmd run build' para validar el tipado de TypeScript y la resolución del bundle."
+  ]
+}

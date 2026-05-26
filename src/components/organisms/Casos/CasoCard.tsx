@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { User, Calendar, ChevronRight, Trash2, Smartphone, Mail, HardDrive } from 'lucide-react';
-import { CasoCMS, EstadoCaso, NivelCumplimiento, TipoProyecto } from '../../store/cmsStore';
+import { CasoCMS, EstadoCaso, NivelCumplimiento, TipoProyecto } from '../../../store/cmsStore';
 
 const TIPO_ICONOS: Record<TipoProyecto, any> = {
   forense_whatsapp: Smartphone,

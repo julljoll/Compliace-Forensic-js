@@ -13,7 +13,7 @@ import {
   TrendingUp, Calendar, User,
   BookOpen, BarChart3, ExternalLink
 } from 'lucide-react';
-import KpiCard from '../components/Shared/KpiCard';
+import KpiCard from '../components/molecules/KpiCard';
 
 // ── Constantes de diseño ────────────────────────────────────────────────────
 

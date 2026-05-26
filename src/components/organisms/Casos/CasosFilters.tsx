@@ -1,5 +1,5 @@
 import { Search, Filter } from 'lucide-react';
-import { EstadoCaso, PrioridadCaso } from '../../store/cmsStore';
+import { EstadoCaso, PrioridadCaso } from '../../../store/cmsStore';
 
 interface CasosFiltersProps {
   busqueda: string;

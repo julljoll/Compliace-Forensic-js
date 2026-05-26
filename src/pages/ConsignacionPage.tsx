@@ -1,4 +1,4 @@
-import ConsignacionForm from '../components/Obtencion/ConsignacionForm';
+import ConsignacionForm from '../components/organisms/Obtencion/ConsignacionForm';
 
 export default function ConsignacionPage() {
   return (

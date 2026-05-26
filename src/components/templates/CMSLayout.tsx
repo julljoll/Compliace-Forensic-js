@@ -4,8 +4,8 @@ import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Menu, X, Mail
 } from 'lucide-react';
-import { useCMSStore } from '../store/cmsStore';
-import { useAuthStore } from '../store/authStore';
+import { useCMSStore } from '../../store/cmsStore';
+import { useAuthStore } from '../../store/authStore';
 
 const menuItems = [
   { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
@@ -14,12 +14,14 @@ const menuItems = [
   { path: '/control/seguimiento-compliance?tab=tareas', label: 'Tablero de Tareas', icon: ClipboardList, group: 'Control' },
   { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Referencia' },
   { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Referencia' },
-  { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Referencia' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
-  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
+  { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Sistema' },
+  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
+  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
+  { path: '/correo-forense', label: 'Correo Corporativo', icon: Mail, group: 'Control' },
 ];
 
-const groups = ['Principal', 'Control', 'Referencia', 'Sistema'];
+const groups = ['Principal', 'Control', 'Referencia', 'Sistema', 'Plantillas Oficiales'];
 
 export default function CMSLayout() {
   const location = useLocation();

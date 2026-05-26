@@ -1,4 +1,4 @@
-import FormularioPrcc from '../components/Prcc/FormularioPrcc';
+import FormularioPrcc from '../components/organisms/Prcc/FormularioPrcc';
 
 export default function PrccPage() {
   return (

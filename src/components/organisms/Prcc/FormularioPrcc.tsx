@@ -1,6 +1,6 @@
 import { useState, memo, useId } from 'react';
 import { Link } from 'react-router-dom';
-import { useForenseStore, type PRCC } from '../../store/forenseStore';
+import { useForenseStore, type PRCC } from '../../../store/forenseStore';
 import { ClipboardList, FileText, User, MapPin, Printer, Info } from 'lucide-react';
 
 const InputField = memo(({ label, value, onChange, placeholder, type = 'text' }: any) => {

@@ -1,4 +1,4 @@
-import InformeTecnico from '../components/Laboratorio/InformeTecnico';
+import InformeTecnico from '../components/organisms/Laboratorio/InformeTecnico';
 
 export default function InformePage() {
   return (

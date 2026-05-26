@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { CasoCMS, EstadoCaso, PrioridadCaso, Normativa } from '../../store/cmsStore';
-import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig } from '../../data/tiposProyecto';
+import { CasoCMS, EstadoCaso, PrioridadCaso, Normativa } from '../../../store/cmsStore';
+import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig } from '../../../data/tiposProyecto';
 
 
 interface NuevoCasoModalProps {

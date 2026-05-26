@@ -6,10 +6,10 @@
 
 @layer base {
   h1, h1 * {
-    color: #FECF06 !important;
+    color: #FECF06;
   }
   h2, h2 * {
-    color: #00FF41 !important;
+    color: #00FF41;
   }
 }
 

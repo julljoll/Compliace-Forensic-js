@@ -1,6 +1,6 @@
 import { useState, useId } from 'react';
 import { Link } from 'react-router-dom';
-import { useForenseStore } from '../../store/forenseStore';
+import { useForenseStore } from '../../../store/forenseStore';
 import { FileCheck, Save, Printer, Award, Gavel, AlertTriangle, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function InformeTecnico() {

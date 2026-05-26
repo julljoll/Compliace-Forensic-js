@@ -1,6 +1,6 @@
 import { Shield, Smartphone, FileText, Microscope, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ReferenciaLegal from '../components/MarcoLegal/ReferenciaLegal';
+import ReferenciaLegal from '../components/organisms/MarcoLegal/ReferenciaLegal';
 
 export default function HomePage() {
   const steps = [

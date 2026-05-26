@@ -17,7 +17,7 @@ import {
   Activity,
   Mail
 } from 'lucide-react';
-import { useForenseStore } from '../store/forenseStore';
+import { useForenseStore } from '../../store/forenseStore';
 
 const menuItems = [
   { path: '/forense', label: 'Inicio', icon: Home },

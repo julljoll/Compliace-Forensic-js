@@ -4,9 +4,9 @@ import { Plus, FolderOpen, CheckCircle2, AlertTriangle, Clock } from 'lucide-rea
 import { getTareasPorDefecto } from '../data/tiposProyecto';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────
-import CasosFilters from '../components/Casos/CasosFilters';
-import CasoCard from '../components/Casos/CasoCard';
-import NuevoCasoModal from '../components/Casos/NuevoCasoModal';
+import CasosFilters from '../components/organisms/Casos/CasosFilters';
+import CasoCard from '../components/organisms/Casos/CasoCard';
+import NuevoCasoModal from '../components/organisms/Casos/NuevoCasoModal';
 
 const ESTADOS: { value: EstadoCaso | 'todos'; label: string }[] = [
   { value: 'todos', label: 'Todos' },

@@ -1,6 +1,6 @@
 import { useState, useId } from 'react';
 import { Link } from 'react-router-dom';
-import { useForenseStore, type Adquisicion } from '../../store/forenseStore';
+import { useForenseStore, type Adquisicion } from '../../../store/forenseStore';
 import { Smartphone, Save, ShieldCheck, Database, FileCode, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export default function AdquisicionTecnica() {

@@ -1,4 +1,4 @@
-import AdquisicionTecnica from '../components/Obtencion/AdquisicionTecnica';
+import AdquisicionTecnica from '../components/organisms/Obtencion/AdquisicionTecnica';
 
 export default function AdquisicionPage() {
   return (

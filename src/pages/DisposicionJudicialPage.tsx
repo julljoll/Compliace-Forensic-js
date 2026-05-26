@@ -1,4 +1,4 @@
-import ResguardoJudicial from '../components/DisposicionJudicial/ResguardoJudicial';
+import ResguardoJudicial from '../components/organisms/DisposicionJudicial/ResguardoJudicial';
 
 export default function DisposicionJudicialPage() {
   return (

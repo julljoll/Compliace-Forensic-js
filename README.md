@@ -19,12 +19,6 @@ Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** q
 
 ---
 
-## Actualizaciones Recientes (v2.0.1 - Mayo 2026)
-
-- **Rediseño del Módulo de Consignación (Fase Inicial):** Se adaptó el módulo de consignación para alinearse estrictamente con el llenado manuscrito obligatorio exigido por el *Manual Único de Cadena de Custodia de Evidencias (MUCC, 2017)*. Se eliminaron los campos de entrada digitales y se incorporó un panel informativo procedimental junto con accesos directos para imprimir los formatos oficiales limpios (**Acta de Obtención por Consignación** y **Planilla PRCC Inicial**).
-
----
-
 ## Stack Tecnológico
 
 | Capa | Tecnología |
@@ -44,10 +38,11 @@ Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** q
 ```
 SHA256.US/
 ├── src/
-│   ├── components/       # Componentes React
-│   │   ├── CMSLayout.tsx # Layout principal CMS
-│   │   ├── Shared/       # KpiCard, ErrorBoundary, Toast
-│   │   └── Casos/        # CasoCard, CasosFilters, NuevoCasoModal
+│   ├── components/       # Componentes React (Atomic Design)
+│   │   ├── atoms/        # Componentes base (Toast, ErrorBoundary)
+│   │   ├── molecules/    # Componentes compuestos (KpiCard)
+│   │   ├── organisms/    # Bloques funcionales (Casos, Compliance, etc.)
+│   │   └── templates/    # Layouts estructurales (CMSLayout, Layout)
 │   ├── pages/            # Páginas del CMS
 │   │   ├── DashboardPage.tsx
 │   │   ├── CasosPage.tsx / CasoDetailPage.tsx
@@ -161,5 +156,5 @@ MIT
 
 ---
 
-*Versión: 2.0.1 — CMS de Cumplimiento Forense*  
-*Última actualización: Mayo 2026 (v2.0.1)*
+*Versión: 2.0.0 — CMS de Cumplimiento Forense*  
+*Última actualización: Mayo 2026*

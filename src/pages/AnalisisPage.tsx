@@ -1,4 +1,4 @@
-import AnalisisForense from '../components/Laboratorio/AnalisisForense';
+import AnalisisForense from '../components/organisms/Laboratorio/AnalisisForense';
 
 export default function AnalisisPage() {
   return (

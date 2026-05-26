@@ -1,6 +1,6 @@
 import { useState, useId } from 'react';
 import { Shield, Gavel, MapPin, Printer, CheckCircle2 } from 'lucide-react';
-import { useForenseStore } from '../../store/forenseStore';
+import { useForenseStore } from '../../../store/forenseStore';
 
 export default function ResguardoJudicial() {
   const { markCmsStepComplete } = useForenseStore();

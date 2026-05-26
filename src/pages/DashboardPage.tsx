@@ -5,7 +5,7 @@ import {
   TrendingUp, Activity, FileSearch, Gavel, Scale
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import KpiCard from '../components/Shared/KpiCard';
+import KpiCard from '../components/molecules/KpiCard';
 
 const ESTADO_LABEL: Record<string, { label: string; color: string }> = {
   iniciado:    { label: 'Iniciado',    color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },

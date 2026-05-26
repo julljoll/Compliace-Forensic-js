@@ -3,7 +3,7 @@ import {
   Archive, RotateCcw, Trash2, User, MapPin, FileText,
   Printer, Gavel, AlertTriangle, CheckCircle2, Lock
 } from 'lucide-react';
-import { useForenseStore } from '../../store/forenseStore';
+import { useForenseStore } from '../../../store/forenseStore';
 
 type DestinoFinal = 'devolucion' | 'destruccion' | 'archivo_fiscal' | 'tribunal';
 

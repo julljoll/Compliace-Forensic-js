@@ -12,7 +12,7 @@ import {
   AlertOctagon, ClipboardList, Plus, Search, Clock, Trash2, X,
   TrendingUp, BarChart3, Pause, FileCheck
 } from 'lucide-react';
-import KpiCard from '../../components/Shared/KpiCard';
+import KpiCard from '../../components/molecules/KpiCard';
 import '../Planillas/Planillas.css';
 
 const iconMap: Record<string, any> = {

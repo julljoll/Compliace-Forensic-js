@@ -4,8 +4,8 @@ import { ShieldCheck, BookOpen, Filter } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────
-import ComplianceKPIs from '../components/Compliance/ComplianceKPIs';
-import NormativaAccordion from '../components/Compliance/NormativaAccordion';
+import ComplianceKPIs from '../components/organisms/Compliance/ComplianceKPIs';
+import NormativaAccordion from '../components/molecules/NormativaAccordion';
 
 /* ── Config visual ─────────────────────────────────────────────── */
 const TIPOS: (TipoNormativa | 'todos')[] = ['todos', 'ISO', 'NIST', 'LEY', 'MANUAL', 'REGLAMENTO'];

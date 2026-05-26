@@ -1,4 +1,4 @@
-import CierreEvidencia from '../components/DisposicionFinal/CierreEvidencia';
+import CierreEvidencia from '../components/organisms/DisposicionFinal/CierreEvidencia';
 
 export default function DisposicionFinalPage() {
   return (
