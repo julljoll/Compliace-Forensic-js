@@ -13,7 +13,16 @@
       "RAG/Skill_electron.yaml",
       "skill_avilla.md",
       "RAG/skill_claude.json"
-    ]
+    ],
+    "latest_project_changes": {
+      "timestamp": "2026-05-26 18:39:38",
+      "last_commit": "4204e85 - Create Manual Serverless page under Sistema section and add routing (2026-05-26)",
+      "modified_files": [
+        "M agent_instructions.json",
+        "M  package.json",
+        "A  scripts/update-agent-instructions.js"
+      ]
+    }
   },
   "project": {
     "name": "SHA256.US",
@@ -299,12 +308,22 @@
         {
           "codigo": "ISO/IEC 27037:2012",
           "titulo": "Directrices para la identificación, recopilación, adquisición y preservación de evidencia digital.",
-          "fases": ["Identificación", "Recopilación", "Adquisición", "Preservación"]
+          "fases": [
+            "Identificación",
+            "Recopilación",
+            "Adquisición",
+            "Preservación"
+          ]
         },
         {
           "codigo": "ISO/IEC 27042:2015",
           "titulo": "Directrices para el análisis forense y la interpretación de evidencia digital.",
-          "fases": ["Preparación", "Examen", "Análisis", "Interpretación"]
+          "fases": [
+            "Preparación",
+            "Examen",
+            "Análisis",
+            "Interpretación"
+          ]
         },
         {
           "codigo": "NIST SP 800-101 r1",
@@ -455,56 +474,262 @@
       }
     },
     "enums": {
-      "NaturalezaHecho": ["HOMICIDIO", "ROBO", "HURTO", "DROGA", "DELITO_INFORMATICO", "VIOLENCIA_GENERO", "ARMAS", "OTROS"],
-      "TipoObtencion": ["TECNICA", "ASEGURAMIENTO", "CONSIGNACION", "DERIVACION"],
-      "FaseCadena": ["INICIAL", "LABORATORIO", "JUDICIAL", "DISPOSICION_FINAL"],
-      "EstadoCadena": ["ACTIVA", "SUSPENDIDA", "CERRADA", "ARCHIVADA"],
-      "TipoEmbalaje": ["BOLSA_PAPEL", "BOLSA_PLASTICA", "SOBRE_EVIDENCIA", "CAJA_CARTON", "BOLSA_FARADAY", "CONTENEDOR_ESTEROIL", "FRASCO_VIDRIO", "OTRO"],
-      "TipoEvento": ["CREACION", "REGISTRO_EVIDENCIA", "TRASLADO", "INGRESO_RESGUARDO", "EGRESO_RESGUARDO", "RECEPCION_LABORATORIO", "DESIGNACION_PERITO", "PERITAJE_COMPLETADO", "EXHIBICION_AUDIENCIA", "DISPOSICION_FINAL", "CIERRE"],
-      "RolUsuario": ["ADMINISTRADOR_SISTEMA", "FUNCIONARIO_ACTUANTE", "PERITO", "ADMINISTRADOR_RESGUARDO", "FISCAL", "JUEZ", "AUDITOR"],
-      "EstadoEvidencia": ["NUEVA", "EN_PROCESO", "EN_RESGUARDO", "EN_LABORATORIO", "EN_AUDIENCIA", "DISPOSICION_PENDIENTE", "DISPUESTA"],
-      "EspecialidadPerito": ["BALISTICA", "BIOLOGIA_FORENSE", "QUIMICA_FORENSE", "DOCUMENTOSCOPIA", "INFORMATICA_FORENSE", "DACTILOSCOPIA", "FOTOGRAFIA_FORENSE", "TOXICOLOGIA"]
+      "NaturalezaHecho": [
+        "HOMICIDIO",
+        "ROBO",
+        "HURTO",
+        "DROGA",
+        "DELITO_INFORMATICO",
+        "VIOLENCIA_GENERO",
+        "ARMAS",
+        "OTROS"
+      ],
+      "TipoObtencion": [
+        "TECNICA",
+        "ASEGURAMIENTO",
+        "CONSIGNACION",
+        "DERIVACION"
+      ],
+      "FaseCadena": [
+        "INICIAL",
+        "LABORATORIO",
+        "JUDICIAL",
+        "DISPOSICION_FINAL"
+      ],
+      "EstadoCadena": [
+        "ACTIVA",
+        "SUSPENDIDA",
+        "CERRADA",
+        "ARCHIVADA"
+      ],
+      "TipoEmbalaje": [
+        "BOLSA_PAPEL",
+        "BOLSA_PLASTICA",
+        "SOBRE_EVIDENCIA",
+        "CAJA_CARTON",
+        "BOLSA_FARADAY",
+        "CONTENEDOR_ESTEROIL",
+        "FRASCO_VIDRIO",
+        "OTRO"
+      ],
+      "TipoEvento": [
+        "CREACION",
+        "REGISTRO_EVIDENCIA",
+        "TRASLADO",
+        "INGRESO_RESGUARDO",
+        "EGRESO_RESGUARDO",
+        "RECEPCION_LABORATORIO",
+        "DESIGNACION_PERITO",
+        "PERITAJE_COMPLETADO",
+        "EXHIBICION_AUDIENCIA",
+        "DISPOSICION_FINAL",
+        "CIERRE"
+      ],
+      "RolUsuario": [
+        "ADMINISTRADOR_SISTEMA",
+        "FUNCIONARIO_ACTUANTE",
+        "PERITO",
+        "ADMINISTRADOR_RESGUARDO",
+        "FISCAL",
+        "JUEZ",
+        "AUDITOR"
+      ],
+      "EstadoEvidencia": [
+        "NUEVA",
+        "EN_PROCESO",
+        "EN_RESGUARDO",
+        "EN_LABORATORIO",
+        "EN_AUDIENCIA",
+        "DISPOSICION_PENDIENTE",
+        "DISPUESTA"
+      ],
+      "EspecialidadPerito": [
+        "BALISTICA",
+        "BIOLOGIA_FORENSE",
+        "QUIMICA_FORENSE",
+        "DOCUMENTOSCOPIA",
+        "INFORMATICA_FORENSE",
+        "DACTILOSCOPIA",
+        "FOTOGRAFIA_FORENSE",
+        "TOXICOLOGIA"
+      ]
     }
   },
   "avilla_forensics": {
     "context": "Avilla Forensics es una suite de forense móvil gratuita y de código abierto desarrollada en C# orientada a la extracción lógica y bypass de bloqueos sin privilegios de Root.",
     "modules": [
-      {"id": 1, "nombre": "Backup ADB", "descripcion": "Generación de backups estándar de Android mediante el protocolo ADB en modo lectura."},
-      {"id": 2, "nombre": "APK Downgrade", "descripcion": "Permite rebajar temporalmente la versión de más de 400 aplicaciones (WhatsApp, Telegram, Instagram, Signal, Tinder, etc.) en dispositivos Android (soportando Android 12, 13 y 14) para acceder a los directorios de base de datos en /data/data/ sin Root."},
-      {"id": 3, "nombre": "Parser de Chats WhatsApp", "descripcion": "Analiza las bases de datos de WhatsApp msgstore.db (mensajes) y wa.db (contactos) con soporte para dos esquemas (Esquema Nuevo: tabla 'message' con chat_row_id; Esquema Antiguo: tabla 'messages' con key_remote_jid), incorporando avatares y fotos de perfil."},
-      {"id": 4, "nombre": "Transcripción de Audios .opus", "descripcion": "Transcripción masiva de mensajes de voz en formato .opus integrados en el reporte HTML final del parser de WhatsApp."},
-      {"id": 5, "nombre": "Colectas ADB Misceláneas", "descripcion": "Extracción automatizada de reportes de texto (Dumpsys, tcp connections, cuentas de usuario, geolocalización de red, IMEI 1/2, número de serie, wifi logs, bluetooth logs y logs del sistema facial)."},
-      {"id": 6, "nombre": "Descifrado de Medios .ENC", "descripcion": "Localización y descifrado de archivos multimedia cifrados mediante scripts de Python integrados."},
-      {"id": 7, "nombre": "Búsqueda de Contactos Eliminados", "descripcion": "Búsqueda física en wa.db de registros de contactos borrados e inconsistencias en la base de datos."},
-      {"id": 8, "nombre": "Descifrado de Bases de Datos WhatsApp", "descripcion": "Descifrado de archivos cifrados Crypt14 y Crypt15 de WhatsApp mediante llaves de descifrado válidas."},
-      {"id": 9, "nombre": "Captura y Dump de Pantalla", "descripcion": "Generación de capturas de pantalla instantáneas y screen dump XML mediante comandos ADB en tiempo real."},
-      {"id": 10, "nombre": "Integración IPED", "descripcion": "Indexación y análisis forense automatizado mediante la integración con la suite IPED y IPEDTools."},
-      {"id": 11, "nombre": "Conversión .AB a .TAR", "descripcion": "Descompresión y conversión de backups de Android (.ab) a archivos tarball legibles (.tar) usando Java AB Extractor."},
-      {"id": 12, "nombre": "Fast Scan y Transferencia en Vivo", "descripcion": "Escaner rápido del sistema de archivos del dispositivo, extrayendo imágenes, audios, videos, documentos, bases de datos SQLite y ejecutables en tiempo real."},
-      {"id": 13, "nombre": "Image Finder & EXIF", "descripcion": "Extracción de metadatos geográficos (latitud/longitud) de imágenes y generación de archivos de coordenadas."},
-      {"id": 14, "nombre": "Plot de Geolocalización KML", "descripcion": "Generación de archivos geo.kml con puntos geográficos e imágenes en miniatura para su visualización en Google Earth Pro."},
-      {"id": 15, "nombre": "Calculadora de Hash", "descripcion": "Módulo de cálculo de firmas MD5, SHA-1, SHA-256, SHA-384 y SHA-512 de archivos y carpetas adquiridas."},
-      {"id": 16, "nombre": "Explorador de Carpetas Android", "descripcion": "Gestor de archivos ADB interactivo con soporte de PULL/PUSH de archivos."},
-      {"id": 17, "nombre": "Device Mirroring (scrcpy)", "descripcion": "Control e interacción visual con el dispositivo móvil mediante la integración del binario scrcpy."},
-      {"id": 18, "nombre": "Scraping de Instagram", "descripcion": "Recopilación automatizada de perfiles y publicaciones usando la herramienta Instaloader de Python."},
-      {"id": 19, "nombre": "Copia General Única", "descripcion": "Copia redundante y selectiva del sistema de archivos en caso de fallos del comando adb backup."},
-      {"id": 20, "nombre": "Herramientas Externas Integradas", "descripcion": "Accesos rápidos a JADX GUI (decompiler), WhatsApp Viewer y jExifToolGUI desde el menú principal."},
-      {"id": 21, "nombre": "Conversión CSV a KML", "descripcion": "Conversión masiva de registros de geoposicionamiento en CSV a ficheros KML."},
-      {"id": 22, "nombre": "Fusión de Bases de Datos", "descripcion": "Herramienta merge_databases para consolidar bases de datos fragmentadas de WhatsApp en un solo fichero."},
-      {"id": 23, "nombre": "Módulo de Extracción iOS", "descripcion": "Extracción y lectura básica de dispositivos de Apple utilizando la biblioteca nativa libimobiledevice."},
-      {"id": 24, "nombre": "Avilla App Full Extraction", "descripcion": "Extracción de datos específicos de cualquier app instalada en la partición DATA sin requerir Root ni APK Downgrade."},
-      {"id": 25, "nombre": "Adquisición Múltiple Simultánea", "descripcion": "Conexión y extracción paralela en múltiples dispositivos móviles conectados por USB."}
+      {
+        "id": 1,
+        "nombre": "Backup ADB",
+        "descripcion": "Generación de backups estándar de Android mediante el protocolo ADB en modo lectura."
+      },
+      {
+        "id": 2,
+        "nombre": "APK Downgrade",
+        "descripcion": "Permite rebajar temporalmente la versión de más de 400 aplicaciones (WhatsApp, Telegram, Instagram, Signal, Tinder, etc.) en dispositivos Android (soportando Android 12, 13 y 14) para acceder a los directorios de base de datos en /data/data/ sin Root."
+      },
+      {
+        "id": 3,
+        "nombre": "Parser de Chats WhatsApp",
+        "descripcion": "Analiza las bases de datos de WhatsApp msgstore.db (mensajes) y wa.db (contactos) con soporte para dos esquemas (Esquema Nuevo: tabla 'message' con chat_row_id; Esquema Antiguo: tabla 'messages' con key_remote_jid), incorporando avatares y fotos de perfil."
+      },
+      {
+        "id": 4,
+        "nombre": "Transcripción de Audios .opus",
+        "descripcion": "Transcripción masiva de mensajes de voz en formato .opus integrados en el reporte HTML final del parser de WhatsApp."
+      },
+      {
+        "id": 5,
+        "nombre": "Colectas ADB Misceláneas",
+        "descripcion": "Extracción automatizada de reportes de texto (Dumpsys, tcp connections, cuentas de usuario, geolocalización de red, IMEI 1/2, número de serie, wifi logs, bluetooth logs y logs del sistema facial)."
+      },
+      {
+        "id": 6,
+        "nombre": "Descifrado de Medios .ENC",
+        "descripcion": "Localización y descifrado de archivos multimedia cifrados mediante scripts de Python integrados."
+      },
+      {
+        "id": 7,
+        "nombre": "Búsqueda de Contactos Eliminados",
+        "descripcion": "Búsqueda física en wa.db de registros de contactos borrados e inconsistencias en la base de datos."
+      },
+      {
+        "id": 8,
+        "nombre": "Descifrado de Bases de Datos WhatsApp",
+        "descripcion": "Descifrado de archivos cifrados Crypt14 y Crypt15 de WhatsApp mediante llaves de descifrado válidas."
+      },
+      {
+        "id": 9,
+        "nombre": "Captura y Dump de Pantalla",
+        "descripcion": "Generación de capturas de pantalla instantáneas y screen dump XML mediante comandos ADB en tiempo real."
+      },
+      {
+        "id": 10,
+        "nombre": "Integración IPED",
+        "descripcion": "Indexación y análisis forense automatizado mediante la integración con la suite IPED y IPEDTools."
+      },
+      {
+        "id": 11,
+        "nombre": "Conversión .AB a .TAR",
+        "descripcion": "Descompresión y conversión de backups de Android (.ab) a archivos tarball legibles (.tar) usando Java AB Extractor."
+      },
+      {
+        "id": 12,
+        "nombre": "Fast Scan y Transferencia en Vivo",
+        "descripcion": "Escaner rápido del sistema de archivos del dispositivo, extrayendo imágenes, audios, videos, documentos, bases de datos SQLite y ejecutables en tiempo real."
+      },
+      {
+        "id": 13,
+        "nombre": "Image Finder & EXIF",
+        "descripcion": "Extracción de metadatos geográficos (latitud/longitud) de imágenes y generación de archivos de coordenadas."
+      },
+      {
+        "id": 14,
+        "nombre": "Plot de Geolocalización KML",
+        "descripcion": "Generación de archivos geo.kml con puntos geográficos e imágenes en miniatura para su visualización en Google Earth Pro."
+      },
+      {
+        "id": 15,
+        "nombre": "Calculadora de Hash",
+        "descripcion": "Módulo de cálculo de firmas MD5, SHA-1, SHA-256, SHA-384 y SHA-512 de archivos y carpetas adquiridas."
+      },
+      {
+        "id": 16,
+        "nombre": "Explorador de Carpetas Android",
+        "descripcion": "Gestor de archivos ADB interactivo con soporte de PULL/PUSH de archivos."
+      },
+      {
+        "id": 17,
+        "nombre": "Device Mirroring (scrcpy)",
+        "descripcion": "Control e interacción visual con el dispositivo móvil mediante la integración del binario scrcpy."
+      },
+      {
+        "id": 18,
+        "nombre": "Scraping de Instagram",
+        "descripcion": "Recopilación automatizada de perfiles y publicaciones usando la herramienta Instaloader de Python."
+      },
+      {
+        "id": 19,
+        "nombre": "Copia General Única",
+        "descripcion": "Copia redundante y selectiva del sistema de archivos en caso de fallos del comando adb backup."
+      },
+      {
+        "id": 20,
+        "nombre": "Herramientas Externas Integradas",
+        "descripcion": "Accesos rápidos a JADX GUI (decompiler), WhatsApp Viewer y jExifToolGUI desde el menú principal."
+      },
+      {
+        "id": 21,
+        "nombre": "Conversión CSV a KML",
+        "descripcion": "Conversión masiva de registros de geoposicionamiento en CSV a ficheros KML."
+      },
+      {
+        "id": 22,
+        "nombre": "Fusión de Bases de Datos",
+        "descripcion": "Herramienta merge_databases para consolidar bases de datos fragmentadas de WhatsApp en un solo fichero."
+      },
+      {
+        "id": 23,
+        "nombre": "Módulo de Extracción iOS",
+        "descripcion": "Extracción y lectura básica de dispositivos de Apple utilizando la biblioteca nativa libimobiledevice."
+      },
+      {
+        "id": 24,
+        "nombre": "Avilla App Full Extraction",
+        "descripcion": "Extracción de datos específicos de cualquier app instalada en la partición DATA sin requerir Root ni APK Downgrade."
+      },
+      {
+        "id": 25,
+        "nombre": "Adquisición Múltiple Simultánea",
+        "descripcion": "Conexión y extracción paralela en múltiples dispositivos móviles conectados por USB."
+      }
     ],
     "tools_integration": [
-      {"nombre": "ADB", "ruta": "C:\\Forensics\\bin\\adb.exe", "licencia": "Apache 2.0"},
-      {"nombre": "JADX GUI", "ruta": "C:\\Forensics\\bin\\jadx-1.2.0\\jadx-gui.exe", "licencia": "Apache 2.0"},
-      {"nombre": "Android Backup Extractor", "ruta": "C:\\Forensics\\bin\\abe.jar", "licencia": "Apache 2.0"},
-      {"nombre": "scrcpy", "ruta": "C:\\Forensics\\bin\\scrcpy\\scrcpy.exe", "licencia": "Apache 2.0"},
-      {"nombre": "libimobiledevice", "ruta": "Z:\\bin\\libimobiledevice\\", "licencia": "GNU GPL"},
-      {"nombre": "IPED", "ruta": "Z:\\bin\\iped\\", "licencia": "GNU GPL"},
-      {"nombre": "WhatsApp-Crypt-Decrypter", "ruta": "C:\\Forensics\\bin\\wa_decrypt.py", "licencia": "GNU GPL"},
-      {"nombre": "ALEAPP", "ruta": "C:\\Forensics\\bin\\aleapp\\", "licencia": "MIT"},
-      {"nombre": "WhatsApp Viewer", "ruta": "C:\\Forensics\\bin\\WhatsAppViewer.exe", "licencia": "MIT"}
+      {
+        "nombre": "ADB",
+        "ruta": "C:\\Forensics\\bin\\adb.exe",
+        "licencia": "Apache 2.0"
+      },
+      {
+        "nombre": "JADX GUI",
+        "ruta": "C:\\Forensics\\bin\\jadx-1.2.0\\jadx-gui.exe",
+        "licencia": "Apache 2.0"
+      },
+      {
+        "nombre": "Android Backup Extractor",
+        "ruta": "C:\\Forensics\\bin\\abe.jar",
+        "licencia": "Apache 2.0"
+      },
+      {
+        "nombre": "scrcpy",
+        "ruta": "C:\\Forensics\\bin\\scrcpy\\scrcpy.exe",
+        "licencia": "Apache 2.0"
+      },
+      {
+        "nombre": "libimobiledevice",
+        "ruta": "Z:\\bin\\libimobiledevice\\",
+        "licencia": "GNU GPL"
+      },
+      {
+        "nombre": "IPED",
+        "ruta": "Z:\\bin\\iped\\",
+        "licencia": "GNU GPL"
+      },
+      {
+        "nombre": "WhatsApp-Crypt-Decrypter",
+        "ruta": "C:\\Forensics\\bin\\wa_decrypt.py",
+        "licencia": "GNU GPL"
+      },
+      {
+        "nombre": "ALEAPP",
+        "ruta": "C:\\Forensics\\bin\\aleapp\\",
+        "licencia": "MIT"
+      },
+      {
+        "nombre": "WhatsApp Viewer",
+        "ruta": "C:\\Forensics\\bin\\WhatsAppViewer.exe",
+        "licencia": "MIT"
+      }
     ],
     "system_directories": {
       "binarios": "C:\\Forensics\\bin\\",
@@ -542,7 +767,9 @@
         "output": "dist-electron"
       },
       "linux": {
-        "target": ["deb"],
+        "target": [
+          "deb"
+        ],
         "category": "Utility",
         "maintainer": "Laboratorio Forense <forense@sha256.us>"
       },
