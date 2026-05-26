@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale } from '../components/atoms/AppleIcon';
+import { ShieldCheck, Eye, EyeOff, AlertCircle } from '../components/atoms/AppleIcon';
 
 export default function LoginPage() {
   const { login, isLoading, error, clearError } = useAuthStore();
@@ -24,7 +24,7 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-[380px] flex flex-col items-center apple-fade-in">
         <div className="w-20 h-20 rounded-full bg-white border border-[rgba(0,0,0,0.06)] flex items-center justify-center mb-6 shadow-[0_0_1px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)]">
-          <Scale size={36} className="text-[#1D1D1F] opacity-70" strokeWidth={1.5} />
+          <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US" className="w-11 h-11" />
         </div>
 
         <div className="text-center mb-8">
