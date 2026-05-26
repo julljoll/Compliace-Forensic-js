@@ -322,25 +322,25 @@ export default function NuevoCasoModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Identificador del Caso *</label>
-              <input required className="fluent-input" placeholder="ej. SHA-2025-001" value={form.numeroCaso}
+              <input required className="apple-input" placeholder="ej. SHA-2025-001" value={form.numeroCaso}
                 onChange={e => setForm(f => ({ ...f, numeroCaso: e.target.value }))} />
             </div>
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">PRCC / Registro Judicial</label>
-              <input className="fluent-input" placeholder="ID de Referencia..." value={form.numeroPRCC || ''}
+              <input className="apple-input" placeholder="ID de Referencia..." value={form.numeroPRCC || ''}
                 onChange={e => setForm(f => ({ ...f, numeroPRCC: e.target.value }))} />
             </div>
           </div>
 
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Título Técnico *</label>
-            <input required className="fluent-input" placeholder="Breve alcance de la investigación" value={form.titulo}
+            <input required className="apple-input" placeholder="Breve alcance de la investigación" value={form.titulo}
               onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))} />
           </div>
 
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Contexto Operacional</label>
-            <textarea className="fluent-input min-h-[60px] resize-none" placeholder="Antecedentes y alcance forense..." value={form.descripcion}
+            <textarea className="apple-input min-h-[60px] resize-none" placeholder="Antecedentes y alcance forense..." value={form.descripcion}
               onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))} />
           </div>
 
@@ -352,12 +352,12 @@ export default function NuevoCasoModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-[#86868B]">Nombre Completo *</label>
-                <input required className="fluent-input" placeholder="ej. Juan Pérez" value={form.solicitante_nombre || ''}
+                <input required className="apple-input" placeholder="ej. Juan Pérez" value={form.solicitante_nombre || ''}
                   onChange={e => setForm(f => ({ ...f, solicitante_nombre: e.target.value }))} />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-[#86868B]">Cédula de Identidad *</label>
-                <input required className="fluent-input" placeholder="ej. V-12345678" value={form.solicitante_cedula || ''}
+                <input required className="apple-input" placeholder="ej. V-12345678" value={form.solicitante_cedula || ''}
                   onChange={e => setForm(f => ({ ...f, solicitante_cedula: e.target.value }))} />
               </div>
             </div>
@@ -372,17 +372,17 @@ export default function NuevoCasoModal({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Marca</label>
-                  <input className="fluent-input" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
+                  <input className="apple-input" placeholder="ej. Samsung" value={form.dispositivo_marca || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_marca: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Modelo</label>
-                  <input className="fluent-input" placeholder="ej. Galaxy S23" value={form.dispositivo_modelo || ''}
+                  <input className="apple-input" placeholder="ej. Galaxy S23" value={form.dispositivo_modelo || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_modelo: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Estado Físico</label>
-                  <select className="fluent-input" value={form.dispositivo_estado_fisico || ''}
+                  <select className="apple-input" value={form.dispositivo_estado_fisico || ''}
                     onChange={e => setForm(f => ({ ...f, dispositivo_estado_fisico: e.target.value }))}>
                     <option value="">Seleccione...</option>
                     <option value="operativo">Operativo</option>
@@ -402,12 +402,12 @@ export default function NuevoCasoModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Correo a Investigar *</label>
-                  <input required type="email" className="fluent-input" placeholder="ej. usuario@dominio.com" value={form.correo_investigar || ''}
+                  <input required type="email" className="apple-input" placeholder="ej. usuario@dominio.com" value={form.correo_investigar || ''}
                     onChange={e => setForm(f => ({ ...f, correo_investigar: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Proveedor / Servidor</label>
-                  <input required className="fluent-input" placeholder="ej. Gmail, Outlook, Corporativo" value={form.correo_proveedor || ''}
+                  <input required className="apple-input" placeholder="ej. Gmail, Outlook, Corporativo" value={form.correo_proveedor || ''}
                     onChange={e => setForm(f => ({ ...f, correo_proveedor: e.target.value }))} />
                 </div>
               </div>
@@ -420,22 +420,22 @@ export default function NuevoCasoModal({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Marca</label>
-                  <input className="fluent-input" placeholder="ej. Western Digital" value={form.discoduro_marca || ''}
+                  <input className="apple-input" placeholder="ej. Western Digital" value={form.discoduro_marca || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_marca: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Modelo</label>
-                  <input className="fluent-input" placeholder="ej. Blue WD10EZEX" value={form.discoduro_modelo || ''}
+                  <input className="apple-input" placeholder="ej. Blue WD10EZEX" value={form.discoduro_modelo || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_modelo: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Número de Serie *</label>
-                  <input required className="fluent-input font-mono" placeholder="ej. WCC6Y1234567" value={form.discoduro_serial || ''}
+                  <input required className="apple-input font-mono" placeholder="ej. WCC6Y1234567" value={form.discoduro_serial || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_serial: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-[#86868B]">Capacidad *</label>
-                  <input required className="fluent-input" placeholder="ej. 1 TB, 500 GB" value={form.discoduro_capacidad || ''}
+                  <input required className="apple-input" placeholder="ej. 1 TB, 500 GB" value={form.discoduro_capacidad || ''}
                     onChange={e => setForm(f => ({ ...f, discoduro_capacidad: e.target.value }))} />
                 </div>
               </div>
@@ -445,13 +445,13 @@ export default function NuevoCasoModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Estado del Flujo de Trabajo</label>
-              <select className="fluent-input" value={form.estado} onChange={e => setForm(f => ({ ...f, estado: e.target.value as EstadoCaso }))}>
+              <select className="apple-input" value={form.estado} onChange={e => setForm(f => ({ ...f, estado: e.target.value as EstadoCaso }))}>
                 {estados.filter(e => e.value !== 'todos').map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
               </select>
             </div>
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Prioridad de Investigación</label>
-              <select className="fluent-input" value={form.prioridad} onChange={e => setForm(f => ({ ...f, prioridad: e.target.value as PrioridadCaso }))}>
+              <select className="apple-input" value={form.prioridad} onChange={e => setForm(f => ({ ...f, prioridad: e.target.value as PrioridadCaso }))}>
                 {prioridades.filter(p => p.value !== 'todos').map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
               </select>
             </div>
@@ -460,12 +460,12 @@ export default function NuevoCasoModal({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Perito Líder *</label>
-              <input required className="fluent-input" placeholder="Perito asignado" value={form.peritoLider}
+              <input required className="apple-input" placeholder="Perito asignado" value={form.peritoLider}
                 onChange={e => setForm(f => ({ ...f, peritoLider: e.target.value }))} />
             </div>
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Fiscal Solicitante</label>
-              <input className="fluent-input" placeholder="Nombre completo..." value={form.fiscal || ''}
+              <input className="apple-input" placeholder="Nombre completo..." value={form.fiscal || ''}
                 onChange={e => setForm(f => ({ ...f, fiscal: e.target.value }))} />
             </div>
           </div>
@@ -490,7 +490,7 @@ export default function NuevoCasoModal({
 
           <div className="space-y-2">
             <label className="text-[11px] font-bold text-[#86868B] uppercase tracking-wider">Notas Preliminares</label>
-            <textarea className="fluent-input min-h-[50px] resize-none" placeholder="Observaciones..." value={form.notas}
+            <textarea className="apple-input min-h-[50px] resize-none" placeholder="Observaciones..." value={form.notas}
               onChange={e => setForm(f => ({ ...f, notas: e.target.value }))} />
           </div>
         </form>

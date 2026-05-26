@@ -78,8 +78,8 @@ const FASES: Fase[] = [
     titulo: 'Pre-Recepción y Consignación',
     subtitulo: 'Documentación legal antes de tocar el dispositivo',
     icono: FileText,
-    color: 'text-cyan-400',
-    glowColor: 'rgba(34,211,238,0.15)',
+    color: 'text-[#007AFF]',
+    glowColor: 'rgba(0,122,255,0.15)',
     pasos: [
       {
         id: 'f0p1',
@@ -150,8 +150,8 @@ const FASES: Fase[] = [
     titulo: 'Preparación del Entorno Forense',
     subtitulo: 'Workstation, herramientas y configuración del dispositivo',
     icono: Terminal,
-    color: 'text-green-400',
-    glowColor: 'rgba(74,222,128,0.15)',
+    color: 'text-[#34C759]',
+    glowColor: 'rgba(52,199,89,0.15)',
     pasos: [
       {
         id: 'f1p1',
@@ -236,8 +236,8 @@ const FASES: Fase[] = [
     titulo: 'Extracción con Avilla Forensics',
         subtitulo: 'APK Downgrade multi-app, WhatsApp DB, multimedia y almacenamiento interno',
     icono: Database,
-    color: 'text-emerald-400',
-    glowColor: 'rgba(52,211,153,0.15)',
+    color: 'text-[#30B0C7]',
+    glowColor: 'rgba(48,176,199,0.15)',
     pasos: [
       {
         id: 'f2p1',
@@ -382,8 +382,8 @@ const FASES: Fase[] = [
     titulo: 'Imagen Forense e Integridad SHA-256',
     subtitulo: 'Sellado criptográfico conforme a ISO/IEC 27037:2012',
     icono: Hash,
-    color: 'text-yellow-400',
-    glowColor: 'rgba(250,204,21,0.15)',
+    color: 'text-[#FF9500]',
+    glowColor: 'rgba(255,149,0,0.15)',
     pasos: [
       {
         id: 'f3p1',
@@ -523,8 +523,8 @@ const FASES: Fase[] = [
     titulo: 'Análisis y Validación de Evidencias',
     subtitulo: 'Mensajes, imágenes, audios .opus y capturas de pantalla',
     icono: Eye,
-    color: 'text-blue-400',
-    glowColor: 'rgba(96,165,250,0.15)',
+    color: 'text-[#007AFF]',
+    glowColor: 'rgba(0,122,255,0.15)',
     pasos: [
       {
         id: 'f4p1',
@@ -663,8 +663,8 @@ const FASES: Fase[] = [
     titulo: 'Documentación Pericial y Cadena de Custodia',
     subtitulo: 'Dictamen pericial, tabla de integridad y sellado final',
     icono: FileText,
-    color: 'text-orange-400',
-    glowColor: 'rgba(251,146,60,0.15)',
+    color: 'text-[#FF9500]',
+    glowColor: 'rgba(255,149,0,0.15)',
     pasos: [
       {
         id: 'f5p1',
@@ -788,8 +788,8 @@ const FASES: Fase[] = [
     titulo: 'Presentación en Tribunales Civiles y Mercantiles',
     subtitulo: 'Consignación judicial, reproducción en sala y demostración de integridad',
     icono: Gavel,
-    color: 'text-red-400',
-    glowColor: 'rgba(248,113,113,0.15)',
+    color: 'text-[#FF3B30]',
+    glowColor: 'rgba(255,59,48,0.15)',
     pasos: [
       {
         id: 'f6p1',
@@ -882,14 +882,14 @@ const FASES: Fase[] = [
 /** Badge de normativa con color */
 function BadgeNormativa({ tag }: { tag: NormativaTag }) {
   const colors: Record<NormativaTag['color'], string> = {
-    cyan:   'bg-cyan-500/10 border-cyan-500/25 text-cyan-400',
-    green:  'bg-green-500/10 border-green-500/25 text-green-400',
-    yellow: 'bg-yellow-500/10 border-yellow-500/25 text-yellow-400',
-    red:    'bg-red-500/10 border-red-500/25 text-red-400',
-    purple: 'bg-purple-500/10 border-purple-500/25 text-purple-400',
+    cyan:   'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]',
+    green:  'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]',
+    yellow: 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]',
+    red:    'bg-[#FF3B30]/10 border-[#FF3B30]/25 text-[#FF3B30]',
+    purple: 'bg-[#AF52DE]/10 border-[#AF52DE]/25 text-[#AF52DE]',
   };
   return (
-    <span className={`inline-flex items-center text-[8px] font-black uppercase tracking-[0.15em] px-2 py-0.5 rounded border ${colors[tag.color]}`}>
+    <span className={`inline-flex items-center text-[8px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded border ${colors[tag.color]}`}>
       {tag.label}
     </span>
   );
@@ -899,24 +899,24 @@ function BadgeNormativa({ tag }: { tag: NormativaTag }) {
 function AlertaForense({ adv }: { adv: Advertencia }) {
   const cfg = {
     critical: {
-      wrapper: 'bg-red-500/[0.06] border-red-500/25',
-      icon:    'text-red-400',
-      titulo:  'text-red-400',
-      cuerpo:  'text-red-300/70',
+      wrapper: 'bg-[#FF3B30]/[0.06] border-[#FF3B30]/25',
+      icon:    'text-[#FF3B30]',
+      titulo:  'text-[#FF3B30]',
+      cuerpo:  'text-[#1D1D1F]',
       Icon:    AlertTriangle,
     },
     warning: {
-      wrapper: 'bg-yellow-500/[0.06] border-yellow-500/25',
-      icon:    'text-yellow-400',
-      titulo:  'text-yellow-400',
-      cuerpo:  'text-yellow-300/70',
+      wrapper: 'bg-[#FF9500]/[0.06] border-[#FF9500]/25',
+      icon:    'text-[#FF9500]',
+      titulo:  'text-[#FF9500]',
+      cuerpo:  'text-[#1D1D1F]',
       Icon:    AlertTriangle,
     },
     info: {
-      wrapper: 'bg-blue-500/[0.06] border-blue-500/25',
-      icon:    'text-blue-400',
-      titulo:  'text-blue-400',
-      cuerpo:  'text-blue-300/70',
+      wrapper: 'bg-[#007AFF]/[0.06] border-[#007AFF]/25',
+      icon:    'text-[#007AFF]',
+      titulo:  'text-[#007AFF]',
+      cuerpo:  'text-[#1D1D1F]',
       Icon:    Info,
     },
   }[adv.nivel];
@@ -925,7 +925,7 @@ function AlertaForense({ adv }: { adv: Advertencia }) {
     <div className={`flex items-start gap-3 p-4 rounded-lg border ${cfg.wrapper}`}>
       <cfg.Icon size={14} className={`${cfg.icon} shrink-0 mt-0.5`} />
       <div>
-        <p className={`text-[10px] font-black uppercase tracking-wider mb-1 ${cfg.titulo}`}>
+        <p className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${cfg.titulo}`}>
           {adv.nivel === 'critical' ? '⚠️ CRÍTICO' : adv.nivel === 'warning' ? '⚠️ Advertencia' : 'ℹ️ Nota'}: {adv.titulo}
         </p>
         <p className={`text-[10px] leading-relaxed ${cfg.cuerpo}`}>{adv.cuerpo}</p>
@@ -996,10 +996,10 @@ function TarjetaPaso({
     <div
       className={`rounded-xl border transition-all duration-300 overflow-hidden ${
         completado
-          ? 'border-green-500/20 bg-green-500/[0.03]'
+          ? 'border-[#34C759]/20 bg-[#34C759]/[0.03]'
           : expandido
-          ? 'border-white/10 bg-white/[0.02]'
-          : 'border-white/[0.05] bg-white/[0.01] hover:bg-white/[0.02]'
+          ? 'border-black/10 bg-white shadow-sm'
+          : 'border-black/[0.06] bg-white hover:border-black/10'
       }`}
     >
       {/* Cabecera del paso */}
@@ -1008,18 +1008,18 @@ function TarjetaPaso({
         onClick={() => setExpandido(v => !v)}
       >
         {/* Número */}
-        <span className="text-[10px] font-black text-white/20 font-mono shrink-0 w-8 tabular-nums">
+        <span className="text-[10px] font-bold text-[#86868B] font-mono shrink-0 w-8 tabular-nums">
           {paso.numero}
         </span>
         {/* Ícono */}
         <div className={`p-2 rounded-lg shrink-0 transition-all ${
-          completado ? 'bg-green-500/15' : 'bg-white/[0.04] group-hover:bg-white/[0.07]'
+          completado ? 'bg-[#34C759]/10' : 'bg-black/[0.04] group-hover:bg-black/[0.06]'
         }`}>
-          <Icon size={14} className={completado ? 'text-green-400' : 'text-white/30'} />
+          <Icon size={14} className={completado ? 'text-[#34C759]' : 'text-black/40'} />
         </div>
         {/* Título */}
-        <span className={`flex-1 text-[11px] font-black uppercase tracking-wide ${
-          completado ? 'text-green-400/80' : 'text-white/60 group-hover:text-white/80'
+        <span className={`flex-1 text-[11px] font-bold uppercase tracking-wide ${
+          completado ? 'text-[#34C759]' : 'text-[#1D1D1F]/70 group-hover:text-[#1D1D1F]/90'
         }`}>
           {paso.titulo}
         </span>
@@ -1033,15 +1033,15 @@ function TarjetaPaso({
         )}
         {/* Chevron */}
         {expandido
-          ? <ChevronUp size={14} className="text-white/25 shrink-0" />
-          : <ChevronDown size={14} className="text-white/20 shrink-0" />}
+          ? <ChevronUp size={14} className="text-black/35 shrink-0" />
+          : <ChevronDown size={14} className="text-black/20 shrink-0" />}
       </button>
 
       {/* Contenido expandido */}
       {expandido && (
         <div className="px-5 pb-5 space-y-5 animate-fade-in">
           {/* Descripción */}
-          <p className="text-[11px] text-white/50 leading-relaxed border-l-2 border-white/10 pl-4">
+          <p className="text-[11px] text-[#1D1D1F]/60 leading-relaxed border-l-2 border-black/15 pl-4">
             {paso.descripcion}
           </p>
 
@@ -1049,8 +1049,8 @@ function TarjetaPaso({
           {paso.items && (
             <ul className="space-y-2">
               {paso.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-[11px] text-white/45 leading-relaxed">
-                  <span className="w-5 h-5 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0 mt-0.5 text-[8px] font-black text-white/30 tabular-nums">
+                <li key={i} className="flex items-start gap-3 text-[11px] text-[#1D1D1F]/70 leading-relaxed">
+                  <span className="w-5 h-5 rounded-full bg-black/[0.04] border border-black/[0.06] flex items-center justify-center shrink-0 mt-0.5 text-[8px] font-bold text-[#86868B] tabular-nums">
                     {i + 1}
                   </span>
                   {item}
@@ -1067,7 +1067,7 @@ function TarjetaPaso({
           {/* Normativas */}
           {paso.normativas && (
             <div className="flex items-center gap-2 flex-wrap pt-1">
-              <span className="text-[9px] font-black text-white/15 uppercase tracking-widest mr-1">
+              <span className="text-[9px] font-bold text-black/30 uppercase tracking-widest mr-1">
                 Base legal:
               </span>
               {paso.normativas.map(n => (
@@ -1082,14 +1082,14 @@ function TarjetaPaso({
           ))}
 
           {/* Botón de marcar como completado */}
-          <div className="pt-2 border-t border-white/[0.05] flex justify-end">
+          <div className="pt-2 border-t border-black/5 flex justify-end">
             <button
               id={`paso-completado-${paso.id}`}
               onClick={e => { e.stopPropagation(); onToggle(paso.id); }}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 ${
                 completado
-                  ? 'bg-green-500/15 border border-green-500/25 text-green-400 hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-400'
-                  : 'bg-white/[0.04] border border-white/[0.08] text-white/35 hover:bg-green-500/10 hover:border-green-500/20 hover:text-green-400'
+                  ? 'bg-[#34C759]/10 border border-[#34C759]/20 text-[#34C759] hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-500'
+                  : 'bg-black/[0.04] border border-black/[0.08] text-black/60 hover:bg-[#34C759]/10 hover:border-[#34C759]/20 hover:text-[#34C759]'
               }`}
             >
               {completado
@@ -1128,47 +1128,46 @@ function StepperFase({
       <div
         className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 shrink-0 ${
           completada
-            ? 'border-green-500 bg-green-500/15 shadow-[0_0_12px_rgba(34,197,94,0.25)]'
+            ? 'border-[#34C759] bg-[#34C759]/10 shadow-sm'
             : activa
-            ? `border-current ${fase.color} bg-white/[0.05] shadow-[0_0_12px_var(--glow)]`
-            : 'border-white/10 bg-white/[0.03]'
+            ? `border-current ${fase.color} bg-white shadow-sm`
+            : 'border-black/10 bg-black/[0.03]'
         }`}
-        style={activa ? { '--glow': fase.glowColor } as React.CSSProperties : undefined}
       >
         {completada
-          ? <CheckCircle2 size={16} className="text-green-400" />
-          : <Icon size={16} className={activa ? fase.color : 'text-white/20'} />}
+          ? <CheckCircle2 size={16} className="text-[#34C759]" />
+          : <Icon size={16} className={activa ? fase.color : 'text-[#86868B]'} />}
       </div>
       {/* Número + Título */}
       <div className="text-center px-1">
-        <p className={`text-[8px] font-black uppercase tracking-[0.15em] ${
-          completada ? 'text-green-400' : activa ? fase.color : 'text-white/20'
+        <p className={`text-[8px] font-bold uppercase tracking-[0.15em] ${
+          completada ? 'text-[#34C759]' : activa ? fase.color : 'text-[#86868B]'
         }`}>
           F{fase.numero}
         </p>
         <p className={`text-[9px] font-bold leading-tight hidden sm:block ${
-          completada ? 'text-white/60' : activa ? 'text-white/70' : 'text-white/20'
+          completada ? 'text-[#1D1D1F]/60' : activa ? 'text-[#1D1D1F]/80' : 'text-[#86868B]'
         }`}>
           {fase.titulo.split(' ').slice(0, 2).join(' ')}
         </p>
       </div>
       {/* Mini barra de progreso */}
-      <div className="w-full h-0.5 bg-white/[0.05] rounded-full overflow-hidden">
+      <div className="w-full h-0.5 bg-black/[0.05] rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${
-            completada ? 'bg-green-500' : activa ? 'bg-current' : 'bg-transparent'
+            completada ? 'bg-[#34C759]' : activa ? 'bg-current' : 'bg-transparent'
           }`}
           style={{
             width: `${progreso}%`,
             color: activa ? fase.color.replace('text-', '') : undefined,
             background: completada ? undefined : activa
-              ? fase.color.includes('cyan') ? '#22d3ee'
-              : fase.color.includes('green') ? '#4ade80'
-              : fase.color.includes('emerald') ? '#34d399'
-              : fase.color.includes('yellow') ? '#facc15'
-              : fase.color.includes('blue') ? '#60a5fa'
-              : fase.color.includes('orange') ? '#fb923c'
-              : '#f87171'
+              ? fase.color.includes('[#0071E3]') || fase.color.includes('cyan') ? '#0071E3'
+              : fase.color.includes('[#34C759]') || fase.color.includes('green') ? '#34C759'
+              : fase.color.includes('[#30B0C7]') || fase.color.includes('emerald') ? '#30B0C7'
+              : fase.color.includes('[#FF9500]') || fase.color.includes('yellow') ? '#FF9500'
+              : fase.color.includes('[#007AFF]') || fase.color.includes('blue') ? '#007AFF'
+              : fase.color.includes('[#FF9500]') || fase.color.includes('orange') ? '#FF9500'
+              : '#FF3B30'
               : undefined,
           }}
         />
@@ -1228,27 +1227,27 @@ export default function ManualAvillaForensics() {
 
   // ─── RENDER ──────────────────────────────────────────────────────────────
   return (
-    <div id="manual-avilla-page" className="space-y-6 pb-20 animate-fade-in">
+    <div id="manual-avilla-page" className="space-y-6 pb-20 animate-fade-in text-[#1D1D1F]">
 
       {/* ── Encabezado principal ─────────────────────────────────── */}
-      <div className="fluent-mica rounded-xl border border-white/5 overflow-hidden shadow-2xl relative">
-        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/[0.03] to-transparent pointer-events-none" />
+      <div className="apple-card overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#007AFF]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#007AFF]/[0.02] to-transparent pointer-events-none" />
 
         <div className="p-6 sm:p-8 relative">
           <div className="flex flex-col sm:flex-row items-start justify-between gap-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-cyan-500/10 rounded-[6px] border border-cyan-500/20">
-                <BookOpen size={26} className="text-cyan-400" strokeWidth={2} />
+              <div className="p-3 bg-[#007AFF]/10 rounded-[6px] border border-[#007AFF]/20">
+                <BookOpen size={26} className="text-[#007AFF]" strokeWidth={2} />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+                <h1 className="text-xl sm:text-2xl font-bold text-[#1D1D1F] uppercase tracking-tight">
                   Manual Operativo — Avilla Forensics
                 </h1>
-                <p className="text-xs text-white/40 font-bold uppercase tracking-[0.15em] mt-1">
+                <p className="text-xs text-[#86868B] font-bold uppercase tracking-[0.15em] mt-1">
                   Software libre para adquisición forense Android · Downgrade multi-app · WhatsApp Evidence
                 </p>
-                <p className="text-[9px] text-white/25 leading-relaxed mt-2 max-w-2xl">
+                <p className="text-[11px] text-[#6E6E73] leading-relaxed mt-2 max-w-2xl">
                   Avilla Forensics es una herramienta de software libre (código abierto) para la adquisición forense de dispositivos Android, diseñada como alternativa gratuita a soluciones comerciales como Cellebrite UFED, Oxygen Forensics o MSAB XRY. Permite técnicas de downgrade de APK sobre múltiples aplicaciones (WhatsApp, Telegram, Signal, y otras) para extraer datos de zonas privadas sin necesidad de root, usando ADB Backup desde Windows, Linux o macOS.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
@@ -1258,7 +1257,7 @@ export default function ManualAvillaForensics() {
                   ].map(tag => (
                     <span
                       key={tag}
-                      className="text-[8px] px-2 py-0.5 rounded bg-cyan-500/[0.07] border border-cyan-500/15 text-cyan-400/60 font-black uppercase tracking-wider"
+                      className="text-[8px] px-2 py-0.5 rounded bg-[#007AFF]/5 border border-[#007AFF]/15 text-[#007AFF] font-bold uppercase tracking-wider"
                     >
                       {tag}
                     </span>
@@ -1267,7 +1266,7 @@ export default function ManualAvillaForensics() {
               </div>
             </div>
             {/* Estado Live */}
-            <div className="shrink-0 flex items-center gap-2 text-[9px] font-black text-green-400 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full">
+            <div className="shrink-0 flex items-center gap-2 text-[9px] font-bold text-[#34C759] bg-[#34C759]/10 border border-[#34C759]/20 px-3 py-1.5 rounded-full">
               <Zap size={10} className="animate-pulse" />
               AVILLA FORENSICS ACTIVO
             </div>
@@ -1276,22 +1275,22 @@ export default function ManualAvillaForensics() {
           {/* ── Barra de progreso global ── */}
           <div className="mt-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">
+              <span className="text-[9px] font-bold text-[#86868B] uppercase tracking-widest">
                 Progreso Global del Protocolo
               </span>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-black text-white/50 tabular-nums">
+                <span className="text-[10px] font-bold text-[#6E6E73] tabular-nums">
                   {totalCompletados}/{totalPasos} pasos
                 </span>
-                <span className={`text-sm font-black tabular-nums ${
-                  pctGlobal === 100 ? 'text-green-400' : pctGlobal > 0 ? 'text-cyan-400' : 'text-white/20'
+                <span className={`text-sm font-bold tabular-nums ${
+                  pctGlobal === 100 ? 'text-[#34C759]' : pctGlobal > 0 ? 'text-[#007AFF]' : 'text-[#86868B]'
                 }`}>
                   {pctGlobal}%
                 </span>
                 {totalCompletados > 0 && (
                   <button
                     onClick={resetearProgreso}
-                    className="flex items-center gap-1 text-[8px] font-black text-white/15 hover:text-red-400 uppercase tracking-wider transition-colors"
+                    className="flex items-center gap-1 text-[8px] font-bold text-[#86868B] hover:text-[#FF3B30] uppercase tracking-wider transition-colors"
                     title="Reiniciar progreso"
                   >
                     <RotateCcw size={10} />
@@ -1299,18 +1298,18 @@ export default function ManualAvillaForensics() {
                 )}
               </div>
             </div>
-            <div className="h-2 w-full bg-white/[0.04] rounded-full overflow-hidden border border-white/[0.05]">
+            <div className="h-2 w-full bg-black/[0.05] rounded-full overflow-hidden border border-black/[0.02]">
               <div
                 className="h-full rounded-full transition-all duration-700 ease-out"
                 style={{
                   width: `${pctGlobal}%`,
                   background: pctGlobal === 100
-                    ? 'linear-gradient(90deg, #22c55e, #4ade80)'
-                    : 'linear-gradient(90deg, #06b6d4, #22d3ee)',
+                    ? 'linear-gradient(90deg, #34C759, #30D158)'
+                    : 'linear-gradient(90deg, #0071E3, #007AFF)',
                   boxShadow: pctGlobal > 0
                     ? pctGlobal === 100
-                      ? '0 0 12px rgba(34,197,94,0.4)'
-                      : '0 0 12px rgba(34,211,238,0.3)'
+                      ? '0 0 8px rgba(52,199,89,0.2)'
+                      : '0 0 8px rgba(0,113,227,0.15)'
                     : 'none',
                 }}
               />
@@ -1320,7 +1319,7 @@ export default function ManualAvillaForensics() {
       </div>
 
       {/* ── Stepper de fases ────────────────────────────────────── */}
-      <div className="fluent-mica rounded-xl border border-white/5 p-4 sm:p-5">
+      <div className="apple-card p-4 sm:p-5">
         <div className="flex items-center gap-2 sm:gap-3">
           {FASES.map((fase, idx) => (
             <div key={fase.id} className="flex items-center flex-1 min-w-0">
@@ -1333,7 +1332,7 @@ export default function ManualAvillaForensics() {
               />
               {idx < FASES.length - 1 && (
                 <div className={`hidden sm:block h-px flex-1 mx-1 ${
-                  faseCompletada(fase) ? 'bg-green-500/30' : 'bg-white/[0.05]'
+                  faseCompletada(fase) ? 'bg-[#34C759]/30' : 'bg-black/[0.06]'
                 }`} />
               )}
             </div>
@@ -1344,35 +1343,35 @@ export default function ManualAvillaForensics() {
       {/* ── Contenido de la fase activa ──────────────────────── */}
       <div className="animate-fade-in" key={fasActiva}>
         {/* Cabecera de fase */}
-        <div className="fluent-mica rounded-xl border border-white/5 p-5 sm:p-6 mb-4 relative overflow-hidden">
+        <div className="apple-card p-5 sm:p-6 mb-4 relative overflow-hidden">
           <div
             className="absolute inset-0 pointer-events-none"
             style={{ background: `radial-gradient(ellipse at top left, ${faseActual.glowColor}, transparent 60%)` }}
           />
           <div className="relative flex items-start justify-between gap-4">
             <div className="flex items-start gap-4">
-              <div className="p-3 rounded-[6px] bg-white/[0.04] border border-white/[0.08] shrink-0">
+              <div className="p-3 rounded-[6px] bg-black/[0.03] border border-black/[0.06] shrink-0">
                 {(() => { const Icon = faseActual.icono; return <Icon size={22} className={faseActual.color} />; })()}
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-1">
-                  <span className={`text-[9px] font-black uppercase tracking-[0.2em] ${faseActual.color}`}>
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${faseActual.color}`}>
                     Fase {faseActual.numero}
                   </span>
-                  <span className={`text-[8px] font-black px-2 py-0.5 rounded border ${
+                  <span className={`text-[8px] font-bold px-2 py-0.5 rounded border ${
                     faseCompletada(faseActual)
-                      ? 'border-green-500/25 bg-green-500/10 text-green-400'
-                      : 'border-white/[0.07] bg-white/[0.03] text-white/25'
+                      ? 'border-[#34C759]/25 bg-[#34C759]/10 text-[#34C759]'
+                      : 'border-black/[0.07] bg-black/[0.02] text-[#86868B]'
                   } uppercase tracking-wider`}>
                     {faseCompletada(faseActual)
                       ? '✓ Completada'
                       : `${progresoPorFase(faseActual)}% completado`}
                   </span>
                 </div>
-                <h2 className="text-base sm:text-lg font-black text-white uppercase tracking-tight">
+                <h2 className="text-base sm:text-lg font-bold text-[#1D1D1F] uppercase tracking-tight">
                   {faseActual.titulo}
                 </h2>
-                <p className="text-[10px] text-white/35 font-medium mt-1">{faseActual.subtitulo}</p>
+                <p className="text-[10px] text-[#6E6E73] font-medium mt-1">{faseActual.subtitulo}</p>
               </div>
             </div>
             {/* Navegación entre fases */}
@@ -1383,7 +1382,7 @@ export default function ManualAvillaForensics() {
                   if (idx > 0) setFaseActiva(FASES[idx - 1].id);
                 }}
                 disabled={fasActiva === 'f0'}
-                className="text-[9px] font-black px-3 py-2 rounded-lg border border-white/[0.07] bg-white/[0.02] text-white/30 hover:text-white/60 hover:bg-white/[0.05] transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider"
+                className="text-[9px] font-bold px-3 py-2 rounded-lg border border-black/[0.08] bg-black/[0.02] text-[#86868B] hover:text-[#1D1D1F] hover:bg-black/[0.05] transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider"
               >
                 ← Anterior
               </button>
@@ -1393,11 +1392,7 @@ export default function ManualAvillaForensics() {
                   if (idx < FASES.length - 1) setFaseActiva(FASES[idx + 1].id);
                 }}
                 disabled={fasActiva === 'f6'}
-                className={`text-[9px] font-black px-3 py-2 rounded-lg border transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider ${
-                  fasActiva !== 'f6'
-                    ? `border-${faseActual.color.split('-')[1]}-500/20 bg-${faseActual.color.split('-')[1]}-500/[0.06] ${faseActual.color} hover:opacity-80`
-                    : 'border-white/[0.07] bg-white/[0.02] text-white/30'
-                }`}
+                className="text-[9px] font-bold px-3 py-2 rounded-lg border border-black/[0.08] bg-black/[0.02] text-[#86868B] hover:text-[#1D1D1F] hover:bg-black/[0.05] transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider"
               >
                 Siguiente →
               </button>
@@ -1420,15 +1415,15 @@ export default function ManualAvillaForensics() {
         {/* CTA siguiente fase */}
         {faseCompletada(faseActual) && fasActiva !== 'f6' && (
           <div
-            className="mt-5 p-5 rounded-xl border border-green-500/20 bg-green-500/[0.04] flex items-center justify-between gap-4 animate-fade-in"
+            className="mt-5 p-5 rounded-xl border border-[#34C759]/20 bg-[#34C759]/[0.03] flex items-center justify-between gap-4 animate-fade-in"
           >
             <div className="flex items-center gap-3">
-              <CheckCircle2 size={20} className="text-green-400 shrink-0" />
+              <CheckCircle2 size={20} className="text-[#34C759] shrink-0" />
               <div>
-                <p className="text-sm font-black text-green-400 uppercase tracking-wide">
+                <p className="text-sm font-bold text-[#34C759] uppercase tracking-wide">
                   Fase {faseActual.numero} completada
                 </p>
-                <p className="text-[10px] text-green-400/60">
+                <p className="text-[10px] text-[#34C759]/80">
                   Continúe con la siguiente fase del protocolo forense
                 </p>
               </div>
@@ -1438,7 +1433,7 @@ export default function ManualAvillaForensics() {
                 const idx = FASES.findIndex(f => f.id === fasActiva);
                 if (idx < FASES.length - 1) setFaseActiva(FASES[idx + 1].id);
               }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-500/15 border border-green-500/30 text-green-400 text-[10px] font-black uppercase tracking-wider hover:bg-green-500/25 transition-all shrink-0"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#34C759]/10 border border-[#34C759]/30 text-[#34C759] text-[10px] font-bold uppercase tracking-wider hover:bg-[#34C759]/20 transition-all shrink-0"
             >
               Siguiente fase <TrendingUp size={12} />
             </button>
@@ -1447,21 +1442,21 @@ export default function ManualAvillaForensics() {
 
         {/* Mensaje final — protocolo completo */}
         {fasActiva === 'f6' && faseCompletada(faseActual) && (
-          <div className="mt-5 p-6 rounded-xl border border-cyan-500/20 bg-cyan-500/[0.04] text-center animate-fade-in relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/[0.05] to-transparent pointer-events-none" />
+          <div className="mt-5 p-6 rounded-xl border border-[#0071E3]/20 bg-[#0071E3]/[0.02] text-center animate-fade-in relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0071E3]/[0.02] to-transparent pointer-events-none" />
             <div className="relative">
-              <CheckCircle2 size={40} className="text-green-400 mx-auto mb-3" />
-              <h3 className="text-base font-black text-white uppercase tracking-tight mb-2">
+              <CheckCircle2 size={40} className="text-[#34C759] mx-auto mb-3" />
+              <h3 className="text-base font-bold text-[#1D1D1F] uppercase tracking-tight mb-2">
                 Protocolo Forense Completado
               </h3>
-              <p className="text-[11px] text-white/40 leading-relaxed max-w-2xl mx-auto mb-4">
+              <p className="text-[11px] text-[#6E6E73] leading-relaxed max-w-2xl mx-auto mb-4">
                 Ha completado las 7 fases del protocolo de consignación forense de dispositivo Android
                 conforme a ISO/IEC 27037/27041/27042, Manual Único de Cadena de Custodia Venezuela 2017,
                 Art. 187 y 225 COPP. La evidencia digital está lista para presentación judicial.
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {['ISO 27037 ✓', 'ISO 27041 ✓', 'ISO 27042 ✓', 'MUCC-2017 ✓', 'COPP ✓'].map(t => (
-                  <span key={t} className="text-[9px] px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 font-black uppercase tracking-wider">
+                  <span key={t} className="text-[9px] px-3 py-1 rounded-full bg-[#34C759]/10 border border-[#34C759]/20 text-[#34C759] font-bold uppercase tracking-wider">
                     {t}
                   </span>
                 ))}
@@ -1472,16 +1467,16 @@ export default function ManualAvillaForensics() {
       </div>
 
       {/* ── Pie de referencia normativa ──────────────────────── */}
-      <div className="fluent-mica p-5 rounded-xl border border-white/5 mt-8 relative overflow-hidden">
+      <div className="apple-card p-5 rounded-xl border border-black/5 mt-8 relative overflow-hidden bg-white">
         <div className="absolute top-0 right-0 opacity-[0.02] pointer-events-none">
-          <Scale size={120} className="text-white" />
+          <Scale size={120} className="text-black" />
         </div>
         <div className="flex items-start gap-4 relative">
-          <div className="p-3 bg-white/[0.04] rounded-[6px] border border-white/[0.08] shrink-0">
-            <BookOpen size={18} className="text-white/30" />
+          <div className="p-3 bg-black/[0.02] rounded-[6px] border border-black/[0.06] shrink-0">
+            <BookOpen size={18} className="text-black/30" />
           </div>
           <div>
-            <h4 className="font-black text-white/50 text-[10px] uppercase tracking-[0.2em] mb-2">
+            <h4 className="font-bold text-[#86868B] text-[10px] uppercase tracking-[0.2em] mb-2">
               Marco Normativo Completo Aplicado
             </h4>
             <div className="flex flex-wrap gap-1.5">
