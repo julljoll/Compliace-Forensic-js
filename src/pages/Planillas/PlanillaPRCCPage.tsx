@@ -148,7 +148,8 @@ const PlanillaPRCCPage = () => {
                             <div className="sig-detail-card" style={{ 'minHeight': 'auto', 'border': 'none', 'padding': '0', 'background': 'transparent', 'gap': '4px' }}>
                                 <div className="label">Entrega (Consignante)</div>
                                 <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.solicitante_nombre || '____________________'}</span></div>
-                                <div className="sig-line" style={{ 'height': '24px' }}>Firma</div>
+                                <div className="sig-line" style={{ 'height': '24px' }} />
+                                <div className="sig-line-label" style={{ 'fontSize': '7px' }}>Firma</div>
                                 <div className="sig-field" style={{ 'fontSize': '8px' }}>
                                     C.I.: <span className="sig-underline" style={{ 'minHeight': '16px' }}>{activeCaso?.solicitante_cedula || ''}</span>
                                 </div>
@@ -165,7 +166,8 @@ const PlanillaPRCCPage = () => {
                             <div className="sig-detail-card" style={{ 'minHeight': 'auto', 'border': 'none', 'padding': '0', 'background': 'transparent', 'gap': '4px' }}>
                                 <div className="label">Recibe (Perito)</div>
                                 <div style={{ 'fontSize': '9px', 'marginBottom': '4px' }}>Nombre: <span style={{ 'fontWeight': 'bold' }}>{activeCaso?.peritoLider || '____________________'}</span></div>
-                                <div className="sig-line" style={{ 'height': '24px' }}>Firma</div>
+                                <div className="sig-line" style={{ 'height': '24px' }} />
+                                <div className="sig-line-label" style={{ 'fontSize': '7px' }}>Firma</div>
                                 <div className="sig-field" style={{ 'fontSize': '8px' }}>
                                     C.I.: <span className="sig-underline" style={{ 'minHeight': '16px' }}></span>
                                 </div>

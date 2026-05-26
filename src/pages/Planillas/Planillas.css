@@ -351,13 +351,16 @@
 .planilla-container .sig-detail-card .sig-line {
   border-bottom: 1px solid #999;
   height: 30px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  width: 100%;
+}
+
+.planilla-container .sig-detail-card .sig-line-label {
   font-size: 8px;
   color: var(--text-dim);
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-top: 1px;
 }
 
 .planilla-container .sig-detail-card .sig-field {
@@ -595,6 +598,10 @@
 
   .planilla-container .sig-detail-card .sig-line {
     border-bottom: 1px solid #666 !important;
+  }
+
+  .planilla-container .sig-detail-card .sig-line-label {
+    color: #444 !important;
   }
 
   .planilla-container .sig-detail-card .sig-field {

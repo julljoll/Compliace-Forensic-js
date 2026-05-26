@@ -150,7 +150,8 @@ const ActaDictamenPage = () => {
         <div className="signature-section" style={{ 'gap': '14mm' }}>
             <div className="sig-detail-card">
                 <div className="sig-detail-label">PERITO FORENSE</div>
-                <div className="sig-line">Firma</div>
+                <div className="sig-line" />
+                <div className="sig-line-label">Firma</div>
                 <div className="sig-field">
                     C.I.: <span className="sig-underline"></span>
                 </div>
@@ -164,7 +165,8 @@ const ActaDictamenPage = () => {
             </div>
             <div className="sig-detail-card">
                 <div className="sig-detail-label">EL CONSIGNANTE</div>
-                <div className="sig-line">Firma</div>
+                <div className="sig-line" />
+                <div className="sig-line-label">Firma</div>
                 <div className="sig-field">
                     C.I.: <span className="sig-underline">{activeCaso?.solicitante_cedula || ''}</span>
                 </div>
