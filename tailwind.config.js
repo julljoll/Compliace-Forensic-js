@@ -8,39 +8,39 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // ── Fluent UI (original) ──
+        // ── Fluent UI (redefined for macOS Light Theme) ──
         fluent: {
           bg: {
-            DEFAULT: '#181818',
-            secondary: '#2c2c2c',
+            DEFAULT: '#F5F5F7',
+            secondary: '#FFFFFF',
           },
-          surface: 'rgba(255, 255, 255, 0.05)',
-          surfaceHover: 'rgba(255, 255, 255, 0.08)',
-          surfaceActive: 'rgba(255, 255, 255, 0.03)',
-          border: 'rgba(255, 255, 255, 0.08)',
+          surface: 'rgba(0, 0, 0, 0.025)',
+          surfaceHover: 'rgba(0, 0, 0, 0.05)',
+          surfaceActive: 'rgba(0, 0, 0, 0.01)',
+          border: 'rgba(0, 0, 0, 0.08)',
           text: {
-            DEFAULT: '#ffffff',
-            muted: 'rgba(255, 255, 255, 0.7)',
+            DEFAULT: '#1D1D1F',
+            muted: '#86868B',
           },
           accent: {
-            DEFAULT: '#FECF06',
-            light: '#FFE46B',
-            dark: '#524000',
-            fg: '#524000',
+            DEFAULT: '#0071E3',
+            light: '#4393E6',
+            dark: '#0054a6',
+            fg: '#ffffff',
           },
-          acrylic: 'rgba(32, 32, 32, 0.7)',
+          acrylic: 'rgba(255, 255, 255, 0.65)',
         },
-        // ── CMS Compliance (Corporativo) ──
+        // ── CMS Compliance (redefined for macOS Light Theme) ──
         cms: {
-          bg:         '#0B0F19',
-          sidebar:    '#111827',
-          card:       '#1F2937',
-          surface:    '#374151',
-          border:     'rgba(255,255,255,0.07)',
-          text:       '#F9FAFB',
-          textMuted:  '#9CA3AF',
-          accent:     '#2563EB',
-          accent2:    '#3B82F6',
+          bg:         '#F5F5F7',           // macOS system gray background
+          sidebar:    'rgba(246, 246, 246, 0.72)', // macOS Finder sidebar translucent
+          card:       '#FFFFFF',           // macOS card background
+          surface:    '#F5F5F7',           // macOS system gray
+          border:     'rgba(0, 0, 0, 0.08)', // macOS divider
+          text:       '#1D1D1F',           // macOS primary label
+          textMuted:  '#86868B',           // macOS secondary label
+          accent:     '#0071E3',           // Apple System Blue
+          accent2:    '#4393E6',           // Apple Light Blue
         },
       },
       fontFamily: {
