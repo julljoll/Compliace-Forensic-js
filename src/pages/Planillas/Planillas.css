@@ -1,22 +1,8 @@
-/* ── Planillas CSS — Documentos Legales Imprimibles ──
- *   Screen: Professional look with subtle accents
- *   Print:  Strict black & white, Legal size, ready to file
- */
-
 .planilla-container {
-  --primary: #0071E3;
-  --accent: #0071E3;
-  --text: #1D1D1F;
-  --text-dim: #86868B;
-  --text-muted: #86868B;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-color: rgba(0, 0, 0, 0.08);
-  --gray: rgba(0, 0, 0, 0.025);
-
-  font-family: "Times New Roman", Georgia, "Times New Roman", serif;
+  font-family: "Times New Roman", Georgia, serif;
   line-height: 1.3;
-  color: var(--text);
-  background: #F5F5F7;
+  color: #000000;
+  background: #ffffff;
   margin: 0;
   padding: 10px;
   font-size: 12px;
@@ -26,33 +12,22 @@
   box-sizing: border-box;
 }
 
-/* ═══ PAGE (Screen / Print) ═══ */
 .planilla-container .page {
-  --primary: #937200;
-  --accent: #937200;
-  --text: #111111;
-  --text-dim: #555555;
-  --border: rgba(0, 0, 0, 0.15);
-  --gray: rgba(0, 0, 0, 0.04);
-
   width: 216mm;
   min-height: 356mm;
   padding: 8mm 12mm;
   margin: 0 auto 12px;
   background: #ffffff;
-  color: #111111;
+  color: #000000;
   position: relative;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid #000000;
 }
 
-/* ═══ HEADER ═══ */
 .planilla-container header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 2px solid var(--primary);
+  border-bottom: 2px solid #000000;
   padding-bottom: 4px;
   margin-bottom: 8px;
 }
@@ -65,7 +40,7 @@
 .planilla-container .logo-text {
   font-size: 16px;
   font-weight: 800;
-  color: var(--primary);
+  color: #000000;
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -74,7 +49,7 @@
 .planilla-container .logo-subtext {
   font-size: 7.5px;
   font-weight: 600;
-  color: var(--text-dim);
+  color: #444444;
   text-transform: uppercase;
   margin: 1px 0;
   letter-spacing: 0.02em;
@@ -82,7 +57,7 @@
 
 .planilla-container .address-text {
   font-size: 6.5px;
-  color: var(--text-dim);
+  color: #444444;
   max-width: 300px;
   line-height: 1.2;
 }
@@ -94,12 +69,12 @@
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  color: var(--primary);
+  color: #000000;
   letter-spacing: 0.01em;
 }
 
 .planilla-container .acta-nro {
-  font-family: "SF Mono", Menlo, Monaco, "Roboto Mono", monospace;
+  font-family: "Courier New", "SF Mono", Menlo, Monaco, "Roboto Mono", monospace;
   font-size: 10px;
   margin-top: 3px;
   display: flex;
@@ -108,17 +83,16 @@
   gap: 4px;
 }
 
-/* ═══ SECTIONS ═══ */
 .planilla-container .section-title {
-  background: var(--gray);
-  border-left: 4px solid var(--primary);
-  color: var(--text);
+  border-left: 4px solid #000000;
+  color: #000000;
   padding: 3px 6px;
   font-size: 8.5px;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 4px;
   letter-spacing: 0.02em;
+  border-bottom: 1px solid #cccccc;
 }
 
 .planilla-container .section {
@@ -132,14 +106,12 @@
 }
 
 .planilla-container .form-group {
-  border: 1px solid var(--border);
-  background: var(--gray);
+  border: 1px solid #000000;
   padding: 3px 6px;
-  border-radius: 4px;
 }
 
 .planilla-container .label {
-  color: var(--text-dim);
+  color: #444444;
   font-size: 6.5px;
   font-weight: 600;
   text-transform: uppercase;
@@ -148,8 +120,8 @@
 }
 
 .planilla-container .value {
-  color: var(--text);
-  border-bottom: 1px dotted var(--border);
+  color: #000000;
+  border-bottom: 1px dotted #999999;
   font-size: 11px;
   min-height: 16px;
   line-height: 1.2;
@@ -157,31 +129,26 @@
 
 .planilla-container .box-inline {
   display: inline-block;
-  border: 1px solid var(--border);
+  border: 1px solid #000000;
   min-width: 50px;
   height: 18px;
-  background: var(--gray);
   vertical-align: middle;
   margin: 0 3px;
-  border-radius: 2px;
 }
 
-/* ═══ TABLES ═══ */
 .planilla-container .evidence-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 .planilla-container .evidence-table td {
-  border: 1px solid var(--border);
-  color: var(--text);
+  border: 1px solid #000000;
+  color: #000000;
   padding: 3px 6px;
   font-size: 9px;
 }
 
 .planilla-container .evidence-table td:first-child {
-  background: var(--gray);
-  color: var(--primary);
   width: 30%;
   font-weight: 600;
   font-size: 8px;
@@ -196,22 +163,19 @@
 }
 
 .planilla-container .transfer-table td {
-  border: 1px solid var(--border);
-  color: var(--text);
+  border: 1px solid #000000;
+  color: #000000;
   padding: 3px 6px;
   font-size: 10px;
   vertical-align: top;
 }
 
 .planilla-container .transfer-header {
-  background: var(--gray);
-  color: var(--primary);
   font-weight: 700;
   font-size: 7px;
   text-transform: uppercase;
 }
 
-/* ═══ CHECKBOXES ═══ */
 .planilla-container .checkbox-group {
   display: flex;
   flex-wrap: wrap;
@@ -224,15 +188,13 @@
   align-items: center;
   gap: 3px;
   font-size: 8px;
-  color: var(--text);
+  color: #000000;
 }
 
 .planilla-container .box {
   width: 11px;
   height: 11px;
-  border: 1.5px solid var(--border);
-  background: var(--gray);
-  border-radius: 2px;
+  border: 1.5px solid #000000;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -241,19 +203,15 @@
   line-height: 1;
 }
 
-/* ═══ TEXT BOXES ═══ */
 .planilla-container .legal-text {
   font-size: 8px;
   text-align: justify;
-  background: var(--gray);
   padding: 5px;
-  border: 1px solid var(--border);
+  border: 1px solid #000000;
   margin: 5px 0;
-  border-radius: 4px;
   line-height: 1.3;
 }
 
-/* ═══ SIGNATURES ═══ */
 .planilla-container .signature-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -270,10 +228,8 @@
 }
 
 .planilla-container .sig-card {
-  border: 1px solid var(--border);
+  border: 1px solid #000000;
   padding: 8px;
-  border-radius: 4px;
-  background: var(--gray);
 }
 
 .planilla-container .sig-row {
@@ -282,14 +238,18 @@
   margin-top: 8px;
 }
 
+.planilla-container .sig-firma-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+
 .planilla-container .sig-box {
   flex: 1;
   height: 85px;
-  border: 1px dashed var(--border);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px dashed #000000;
 }
 
 .planilla-container .thumb-wrapper {
@@ -302,12 +262,12 @@
 .planilla-container .thumb-box {
   width: 65px;
   height: 85px;
-  border: 1px dashed var(--border);
+  border: 1px dashed #000000;
 }
 
 .planilla-container .thumb-label {
   font-size: 7.5px;
-  color: var(--text-dim);
+  color: #444444;
   text-align: center;
   font-weight: 600;
   text-transform: uppercase;
@@ -318,55 +278,52 @@
   text-align: center;
   font-size: 9px;
   font-weight: 700;
-  color: var(--primary);
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .planilla-container .sig-label + .sig-sub {
   font-size: 8px;
-  color: var(--text-dim);
+  color: #444444;
   margin-top: 2px;
 }
 
 .planilla-container .sig-sub {
   font-size: 8px;
-  color: var(--text-dim);
+  color: #444444;
   margin-top: 1px;
 }
 
-/* ═══ DETAILED SIGNATURE CARDS ═══ */
 .planilla-container .sig-detail-card {
   display: flex;
   flex-direction: column;
   gap: 3px;
   padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--gray);
+  border: 1px solid #000000;
 }
 
 .planilla-container .sig-detail-card .sig-detail-label {
   font-size: 9px;
   font-weight: 700;
-  color: var(--primary);
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   text-align: center;
   padding-bottom: 2px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #000000;
   margin-bottom: 1px;
 }
 
 .planilla-container .sig-detail-card .sig-line {
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid #000000;
   height: 18px;
   width: 100%;
 }
 
 .planilla-container .sig-detail-card .sig-line-label {
   font-size: 7px;
-  color: var(--text-dim);
+  color: #444444;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -378,17 +335,17 @@
   align-items: center;
   gap: 3px;
   font-size: 7.5px;
-  color: #333;
+  color: #000000;
 }
 
 .planilla-container .sig-detail-card .sig-field .sig-underline {
   flex: 1;
-  border-bottom: 1px dashed #bbb;
+  border-bottom: 1px dashed #999999;
   min-height: 14px;
   padding: 0 3px;
   font-size: 8px;
   font-weight: 600;
-  color: #111;
+  color: #000000;
 }
 
 .planilla-container .sig-detail-card .fingerprint-row {
@@ -397,10 +354,9 @@
   justify-content: center;
   margin-top: 3px;
   padding-top: 3px;
-  border-top: 1px dotted var(--border);
+  border-top: 1px dotted #999999;
 }
 
-/* ═══ FOOTER ═══ */
 .planilla-container .footer {
   position: absolute;
   bottom: 6mm;
@@ -408,30 +364,27 @@
   right: 12mm;
   text-align: center;
   font-size: 6.5px;
-  color: var(--text-dim);
-  border-top: 1px solid var(--border);
+  color: #444444;
+  border-top: 1px solid #000000;
   padding-top: 2px;
   line-height: 1.2;
 }
 
-/* ═══ PRCC SPECIFICS ═══ */
 .planilla-container .form-header-info { text-align: right; }
-.planilla-container .form-title-main { font-size: 11px; font-weight: 700; margin: 0; text-transform: uppercase; color: var(--primary); letter-spacing: 0.01em; }
-.planilla-container .form-nro { font-family: "SF Mono", Menlo, Monaco, "Roboto Mono", monospace; font-size: 10px; margin-top: 3px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.planilla-container .form-title-main { font-size: 11px; font-weight: 700; margin: 0; text-transform: uppercase; color: #000000; letter-spacing: 0.01em; }
+.planilla-container .form-nro { font-family: "Courier New", "SF Mono", Menlo, Monaco, "Roboto Mono", monospace; font-size: 10px; margin-top: 3px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 
 .planilla-container .anexo-derivacion {
-  border: 2px solid var(--primary);
+  border: 2px solid #000000;
   padding: 6px;
-  border-radius: 4px;
   margin-top: 8px;
-  background: var(--gray);
 }
 
 .planilla-container .anexo-header {
   font-weight: 700;
   font-size: 8px;
-  color: var(--primary);
-  border-bottom: 1px solid var(--border);
+  color: #000000;
+  border-bottom: 1px solid #000000;
   padding-bottom: 3px;
   margin-bottom: 4px;
   text-transform: uppercase;
@@ -454,35 +407,25 @@
 .planilla-container footer {
   text-align: center;
   font-size: 6.5px;
-  color: var(--text-dim);
+  color: #444444;
   margin-top: 6px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #000000;
   padding-top: 3px;
 }
 
-/* ═══ PRINT BUTTON ═══ */
-.planilla-container .no-print button {
-  background: #0071E3;
-  color: #ffffff;
-  border: none;
+.planilla-container .no-print button,
+.planilla-container .print-button {
+  color: #000000;
+  border: 1px solid #000000;
   padding: 10px 24px;
-  border-radius: 8px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, Inter, sans-serif;
-  transition: all 0.15s ease;
-}
-.planilla-container .no-print button:hover {
-  background: #0077ED;
+  font-family: "Times New Roman", serif;
 }
 
-/* ═══ PRINT TIMELINE ═══ */
 .planilla-container .timeline-print-layout { display: none; }
 
-/* ════════════════════════════════════════════════
-   PRINT — Black & White, Legal Document
-   ════════════════════════════════════════════════ */
 @media print {
   html, body {
     background: white !important;
@@ -498,21 +441,12 @@
   }
 
   .planilla-container .page {
-    --primary: #000000 !important;
-    --accent: #000000 !important;
-    --text: #000000 !important;
-    --text-dim: #333333 !important;
-    --border: #aaaaaa !important;
-    --gray: #f2f2f2 !important;
-
     width: 100% !important;
     min-height: 0 !important;
     height: auto !important;
     padding: 10mm 14mm !important;
     margin: 0 !important;
     border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
     overflow: hidden !important;
   }
 
@@ -526,9 +460,7 @@
   .planilla-container .form-title-main,
   .planilla-container .sig-label,
   .planilla-container .anexo-header,
-  .planilla-container .section-title,
-  .planilla-container .evidence-table td:first-child,
-  .planilla-container .transfer-header {
+  .planilla-container .section-title {
     color: #000000 !important;
   }
 
@@ -538,12 +470,11 @@
   .planilla-container .sig-sub,
   .planilla-container .footer,
   .planilla-container footer,
-  .planilla-container .thumb-box {
+  .planilla-container .thumb-label {
     color: #444444 !important;
   }
 
   .planilla-container .section-title {
-    background: #f2f2f2 !important;
     border-left: 4px solid #000 !important;
     padding: 2px 4px !important;
     font-size: 7.5px !important;
@@ -618,20 +549,18 @@
 
   .planilla-container .evidence-table td,
   .planilla-container .transfer-table td {
-    border: 1px solid #999 !important;
+    border: 1px solid #000 !important;
     color: #000 !important;
     padding: 2px 4px !important;
     font-size: 8px !important;
   }
 
   .planilla-container .evidence-table td:first-child {
-    background: #f2f2f2 !important;
     font-size: 7px !important;
   }
 
   .planilla-container .form-group {
-    border: 1px solid #bbb !important;
-    background: #fafafa !important;
+    border: 1px solid #000 !important;
     padding: 2px 4px !important;
   }
 
@@ -642,40 +571,35 @@
   }
 
   .planilla-container .legal-text {
-    background: #fafafa !important;
-    border: 1px solid #bbb !important;
+    border: 1px solid #000 !important;
     padding: 3px !important;
     font-size: 7px !important;
     margin: 3px 0 !important;
   }
 
   .planilla-container .box {
-    border: 1.5px solid #999 !important;
-    background: #fafafa !important;
+    border: 1.5px solid #000 !important;
     width: 9px !important;
     height: 9px !important;
   }
 
   .planilla-container .box-inline {
-    border: 1px solid #999 !important;
-    background: #fafafa !important;
+    border: 1px solid #000 !important;
     height: 14px !important;
     min-width: 40px !important;
   }
 
   .planilla-container .sig-card {
-    border: 1px solid #bbb !important;
-    background: #fafafa !important;
-    border-radius: 0 !important;
+    border: 1px solid #000 !important;
   }
 
   .planilla-container .sig-box {
-    border: 1px dashed #666 !important;
+    border: 1px dashed #000 !important;
     height: 80px !important;
   }
 
   .planilla-container .thumb-box {
-    border: 1px dashed #666 !important;
+    border: 1px dashed #000 !important;
     width: 60px !important;
     height: 80px !important;
   }
@@ -686,22 +610,20 @@
   }
 
   .planilla-container .sig-detail-card {
-    border: 1px solid #bbb !important;
-    background: #fafafa !important;
-    border-radius: 0 !important;
+    border: 1px solid #000 !important;
     padding: 4px 6px !important;
     gap: 2px !important;
   }
 
   .planilla-container .sig-detail-card .sig-detail-label {
     color: #000 !important;
-    border-bottom-color: #999 !important;
+    border-bottom-color: #000 !important;
     font-size: 8px !important;
     padding-bottom: 1px !important;
   }
 
   .planilla-container .sig-detail-card .sig-line {
-    border-bottom: 1px solid #666 !important;
+    border-bottom: 1px solid #000 !important;
     height: 14px !important;
   }
 
@@ -723,16 +645,10 @@
   }
 
   .planilla-container .sig-detail-card .fingerprint-row {
-    border-top-color: #bbb !important;
+    border-top-color: #999 !important;
     gap: 6px !important;
     margin-top: 2px !important;
     padding-top: 2px !important;
-  }
-
-  /* ── Print blank: hide auto-filled values, keep form structure ── */
-  .planilla-container .value {
-    color: transparent !important;
-    text-shadow: none !important;
   }
 
   .planilla-container .watermark {
@@ -741,16 +657,11 @@
 
   .planilla-container .anexo-derivacion {
     border: 2px solid #000 !important;
-    background: #fafafa !important;
   }
 
   .planilla-container button,
   .planilla-container .no-print {
     display: none !important;
-  }
-
-  .planilla-container .transfer-header {
-    background: #f2f2f2 !important;
   }
 
   .planilla-container .signature-section {
@@ -790,7 +701,6 @@
   }
 
   .planilla-container .timeline-print-table th {
-    background: #f2f2f2 !important;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 8px;

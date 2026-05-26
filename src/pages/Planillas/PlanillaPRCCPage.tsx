@@ -61,7 +61,10 @@ const PlanillaPRCCPage = () => {
                     <div className="label">A. Fijación (Nombre, Cédula y Credencial)</div>
                     <div className="value" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{''}</div>
                     <div className="sig-row">
-                        <div className="sig-box"><span className="sig-label">FIRMA</span></div>
+                        <div className="sig-firma-col">
+                            <div className="sig-box" />
+                            <span className="sig-label">FIRMA</span>
+                        </div>
                         <div className="thumb-wrapper">
                             <div className="thumb-box" />
                             <span className="thumb-label">PULGAR DER.</span>
@@ -72,7 +75,10 @@ const PlanillaPRCCPage = () => {
                     <div className="label">B. Colección (Nombre, Cédula y Credencial)</div>
                     <div className="value" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{''}</div>
                     <div className="sig-row">
-                        <div className="sig-box"><span className="sig-label">FIRMA</span></div>
+                        <div className="sig-firma-col">
+                            <div className="sig-box" />
+                            <span className="sig-label">FIRMA</span>
+                        </div>
                         <div className="thumb-wrapper">
                             <div className="thumb-box" />
                             <span className="thumb-label">PULGAR DER.</span>
@@ -214,7 +220,7 @@ const PlanillaPRCCPage = () => {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }} className="no-print">
-            <button onClick={() => { window.print() }} style={{ padding: '10px 20px', background: '#0071E3', color: '#ffffff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontFamily: '"Inter", sans-serif', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
+            <button onClick={() => { window.print() }} className="print-button">🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
         </div>
     </div>
 
