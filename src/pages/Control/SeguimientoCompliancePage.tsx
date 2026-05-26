@@ -796,20 +796,57 @@ export default function SeguimientoCompliancePage() {
 
                       {/* Gating protection validation warnings */}
                       {!stepValidation.canComplete && !completado && (
-                        <div className="p-4 rounded-lg border border-[#FF9500]/25 bg-[#FF9500]/[0.04] space-y-2">
+                        <div className="p-4 rounded-lg border border-[#FF9500]/25 bg-[#FF9500]/[0.04] space-y-3">
                           <div className="flex items-center gap-2 text-[#FF9500]">
                             <AlertTriangle size={14} />
                             <span className="text-[10px] font-semibold uppercase tracking-wider">
-                              Requisitos pendientes para completar esta etapa
+                              Requisitos pendientes para completar esta etapa (Haga clic para resolver)
                             </span>
                           </div>
-                          <ul className="list-disc pl-4 space-y-1">
-                            {stepValidation.missing.map((item, idx) => (
-                              <li key={idx} className="text-[10px] text-[#1D1D1F] font-medium">
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
+                          
+                          {(stepValidation as any).missingObjects && (stepValidation as any).missingObjects.length > 0 ? (
+                            <div className="space-y-2">
+                              {(stepValidation as any).missingObjects.map((item: any, idx: number) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    if (item.type === 'tarea') {
+                                      updateTarea(item.id, {
+                                        estado: 'completada',
+                                        fechaCompletada: new Date().toISOString(),
+                                        porcentaje: 100
+                                      });
+                                      addAuditLog({
+                                        accion: 'TAREA_ACTUALIZADA',
+                                        detalle: `Tarea "${item.text.replace('Tarea pendiente: ', '')}" → Completada (desde advertencias)`,
+                                        nivel: 'success',
+                                        casoId: activeCaso.id,
+                                        usuario: activeCaso.peritoLider || 'sistema'
+                                      });
+                                    } else {
+                                      toggleComplianceCheck(item.id, item.subId || '');
+                                    }
+                                  }}
+                                  className="w-full flex items-center gap-2.5 p-2 rounded border border-black/[0.04] bg-white/40 hover:bg-white hover:border-[#FF9500]/30 hover:shadow-sm text-left transition-all group"
+                                >
+                                  <div className="w-[14px] h-[14px] rounded border border-black/25 flex items-center justify-center bg-white group-hover:border-[#FF9500] group-hover:text-[#FF9500] shrink-0 transition-all">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-transparent group-hover:bg-[#FF9500]/40 transition-all" />
+                                  </div>
+                                  <span className="text-[10px] text-[#1D1D1F] font-medium leading-tight">
+                                    {item.text}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <ul className="list-disc pl-4 space-y-1">
+                              {stepValidation.missing.map((item, idx) => (
+                                <li key={idx} className="text-[10px] text-[#1D1D1F] font-medium">
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       )}
 

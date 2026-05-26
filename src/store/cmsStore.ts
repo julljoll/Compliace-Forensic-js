@@ -241,7 +241,11 @@ interface CMSState {
   // Nuevo sistema de pasos con estado enriquecido y gating secuencial
   initSteps: (casoId: string) => void;
   startStep: (stepId: string) => void;
-  verifyStepCompletion: (stepId: string) => { canComplete: boolean; missing: string[] };
+  verifyStepCompletion: (stepId: string) => { 
+    canComplete: boolean; 
+    missing: string[]; 
+    missingObjects?: { type: 'tarea' | 'compliance'; id: string; text: string; subId?: string }[];
+  };
   completeStep: (stepId: string) => void;
   unlockNextStep: (stepId: string) => void;
   getStepState: (stepId: string) => EstadoPaso | undefined;
@@ -878,21 +882,29 @@ export const useCMSStore = create<CMSState>()(
       // ── Verificar si un paso puede completarse ──
       verifyStepCompletion: (stepId) => {
         const { casoSeleccionado, casos, tareas } = get();
-        if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'] };
+        if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'], missingObjects: [] };
         const caso = casos.find(c => c.id === casoSeleccionado);
-        if (!caso) return { canComplete: false, missing: ['Caso no encontrado'] };
-        if (!caso.tipoProyecto) return { canComplete: false, missing: ['Tipo de proyecto no definido'] };
+        if (!caso) return { canComplete: false, missing: ['Caso no encontrado'], missingObjects: [] };
+        if (!caso.tipoProyecto) return { canComplete: false, missing: ['Tipo de proyecto no definido'], missingObjects: [] };
 
         const pasos = getPasosPorTipo(caso.tipoProyecto);
         const paso = pasos.find(p => p.id === stepId);
-        if (!paso) return { canComplete: false, missing: ['Paso no encontrado'] };
+        if (!paso) return { canComplete: false, missing: ['Paso no encontrado'], missingObjects: [] };
 
         const missing: string[] = [];
+        const missingObjects: { type: 'tarea' | 'compliance'; id: string; text: string; subId?: string }[] = [];
 
         // 1. Verificar tareas del paso (solo si existen tareas asignadas)
         const tareasPaso = tareas.filter(t => t.casoId === casoSeleccionado && t.pasoId === stepId);
         const tareasPendientes = tareasPaso.filter(t => t.estado !== 'completada');
-        tareasPendientes.forEach(t => missing.push(`Tarea pendiente: ${t.titulo}`));
+        tareasPendientes.forEach(t => {
+          missing.push(`Tarea pendiente: ${t.titulo}`);
+          missingObjects.push({
+            type: 'tarea',
+            id: t.id,
+            text: `Tarea pendiente: ${t.titulo}`
+          });
+        });
 
         // 2. Verificar compliance — Leer del caso directamente (fuente de verdad definitiva)
         const checklist = caso.compliance_checklist || [];
@@ -901,26 +913,35 @@ export const useCMSStore = create<CMSState>()(
           if (!item?.checked) {
             // Buscar un nombre legible de la normativa para mostrar una advertencia amigable
             let nombreLegible = reqId;
+            let normativaId = '';
             for (const ne of NORMATIVAS_ETAPAS) {
               for (const et of ne.etapas) {
                 if (et.id === reqId) {
                   nombreLegible = `${ne.codigo} — ${et.nombre}`;
+                  normativaId = ne.normativaId;
                   break;
                 }
                 if (et.subetapas) {
                   const sub = et.subetapas.find(s => s.id === reqId);
                   if (sub) {
                     nombreLegible = `${ne.codigo} — ${sub.nombre}`;
+                    normativaId = ne.normativaId;
                     break;
                   }
                 }
               }
             }
             missing.push(`Requisito normativo pendiente: ${nombreLegible}`);
+            missingObjects.push({
+              type: 'compliance',
+              id: reqId,
+              subId: normativaId,
+              text: `Requisito normativo pendiente: ${nombreLegible}`
+            });
           }
         });
 
-        return { canComplete: missing.length === 0, missing };
+        return { canComplete: missing.length === 0, missing, missingObjects };
       },
 
       // ── Completar paso (con validación) ──
