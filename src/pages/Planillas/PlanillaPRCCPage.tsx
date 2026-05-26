@@ -164,11 +164,11 @@ const PlanillaPRCCPage = () => {
                                 </div>
                                 <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
                                     <div className="thumb-wrapper">
-                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <div className="thumb-box" />
                                         <span className="thumb-label">PULGAR DER.</span>
                                     </div>
                                     <div className="thumb-wrapper">
-                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <div className="thumb-box" />
                                         <span className="thumb-label">PULGAR IZQ.</span>
                                     </div>
                                 </div>
@@ -188,11 +188,11 @@ const PlanillaPRCCPage = () => {
                                 </div>
                                 <div className="fingerprint-row" style={{ 'marginTop': '4px', 'paddingTop': '4px' }}>
                                     <div className="thumb-wrapper">
-                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <div className="thumb-box" />
                                         <span className="thumb-label">PULGAR DER.</span>
                                     </div>
                                     <div className="thumb-wrapper">
-                                        <div className="thumb-box" style={{ 'height': '45px', 'width': '35px' }} />
+                                        <div className="thumb-box" />
                                         <span className="thumb-label">PULGAR IZQ.</span>
                                     </div>
                                 </div>

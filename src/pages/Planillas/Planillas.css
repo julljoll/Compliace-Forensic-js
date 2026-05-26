@@ -13,13 +13,13 @@
   --border-color: rgba(0, 0, 0, 0.08);
   --gray: rgba(0, 0, 0, 0.025);
 
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, sans-serif;
+  font-family: "Times New Roman", Georgia, "Times New Roman", serif;
   line-height: 1.3;
   color: var(--text);
   background: #F5F5F7;
   margin: 0;
   padding: 10px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .planilla-container * {
@@ -284,7 +284,7 @@
 
 .planilla-container .sig-box {
   flex: 1;
-  height: 48px;
+  height: 85px;
   border: 1px dashed var(--border);
   position: relative;
   display: flex;
@@ -300,13 +300,13 @@
 }
 
 .planilla-container .thumb-box {
-  width: 32px;
-  height: 36px;
+  width: 65px;
+  height: 85px;
   border: 1px dashed var(--border);
 }
 
 .planilla-container .thumb-label {
-  font-size: 6px;
+  font-size: 7.5px;
   color: var(--text-dim);
   text-align: center;
   font-weight: 600;
@@ -671,18 +671,18 @@
 
   .planilla-container .sig-box {
     border: 1px dashed #666 !important;
-    height: 30px !important;
+    height: 80px !important;
   }
 
   .planilla-container .thumb-box {
     border: 1px dashed #666 !important;
-    width: 28px !important;
-    height: 30px !important;
+    width: 60px !important;
+    height: 80px !important;
   }
 
   .planilla-container .thumb-label {
     color: #444 !important;
-    font-size: 5.5px !important;
+    font-size: 7px !important;
   }
 
   .planilla-container .sig-detail-card {

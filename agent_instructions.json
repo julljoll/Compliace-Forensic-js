@@ -15,16 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 21:50:59",
-      "last_commit": "dc1d83f - sas (2026-05-26)",
+      "timestamp": "2026-05-26 21:53:55",
+      "last_commit": "b3450f2 - sd (2026-05-26)",
       "modified_files": [
-        "M  .env.example",
         "M  agent_instructions.json",
-        "A  api/oauth/vercel.ts",
-        "M  src/App.tsx",
-        "A  src/pages/Auth/VercelCallback.tsx",
-        "M  src/pages/LoginPage.tsx",
-        "M  src/store/authStore.ts"
+        "M  src/pages/Planillas/PlanillaPRCCPage.tsx",
+        "M  src/pages/Planillas/Planillas.css"
       ]
     }
   },
