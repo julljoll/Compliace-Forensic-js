@@ -36,16 +36,34 @@
 
 /* Page base layouts */
 .planilla-container .page {
+    /* Variables de tema claro para la hoja de impresion blanca */
+    --primary-color: #937200; /* Oro oscuro para alto contraste sobre fondo blanco */
+    --text-color: #111111;
+    --text-muted: #555555;
+    --border-color: rgba(0, 0, 0, 0.15);
+    --gray-light: rgba(0, 0, 0, 0.04);
+
+    --primary: #937200;
+    --accent: #937200;
+    --success: #008020;
+    --warning: #d83b01;
+    --bg-card: rgba(0, 0, 0, 0.02);
+    --text-main: #111111;
+    --text-dim: #555555;
+    --text-bright: #111111;
+    --border: rgba(0, 0, 0, 0.15);
+
     width: 216mm; /* Legal width approx */
     min-height: 356mm; /* Legal height approx */
     padding: 12mm;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.03);
+    background: #ffffff;
+    color: #111111;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    backdrop-filter: none;
 }
 
 .planilla-container header {
@@ -121,7 +139,7 @@
     border: 1px solid var(--border-color);
     min-width: 60px;
     height: 25px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.02);
     vertical-align: middle;
     margin: 0 4px;
     border-radius: 4px;
@@ -155,7 +173,7 @@
     width: 15px;
     height: 15px;
     border: 1.5px solid var(--border-color);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.02);
     cursor: pointer;
     border-radius: 3px;
 }
@@ -185,13 +203,13 @@
 .planilla-container .form-nro { font-family: 'Roboto Mono', monospace; font-size: 13px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; }
 
 .planilla-container .signature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 5px; }
-.planilla-container .sig-card { border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.02); }
+.planilla-container .sig-card { border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.01); }
 .planilla-container .sig-row { display: flex; gap: 10px; margin-top: 8px; }
 .planilla-container .sig-box { flex: 1; height: 50px; border: 1px dashed var(--border-color); position: relative; display: flex; align-items: center; justify-content: center; }
 .planilla-container .thumb-box { width: 45px; height: 55px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--text-muted); text-align: center; }
 .planilla-container .sig-label { position: absolute; bottom: 2px; font-size: 6px; color: var(--text-muted); text-transform: uppercase; }
 
-.planilla-container .anexo-derivacion { border: 2px solid var(--primary-color); padding: 10px; border-radius: 6px; margin-top: 15px; background: rgba(255, 255, 255, 0.02); }
+.planilla-container .anexo-derivacion { border: 2px solid var(--primary-color); padding: 10px; border-radius: 6px; margin-top: 15px; background: rgba(0, 0, 0, 0.01); }
 .planilla-container .anexo-header { font-weight: 800; font-size: 11px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 8px; text-transform: uppercase; }
 
 .planilla-container .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(254, 207, 6, 0.05); font-weight: 900; pointer-events: none; z-index: 0; }

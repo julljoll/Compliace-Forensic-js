@@ -210,27 +210,39 @@ body {
 
     /* Form and Planilla Elements */
     .section-title {
-      @apply bg-white/[0.05] py-1.5 px-2.5 text-[11px] font-bold uppercase border-l-4 border-fluent-accent mb-2.5;
+      background-color: var(--gray-light);
+      border-left: 4px solid var(--primary-color);
+      color: var(--text-color);
+      @apply py-1.5 px-2.5 text-[11px] font-bold uppercase mb-2.5;
     }
 
     .form-group {
-      @apply border border-white/10 p-2 rounded mb-1 bg-white/[0.02];
+      border: 1px solid var(--border-color);
+      background-color: var(--gray-light);
+      @apply p-2 rounded mb-1;
     }
 
     .label {
-      @apply text-[8px] font-bold text-fluent-text-muted uppercase mb-[5px];
+      color: var(--text-muted);
+      @apply text-[8px] font-bold uppercase mb-[5px];
     }
 
     .value {
-      @apply text-sm min-h-[25px] border-b border-dotted border-white/20;
+      color: var(--text-color);
+      border-bottom: 1px dotted var(--border-color);
+      @apply text-sm min-h-[25px];
     }
 
     .evidence-table {
       @apply w-full border-collapse;
       td {
-        @apply border border-white/10 py-2 px-3 text-[11px] h-[35px];
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        @apply py-2 px-3 text-[11px] h-[35px];
         &:first-child {
-          @apply w-[30%] font-semibold bg-white/[0.05] uppercase text-[9px] text-fluent-accent;
+          background-color: var(--gray-light);
+          color: var(--primary-color);
+          @apply w-[30%] font-semibold uppercase text-[9px];
         }
       }
     }
@@ -238,24 +250,32 @@ body {
     .transfer-table {
       @apply w-full border-collapse mt-[5px];
       td {
-        @apply border border-white/10 p-1.5 text-xs align-top;
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+        @apply p-1.5 text-xs align-top;
       }
     }
 
     .transfer-header {
-      @apply bg-white/[0.05] font-bold text-[8px] uppercase text-fluent-accent;
+      background-color: var(--gray-light);
+      color: var(--primary-color);
+      @apply font-bold text-[8px] uppercase;
     }
 
     .sig-box {
-      @apply text-center border-t border-fluent-text-muted/50 pt-[5px];
+      border-top: 1px solid var(--border-color);
+      color: var(--text-color);
+      @apply text-center pt-[5px];
     }
 
     .sig-label {
-      @apply font-bold text-[10px] text-fluent-accent;
+      color: var(--primary-color);
+      @apply font-bold text-[10px];
     }
 
     .sig-sub {
-      @apply text-[9px] text-fluent-text-muted mt-0.5;
+      color: var(--text-muted);
+      @apply text-[9px] mt-0.5;
     }
 
     /* Timeline Elements */

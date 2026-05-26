@@ -15,12 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 18:39:38",
-      "last_commit": "4204e85 - Create Manual Serverless page under Sistema section and add routing (2026-05-26)",
+      "timestamp": "2026-05-26 18:46:51",
+      "last_commit": "9783d7f - Configure auto-update hooks and scripts for agent_instructions.json (2026-05-26)",
       "modified_files": [
         "M agent_instructions.json",
-        "M  package.json",
-        "A  scripts/update-agent-instructions.js"
+        "M  src/index.css",
+        "M  src/pages/Planillas/Planillas.css"
       ]
     }
   },
