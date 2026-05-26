@@ -68,8 +68,15 @@ export default function CMSLayout() {
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
       <aside className="print:hidden w-[260px] fluent-mica border-r border-white/5 shadow-2xl flex flex-col shrink-0">
 
+        {/* macOS Window Controls */}
+        <div className="px-5 pt-4 pb-1.5 flex items-center gap-1.5 print:hidden select-none">
+          <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] block" />
+          <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] block" />
+          <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] block" />
+        </div>
+
         {/* Branding */}
-        <div className="p-5 flex items-center justify-between">
+        <div className="p-5 pt-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256 Logo" className="w-8 h-8 drop-shadow-lg" />
             <div>

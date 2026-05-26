@@ -75,52 +75,85 @@ body {
 }
 
 @layer components {
-  /* Fluent UI Components */
+  /* macOS Sonoma UI Components */
   .fluent-mica {
-    @apply bg-white/80 backdrop-blur-[50px] border border-fluent-border relative overflow-hidden;
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, transparent 100%);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+    background-color: rgba(246, 246, 246, 0.72) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: none !important;
   }
 
   .fluent-acrylic {
-    @apply bg-white/60 backdrop-blur-[30px] border border-fluent-border shadow-[0_8px_32px_rgba(0,0,0,0.03)];
+    background-color: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
   }
 
   .fluent-card {
-    @apply bg-white border border-fluent-border rounded-xl transition-all duration-150 ease-out hover:bg-fluent-surfaceHover hover:border-black/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.03)];
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.015) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .fluent-card:hover {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03), 0 12px 24px rgba(0, 0, 0, 0.02) !important;
   }
 
   .fluent-btn {
-    @apply px-4 py-2 rounded-lg font-medium text-sm transition-all duration-150 active:scale-[0.98] outline-none flex items-center justify-center gap-2;
+    @apply px-3.5 py-1.5 rounded-md font-medium text-xs transition-all duration-150 active:scale-[0.98] outline-none flex items-center justify-center gap-2;
   }
 
   .fluent-btn-primary {
-    @apply bg-fluent-accent text-white hover:bg-fluent-accent/90 border border-transparent shadow-[0_2px_4px_rgba(0,113,227,0.12)];
+    background: linear-gradient(180deg, #0078F2 0%, #0071E3 100%) !important;
+    border: 1px solid #0067cf !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  }
+  .fluent-btn-primary:hover {
+    background: linear-gradient(180deg, #1485f7 0%, #0078F2 100%) !important;
   }
 
   .fluent-btn-secondary {
-    @apply bg-white border border-fluent-border text-fluent-text hover:bg-fluent-surfaceHover;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    color: #1D1D1F !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  }
+  .fluent-btn-secondary:hover {
+    background: #fafafa !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
   }
 
   .fluent-input {
-    @apply w-full text-sm bg-white border border-fluent-border rounded-lg py-2 px-3 hover:border-black/20 transition-all outline-none;
+    @apply w-full text-xs bg-white border border-black/15 rounded-md py-1.5 px-3 transition-all outline-none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04) !important;
   }
   .fluent-input:focus {
-    background-color: #ffffff;
-    border-color: var(--fluent-accent);
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+    background-color: #ffffff !important;
+    border-color: var(--fluent-accent) !important;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.04) !important;
   }
 
   .fluent-label {
-    @apply block text-xs font-semibold text-fluent-text-muted mb-1.5;
+    @apply block text-[10px] font-bold text-fluent-text-muted mb-1;
   }
 
   .fluent-sidebar-item {
-    @apply flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative;
+    @apply flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-100 text-[#444444] hover:bg-black/5 hover:text-fluent-text relative text-xs font-medium;
   }
 
   .fluent-sidebar-item-active {
-    @apply bg-[#E8E8ED] text-[#1D1D1F] font-semibold before:content-[''] before:absolute before:left-[-4px] before:top-2 before:bottom-2 before:w-1 before:bg-fluent-accent before:rounded-full;
+    background-color: var(--fluent-accent) !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+  }
+  .fluent-sidebar-item-active svg {
+    color: #ffffff !important;
   }
 
   /* ── CMS Custom Styles ── */
@@ -150,44 +183,50 @@ body {
 
   /* ── Forensic Module Styles (Layout.tsx / HomePage.tsx) ── */
   .forensic-card {
-    @apply bg-white border border-fluent-border rounded-xl transition-all duration-150 ease-out hover:bg-fluent-surfaceHover hover:border-black/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.03)];
+    @apply fluent-card p-4 md:p-5;
   }
 
   .forensic-btn {
-    @apply px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-150 active:scale-[0.98] outline-none inline-flex items-center justify-center gap-2;
+    @apply fluent-btn;
   }
 
   .forensic-btn-primary {
-    @apply bg-fluent-accent text-white hover:bg-fluent-accent/90 border border-transparent shadow-[0_2px_4px_rgba(0,113,227,0.12)];
+    @apply fluent-btn-primary;
   }
 
   .forensic-btn-secondary {
-    @apply forensic-btn bg-white border border-fluent-border text-fluent-text hover:bg-fluent-surfaceHover;
+    @apply fluent-btn-secondary;
   }
 
   .forensic-input {
-    @apply w-full text-sm bg-white border border-fluent-border rounded-lg py-2 px-3 hover:border-black/20 transition-all outline-none;
+    @apply fluent-input;
   }
   .forensic-input:focus {
-    background-color: #ffffff;
-    border-color: var(--fluent-accent);
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+    @apply fluent-input;
   }
 
   .forensic-label {
-    @apply block text-xs font-semibold text-fluent-text-muted mb-1.5;
+    @apply fluent-label;
   }
 
   .acrylic-panel {
-    @apply bg-white/60 backdrop-blur-[30px] border-r border-fluent-border;
+    background-color: rgba(246, 246, 246, 0.72) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
   }
 
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-3 rounded-md transition-all duration-100 text-fluent-text-muted hover:bg-fluent-surfaceHover hover:text-fluent-text relative text-sm font-medium;
+    @apply flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-100 text-[#444444] hover:bg-black/5 hover:text-fluent-text relative text-xs font-medium;
   }
 
   .nav-item-active {
-    @apply bg-fluent-surface text-fluent-text font-semibold;
+    background-color: var(--fluent-accent) !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+  }
+  .nav-item-active svg {
+    color: #ffffff !important;
   }
 
   .breadcrumb-item {

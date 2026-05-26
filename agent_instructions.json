@@ -15,12 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 18:53:00",
-      "last_commit": "6e86b83 - Configure sheets (planillas) to render on white background with high-contrast styles (2026-05-26)",
+      "timestamp": "2026-05-26 18:59:26",
+      "last_commit": "9524a6d - Implement Apple-style Light Mode with refined contrasts and Gestalt spacing rules (2026-05-26)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  src/index.css",
-        "M  src/pages/Planillas/Planillas.css"
+        "M  src/components/templates/CMSLayout.tsx",
+        "M  src/components/templates/Layout.tsx",
+        "M  src/index.css"
       ]
     }
   },

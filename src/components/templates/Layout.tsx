@@ -96,7 +96,14 @@ export default function Layout() {
         className="w-72 acrylic-panel flex-col shrink-0 shadow-2xl print:hidden flex"
         aria-label="Navegación principal"
       >
-        <div className="p-8 pb-4">
+        {/* macOS Window Controls */}
+        <div className="px-8 pt-6 pb-2 flex items-center gap-1.5 print:hidden select-none">
+          <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] block" />
+          <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] block" />
+          <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] block" />
+        </div>
+
+        <div className="p-8 pt-2 pb-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <img src="/favicon.svg" alt="SHA256.US Logo" className="w-9 h-9 drop-shadow-lg" />
