@@ -4,7 +4,7 @@ import { indexedDBStorage } from '../db/indexedDB';
 import {
   Mail, Shield, CheckCircle2, Circle, Clock, User,
   FileText, Printer, AlertTriangle,
-  Hash, Fingerprint, Lock, Eye, Archive
+  Hash, Fingerprint, Lock, Eye, Archive, Search
 } from '../components/atoms/AppleIcon';
 
 interface StepLog {
@@ -121,7 +121,6 @@ const PASOS_FIJOS = [
   },
 ];
 
-function Search(props: any) { return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>; }
 
 export default function CorreoForensePage() {
   const [casoId, setCasoId] = useState('');
