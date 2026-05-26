@@ -1,16 +1,33 @@
 {
+  "meta": {
+    "version": "2.0.0",
+    "updated": "2026-05-26",
+    "sources": [
+      "RAG/manual-procedimiento.yaml",
+      "RAG/arquitectura_cadena_custodia.yaml",
+      "RAG/arquitectura_sitio.yaml",
+      "RAG/proceso-desarrollo-forense.yaml",
+      "RAG/manual_unico_unificado.yaml",
+      "RAG/Formato_Planilla_PRCC.yaml",
+      "RAG/Formato_acta_consignacion.yaml",
+      "RAG/Skill_electron.yaml",
+      "skill_avilla.md",
+      "RAG/skill_claude.json"
+    ]
+  },
   "project": {
     "name": "SHA256.US",
-    "description": "CMS de Cumplimiento Normativo para procesos de peritaje digital y control técnico-forense en dispositivos móviles.",
-    "role": "El asistente IA debe comportarse como un Programador Senior y un Diseñador UX/UI Senior de nivel premium.",
-    "design_system": "Atomic Design (atoms, molecules, organisms, templates, pages) y Fluent Design (Microsoft design system).",
+    "description": "Sistema CMS de Cumplimiento Normativo para procesos de peritaje digital y control técnico-forense en dispositivos móviles.",
+    "role": "El asistente IA debe actuar como un Programador Senior y Diseñador UX/UI Senior de nivel premium para expandir y dar mantenimiento a la plataforma.",
+    "design_system": "Atomic Design (atoms, molecules, organisms, templates, pages) y Fluent Design (Microsoft design system) con enfoque estricto en Desktop-First.",
     "tech_stack": {
       "frontend": "React 19 + TypeScript",
       "bundler": "Vite",
       "styles": "TailwindCSS + Vanilla CSS (Mica, Glassmorphism, Bordes sutiles)",
       "state_management": "Zustand (cmsStore.ts, forenseStore.ts, authStore.ts, auditStore.ts)",
       "database": "Neon PostgreSQL (sincronización remota) + IndexedDB (almacenamiento local offline-first)",
-      "pwa": "Vite PWA Plugin (operable totalmente sin conexión)"
+      "pwa": "Vite PWA Plugin (operabilidad completa sin conexión)",
+      "desktop_runtime": "Electron 28.0.0"
     }
   },
   "guidelines": {
@@ -18,109 +35,538 @@
       "Priorizar estética premium con wow-factor, tema oscuro estricto (fondo #181818, sidebar #141721).",
       "Aplicar efectos de Glassmorphism (fluent-mica, fluent-acrylic, fluent-card) con bordes suaves de 1px (white/5 o white/10) y gradients discretos.",
       "Usar iconos consistentes importados de Lucide React.",
-      "Añadir transiciones suaves (fade-in, transformaciones hover rápidas de 100-150ms).",
+      "Añadir transiciones suaves (fade-in, transformaciones hover rápidas de 100-150ms) usando curvas cúbicas: cubic-bezier(0.1, 0.9, 0.2, 1).",
       "Mantener tipografía moderna con Segoe UI Variable o Inter.",
-      "Asegurar soporte de impresión ('@media print') limpio, convirtiendo colores a blanco y negro, ocultando elementos del menú (clase no-print) y ajustando layouts a tamaño Carta/Oficio."
+      "Asegurar soporte de impresión ('@media print') limpio, convirtiendo colores a blanco y negro, ocultando elementos del menú (clase no-print) y ajustando layouts a tamaño Carta/Oficio.",
+      "Establecer la geometría de bordes redondeados: botones 4px, inputs 4px, cards 12px (0.75rem), scrollbars 9999px.",
+      "Utilizar una elevación consistente mediante sombras: default (0 4px 8px 0 rgba(0,0,0,0.2)), elevated (0 8px 16px 0 rgba(0,0,0,0.2)), button (0 1px 2px rgba(0,0,0,0.14))."
     ],
     "architecture": [
-      "Adherirse estrictamente a la estructura de Atomic Design en src/components/:",
-      "  - atoms/ (Toast, ErrorBoundary, botones e inputs básicos)",
-      "  - molecules/ (KpiCard, NormativaAccordion, badges enriquecidos)",
-      "  - organisms/ (Casos, Compliance, Laboratorio, Obtencion, Prcc, DisposicionFinal, DisposicionJudicial, MarcoLegal)",
-      "  - templates/ (Layout layouts estructurales globales)",
-      "Las vistas de enrutamiento se ubican en src/pages/ para mantener limpia la resolución de rutas de Vite.",
-      "Toda lógica de almacenamiento local e IndexedDB debe interactuar limpiamente con la simulación PWA (window.electronAPI en src/main.tsx)."
+      "Adherirse estrictamente a la estructura de Atomic Design en src/components/ (atoms, molecules, organisms, templates).",
+      "Las vistas de enrutamiento y páginas principales se ubican exclusivamente en src/pages/.",
+      "Toda comunicación con herramientas externas o almacenamiento del sistema de archivos debe pasar por el bridge seguro de Electron (preload/IPC) usando el objeto window.electronAPI.",
+      "Optimizar para entornos de escritorio (Desktop-First), suprimiendo elementos innecesarios de interfaces móviles como el menú hamburguesa o layouts colapsables en móviles."
     ],
     "business_logic": [
-      "El sistema NO es una herramienta de análisis directo; funciona como un CMS para controlar y auditar el proceso técnico.",
-      "Cadena de custodia inmutable: cada log crítico se registra en auditStore.ts aplicando un Hash Chain SHA-256 (hashActual = sha256(accion|detalle|usuario|timestamp|lastHash)).",
-      "Gating secuencial: un paso forense no puede marcarse como completado si tiene tareas técnicas o requisitos de compliance pendientes (verificado mediante verifyStepCompletion() en cmsStore.ts)."
-    ],
-    "forensic_procedure_venezuela": {
-      "fases": {
-        "1_obtencion": {
-          "nombre": "Fase de Obtención",
-          "modalidades": "Consignación (prioritaria por entrega voluntaria) y Técnica (sitio del suceso).",
-          "acciones": [
-            "Registrar identidad exacta del consignante (Cédula de Identidad y datos de contacto).",
-            "Registrar datos completos del dispositivo (Marca, Modelo, IMEI 1 y 2, número de línea, operadora, accesorios, porcentaje de batería y daños visibles).",
-            "Protección de radiofrecuencias: activar Modo Avión o resguardar en Bolsa Faraday inmediatamente.",
-            "Generar Acta de Obtención por Consignación y reportar fijación fotográfica técnica."
-          ]
-        },
-        "2_peritaje": {
-          "nombre": "Fase de Laboratorio / Peritaje",
-          "acciones": [
-            "Recepción en laboratorio y verificación de precintos.",
-            "Recálculo de hashes originales para validar inalterabilidad.",
-            "Ejecución de extracción y análisis con herramientas forenses (Andriller, ALEAPP).",
-            "Registro riguroso en la Planilla de Registro de Cadena de Custodia (PRCC)."
-          ]
-        },
-        "3_disposicion_judicial": {
-          "nombre": "Fase de Disposición Judicial",
-          "acciones": [
-            "Resguardo en áreas especializadas del Poder Judicial.",
-            "Preparación de Acta de Exhibición de Evidencias en audiencia de juicio."
-          ]
-        },
-        "4_disposicion_final": {
-          "nombre": "Fase de Disposición Final y Cierre",
-          "modalidades": "Devolución (restitución autorizada), Entrega (terceros legales) o Destrucción (inutilización judicial).",
-          "acciones": [
-            "Ejecutar y documentar en Acta de Disposición Final.",
-            "Asentar el cierre final en la Planilla de Cadena de Custodia (PRCC)."
+      "Regla 1: El flujo de pasos del procedimiento forense es estrictamente lineal. El paso N+1 solo se habilita cuando el paso N está completado y guardado en la base de datos.",
+      "Regla 2: Los hashes SHA-256 deben mostrarse completos (64 caracteres hexadecimales). Si hay discrepancia entre el hash de origen y el hash de copia, mostrar una alerta roja crítica en la UI y bloquear el avance al siguiente paso.",
+      "Regla 3: Toda operación que acceda a herramientas externas como Andriller o ALEAPP debe ejecutarse de forma asíncrona mediante QProcess (o spawn de Node.js) sin bloquear el hilo principal de la aplicación.",
+      "Regla 4: Todos los timestamps de la cadena de custodia se almacenan en formato UTC (ISO 8601) y se transforman a UTC-4 (América/Caracas) al ser visualizados en la interfaz de usuario.",
+      "Regla 5: El número IMEI debe validarse mediante el algoritmo de Luhn (15 dígitos).",
+      "Regla 6: El log de trazabilidad (audit_log) es estrictamente inmutable (solo INSERT, no UPDATE ni DELETE). Cada registro debe contener el hash criptográfico del registro inmediatamente anterior.",
+      "Regla 7: Las conclusiones redactadas en el dictamen pericial deben limitarse exclusivamente a un juicio técnico-científico, sin incluir precalificaciones jurídicas ni pronunciamiento de culpabilidad. Mostrar una advertencia explícita en la interfaz.",
+      "Regla 8: La aplicación debe poder gestionar múltiples casos simultáneamente a través de un selector de caso activo en el dashboard.",
+      "Regla 9: Las rutas ejecutables de herramientas forenses externas (Andriller, ALEAPP) y los directorios de almacenamiento de casos deben ser configurables mediante un panel de ajustes (no harcodear rutas).",
+      "Regla 10: Todos los formularios legales (PRCC, Acta de Consignación, etc.) deben contar con una funcionalidad de vista previa e impresión a PDF usando reportlab (Python) o impresión directa del navegador con estilos CSS de impresión optimizados."
+    ]
+  },
+  "forensic_procedure": {
+    "fases": {
+      "1_obtencion": {
+        "nombre": "Fase Inicial - Obtención",
+        "descripcion": "Fase génesis donde se localiza, protege y asegura la evidencia física o digital para su incorporación a la cadena de custodia.",
+        "modalidades": [
+          {
+            "tipo": "Obtención por Consignación",
+            "prioridad": "Alta",
+            "definicion": "Cuando el propietario o poseedor legítimo entrega de forma voluntaria el dispositivo móvil al organismo de investigación penal.",
+            "pasos_operativos": [
+              "Verificar y registrar la identidad exacta de quien consigna (Cédula de Identidad, nombres, apellidos, teléfono, dirección).",
+              "Documentar y detallar el motivo que origina la consignación voluntaria.",
+              "Registrar las características técnicas del dispositivo (marca, modelo, seriales de IMEI, número de línea, operadora, accesorios, porcentaje de batería, estado de la pantalla y daños físicos visibles).",
+              "Ejecutar la fijación escrita (Acta de Obtención por Consignación) y fijación fotográfica del estado del dispositivo (pantalla, puertos, seriales)."
+            ]
+          },
+          {
+            "tipo": "Obtención Técnica",
+            "prioridad": "Media",
+            "definicion": "Cuando personal especializado acude al sitio del suceso o ubicación física de la evidencia mediante técnicas de campo.",
+            "pasos_operativos": [
+              "Protección Técnica: delimitar y acordonar el área para evitar alteraciones.",
+              "Observación Preliminar: evaluar las condiciones físicas y climáticas del sitio e identificar las evidencias.",
+              "Fijación: documentar el lugar mediante métodos escritos, fotográficos y planimétricos.",
+              "Colección: recoger la evidencia utilizando métodos directos o instrumentales idóneos.",
+              "Embalaje y Rotulación: acondicionar de forma aislada la evidencia con sellado inviolable y etiqueta de identificación única.",
+              "Registro en PRCC: ingresar los datos del colector, fecha, hora y descripción detallada en la Planilla de Registro de Cadena de Custodia.",
+              "Traslado: transportar la evidencia al área de resguardo o laboratorio criminalístico."
+            ]
+          },
+          {
+            "tipo": "Obtención por Aseguramiento",
+            "prioridad": "Media",
+            "definicion": "Toma de posesión y control de evidencias digitales o físicas mediante órdenes judiciales, decomisos o allanamientos."
+          },
+          {
+            "tipo": "Obtención por Derivación",
+            "prioridad": "Baja",
+            "definicion": "Generación de una nueva evidencia a partir del análisis forense de una evidencia matriz o principal.",
+            "modalidades_derivacion": [
+              "Por Separación: la nueva evidencia es de diferente naturaleza que la principal.",
+              "Por Segmentación: división física o lógica de la evidencia principal.",
+              "Por Selección: discriminación de archivos específicos relevantes para un peritaje especializado."
+            ]
+          }
+        ],
+        "checklist_compliance": [
+          "¿Se verificó y registró la Cédula de Identidad del consignante?",
+          "¿El dispositivo fue aislado de radiofrecuencias inmediatamente (Modo Avión / Bolsa Faraday)?",
+          "¿Se documentó detalladamente el estado físico del dispositivo y de la batería?",
+          "¿Se capturaron las fijaciones fotográficas requeridas (frontal, trasera, laterales, IMEI)?",
+          "¿Se redactó y firmó el Acta de Obtención por Consignación?",
+          "¿Se inició la Planilla de Registro de Cadena de Custodia (PRCC) asignando su numeración única?"
+        ],
+        "campos_formulario": {
+          "datos_consignante": [
+            "nombre_completo",
+            "cedula_identidad",
+            "telefono_contacto",
+            "direccion_domicilio",
+            "relacion_con_caso"
+          ],
+          "datos_dispositivo": [
+            "marca",
+            "modelo",
+            "imei_1",
+            "imei_2",
+            "numero_telefonico",
+            "estado_fisico_detalles",
+            "estado_pantalla",
+            "porcentaje_bateria",
+            "accesorios_entregados",
+            "modo_aislamiento"
           ]
         }
       },
-      "marco_legal": [
-        "COPP Artículo 187: Establece las formalidades y obligatoriedad del Registro de Cadena de Custodia (PRCC).",
-        "COPP Artículo 188: Regula el resguardo de evidencias físicas y digitales.",
-        "Ley de Mensajes de Datos y Firmas Electrónicas Artículos 4 y 8: Otorga al mensaje de datos la misma eficacia probatoria que a la firma y al documento escrito.",
-        "Ley Especial contra Delitos Informáticos (LEDI-2001): Tipifica los delitos cibernéticos y el acceso indebido a sistemas."
+      "2_laboratorio": {
+        "nombre": "Fase de Laboratorio - Peritación",
+        "descripcion": "Fase técnica intermedia destinada al análisis pericial y científico de las evidencias recibidas.",
+        "procesos": [
+          {
+            "paso": "Recepción en Laboratorio",
+            "acciones": [
+              "Inspeccionar visualmente el estado de los precintos y sellos de seguridad del embalaje.",
+              "Recalcular el hash de integridad de la evidencia y compararlo con el valor documentado en la PRCC original.",
+              "Validar la correspondencia de los datos del embalaje y la PRCC con el oficio de remisión."
+            ],
+            "norma": "ISO/IEC 27042:2015"
+          },
+          {
+            "paso": "Designación de Perito",
+            "acciones": [
+              "Registrar formalmente el ingreso en el sistema del laboratorio.",
+              "Asignar al perito especialista según la naturaleza de la evidencia.",
+              "Estampar la firma del director del laboratorio y del perito en la PRCC."
+            ]
+          },
+          {
+            "paso": "Peritaje Técnico",
+            "etapas": [
+              "Valoración: análisis del contexto forense y planificación de técnicas no destructivas.",
+              "Descripción: registro detallado del estado externo y características del dispositivo.",
+              "Análisis: aplicación de herramientas autorizadas (extracciones lógicas/físicas con Andriller, parseo con ALEAPP).",
+              "Interpretación: evaluación de los archivos y eventos extraídos (timelines, logs de chat).",
+              "Conclusión: redacción de conclusiones técnico-científicas objetivas y fundamentadas."
+            ]
+          },
+          {
+            "paso": "Remisión de Resultados",
+            "acciones": [
+              "Elaborar el Dictamen Pericial firmado y sellado.",
+              "Remitir el dictamen junto con la evidencia original y la PRCC al despacho judicial solicitante.",
+              "Asentar detalladamente la entrega en el apartado de transferencia de la PRCC."
+            ]
+          }
+        ],
+        "checklist_compliance": [
+          "¿Los precintos de seguridad estaban intactos al recibir el embalaje?",
+          "¿Coincide el hash recalculado con el hash registrado en la obtención?",
+          "¿Se especificó la versión exacta de Andriller y ALEAPP en el peritaje?",
+          "¿El dictamen carece de juicios de precalificación jurídica?",
+          "¿El perito y el receptor firmaron y estamparon su huella en la transferencia de la PRCC?"
+        ]
+      },
+      "3_disposicion_judicial": {
+        "nombre": "Fase de Disposición Judicial",
+        "descripcion": "Presentación, valoración y exhibición de las evidencias ante el tribunal durante el desarrollo del proceso penal.",
+        "procesos": [
+          {
+            "nombre": "Resguardo Judicial",
+            "detalles": "Almacenamiento y custodia en las áreas de depósito de evidencias del Poder Judicial, manteniendo los controles ambientales y de seguridad física."
+          },
+          {
+            "nombre": "Exhibición en Audiencia",
+            "detalles": "Presentación de la evidencia en el juicio oral y público. Requiere verificar la correspondencia del precinto y la PRCC en presencia de las partes del proceso.",
+            "documento_requerido": "Acta de Exhibición de Evidencias"
+          }
+        ],
+        "checklist_compliance": [
+          "¿Se registró la fecha, hora y funcionario responsable del traslado al tribunal?",
+          "¿El juez, el fiscal y la defensa constataron la integridad de los precintos en sala?",
+          "¿Se firmó el Acta de Exhibición de Evidencias?"
+        ]
+      },
+      "4_disposicion_final": {
+        "nombre": "Fase de Disposición Final - Cierre",
+        "descripcion": "Fase de culminación que determina el destino definitivo de la evidencia física o digital una vez finalizado el proceso legal.",
+        "modalidades_cierre": [
+          {
+            "tipo": "Devolución",
+            "descripcion": "Restitución de la evidencia a su propietario legítimo previa orden del juez."
+          },
+          {
+            "tipo": "Entrega",
+            "descripcion": "Otorgamiento de la posesión de la evidencia a una persona jurídica o institución autorizada."
+          },
+          {
+            "tipo": "Destrucción",
+            "descripcion": "Inutilización física de la evidencia por no poseer interés criminalístico ni valor legal, bajo supervisión y acta oficial."
+          },
+          {
+            "tipo": "Consumida en Peritaje",
+            "descripcion": "Cuando la evidencia se agota o altera de forma irreversible durante el análisis de laboratorio."
+          }
+        ],
+        "pasos_cierre": [
+          "Registrar el destino final ordenado mediante oficio o sentencia judicial firme.",
+          "Llenar y firmar el Acta de Disposición Final de Evidencias con presencia de testigos.",
+          "Completar el apartado de cierre de la PRCC, indicando fecha, hora, motivo del cierre y firma del funcionario responsable.",
+          "Archivar la PRCC original en el expediente judicial de la causa."
+        ],
+        "checklist_compliance": [
+          "¿Existe una orden judicial por escrito que ordene la disposición final?",
+          "¿Se elaboró y firmó el Acta de Disposición Final?",
+          "¿Se asentó el cierre formal y observaciones en la PRCC original?"
+        ]
+      }
+    },
+    "figuras_continuas": {
+      "resguardo": {
+        "descripcion": "Procedimientos para proteger y conservar las evidencias en depósitos especiales durante cualquier etapa del proceso.",
+        "ingreso": "Verificación estricta de la PRCC, identificación del funcionario que entrega, toma de fotografía y asignación de ubicación física (Estante, Nivel, Caja).",
+        "deposito": "Almacenamiento seguro bajo condiciones controladas de temperatura, humedad, acceso restringido con bitácora e inventarios periódicos (máximo anual).",
+        "egreso": "Salida temporal o definitiva autorizada expresamente por escrito por el Fiscal o Tribunal competente, registrando los datos de quien recibe."
+      },
+      "traslado": {
+        "descripcion": "Transporte seguro de la evidencia minimizando riesgos de pérdida, alteración o deterioro.",
+        "lineamientos": [
+          "Inspeccionar el embalaje antes de iniciar el traslado.",
+          "Utilizar medios de transporte oficiales acondicionados.",
+          "Registrar detalladamente la ruta, hora de salida, hora de llegada y datos del conductor en la PRCC."
+        ]
+      },
+      "transferencia": {
+        "descripcion": "Acto formal de entrega y recepción de la evidencia física y su documentación.",
+        "lineamientos": [
+          "Examinar físicamente el estado de los precintos y el embalaje en presencia de ambas partes.",
+          "Cotejar los datos de identificación del rotulado con el registro de la PRCC.",
+          "Registrar firmas, nombres, cédulas de identidad, credenciales, fecha, hora y huellas dactilares de entrega y recepción."
+        ]
+      }
+    },
+    "marco_legal": {
+      "constitucion": [
+        "Art. 2: Estado democrático y social de Derecho y de Justicia.",
+        "Art. 48: Garantía de la privacidad y el secreto de las comunicaciones privadas (renuncia temporal solo bajo autorización expresa del titular o decisión judicial).",
+        "Art. 49: Garantías constitucionales del debido proceso y derecho a la defensa.",
+        "Art. 253: Composición del Sistema de Justicia penal venezolano.",
+        "Art. 285: Atribuciones del Ministerio Público en la dirección de la investigación penal."
+      ],
+      "copp": [
+        "Art. 187: Definición, obligatoriedad e inmutabilidad de la Cadena de Custodia de evidencias físicas y digitales.",
+        "Art. 188: Normativas para el resguardo e inventario de las evidencias en locales oficiales.",
+        "Art. 202: Obligatoriedad de aplicación de los manuales de procedimiento únicos en el tratamiento de evidencias.",
+        "Art. 283 a 289: Principios que rigen la licitud de la prueba en el proceso penal."
+      ],
+      "leyes_especiales": [
+        {
+          "nombre": "Ley Especial contra Delitos Informáticos (2001)",
+          "detalles": "Tipificación y sanción de delitos cometidos contra o mediante sistemas de tecnología de información."
+        },
+        {
+          "nombre": "Ley de Infogobierno (2013)",
+          "detalles": "Establece las normas para el uso seguro, válido y transparente de las tecnologías de información en la gestión pública."
+        },
+        {
+          "nombre": "Ley sobre Mensajes de Datos y Firmas Electrónicas (2001)",
+          "articulos": [
+            "Art. 4: Eficacia probatoria de los mensajes de datos.",
+            "Art. 7: Equivalencia del valor jurídico de la firma electrónica con la firma manuscrita.",
+            "Art. 8: Otorga al mensaje de datos la misma fuerza y eficacia que a un documento escrito."
+          ]
+        }
       ],
       "estandares_internacionales": [
-        "ISO/IEC 27037:2012: Directrices internacionales para la identificación, recopilación, adquisición y preservación de evidencia digital.",
-        "ISO/IEC 27042:2015: Directrices para el análisis forense e interpretación posterior de datos preservados.",
-        "NIST SP 800-101 r1: Guía metodológica para la preservación forense de dispositivos móviles."
+        {
+          "codigo": "ISO/IEC 27037:2012",
+          "titulo": "Directrices para la identificación, recopilación, adquisición y preservación de evidencia digital.",
+          "fases": ["Identificación", "Recopilación", "Adquisición", "Preservación"]
+        },
+        {
+          "codigo": "ISO/IEC 27042:2015",
+          "titulo": "Directrices para el análisis forense y la interpretación de evidencia digital.",
+          "fases": ["Preparación", "Examen", "Análisis", "Interpretación"]
+        },
+        {
+          "codigo": "NIST SP 800-101 r1",
+          "titulo": "Directrices y metodologías técnicas para la forensia en dispositivos móviles."
+        },
+        {
+          "codigo": "ACPO v5",
+          "titulo": "Guía de buenas prácticas de la Asociación de Jefes de Policía (Reino Unido) para el manejo de evidencias digitales."
+        }
       ]
     },
-    "avilla_forensics_integration": {
-      "context": "Avilla Forensics es una herramienta gratuita de forense móvil (Daniel Hubscher Avilla, Policía Civil SP, Feb 2021).",
-      "core_capabilities": {
-        "apk_downgrade": "Degrada aplicaciones (WhatsApp, Telegram, Signal, etc.) en dispositivos Android sin Root para acceder a la base de datos de datos en /data/data.",
-        "whatsapp_parser": {
-          "schemas": {
-            "nuevo_schema": "Tabla 'message' (campos: _id, chat_row_id, timestamp, text_data, message_type, sort_id).",
-            "antiguo_schema": "Tabla 'messages' (campos: _id, key_remote_jid, data, media_url, received_timestamp)."
-          },
-          "db_files": [
-            "msgstore.db (mensajes y chats de WhatsApp decodificados)",
-            "wa.db (contactos de WhatsApp y avatares)",
-            "avatars/ (fotos de contactos)"
-          ]
-        },
-        "opus_audio_transcription": "Transcripción automática de audios de WhatsApp en formato .opus integrados en reportes HTML.",
-        "kml_geopositioning": "Conversión de coordenadas y ubicaciones extraídas a archivos .kml para mapeo en Google Earth/Maps.",
-        "avilla_encryption": "Logs protegidos mediante cifrado AES-256 con firma HMAC bajo extensión '.avilla' para mitigar alteraciones externas."
+    "formatos_oficiales": {
+      "acta_consignacion": {
+        "secciones": [
+          "I. Datos del Solicitante y Autorización (Nombres, Cédula, Ciudad, Teléfono, Dirección Completa, texto de autorización expresa y renuncia voluntaria al secreto de las comunicaciones).",
+          "II. Descripción del Dispositivo (Marca, Modelo, Seriales, IMEI 1/2, color, detalles físicos).",
+          "III. Alcance de la Extracción (Aplicación objeto como WhatsApp, número específico de contacto, rango de fechas desde/hasta).",
+          "IV. Requerimientos Técnicos (Aislamiento de señal en modo avión, cálculo de algoritmo hash MD5/SHA256, firmas y huellas dactilares del solicitante y expertos forenses)."
+        ]
       },
-      "system_directories": {
-        "binarios": "C:\\Forensics\\bin\\",
-        "backup_extractor": "C:\\Forensics\\backup_extractor\\",
-        "descarga_free": "C:\\Avilla-Forensics-Free\\down\\",
-        "drive_virtual": "Z:\\bin\\"
+      "planilla_prcc": {
+        "secciones": [
+          "I. DATOS DEL CASO: Número de caso/expediente, fecha y hora de inicio, lugar de obtención de la evidencia, naturaleza del hecho, organismo remitente, dirección del organismo.",
+          "II. IDENTIFICACIÓN DEL FUNCIONARIO: Nombre completo, Cédula de Identidad, cargo, organismo de adscripción.",
+          "III. DESCRIPCIÓN DE LA EVIDENCIA (Tabla): N°, descripción, cantidad, marca, modelo, seriales, color, tipo de embalaje, número de precinto de seguridad, observaciones y estado físico.",
+          "IV. FORMA DE OBTENCIÓN: Casillas de verificación para Obtención Técnica, Aseguramiento, Consignación o Derivación.",
+          "V. TRANSFERENCIA DE EVIDENCIA: Motivo de transferencia (Traslado, Peritaje, Resguardo, Disposición Judicial, Disposición Final), fecha y hora, y subsecciones de Entrega y Recibe (nombres, organismo, despacho, credencial, firmas, huellas pulgares izquierda/derecha).",
+          "VI. OBSERVACIONES GENERALES Y NOTA LEGAL: Espacio para observaciones del estado de los embalajes y nota legal obligatoria: 'la planilla de Registro de Cadena de Custodia debe permanecer siempre con la evidencia, y sólo en original, desde el instante de su llenado en el lugar de obtención hasta la disposición final'."
+        ]
+      },
+      "dictamen_pericial": {
+        "estructura": [
+          "1. Motivo: justificación legal y técnica de la peritación.",
+          "2. Descripción de la evidencia: condiciones físicas de recepción y concordancia de precintos.",
+          "3. Exámenes practicados: metodologías aplicadas, versión de herramientas (Andriller, ALEAPP) y validación de integridad hash.",
+          "4. Resultados: tabla con archivos recuperados (nombre, fechas, tamaño, ruta, hash SHA-256 e interés criminalístico).",
+          "5. Conclusiones: dictamen técnico-científico directo, objetivo y sin valoraciones de precalificación penal.",
+          "6. Consumo de la evidencia: constancia de inalterabilidad o nivel de consumo/desgaste físico de la muestra."
+        ]
       }
     }
   },
+  "data_model": {
+    "entities": {
+      "CadenaCustodia": {
+        "descripcion": "Entidad principal que documenta e inicia el expediente técnico de control de evidencias.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "numero_actuacion (String, Único, Indexado, Formato: MP-YYYY-NNNN)",
+          "naturaleza_hecho (Enum, ej: DELITO_INFORMATICO)",
+          "fecha_hecho (DateTime)",
+          "lugar_hechos (Text)",
+          "coordenadas (GeoPoint, Opcional)",
+          "organismo_actuante_id (ForeignKey -> Organismo)",
+          "funcionario_responsable_id (ForeignKey -> Usuario)",
+          "tipo_obtencion (Enum: TECNICA, ASEGURAMIENTO, CONSIGNACION, DERIVACION)",
+          "fase_actual (Enum: INICIAL, LABORATORIO, JUDICIAL, DISPOSICION_FINAL)",
+          "estado (Enum: ACTIVA, CERRADA, ARCHIVADA)",
+          "fecha_creacion (DateTime, Automático)",
+          "fecha_cierre (DateTime, Nulo por defecto)",
+          "motivo_cierre (String, Nulo por defecto)"
+        ]
+      },
+      "Evidencia": {
+        "descripcion": "Representa cada uno de los elementos materiales o digitales asociados a la cadena de custodia.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "cadena_custodia_id (ForeignKey -> CadenaCustodia)",
+          "numero_evidencia (String, Único, Formato: EVD-YYYY-NNNN)",
+          "descripcion (Text)",
+          "cantidad (Integer, default: 1)",
+          "marca (String, Opcional)",
+          "modelo (String, Opcional)",
+          "numero_serie (String, Opcional)",
+          "color (String, Opcional)",
+          "peso_medida (String, Opcional)",
+          "tipo_embalaje (Enum: BOLSA_PAPEL, BOLSA_PLASTICA, SOBRE_EVIDENCIA, CAJA_CARTON, BOLSA_FARADAY, etc.)",
+          "precinto_sello (String, Único)",
+          "observaciones (Text, Opcional)",
+          "ubicacion_actual (String)",
+          "estado_conservacion (Enum: NUEVA, EN_PROCESO, EN_RESGUARDO, EN_LABORATORIO, DISPUESTA)",
+          "codigo_barras (String, Único)",
+          "fotos (Array de rutas de imágenes)"
+        ]
+      },
+      "EventoCadena": {
+        "descripcion": "Bitácora cronológica de sucesos asociados a la cadena de custodia.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "cadena_custodia_id (ForeignKey -> CadenaCustodia)",
+          "tipo_evento (Enum: CREACION, TRASLADO, RECEPCION_LAB, PERITAJE, DISPOSICION, etc.)",
+          "fecha_hora (DateTime)",
+          "descripcion (Text)",
+          "usuario_id (ForeignKey -> Usuario)",
+          "firma_digital (String)"
+        ]
+      },
+      "MovimientoEvidencia": {
+        "descripcion": "Registro detallado de los traslados y transferencias físicas de la evidencia.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "evidencia_id (ForeignKey -> Evidencia)",
+          "fecha_hora_salida (DateTime)",
+          "fecha_hora_llegada (DateTime, Opcional)",
+          "origen_tipo (Enum)",
+          "origen_id (UUID)",
+          "destino_tipo (Enum)",
+          "destino_id (UUID)",
+          "motivo (Enum: Peritaje, Resguardo, Audiencia, Devolución)",
+          "funcionario_responsable_id (ForeignKey -> Usuario)",
+          "estado (Enum: EN_TRANSITO, ENTREGADO)",
+          "observaciones (Text, Opcional)"
+        ]
+      },
+      "Peritaje": {
+        "descripcion": "Documenta la fase de peritación y análisis de la evidencia en el laboratorio.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "evidencia_id (ForeignKey -> Evidencia)",
+          "numero_lab (String, Único, Formato: LAB-YYYY-NNNN)",
+          "perito_designado_id (ForeignKey -> Usuario)",
+          "especialidad (Enum: INFORMATICA_FORENSE, etc.)",
+          "tipo_examen (Text)",
+          "metodologia (Text)",
+          "equipos_utilizados (Array de Strings)",
+          "resultados (Text)",
+          "conclusiones (Text)",
+          "fecha_designacion (DateTime)",
+          "fecha_elaboracion (DateTime, Opcional)",
+          "estado (Enum: PENDIENTE, EN_PROCESO, COMPLETADO)",
+          "informe_pdf (String, Ruta del archivo)"
+        ]
+      },
+      "Usuario": {
+        "descripcion": "Personal del sistema de justicia registrado en la plataforma.",
+        "campos": [
+          "id (UUID, Clave Primaria)",
+          "cedula (String, Única)",
+          "nombre (String)",
+          "apellido (String)",
+          "correo (String, Único)",
+          "cargo (String)",
+          "organismo_id (ForeignKey -> Organismo)",
+          "rol (Enum: ADMINISTRADOR_SISTEMA, FUNCIONARIO_ACTUANTE, PERITO, FISCAL, JUEZ, AUDITOR)",
+          "firma_digital (String, Opcional)",
+          "activo (Boolean, default: true)"
+        ]
+      }
+    },
+    "enums": {
+      "NaturalezaHecho": ["HOMICIDIO", "ROBO", "HURTO", "DROGA", "DELITO_INFORMATICO", "VIOLENCIA_GENERO", "ARMAS", "OTROS"],
+      "TipoObtencion": ["TECNICA", "ASEGURAMIENTO", "CONSIGNACION", "DERIVACION"],
+      "FaseCadena": ["INICIAL", "LABORATORIO", "JUDICIAL", "DISPOSICION_FINAL"],
+      "EstadoCadena": ["ACTIVA", "SUSPENDIDA", "CERRADA", "ARCHIVADA"],
+      "TipoEmbalaje": ["BOLSA_PAPEL", "BOLSA_PLASTICA", "SOBRE_EVIDENCIA", "CAJA_CARTON", "BOLSA_FARADAY", "CONTENEDOR_ESTEROIL", "FRASCO_VIDRIO", "OTRO"],
+      "TipoEvento": ["CREACION", "REGISTRO_EVIDENCIA", "TRASLADO", "INGRESO_RESGUARDO", "EGRESO_RESGUARDO", "RECEPCION_LABORATORIO", "DESIGNACION_PERITO", "PERITAJE_COMPLETADO", "EXHIBICION_AUDIENCIA", "DISPOSICION_FINAL", "CIERRE"],
+      "RolUsuario": ["ADMINISTRADOR_SISTEMA", "FUNCIONARIO_ACTUANTE", "PERITO", "ADMINISTRADOR_RESGUARDO", "FISCAL", "JUEZ", "AUDITOR"],
+      "EstadoEvidencia": ["NUEVA", "EN_PROCESO", "EN_RESGUARDO", "EN_LABORATORIO", "EN_AUDIENCIA", "DISPOSICION_PENDIENTE", "DISPUESTA"],
+      "EspecialidadPerito": ["BALISTICA", "BIOLOGIA_FORENSE", "QUIMICA_FORENSE", "DOCUMENTOSCOPIA", "INFORMATICA_FORENSE", "DACTILOSCOPIA", "FOTOGRAFIA_FORENSE", "TOXICOLOGIA"]
+    }
+  },
+  "avilla_forensics": {
+    "context": "Avilla Forensics es una suite de forense móvil gratuita y de código abierto desarrollada en C# orientada a la extracción lógica y bypass de bloqueos sin privilegios de Root.",
+    "modules": [
+      {"id": 1, "nombre": "Backup ADB", "descripcion": "Generación de backups estándar de Android mediante el protocolo ADB en modo lectura."},
+      {"id": 2, "nombre": "APK Downgrade", "descripcion": "Permite rebajar temporalmente la versión de más de 400 aplicaciones (WhatsApp, Telegram, Instagram, Signal, Tinder, etc.) en dispositivos Android (soportando Android 12, 13 y 14) para acceder a los directorios de base de datos en /data/data/ sin Root."},
+      {"id": 3, "nombre": "Parser de Chats WhatsApp", "descripcion": "Analiza las bases de datos de WhatsApp msgstore.db (mensajes) y wa.db (contactos) con soporte para dos esquemas (Esquema Nuevo: tabla 'message' con chat_row_id; Esquema Antiguo: tabla 'messages' con key_remote_jid), incorporando avatares y fotos de perfil."},
+      {"id": 4, "nombre": "Transcripción de Audios .opus", "descripcion": "Transcripción masiva de mensajes de voz en formato .opus integrados en el reporte HTML final del parser de WhatsApp."},
+      {"id": 5, "nombre": "Colectas ADB Misceláneas", "descripcion": "Extracción automatizada de reportes de texto (Dumpsys, tcp connections, cuentas de usuario, geolocalización de red, IMEI 1/2, número de serie, wifi logs, bluetooth logs y logs del sistema facial)."},
+      {"id": 6, "nombre": "Descifrado de Medios .ENC", "descripcion": "Localización y descifrado de archivos multimedia cifrados mediante scripts de Python integrados."},
+      {"id": 7, "nombre": "Búsqueda de Contactos Eliminados", "descripcion": "Búsqueda física en wa.db de registros de contactos borrados e inconsistencias en la base de datos."},
+      {"id": 8, "nombre": "Descifrado de Bases de Datos WhatsApp", "descripcion": "Descifrado de archivos cifrados Crypt14 y Crypt15 de WhatsApp mediante llaves de descifrado válidas."},
+      {"id": 9, "nombre": "Captura y Dump de Pantalla", "descripcion": "Generación de capturas de pantalla instantáneas y screen dump XML mediante comandos ADB en tiempo real."},
+      {"id": 10, "nombre": "Integración IPED", "descripcion": "Indexación y análisis forense automatizado mediante la integración con la suite IPED y IPEDTools."},
+      {"id": 11, "nombre": "Conversión .AB a .TAR", "descripcion": "Descompresión y conversión de backups de Android (.ab) a archivos tarball legibles (.tar) usando Java AB Extractor."},
+      {"id": 12, "nombre": "Fast Scan y Transferencia en Vivo", "descripcion": "Escaner rápido del sistema de archivos del dispositivo, extrayendo imágenes, audios, videos, documentos, bases de datos SQLite y ejecutables en tiempo real."},
+      {"id": 13, "nombre": "Image Finder & EXIF", "descripcion": "Extracción de metadatos geográficos (latitud/longitud) de imágenes y generación de archivos de coordenadas."},
+      {"id": 14, "nombre": "Plot de Geolocalización KML", "descripcion": "Generación de archivos geo.kml con puntos geográficos e imágenes en miniatura para su visualización en Google Earth Pro."},
+      {"id": 15, "nombre": "Calculadora de Hash", "descripcion": "Módulo de cálculo de firmas MD5, SHA-1, SHA-256, SHA-384 y SHA-512 de archivos y carpetas adquiridas."},
+      {"id": 16, "nombre": "Explorador de Carpetas Android", "descripcion": "Gestor de archivos ADB interactivo con soporte de PULL/PUSH de archivos."},
+      {"id": 17, "nombre": "Device Mirroring (scrcpy)", "descripcion": "Control e interacción visual con el dispositivo móvil mediante la integración del binario scrcpy."},
+      {"id": 18, "nombre": "Scraping de Instagram", "descripcion": "Recopilación automatizada de perfiles y publicaciones usando la herramienta Instaloader de Python."},
+      {"id": 19, "nombre": "Copia General Única", "descripcion": "Copia redundante y selectiva del sistema de archivos en caso de fallos del comando adb backup."},
+      {"id": 20, "nombre": "Herramientas Externas Integradas", "descripcion": "Accesos rápidos a JADX GUI (decompiler), WhatsApp Viewer y jExifToolGUI desde el menú principal."},
+      {"id": 21, "nombre": "Conversión CSV a KML", "descripcion": "Conversión masiva de registros de geoposicionamiento en CSV a ficheros KML."},
+      {"id": 22, "nombre": "Fusión de Bases de Datos", "descripcion": "Herramienta merge_databases para consolidar bases de datos fragmentadas de WhatsApp en un solo fichero."},
+      {"id": 23, "nombre": "Módulo de Extracción iOS", "descripcion": "Extracción y lectura básica de dispositivos de Apple utilizando la biblioteca nativa libimobiledevice."},
+      {"id": 24, "nombre": "Avilla App Full Extraction", "descripcion": "Extracción de datos específicos de cualquier app instalada en la partición DATA sin requerir Root ni APK Downgrade."},
+      {"id": 25, "nombre": "Adquisición Múltiple Simultánea", "descripcion": "Conexión y extracción paralela en múltiples dispositivos móviles conectados por USB."}
+    ],
+    "tools_integration": [
+      {"nombre": "ADB", "ruta": "C:\\Forensics\\bin\\adb.exe", "licencia": "Apache 2.0"},
+      {"nombre": "JADX GUI", "ruta": "C:\\Forensics\\bin\\jadx-1.2.0\\jadx-gui.exe", "licencia": "Apache 2.0"},
+      {"nombre": "Android Backup Extractor", "ruta": "C:\\Forensics\\bin\\abe.jar", "licencia": "Apache 2.0"},
+      {"nombre": "scrcpy", "ruta": "C:\\Forensics\\bin\\scrcpy\\scrcpy.exe", "licencia": "Apache 2.0"},
+      {"nombre": "libimobiledevice", "ruta": "Z:\\bin\\libimobiledevice\\", "licencia": "GNU GPL"},
+      {"nombre": "IPED", "ruta": "Z:\\bin\\iped\\", "licencia": "GNU GPL"},
+      {"nombre": "WhatsApp-Crypt-Decrypter", "ruta": "C:\\Forensics\\bin\\wa_decrypt.py", "licencia": "GNU GPL"},
+      {"nombre": "ALEAPP", "ruta": "C:\\Forensics\\bin\\aleapp\\", "licencia": "MIT"},
+      {"nombre": "WhatsApp Viewer", "ruta": "C:\\Forensics\\bin\\WhatsAppViewer.exe", "licencia": "MIT"}
+    ],
+    "system_directories": {
+      "binarios": "C:\\Forensics\\bin\\",
+      "backups": "C:\\Forensics\\backup_extractor\\",
+      "descargas": "C:\\Avilla-Forensics-Free\\down\\",
+      "drive_virtual": "Z:\\bin\\"
+    }
+  },
+  "security": {
+    "hash_chain": {
+      "descripcion": "Cadena criptográfica de trazabilidad para auditar todas las acciones del CMS de forma inmutable.",
+      "algoritmo": "SHA-256",
+      "formula": "hash_actual = SHA-256(fase || paso || accion || usuario || fecha_utc || hash_previo)"
+    },
+    "roles_rbac": {
+      "ADMINISTRADOR_SISTEMA": "Acceso total y configuración global de la plataforma.",
+      "FUNCIONARIO_ACTUANTE": "Creación de casos, llenado de PRCC inicial y Acta de Consignación.",
+      "PERITO": "Recepción técnica, ejecución de herramientas forenses, cálculo de hashes y redacción del dictamen pericial.",
+      "ADMINISTRADOR_RESGUARDO": "Control de depósitos de evidencias, asignación de ubicaciones, ingresos e inventario.",
+      "FISCAL": "Visualización global de casos, asignación de peritajes y solicitudes de disposición judicial o final.",
+      "JUEZ": "Revisión del cumplimiento de la cadena de custodia y emisión de órdenes judiciales de disposición (destrucción, entrega, devolución).",
+      "AUDITOR": "Acceso de lectura a las cadenas de custodia, bitácoras de auditoría e inmutabilidad del hash chain."
+    },
+    "encryption_specs": {
+      "data_at_rest": "AES-256-GCM para datos sensibles de casos y claves locales.",
+      "data_in_transit": "TLS 1.3 para comunicaciones cliente-servidor remotos.",
+      "signatures": "RSA-4096 / ECDSA P-384 para firmas digitales certificadas de funcionarios."
+    }
+  },
+  "electron_packaging": {
+    "config": {
+      "appId": "com.forense.android",
+      "productName": "Forense Android",
+      "directories": {
+        "output": "dist-electron"
+      },
+      "linux": {
+        "target": ["deb"],
+        "category": "Utility",
+        "maintainer": "Laboratorio Forense <forense@sha256.us>"
+      },
+      "dependencies": [
+        "python3 (>= 3.11)",
+        "andriller",
+        "aleapp"
+      ]
+    },
+    "build_process": [
+      "1. Compilar los archivos de TypeScript con 'tsc'.",
+      "2. Compilar los assets del frontend con 'vite build' para empaquetarlos en la carpeta /dist/.",
+      "3. Generar el instalador .deb usando 'electron-builder --linux deb' depositándolo en /dist-electron/."
+    ]
+  },
   "routing_rules": [
-    "La interfaz del CMS Compliance corre bajo la raíz '/' (ej: /casos, /control/seguimiento-compliance).",
-    "Los módulos operativos forenses específicos corren bajo '/forense/...' (ej: /forense/consignacion, /forense/prcc).",
+    "La interfaz del CMS Compliance corre bajo la raíz '/' (ej: /casos, /compliance, /normativas, /auditoria, /manual-avilla).",
+    "Los módulos operativos forenses específicos corren bajo la subruta '/forense/...' (ej: /forense/consignacion, /forense/prcc, /forense/adquisicion, /forense/analisis, /forense/informe, /forense/disposicion).",
     "La sección de 'Personal' pertenece estrictamente al menú 'Sistema' en la navegación (sidebar) debajo de 'Auditoría'."
   ],
   "agent_behavior": [
     "Actuar como ingeniero y diseñador senior: verificar que las rutas relativas no se rompan tras la estructuración de componentes.",
     "Nunca almacenar adquisiciones o reportes en el Escritorio (Desktop); siempre usar las rutas locales de almacenamiento estructuradas.",
     "Asegurar la inmutabilidad física y lógica de los logs de auditoría en IndexedDB.",
-    "Antes de modificar archivos globales de estilo o enrutamiento (index.css, App.tsx), ejecutar 'npm.cmd run build' para validar el tipado de TypeScript y la resolución del bundle."
+    "Antes de modificar archivos globales de estilo o enrutamiento (index.css, App.tsx), ejecutar 'npm run build' para validar el tipado de TypeScript y la resolución del bundle."
   ]
 }

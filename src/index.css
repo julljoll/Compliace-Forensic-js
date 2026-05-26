@@ -164,6 +164,22 @@ body {
     @apply bg-fluent-accent text-fluent-accent-fg hover:bg-fluent-accent-light border border-white/10 shadow-[0_2px_4px_rgba(0,0,0,0.2)];
   }
 
+  .forensic-btn-secondary {
+    @apply forensic-btn bg-fluent-surface border border-fluent-border text-fluent-text hover:bg-fluent-surfaceHover;
+  }
+
+  .forensic-input {
+    @apply w-full text-sm bg-fluent-surfaceActive border border-fluent-border border-b-white/40 rounded-[4px] py-2.5 md:py-2 px-3 hover:bg-fluent-surface transition-all outline-none;
+  }
+  .forensic-input:focus {
+    background-color: #2c2c2c;
+    border-bottom-color: #FECF06;
+  }
+
+  .forensic-label {
+    @apply block text-xs font-semibold text-fluent-text-muted mb-1.5;
+  }
+
   .acrylic-panel {
     @apply bg-fluent-acrylic backdrop-blur-[30px] border-r border-fluent-border;
   }
@@ -182,6 +198,192 @@ body {
 
   .breadcrumb-item-active {
     @apply text-fluent-text font-semibold;
+  }
+
+  /* ── Planilla & Timeline Migrated Components ── */
+  .planilla-container {
+    --primary-color: #FECF06;
+    --text-color: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --gray-light: rgba(255, 255, 255, 0.05);
+
+    /* Form and Planilla Elements */
+    .section-title {
+      @apply bg-white/[0.05] py-1.5 px-2.5 text-[11px] font-bold uppercase border-l-4 border-fluent-accent mb-2.5;
+    }
+
+    .form-group {
+      @apply border border-white/10 p-2 rounded mb-1 bg-white/[0.02];
+    }
+
+    .label {
+      @apply text-[8px] font-bold text-fluent-text-muted uppercase mb-[5px];
+    }
+
+    .value {
+      @apply text-sm min-h-[25px] border-b border-dotted border-white/20;
+    }
+
+    .evidence-table {
+      @apply w-full border-collapse;
+      td {
+        @apply border border-white/10 py-2 px-3 text-[11px] h-[35px];
+        &:first-child {
+          @apply w-[30%] font-semibold bg-white/[0.05] uppercase text-[9px] text-fluent-accent;
+        }
+      }
+    }
+
+    .transfer-table {
+      @apply w-full border-collapse mt-[5px];
+      td {
+        @apply border border-white/10 p-1.5 text-xs align-top;
+      }
+    }
+
+    .transfer-header {
+      @apply bg-white/[0.05] font-bold text-[8px] uppercase text-fluent-accent;
+    }
+
+    .sig-box {
+      @apply text-center border-t border-fluent-text-muted/50 pt-[5px];
+    }
+
+    .sig-label {
+      @apply font-bold text-[10px] text-fluent-accent;
+    }
+
+    .sig-sub {
+      @apply text-[9px] text-fluent-text-muted mt-0.5;
+    }
+
+    /* Timeline Elements */
+    .timeline-header-card {
+      @apply bg-white/[0.02] border border-white/10 rounded-xl p-6 mb-8 backdrop-blur-[10px];
+    }
+
+    .timeline-progress-container {
+      @apply flex flex-col gap-2 my-[15px];
+    }
+
+    .timeline-progress-bar {
+      @apply h-2 bg-white/10 rounded-full overflow-hidden;
+    }
+
+    .timeline-progress-fill {
+      @apply h-full bg-gradient-to-r from-fluent-accent to-[#00FF41] transition-[width] duration-300 ease-in-out;
+    }
+
+    .timeline-progress-text {
+      @apply text-[11px] text-fluent-text-muted font-semibold;
+    }
+
+    .timeline-controls {
+      @apply flex justify-between items-center mb-6 gap-[15px] bg-white/[0.01] py-3 px-5 rounded-lg border border-white/[0.03];
+    }
+
+    .timeline-filter-btn {
+      @apply bg-white/5 border border-white/10 text-white py-1.5 px-3 rounded text-[10px] cursor-pointer font-bold uppercase transition-all duration-200;
+      &.active {
+        @apply bg-fluent-accent text-[#181818] border-fluent-accent;
+      }
+    }
+
+    .timeline-wrapper {
+      @apply relative pl-12 mt-4;
+      &::before {
+        content: '';
+        @apply absolute left-[14px] top-2.5 bottom-2.5 w-[2px] bg-white/[0.08] z-10;
+      }
+    }
+
+    .timeline-step-node {
+      @apply absolute left-[3px] top-5 w-6 h-6 rounded-full bg-[#181818] border-2 border-white/20 flex items-center justify-center text-[10px] font-bold z-20 transition-all duration-300 text-fluent-text-muted;
+      &.completed {
+        @apply bg-[#00FF41] border-[#00FF41] text-[#181818] shadow-[0_0_12px_rgba(0,255,65,0.4)];
+      }
+      &.active:not(.completed) {
+        @apply border-fluent-accent text-fluent-accent shadow-[0_0_10px_rgba(254,207,6,0.3)];
+      }
+    }
+
+    .timeline-item {
+      @apply relative mb-8;
+    }
+
+    .timeline-item-card {
+      @apply bg-white/[0.02] border border-white/10 rounded-xl p-6 transition-all duration-300;
+      &.completed {
+        @apply border-l-4 border-l-[#00FF41];
+      }
+      &.active:not(.completed) {
+        @apply border-l-4 border-l-fluent-accent bg-fluent-accent/5;
+      }
+    }
+
+    .timeline-item-header {
+      @apply flex justify-between items-start gap-[15px] mb-3 border-b border-white/5 pb-2;
+    }
+
+    .timeline-step-title {
+      @apply text-base font-bold text-white;
+    }
+
+    .timeline-status-badge {
+      @apply text-[8px] uppercase font-bold py-1 px-2 rounded tracking-wider;
+      &.completed {
+        @apply bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/20;
+      }
+      &.pending {
+        @apply bg-white/5 text-fluent-text-muted border border-white/10;
+      }
+    }
+
+    .timeline-item-body {
+      @apply text-xs;
+    }
+
+    .timeline-meta-box {
+      @apply mt-[1.2rem] p-4 bg-black/20 border border-white/5 rounded-lg grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3;
+    }
+
+    .timeline-input-group {
+      @apply flex flex-col gap-[5px];
+    }
+
+    .timeline-input-label {
+      @apply text-[8px] font-bold uppercase text-fluent-text-muted;
+    }
+
+    .timeline-input {
+      @apply bg-[#181818]/80 border border-white/10 rounded text-[11px] p-2 w-full outline-none transition-all duration-200 focus:border-fluent-accent focus:bg-[#181818]/95 focus:shadow-[0_0_5px_rgba(254,207,6,0.2)];
+    }
+
+    .timeline-actions-footer {
+      @apply flex justify-between items-center mt-[1.2rem] pt-4 border-t border-white/5;
+    }
+
+    .timeline-toggle-btn {
+      @apply flex items-center gap-2 py-2 px-4 rounded-md text-[10px] font-bold cursor-pointer transition-all duration-200 uppercase;
+      &.completed {
+        @apply bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/30;
+      }
+      &.pending {
+        @apply bg-fluent-accent/10 text-fluent-accent border border-fluent-accent/30;
+      }
+      &:hover {
+        @apply -translate-y-[1.5px] shadow-[0_4px_8px_rgba(0,0,0,0.3)];
+      }
+    }
+
+    .timeline-details-btn {
+      @apply bg-transparent shadow-none border-none text-fluent-accent text-[11px] cursor-pointer py-[5px] flex items-center gap-1.5 no-underline font-semibold hover:underline hover:text-white;
+    }
+
+    .timeline-guide-panel {
+      @apply mt-4 p-[1.2rem] bg-fluent-accent/5 border border-dashed border-fluent-accent/20 rounded-lg;
+    }
   }
 }
 

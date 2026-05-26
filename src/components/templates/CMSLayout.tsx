@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Menu, X, Mail
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail
 } from 'lucide-react';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -28,7 +28,6 @@ export default function CMSLayout() {
   const getEstadisticas = useCMSStore(state => state.getEstadisticas);
   const fetchCasos = useCMSStore(state => state.fetchCasos);
   const { user, logout } = useAuthStore();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const stats = getEstadisticas();
 
   useEffect(() => {
@@ -65,20 +64,8 @@ export default function CMSLayout() {
   return (
     <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden selection:bg-fluent-accent/30 selection:text-white">
 
-      {/* ── Overlay Móvil ── */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
       {/* ── Sidebar ────────────────────────────────────────────────────── */}
-      <aside className={`
-        print:hidden fixed inset-y-0 left-0 z-50 w-[260px] fluent-mica border-r border-white/5 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col shrink-0
-        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:relative md:translate-x-0
-      `}>
+      <aside className="print:hidden w-[260px] fluent-mica border-r border-white/5 shadow-2xl flex flex-col shrink-0">
 
         {/* Branding */}
         <div className="p-5 flex items-center justify-between">
@@ -89,12 +76,6 @@ export default function CMSLayout() {
               <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">CMS Forense</p>
             </div>
           </div>
-          <button 
-            className="md:hidden text-fluent-text-muted hover:text-white p-1 rounded-md hover:bg-white/5"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <X size={18} />
-          </button>
         </div>
 
         {/* Navigation */}
@@ -126,7 +107,6 @@ export default function CMSLayout() {
                       <Link
                         key={item.path}
                         to={item.path}
-                        onClick={() => setIsMobileMenuOpen(false)}
                         className={`fluent-sidebar-item ${isActive ? 'fluent-sidebar-item-active' : ''}`}
                       >
                         <Icon size={16} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-fluent-accent' : 'text-fluent-text-muted'} />
@@ -178,13 +158,7 @@ export default function CMSLayout() {
         {/* Header */}
         <header className="print:hidden h-[48px] border-b border-white/5 flex items-center justify-between px-6 bg-fluent-bg/60 backdrop-blur-xl z-10 shrink-0">
           <div className="flex items-center gap-4">
-            <button 
-              className="md:hidden p-1.5 text-fluent-text-muted hover:text-white hover:bg-white/5 rounded-md transition-colors"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <Menu size={18} />
-            </button>
-            <nav className="hidden md:flex items-center gap-2 text-[11px] text-fluent-text-muted font-medium">
+            <nav className="flex items-center gap-2 text-[11px] text-fluent-text-muted font-medium">
               <Link to="/" className="hover:text-fluent-text transition-colors">SHA256.US</Link>
               {location.pathname !== '/' && (
                 <>

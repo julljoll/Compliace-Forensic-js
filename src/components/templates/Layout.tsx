@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
   Smartphone, 
@@ -9,8 +9,6 @@ import {
   Shield,
   ChevronRight,
   Info,
-  Menu,
-  X,
   ArrowLeft,
   Lock,
   CheckCircle2,
@@ -33,7 +31,6 @@ const menuItems = [
 export default function Layout() {
   const location = useLocation();
   const { casoActual, dispositivoActual, completedSteps, loadCompletedSteps } = useForenseStore();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     loadCompletedSteps();
@@ -94,22 +91,9 @@ export default function Layout() {
   return (
     <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden relative">
 
-      {/* ── Overlay Móvil ── */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
-
       {/* Sidebar */}
       <aside 
-        className={`
-          fixed inset-y-0 left-0 z-50 w-72 acrylic-panel flex-col shrink-0 shadow-2xl print:hidden
-          transform transition-transform duration-300 ease-in-out flex
-          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:relative md:translate-x-0
-        `}
+        className="w-72 acrylic-panel flex-col shrink-0 shadow-2xl print:hidden flex"
         aria-label="Navegación principal"
       >
         <div className="p-8 pb-4">
@@ -120,12 +104,6 @@ export default function Layout() {
                 <h1 className="font-bold text-2xl tracking-widest text-fluent-text print:hidden uppercase">SHA256.US</h1>
               </div>
             </div>
-            <button 
-              className="md:hidden text-white/40 hover:text-white"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <X size={24} />
-            </button>
           </div>
           <p className="text-[10px] uppercase font-semibold tracking-widest text-fluent-accent-light/80 mb-10 leading-relaxed max-w-[200px]">
             Laboratorio de Informática Forense y Ciberseguridad
@@ -141,7 +119,6 @@ export default function Layout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
                   className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -156,7 +133,6 @@ export default function Layout() {
             <h3 className="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 pl-3">Plantillas en Limpio</h3>
             <Link
               to="/forense/planillas/acta-obtencion"
-              onClick={() => setIsMobileMenuOpen(false)}
               className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
             >
               <FileText className="w-5 h-5 text-fluent-accent" />
@@ -164,7 +140,6 @@ export default function Layout() {
             </Link>
             <Link
               to="/forense/planillas/prcc-derivacion"
-              onClick={() => setIsMobileMenuOpen(false)}
               className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
             >
               <Shield className="w-5 h-5 text-fluent-accent" />
@@ -172,7 +147,6 @@ export default function Layout() {
             </Link>
             <Link
               to="/forense/planillas/seguimiento"
-              onClick={() => setIsMobileMenuOpen(false)}
               className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
             >
               <Smartphone className="w-5 h-5 text-fluent-accent" />
@@ -180,7 +154,6 @@ export default function Layout() {
             </Link>
             <Link
               to="/forense/correo-forense"
-              onClick={() => setIsMobileMenuOpen(false)}
               className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
             >
               <Mail className="w-5 h-5 text-fluent-accent" />
@@ -191,7 +164,6 @@ export default function Layout() {
           <div className="mt-6 pt-4 border-t border-fluent-border">
             <Link
               to="/"
-              onClick={() => setIsMobileMenuOpen(false)}
               className="nav-item border border-dashed border-white/10 hover:border-fluent-accent/50 text-fluent-accent-light hover:text-white transition-all bg-white/[0.02]"
             >
               <ArrowLeft className="w-5 h-5 text-fluent-accent-light" />
@@ -222,13 +194,7 @@ export default function Layout() {
         {/* Top Header / Breadcrumbs */}
         <header className="h-16 border-b border-fluent-border flex items-center justify-between px-4 md:px-8 bg-fluent-bg/50 backdrop-blur-md z-10 print:hidden shrink-0">
           <div className="flex items-center gap-4">
-            <button 
-              className="md:hidden p-2 text-white/40 hover:text-white hover:bg-white/5 rounded-md transition-colors"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
-            <nav className="hidden md:flex items-center gap-2 text-sm" aria-label="Breadcrumb">
+            <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
               <Link to="/forense" className="breadcrumb-item">Inicio</Link>
               {location.pathname !== '/forense' && (
                 <>
