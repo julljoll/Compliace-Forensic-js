@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useCMSStore, EstadoPaso, TareaForense, PrioridadCaso, EstadoTarea } from '../../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../../data/normativasEtapas';
 import { getPasosPorTipo } from '../../data/tiposProyecto';
+
 import {
   ShieldCheck, Calendar, User, Info,
   CheckCircle2, Terminal,
@@ -184,7 +185,8 @@ export default function SeguimientoCompliancePage() {
     deleteTarea,
     normativas,
     addAuditLog,
-    verifyStepCompletion
+    verifyStepCompletion,
+    complianceChecklist,
   } = useCMSStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -210,9 +212,9 @@ export default function SeguimientoCompliancePage() {
     }
   }, [casos, casoSeleccionado, seleccionarCaso]);
 
-  // Initialize steps if case has no steps
+  // Initialize steps if case has no steps or if they are empty
   useEffect(() => {
-    if (activeCaso && !activeCaso.steps && !activeCaso.completed_steps) {
+    if (activeCaso && (!activeCaso.steps || Object.keys(activeCaso.steps).length === 0)) {
       initSteps(activeCaso.id);
     }
   }, [activeCaso, initSteps]);
@@ -357,10 +359,13 @@ export default function SeguimientoCompliancePage() {
   }, [selectedStepId, metrics.pasos]);
 
   // Gating validation for selected step
+  // IMPORTANTE: Incluir complianceChecklist como dependencia para que se recalcule
+  // inmediatamente cuando el usuario marca/desmarca un compliance check
   const stepValidation = useMemo(() => {
     if (!activeCaso || !selectedStepId) return { canComplete: true, missing: [] };
     return verifyStepCompletion(selectedStepId);
-  }, [activeCaso, selectedStepId, tareas, activeCaso?.compliance_checklist, verifyStepCompletion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCaso, selectedStepId, tareas, complianceChecklist, verifyStepCompletion]);
 
   // Group steps by Phase for left-hand nav
   const stepsByPhase = useMemo(() => {
@@ -707,9 +712,17 @@ export default function SeguimientoCompliancePage() {
                   const { completado, metadata, estado } = getStepStatus(selectedStep.id);
                   const Icon = iconMap[selectedStep.iconoName] || Shield;
                   const requisitos = getRequisitosForPaso(selectedStep.complianceIds);
-                  const isLocked = estado === 'bloqueado' || estado === 'completado';
+                  // Solo bloquear edición si el paso está genuinamente bloqueado (sin desbloquear aún)
+                  // Un paso completado puede ser revisado (para posible corrección va Desmarcar Hito)
+                  const isLocked = estado === 'bloqueado';
                   const isDisponible = estado === 'disponible';
                   const isEnProgreso = estado === 'en_progreso';
+
+                  // Calcular progreso interno del paso
+                  const tareasCompletadas = stepTasks.filter(t => t.estado === 'completada').length;
+                  const totalTareasPaso = stepTasks.length;
+                  const complianceCompletados = requisitos.filter(r => isComplianceChecked(r.id)).length;
+                  const totalCompliancePaso = requisitos.length;
 
                   return (
                     <div className="apple-card p-6 relative overflow-hidden space-y-6">
@@ -739,8 +752,31 @@ export default function SeguimientoCompliancePage() {
                           </div>
                         </div>
 
-                        {/* Status label */}
-                        <div className="flex items-center gap-2">
+                        {/* Status label + progreso interno del paso */}
+                        <div className="flex items-center gap-3 flex-wrap">
+                          {/* Mini indicadores de progreso del paso */}
+                          {!completado && (
+                            <>
+                              {totalTareasPaso > 0 && (
+                                <span className={`text-[9px] font-semibold px-2 py-0.5 rounded border uppercase tracking-wider ${
+                                  tareasCompletadas === totalTareasPaso
+                                    ? 'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]'
+                                    : 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]'
+                                }`}>
+                                  ✓ {tareasCompletadas}/{totalTareasPaso} Tareas
+                                </span>
+                              )}
+                              {totalCompliancePaso > 0 && (
+                                <span className={`text-[9px] font-semibold px-2 py-0.5 rounded border uppercase tracking-wider ${
+                                  complianceCompletados === totalCompliancePaso
+                                    ? 'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]'
+                                    : 'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]'
+                                }`}>
+                                  □ {complianceCompletados}/{totalCompliancePaso} Compliance
+                                </span>
+                              )}
+                            </>
+                          )}
                           <span className={`text-[9px] font-semibold uppercase tracking-[0.15em] px-2.5 py-1 rounded border ${
                             completado
                               ? 'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]'
@@ -1065,6 +1101,16 @@ export default function SeguimientoCompliancePage() {
                                   startStep(selectedStep.id);
                                 }
                                 completeStep(selectedStep.id);
+
+                                // Auto-navegar al siguiente paso disponible
+                                setTimeout(() => {
+                                  const pasos = metrics.pasos;
+                                  const currentIdx = pasos.findIndex((p: any) => p.id === selectedStep.id);
+                                  if (currentIdx !== -1 && currentIdx < pasos.length - 1) {
+                                    const nextPaso = pasos[currentIdx + 1];
+                                    if (nextPaso) setSelectedStepId(nextPaso.id);
+                                  }
+                                }, 150);
                               }}
                               className={`apple-btn text-[9px] font-semibold uppercase tracking-wider transition-all ${
                                 stepValidation.canComplete

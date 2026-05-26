@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-05-26",
+    "updated": "2026-05-27",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,12 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 23:47:59",
-      "last_commit": "cb3c1a4 - fffff (2026-05-26)",
+      "timestamp": "2026-05-27 00:08:04",
+      "last_commit": "3c9652b - sss (2026-05-26)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  src/index.css",
-        "M  src/pages/Control/SeguimientoCompliancePage.tsx"
+        "M  src/data/tiposProyecto.ts",
+        "M  src/pages/Control/SeguimientoCompliancePage.tsx",
+        "M  src/store/cmsStore.ts"
       ]
     }
   },

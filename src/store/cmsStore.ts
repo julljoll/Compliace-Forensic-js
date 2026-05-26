@@ -432,11 +432,37 @@ export const useCMSStore = create<CMSState>()(
                         steps = typeof c.steps === 'string' ? JSON.parse(c.steps) : (c.steps || {});
                     } catch (e) { console.error('Error parsing steps', e); }
 
-                    const hasNewSteps = Object.keys(steps).length > 0;
+                    let finalSteps = steps as Record<string, StepState>;
+                    const hasNewSteps = Object.keys(finalSteps).length > 0;
+                    if (!hasNewSteps) {
+                      const oldCompleted = (completed || {}) as Record<string, any>;
+                      const oldMetadata = (metadata || {}) as Record<string, any>;
+                      const pasos = c.tipo_proyecto ? getPasosPorTipo(c.tipo_proyecto) : [];
+                      finalSteps = {};
+
+                      pasos.forEach((paso, idx) => {
+                        const wasCompleted = !!oldCompleted[paso.id];
+                        const meta = oldMetadata[paso.id] || {};
+
+                        if (wasCompleted) {
+                          finalSteps[paso.id] = {
+                            estado: 'completado',
+                            fechaInicio: meta.fecha || undefined,
+                            fechaCompletado: meta.fecha || undefined,
+                            responsable: meta.responsable || '',
+                            observaciones: meta.observaciones || '',
+                          };
+                        } else {
+                          const prevCompleted = idx === 0 || pasos.slice(0, idx).every(p => !!oldCompleted[p.id]);
+                          finalSteps[paso.id] = {
+                            estado: prevCompleted ? 'disponible' : 'bloqueado',
+                          };
+                        }
+                      });
+                    }
+
                     const totalSteps = c.tipo_proyecto ? getPasosPorTipo(c.tipo_proyecto).length : 9;
-                    const completedCount = hasNewSteps
-                      ? Object.values(steps as Record<string, StepState>).filter(s => s.estado === 'completado').length
-                      : Object.values(completed).filter(Boolean).length;
+                    const completedCount = Object.values(finalSteps).filter(s => s.estado === 'completado').length;
                     const pct = Math.round((completedCount / Math.max(totalSteps, 1)) * 100);
 
                     return {
@@ -453,15 +479,13 @@ export const useCMSStore = create<CMSState>()(
                         fiscal: c.fiscal,
                         normativasAplicadas: [],
                         fasesCompletadas: completedCount,
-                        totalFases: 9,
+                        totalFases: totalSteps,
                         porcentajeCompletado: pct,
                         totalEvidencias: 0,
                         nivelCumplimientoGeneral: 'no_aplica',
                         etiquetas: [],
                         notas: '',
-                        steps: Object.keys(steps).length > 0 ? steps as Record<string, StepState> : undefined,
-                        completed_steps: !hasNewSteps ? completed : undefined,
-                        step_metadata: !hasNewSteps ? metadata : undefined,
+                        steps: finalSteps,
                         compliance_checklist: compliance,
                         dispositivo_marca: c.dispositivo_marca,
                         dispositivo_modelo: c.dispositivo_modelo,
@@ -807,7 +831,7 @@ export const useCMSStore = create<CMSState>()(
         const { casos } = get();
         const caso = casos.find(c => c.id === casoId);
         if (!caso) return;
-        if (caso.steps) return; // Ya inicializado
+        if (caso.steps && Object.keys(caso.steps).length > 0) return; // Ya inicializado
 
         const pasos = caso.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto) : [];
         const steps: Record<string, StepState> = {};
@@ -852,7 +876,7 @@ export const useCMSStore = create<CMSState>()(
 
       // ── Verificar si un paso puede completarse ──
       verifyStepCompletion: (stepId) => {
-        const { casoSeleccionado, casos, tareas } = get();
+        const { casoSeleccionado, casos, tareas, complianceChecklist } = get();
         if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'] };
         const caso = casos.find(c => c.id === casoSeleccionado);
         if (!caso) return { canComplete: false, missing: ['Caso no encontrado'] };
@@ -864,17 +888,16 @@ export const useCMSStore = create<CMSState>()(
 
         const missing: string[] = [];
 
-        // 1. Verificar tareas del paso
+        // 1. Verificar tareas del paso (solo si existen tareas asignadas)
         const tareasPaso = tareas.filter(t => t.casoId === casoSeleccionado && t.pasoId === stepId);
         const tareasPendientes = tareasPaso.filter(t => t.estado !== 'completada');
         tareasPendientes.forEach(t => missing.push(`Tarea pendiente: ${t.titulo}`));
 
-        // 2. Verificar compliance
-        const complianceList = caso.compliance_checklist || [];
+        // 2. Verificar compliance — leer del estado global sincronizado (no del caso que se actualiza asíncronamente)
         paso.complianceIds.forEach(reqId => {
-          const item = complianceList.find(c => c.stageId === reqId);
+          const item = complianceChecklist.find(c => c.stageId === reqId);
           if (!item?.checked) {
-          missing.push(`Compliance pendiente: ${reqId}`);
+            missing.push(`Requisito normativo pendiente: ${reqId}`);
           }
         });
 
@@ -1018,60 +1041,77 @@ export const useCMSStore = create<CMSState>()(
       },
 
       toggleComplianceCheck: (stageId, normativaId) => {
+        // Determinar nuevo estado ANTES de actualizar para audit log
         const stateBefore = get();
         const existingBefore = stateBefore.complianceChecklist.find(c => c.stageId === stageId);
         const newChecked = existingBefore ? !existingBefore.checked : true;
+        const casoId = stateBefore.casoSeleccionado;
 
+        // Actualización SÍNCRONA: todo dentro del mismo set() para evitar condición de carrera
         set(s => {
-          let updatedChecklist: ComplianceCheckItem[] = [];
+          const fechaNow = new Date().toISOString();
+
+          // 1. Actualizar complianceChecklist global
+          let updatedChecklist: ComplianceCheckItem[];
           const existing = s.complianceChecklist.find(c => c.stageId === stageId);
           if (existing) {
             updatedChecklist = s.complianceChecklist.map(c =>
               c.stageId === stageId
-                ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
+                ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? fechaNow : undefined }
                 : c
             );
           } else {
             updatedChecklist = [
               ...s.complianceChecklist,
-              { stageId, normativaId, checked: true, fechaCheck: new Date().toISOString(), observacion: '' },
+              { stageId, normativaId, checked: true, fechaCheck: fechaNow, observacion: '' },
             ];
           }
 
+          // 2. Actualizar compliance_checklist del caso SÍNCRONAMENTE en el mismo set
+          let updatedCasos = s.casos;
           if (s.casoSeleccionado) {
-            const casoAct = s.casos.find(c => c.id === s.casoSeleccionado);
-            if (casoAct) {
-              const currentChecklist = casoAct.compliance_checklist || [];
-              let nextChecklist: any[] = [];
+            updatedCasos = s.casos.map(caso => {
+              if (caso.id !== s.casoSeleccionado) return caso;
+              const currentChecklist = caso.compliance_checklist || [];
+              let nextChecklist: typeof currentChecklist;
               const cExisting = currentChecklist.find(c => c.stageId === stageId);
               if (cExisting) {
                 nextChecklist = currentChecklist.map(c =>
                   c.stageId === stageId
-                    ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? new Date().toISOString() : undefined }
+                    ? { ...c, checked: !c.checked, fechaCheck: !c.checked ? fechaNow : undefined }
                     : c
                 );
               } else {
                 nextChecklist = [
                   ...currentChecklist,
-                  { stageId, normativaId, checked: true, fechaCheck: new Date().toISOString(), observacion: '' }
+                  { stageId, normativaId, checked: true, fechaCheck: fechaNow, observacion: '' }
                 ];
               }
-              setTimeout(() => {
-                get().updateCaso(s.casoSeleccionado!, { compliance_checklist: nextChecklist });
-              }, 0);
-            }
+              return { ...caso, compliance_checklist: nextChecklist };
+            });
           }
 
-          return { complianceChecklist: updatedChecklist };
+          return { complianceChecklist: updatedChecklist, casos: updatedCasos };
         });
 
+        // Persistir en DB de forma asíncrona (no bloquea el UI)
+        if (casoId) {
+          setTimeout(() => {
+            const updatedCaso = get().casos.find(c => c.id === casoId);
+            if (updatedCaso?.compliance_checklist && window.electronAPI?.db) {
+              window.electronAPI.db.updateCaso(casoId, { compliance_checklist: updatedCaso.compliance_checklist });
+            }
+          }, 150);
+        }
+
+        // Audit log asíncrono
         setTimeout(() => {
           useAuditStore.getState().addEntry({
             accion: newChecked ? 'CUMPLIMIENTO_VERIFICADO' : 'CUMPLIMIENTO_DESVERIFICADO',
             detalle: `Requisito ${stageId} (normativa ${normativaId}) ${newChecked ? 'verificado' : 'desmarcado'}`,
             usuario: 'Perito de Guardia',
             nivel: newChecked ? 'success' : 'info',
-            casoId: stateBefore.casoSeleccionado || undefined,
+            casoId: casoId || undefined,
           });
         }, 100);
       },

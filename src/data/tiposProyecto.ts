@@ -51,7 +51,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     requerimientosTecnicos: [
       'Cable USB propio del perito',
       'Avilla Forensics / Andriller instalado',
-      'ALEAPP para análisis de artefactos Android',
+      'ALEAPP e IPED Digital Forensic Tool para análisis de artefactos Android y bases de datos',
       'Parser de WhatsApp (Avilla WhatsApp Parser)',
       'Herramienta de transcripción de audios .opus',
       'Bolsa antiestática y precintos de seguridad'
@@ -146,14 +146,15 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
       },
       {
         id: 'wp_step5', num: 5, fase: 'Fase 2: Laboratorio',
-        titulo: 'Procesamiento con ALEAPP',
+        titulo: 'Procesamiento con ALEAPP e IPED Digital Forensic Tool',
         action: 'Analizar la extracción con herramientas de laboratorio.',
-        docs: ['Reporte ALEAPP', 'Reporte de análisis'],
-        guide: 'Cargar extracción en ALEAPP para parseo de artefactos Android.',
+        docs: ['Reporte ALEAPP', 'Reporte IPED', 'Reporte de análisis'],
+        guide: 'Cargar extracción en ALEAPP para parseo de artefactos Android y utilizar IPED Digital Forensic Tool para análisis avanzado de bases de datos.',
         tareas: [
           'Cargar archivo de extracción en ALEAPP',
-          'Ejecutar análisis completo de artefactos Android',
-          'Revisar y documentar hallazgos'
+          'Procesar extracción con IPED Digital Forensic Tool',
+          'Ejecutar análisis completo de artefactos Android y bases de datos',
+          'Revisar y documentar hallazgos de ambas herramientas'
         ],
         iconoName: 'Database',
         normativas: [
