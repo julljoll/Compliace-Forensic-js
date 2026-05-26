@@ -127,7 +127,7 @@ export default function CasosPage() {
             <button
               key={d.id}
               onClick={() => handleSelectDispositivo(d.id)}
-              className="group relative flex flex-col text-left bg-white border border-black/[0.06] rounded-2xl p-7 hover:border-black/20 hover:shadow-lg transition-all duration-300 cursor-pointer shadow-sm"
+              className="apple-card group relative flex flex-col text-left p-7 hover:shadow-lg transition-all duration-300 cursor-pointer"
             >
               <div className="w-12 h-12 rounded-2xl bg-black/[0.03] flex items-center justify-center mb-5 group-hover:bg-[#0071E3]/10 group-hover:scale-105 transition-all">
                 <Icon size={24} className="text-[#86868B] group-hover:text-[#0071E3] transition-colors" />
@@ -178,12 +178,12 @@ export default function CasosPage() {
 
       <div className="space-y-4 mt-8">
         {casos.length === 0 ? (
-          <div className="apple-card p-16 text-center border-dashed border-black/[0.08]">
-            <div className="w-20 h-20 bg-black/[0.02] rounded-full flex items-center justify-center mx-auto mb-6">
-               <FolderOpen size={40} className="text-[#86868B] opacity-20" />
+          <div className="apple-card p-16 text-center">
+            <div className="w-20 h-20 bg-black/[0.03] rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-black/[0.04]">
+               <FolderOpen size={40} className="text-[#86868B] opacity-30" />
             </div>
             <h3 className="text-xl font-bold text-[#1D1D1F] mb-2">Sin Registros</h3>
-            <p className="text-[#86868B] text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+            <p className="text-[#86868B] text-sm max-w-sm mx-auto font-medium leading-relaxed">
                No se encontraron casos con los criterios de búsqueda actuales.
             </p>
           </div>
