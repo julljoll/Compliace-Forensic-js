@@ -27,26 +27,26 @@ const PRIORIDADES: { value: PrioridadCaso | 'todos'; label: string }[] = [
 ];
 
 const ESTADO_COLORS: Record<string, string> = {
-  iniciado: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
-  en_proceso: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30',
-  analisis: 'bg-purple-500/15 text-purple-300 border-purple-500/30',
-  informe: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
-  cerrado: 'bg-green-500/15 text-green-300 border-green-500/30',
-  archivado: 'bg-gray-500/15 text-gray-400 border-gray-500/30',
+  iniciado: 'bg-blue-500/10 text-[#007AFF] border-blue-500/20',
+  en_proceso: 'bg-yellow-500/10 text-[#FF9500] border-yellow-500/20',
+  analisis: 'bg-purple-500/10 text-[#AF52DE] border-purple-500/20',
+  informe: 'bg-indigo-500/10 text-[#5856D6] border-indigo-500/20',
+  cerrado: 'bg-green-500/10 text-[#34C759] border-green-500/20',
+  archivado: 'bg-gray-500/10 text-[#86868B] border-gray-500/20',
 };
 
 const PRIORIDAD_COLORS: Record<string, string> = {
-  critica: 'bg-red-500',
-  alta: 'bg-orange-500',
-  media: 'bg-yellow-500',
-  baja: 'bg-green-500',
+  critica: 'bg-[#FF3B30]',
+  alta: 'bg-[#FF9500]',
+  media: 'bg-[#FFCC00]',
+  baja: 'bg-[#34C759]',
 };
 
 const CUMPLIMIENTO_ICON: Record<NivelCumplimiento, { icon: any; color: string; label: string }> = {
-  conforme:    { icon: CheckCircle2, color: 'text-green-400', label: 'Conforme' },
-  parcial:     { icon: AlertTriangle, color: 'text-yellow-400', label: 'Parcial' },
-  no_conforme: { icon: AlertTriangle, color: 'text-red-400', label: 'No Conforme' },
-  no_aplica:   { icon: Clock, color: 'text-gray-400', label: 'N/A' },
+  conforme:    { icon: CheckCircle2, color: 'text-[#34C759]', label: 'Conforme' },
+  parcial:     { icon: AlertTriangle, color: 'text-[#FF9500]', label: 'Parcial' },
+  no_conforme: { icon: AlertTriangle, color: 'text-[#FF3B30]', label: 'No Conforme' },
+  no_aplica:   { icon: Clock, color: 'text-[#86868B]', label: 'N/A' },
 };
 
 export default function CasosPage() {
@@ -76,10 +76,8 @@ export default function CasosPage() {
         const tipo = formData.tipoProyecto || 'forense_whatsapp';
         const tareasDefecto = getTareasPorDefecto(tipo);
 
-        // Inicializar pasos con gating secuencial (primer paso disponible, resto bloqueado)
         initSteps(id);
 
-        // Crear tareas por defecto del tipo de proyecto
         tareasDefecto.forEach(t => {
           addTarea({
             casoId: id,
@@ -106,17 +104,17 @@ export default function CasosPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 apple-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">Gestión de Casos</h1>
-          <p className="text-sm text-fluent-text-muted font-medium mt-1">
-            <span className="text-apple-accent font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Gestión de Casos</h1>
+          <p className="text-sm text-[#86868B] font-medium mt-1">
+            <span className="text-[#0071E3] font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
           </p>
         </div>
         <button 
           onClick={() => setShowForm(true)} 
-          className="fluent-btn fluent-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start sm:self-auto"
+          className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-lg hover:translate-y-[-2px] transition-all self-start sm:self-auto"
         >
           <Plus size={18} strokeWidth={3} />
           Nuevo Caso
@@ -136,12 +134,12 @@ export default function CasosPage() {
 
       <div className="space-y-4 mt-8">
         {casos.length === 0 ? (
-          <div className="fluent-mica p-20 text-center rounded-2xl border-dashed border-white/10">
-            <div className="w-20 h-20 bg-white/[0.03] rounded-full flex items-center justify-center mx-auto mb-6">
-               <FolderOpen size={40} className="text-fluent-text-muted opacity-20" />
+          <div className="apple-card p-16 text-center border-dashed border-black/[0.08]">
+            <div className="w-20 h-20 bg-black/[0.02] rounded-full flex items-center justify-center mx-auto mb-6">
+               <FolderOpen size={40} className="text-[#86868B] opacity-20" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Sin Registros</h3>
-            <p className="text-fluent-text-muted text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+            <h3 className="text-xl font-bold text-[#1D1D1F] mb-2">Sin Registros</h3>
+            <p className="text-[#86868B] text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
                No se encontraron casos con los criterios de búsqueda actuales.
             </p>
           </div>

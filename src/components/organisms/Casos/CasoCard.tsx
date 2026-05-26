@@ -9,9 +9,9 @@ const TIPO_ICONOS: Record<TipoProyecto, any> = {
 };
 
 const TIPO_BADGE: Record<TipoProyecto, string> = {
-  forense_whatsapp: 'bg-green-500/10 text-green-400 border-green-500/20',
-  forense_email: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  forense_discoduro: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+  forense_whatsapp: 'bg-green-500/10 text-[#34C759] border-green-500/20',
+  forense_email: 'bg-blue-500/10 text-[#007AFF] border-blue-500/20',
+  forense_discoduro: 'bg-purple-500/10 text-[#AF52DE] border-purple-500/20',
 };
 
 const TIPO_LABEL: Record<TipoProyecto, string> = {
@@ -29,6 +29,13 @@ interface CasoCardProps {
   cumplimientoIcon: Record<NivelCumplimiento, { icon: any; color: string; label: string }>;
 }
 
+const PRIORIDAD_SHADOWS: Record<string, string> = {
+  critica: 'shadow-[0_0_8px_rgba(255,59,48,0.25)]',
+  alta: 'shadow-[0_0_8px_rgba(255,149,0,0.25)]',
+  media: 'shadow-[0_0_8px_rgba(255,204,0,0.25)]',
+  baja: 'shadow-[0_0_8px_rgba(52,199,89,0.25)]',
+};
+
 export default function CasoCard({
   caso,
   deleteCaso,
@@ -43,13 +50,12 @@ export default function CasoCard({
   const TipoIcon = TIPO_ICONOS[caso.tipoProyecto] || Smartphone;
 
   return (
-    <div className="fluent-card p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:translate-y-[-2px] group">
-      {/* Priority Indicator Dot */}
-      <div className={`w-1.5 h-10 rounded-full ${prioridadColors[caso.prioridad]} shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]`} />
-      
+    <div className="apple-card p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:translate-y-[-2px] group">
+      <div className={`w-1.5 h-10 rounded-full ${prioridadColors[caso.prioridad]} shrink-0 ${PRIORIDAD_SHADOWS[caso.prioridad] || ''}`} />
+
       <div className="flex-1 min-w-0 w-full">
         <div className="flex flex-wrap items-center gap-1.5 mb-1">
-          <span className="font-mono font-black text-apple-accent text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
+          <span className="font-mono font-black text-[#0071E3] text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
           <div className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estadoConf}`}>
             {estados.find(e => e.value === caso.estado)?.label}
           </div>
@@ -58,47 +64,46 @@ export default function CasoCard({
             {TIPO_LABEL[caso.tipoProyecto] || 'WhatsApp'}
           </div>
         </div>
-        <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-apple-accent transition-colors">{caso.titulo}</h3>
-        <div className="flex items-center gap-4 text-[11px] text-fluent-text-muted font-medium">
+        <h3 className="font-bold text-[#1D1D1F] truncate text-sm mb-1 group-hover:text-[#0071E3] transition-colors">{caso.titulo}</h3>
+        <div className="flex items-center gap-4 text-[11px] text-[#86868B] font-medium">
           <span className="flex items-center gap-1.5"><User size={12} className="opacity-50" />{caso.peritoLider}</span>
           <span className="flex items-center gap-1.5"><Calendar size={12} className="opacity-50" />{new Date(caso.fechaCreacion).toLocaleDateString('es')}</span>
         </div>
       </div>
 
-      <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 shrink-0 border-t border-white/5 sm:border-0 pt-3 sm:pt-0">
+      <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 shrink-0 border-t border-black/[0.06] sm:border-0 pt-3 sm:pt-0">
         <div className="flex items-center gap-2">
            <div className={`p-1 rounded-md ${cumplConf.color.replace('text', 'bg')}/10`}>
               <CumplIcon size={14} className={cumplConf.color} />
            </div>
-           <span className="text-[10px] font-bold text-fluent-text-muted/70 uppercase tracking-widest">{cumplConf.label}</span>
+           <span className="text-[10px] font-bold text-[#86868B]/70 uppercase tracking-widest">{cumplConf.label}</span>
         </div>
         <div className="w-full sm:w-28">
-          <div className="flex justify-between text-[9px] font-bold text-fluent-text-muted mb-1 uppercase tracking-tighter">
+          <div className="flex justify-between text-[9px] font-bold text-[#86868B] mb-1 uppercase tracking-tighter">
             <span>Progreso</span>
             <span>{caso.porcentajeCompletado}%</span>
           </div>
-          <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-apple-accent rounded-full transition-all duration-700 ease-out" style={{ width: `${caso.porcentajeCompletado}%` }} />
+          <div className="h-1 bg-black/[0.06] rounded-full overflow-hidden">
+            <div className="h-full bg-[#0071E3] rounded-full transition-all duration-700 ease-out" style={{ width: `${caso.porcentajeCompletado}%` }} />
           </div>
         </div>
       </div>
 
       <div className="hidden sm:flex items-center gap-1.5 shrink-0 ml-2">
-        <Link to={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-white/5 text-fluent-text-muted hover:bg-apple-accent hover:text-white transition-all">
+        <Link to={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-black/[0.04] text-[#86868B] hover:bg-[#0071E3] hover:text-white transition-all">
           <ChevronRight size={16} strokeWidth={2.5} />
         </Link>
-        <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-[4px] bg-white/5 text-fluent-text-muted hover:bg-red-500 hover:text-white transition-all">
+        <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-[4px] bg-black/[0.04] text-[#86868B] hover:bg-[#FF3B30] hover:text-white transition-all">
           <Trash2 size={14} />
         </button>
       </div>
 
-      {/* Mobile Actions */}
       <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
-        <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-apple-accent text-white font-bold text-xs uppercase tracking-widest shadow-lg">
+        <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-[#0071E3] text-white font-bold text-xs uppercase tracking-widest shadow-lg">
           Abrir Registro
           <ChevronRight size={14} className="ml-1" strokeWidth={3} />
         </Link>
-        <button onClick={() => deleteCaso(caso.id)} className="p-2 px-4 rounded-[4px] bg-red-500/10 text-red-400 border border-red-500/20">
+        <button onClick={() => deleteCaso(caso.id)} className="p-2 px-4 rounded-[4px] bg-red-500/10 text-[#FF3B30] border border-red-500/20">
           <Trash2 size={16} />
         </button>
       </div>
