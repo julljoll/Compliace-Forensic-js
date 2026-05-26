@@ -106,7 +106,8 @@ export default function LoginPage() {
               const apiUrl = import.meta.env.VITE_API_URL || '/api/oauth/vercel';
               window.location.href = apiUrl;
             }}
-            className="apple-btn w-full py-2.5 text-[13px] font-semibold border border-[rgba(0,0,0,0.12)] text-[#1D1D1F] hover:bg-[rgba(0,0,0,0.03)]"
+            type="button"
+            className="apple-btn w-full py-2.5 text-[13px] font-semibold bg-[rgba(0,0,0,0.04)] border border-[rgba(0,0,0,0.12)] text-[#1D1D1F] hover:bg-[rgba(0,0,0,0.08)] transition-all"
           >
             <svg viewBox="0 0 24 24" width={15} height={15} fill="#000000" className="shrink-0">
               <path d="M12 2L22 21H2L12 2Z" />
@@ -126,6 +127,12 @@ export default function LoginPage() {
           </div>
           <p className="text-[11px] text-[#86868B] font-medium tracking-[-0.01em] opacity-50">
             SHA256.US v2.0 · Laboratorio de Informática Forense
+          </p>
+          <p className="text-[9px] text-[#86868B] font-light tracking-[0.02em] opacity-30">
+            powered by jull
+          </p>
+          <p className="text-[10px] text-[#86868B] leading-relaxed opacity-40 max-w-[280px] mx-auto">
+            Av. 6 con calle 7, Edif. Mercantil La Ceiba, Piso 1, Ofc. Nº 8, Quíbor, Municipio Jiménez, Estado Lara.
           </p>
         </div>
       </div>
