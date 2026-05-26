@@ -68,10 +68,10 @@ export default function NormativaAccordion({
                   <p className="text-[12px] text-[#86868B] leading-relaxed max-w-2xl ml-6">{etapa.descripcion}</p>
                 </div>
               ) : (
-                <label className="flex items-start gap-4 px-6 py-3.5 cursor-pointer hover:bg-[rgba(0,0,0,0.01)] transition-all group">
+                <div className="flex items-start gap-4 px-6 py-3.5 hover:bg-[rgba(0,0,0,0.01)] transition-all group">
                   <div className="pt-0.5 shrink-0">
-                    <div
-                      onClick={(e) => { e.preventDefault(); toggleCheck(etapa.id, norm.id); }}
+                    <button
+                      onClick={() => toggleCheck(etapa.id, norm.id)}
                       className={`w-[18px] h-[18px] rounded-[6px] border-2 flex items-center justify-center transition-all ${
                         isChecked(etapa.id)
                           ? 'bg-[#0071E3] border-[#0071E3]'
@@ -79,7 +79,7 @@ export default function NormativaAccordion({
                       }`}
                     >
                       {isChecked(etapa.id) && <Check size={12} className="text-white" strokeWidth={3} />}
-                    </div>
+                    </button>
                   </div>
                   <div className="flex-1">
                     <span className={`text-[13px] font-medium transition-all ${isChecked(etapa.id) ? 'text-[#86868B] line-through' : 'text-[#1D1D1F]'}`}>
@@ -90,16 +90,16 @@ export default function NormativaAccordion({
                       <p className="text-[10px] text-[#248A3D] mt-1 font-medium">✓ {new Date(getCheckDate(etapa.id)!).toLocaleDateString()}</p>
                     )}
                   </div>
-                </label>
+                </div>
               )}
 
               {etapa.subetapas && (
                 <div className="ml-10 border-l-2 border-[rgba(0,0,0,0.06)] mb-4 mt-1">
                   {etapa.subetapas.map((sub: any) => (
-                    <label key={sub.id} className="flex items-start gap-4 px-6 py-2.5 cursor-pointer hover:bg-[rgba(0,0,0,0.01)] transition-all group">
+                    <div key={sub.id} className="flex items-start gap-4 px-6 py-2.5 hover:bg-[rgba(0,0,0,0.01)] transition-all group">
                       <div className="pt-0.5 shrink-0">
-                        <div
-                          onClick={(e) => { e.preventDefault(); toggleCheck(sub.id, norm.id); }}
+                        <button
+                          onClick={() => toggleCheck(sub.id, norm.id)}
                           className={`w-4 h-4 rounded-[5px] border-2 flex items-center justify-center transition-all ${
                             isChecked(sub.id)
                               ? 'bg-[#0071E3] border-[#0071E3]'
@@ -107,7 +107,7 @@ export default function NormativaAccordion({
                           }`}
                         >
                           {isChecked(sub.id) && <Check size={10} className="text-white" strokeWidth={3} />}
-                        </div>
+                        </button>
                       </div>
                       <div className="flex-1">
                         <span className={`text-[12px] font-medium transition-all ${isChecked(sub.id) ? 'text-[#86868B] line-through' : 'text-[#1D1D1F]'}`}>
@@ -115,7 +115,7 @@ export default function NormativaAccordion({
                         </span>
                         <p className="text-[11px] text-[#86868B] mt-0.5">{sub.descripcion}</p>
                       </div>
-                    </label>
+                    </div>
                   ))}
                 </div>
               )}
