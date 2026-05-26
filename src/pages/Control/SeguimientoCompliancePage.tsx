@@ -707,7 +707,7 @@ export default function SeguimientoCompliancePage() {
                   const { completado, metadata, estado } = getStepStatus(selectedStep.id);
                   const Icon = iconMap[selectedStep.iconoName] || Shield;
                   const requisitos = getRequisitosForPaso(selectedStep.complianceIds);
-                  const isLocked = estado === 'bloqueado';
+                  const isLocked = estado === 'bloqueado' || estado === 'completado';
                   const isDisponible = estado === 'disponible';
                   const isEnProgreso = estado === 'en_progreso';
 
@@ -839,6 +839,7 @@ export default function SeguimientoCompliancePage() {
                                     <div key={task.id} className="flex items-center justify-between p-2.5 rounded bg-black/[0.02] border border-black/[0.06] hover:border-black/10 transition-all group">
                                       <div className="flex items-center gap-3 min-w-0">
                                         <button
+                                          disabled={isLocked}
                                           onClick={() => {
                                             updateTarea(task.id, {
                                               estado: isCompleted ? 'pendiente' : 'completada',
@@ -849,7 +850,9 @@ export default function SeguimientoCompliancePage() {
                                           className={`w-[16px] h-[16px] rounded border flex items-center justify-center shrink-0 transition-all ${
                                             isCompleted
                                               ? 'bg-[#0071E3] border-[#0071E3] text-white'
-                                              : 'border-black/20 hover:border-[#0071E3]/50'
+                                              : !isLocked
+                                                ? 'border-black/20 hover:border-[#0071E3]/50'
+                                                : 'border-black/10 opacity-40 cursor-not-allowed'
                                           }`}
                                         >
                                           {isCompleted && <CheckCheck size={10} strokeWidth={3} />}
@@ -1068,7 +1071,7 @@ export default function SeguimientoCompliancePage() {
                             </button>
                           )}
 
-                          {completado && !activeCaso?.steps && (
+                          {completado && (
                             <button
                               onClick={() => setStepCompleted(selectedStep.id, false)}
                               className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#FF3B30]/10 border border-[#FF3B30]/20 text-[#FF3B30] hover:bg-[#FF3B30]/20"
