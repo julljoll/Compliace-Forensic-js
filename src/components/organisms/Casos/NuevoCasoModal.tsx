@@ -10,11 +10,12 @@ interface NuevoCasoModalProps {
   normativas: Normativa[];
   estados: { value: EstadoCaso | 'todos'; label: string }[];
   prioridades: { value: PrioridadCaso | 'todos'; label: string }[];
+  initialTipo?: TipoProyecto;
 }
 
 const TIPOS = getTiposProyecto();
 
-const DISPOSITIVOS = [
+export const DISPOSITIVOS = [
   {
     id: 'forense_whatsapp' as TipoProyecto,
     titulo: 'Teléfono Android WhatsApp',
@@ -113,10 +114,21 @@ export default function NuevoCasoModal({
   normativas,
   estados,
   prioridades,
+  initialTipo,
 }: NuevoCasoModalProps) {
-  const [step, setStep] = useState<'select' | 'form'>('select');
-  const [selectedTipo, setSelectedTipo] = useState<TipoProyecto | null>(null);
-  const [form, setForm] = useState({ ...FORM_INICIAL });
+  const [step, setStep] = useState<'select' | 'form'>(initialTipo ? 'form' : 'select');
+  const [selectedTipo, setSelectedTipo] = useState<TipoProyecto | null>(initialTipo || null);
+  const [form, setForm] = useState(() => {
+    if (!initialTipo) return { ...FORM_INICIAL };
+    const fases = getFasesPorTipo(initialTipo);
+    const config = getTipoProyectoConfig(initialTipo);
+    return {
+      ...FORM_INICIAL,
+      tipoProyecto: initialTipo,
+      totalFases: fases.length,
+      normativasAplicadas: config.normativasPorDefecto,
+    };
+  });
 
   const handleSelectDispositivo = (tipo: TipoProyecto) => {
     const fases = getFasesPorTipo(tipo);

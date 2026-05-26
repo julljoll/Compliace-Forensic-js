@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useCMSStore, EstadoCaso, PrioridadCaso, NivelCumplimiento } from '../store/cmsStore';
-import { Plus, FolderOpen, CheckCircle2, AlertTriangle, Clock } from '../components/atoms/AppleIcon';
-import { getTareasPorDefecto } from '../data/tiposProyecto';
+import { FolderOpen, CheckCircle2, AlertTriangle, Clock, BookOpen, ArrowLeft } from '../components/atoms/AppleIcon';
+import { getTareasPorDefecto, TipoProyecto } from '../data/tiposProyecto';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────
 import CasosFilters from '../components/organisms/Casos/CasosFilters';
 import CasoCard from '../components/organisms/Casos/CasoCard';
-import NuevoCasoModal from '../components/organisms/Casos/NuevoCasoModal';
+import NuevoCasoModal, { DISPOSITIVOS } from '../components/organisms/Casos/NuevoCasoModal';
 
 const ESTADOS: { value: EstadoCaso | 'todos'; label: string }[] = [
   { value: 'todos', label: 'Todos' },
@@ -65,8 +65,14 @@ export default function CasosPage() {
   
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [selectedTipo, setSelectedTipo] = useState<TipoProyecto | null>(null);
 
   const casos = getCasosFiltrados();
+
+  const handleSelectDispositivo = (tipo: TipoProyecto) => {
+    setSelectedTipo(tipo);
+    setShowForm(true);
+  };
 
   const handleCreateCaso = async (formData: any) => {
     setSaving(true);
@@ -95,6 +101,7 @@ export default function CasosPage() {
         });
 
         setShowForm(false);
+        setSelectedTipo(null);
       } else {
         alert('Error al registrar el caso.');
       }
@@ -105,20 +112,57 @@ export default function CasosPage() {
 
   return (
     <div className="space-y-6 apple-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Gestión de Casos</h1>
-          <p className="text-sm text-[#86868B] font-medium mt-1">
-            <span className="text-[#0071E3] font-bold">{casos.length}</span> investigaciones activas en procesamiento técnico.
-          </p>
-        </div>
-        <button 
-          onClick={() => setShowForm(true)} 
-          className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-lg hover:translate-y-[-2px] transition-all self-start sm:self-auto"
-        >
-          <Plus size={18} strokeWidth={3} />
-          Nuevo Caso
-        </button>
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Gestión de Casos</h1>
+        <p className="text-sm text-[#86868B] font-medium mt-1">
+          Seleccione el tipo de dispositivo a investigar o revise los casos existentes.
+        </p>
+      </div>
+
+      {/* ── Device Selection Cards ─────────────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+        {DISPOSITIVOS.map(d => {
+          const Icon = d.icon;
+          return (
+            <button
+              key={d.id}
+              onClick={() => handleSelectDispositivo(d.id)}
+              className="group relative flex flex-col text-left bg-white border border-black/[0.06] rounded-2xl p-7 hover:border-black/20 hover:shadow-lg transition-all duration-300 cursor-pointer shadow-sm"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-black/[0.03] flex items-center justify-center mb-5 group-hover:bg-[#0071E3]/10 group-hover:scale-105 transition-all">
+                <Icon size={24} className="text-[#86868B] group-hover:text-[#0071E3] transition-colors" />
+              </div>
+
+              <h3 className="text-lg font-bold text-[#1D1D1F] mb-1.5 group-hover:text-[#0071E3] transition-colors">
+                {d.titulo}
+              </h3>
+
+              <p className="text-xs text-[#86868B] leading-relaxed mb-4">
+                {d.descripcion}
+              </p>
+
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {d.marcoLegal.slice(0, 4).map((m, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/[0.04] text-[9px] font-medium text-[#86868B] border border-black/[0.06]"
+                    title={m.descripcion}
+                  >
+                    <BookOpen size={8} />
+                    {m.codigo}
+                  </span>
+                ))}
+                {d.marcoLegal.length > 4 && (
+                  <span className="text-[9px] text-[#86868B]/50 font-medium">+{d.marcoLegal.length - 4}</span>
+                )}
+              </div>
+
+              <div className="absolute top-5 right-5 w-7 h-7 rounded-full bg-black/[0.04] flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-[#0071E3] transition-all -translate-x-2 group-hover:translate-x-0">
+                <ArrowLeft size={12} className="text-white rotate-180" />
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       <CasosFilters 
@@ -159,14 +203,15 @@ export default function CasosPage() {
       </div>
 
 
-      {showForm && (
+      {showForm && selectedTipo && (
         <NuevoCasoModal 
-          onClose={() => setShowForm(false)}
+          onClose={() => { setShowForm(false); setSelectedTipo(null); }}
           onSubmit={handleCreateCaso}
           saving={saving}
           normativas={normativas}
           estados={ESTADOS}
           prioridades={PRIORIDADES}
+          initialTipo={selectedTipo}
         />
       )}
     </div>
