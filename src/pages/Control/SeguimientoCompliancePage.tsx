@@ -759,7 +759,7 @@ export default function SeguimientoCompliancePage() {
                       </div>
 
                       {/* Gating protection validation warnings */}
-                      {!stepValidation.canComplete && isEnProgreso && (
+                      {!stepValidation.canComplete && !completado && (
                         <div className="p-4 rounded-lg border border-[#FF9500]/25 bg-[#FF9500]/[0.04] space-y-2">
                           <div className="flex items-center gap-2 text-[#FF9500]">
                             <AlertTriangle size={14} />
@@ -836,7 +836,11 @@ export default function SeguimientoCompliancePage() {
                                   const isCompleted = task.estado === 'completada';
                                   const pr = PRIORIDAD_CONFIG[task.prioridad || 'media'];
                                   return (
-                                    <div key={task.id} className="flex items-center justify-between p-2.5 rounded bg-black/[0.02] border border-black/[0.06] hover:border-black/10 transition-all group">
+                                    <div key={task.id} className={`flex items-center justify-between p-2.5 rounded border hover:border-black/10 transition-all group ${
+                                      isCompleted
+                                        ? 'check-item-conforme'
+                                        : 'check-item-pendiente'
+                                    }`}>
                                       <div className="flex items-center gap-3 min-w-0">
                                         <button
                                           disabled={isLocked}
@@ -923,7 +927,9 @@ export default function SeguimientoCompliancePage() {
                               const obsValue = getComplianceObservacionValue(req.id);
 
                               return (
-                                <div key={req.id} className="apple-card p-4 space-y-3">
+                                <div key={req.id} className={`apple-card p-4 space-y-3 border transition-all ${
+                                  checked ? 'check-item-conforme' : 'check-item-pendiente'
+                                }`}>
                                   <div className="flex items-start gap-3">
                                     <button
                                       onClick={() => {
