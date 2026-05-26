@@ -1,293 +1,587 @@
-/* Scoped CSS to prevent style leakage in SHA256.US */
+/* ── Planillas CSS — Documentos Legales Imprimibles ──
+ *   Screen: Professional look with subtle accents
+ *   Print:  Strict black & white, Legal size, ready to file
+ */
 
 .planilla-container {
-    --primary-color: #0071E3; /* Apple Blue accent for digital view */
-    --text-color: #1D1D1F;
-    --text-muted: #86868B;
-    --border-color: rgba(0, 0, 0, 0.08);
-    --bg-page: #FFFFFF;
-    --bg-body: #F5F5F7;
-    --gray-light: rgba(0, 0, 0, 0.025);
+  --primary: #0071E3;
+  --accent: #0071E3;
+  --text: #1D1D1F;
+  --text-dim: #86868B;
+  --border: rgba(0, 0, 0, 0.08);
+  --gray: rgba(0, 0, 0, 0.025);
 
-    --primary: #0071E3;
-    --accent: #0071E3;
-    --success: #34C759;
-    --warning: #FF9500;
-    --bg-dark: #F5F5F7;
-    --bg-card: #FFFFFF;
-    --bg-sidebar: #FFFFFF;
-    --text-main: #1D1D1F;
-    --text-dim: #86868B;
-    --text-bright: #1D1D1F;
-    --border: rgba(0, 0, 0, 0.08);
-
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
-    line-height: 1.3;
-    color: #1D1D1F;
-    background-color: #F5F5F7;
-    margin: 0;
-    padding: 10px;
-    font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, sans-serif;
+  line-height: 1.3;
+  color: var(--text);
+  background: #F5F5F7;
+  margin: 0;
+  padding: 10px;
+  font-size: 11px;
 }
 
 .planilla-container * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-/* Page base layouts */
+/* ═══ PAGE (Screen / Print) ═══ */
 .planilla-container .page {
-    /* Variables de tema claro para la hoja de impresion blanca */
-    --primary-color: #937200; /* Oro oscuro para alto contraste sobre fondo blanco */
-    --text-color: #111111;
-    --text-muted: #555555;
-    --border-color: rgba(0, 0, 0, 0.15);
-    --gray-light: rgba(0, 0, 0, 0.04);
+  --primary: #937200;
+  --accent: #937200;
+  --text: #111111;
+  --text-dim: #555555;
+  --border: rgba(0, 0, 0, 0.15);
+  --gray: rgba(0, 0, 0, 0.04);
 
-    --primary: #937200;
-    --accent: #937200;
-    --success: #008020;
-    --warning: #d83b01;
-    --bg-card: rgba(0, 0, 0, 0.02);
-    --text-main: #111111;
-    --text-dim: #555555;
-    --text-bright: #111111;
-    --border: rgba(0, 0, 0, 0.15);
-
-    width: 216mm; /* Legal width approx */
-    min-height: 356mm; /* Legal height approx */
-    padding: 12mm;
-    margin: 0 auto;
-    background: #ffffff;
-    color: #111111;
-    position: relative;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    backdrop-filter: none;
+  width: 216mm;
+  min-height: 356mm;
+  padding: 12mm 14mm;
+  margin: 0 auto 12px;
+  background: #ffffff;
+  color: #111111;
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
+/* ═══ HEADER ═══ */
 .planilla-container header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 8px;
-    margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .planilla-container .logo-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .planilla-container .logo-text {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--primary-color);
-    text-transform: uppercase;
-    line-height: 1;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .planilla-container .logo-subtext {
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin: 2px 0;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin: 2px 0;
+  letter-spacing: 0.02em;
 }
 
 .planilla-container .address-text {
-    font-size: 8px;
-    color: var(--text-muted);
-    max-width: 350px;
-    line-height: 1.2;
+  font-size: 7.5px;
+  color: var(--text-dim);
+  max-width: 350px;
+  line-height: 1.3;
 }
 
-.planilla-container .acta-header {
-    text-align: right;
-}
+.planilla-container .acta-header { text-align: right; }
 
 .planilla-container .acta-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin: 0;
-    text-transform: uppercase;
-    color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--primary);
+  letter-spacing: 0.01em;
 }
 
 .planilla-container .acta-nro {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 13px;
-    margin-top: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  font-family: "SF Mono", Menlo, Monaco, "Roboto Mono", monospace;
+  font-size: 12px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+/* ═══ SECTIONS ═══ */
+.planilla-container .section-title {
+  background: var(--gray);
+  border-left: 4px solid var(--primary);
+  color: var(--text);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
 }
 
 .planilla-container .section {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 .planilla-container .grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.planilla-container .form-group {
+  border: 1px solid var(--border);
+  background: var(--gray);
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.planilla-container .label {
+  color: var(--text-dim);
+  font-size: 7px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.planilla-container .value {
+  color: var(--text);
+  border-bottom: 1px dotted var(--border);
+  font-size: 13px;
+  min-height: 24px;
+  line-height: 1.3;
 }
 
 .planilla-container .box-inline {
-    display: inline-block;
-    border: 1px solid var(--border-color);
-    min-width: 60px;
-    height: 25px;
-    background: rgba(0, 0, 0, 0.02);
-    vertical-align: middle;
-    margin: 0 4px;
-    border-radius: 4px;
+  display: inline-block;
+  border: 1px solid var(--border);
+  min-width: 60px;
+  height: 24px;
+  background: var(--gray);
+  vertical-align: middle;
+  margin: 0 4px;
+  border-radius: 3px;
 }
 
-.planilla-container .legal-text {
-    font-size: 10px;
-    text-align: justify;
-    background-color: var(--gray-light);
-    padding: 8px;
-    border: 1px solid var(--border-color);
-    margin: 8px 0;
-    border-radius: 4px;
+/* ═══ TABLES ═══ */
+.planilla-container .evidence-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
+.planilla-container .evidence-table td {
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 8px;
+  font-size: 10px;
+  height: 32px;
+}
+
+.planilla-container .evidence-table td:first-child {
+  background: var(--gray);
+  color: var(--primary);
+  width: 30%;
+  font-weight: 600;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.planilla-container .transfer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+.planilla-container .transfer-table td {
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 5px 8px;
+  font-size: 11px;
+  vertical-align: top;
+}
+
+.planilla-container .transfer-header {
+  background: var(--gray);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 7px;
+  text-transform: uppercase;
+}
+
+/* ═══ CHECKBOXES ═══ */
 .planilla-container .checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .planilla-container .check-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  color: var(--text);
 }
 
 .planilla-container .box {
-    width: 15px;
-    height: 15px;
-    border: 1.5px solid var(--border-color);
-    background: rgba(0, 0, 0, 0.02);
-    cursor: pointer;
-    border-radius: 3px;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--gray);
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  line-height: 1;
 }
 
+/* ═══ TEXT BOXES ═══ */
+.planilla-container .legal-text {
+  font-size: 9px;
+  text-align: justify;
+  background: var(--gray);
+  padding: 8px;
+  border: 1px solid var(--border);
+  margin: 8px 0;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+/* ═══ SIGNATURES ═══ */
 .planilla-container .signature-section {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30mm;
-    margin-top: 15mm;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25mm;
+  margin-top: 18mm;
+  padding-bottom: 15mm;
 }
 
+.planilla-container .signature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.planilla-container .sig-card {
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: 4px;
+  background: var(--gray);
+}
+
+.planilla-container .sig-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.planilla-container .sig-box {
+  flex: 1;
+  height: 48px;
+  border: 1px dashed var(--border);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planilla-container .thumb-box {
+  width: 40px;
+  height: 50px;
+  border: 1px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.planilla-container .sig-label {
+  text-align: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.planilla-container .sig-label + .sig-sub {
+  font-size: 8px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.planilla-container .sig-sub {
+  font-size: 8px;
+  color: var(--text-dim);
+  margin-top: 1px;
+}
+
+/* ═══ FOOTER ═══ */
 .planilla-container .footer {
-    position: absolute;
-    bottom: 10mm;
-    left: 12mm;
-    right: 12mm;
-    text-align: center;
-    font-size: 8px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-color);
-    padding-top: 4px;
+  position: absolute;
+  bottom: 10mm;
+  left: 14mm;
+  right: 14mm;
+  text-align: center;
+  font-size: 7.5px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  padding-top: 4px;
+  line-height: 1.4;
 }
 
-/* PRCC derivacion styles */
+/* ═══ PRCC SPECIFICS ═══ */
 .planilla-container .form-header-info { text-align: right; }
-.planilla-container .form-title-main { font-size: 14px; font-weight: 700; margin: 0; text-transform: uppercase; color: var(--primary-color); }
-.planilla-container .form-nro { font-family: 'Roboto Mono', monospace; font-size: 13px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; }
+.planilla-container .form-title-main { font-size: 13px; font-weight: 700; margin: 0; text-transform: uppercase; color: var(--primary); letter-spacing: 0.01em; }
+.planilla-container .form-nro { font-family: "SF Mono", Menlo, Monaco, "Roboto Mono", monospace; font-size: 12px; margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 
-.planilla-container .signature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 5px; }
-.planilla-container .sig-card { border: 1px solid var(--border-color); padding: 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.01); }
-.planilla-container .sig-row { display: flex; gap: 10px; margin-top: 8px; }
-.planilla-container .sig-box { flex: 1; height: 50px; border: 1px dashed var(--border-color); position: relative; display: flex; align-items: center; justify-content: center; }
-.planilla-container .thumb-box { width: 45px; height: 55px; border: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 6px; color: var(--text-muted); text-align: center; }
-.planilla-container .sig-label { position: absolute; bottom: 2px; font-size: 6px; color: var(--text-muted); text-transform: uppercase; }
-
-.planilla-container .anexo-derivacion { border: 2px solid var(--primary-color); padding: 10px; border-radius: 6px; margin-top: 15px; background: rgba(0, 0, 0, 0.01); }
-.planilla-container .anexo-header { font-weight: 800; font-size: 11px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 8px; text-transform: uppercase; }
-
-.planilla-container .watermark { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 80px; color: rgba(0, 113, 227, 0.04); font-weight: 900; pointer-events: none; z-index: 0; }
-
-.planilla-container footer { text-align: center; font-size: 8px; color: var(--text-muted); margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 8px; }
-
-.planilla-container button { background-color: var(--primary-color); color: #181818; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Inter', sans-serif; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-
-/* Print Timeline Styling */
-.planilla-container .timeline-print-layout {
-    display: none;
+.planilla-container .anexo-derivacion {
+  border: 2px solid var(--primary);
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 15px;
+  background: var(--gray);
 }
 
-@media print {
-    .planilla-container .app-container {
-        display: block !important;
-    }
-    
-    .planilla-container aside,
-    .planilla-container .timeline-controls,
-    .planilla-container .timeline-progress-container,
-    .planilla-container .floating-print-btn,
-    .planilla-container .timeline-toggle-btn,
-    .planilla-container .timeline-details-btn,
-    .planilla-container .timeline-guide-panel,
-    .planilla-container .timeline-meta-box input,
-    .planilla-container .timeline-meta-box select,
-    .planilla-container .timeline-wrapper {
-        display: none !important;
-    }
-    
-    .planilla-container main {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: 100% !important;
-    }
-    
-    .planilla-container .timeline-print-layout {
-        display: block !important;
-        width: 100%;
-        margin-top: 25px;
-    }
-    
-    .planilla-container .timeline-print-title {
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 5px;
-        color: black !important;
-    }
+.planilla-container .anexo-header {
+  font-weight: 700;
+  font-size: 10px;
+  color: var(--primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
 
-    .planilla-container .timeline-print-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-    
-    .planilla-container .timeline-print-table th,
-    .planilla-container .timeline-print-table td {
-        border: 1px solid #000 !important;
-        padding: 8px;
-        font-size: 10px;
-        color: black !important;
-        vertical-align: top;
-    }
-    
-    .planilla-container .timeline-print-table th {
-        background-color: #f2f2f2 !important;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 9px;
-    }
-    
-    .planilla-container .timeline-print-table tr.pending-row td {
-        color: #777 !important;
-        font-style: italic;
-    }
+.planilla-container .watermark {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 80px;
+  color: rgba(0, 0, 0, 0.03);
+  font-weight: 900;
+  pointer-events: none;
+  z-index: 0;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.planilla-container footer {
+  text-align: center;
+  font-size: 7.5px;
+  color: var(--text-dim);
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+/* ═══ PRINT BUTTON ═══ */
+.planilla-container .no-print button {
+  background: #0071E3;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, sans-serif;
+  transition: all 0.15s ease;
+}
+.planilla-container .no-print button:hover {
+  background: #0077ED;
+}
+
+/* ═══ PRINT TIMELINE ═══ */
+.planilla-container .timeline-print-layout { display: none; }
+
+/* ════════════════════════════════════════════════
+   PRINT — Black & White, Legal Document
+   ════════════════════════════════════════════════ */
+@media print {
+  html, body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .planilla-container {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .planilla-container .page {
+    --primary: #000000 !important;
+    --accent: #000000 !important;
+    --text: #000000 !important;
+    --text-dim: #333333 !important;
+    --border: #aaaaaa !important;
+    --gray: #f2f2f2 !important;
+
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 15mm 20mm !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    page-break-after: always;
+  }
+
+  .planilla-container header {
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 6px !important;
+  }
+
+  .planilla-container .logo-text,
+  .planilla-container .acta-title,
+  .planilla-container .form-title-main,
+  .planilla-container .sig-label,
+  .planilla-container .anexo-header,
+  .planilla-container .section-title,
+  .planilla-container .evidence-table td:first-child,
+  .planilla-container .transfer-header {
+    color: #000000 !important;
+  }
+
+  .planilla-container .logo-subtext,
+  .planilla-container .address-text,
+  .planilla-container .label,
+  .planilla-container .sig-sub,
+  .planilla-container .footer,
+  .planilla-container footer,
+  .planilla-container .thumb-box {
+    color: #444444 !important;
+  }
+
+  .planilla-container .section-title {
+    background: #f2f2f2 !important;
+    border-left: 4px solid #000 !important;
+  }
+
+  .planilla-container .evidence-table td,
+  .planilla-container .transfer-table td {
+    border: 1px solid #999 !important;
+    color: #000 !important;
+  }
+
+  .planilla-container .evidence-table td:first-child {
+    background: #f2f2f2 !important;
+  }
+
+  .planilla-container .form-group {
+    border: 1px solid #bbb !important;
+    background: #fafafa !important;
+  }
+
+  .planilla-container .value {
+    border-bottom: 1px dotted #999 !important;
+  }
+
+  .planilla-container .legal-text {
+    background: #fafafa !important;
+    border: 1px solid #bbb !important;
+  }
+
+  .planilla-container .box {
+    border: 1.5px solid #999 !important;
+    background: #fafafa !important;
+  }
+
+  .planilla-container .box-inline {
+    border: 1px solid #999 !important;
+    background: #fafafa !important;
+  }
+
+  .planilla-container .sig-card {
+    border: 1px solid #bbb !important;
+    background: #fafafa !important;
+    border-radius: 0 !important;
+  }
+
+  .planilla-container .sig-box {
+    border: 1px dashed #666 !important;
+    height: 40px !important;
+  }
+
+  .planilla-container .thumb-box {
+    border: 1px dashed #666 !important;
+  }
+
+  .planilla-container .watermark {
+    color: rgba(0, 0, 0, 0.02) !important;
+  }
+
+  .planilla-container .anexo-derivacion {
+    border: 2px solid #000 !important;
+    background: #fafafa !important;
+  }
+
+  .planilla-container button,
+  .planilla-container .no-print {
+    display: none !important;
+  }
+
+  .planilla-container .transfer-header {
+    background: #f2f2f2 !important;
+  }
+
+  .planilla-container .signature-section {
+    page-break-inside: avoid;
+  }
+
+  .planilla-container .timeline-print-layout {
+    display: block !important;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .planilla-container .timeline-print-title {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 4px;
+    color: #000 !important;
+  }
+
+  .planilla-container .timeline-print-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .planilla-container .timeline-print-table th,
+  .planilla-container .timeline-print-table td {
+    border: 1px solid #000 !important;
+    padding: 6px;
+    font-size: 9px;
+    color: #000 !important;
+    vertical-align: top;
+  }
+
+  .planilla-container .timeline-print-table th {
+    background: #f2f2f2 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 8px;
+  }
+
+  .planilla-container .timeline-print-table tr.pending-row td {
+    color: #555 !important;
+    font-style: italic;
+  }
 }

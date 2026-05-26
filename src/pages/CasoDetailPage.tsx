@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useCMSStore, CasoCMS, Evidencia, TareaForense, EstadoCaso, PrioridadCaso, NivelCumplimiento, TipoEvidencia } from '../store/cmsStore';
-import { useForenseStore } from '../store/forenseStore';
+
 import { 
   ArrowLeft, Calendar, User, Shield, Plus, Clock, 
   Smartphone, History, ListTodo, ShieldCheck, 
@@ -60,11 +60,6 @@ export default function CasoDetailPage() {
 
   const auditLogs = useCMSStore(state => state.auditLogs);
   const normativas = useCMSStore(state => state.normativas);
-
-  // Zustand Store Forense
-  const setCasoForense = useForenseStore(state => state.setCaso);
-  const setDispositivoForense = useForenseStore(state => state.setDispositivo);
-  const setCmsCasoId = useForenseStore(state => state.setCmsCasoId);
 
   // Local States
   const [caso, setCaso] = useState<CasoCMS | null>(null);
@@ -294,48 +289,9 @@ export default function CasoDetailPage() {
     });
   };
 
-  // Botón para iniciar peritaje guiado en el Laboratorio Forense
+  // Navegar a Fases, Tareas & Compliance
   const handleIniciarFlujoForense = () => {
-    // Configurar estado en useForenseStore
-    setCasoForense({
-      numeroCaso: caso.numeroCaso,
-      fiscal: caso.fiscal || 'Fiscalía del Ministerio Público',
-      fechaInicio: caso.fechaCreacion,
-      estado: caso.estado === 'cerrado' || caso.estado === 'archivado' ? caso.estado : 'activo',
-      pasoActual: 1
-    });
-
-    // Cargar la primera evidencia móvil si existe para precargar datos
-    const primerDispositivo = evidenciasCaso.find(e => e.tipo === 'dispositivo_movil');
-    if (primerDispositivo) {
-      setDispositivoForense({
-        marca: primerDispositivo.marca || '',
-        modelo: primerDispositivo.modelo || '',
-        imei: primerDispositivo.imei || '',
-        imei2: '',
-        simCard: '',
-        numeroTel: '',
-        estadoFisico: primerDispositivo.estadoFisico,
-        modoAislamiento: 'modo_avion',
-        danosVisibles: 'Ninguno visible.',
-        bateriaEstado: '100%',
-        pantallaEstado: 'encendido'
-      });
-    }
-
-    addAuditLog({
-      accion: 'FLUJO_FORENSE_INICIADO',
-      detalle: `Inicio guiado del peritaje forense para el caso ${caso.numeroCaso}. Transición a Laboratorio Técnico.`,
-      nivel: 'success',
-      casoId: caso.id,
-      usuario: caso.peritoLider || 'Perito'
-    });
-
-    // Vincular con el CMS para sync automático en Seguimiento & Compliance
-    setCmsCasoId(caso.id);
-
-    // Redirigir al primer paso del flujo forense
-    navigate('/forense/consignacion');
+    navigate('/control/seguimiento-compliance');
   };
 
   const statusConf = ESTADO_OPCIONES.find(e => e.value === caso.estado) || ESTADO_OPCIONES[0];
@@ -387,8 +343,8 @@ export default function CasoDetailPage() {
               onClick={handleIniciarFlujoForense}
               className="fluent-btn bg-fluent-accent text-black font-extrabold hover:bg-fluent-accent-light shadow-[0_0_15px_rgba(254,207,6,0.3)] px-6 py-3 rounded-md text-xs uppercase tracking-widest flex items-center justify-center gap-2.5"
             >
-              <Smartphone size={18} strokeWidth={2.5} />
-              Iniciar Flujo Forense
+              <ShieldCheck size={18} strokeWidth={2.5} />
+              Fases, Tareas &amp; Compliance
             </button>
             <div className="flex items-center gap-2 justify-end text-xs">
               <span className="text-white/40">Cumplimiento:</span>

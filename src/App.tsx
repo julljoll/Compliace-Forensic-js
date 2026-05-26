@@ -6,7 +6,6 @@ import { ErrorBoundary } from './components/atoms/ErrorBoundary';
 
 // ── Layouts ─────────────────────────────────────────────────────────────────
 import CMSLayout from './components/templates/CMSLayout';
-import Layout from './components/templates/Layout';
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -28,15 +27,7 @@ const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage')
 const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage'));
 const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
 
-// ── Módulos forenses ────────────────────────────────────────────────────────
-const HomePage = lazy(() => import('./pages/HomePage'));
-const ConsignacionPage = lazy(() => import('./pages/ConsignacionPage'));
-const PrccPage = lazy(() => import('./pages/PrccPage'));
-const AdquisicionPage = lazy(() => import('./pages/AdquisicionPage'));
-const AnalisisPage = lazy(() => import('./pages/AnalisisPage'));
-const InformePage = lazy(() => import('./pages/InformePage'));
-const DisposicionJudicialPage = lazy(() => import('./pages/DisposicionJudicialPage'));
-const DisposicionFinalPage = lazy(() => import('./pages/DisposicionFinalPage'));
+// ── Correo Forense ──────────────────────────────────────────────────────────
 const CorreoForensePage = lazy(() => import('./pages/CorreoForensePage'));
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
@@ -90,23 +81,7 @@ function App() {
           <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
         </Route>
 
-        {/* ── Módulos Forenses (protegido, prefijo /forense) ── */}
-        <Route path="/forense" element={<AuthGuard><Layout /></AuthGuard>}>
-          <Route index element={<Suspense fallback={<PageLoader />}><HomePage /></Suspense>} />
-          <Route path="consignacion" element={<Suspense fallback={<PageLoader />}><ConsignacionPage /></Suspense>} />
-          <Route path="prcc" element={<Suspense fallback={<PageLoader />}><PrccPage /></Suspense>} />
-          <Route path="adquisicion" element={<Suspense fallback={<PageLoader />}><AdquisicionPage /></Suspense>} />
-          <Route path="analisis" element={<Suspense fallback={<PageLoader />}><AnalisisPage /></Suspense>} />
-          <Route path="informe" element={<Suspense fallback={<PageLoader />}><InformePage /></Suspense>} />
-          <Route path="disposicion-judicial" element={<Suspense fallback={<PageLoader />}><DisposicionJudicialPage /></Suspense>} />
-          <Route path="disposicion-final" element={<Suspense fallback={<PageLoader />}><DisposicionFinalPage /></Suspense>} />
-          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
-          <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
-          <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
-          <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
-          <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
-          <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
-        </Route>
+
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
