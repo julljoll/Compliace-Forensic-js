@@ -76,9 +76,14 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Entrevista', 'Acta de Obtención por Consignación'],
         guide: 'Redactar en tercera persona, tiempo presente, de manera clara y precisa. Firmadas por consignatario y funcionario receptor.',
         tareas: [
-          'Realizar entrevista estructurada a quien entrega el equipo',
-          'Levantar Acta de Entrevista',
-          'Levantar Acta de Obtención por Consignación'
+          'Verificar la identidad del consignatario mediante cédula de identidad',
+          'Documentar detalladamente el motivo de la consignación de la evidencia',
+          'Registrar marca, modelo, seriales e IMEI/IMEI2 del dispositivo consignado',
+          'Registrar número telefónico y compañía operadora de la línea activa',
+          'Verificar el estado de carga de la batería y si la pantalla enciende',
+          'Inspeccionar y documentar minuciosamente daños físicos visibles en el equipo',
+          'Redactar y levantar el Acta de Entrevista estructurada',
+          'Redactar y firmar el Acta de Obtención por Consignación (consignatario y receptor)'
         ],
         iconoName: 'FileText',
         normativas: [
@@ -95,9 +100,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Planilla PRCC', 'Fotografías'],
         guide: 'Describir minuciosamente el dispositivo, su estado, accesorios. Proceder al sellado y etiquetado.',
         tareas: [
-          'Tomar fotografías del dispositivo (mínimo 4 ángulos)',
-          'Registrar dispositivo en Planilla PRCC',
-          'Aplicar etiquetado único y sellado de seguridad'
+          'Tomar fijación fotográfica del dispositivo desde al menos 4 ángulos diferentes',
+          'Registrar minuciosamente el dispositivo y accesorios en la planilla PRCC',
+          'Colocar el equipo en una bolsa antiestática o bolsa Faraday de seguridad',
+          'Aplicar sellado de seguridad inviolable y rotulación técnica reglamentaria',
+          'Asentar en PRCC los datos del perito de origen y el funcionario trasladante'
         ],
         iconoName: 'Shield',
         normativas: [
@@ -113,10 +120,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Log de extracción', 'Reporte de hash', 'Fotografías'],
         guide: 'Usar cable del perito. Activar modo avión antes de cualquier conexión. Documentar cada comando.',
         tareas: [
-          'Conectar dispositivo al equipo forense con cable propio',
-          'Verificar modo avión activado',
-          'Ejecutar Avilla Forensics o Andriller para extracción lógica',
-          'Verificar integridad con hash SHA-256 del archivo generado'
+          'Aislar el dispositivo móvil en Modo Avión o dentro de bolsa Faraday',
+          'Conectar el equipo a la estación forense usando cable propio certificado',
+          'Configurar depuración USB y depurar permisos necesarios en modo solo lectura',
+          'Ejecutar extracción lógica o física con Avilla Forensics o Andriller',
+          'Calcular hash SHA-256 del contenedor de la extracción forense generada',
+          'Guardar log detallado de la extracción y el reporte de hash pre-imagen'
         ],
         iconoName: 'Terminal',
         normativas: [
@@ -133,9 +142,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Cadena de Custodia', 'Fotografías de sellado'],
         guide: 'El dispositivo original no debe ser alterado. Se sella y almacena en bóveda de evidencias.',
         tareas: [
-          'Sellar dispositivo original en bolsa antiestática con precinto',
-          'Almacenar en bóveda de evidencias',
-          'Registrar ubicación en sistema y PRCC'
+          'Embalar dispositivo original en bolsa antiestática sellada con precinto único',
+          'Rotular el embalaje exterior y asentar la codificación del precinto en PRCC',
+          'Registrar formalmente el ingreso físico de la evidencia a la Bóveda de Resguardo',
+          'Verificar condiciones de resguardo: temperatura, humedad y control de acceso',
+          'Registrar la ubicación física exacta del depósito en PRCC y sistema de control'
         ],
         iconoName: 'Package',
         normativas: [
@@ -151,10 +162,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte ALEAPP', 'Reporte IPED', 'Reporte de análisis'],
         guide: 'Cargar extracción en ALEAPP para parseo de artefactos Android y utilizar IPED Digital Forensic Tool para análisis avanzado de bases de datos.',
         tareas: [
-          'Cargar archivo de extracción en ALEAPP',
-          'Procesar extracción con IPED Digital Forensic Tool',
-          'Ejecutar análisis completo de artefactos Android y bases de datos',
-          'Revisar y documentar hallazgos de ambas herramientas'
+          'Verificar la integridad del embalaje y correspondencia de precintos al recibir',
+          'Recalcular y validar hash SHA-256 de la extracción antes de iniciar análisis',
+          'Cargar el archivo de extracción lógica en la herramienta ALEAPP',
+          'Procesar extracción en IPED Digital Forensic Tool para indexación de base de datos',
+          'Ejecutar búsquedas cruzadas y clasificar los registros de interés forense',
+          'Documentar versiones exactas de ALEAPP e IPED en la bitácora del perito'
         ],
         iconoName: 'Database',
         normativas: [
@@ -170,10 +183,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte de chats', 'Transcripción de audios'],
         guide: 'Parsear msgstore.db. Transcribir audios .opus. Documentar metadata de cada mensaje.',
         tareas: [
-          'Parsear msgstore.db con parser de WhatsApp',
-          'Extraer conversaciones relevantes para la investigación',
-          'Transcribir audios .opus a texto',
-          'Generar línea de tiempo de mensajes'
+          'Localizar y extraer base de datos SQLite msgstore.db de WhatsApp',
+          'Parsear la base de datos msgstore.db para la extracción íntegra de chats',
+          'Extraer y transcribir a texto archivos de audio en formato .opus adjuntos',
+          'Construir línea de tiempo cronológica (fecha, hora, remitente, destinatario)',
+          'Identificar y documentar metadatos y registros de mensajes eliminados',
+          'Exportar chats analizados calculando hash individual para cada reporte'
         ],
         iconoName: 'Smartphone',
         normativas: [
@@ -189,10 +204,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Dictamen Pericial', 'Anexos', 'Cadena de Custodia'],
         guide: 'Incluir metodología, hallazgos, conclusión y firma del perito.',
         tareas: [
-          'Redactar dictamen pericial con metodología y conclusiones',
-          'Anexar reportes generados',
-          'Incluir planilla PRCC y cadena de custodia',
-          'Firmar digitalmente el dictamen'
+          'Redactar dictamen pericial estructurado (Motivo, Descripción, Examen y Conclusiones)',
+          'Registrar de forma obligatoria las versiones exactas de herramientas y software usados',
+          'Incluir tabla de resultados con nombre nativo, ruta, tamaño y Hash SHA-256 individual',
+          'Formular conclusiones técnico-científicas claras sin precalificaciones jurídicas',
+          'Adjuntar planilla PRCC completa, bitácora de peritaje y anexos firmados',
+          'Firmar y sellar físicamente/digitalmente el dictamen pericial como Perito Informático'
         ],
         iconoName: 'FileCheck',
         normativas: [
@@ -208,9 +225,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Exhibición', 'Oficio de remisión'],
         guide: 'Coordinar con el tribunal la presentación de la evidencia.',
         tareas: [
-          'Preparar evidencia digital y dictamen para presentación judicial',
-          'Coordinar fecha y hora de exhibición',
-          'Levantar acta de exhibición y entrega formal'
+          'Preparar el contenedor de evidencia digital y dictamen pericial para juicio',
+          'Coordinar con la secretaría del tribunal la fecha y hora de la exhibición',
+          'Realizar el traslado pericial cumpliendo las medidas de seguridad y embalaje',
+          'Presentar y exhibir la evidencia digital en la audiencia de juicio oral',
+          'Levantar Acta de Exhibición de Evidencias en audiencia y firmar PRCC de traslado'
         ],
         iconoName: 'Scale',
         normativas: [
@@ -226,9 +245,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Cierre', 'Documento de disposición final'],
         guide: 'Determinar disposición final de la evidencia y documentar el cierre.',
         tareas: [
-          'Determinar disposición final según orden judicial',
-          'Documentar disposición en acta de cierre',
-          'Actualizar estado del caso a cerrado o archivado'
+          'Recibir orden judicial expresa que determine la disposición final de la evidencia',
+          'Materializar el cierre formal correspondiente (Devolución, Entrega o Destrucción)',
+          'Levantar y firmar el Acta de Disposición Final de Evidencias en el laboratorio',
+          'Registrar el cierre administrativo e instrumental en observaciones de la planilla PRCC',
+          'Archivar copias de respaldo de imágenes forenses bajo resguardo inmutable'
         ],
         iconoName: 'CheckCircle2',
         normativas: [
@@ -278,9 +299,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Identificación de Fuentes', 'Listado de cuentas'],
         guide: 'Identificar todas las cuentas de correo relevantes, proveedores de servicio (Gmail, Outlook, corporativo), y dispositivos asociados.',
         tareas: [
-          'Identificar cuentas de correo electrónico a investigar',
-          'Documentar proveedores de servicio y tipo de acceso',
-          'Solicitar credenciales de acceso o copia del buzón'
+          'Identificar cuentas de correo electrónico a investigar e IP de servidores',
+          'Documentar proveedores de servicio (IMAP/POP3/Exchange) y tipo de cifrado',
+          'Registrar orden judicial de interceptación o autorización de acceso fiscal',
+          'Solicitar formalmente credenciales de acceso o copia directa del buzón original',
+          'Registrar de forma descriptiva el buzón de destino y perfiles asociados en el PRCC'
         ],
         iconoName: 'FileText',
         normativas: [
@@ -296,9 +319,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Obtención', 'Log de exportación'],
         guide: 'Exportar buzón a formato PST/OST con verificación de integridad SHA-256. Documentar todo el proceso.',
         tareas: [
-          'Exportar buzón de correo completo a PST/OST',
-          'Verificar integridad del archivo exportado con SHA-256',
-          'Sellar y etiquetar el archivo como evidencia digital'
+          'Exportar buzón de correo completo a formato estructurado PST/OST/MBOX',
+          'Calcular hash SHA-256 del archivo de buzón exportado (sello criptográfico inicial)',
+          'Sellar y etiquetar digitalmente el archivo contenedor como evidencia primaria',
+          'Almacenar el archivo de buzón en un medio físico/lógico protegido bajo PRCC',
+          'Registrar ingreso a la bóveda y documentar ubicación del respaldo forense'
         ],
         iconoName: 'Terminal',
         normativas: [
@@ -314,10 +339,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte de análisis de cabeceras', 'Diagrama de ruta'],
         guide: 'Extraer cabeceras completas (Internet Headers). Analizar campos Received, Message-ID, SPF, DKIM, DMARC para determinar autenticidad y ruta.',
         tareas: [
-          'Extraer cabeceras completas de cada correo relevante',
-          'Analizar ruta de servidores SMTP',
-          'Verificar autenticidad SPF, DKIM y DMARC',
-          'Documentar hallazgos en reporte técnico'
+          'Extraer Internet Headers (cabeceras completas) de correos seleccionados',
+          'Analizar la ruta de servidores SMTP y direcciones IP de origen del mensaje',
+          'Verificar la autenticidad técnica de los correos mediante SPF, DKIM y DMARC',
+          'Rastrear y verificar zonas horarias de envío y desfases en marcas de tiempo',
+          'Documentar hallazgos de cabeceras en reporte técnico y bitácora del perito'
         ],
         iconoName: 'Database',
         normativas: [
@@ -333,9 +359,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte de adjuntos', 'Análisis de malware'],
         guide: 'Extraer todos los archivos adjuntos, calcular hash de cada uno, analizar en busca de malware o contenido relevante.',
         tareas: [
-          'Extraer archivos adjuntos de los correos seleccionados',
-          'Calcular hash SHA-256 de cada adjunto',
-          'Analizar adjuntos en busca de malware o datos relevantes'
+          'Extraer la totalidad de archivos adjuntos de los correos seleccionados',
+          'Calcular hash SHA-256 individual de cada archivo adjunto extraído',
+          'Analizar archivos adjuntos en busca de malware, virus o troyanos',
+          'Verificar metadatos (EXIF, propiedades del documento) de archivos adjuntos',
+          'Generar reporte individual de adjuntos con su respectiva correlación hash'
         ],
         iconoName: 'Package',
         normativas: [
@@ -351,9 +379,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Línea de tiempo', 'Reporte de metadatos'],
         guide: 'Extraer metadatos (fechas, destinatarios, asuntos, tamaño). Construir línea de tiempo cronológica de las comunicaciones.',
         tareas: [
-          'Extraer metadatos de todos los correos',
-          'Construir línea de tiempo cronológica',
-          'Identificar patrones de comunicación relevantes'
+          'Extraer metadatos de mensajería (remitente, destinatarios, asunto, fecha, id)',
+          'Construir línea de tiempo cronológica unificada de las comunicaciones',
+          'Identificar y clasificar patrones de comunicación o alias de interés',
+          'Detectar anomalías en metadatos que sugieran alteración o falsificación',
+          'Calcular hash SHA-256 de los reportes temporales construidos'
         ],
         iconoName: 'Smartphone',
         normativas: [
@@ -369,9 +399,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Dictamen Pericial Email Forense', 'Anexos técnicos'],
         guide: 'Dictamen debe incluir: metodología, análisis de cabeceras, adjuntos, metadatos, conclusiones sobre autenticidad y autoría.',
         tareas: [
-          'Redactar dictamen pericial de correo electrónico',
-          'Incluir reportes de cabeceras, adjuntos y metadatos',
-          'Firmar digitalmente el dictamen'
+          'Redactar dictamen pericial (Motivo, Descripción, Examen y Conclusiones)',
+          'Registrar de forma expresa las herramientas de análisis de correo y versiones',
+          'Incluir tabla con nombre nativo, metadatos, tamaño y hash SHA-256 de correos y adjuntos',
+          'Formular conclusiones periciales técnico-científicas sin precalificar delitos',
+          'Adjuntar planilla PRCC completa y las bitácoras firmadas por el perito',
+          'Firmar y sellar digitalmente el dictamen de email forense como Perito Informático'
         ],
         iconoName: 'FileCheck',
         normativas: [
@@ -387,9 +420,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Cierre'],
         guide: 'Determinar disposición final del material extraído y documentar el cierre del peritaje.',
         tareas: [
-          'Determinar disposición final según orden judicial',
-          'Archivar copia forense del buzón',
-          'Actualizar estado del caso a cerrado'
+          'Verificar orden judicial de disposición final de la copia y buzón',
+          'Ejecutar la devolución de soportes físicos o destrucción pericial de respaldos',
+          'Levantar y firmar el Acta de Disposición Final de Evidencias de Email',
+          'Registrar el cierre en la planilla PRCC asentando observaciones finales',
+          'Archivar reporte de dictamen firmado en archivo inmutable del laboratorio'
         ],
         iconoName: 'CheckCircle2',
         normativas: [
@@ -439,9 +474,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Recepción', 'Fotografías del dispositivo'],
         guide: 'Recibir el dispositivo, fotografiar su estado físico, registrar marca, modelo, capacidad y número de serie.',
         tareas: [
-          'Fotografiar el dispositivo desde múltiples ángulos',
-          'Registrar marca, modelo, capacidad y serie',
-          'Documentar estado físico del dispositivo'
+          'Fotografiar el disco duro o unidad desde al menos 4 ángulos diferentes',
+          'Registrar minuciosamente marca, modelo, capacidad nominal y número de serie',
+          'Registrar tipo de interfaz (SATA, IDE, M.2, NVMe) y formato físico del disco',
+          'Inspeccionar y documentar detalladamente el estado físico externo y conectores',
+          'Verificar identidad del funcionario que entrega y el motivo de la peritación',
+          'Redactar y firmar el Acta de Recepción del dispositivo en el laboratorio'
         ],
         iconoName: 'FileText',
         normativas: [
@@ -457,9 +495,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Planilla PRCC'],
         guide: 'Registrar en PRCC la cadena de custodia del dispositivo, incluyendo estado, precintos y sellos.',
         tareas: [
-          'Registrar dispositivo en Planilla PRCC',
-          'Aplicar etiquetado único y sellado',
-          'Documentar cadena de custodia'
+          'Registrar detalladamente el disco duro en la Planilla de Registro de Cadena de Custodia (PRCC)',
+          'Aplicar etiquetado físico permanente con código único sobre el dispositivo',
+          'Sellar disco en bolsa antiestática homologada con precinto inviolable numerado',
+          'Documentar en PRCC el número del precinto y la firma de los intervinientes',
+          'Registrar ingreso a bóveda de evidencias y asignar ubicación controlada'
         ],
         iconoName: 'Shield',
         normativas: [
@@ -475,9 +515,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Fotografía de conexión', 'Log de reconocimiento'],
         guide: 'Conectar el disco a través de write-blocker hardware. Verificar que el sistema operativo reconozca el dispositivo en modo solo lectura.',
         tareas: [
-          'Conectar disco mediante write-blocker hardware',
-          'Verificar reconocimiento en modo solo lectura',
-          'Documentar configuración de conexión'
+          'Conectar el disco duro a la estación forense a través de write-blocker hardware',
+          'Verificar en el sistema que la unidad esté montada estrictamente en modo solo lectura',
+          'Registrar la marca, modelo y versión de firmware del write-blocker utilizado',
+          'Verificar el reconocimiento correcto de la geometría del disco en el sistema forense',
+          'Tomar fotografía detallada del esquema de conexión física en la workstation'
         ],
         iconoName: 'Terminal',
         normativas: [
@@ -493,10 +535,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Log de adquisición', 'Reporte de hash SHA-256', 'Fotografías'],
         guide: 'Crear imagen bit-a-bit usando FTK Imager, Guymager o DD. Calcular hash SHA-256 antes y después de la adquisición.',
         tareas: [
-          'Calcular hash SHA-256 del disco original',
-          'Crear imagen forense bit-a-bit (DD/E01)',
-          'Verificar hash de la imagen vs disco original',
-          'Documentar todo el proceso en log'
+          'Calcular hash SHA-256 del disco duro original antes de iniciar copia',
+          'Crear imagen forense bit-a-bit en formato binario DD o formato pericial E01',
+          'Recalcular y verificar el hash SHA-256 de la imagen forense creada contra el original',
+          'Generar reporte de hash pre-imagen detallando fecha, hora y velocidad de copia',
+          'Almacenar la imagen forense creada en un disco de trabajo seguro y protegido'
         ],
         iconoName: 'HardDrive',
         normativas: [
@@ -512,9 +555,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte de particiones', 'Diagrama de estructura'],
         guide: 'Montar la imagen en modo solo lectura. Analizar tabla de particiones (MBR/GPT), sistema de archivos (NTFS/FAT32/ext4).',
         tareas: [
-          'Montar imagen forense en modo solo lectura',
-          'Analizar tabla de particiones (MBR/GPT)',
-          'Identificar sistemas de archivos presentes'
+          'Montar la imagen forense generada estrictamente en modo de solo lectura',
+          'Analizar la tabla de particiones del disco (MBR, GPT o esquemas heredados)',
+          'Identificar sistemas de archivos presentes (NTFS, FAT32, exFAT, ext4)',
+          'Analizar el slack space y sectores no asignados de las particiones',
+          'Documentar estructura de particiones en reporte detallado con marcas de tiempo'
         ],
         iconoName: 'Database',
         normativas: [
@@ -530,9 +575,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Reporte de recuperación', 'Listado de archivos'],
         guide: 'Utilizar herramientas forenses para recuperar archivos eliminados, slack space, y datos ocultos. Documentar todos los hallazgos.',
         tareas: [
-          'Ejecutar escaneo de archivos eliminados',
-          'Recuperar archivos de interés forense',
-          'Documentar hallazgos con hash de cada archivo'
+          'Ejecutar escaneo de archivos eliminados mediante file carving (Autopsy/Scalpel)',
+          'Recuperar particiones borradas o huérfanas si existieran en la unidad',
+          'Analizar metadatos y registros del sistema de archivos para archivos borrados',
+          'Extraer y clasificar archivos recuperados de interés forense para la causa',
+          'Calcular hash SHA-256 individual de cada archivo recuperado de relevancia',
+          'Generar listado indexado de archivos recuperados con su correspondiente hash'
         ],
         iconoName: 'Smartphone',
         normativas: [
@@ -548,9 +596,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Dictamen Pericial', 'Anexos'],
         guide: 'Incluir metodología de adquisición, hallazgos, archivos recuperados, y conclusiones técnicas.',
         tareas: [
-          'Redactar dictamen pericial de disco duro',
-          'Incluir log de adquisición y reportes de hash',
-          'Firmar digitalmente el dictamen'
+          'Redactar dictamen pericial estructurado (Motivo, Descripción, Examen y Conclusiones)',
+          'Registrar de forma obligatoria las versiones del software de análisis forense (Autopsy/FTK)',
+          'Incluir tabla con nombre nativo, ruta, tamaño, fecha de creación/modificación y hash de archivos',
+          'Formular conclusiones técnico-científicas claras basadas exclusivamente en la evidencia física',
+          'Adjuntar planilla PRCC completa, bitácora de adquisición forense y logs de hash',
+          'Firmar y sellar digitalmente el dictamen pericial de disco duro como Perito Informático'
         ],
         iconoName: 'FileCheck',
         normativas: [
@@ -566,9 +617,11 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
         docs: ['Acta de Cierre', 'Documento de disposición'],
         guide: 'Determinar disposición final del disco y la imagen forense.',
         tareas: [
-          'Determinar disposición final del disco',
-          'Archivar imagen forense según normativa',
-          'Actualizar estado del caso a cerrado'
+          'Recibir orden del tribunal indicando disposición final del disco original',
+          'Materializar el cierre físico correspondiente (Devolución, Entrega o Destrucción)',
+          'Levantar y firmar el Acta de Disposición Final de la evidencia física en el laboratorio',
+          'Asentar el egreso y cierre instrumental en observaciones de la planilla PRCC',
+          'Archivar la imagen forense de respaldo en soporte inmutable del laboratorio forense'
         ],
         iconoName: 'CheckCircle2',
         normativas: [
