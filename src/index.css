@@ -288,21 +288,24 @@
 
   /* ── Planilla & Timeline ── */
   .planilla-container {
-    --primary-color: #0071E3;
-    --text-color: #1D1D1F;
+    --primary: #0071E3;
+    --text: #1D1D1F;
+    --text-dim: #86868B;
     --text-muted: #86868B;
+    --border: rgba(0, 0, 0, 0.08);
     --border-color: rgba(0, 0, 0, 0.08);
+    --gray: rgba(0, 0, 0, 0.025);
     --gray-light: rgba(0, 0, 0, 0.025);
 
     .section-title {
-      background-color: var(--gray-light);
-      border-left: 4px solid var(--primary-color);
-      color: var(--text-color);
+      background-color: var(--gray);
+      border-left: 4px solid var(--primary);
+      color: var(--text);
       @apply py-1.5 px-2.5 text-[11px] font-bold uppercase mb-2.5;
     }
     .form-group {
-      border: 1px solid var(--border-color);
-      background-color: var(--gray-light);
+      border: 1px solid var(--border);
+      background-color: var(--gray);
       @apply p-2 rounded mb-1;
     }
     .label {

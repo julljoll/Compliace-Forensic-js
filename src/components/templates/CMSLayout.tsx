@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
@@ -6,6 +6,7 @@ import {
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
+import { checkConnection } from '../../db/neonClient';
 
 const menuItems = [
   { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
@@ -30,6 +31,18 @@ export default function CMSLayout() {
   const fetchCasos = useCMSStore(state => state.fetchCasos);
   const { user, logout } = useAuthStore();
   const stats = getEstadisticas();
+  const [dbOnline, setDbOnline] = useState<boolean | null>(null);
+
+  const verificarDB = useCallback(async () => {
+    const ok = await checkConnection();
+    setDbOnline(ok);
+  }, []);
+
+  useEffect(() => {
+    verificarDB();
+    const interval = setInterval(verificarDB, 30000);
+    return () => clearInterval(interval);
+  }, [verificarDB]);
 
   useEffect(() => {
     fetchCasos();
@@ -193,10 +206,16 @@ export default function CMSLayout() {
             >
               <Trash2 size={13} />
             </button>
-            <div className="flex items-center gap-2 text-[12px] font-medium text-[#86868B]">
-              <div className="w-2 h-2 rounded-full bg-[#34C759]" />
-              <span>Sincronizado</span>
-            </div>
+            <button
+              onClick={verificarDB}
+              title={dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon Serverless' : 'Sin conexión a Neon'}
+              className="flex items-center gap-2 text-[12px] font-medium px-2.5 py-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] transition-all"
+            >
+              <div className={`w-2 h-2 rounded-full ${dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
+              <span className={dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}>
+                {dbOnline === null ? 'Verificando...' : dbOnline ? 'Estado del Sistema' : 'Estado del Sistema'}
+              </span>
+            </button>
             <div className="apple-badge-green">
               <Activity size={11} />
               <span>PRODUCCIÓN</span>

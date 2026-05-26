@@ -213,9 +213,9 @@ const PlanillaPRCCPage = () => {
             </p>
         </div>
 
-        <footer>
+        <div className="footer">
             Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) | SHA256 Forensic Lab
-        </footer>
+        </div>
 
         <div style={{ 'textAlign': 'center', 'marginTop': '20px', 'marginBottom': '20px' }} className="no-print">
             <button onClick={() => { window.print() }} style={{ 'padding': '10px 20px', 'background': '#0071E3', 'color': '#ffffff', 'border': 'none', 'borderRadius': '4px', 'cursor': 'pointer', 'fontWeight': 'bold', 'fontFamily': '"Inter", sans-serif', 'boxShadow': '0 2px 4px rgba(0,0,0,0.2)' }}>🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>

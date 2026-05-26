@@ -8,7 +8,9 @@
   --accent: #0071E3;
   --text: #1D1D1F;
   --text-dim: #86868B;
+  --text-muted: #86868B;
   --border: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.08);
   --gray: rgba(0, 0, 0, 0.025);
 
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Inter, sans-serif;

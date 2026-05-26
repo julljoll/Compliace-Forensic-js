@@ -14,6 +14,18 @@ try {
   console.error('Error al inicializar el cliente Neon:', e);
 }
 
+// Verificar conexión a la base de datos Neon
+export async function checkConnection(): Promise<boolean> {
+  if (!sqlClient) return false;
+  try {
+    await sqlClient('SELECT 1');
+    return true;
+  } catch (e) {
+    console.error('Error de conexión a Neon:', e);
+    return false;
+  }
+}
+
 // Inicializar tablas en la base de datos
 export async function initDatabase() {
   if (!sqlClient) return false;
