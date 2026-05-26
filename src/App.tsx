@@ -28,8 +28,8 @@ const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage')
 const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage'));
 const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
 
-// ── Correo Forense ──────────────────────────────────────────────────────────
-const CorreoForensePage = lazy(() => import('./pages/CorreoForensePage'));
+// ── Sistemas ────────────────────────────────────────────────────────────────
+const CorreoCorporativoManual = lazy(() => import('./pages/CorreoCorporativoManual'));
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -88,7 +88,7 @@ function App() {
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
-          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
+          <Route path="sistemas/correo-corporativo" element={<Suspense fallback={<PageLoader />}><CorreoCorporativoManual /></Suspense>} />
         </Route>
 
 

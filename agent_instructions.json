@@ -15,14 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 22:24:15",
-      "last_commit": "3cc76cc - dsdsdds (2026-05-26)",
+      "timestamp": "2026-05-26 22:44:43",
+      "last_commit": "f02e023 - 34 (2026-05-26)",
       "modified_files": [
-        "M  src/pages/Planillas/ActaDictamenPage.tsx",
-        "M  src/pages/Planillas/ActaEntregaResultadosPage.tsx",
-        "M  src/pages/Planillas/ActaObtencionPage.tsx",
-        "M  src/pages/Planillas/PlanillaPRCCPage.tsx",
-        "M  src/pages/Planillas/Planillas.css"
+        "A  sistemas/correo-corporativo-manual/README.md",
+        "A  sistemas/oauth-vercel-tutorial/README.md",
+        "M  src/App.tsx",
+        "A  src/pages/CorreoCorporativoManual.tsx"
       ]
     }
   },
