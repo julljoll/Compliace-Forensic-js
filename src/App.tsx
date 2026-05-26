@@ -18,7 +18,6 @@ const CasoDetailPage = lazy(() => import('./pages/CasoDetailPage'));
 const SeguimientoCompliancePage = lazy(() => import('./pages/Control/SeguimientoCompliancePage'));
 const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
-const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
 const ManualServerlessPage = lazy(() => import('./pages/ManualServerlessPage'));
 
@@ -30,6 +29,8 @@ const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntre
 
 // ── Sistemas ────────────────────────────────────────────────────────────────
 const CorreoCorporativoManual = lazy(() => import('./pages/CorreoCorporativoManual'));
+const CorreoForensePage = lazy(() => import('./pages/CorreoForensePage'));
+const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -79,7 +80,7 @@ function App() {
           <Route path="compliance" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="normativas" element={<Suspense fallback={<PageLoader />}><NormativasPage /></Suspense>} />
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
-          <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
+          <Route path="sistemas/manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
           <Route path="tareas" element={<Navigate to="/control/seguimiento-compliance?tab=tareas" replace />} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
           <Route path="manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
@@ -89,6 +90,7 @@ function App() {
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="sistemas/correo-corporativo" element={<Suspense fallback={<PageLoader />}><CorreoCorporativoManual /></Suspense>} />
+          <Route path="sistemas/correo-electronico" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
         </Route>
 
 

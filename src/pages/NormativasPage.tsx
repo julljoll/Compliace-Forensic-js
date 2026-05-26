@@ -5,12 +5,32 @@ const TIPO_ICONS: Record<string, typeof BookOpen> = {
   ISO: Shield, NIST: Shield, LEY: Gavel, MANUAL: FileText, REGLAMENTO: Scale,
 };
 
-const TIPO_COLORS: Record<string, string> = {
-  ISO:        'bg-blue-500/10 border-blue-500/20 text-blue-300',
-  NIST:       'bg-purple-500/10 border-purple-500/20 text-purple-300',
-  LEY:        'bg-red-500/10 border-red-500/20 text-red-300',
-  MANUAL:     'bg-yellow-500/10 border-yellow-500/20 text-yellow-300',
-  REGLAMENTO: 'bg-green-500/10 border-green-500/20 text-green-300',
+const TIPO_STYLES: Record<string, { badge: string; iconBg: string; iconColor: string }> = {
+  ISO: {
+    badge: 'bg-[rgba(0,122,255,0.08)] text-[#007AFF] border-[rgba(0,122,255,0.2)]',
+    iconBg: 'bg-[rgba(0,122,255,0.1)]',
+    iconColor: 'text-[#007AFF]',
+  },
+  NIST: {
+    badge: 'bg-[rgba(88,86,214,0.08)] text-[#5856D6] border-[rgba(88,86,214,0.2)]',
+    iconBg: 'bg-[rgba(88,86,214,0.1)]',
+    iconColor: 'text-[#5856D6]',
+  },
+  LEY: {
+    badge: 'bg-[rgba(255,59,48,0.08)] text-[#FF3B30] border-[rgba(255,59,48,0.2)]',
+    iconBg: 'bg-[rgba(255,59,48,0.1)]',
+    iconColor: 'text-[#FF3B30]',
+  },
+  MANUAL: {
+    badge: 'bg-[rgba(255,149,0,0.08)] text-[#FF9500] border-[rgba(255,149,0,0.2)]',
+    iconBg: 'bg-[rgba(255,149,0,0.1)]',
+    iconColor: 'text-[#FF9500]',
+  },
+  REGLAMENTO: {
+    badge: 'bg-[rgba(52,199,89,0.08)] text-[#34C759] border-[rgba(52,199,89,0.2)]',
+    iconBg: 'bg-[rgba(52,199,89,0.1)]',
+    iconColor: 'text-[#34C759]',
+  },
 };
 
 export default function NormativasPage() {
@@ -19,56 +39,71 @@ export default function NormativasPage() {
   const tiposUnicos = [...new Set(normativas.map(n => n.tipo))];
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-black text-white mb-1 flex items-center gap-3">
-          <BookOpen className="text-cms-accent" size={24} />
-          Marco Normativo de Referencia
-        </h1>
-        <p className="text-sm text-cms-textMuted">
-          Normativas cargadas desde la carpeta RAG del sistema · {normativas.length} instrumentos normativos
-        </p>
+    <div className="space-y-10 animate-fade-in">
+      <div className="animate-slide-up">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 rounded-[10px] bg-[rgba(0,113,227,0.1)]">
+            <BookOpen size={20} className="text-[#0071E3]" />
+          </div>
+          <div>
+            <h1 className="text-apple-title font-black text-[#1D1D1F]">Marco Normativo de Referencia</h1>
+            <p className="text-apple-body text-[#86868B] mt-0.5">
+              {normativas.length} instrumentos normativos · Repositorio RAG
+            </p>
+          </div>
+        </div>
       </div>
 
-      {tiposUnicos.map(tipo => {
+      {tiposUnicos.map((tipo, tipoIdx) => {
         const normsDelTipo = normativas.filter(n => n.tipo === tipo);
         const TipoIcon = TIPO_ICONS[tipo] || BookOpen;
-        const tipoColor = TIPO_COLORS[tipo] || 'bg-gray-500/10 border-gray-500/20 text-gray-300';
+        const style = TIPO_STYLES[tipo] || TIPO_STYLES.ISO;
         return (
-          <div key={tipo}>
-            <div className="flex items-center gap-2 mb-4">
-              <TipoIcon size={16} className="text-cms-accent" />
-              <h2 className="font-bold text-white text-base">{tipo}</h2>
-              <span className="text-xs text-cms-textMuted">({normsDelTipo.length})</span>
+          <div key={tipo} className="animate-slide-up" style={{ animationDelay: `${tipoIdx * 0.1}s` }}>
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className={`p-1.5 rounded-lg ${style.iconBg}`}>
+                <TipoIcon size={14} className={style.iconColor} />
+              </div>
+              <h2 className="text-apple-headline font-bold text-[#1D1D1F]">{tipo}</h2>
+              <span className="text-apple-footnote text-[#86868B] font-medium">({normsDelTipo.length})</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {normsDelTipo.map(norm => {
+              {normsDelTipo.map((norm, normIdx) => {
                 const casosUsando = casos.filter(c => c.normativasAplicadas.includes(norm.id)).length;
                 return (
-                  <div key={norm.id} className="cms-card p-5 group hover:border-cms-accent/30">
+                  <div
+                    key={norm.id}
+                    className="apple-card p-5 transition-all duration-300"
+                    style={{ animationDelay: `${(tipoIdx * 0.1) + (normIdx * 0.05)}s` }}
+                  >
                     <div className="flex items-start gap-4">
-                      <div className={`p-2 rounded-lg border ${tipoColor} shrink-0`}>
-                        <TipoIcon size={16} />
+                      <div className={`p-2.5 rounded-xl ${style.iconBg} shrink-0`}>
+                        <TipoIcon size={18} className={style.iconColor} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-mono font-black text-cms-accent text-sm">{norm.codigo}</span>
-                          {norm.activa
-                            ? <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-500/15 border border-green-500/30 text-green-300 font-bold">VIGENTE</span>
-                            : <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-gray-500/15 border border-gray-500/30 text-gray-400 font-bold">INACTIVA</span>
-                          }
+                        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                          <span className="font-mono font-black text-[#0071E3] text-apple-subhead tracking-tight">{norm.codigo}</span>
+                          {norm.activa ? (
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${style.badge}`}>VIGENTE</span>
+                          ) : (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold border bg-[rgba(142,142,147,0.08)] text-[#8E8E93] border-[rgba(142,142,147,0.2)]">INACTIVA</span>
+                          )}
                         </div>
-                        <h3 className="text-sm font-bold text-white leading-snug mb-2">{norm.nombre}</h3>
-                        <p className="text-xs text-cms-textMuted leading-relaxed mb-3">{norm.descripcion}</p>
-                        <div className="flex items-center gap-4 text-[10px] text-cms-textMuted">
-                          <span>Versión: <span className="text-white">{norm.version}</span></span>
-                          <span>Vigencia: <span className="text-white">{new Date(norm.fechaVigencia).toLocaleDateString('es')}</span></span>
-                          <span className="text-cms-accent font-bold">{casosUsando} casos</span>
+                        <h3 className="text-apple-headline font-semibold text-[#1D1D1F] leading-snug mb-2">{norm.nombre}</h3>
+                        <p className="text-apple-callout text-[#86868B] leading-relaxed mb-3.5">{norm.descripcion}</p>
+                        <div className="flex items-center gap-4 text-apple-footnote text-[#86868B]">
+                          <span>Versión <span className="text-[#1D1D1F] font-medium">{norm.version}</span></span>
+                          <span className="w-px h-3 bg-[rgba(0,0,0,0.08)]" />
+                          <span>Vigencia <span className="text-[#1D1D1F] font-medium">{new Date(norm.fechaVigencia).toLocaleDateString('es')}</span></span>
+                          <span className="w-px h-3 bg-[rgba(0,0,0,0.08)]" />
+                          <span className="text-[#0071E3] font-semibold">{casosUsando} casos</span>
                         </div>
                         {norm.articulos && norm.articulos.length > 0 && (
-                          <div className="mt-3 flex flex-wrap gap-1">
+                          <div className="mt-3.5 pt-3.5 border-t border-[rgba(0,0,0,0.06)] flex flex-wrap gap-1.5">
                             {norm.articulos.map(art => (
-                              <span key={art} className="text-[9px] px-2 py-0.5 rounded bg-cms-surface border border-cms-border text-cms-textMuted">{art}</span>
+                              <span key={art} className="text-[10px] px-2.5 py-1 rounded-full bg-[rgba(0,0,0,0.04)] text-[#6E6E73] font-medium border border-[rgba(0,0,0,0.06)]">
+                                {art}
+                              </span>
                             ))}
                           </div>
                         )}
@@ -82,17 +117,18 @@ export default function NormativasPage() {
         );
       })}
 
-      {/* Nota sobre RAG */}
-      <div className="cms-card p-5 border-cms-accent/20 bg-cms-accent/5">
-        <div className="flex items-start gap-3">
-          <BookOpen size={18} className="text-cms-accent shrink-0 mt-0.5" />
+      <div className="apple-card p-6 border border-[rgba(0,113,227,0.15)] bg-[rgba(0,113,227,0.04)] animate-fade-in">
+        <div className="flex items-start gap-3.5">
+          <div className="p-2 rounded-xl bg-[rgba(0,113,227,0.1)] shrink-0">
+            <BookOpen size={18} className="text-[#0071E3]" />
+          </div>
           <div>
-            <h3 className="font-bold text-white text-sm mb-1">Documentos en Repositorio RAG</h3>
-            <p className="text-xs text-cms-textMuted leading-relaxed">
-              Los documentos normativos originales (PDFs, YAMLs) se encuentran intactos en la carpeta <code className="font-mono text-cms-accent bg-cms-surface px-1 py-0.5 rounded">RAG/</code> del proyecto.
+            <h3 className="text-apple-headline font-semibold text-[#1D1D1F] mb-1">Repositorio RAG</h3>
+            <p className="text-apple-callout text-[#86868B] leading-relaxed">
+              Los documentos normativos originales (PDFs, YAMLs) se encuentran intactos en la carpeta <code className="font-mono text-[#0071E3] bg-[rgba(0,113,227,0.08)] px-1.5 py-0.5 rounded-md text-apple-footnote">RAG/</code> del proyecto.
               Este panel los referencia para el proceso de compliance sin modificar su contenido.
-              Los documentos incluyen: ISO/IEC 27037, ISO/IEC 27042, NIST SP 800-101, Manual Único de Cadena de Custodia,
-              ACPO Guide, Ley de Delitos Informáticos, Código Orgánico Procesal Penal, Constitución Nacional y más.
+              Incluye: ISO/IEC 27037, ISO/IEC 27042, NIST SP 800-101, MUCC-2017,
+              ACPO Guide, LEDI, COPP, Constitución Nacional y más.
             </p>
           </div>
         </div>
