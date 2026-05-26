@@ -116,24 +116,41 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <div className="mt-7 text-center space-y-2.5">
-          <p className="text-[11px] text-[#86868B] leading-relaxed max-w-xs mx-auto font-normal">
-            El acceso no autorizado será registrado conforme al Art. 187 COPP y la Ley de Mensajes de Datos y Firmas Electrónicas.
-          </p>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#0071E3]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[rgba(0,0,0,0.1)]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[rgba(0,0,0,0.1)]" />
+        <div className="mt-8 w-full text-center space-y-4">
+          {/* Legal Warning Badge/Card */}
+          <div className="p-3.5 rounded-[12px] bg-[rgba(255,149,0,0.03)] border border-[rgba(255,149,0,0.12)] text-left flex items-start gap-2.5 max-w-[340px] mx-auto">
+            <span className="text-[9px] font-bold text-[#FF9500] bg-[#FF9500]/10 px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 mt-0.5">
+              AVISO LEGAL
+            </span>
+            <p className="text-[10px] text-[#6E6E73] leading-relaxed font-normal">
+              El acceso no autorizado será registrado y procesado penalmente conforme al <strong>Art. 187 del COPP</strong> y la <strong>Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>.
+            </p>
           </div>
-          <p className="text-[11px] text-[#86868B] font-medium tracking-[-0.01em] opacity-50">
-            SHA256.US v2.0 · Laboratorio de Informática Forense
-          </p>
-          <p className="text-[9px] text-[#86868B] font-light tracking-[0.02em] opacity-30">
-            powered by jull
-          </p>
-          <p className="text-[10px] text-[#86868B] leading-relaxed opacity-40 max-w-[280px] mx-auto">
-            Av. 6 con calle 7, Edif. Mercantil La Ceiba, Piso 1, Ofc. Nº 8, Quíbor, Municipio Jiménez, Estado Lara.
-          </p>
+
+          <div className="pt-2 flex flex-col items-center space-y-2">
+            {/* Dots divider */}
+            <div className="flex items-center justify-center gap-1.5">
+              <div className="w-1 h-1 rounded-full bg-[#86868B]/40" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#0071E3]/70" />
+              <div className="w-1 h-1 rounded-full bg-[#86868B]/40" />
+            </div>
+
+            {/* Brand and Laboratorio */}
+            <p className="text-[11px] font-semibold text-[#1D1D1F] tracking-tight">
+              SHA256.US v2.0 <span className="text-[#86868B] font-light">·</span> Laboratorio de Informática Forense
+            </p>
+
+            {/* Address */}
+            <p className="text-[9.5px] text-[#86868B] leading-relaxed max-w-[290px] font-medium opacity-80">
+              Av. 6 con calle 7, Edif. Mercantil La Ceiba, Piso 1, Ofc. Nº 8.<br />
+              Quíbor, Municipio Jiménez, Estado Lara.
+            </p>
+
+            {/* Powered by */}
+            <p className="text-[8.5px] text-[#86868B] font-semibold uppercase tracking-[0.15em] opacity-40 pt-1">
+              powered by <span className="text-[#1D1D1F] font-bold">jull</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
