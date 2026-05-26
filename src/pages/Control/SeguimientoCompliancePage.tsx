@@ -42,6 +42,15 @@ const PLANILLA_ROUTES: Record<string, string> = {
   wp_step9: '/planillas/entrega-resultados',
 };
 
+const PLANILLA_LABELS: Record<string, string> = {
+  wp_step1: 'Imprimir Acta de Obtención por Consignación',
+  wp_step2: 'Imprimir Planilla PRCC',
+  wp_step4: 'Imprimir Planilla PRCC',
+  wp_step7: 'Imprimir Dictamen Forense',
+  wp_step8: 'Imprimir Acta de Entrega de Resultados',
+  wp_step9: 'Imprimir Acta de Entrega de Resultados',
+};
+
 // Helper types & configs for task list
 const ESTADO_TAREA: Record<EstadoTarea, { label: string; color: string; icon: any }> = {
   pendiente:   { label: 'Pendiente',    color: 'bg-[#FF9500]/10 text-[#FF9500] border-[#FF9500]/20', icon: Clock },
@@ -183,11 +192,6 @@ export default function SeguimientoCompliancePage() {
 
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
 
-  // States for adding a new task inline
-  const [inlineTaskTitle, setInlineTaskTitle] = useState('');
-  const [inlineTaskPrioridad, setInlineTaskPrioridad] = useState<PrioridadCaso>('media');
-  const [inlineTaskAsignadoA, setInlineTaskAsignadoA] = useState('');
-
   // States for general tasks search & filter
   const [busqueda, setBusqueda] = useState('');
   const [filtroEstado, setFiltroEstado] = useState<EstadoTarea | 'todos'>('todos');
@@ -234,6 +238,40 @@ export default function SeguimientoCompliancePage() {
     const metadata = activeCaso.step_metadata?.[stepId] || { fecha: '', responsable: '', observaciones: '' };
     return { completado, metadata, estado: completado ? 'completado' as EstadoPaso : 'disponible' as EstadoPaso };
   }, [activeCaso]);
+
+  // Auto-complete step if all task and compliance checks are checked
+  const checkAutoCompletion = (stepId: string) => {
+    const store = useCMSStore.getState();
+    if (!store.casoSeleccionado) return;
+    const caso = store.casos.find(c => c.id === store.casoSeleccionado);
+    if (!caso || !caso.tipoProyecto) return;
+
+    const pasos = getPasosPorTipo(caso.tipoProyecto);
+    const paso = pasos.find(p => p.id === stepId);
+    if (!paso) return;
+
+    // Verify tasks
+    const tasksPaso = store.tareas.filter(t => t.casoId === store.casoSeleccionado && t.pasoId === stepId);
+    const tasksPendientes = tasksPaso.filter(t => t.estado !== 'completada');
+    if (tasksPendientes.length > 0) return;
+
+    // Verify compliance
+    const complianceList = caso.compliance_checklist || [];
+    const compliancePendientes = paso.complianceIds.filter(reqId => {
+      const item = complianceList.find(c => c.stageId === reqId);
+      return !item?.checked;
+    });
+    if (compliancePendientes.length > 0) return;
+
+    // If we reach here, all checks are marked! Auto-complete the step
+    const { estado } = getStepStatus(stepId);
+    if (estado === 'en_progreso' || estado === 'disponible') {
+      if (estado === 'disponible') {
+        store.startStep(stepId);
+      }
+      store.completeStep(stepId);
+    }
+  };
 
   // Find requirements helper
   const getRequisitosForPaso = useCallback((complianceIds: string[]) => {
@@ -370,35 +408,7 @@ export default function SeguimientoCompliancePage() {
     return grouped;
   }, [activeCaso, metrics.pasos]);
 
-  // Add a task inline
-  const handleAddInlineTask = () => {
-    if (!inlineTaskTitle.trim() || !activeCaso || !selectedStepId) return;
-    addTarea({
-      casoId: activeCaso.id,
-      pasoId: selectedStepId,
-      titulo: inlineTaskTitle.trim(),
-      descripcion: `Tarea técnica para el paso ${selectedStep?.titulo || selectedStepId}`,
-      asignadoA: inlineTaskAsignadoA.trim() || activeCaso.peritoLider || 'Perito de Guardia',
-      estado: 'pendiente',
-      prioridad: inlineTaskPrioridad,
-      fechaVencimiento: undefined,
-      normativasRelacionadas: [],
-      observaciones: '',
-      porcentaje: 0
-    });
 
-    addAuditLog({
-      accion: 'TAREA_CREADA',
-      detalle: `Tarea "${inlineTaskTitle.trim()}" agregada al paso: ${selectedStep?.titulo}`,
-      nivel: 'success',
-      casoId: activeCaso.id,
-      usuario: inlineTaskAsignadoA.trim() || 'sistema'
-    });
-
-    setInlineTaskTitle('');
-    setInlineTaskAsignadoA('');
-    setInlineTaskPrioridad('media');
-  };
 
   // General tasks filtering
   const generalFilteredTasks = useMemo(() => {
@@ -861,11 +871,14 @@ export default function SeguimientoCompliancePage() {
                                     <div key={task.id} className="flex items-center justify-between p-2.5 rounded bg-black/[0.02] border border-black/[0.06] hover:border-black/10 transition-all group">
                                       <div className="flex items-center gap-3 min-w-0">
                                         <button
-                                          onClick={() => updateTarea(task.id, {
-                                            estado: isCompleted ? 'pendiente' : 'en_progreso' as EstadoTarea,
-                                            fechaCompletada: undefined,
-                                            porcentaje: isCompleted ? 0 : 50
-                                          })}
+                                          onClick={() => {
+                                            updateTarea(task.id, {
+                                              estado: isCompleted ? 'pendiente' : 'completada',
+                                              fechaCompletada: isCompleted ? undefined : new Date().toISOString(),
+                                              porcentaje: isCompleted ? 0 : 100
+                                            });
+                                            setTimeout(() => checkAutoCompletion(selectedStep.id), 0);
+                                          }}
                                           className={`w-[16px] h-[16px] rounded border flex items-center justify-center shrink-0 transition-all ${
                                             isCompleted
                                               ? 'bg-[#0071E3] border-[#0071E3] text-white'
@@ -876,12 +889,7 @@ export default function SeguimientoCompliancePage() {
                                         </button>
                                         <div className="min-w-0">
                                           <span 
-                                            onClick={() => updateTarea(task.id, {
-                                              estado: isCompleted ? 'pendiente' : 'completada',
-                                              fechaCompletada: isCompleted ? undefined : new Date().toISOString(),
-                                              porcentaje: isCompleted ? 0 : 100
-                                            })}
-                                            className={`text-xs block cursor-pointer select-none ${isCompleted ? 'text-[#34C759]/60 line-through' : 'text-[#1D1D1F] hover:text-[#0071E3]'}`}
+                                            className={`text-xs block select-none ${isCompleted ? 'text-[#34C759]/60 line-through' : 'text-[#1D1D1F]'}`}
                                           >
                                             {task.titulo}
                                           </span>
@@ -918,50 +926,6 @@ export default function SeguimientoCompliancePage() {
                               )}
                             </div>
 
-                            {/* Inline task creator */}
-                            {!isLocked && (
-                              <div className="pt-3 border-t border-black/[0.06] space-y-2">
-                                <p className="text-[9px] font-semibold text-[#86868B] uppercase tracking-widest">
-                                  Crear Tarea Rápida en esta Fase
-                                </p>
-                                <div className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    placeholder="Nueva tarea..."
-                                    value={inlineTaskTitle}
-                                    onChange={(e) => setInlineTaskTitle(e.target.value)}
-                                    className="apple-input flex-1 text-xs"
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') handleAddInlineTask();
-                                    }}
-                                  />
-                                  <select
-                                    value={inlineTaskPrioridad}
-                                    onChange={(e) => setInlineTaskPrioridad(e.target.value as PrioridadCaso)}
-                                    className="apple-input w-auto text-[10px]"
-                                  >
-                                    <option value="baja">Baja</option>
-                                    <option value="media">Media</option>
-                                    <option value="alta">Alta</option>
-                                    <option value="critica">Crítica</option>
-                                  </select>
-                                  <input
-                                    type="text"
-                                    placeholder="Perito..."
-                                    value={inlineTaskAsignadoA}
-                                    onChange={(e) => setInlineTaskAsignadoA(e.target.value)}
-                                    className="apple-input w-[100px] text-[10px]"
-                                  />
-                                  <button
-                                    onClick={handleAddInlineTask}
-                                    disabled={!inlineTaskTitle.trim()}
-                                    className="apple-btn apple-btn-primary text-xs disabled:opacity-40 disabled:cursor-not-allowed"
-                                  >
-                                    <Plus size={14} strokeWidth={2.5} />
-                                  </button>
-                                </div>
-                              </div>
-                            )}
                           </div>
 
                           {/* Code blocks */}
@@ -992,7 +956,10 @@ export default function SeguimientoCompliancePage() {
                                 <div key={req.id} className="apple-card p-4 space-y-3">
                                   <div className="flex items-start gap-3">
                                     <button
-                                      onClick={() => toggleComplianceCheck(req.id, req.normativaId)}
+                                      onClick={() => {
+                                        toggleComplianceCheck(req.id, req.normativaId);
+                                        setTimeout(() => checkAutoCompletion(selectedStep.id), 0);
+                                      }}
                                       disabled={isLocked}
                                       className={`w-[18px] h-[18px] rounded-[4px] border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
                                         checked
@@ -1101,7 +1068,7 @@ export default function SeguimientoCompliancePage() {
                             className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
                           >
                             <Printer size={12} />
-                            <span>Imprimir Planilla Oficial</span>
+                            <span>{PLANILLA_LABELS[selectedStep.id] || 'Imprimir Planilla Oficial'}</span>
                           </Link>
                         </div>
                       )}
