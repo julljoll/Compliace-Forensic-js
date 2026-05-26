@@ -22,7 +22,7 @@ import {
   AlertTriangle, Copy, CheckCheck, Gavel, Hash,
   BookOpen, Fingerprint, Package, Scale, Eye, Mic,
   ImageIcon, Archive, TrendingUp, Info, Zap, RotateCcw
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTES Y TIPOS

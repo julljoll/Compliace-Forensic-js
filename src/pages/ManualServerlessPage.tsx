@@ -1,4 +1,4 @@
-import { Database, ShieldAlert, Key, Globe, Terminal, CheckCircle2 } from 'lucide-react';
+import { Database, ShieldAlert, Key, Globe, Terminal, CheckCircle2 } from '../components/atoms/AppleIcon';
 
 export default function ManualServerlessPage() {
   return (

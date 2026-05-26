@@ -1,4 +1,4 @@
-import { Scale, Book, Shield } from 'lucide-react';
+import { Scale, Book, Shield } from '../../atoms/AppleIcon';
 
 export default function ReferenciaLegal() {
   return (

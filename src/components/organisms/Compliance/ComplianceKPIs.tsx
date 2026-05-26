@@ -1,4 +1,4 @@
-import { ShieldCheck, CheckCircle2, Clock, ListChecks } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, Clock, ListChecks } from '../../atoms/AppleIcon';
 
 interface ComplianceKPIsProps {
   stats: {

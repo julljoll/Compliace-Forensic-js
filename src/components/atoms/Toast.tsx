@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
-import { CheckCircle2, AlertTriangle, X, Info, XCircle } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, X, Info, XCircle } from './AppleIcon';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 

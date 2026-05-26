@@ -5,7 +5,7 @@ import {
   Mail, Shield, CheckCircle2, Circle, Clock, User,
   FileText, Printer, AlertTriangle,
   Hash, Fingerprint, Lock, Eye, Archive
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 
 interface StepLog {
   stepId: string;

@@ -6,7 +6,7 @@ import {
   Key, User, Camera, Star, UserPlus, Shield, Award, 
   Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff,
   FolderOpen, Trash2, Database, ShieldCheck
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 
 const ROLES = [
   { value: 'perito_lider', label: 'Perito Líder' },

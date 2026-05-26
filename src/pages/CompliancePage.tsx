@@ -1,6 +1,6 @@
 import { useCMSStore, TipoNormativa } from '../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
-import { ShieldCheck, BookOpen, Filter } from 'lucide-react';
+import { ShieldCheck, BookOpen, Filter } from '../components/atoms/AppleIcon';
 import { useState, useMemo } from 'react';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────

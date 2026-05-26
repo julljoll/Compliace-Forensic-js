@@ -49,6 +49,26 @@ module.exports = {
           gray5:  '#E5E5EA',
           gray6:  '#F2F2F7',
         },
+
+        // ── Legacy fluent-* aliases (mapped to Apple HIG) ──
+        fluent: {
+          accent: '#0071E3',
+          'accent-light': '#4393E6',
+          'accent-fg': '#ffffff',
+          bg: '#F5F5F7',
+          border: 'rgba(0, 0, 0, 0.08)',
+          surface: 'rgba(255, 255, 255, 0.8)',
+          surfaceActive: 'rgba(0, 0, 0, 0.025)',
+          text: '#1D1D1F',
+          'text-muted': '#86868B',
+        },
+        // ── Legacy cms-* aliases (mapped to Apple HIG) ──
+        cms: {
+          accent: '#0071E3',
+          border: 'rgba(0, 0, 0, 0.08)',
+          surface: '#F5F5F7',
+          textMuted: '#86868B',
+        },
       },
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Inter', 'sans-serif'],

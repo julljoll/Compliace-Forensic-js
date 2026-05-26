@@ -12,7 +12,7 @@ import {
   AlertTriangle, Pause, Trash2, X,
   TrendingUp, Calendar, User,
   BookOpen, BarChart3, ExternalLink
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 import KpiCard from '../components/molecules/KpiCard';
 
 // ── Constantes de diseño ────────────────────────────────────────────────────

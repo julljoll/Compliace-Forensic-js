@@ -1,4 +1,4 @@
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter } from '../../atoms/AppleIcon';
 import { EstadoCaso, PrioridadCaso } from '../../../store/cmsStore';
 
 interface CasosFiltersProps {

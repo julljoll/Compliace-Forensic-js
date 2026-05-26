@@ -11,7 +11,7 @@ import {
   Scale, Archive, Briefcase, PlusCircle, Printer, Play,
   AlertOctagon, ClipboardList, Plus, Search, Clock, Trash2, X,
   TrendingUp, BarChart3, Pause, FileCheck
-} from 'lucide-react';
+} from '../../components/atoms/AppleIcon';
 import KpiCard from '../../components/molecules/KpiCard';
 import '../Planillas/Planillas.css';
 

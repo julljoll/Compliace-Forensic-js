@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale } from 'lucide-react';
+import { ShieldCheck, Eye, EyeOff, AlertCircle, Scale } from '../components/atoms/AppleIcon';
 
 export default function LoginPage() {
   const { login, isLoading, error, clearError } = useAuthStore();

@@ -1,5 +1,5 @@
 import { useCMSStore } from '../store/cmsStore';
-import { BookOpen, Scale, Gavel, FileText, Shield } from 'lucide-react';
+import { BookOpen, Scale, Gavel, FileText, Shield } from '../components/atoms/AppleIcon';
 
 const TIPO_ICONS: Record<string, typeof BookOpen> = {
   ISO: Shield, NIST: Shield, LEY: Gavel, MANUAL: FileText, REGLAMENTO: Scale,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCMSStore, EstadoCaso, PrioridadCaso, NivelCumplimiento } from '../store/cmsStore';
-import { Plus, FolderOpen, CheckCircle2, AlertTriangle, Clock } from 'lucide-react';
+import { Plus, FolderOpen, CheckCircle2, AlertTriangle, Clock } from '../components/atoms/AppleIcon';
 import { getTareasPorDefecto } from '../data/tiposProyecto';
 
 // ── Componentes Modulares ───────────────────────────────────────────────────

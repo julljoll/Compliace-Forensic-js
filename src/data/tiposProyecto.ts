@@ -1,4 +1,4 @@
-import { Smartphone, Mail, HardDrive } from 'lucide-react';
+import { Smartphone, Mail, HardDrive } from '../components/atoms/AppleIcon';
 
 export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro';
 

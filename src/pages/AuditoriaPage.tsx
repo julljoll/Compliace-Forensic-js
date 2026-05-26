@@ -5,7 +5,7 @@ import { getPasosPorTipo } from '../data/tiposProyecto';
 import { 
   Activity, CheckCircle2, AlertTriangle, Info, AlertOctagon, 
   Printer, User, Clock, FileText
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 
 const NIVEL_CONFIG = {
   success: { icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-500/10 border-green-500/20' },

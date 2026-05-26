@@ -6,7 +6,7 @@ import {
   ArrowLeft, Calendar, User, Shield, Plus, Clock, 
   Smartphone, History, ListTodo, ShieldCheck, 
   Trash2, PlusCircle, CheckSquare, Square, Fingerprint, AlertTriangle
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 
 const ESTADO_OPCIONES: { value: EstadoCaso; label: string; color: string }[] = [
   { value: 'iniciado',    label: 'Iniciado',    color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },

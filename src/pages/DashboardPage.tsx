@@ -3,7 +3,7 @@ import { useCMSStore } from '../store/cmsStore';
 import {
   FolderOpen, ShieldCheck, AlertTriangle, Clock,
   TrendingUp, Activity, FileSearch, Gavel, Scale
-} from 'lucide-react';
+} from '../components/atoms/AppleIcon';
 import { Link } from 'react-router-dom';
 import KpiCard from '../components/molecules/KpiCard';
 

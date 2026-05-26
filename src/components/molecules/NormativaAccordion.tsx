@@ -1,4 +1,4 @@
-import { ChevronRight, Check, BookOpen } from 'lucide-react';
+import { ChevronRight, Check, BookOpen } from '../atoms/AppleIcon';
 import { Normativa } from '../../store/cmsStore';
 
 interface NormativaAccordionProps {
