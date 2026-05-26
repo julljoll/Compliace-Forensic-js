@@ -239,39 +239,7 @@ export default function SeguimientoCompliancePage() {
     return { completado, metadata, estado: completado ? 'completado' as EstadoPaso : 'disponible' as EstadoPaso };
   }, [activeCaso]);
 
-  // Auto-complete step if all task and compliance checks are checked
-  const checkAutoCompletion = (stepId: string) => {
-    const store = useCMSStore.getState();
-    if (!store.casoSeleccionado) return;
-    const caso = store.casos.find(c => c.id === store.casoSeleccionado);
-    if (!caso || !caso.tipoProyecto) return;
-
-    const pasos = getPasosPorTipo(caso.tipoProyecto);
-    const paso = pasos.find(p => p.id === stepId);
-    if (!paso) return;
-
-    // Verify tasks
-    const tasksPaso = store.tareas.filter(t => t.casoId === store.casoSeleccionado && t.pasoId === stepId);
-    const tasksPendientes = tasksPaso.filter(t => t.estado !== 'completada');
-    if (tasksPendientes.length > 0) return;
-
-    // Verify compliance
-    const complianceList = caso.compliance_checklist || [];
-    const compliancePendientes = paso.complianceIds.filter(reqId => {
-      const item = complianceList.find(c => c.stageId === reqId);
-      return !item?.checked;
-    });
-    if (compliancePendientes.length > 0) return;
-
-    // If we reach here, all checks are marked! Auto-complete the step
-    const { estado } = getStepStatus(stepId);
-    if (estado === 'en_progreso' || estado === 'disponible') {
-      if (estado === 'disponible') {
-        store.startStep(stepId);
-      }
-      store.completeStep(stepId);
-    }
-  };
+  // Manual step progression checks are evaluated dynamically via stepValidation
 
   // Find requirements helper
   const getRequisitosForPaso = useCallback((complianceIds: string[]) => {
@@ -877,7 +845,6 @@ export default function SeguimientoCompliancePage() {
                                               fechaCompletada: isCompleted ? undefined : new Date().toISOString(),
                                               porcentaje: isCompleted ? 0 : 100
                                             });
-                                            setTimeout(() => checkAutoCompletion(selectedStep.id), 0);
                                           }}
                                           className={`w-[16px] h-[16px] rounded border flex items-center justify-center shrink-0 transition-all ${
                                             isCompleted
@@ -958,7 +925,6 @@ export default function SeguimientoCompliancePage() {
                                     <button
                                       onClick={() => {
                                         toggleComplianceCheck(req.id, req.normativaId);
-                                        setTimeout(() => checkAutoCompletion(selectedStep.id), 0);
                                       }}
                                       disabled={isLocked}
                                       className={`w-[18px] h-[18px] rounded-[4px] border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
@@ -1077,29 +1043,28 @@ export default function SeguimientoCompliancePage() {
                       <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between">
                         <span className="text-[10px] text-[#86868B] italic max-w-[50%]">
                           {completado && '✓ Hito cerrado y auditado'}
-                          {isEnProgreso && 'Resuelva todas las tareas y checks para poder completar'}
-                          {isDisponible && 'Inicie esta etapa para habilitar su checklist operativo'}
+                          {!completado && !stepValidation.canComplete && 'Complete todas las tareas y requisitos normativos para habilitar el paso siguiente'}
+                          {!completado && stepValidation.canComplete && 'Todo listo. Presione Paso Siguiente para avanzar'}
                         </span>
 
                         <div className="flex items-center gap-3">
-                          {isDisponible && (
+                          {!completado && (
                             <button
-                              onClick={() => startStep(selectedStep.id)}
-                              className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#007AFF]/15 border border-[#007AFF]/25 text-[#007AFF] hover:bg-[#007AFF]/25"
+                              disabled={!stepValidation.canComplete}
+                              onClick={() => {
+                                if (estado === 'disponible') {
+                                  startStep(selectedStep.id);
+                                }
+                                completeStep(selectedStep.id);
+                              }}
+                              className={`apple-btn text-[9px] font-semibold uppercase tracking-wider transition-all ${
+                                stepValidation.canComplete
+                                  ? 'bg-[#007AFF]/15 border border-[#007AFF]/25 text-[#007AFF] hover:bg-[#007AFF]/25 cursor-pointer shadow-sm'
+                                  : 'bg-black/[0.04] border border-black/[0.08] text-[#86868B] cursor-not-allowed opacity-50'
+                              }`}
                             >
                               <Play size={12} />
-                              <span>Iniciar Paso</span>
-                            </button>
-                          )}
-
-                          {isEnProgreso && (
-                            <button
-                              onClick={() => completeStep(selectedStep.id)}
-                              className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#34C759]/15 border border-[#34C759]/25 text-[#34C759] hover:bg-[#34C759]/25"
-                              title="Completa tareas y compliance primero"
-                            >
-                              <CheckCircle2 size={12} />
-                              <span>Completar Paso</span>
+                              <span>Paso Siguiente</span>
                             </button>
                           )}
 
