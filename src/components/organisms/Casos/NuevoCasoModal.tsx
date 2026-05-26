@@ -248,7 +248,7 @@ export default function NuevoCasoModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-20 pb-8 px-4 overflow-y-auto bg-black/30">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-20 pb-8 px-4 overflow-y-auto bg-[#F5F5F7]">
       <div className="bg-white border border-black/[0.08] rounded-xl w-full max-w-2xl shadow-[0_32px_64px_rgba(0,0,0,0.12)] flex flex-col apple-scale-in">
         <div className="p-5 border-b border-black/[0.06] flex items-center justify-between">
           <div className="flex items-center gap-3">
