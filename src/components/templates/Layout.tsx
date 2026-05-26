@@ -71,7 +71,7 @@ export default function Layout() {
       const completed = isPhaseCompleted(label);
       return (
         <span>
-          <span className={completed ? 'text-green-400 font-black' : ''}>{number}. </span>
+          <span className={completed ? 'text-[#248A3D] font-bold' : ''}>{number}. </span>
           {text}
         </span>
       );
@@ -89,158 +89,135 @@ export default function Layout() {
   };
 
   return (
-    <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden relative">
+    <div className="flex h-screen bg-[#F5F5F7] font-sans text-[#1D1D1F] overflow-hidden">
 
-      {/* Sidebar */}
-      <aside 
-        className="w-72 acrylic-panel flex-col shrink-0 shadow-2xl print:hidden flex"
-        aria-label="Navegación principal"
-      >
+      {/* macOS Sidebar */}
+      <aside className="w-[272px] apple-sidebar flex-col shrink-0 print:hidden flex" aria-label="Navegación principal">
+
         {/* macOS Window Controls */}
-        <div className="px-8 pt-6 pb-2 flex items-center gap-1.5 print:hidden select-none">
-          <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] block" />
-          <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] block" />
-          <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] block" />
+        <div className="apple-window-controls print:hidden">
+          <span className="apple-window-close" />
+          <span className="apple-window-minimize" />
+          <span className="apple-window-zoom" />
         </div>
 
-        <div className="p-8 pt-2 pb-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <img src="/favicon.svg" alt="SHA256.US Logo" className="w-9 h-9 drop-shadow-lg" />
-              <div>
-                <h1 className="font-bold text-2xl tracking-widest text-fluent-text print:hidden uppercase">SHA256.US</h1>
-              </div>
+        {/* Branding */}
+        <div className="px-5 pt-1 pb-4">
+          <div className="flex items-center gap-3 mb-1">
+            <img src="/favicon.svg" alt="" className="w-8 h-8" />
+            <div>
+              <h1 className="text-[16px] font-bold tracking-[-0.02em] text-[#1D1D1F] leading-tight">SHA256.US</h1>
             </div>
           </div>
-          <p className="text-[10px] uppercase font-semibold tracking-widest text-fluent-accent-light/80 mb-10 leading-relaxed max-w-[200px]">
+          <p className="text-[10px] font-medium text-[#86868B] leading-snug">
             Laboratorio de Informática Forense y Ciberseguridad
           </p>
-
-          <nav className="flex flex-col gap-1.5">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 pl-3">Menú Principal</h3>
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <Icon className="w-5 h-5" />
-                  {renderLabel(item.label)}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <nav className="flex flex-col gap-1.5 mt-6 pt-4 border-t border-fluent-border">
-            <h3 className="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 pl-3">Plantillas en Limpio</h3>
-            <Link
-              to="/forense/planillas/acta-obtencion"
-              className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
-            >
-              <FileText className="w-5 h-5 text-fluent-accent" />
-              <span>1. Acta de Obtención</span>
-            </Link>
-            <Link
-              to="/forense/planillas/prcc-derivacion"
-              className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
-            >
-              <Shield className="w-5 h-5 text-fluent-accent" />
-              <span>2. Planilla PRCC</span>
-            </Link>
-            <Link
-              to="/forense/planillas/seguimiento"
-              className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
-            >
-              <Smartphone className="w-5 h-5 text-fluent-accent" />
-              <span>3. Seguimiento Forense</span>
-            </Link>
-            <Link
-              to="/forense/correo-forense"
-              className="nav-item border border-transparent hover:border-fluent-accent/30 text-fluent-textSecondary hover:text-white transition-all bg-white/[0.01]"
-            >
-              <Mail className="w-5 h-5 text-fluent-accent" />
-              <span>4. Correo Electrónico</span>
-            </Link>
-          </nav>
-          
-          <div className="mt-6 pt-4 border-t border-fluent-border">
-            <Link
-              to="/"
-              className="nav-item border border-dashed border-white/10 hover:border-fluent-accent/50 text-fluent-accent-light hover:text-white transition-all bg-white/[0.02]"
-            >
-              <ArrowLeft className="w-5 h-5 text-fluent-accent-light" />
-              <span className="font-bold">Regresar al CMS</span>
-            </Link>
-          </div>
         </div>
 
-        <div className="mt-auto p-8 border-t border-fluent-border flex flex-col gap-6">
-          <div className="pt-6 border-t border-fluent-border print:hidden">
-            <div className="block p-3 rounded-fluent-btn border border-fluent-border bg-fluent-surface hover:bg-fluent-surfaceHover transition-all group cursor-default">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-fluent-surfaceActive rounded-md text-white/40 group-hover:text-fluent-accent-light transition-colors shadow-sm">
-                  <Shield size={18} strokeWidth={2.5} />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-[11px] font-bold text-fluent-text uppercase tracking-widest mb-1">Sistema Forense v1.0</h4>
-                  <p className="text-[9px] text-white/40 leading-tight">Cumplimiento MP / ISO 27037</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="apple-separator mx-4" />
+
+        {/* Main Navigation */}
+        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-1">
+          <p className="apple-section-header">Menú Principal</p>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            const completed = isPhaseCompleted(item.label);
+            
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`apple-sidebar-item ${isActive ? 'apple-sidebar-item-active' : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <Icon size={16} strokeWidth={isActive ? 2.5 : 1.5} className={isActive ? 'text-[#0071E3]' : 'text-[#86868B]'} />
+                {renderLabel(item.label)}
+                {completed && !isActive && (
+                  <CheckCircle2 size={12} className="ml-auto text-[#34C759]" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Templates Section */}
+        <div className="px-3 py-3 space-y-1 border-t border-[rgba(0,0,0,0.06)]">
+          <p className="apple-section-header">Plantillas</p>
+          <Link to="/forense/planillas/acta-obtencion" className="apple-sidebar-item">
+            <FileText size={16} className="text-[#86868B]" />
+            <span>Acta de Obtención</span>
+          </Link>
+          <Link to="/forense/planillas/prcc-derivacion" className="apple-sidebar-item">
+            <Shield size={16} className="text-[#86868B]" />
+            <span>Planilla PRCC</span>
+          </Link>
+          <Link to="/forense/planillas/seguimiento" className="apple-sidebar-item">
+            <Smartphone size={16} className="text-[#86868B]" />
+            <span>Seguimiento</span>
+          </Link>
+          <Link to="/forense/correo-forense" className="apple-sidebar-item">
+            <Mail size={16} className="text-[#86868B]" />
+            <span>Correo Electrónico</span>
+          </Link>
+        </div>
+
+        {/* Back to CMS */}
+        <div className="px-3 pb-3">
+          <div className="apple-separator mb-3" />
+          <Link to="/" className="apple-sidebar-item text-[#0071E3]">
+            <ArrowLeft size={16} />
+            <span className="font-semibold">Regresar al CMS</span>
+          </Link>
         </div>
       </aside>
 
-        {/* Main Content Area */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Header / Breadcrumbs */}
-        <header className="h-16 border-b border-fluent-border flex items-center justify-between px-4 md:px-8 bg-fluent-bg/50 backdrop-blur-md z-10 print:hidden shrink-0">
-          <div className="flex items-center gap-4">
-            <nav className="flex items-center gap-2 text-sm" aria-label="Breadcrumb">
-              <Link to="/forense" className="breadcrumb-item">Inicio</Link>
+
+        {/* macOS Unified Toolbar */}
+        <header className="h-[50px] border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between px-6 bg-[rgba(245,245,247,0.7)] backdrop-blur-[30px] z-10 print:hidden shrink-0">
+          <div className="flex items-center gap-3">
+            <nav className="flex items-center gap-2 text-[13px]" aria-label="Breadcrumb">
+              <Link to="/forense" className="apple-breadcrumb">Inicio</Link>
               {location.pathname !== '/forense' && (
                 <>
-                  <ChevronRight size={14} className="text-white/20" />
-                  <span className="breadcrumb-item-active">{getBreadcrumb()}</span>
+                  <ChevronRight size={11} className="text-[#86868B] opacity-50" />
+                  <span className="apple-breadcrumb-active">{getBreadcrumb()}</span>
                 </>
               )}
             </nav>
           </div>
 
-          {/* Current Context Indicator */}
+          {/* Context & Status */}
           <div className="flex items-center gap-3">
             {casoActual && (
-              <div className="flex items-center gap-4 animate-in fade-in slide-in-from-right-4 duration-500">
-                <div className="h-8 w-px bg-fluent-border"></div>
+              <div className="flex items-center gap-3">
+                <div className="h-6 w-px bg-[rgba(0,0,0,0.06)]" />
                 <div className="flex flex-col items-end">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold text-fluent-accent-light uppercase tracking-wider">Caso Activo:</span>
-                    <span className="text-xs font-mono font-bold text-white">{casoActual.numeroCaso}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-semibold text-[#86868B]">Caso:</span>
+                    <span className="text-[12px] font-semibold text-[#1D1D1F]">{casoActual.numeroCaso}</span>
                   </div>
                   {dispositivoActual && (
-                    <span className="text-[10px] text-white/40">{dispositivoActual.marca} {dispositivoActual.modelo}</span>
+                    <span className="text-[10px] text-[#86868B]">{dispositivoActual.marca} {dispositivoActual.modelo}</span>
                   )}
                 </div>
-                <div className="p-1.5 bg-fluent-accent/10 rounded-full text-fluent-accent">
-                  <Info size={14} />
+                <div className="p-1 rounded-[6px] bg-[rgba(0,113,227,0.08)] text-[#0071E3]">
+                  <Info size={13} />
                 </div>
               </div>
             )}
-            <div id="operation-mode-badge" className="flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border bg-green-500/10 text-green-400 border-green-500/30">
-               <Activity size={12} />
-               <span>PRODUCCIÓN</span>
+            <div className="apple-badge-green">
+              <Activity size={11} />
+              <span>PRODUCCIÓN</span>
             </div>
           </div>
         </header>
 
         {/* Scrollable Content */}
-        <main className="flex-1 overflow-y-auto relative outline-none print:overflow-visible print:p-0 print:m-0" tabIndex={-1}>
-          <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-12 lg:p-16 text-fluent-text animate-fade-in print:max-w-none print:p-0 print:m-0">
+        <main className="flex-1 overflow-y-auto print:overflow-visible print:p-0 print:m-0">
+          <div className="max-w-6xl mx-auto p-5 sm:p-8 md:p-12 apple-fade-in print:max-w-none print:p-0 print:m-0">
             <Outlet />
           </div>
         </main>

@@ -15,11 +15,18 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-05-26 19:12:26",
-      "last_commit": "1897bea - Enforce Apple Human Interface Guidelines globally and clean up redundant styles (2026-05-26)",
+      "timestamp": "2026-05-26 20:05:20",
+      "last_commit": "eda2c95 - mac (2026-05-26)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  index.html",
+        "M  src/components/atoms/ErrorBoundary.tsx",
+        "M  src/components/atoms/Toast.tsx",
+        "M  src/components/molecules/KpiCard.tsx",
+        "M  src/components/molecules/NormativaAccordion.tsx",
+        "M  src/components/templates/CMSLayout.tsx",
+        "M  src/components/templates/Layout.tsx",
+        "M  src/index.css",
+        "M  src/pages/DashboardPage.tsx",
         "M  tailwind.config.js"
       ]
     }

@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // ── Fluent UI (redefined for macOS Light Theme) ──
-        fluent: {
+        // ── Apple HIG Design System ──
+        apple: {
           bg: {
             DEFAULT: '#F5F5F7',
             secondary: '#FFFFFF',
@@ -21,6 +21,7 @@ module.exports = {
           text: {
             DEFAULT: '#1D1D1F',
             muted: '#86868B',
+            secondary: '#6E6E73',
           },
           accent: {
             DEFAULT: '#0071E3',
@@ -29,46 +30,80 @@ module.exports = {
             fg: '#ffffff',
           },
           acrylic: 'rgba(255, 255, 255, 0.65)',
-        },
-        // ── CMS Compliance (redefined for macOS Light Theme) ──
-        cms: {
-          bg:         '#F5F5F7',           // macOS system gray background
-          sidebar:    'rgba(246, 246, 246, 0.72)', // macOS Finder sidebar translucent
-          card:       '#FFFFFF',           // macOS card background
-          surface:    '#F5F5F7',           // macOS system gray
-          border:     'rgba(0, 0, 0, 0.08)', // macOS divider
-          text:       '#1D1D1F',           // macOS primary label
-          textMuted:  '#86868B',           // macOS secondary label
-          accent:     '#0071E3',           // Apple System Blue
-          accent2:    '#4393E6',           // Apple Light Blue
+          red:    '#FF3B30',
+          orange: '#FF9500',
+          yellow: '#FFCC00',
+          green:  '#34C759',
+          mint:   '#00C7BE',
+          teal:   '#30B0C7',
+          cyan:   '#32ADE6',
+          blue:   '#007AFF',
+          indigo: '#5856D6',
+          purple: '#AF52DE',
+          pink:   '#FF2D55',
+          brown:  '#A2845E',
+          gray:   '#8E8E93',
+          gray2:  '#AEAEB2',
+          gray3:  '#C7C7CC',
+          gray4:  '#D1D1D6',
+          gray5:  '#E5E5EA',
+          gray6:  '#F2F2F7',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Inter', 'sans-serif'],
+      },
+      fontSize: {
+        'apple-title':   ['2rem',   { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.025em' }],
+        'apple-title2':  ['1.5rem', { lineHeight: '1.25', fontWeight: '700', letterSpacing: '-0.02em' }],
+        'apple-headline':['1rem',   { lineHeight: '1.3', fontWeight: '600', letterSpacing: '0em' }],
+        'apple-body':    ['0.875rem',{ lineHeight: '1.4', fontWeight: '400', letterSpacing: '0em' }],
+        'apple-callout': ['0.8125rem',{lineHeight: '1.4', fontWeight: '400', letterSpacing: '0em' }],
+        'apple-subhead': ['0.75rem', { lineHeight: '1.3', fontWeight: '500', letterSpacing: '0em' }],
+        'apple-footnote':['0.6875rem',{lineHeight: '1.3', fontWeight: '400', letterSpacing: '0em' }],
+        'apple-caption': ['0.625rem', { lineHeight: '1.2', fontWeight: '500', letterSpacing: '0.025em' }],
+        'apple-caption2':['0.5625rem',{lineHeight: '1.2', fontWeight: '600', letterSpacing: '0.04em' }],
       },
       borderRadius: {
-        'fluent-btn': '4px',
-        'fluent-card': '0.75rem', // 12px
+        'apple-btn': '8px',
+        'apple-card': '16px',
+        'apple-panel': '20px',
       },
       backdropBlur: {
-        fluent: '20px',
+        apple: '30px',
       },
       boxShadow: {
-        fluent: '0 4px 8px 0 rgba(0,0,0,0.2), 0 1px 2px 0 rgba(0,0,0,0.1)',
-        'fluent-elevated': '0 8px 16px 0 rgba(0,0,0,0.2), 0 2px 4px 0 rgba(0,0,0,0.1)',
-        'cms': '0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3)',
+        'apple': '0 0 1px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04)',
+        'apple-elevated': '0 0 1px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.02)',
+        'apple-modal': '0 0 1px rgba(0,0,0,0.1), 0 20px 60px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.06)',
       },
-      transitionDuration: {
-        '167': '167ms',
+      transitionTimingFunction: {
+        'apple-spring': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'apple-momentum': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideUp: {
           '0%': { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
-        fadeUp: 'fadeUp 0.35s ease-out forwards',
+        'apple-fadeUp': 'fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'apple-fadeIn': 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'apple-scaleIn': 'scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'apple-slideUp': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
     },
   },

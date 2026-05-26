@@ -37,29 +37,31 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="flex items-center justify-center min-h-[50vh] p-8">
-          <div className="fluent-card p-8 max-w-md text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto">
-              <AlertTriangle size={32} className="text-red-400" />
+          <div className="apple-card p-8 max-w-md text-center space-y-5">
+            <div className="w-16 h-16 rounded-full bg-[rgba(255,59,48,0.1)] flex items-center justify-center mx-auto">
+              <AlertTriangle size={28} className="text-[#FF3B30]" />
             </div>
-            <h2 className="text-lg font-bold text-white">Error en la aplicación</h2>
-            <p className="text-sm text-fluent-text-muted">
-              Ocurrió un error inesperado en este módulo. El sistema ha registrado el incidente.
-            </p>
+            <div>
+              <h2 className="text-[20px] font-bold text-[#1D1D1F] tracking-[-0.02em] mb-1">Error en la aplicación</h2>
+              <p className="text-[14px] text-[#86868B] leading-relaxed">
+                Ocurrió un error inesperado. El sistema ha registrado el incidente.
+              </p>
+            </div>
             {this.state.error && (
               <details className="text-left">
-                <summary className="text-[11px] text-fluent-text-muted cursor-pointer hover:text-white">
+                <summary className="text-[12px] text-[#86868B] cursor-pointer hover:text-[#1D1D1F] font-medium">
                   Ver detalle técnico
                 </summary>
-                <pre className="mt-2 p-3 rounded bg-black/30 text-[10px] text-red-300 overflow-auto max-h-32">
+                <pre className="mt-2 p-3 rounded-[8px] bg-[#F5F5F7] text-[11px] text-[#FF3B30] overflow-auto max-h-32 border border-[rgba(0,0,0,0.06)]">
                   {this.state.error.message}
                 </pre>
               </details>
             )}
-            <div className="flex justify-center gap-3 pt-2">
-              <button onClick={this.handleReset} className="cms-btn cms-btn-primary text-sm">
+            <div className="flex justify-center gap-3 pt-1">
+              <button onClick={this.handleReset} className="apple-btn apple-btn-primary text-[13px]">
                 <RefreshCw size={14} /> Reintentar
               </button>
-              <button onClick={() => window.location.href = '/'} className="cms-btn cms-btn-secondary text-sm">
+              <button onClick={() => window.location.href = '/'} className="apple-btn apple-btn-secondary text-[13px]">
                 <Home size={14} /> Ir al inicio
               </button>
             </div>

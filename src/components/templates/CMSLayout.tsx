@@ -36,7 +36,6 @@ export default function CMSLayout() {
   }, [fetchCasos]);
 
   const getBreadcrumb = () => {
-    // Intenta encontrar el elemento activo exacto (que coincida con los parámetros de búsqueda si existen)
     const activeItem = menuItems.find(item => {
       const [itemPathname, itemSearch] = item.path.split('?');
       if (itemSearch) {
@@ -54,7 +53,6 @@ export default function CMSLayout() {
     });
     if (activeItem) return activeItem.label;
 
-    // Búsqueda de respaldo por ruta base
     const fallbackItem = menuItems.find(m => {
       const [mPath] = m.path.split('?');
       return mPath === location.pathname || (mPath !== '/' && location.pathname.startsWith(mPath + '/'));
@@ -63,37 +61,40 @@ export default function CMSLayout() {
   };
 
   return (
-    <div className="flex h-screen bg-fluent-bg font-sans text-fluent-text overflow-hidden selection:bg-fluent-accent/30 selection:text-white">
+    <div className="flex h-screen bg-[#F5F5F7] font-sans text-[#1D1D1F] overflow-hidden selection:bg-[#0071E3]/20">
 
-      {/* ── Sidebar ────────────────────────────────────────────────────── */}
-      <aside className="print:hidden w-[260px] fluent-mica border-r border-white/5 shadow-2xl flex flex-col shrink-0">
+      {/* ── macOS Sidebar ─────────────────────────────────────────────── */}
+      <aside className="print:hidden w-[272px] apple-sidebar flex flex-col shrink-0">
 
         {/* macOS Window Controls */}
-        <div className="px-5 pt-4 pb-1.5 flex items-center gap-1.5 print:hidden select-none">
-          <span className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] block" />
-          <span className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] block" />
-          <span className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] block" />
+        <div className="apple-window-controls print:hidden">
+          <span className="apple-window-close" />
+          <span className="apple-window-minimize" />
+          <span className="apple-window-zoom" />
         </div>
 
         {/* Branding */}
-        <div className="p-5 pt-2 flex items-center justify-between">
+        <div className="px-5 pt-1 pb-3">
           <div className="flex items-center gap-3">
-            <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256 Logo" className="w-8 h-8 drop-shadow-lg" />
+            <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-8 h-8" />
             <div>
-              <h1 className="font-black text-sm tracking-tight text-white leading-none">SHA256.US</h1>
-              <p className="text-[9px] text-fluent-text-muted uppercase tracking-[0.2em] mt-1">CMS Forense</p>
+              <h1 className="text-[14px] font-bold tracking-[-0.01em] text-[#1D1D1F] leading-tight">SHA256.US</h1>
+              <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
             </div>
           </div>
         </div>
 
+        <div className="apple-separator mx-4" />
+
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-6 custom-scrollbar">
+        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-5">
           {groups.map(group => {
             const items = menuItems.filter(m => m.group === group);
+            if (items.length === 0) return null;
             return (
-              <div key={group} className="space-y-1">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-fluent-text-muted/50 px-3 py-2">{group}</p>
-                <div className="space-y-0.5">
+              <div key={group}>
+                <p className="apple-section-header">{group}</p>
+                <div className="space-y-0.5 mt-1">
                   {items.map(item => {
                     const Icon = item.icon;
                     const isActive = (() => {
@@ -115,11 +116,10 @@ export default function CMSLayout() {
                       <Link
                         key={item.path}
                         to={item.path}
-                        className={`fluent-sidebar-item ${isActive ? 'fluent-sidebar-item-active' : ''}`}
+                        className={`apple-sidebar-item ${isActive ? 'apple-sidebar-item-active' : ''}`}
                       >
-                        <Icon size={16} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-fluent-accent' : 'text-fluent-text-muted'} />
-                        <span className="text-sm">{item.label}</span>
-                        {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-fluent-accent" />}
+                        <Icon size={16} strokeWidth={isActive ? 2.5 : 1.5} className={isActive ? 'text-[#0071E3]' : 'text-[#86868B]'} />
+                        <span>{item.label}</span>
                       </Link>
                     );
                   })}
@@ -129,68 +129,68 @@ export default function CMSLayout() {
           })}
         </nav>
 
-        {/* Stats and User */}
-        <div className="p-4 border-t border-white/5 bg-white/[0.02] space-y-4">
-           <div className="grid grid-cols-2 gap-2">
-              <div className="p-2 rounded-md bg-white/[0.03] border border-white/5">
-                 <p className="text-[9px] font-bold text-fluent-text-muted/50 uppercase">Activos</p>
-                 <p className="text-sm font-black text-fluent-accent">{stats.casosActivos}</p>
-              </div>
-              <div className="p-2 rounded-md bg-white/[0.03] border border-white/5">
-                 <p className="text-[9px] font-bold text-fluent-text-muted/50 uppercase">Cumpl.</p>
-                 <p className="text-sm font-black text-green-400">{stats.cumplimientoGeneral}%</p>
-              </div>
-           </div>
+        {/* Stats & User Footer */}
+        <div className="px-4 py-3 border-t border-[rgba(0,0,0,0.06)] space-y-3">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
+              <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
+              <p className="text-[17px] font-bold text-[#0071E3] tracking-[-0.02em]">{stats.casosActivos}</p>
+            </div>
+            <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
+              <p className="text-[10px] font-semibold text-[#86868B]">Cumpl.</p>
+              <p className="text-[17px] font-bold text-[#248A3D] tracking-[-0.02em]">{stats.cumplimientoGeneral}%</p>
+            </div>
+          </div>
 
-          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
+          <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] transition-colors group cursor-default">
             <img 
               src={user?.profileImage || "https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png"} 
-              alt="Profile" 
-              className="w-8 h-8 rounded-full object-cover border border-fluent-accent/20 bg-white/[0.03]"
+              alt="" 
+              className="w-7 h-7 rounded-full object-cover bg-[rgba(0,0,0,0.03)]"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-bold text-white truncate">{user?.nombre || 'Perito Judicial'}</p>
-              <p className="text-[9px] text-fluent-text-muted">ID: PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
+              <p className="text-[12px] font-semibold text-[#1D1D1F] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
+              <p className="text-[10px] text-[#86868B]">ID: PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
             </div>
             <button onClick={logout} title="Cerrar sesión"
-              className="p-1.5 rounded-md hover:bg-red-500/10 text-fluent-text-muted hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100">
-              <LogOut size={14} />
+              className="p-1 rounded-[6px] hover:bg-red-500/10 text-[#86868B] hover:text-[#FF3B30] transition-colors opacity-0 group-hover:opacity-100">
+              <LogOut size={13} />
             </button>
           </div>
         </div>
       </aside>
 
-      {/* ── Main ───────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-fluent-bg print:bg-white print:overflow-visible">
+      {/* ── Main Content ──────────────────────────────────────────────── */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F5F5F7] print:bg-white print:overflow-visible">
 
-        {/* Header */}
-        <header className="print:hidden h-[48px] border-b border-white/5 flex items-center justify-between px-6 bg-fluent-bg/60 backdrop-blur-xl z-10 shrink-0">
-          <div className="flex items-center gap-4">
-            <nav className="flex items-center gap-2 text-[11px] text-fluent-text-muted font-medium">
-              <Link to="/" className="hover:text-fluent-text transition-colors">SHA256.US</Link>
+        {/* macOS Unified Toolbar */}
+        <header className="print:hidden h-[50px] border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between px-6 bg-[rgba(245,245,247,0.7)] backdrop-blur-[30px] z-10 shrink-0">
+          <div className="flex items-center gap-3">
+            <nav className="flex items-center gap-2 text-[13px] text-[#86868B] font-medium">
+              <Link to="/" className="apple-breadcrumb">SHA256.US</Link>
               {location.pathname !== '/' && (
                 <>
-                  <ChevronRight size={10} className="opacity-40" />
-                  <span className="text-fluent-text font-semibold">{getBreadcrumb()}</span>
+                  <ChevronRight size={11} className="text-[#86868B] opacity-50" />
+                  <span className="apple-breadcrumb-active">{getBreadcrumb()}</span>
                 </>
               )}
             </nav>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-[11px] font-semibold text-fluent-text-muted">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.4)]" />
+            <div className="flex items-center gap-2 text-[12px] font-medium text-[#86868B]">
+              <div className="w-2 h-2 rounded-full bg-[#34C759]" />
               <span>Sincronizado</span>
             </div>
-            <div id="operation-mode-badge" className="flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-[4px] border bg-green-500/10 text-green-400 border-green-500/30">
-               <Activity size={12} />
-               <span>PRODUCCIÓN</span>
+            <div className="apple-badge-green">
+              <Activity size={11} />
+              <span>PRODUCCIÓN</span>
             </div>
           </div>
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar print:overflow-visible print:m-0 print:p-0">
-          <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-10 animate-fade-in print:max-w-none print:m-0 print:p-0">
+        <main className="flex-1 overflow-y-auto print:overflow-visible print:m-0 print:p-0">
+          <div className="max-w-6xl mx-auto p-5 sm:p-8 md:p-12 apple-fade-in print:max-w-none print:m-0 print:p-0">
             <Outlet />
           </div>
         </main>

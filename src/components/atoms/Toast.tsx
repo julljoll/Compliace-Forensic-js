@@ -33,10 +33,10 @@ const ICONS: Record<ToastType, any> = {
 };
 
 const COLORS: Record<ToastType, string> = {
-  success: 'bg-green-500/15 border-green-500/30 text-green-300',
-  error: 'bg-red-500/15 border-red-500/30 text-red-300',
-  warning: 'bg-yellow-500/15 border-yellow-500/30 text-yellow-300',
-  info: 'bg-blue-500/15 border-blue-500/30 text-blue-300',
+  success: 'bg-white border border-[rgba(52,199,89,0.2)] text-[#248A3D]',
+  error: 'bg-white border border-[rgba(255,59,48,0.2)] text-[#BF2D24]',
+  warning: 'bg-white border border-[rgba(255,149,0,0.2)] text-[#C93400]',
+  info: 'bg-white border border-[rgba(0,113,227,0.2)] text-[#0071E3]',
 };
 
 function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
@@ -50,14 +50,14 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   }, [toast.duration, onClose]);
 
   return (
-    <div className={`flex items-start gap-3 p-3 rounded-lg border backdrop-blur-md shadow-lg animate-fade-in ${COLORS[toast.type]}`}>
+    <div className={`flex items-start gap-3 p-3.5 rounded-[12px] shadow-[0_0_1px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.04)] apple-fade-in ${COLORS[toast.type]}`}>
       <Icon size={16} className="shrink-0 mt-0.5" />
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold">{toast.title}</p>
-        {toast.message && <p className="text-[10px] opacity-80 mt-0.5">{toast.message}</p>}
+        <p className="text-[13px] font-semibold text-[#1D1D1F]">{toast.title}</p>
+        {toast.message && <p className="text-[11px] text-[#86868B] mt-0.5">{toast.message}</p>}
       </div>
-      <button onClick={onClose} className="shrink-0 p-0.5 rounded hover:bg-white/10 transition-colors">
-        <X size={12} />
+      <button onClick={onClose} className="shrink-0 p-0.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.05)] transition-colors text-[#86868B]">
+        <X size={13} />
       </button>
     </div>
   );
