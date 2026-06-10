@@ -15,18 +15,10 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-10 09:58:38",
-      "last_commit": "bc6e6e1 - s (2026-05-29)",
+      "timestamp": "2026-06-10 12:57:38",
+      "last_commit": "7d9a24d - estilos aple (2026-06-10)",
       "modified_files": [
-        "A  .megaignore",
-        "A  RAG/apple-ios-design.skill",
-        "A  RAG/apple-ios-design/SKILL.md",
-        "A  RAG/apple-ios-design/references/animations.md",
-        "A  RAG/apple-ios-design/references/components.md",
-        "A  RAG/apple-ios-design/references/stack.md",
-        "A  RAG/apple-ios-design/references/tokens.md",
         "M  agent_instructions.json",
-        "A  desktop.ini",
         "M  dev-dist/sw.js"
       ]
     }
