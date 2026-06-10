@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal, Sun, Moon
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -40,6 +40,26 @@ export default function CMSLayout() {
   const { user, logout } = useAuthStore();
   const stats = getEstadisticas();
   const [dbOnline, setDbOnline] = useState<boolean | null>(null);
+  
+  // Tema Oscuro / Claro
+  const [isDark, setIsDark] = useState(() => {
+    return document.documentElement.classList.contains('dark') || 
+           localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => {
+    setIsDark(prev => !prev);
+  };
 
   const verificarDB = useCallback(async () => {
     const ok = await checkConnection();
@@ -200,6 +220,13 @@ export default function CMSLayout() {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              title={isDark ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
+              className="p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#0071E3] transition-all"
+            >
+              {isDark ? <Sun size={13} /> : <Moon size={13} />}
+            </button>
             <button
               onClick={limpiarDatos}
               title="Limpiar datos temporales y cookies"
