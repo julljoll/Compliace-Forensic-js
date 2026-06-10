@@ -126,3 +126,6 @@ export function ImageIcon(props: IconProps) { return <MaterialIcon name="image" 
 export function Gavel(props: IconProps) { return <MaterialIcon name="gavel" {...props} />; }
 export function Scale(props: IconProps) { return <MaterialIcon name="balance" {...props} />; }
 export function LayoutDashboard(props: IconProps) { return <MaterialIcon name="dashboard" {...props} />; }
+export function Save(props: IconProps) { return <MaterialIcon name="save" {...props} />; }
+export function Upload(props: IconProps) { return <MaterialIcon name="upload" {...props} />; }
+export function MessageSquare(props: IconProps) { return <MaterialIcon name="chat" {...props} />; }

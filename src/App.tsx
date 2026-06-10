@@ -19,7 +19,14 @@ const SeguimientoCompliancePage = lazy(() => import('./pages/Control/Seguimiento
 const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
+const TareasPage = lazy(() => import('./pages/TareasPage'));
 const ManualServerlessPage = lazy(() => import('./pages/ManualServerlessPage'));
+
+// ── Módulos Forenses ──
+const AdbBackupPage = lazy(() => import('./pages/Forense/AdbBackupPage'));
+const ApkDowngradePage = lazy(() => import('./pages/Forense/ApkDowngradePage'));
+const WhatsAppParserPage = lazy(() => import('./pages/Forense/WhatsAppParserPage'));
+const IntegrityPage = lazy(() => import('./pages/Forense/IntegrityPage'));
 
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
@@ -82,8 +89,14 @@ function App() {
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
           <Route path="sistemas/manual-avilla" element={<Navigate to="/manual-avilla" replace />} />
-          <Route path="tareas" element={<Navigate to="/control/seguimiento-compliance?tab=tareas" replace />} />
+          <Route path="tareas" element={<Suspense fallback={<PageLoader />}><TareasPage /></Suspense>} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
+
+          {/* ── Módulos Forenses ── */}
+          <Route path="forense/adb-backup" element={<Suspense fallback={<PageLoader />}><AdbBackupPage /></Suspense>} />
+          <Route path="forense/apk-downgrade" element={<Suspense fallback={<PageLoader />}><ApkDowngradePage /></Suspense>} />
+          <Route path="forense/whatsapp-parser" element={<Suspense fallback={<PageLoader />}><WhatsAppParserPage /></Suspense>} />
+          <Route path="forense/integridad" element={<Suspense fallback={<PageLoader />}><IntegrityPage /></Suspense>} />
           <Route path="manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />

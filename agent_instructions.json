@@ -15,11 +15,20 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-10 12:57:38",
-      "last_commit": "7d9a24d - estilos aple (2026-06-10)",
+      "timestamp": "2026-06-10 14:35:36",
+      "last_commit": "e0082fd - gh (2026-06-10)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  dev-dist/sw.js"
+        "M  dev-dist/sw.js",
+        "M  src/App.tsx",
+        "M  src/components/atoms/AppleIcon.tsx",
+        "M  src/components/templates/CMSLayout.tsx",
+        "A  src/pages/Forense/AdbBackupPage.tsx",
+        "A  src/pages/Forense/ApkDowngradePage.tsx",
+        "A  src/pages/Forense/IntegrityPage.tsx",
+        "A  src/pages/Forense/WhatsAppParserPage.tsx",
+        "M  src/pages/PersonalPage.tsx",
+        "M  src/pages/TareasPage.tsx"
       ]
     }
   },

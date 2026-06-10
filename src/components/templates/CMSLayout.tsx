@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -12,7 +12,15 @@ const menuItems = [
   { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
   { path: '/casos',            label: 'Gestión de Casos',      icon: FolderOpen,       group: 'Principal' },
   { path: '/control/seguimiento-compliance', label: 'Fases, Tareas & Compliance', icon: ShieldCheck, group: 'Control' },
-  { path: '/control/seguimiento-compliance?tab=tareas', label: 'Tablero de Tareas', icon: ClipboardList, group: 'Control' },
+  { path: '/tareas',           label: 'Tablero de Tareas',     icon: ClipboardList,    group: 'Control' },
+  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
+  
+  // Módulos Forenses
+  { path: '/forense/adb-backup', label: 'Colectas ADB',        icon: Terminal,         group: 'Módulos Forenses' },
+  { path: '/forense/apk-downgrade', label: 'APK Downgrade',    icon: Smartphone,       group: 'Módulos Forenses' },
+  { path: '/forense/whatsapp-parser', label: 'WhatsApp Parser', icon: Database,        group: 'Módulos Forenses' },
+  { path: '/forense/integridad', label: 'Integridad (.avilla)', icon: ShieldCheck,     group: 'Módulos Forenses' },
+
   { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Sistema' },
   { path: '/sistemas/correo-corporativo', label: 'Manual Correo', icon: BookOpen,      group: 'Sistema' },
   { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
@@ -21,10 +29,9 @@ const menuItems = [
   { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
   { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Plantillas Oficiales' },
-  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
 ];
 
-const groups = ['Principal', 'Control', 'Sistema', 'Plantillas Oficiales'];
+const groups = ['Principal', 'Control', 'Módulos Forenses', 'Sistema', 'Plantillas Oficiales'];
 
 export default function CMSLayout() {
   const location = useLocation();

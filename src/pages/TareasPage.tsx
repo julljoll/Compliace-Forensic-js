@@ -11,24 +11,24 @@ import {
   ClipboardList, Plus, Search, CheckCircle2, Clock,
   AlertTriangle, Pause, Trash2, X,
   TrendingUp, Calendar, User,
-  BookOpen, BarChart3, ExternalLink
+  BookOpen, BarChart3, ExternalLink, CheckCheck
 } from '../components/atoms/AppleIcon';
 import KpiCard from '../components/molecules/KpiCard';
 
 // ── Constantes de diseño ────────────────────────────────────────────────────
 
 const ESTADO_TAREA: Record<EstadoTarea, { label: string; color: string; icon: any }> = {
-  pendiente:   { label: 'Pendiente',    color: 'bg-yellow-500/10 text-yellow-800 border-yellow-500/20', icon: Clock },
-  en_progreso: { label: 'En Progreso',  color: 'bg-blue-500/10 text-blue-700 border-blue-500/20',     icon: TrendingUp },
-  completada:  { label: 'Completada',   color: 'bg-green-500/10 text-green-700 border-green-500/20',  icon: CheckCircle2 },
-  bloqueada:   { label: 'Bloqueada',    color: 'bg-red-500/10 text-red-700 border-red-500/20',        icon: Pause },
+  pendiente:   { label: 'Pendiente',    color: 'bg-[#FF9500]/10 text-[#FF9500] border-[#FF9500]/20', icon: Clock },
+  en_progreso: { label: 'En Progreso',  color: 'bg-[#007AFF]/10 text-[#007AFF] border-[#007AFF]/20',   icon: TrendingUp },
+  completada:  { label: 'Completada',   color: 'bg-[#34C759]/10 text-[#34C759] border-[#34C759]/20',  icon: CheckCircle2 },
+  bloqueada:   { label: 'Bloqueada',    color: 'bg-[#FF3B30]/10 text-[#FF3B30] border-[#FF3B30]/20',  icon: Pause },
 };
 
 const PRIORIDAD_CONFIG: Record<PrioridadCaso, { label: string; dot: string; bg: string }> = {
-  critica: { label: 'Crítica', dot: 'bg-red-500',    bg: 'bg-red-500/10 text-red-700 border-red-500/20' },
-  alta:    { label: 'Alta',    dot: 'bg-orange-500',  bg: 'bg-orange-500/10 text-orange-700 border-orange-500/20' },
-  media:   { label: 'Media',   dot: 'bg-yellow-500',  bg: 'bg-yellow-500/10 text-yellow-800 border-yellow-500/20' },
-  baja:    { label: 'Baja',    dot: 'bg-green-500',   bg: 'bg-green-500/10 text-green-700 border-green-500/20' },
+  critica: { label: 'Crítica', dot: 'bg-[#FF3B30]',    bg: 'bg-[#FF3B30]/10 text-[#FF3B30] border-[#FF3B30]/20' },
+  alta:    { label: 'Alta',    dot: 'bg-[#FF9500]',  bg: 'bg-[#FF9500]/10 text-[#FF9500] border-[#FF9500]/20' },
+  media:   { label: 'Media',   dot: 'bg-[#FFCC00]',  bg: 'bg-[#FFCC00]/10 text-[#FFCC00] border-[#FFCC00]/20' },
+  baja:    { label: 'Baja',    dot: 'bg-[#34C759]',   bg: 'bg-[#34C759]/10 text-[#34C759] border-[#34C759]/20' },
 };
 
 // ── Componente Principal ────────────────────────────────────────────────────
@@ -113,15 +113,15 @@ export default function TareasPage() {
       {/* ── Header ─────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-apple-text tracking-tight">Task & Phase Control</h1>
-          <p className="text-xs md:text-sm text-apple-text-secondary font-medium max-w-lg mt-1">
-            Forensic workflow management under <span className="text-apple-accent">MUCC-2017</span> and <span className="text-apple-accent">ISO 27037</span> phase-tracking methodology.
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight">Control de Tareas y Fases</h1>
+          <p className="text-xs md:text-sm text-[#86868B] font-medium max-w-lg mt-1">
+            Gestión del flujo de trabajo forense bajo la metodología de seguimiento de fases de <span className="text-[#0071E3] font-semibold">MUCC-2017</span> e <span className="text-[#0071E3] font-semibold">ISO 27037</span>.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             to="/control/seguimiento-compliance"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-cyan-500/10 border border-cyan-500/25 text-cyan-700 hover:bg-cyan-500/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all duration-200 bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
           >
             <ExternalLink size={12} />
             <span>Ver Flujo Unificado</span>
@@ -131,26 +131,26 @@ export default function TareasPage() {
             className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-2xl hover:translate-y-[-2px] transition-all self-start md:self-auto"
           >
             <Plus size={18} strokeWidth={3} />
-            New Task
+            Nueva Tarea
           </button>
         </div>
       </div>
 
       {/* ── KPIs ───────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Total Tasks" value={kpis.total} sub={`${kpis.enProgreso} in progress`} icon={ClipboardList} />
-        <KpiCard title="Pending" value={kpis.pendientes} sub="Awaiting assignment" icon={Clock} color="text-yellow-400" />
-        <KpiCard title="Completed" value={kpis.completadas} sub={`${kpis.progreso}% overall progress`} icon={CheckCircle2} color="text-green-400" accent />
-        <KpiCard title="Blocked" value={kpis.bloqueadas} sub="Requires attention" icon={AlertTriangle} color="text-red-400" />
+        <KpiCard title="Tareas Totales" value={kpis.total} sub={`${kpis.enProgreso} en progreso`} icon={ClipboardList} />
+        <KpiCard title="Pendientes" value={kpis.pendientes} sub="Esperando asignación" icon={Clock} color="text-[#FF9500]" />
+        <KpiCard title="Completadas" value={kpis.completadas} sub={`${kpis.progreso}% de progreso general`} icon={CheckCircle2} color="text-[#34C759]" accent />
+        <KpiCard title="Bloqueadas" value={kpis.bloqueadas} sub="Requieren atención" icon={AlertTriangle} color="text-[#FF3B30]" />
       </div>
 
       {/* ── Filtros ── */}
       <div className="apple-card p-4 flex flex-col md:flex-row gap-3">
         <div className="relative flex-1">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-apple-text-secondary" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B]" />
           <input
             type="text"
-            placeholder="Search tasks by title, description or assignee..."
+            placeholder="Buscar tareas por título, descripción o responsable..."
             value={busqueda}
             onChange={e => setBusqueda(e.target.value)}
             className="apple-input pl-9"
@@ -162,7 +162,7 @@ export default function TareasPage() {
             onChange={e => setFiltroEstado(e.target.value as EstadoTarea | 'todos')}
             className="apple-input w-auto min-w-[130px]"
           >
-            <option value="todos">All Status</option>
+            <option value="todos">Todos los Estados</option>
             {Object.entries(ESTADO_TAREA).map(([k, v]) => (
               <option key={k} value={k}>{v.label}</option>
             ))}
@@ -172,7 +172,7 @@ export default function TareasPage() {
             onChange={e => setFiltroPrioridad(e.target.value as PrioridadCaso | 'todos')}
             className="apple-input w-auto min-w-[120px]"
           >
-            <option value="todos">All Priority</option>
+            <option value="todos">Todas las Prioridades</option>
             {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
               <option key={k} value={k}>{v.label}</option>
             ))}
@@ -182,7 +182,7 @@ export default function TareasPage() {
             onChange={e => setFiltroCaso(e.target.value)}
             className="apple-input w-auto min-w-[160px]"
           >
-            <option value="todos">All Cases</option>
+            <option value="todos">Todos los Casos</option>
             {casos.map(c => (
               <option key={c.id} value={c.id}>{c.numeroCaso}</option>
             ))}
@@ -195,11 +195,11 @@ export default function TareasPage() {
         {tareasFiltradas.length === 0 ? (
           <div className="apple-card p-20 text-center border-dashed border-black/10">
             <div className="w-20 h-20 bg-black/[0.02] rounded-full flex items-center justify-center mx-auto mb-6">
-              <ClipboardList size={40} className="text-apple-text-secondary opacity-20" />
+              <ClipboardList size={40} className="text-[#86868B] opacity-20" />
             </div>
-            <h3 className="text-xl font-bold text-apple-text mb-2">No Tasks Found</h3>
-            <p className="text-apple-text-secondary text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
-              No forensic tasks match the current filter criteria. Create a new task to begin workflow tracking.
+            <h3 className="text-xl font-bold text-[#1D1D1F] mb-2">No se encontraron tareas</h3>
+            <p className="text-[#86868B] text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+              Ninguna tarea forense coincide con los criterios de búsqueda. Cree una nueva tarea para iniciar el seguimiento del flujo de trabajo.
             </p>
           </div>
         ) : (
@@ -224,8 +224,8 @@ export default function TareasPage() {
                           <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
                         </div>
                         <div className="min-w-0">
-                          <h3 className="text-sm font-bold text-apple-text truncate">{tarea.titulo}</h3>
-                          <p className="text-[10px] text-apple-text-secondary font-mono uppercase tracking-tight">
+                          <h3 className="text-sm font-bold text-[#1D1D1F] truncate">{tarea.titulo}</h3>
+                          <p className="text-[10px] text-[#86868B] font-mono uppercase tracking-tight">
                             {getCasoLabel(tarea.casoId)}
                           </p>
                         </div>
@@ -240,10 +240,10 @@ export default function TareasPage() {
                       </div>
                     </div>
 
-                    <p className="text-xs text-apple-text-secondary mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
+                    <p className="text-xs text-[#86868B] mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
 
                     {/* Meta row */}
-                    <div className="flex flex-wrap items-center gap-4 text-[10px] text-apple-text-secondary font-medium">
+                    <div className="flex flex-wrap items-center gap-4 text-[10px] text-[#86868B] font-medium">
                       <span className="flex items-center gap-1.5">
                         <User size={11} /> {tarea.asignadoA || 'Sin asignar'}
                       </span>
@@ -265,7 +265,7 @@ export default function TareasPage() {
                         <BarChart3 size={11} /> {tarea.porcentaje}%
                       </span>
                       {tarea.pasoId && (
-                        <span className="flex items-center gap-1.5 text-apple-accent">
+                        <span className="flex items-center gap-1.5 text-[#0071E3]">
                           <span className="text-[8px] font-black uppercase tracking-wider">Paso:</span>
                           {tarea.pasoId}
                         </span>
@@ -275,7 +275,7 @@ export default function TareasPage() {
                     {/* Progress bar */}
                     <div className="mt-3 w-full bg-black/[0.08] rounded-full h-1.5 overflow-hidden">
                       <div
-                        className="h-full bg-apple-accent rounded-full transition-all duration-500"
+                        className="h-full bg-[#0071E3] rounded-full transition-all duration-500"
                         style={{ width: `${tarea.porcentaje}%` }}
                       />
                     </div>
@@ -286,7 +286,7 @@ export default function TareasPage() {
                     <select
                       value={tarea.estado}
                       onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
-                      className="text-[10px] bg-black/[0.02] border border-black/10 rounded px-1.5 py-1 text-apple-text outline-none cursor-pointer"
+                      className="text-[10px] bg-black/[0.02] border border-black/10 rounded px-1.5 py-1 text-[#1D1D1F] outline-none cursor-pointer"
                       title="Cambiar estado"
                     >
                       {Object.entries(ESTADO_TAREA).map(([k, v]) => (
@@ -295,7 +295,7 @@ export default function TareasPage() {
                     </select>
                     <button
                       onClick={() => handleDeleteTarea(tarea)}
-                      className="p-1.5 rounded hover:bg-red-500/10 text-apple-text-secondary hover:text-red-600 transition-colors"
+                      className="p-1.5 rounded hover:bg-red-500/10 text-[#86868B] hover:text-red-600 transition-colors"
                       title="Eliminar tarea"
                     >
                       <Trash2 size={13} />
@@ -308,9 +308,7 @@ export default function TareasPage() {
         )}
       </div>
 
-      {/* ════════════════════════════════════════════════════════════════════ */}
       {/* ── MODAL NUEVA TAREA ────────────────────────────────────────────── */}
-      {/* ════════════════════════════════════════════════════════════════════ */}
       {showModal && (
         <NuevaTareaModal
           onClose={() => setShowModal(false)}
@@ -394,15 +392,15 @@ function NuevaTareaModal({
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-black/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-apple-accent/10">
-              <ClipboardList size={18} className="text-apple-accent" />
+            <div className="p-2 rounded-md bg-[#0071E3]/10">
+              <ClipboardList size={18} className="text-[#0071E3]" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-apple-text">New Forensic Task</h2>
-              <p className="text-[10px] text-apple-text-secondary font-medium">Art. 187 COPP — Task Registration</p>
+              <h2 className="text-base font-bold text-[#1D1D1F]">Nueva Tarea Forense</h2>
+              <p className="text-[10px] text-[#86868B] font-medium">Art. 187 COPP — Registro de Actividad Técnica</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/[0.04] text-apple-text-secondary hover:text-apple-text transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/[0.04] text-[#86868B] hover:text-[#1D1D1F] transition-colors">
             <X size={16} />
           </button>
         </div>
@@ -411,14 +409,14 @@ function NuevaTareaModal({
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {/* Caso */}
           <div>
-            <label className="apple-label">Associated Case *</label>
+            <label className="apple-label">Caso Asociado *</label>
             <select
               value={form.casoId}
               onChange={e => setForm(p => ({ ...p, casoId: e.target.value }))}
               className="apple-input"
               required
             >
-              <option value="">Select a case...</option>
+              <option value="">Seleccione un caso...</option>
               {casos.map(c => (
                 <option key={c.id} value={c.id}>{c.numeroCaso} — {c.titulo}</option>
               ))}
@@ -427,7 +425,7 @@ function NuevaTareaModal({
 
           {/* Paso / Step */}
           <div>
-            <label className="apple-label">Forensic Step</label>
+            <label className="apple-label">Paso / Etapa Técnica</label>
             <select
               value={form.pasoId}
               onChange={e => setForm(p => ({ ...p, pasoId: e.target.value }))}
@@ -442,42 +440,42 @@ function NuevaTareaModal({
 
           {/* Título */}
           <div>
-            <label className="apple-label">Task Title *</label>
+            <label className="apple-label">Título de la Tarea *</label>
             <input
               type="text"
               value={form.titulo}
               onChange={e => setForm(p => ({ ...p, titulo: e.target.value }))}
               className="apple-input"
-              placeholder="e.g., Extract WhatsApp backup via APK Downgrade"
+              placeholder="Ej: Extraer msgstore.db con APK Downgrade"
               required
             />
           </div>
 
           {/* Descripción */}
           <div>
-            <label className="apple-label">Description</label>
+            <label className="apple-label">Descripción</label>
             <textarea
               value={form.descripcion}
               onChange={e => setForm(p => ({ ...p, descripcion: e.target.value }))}
               className="apple-input min-h-[80px] resize-y"
-              placeholder="Detailed description of the forensic task..."
+              placeholder="Detalle los objetivos técnicos o alcances de la tarea..."
             />
           </div>
 
           {/* Row: Asignado + Prioridad */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="apple-label">Assigned To</label>
+              <label className="apple-label">Asignar Perito</label>
               <input
                 type="text"
                 value={form.asignadoA}
                 onChange={e => setForm(p => ({ ...p, asignadoA: e.target.value }))}
                 className="apple-input"
-                placeholder="Expert name"
+                placeholder="Nombre del perito"
               />
             </div>
             <div>
-              <label className="apple-label">Priority</label>
+              <label className="apple-label">Prioridad</label>
               <select
                 value={form.prioridad}
                 onChange={e => setForm(p => ({ ...p, prioridad: e.target.value as PrioridadCaso }))}
@@ -492,7 +490,7 @@ function NuevaTareaModal({
 
           {/* Fecha vencimiento */}
           <div>
-            <label className="apple-label">Due Date</label>
+            <label className="apple-label">Fecha de Vencimiento</label>
             <input
               type="date"
               value={form.fechaVencimiento}
@@ -503,15 +501,15 @@ function NuevaTareaModal({
 
           {/* Normativas */}
           <div>
-            <label className="apple-label">Related Standards</label>
+            <label className="apple-label">Normativas Relacionadas</label>
             <div className="grid grid-cols-3 gap-2 mt-1">
               {normativas.map(n => (
                 <label
                   key={n.id}
                   className={`flex items-center gap-2 text-[10px] font-bold p-2 rounded-md border cursor-pointer transition-all ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-apple-accent/10 border-apple-accent/30 text-apple-accent'
-                      : 'bg-black/[0.02] border-black/[0.06] text-apple-text-secondary hover:bg-black/[0.04]'
+                      ? 'bg-[#0071E3]/10 border-[#0071E3]/30 text-[#0071E3]'
+                      : 'bg-black/[0.02] border-black/[0.06] text-[#86868B] hover:bg-black/[0.04]'
                   }`}
                 >
                   <input
@@ -522,11 +520,11 @@ function NuevaTareaModal({
                   />
                   <div className={`w-3 h-3 rounded-sm border flex items-center justify-center shrink-0 ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-apple-accent border-apple-accent'
+                      ? 'bg-[#0071E3] border-[#0071E3]'
                       : 'border-black/20'
                   }`}>
                     {form.normativasRelacionadas.includes(n.id) && (
-                      <CheckCircle2 size={8} className="text-white" />
+                      <CheckCheck size={8} className="text-white" />
                     )}
                   </div>
                   <span className="truncate">{n.codigo}</span>
@@ -537,12 +535,12 @@ function NuevaTareaModal({
 
           {/* Observaciones */}
           <div>
-            <label className="apple-label">Observations</label>
+            <label className="apple-label">Observaciones</label>
             <textarea
               value={form.observaciones}
               onChange={e => setForm(p => ({ ...p, observaciones: e.target.value }))}
               className="apple-input min-h-[60px] resize-y"
-              placeholder="Additional notes..."
+              placeholder="Notas u observaciones técnicas adicionales..."
             />
           </div>
 
@@ -556,7 +554,7 @@ function NuevaTareaModal({
               disabled={!form.casoId || !form.titulo}
               className="apple-btn apple-btn-primary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <Plus size={16} /> Register Task
+              Registrar Tarea
             </button>
           </div>
         </form>

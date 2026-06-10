@@ -21,14 +21,14 @@ export default function PersonalPage() {
   const [personal, setPersonal] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'projects'>('profile');
-  const { casos, deleteCaso } = useCMSStore();
+  const { casos, deleteCaso, personal: cmsPersonal, addPersonal, updatePersonal } = useCMSStore();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passError, setPassError] = useState<string | null>(null);
   const [passSuccess, setPassSuccess] = useState<string | null>(null);
   const [changingPass, setChangingPass] = useState(false);
 
-  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [isEditing, setIsEditing] = useState<string | number | null>(null);
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [ci, setCi] = useState('');
@@ -43,20 +43,20 @@ export default function PersonalPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { loadUsers(); }, []);
-
   const loadUsers = async () => {
     try {
       if (window.electronAPI?.db?.getUsers) {
         const users = await window.electronAPI.db.getUsers();
         setPersonal(users.filter((u: any) => u.username !== 'admin'));
       } else {
-        setPersonal([]);
+        setPersonal(cmsPersonal.filter((u: any) => u.username !== 'admin'));
       }
     } catch (e) {
       console.error('Error loading users:', e);
     } finally { setLoading(false); }
   };
+
+  useEffect(() => { loadUsers(); }, [cmsPersonal]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -102,15 +102,36 @@ export default function PersonalPage() {
     if (!nombre || !apellido || !ci || !cargo || !email || (!isEditing && (!username || !passwordColab))) {
       alert('Por favor completa los campos obligatorios'); return;
     }
-    const userData: any = { nombre, apellido, ci, cargo, rol, despacho, email, telefono, username };
+    const userData: any = { nombre, apellido, ci, cargo, rol, despacho, email, telefono, username, activo: 1 };
     if (passwordColab) userData.password = passwordColab;
+    
     if (window.electronAPI?.db) {
-      if (isEditing) { await window.electronAPI.db.updateUser(user?.id || 0, isEditing, userData); }
+      if (isEditing) { await window.electronAPI.db.updateUser(user?.id || 0, Number(isEditing), userData); }
       else {
         const res = await window.electronAPI.db.addUser(user?.id || 0, userData);
         if (!res.success) { alert('Error: ' + res.error); return; }
       }
       await loadUsers();
+    } else {
+      if (isEditing) {
+        updatePersonal(isEditing.toString(), {
+          nombre, apellido, ci, cargo, rol: rol as any, despacho, email, telefono
+        });
+      } else {
+        addPersonal({
+          nombre,
+          apellido,
+          ci,
+          cargo,
+          rol: rol as any,
+          organismo: 'MP',
+          despacho,
+          email,
+          telefono,
+          activo: true,
+          ranking: 0,
+        });
+      }
     }
     resetForm();
   };
@@ -122,17 +143,22 @@ export default function PersonalPage() {
     setUsername(colab.username || ''); setPasswordColab(''); setShowAddForm(true);
   };
 
-  const handleToggleActive = async (id: number, currentStatus: number) => {
+  const handleToggleActive = async (id: number | string, currentStatus: any) => {
+    const nextStatus = (currentStatus === 1 || currentStatus === true) ? false : true;
     if (window.electronAPI?.db?.updateUser && user?.id) {
-      await window.electronAPI.db.updateUser(user.id, id, { activo: currentStatus === 1 ? 0 : 1 });
+      await window.electronAPI.db.updateUser(user.id, Number(id), { activo: nextStatus ? 1 : 0 });
       await loadUsers();
+    } else {
+      updatePersonal(id.toString(), { activo: nextStatus });
     }
   };
 
-  const handleSetRanking = async (id: number, stars: number) => {
+  const handleSetRanking = async (id: number | string, stars: number) => {
     if (window.electronAPI?.db?.updateUser && user?.id) {
-      await window.electronAPI.db.updateUser(user.id, id, { ranking: stars });
+      await window.electronAPI.db.updateUser(user.id, Number(id), { ranking: stars });
       await loadUsers();
+    } else {
+      updatePersonal(id.toString(), { ranking: stars });
     }
   };
 
@@ -388,7 +414,7 @@ export default function PersonalPage() {
                             <span className="text-[9px] bg-[rgba(0,0,0,0.06)] px-1.5 py-0.5 rounded text-[#6E6E73] uppercase font-semibold">
                               {ROLES.find(r => r.value === p.rol)?.label || p.rol}
                             </span>
-                            {p.activo === 0 && (
+                            {(p.activo === 0 || p.activo === false) && (
                               <span className="text-[9px] bg-[rgba(255,59,48,0.1)] text-[#FF3B30] px-1.5 py-0.5 rounded uppercase font-semibold">Inactivo</span>
                             )}
                           </div>
