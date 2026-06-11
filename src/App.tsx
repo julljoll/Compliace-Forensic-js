@@ -19,7 +19,6 @@ const SeguimientoCompliancePage = lazy(() => import('./pages/Control/Seguimiento
 const NormativasPage = lazy(() => import('./pages/NormativasPage'));
 const AuditoriaPage = lazy(() => import('./pages/AuditoriaPage'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage'));
-const TareasPage = lazy(() => import('./pages/TareasPage'));
 const ManualServerlessPage = lazy(() => import('./pages/ManualServerlessPage'));
 
 // ── Módulos Forenses ──
@@ -89,7 +88,7 @@ function App() {
           <Route path="auditoria" element={<Suspense fallback={<PageLoader />}><AuditoriaPage /></Suspense>} />
           <Route path="manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
           <Route path="sistemas/manual-avilla" element={<Navigate to="/manual-avilla" replace />} />
-          <Route path="tareas" element={<Suspense fallback={<PageLoader />}><TareasPage /></Suspense>} />
+          <Route path="tareas" element={<Suspense fallback={<PageLoader />}><DashboardPage /></Suspense>} />
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
 
           {/* ── Módulos Forenses ── */}
