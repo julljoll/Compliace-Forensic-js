@@ -15,14 +15,11 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-11 16:15:33",
-      "last_commit": "42cea45 - Add responsive hamburger menu and mobile drawer, improve CSS for mobile (2026-06-11)",
+      "timestamp": "2026-06-11 17:03:09",
+      "last_commit": "3b81cf3 - feat(mobile): full PWA mobile optimization with hamburger drawer, safe areas, touch targets, responsive CSS, xs breakpoint (2026-06-11)",
       "modified_files": [
-        "M  index.html",
-        "M  src/components/atoms/AppleIcon.tsx",
-        "M  src/components/templates/CMSLayout.tsx",
-        "M  src/index.css",
-        "M  tailwind.config.js"
+        "M  agent_instructions.json",
+        "M  src/main.tsx"
       ]
     }
   },
