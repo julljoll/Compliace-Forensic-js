@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-06-10",
+    "updated": "2026-06-11",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,15 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-10 14:51:48",
-      "last_commit": "94b5ebe - nueva (2026-06-10)",
+      "timestamp": "2026-06-11 16:05:51",
+      "last_commit": "3dd5656 - cambios (2026-06-10)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  index.html",
-        "M  src/components/atoms/AppleIcon.tsx",
         "M  src/components/templates/CMSLayout.tsx",
-        "M  src/index.css",
-        "M  tailwind.config.js"
+        "M  src/index.css"
       ]
     }
   },

@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal, Sun, Moon
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal, Sun, Moon,
+  Menu
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -46,6 +47,9 @@ export default function CMSLayout() {
     return document.documentElement.classList.contains('dark') || 
            localStorage.getItem('theme') === 'dark';
   });
+
+  // Estado del menú móvil
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (isDark) {
@@ -114,7 +118,7 @@ export default function CMSLayout() {
     <div className="flex h-screen bg-[#F5F5F7] font-sans text-[#1D1D1F] overflow-hidden selection:bg-[#0071E3]/20">
 
       {/* ── macOS Sidebar ─────────────────────────────────────────────── */}
-      <aside className="print:hidden w-[272px] apple-sidebar flex flex-col shrink-0">
+      <aside className="print:hidden w-[272px] apple-sidebar flex flex-col shrink-0 hidden sm:flex">
 
         {/* Branding */}
         <div className="px-5 pt-5 pb-3">
@@ -203,6 +207,52 @@ export default function CMSLayout() {
         </div>
       </aside>
 
+      {/* Mobile drawer */}
+      {isMobileMenuOpen && (
+        <>
+          <div className="fixed inset-0 bg-black/30 z-40" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <aside className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#1C1C1E] transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+            <div className="px-5 pt-5 pb-3">
+              <div className="flex items-center gap-3">
+                <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-8 h-8" />
+                <div>
+                  <h1 className="text-[14px] font-bold tracking-[-0.01em] text-[#1D1D1F] leading-tight">SHA256.US</h1>
+                  <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
+                </div>
+              </div>
+              <div className="apple-separator my-4" />
+              <nav className="py-3 space-y-5">
+                {groups.map(group => {
+                  const items = menuItems.filter(m => m.group === group);
+                  if (items.length === 0) return null;
+                  return (
+                    <div key={group}>
+                      <p className="apple-section-header">{group}</p>
+                      <div className="space-y-0.5 mt-1">
+                        {items.map(item => {
+                          const Icon = item.icon;
+                          return (
+                            <Link
+                              key={item.path}
+                              to={item.path}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="apple-sidebar-item"
+                            >
+                              <Icon size={16} strokeWidth={1.5} className="text-[#86868B]" />
+                              <span>{item.label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </nav>
+            </div>
+          </aside>
+        </>
+      )}
+
       {/* ── Main Content ──────────────────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F5F5F7] print:bg-white print:overflow-visible">
 
@@ -220,6 +270,14 @@ export default function CMSLayout() {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            {/* Hamburger for mobile */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              title="Abrir menú"
+              className="sm:hidden p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#0071E3] transition-all"
+            >
+              <Menu size={20} />
+            </button>
             <button
               onClick={toggleTheme}
               title={isDark ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}

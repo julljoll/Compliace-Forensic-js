@@ -597,3 +597,4 @@ html.dark ::-webkit-scrollbar-thumb {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   font-family: Menlo, Monaco, Consolas, "SF Mono", "Fira Code", monospace !important;
 }
+html { font-size: clamp(14px, 1vw, 16px); }
