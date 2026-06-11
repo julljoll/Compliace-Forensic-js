@@ -15,11 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-11 17:40:31",
-      "last_commit": "7dc035c - pppppp (2026-06-11)",
+      "timestamp": "2026-06-11 17:57:41",
+      "last_commit": "ee388eb - iiii (2026-06-11)",
       "modified_files": [
-        "M  agent_instructions.json",
-        "M  src/pages/CasoDetailPage.tsx"
+        "M  src/pages/CompliancePage.tsx",
+        "M  src/pages/CorreoCorporativoManual.tsx",
+        "M  src/pages/CorreoForensePage.tsx"
       ]
     }
   },
