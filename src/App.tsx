@@ -22,10 +22,7 @@ const PersonalPage = lazy(() => import('./pages/PersonalPage'));
 const ManualServerlessPage = lazy(() => import('./pages/ManualServerlessPage'));
 
 // ── Módulos Forenses ──
-const AdbBackupPage = lazy(() => import('./pages/Forense/AdbBackupPage'));
-const ApkDowngradePage = lazy(() => import('./pages/Forense/ApkDowngradePage'));
-const WhatsAppParserPage = lazy(() => import('./pages/Forense/WhatsAppParserPage'));
-const IntegrityPage = lazy(() => import('./pages/Forense/IntegrityPage'));
+const TutorialesForensesPage = lazy(() => import('./pages/Forense/TutorialesForensesPage'));
 
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
@@ -34,8 +31,6 @@ const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage')
 const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
 
 // ── Sistemas ────────────────────────────────────────────────────────────────
-const CorreoCorporativoManual = lazy(() => import('./pages/CorreoCorporativoManual'));
-const CorreoForensePage = lazy(() => import('./pages/CorreoForensePage'));
 const ManualAvillaPage = lazy(() => import('./pages/ManualAvillaPage'));
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
@@ -92,19 +87,20 @@ function App() {
           <Route path="personal" element={<Suspense fallback={<PageLoader />}><PersonalPage /></Suspense>} />
 
           {/* ── Módulos Forenses ── */}
-          <Route path="forense/adb-backup" element={<Suspense fallback={<PageLoader />}><AdbBackupPage /></Suspense>} />
-          <Route path="forense/apk-downgrade" element={<Suspense fallback={<PageLoader />}><ApkDowngradePage /></Suspense>} />
-          <Route path="forense/whatsapp-parser" element={<Suspense fallback={<PageLoader />}><WhatsAppParserPage /></Suspense>} />
-          <Route path="forense/integridad" element={<Suspense fallback={<PageLoader />}><IntegrityPage /></Suspense>} />
+          <Route path="forense/tutoriales" element={<Suspense fallback={<PageLoader />}><TutorialesForensesPage /></Suspense>} />
+          <Route path="forense/adb-backup" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="forense/apk-downgrade" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="forense/whatsapp-parser" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="forense/integridad" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
-          <Route path="correo-forense" element={<Suspense fallback={<PageLoader />}><CorreoForensePage /></Suspense>} />
-          <Route path="sistemas/correo-electronico" element={<Navigate to="/correo-forense" replace />} />
-          <Route path="sistemas/correo-corporativo" element={<Suspense fallback={<PageLoader />}><CorreoCorporativoManual /></Suspense>} />
+          <Route path="correo-forense" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="sistemas/correo-electronico" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="sistemas/correo-corporativo" element={<Navigate to="/forense/tutoriales" replace />} />
         </Route>
 
 

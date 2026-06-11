@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut,
-  Mail, Database, Trash2, Terminal, Sun, Moon, Menu, X,
+  Database, Trash2, Sun, Moon, Menu, X,
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -14,13 +14,8 @@ const menuItems = [
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
   { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
   { path: '/tareas',                             label: 'Tablero de Tareas',        icon: ClipboardList,   group: 'Control' },
-  { path: '/correo-forense',                     label: 'Correo Corporativo',       icon: Mail,            group: 'Control' },
-  { path: '/forense/adb-backup',                 label: 'Colectas ADB',             icon: Terminal,        group: 'Módulos Forenses' },
-  { path: '/forense/apk-downgrade',              label: 'APK Downgrade',            icon: Smartphone,      group: 'Módulos Forenses' },
-  { path: '/forense/whatsapp-parser',            label: 'WhatsApp Parser',          icon: Database,        group: 'Módulos Forenses' },
-  { path: '/forense/integridad',                 label: 'Integridad (.avilla)',      icon: ShieldCheck,     group: 'Módulos Forenses' },
+  { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Módulos Forenses' },
   { path: '/manual-avilla',                      label: 'Manual Avilla',            icon: Smartphone,      group: 'Sistema' },
-  { path: '/sistemas/correo-corporativo',        label: 'Manual Correo',            icon: BookOpen,        group: 'Sistema' },
   { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
   { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
   { path: '/manual-serverless',                  label: 'Manual Serverless',        icon: Database,        group: 'Sistema' },
