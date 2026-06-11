@@ -15,12 +15,14 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-11 16:05:51",
-      "last_commit": "3dd5656 - cambios (2026-06-10)",
+      "timestamp": "2026-06-11 16:15:33",
+      "last_commit": "42cea45 - Add responsive hamburger menu and mobile drawer, improve CSS for mobile (2026-06-11)",
       "modified_files": [
-        "M  agent_instructions.json",
+        "M  index.html",
+        "M  src/components/atoms/AppleIcon.tsx",
         "M  src/components/templates/CMSLayout.tsx",
-        "M  src/index.css"
+        "M  src/index.css",
+        "M  tailwind.config.js"
       ]
     }
   },

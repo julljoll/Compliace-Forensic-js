@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '480px', // extra-small — teléfonos pequeños
+      },
       colors: {
         // ── Apple HIG Design System ──
         apple: {

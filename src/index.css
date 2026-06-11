@@ -597,4 +597,102 @@ html.dark ::-webkit-scrollbar-thumb {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   font-family: Menlo, Monaco, Consolas, "SF Mono", "Fira Code", monospace !important;
 }
-html { font-size: clamp(14px, 1vw, 16px); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE / PWA OPTIMIZATIONS
+══════════════════════════════════════════════════════════════════════════ */
+
+/* Safe-area insets para iPhones con notch/Dynamic Island */
+:root {
+  --safe-top:    env(safe-area-inset-top,    0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left,   0px);
+  --safe-right:  env(safe-area-inset-right,  0px);
+}
+
+/* Responsive typography — legible en pantallas pequeñas */
+html {
+  font-size: clamp(14px, 3.8vw, 16px);
+  -webkit-tap-highlight-color: transparent; /* elimina flash azul en taps iOS */
+}
+
+/* Evitar zoom involuntario en inputs en iOS */
+input, select, textarea {
+  font-size: max(16px, 1em) !important;
+}
+
+/* Touch targets mínimos 44×44 px (Apple HIG) */
+button, a, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Excepción: badges y elementos decorativos */
+.apple-badge, .apple-badge-blue, .apple-badge-green,
+.apple-badge-red, .apple-badge-orange,
+.apple-window-close, .apple-window-minimize, .apple-window-zoom {
+  min-height: unset;
+  min-width: unset;
+}
+
+/* Scrolling nativo suave en iOS */
+main, .overflow-y-auto, .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Breakpoint extra-small (320–479 px) */
+@media (max-width: 479px) {
+  /* Reducir padding de tarjetas en móvil muy pequeño */
+  .apple-card, .cms-card, .forensic-card {
+    padding: 1rem !important;
+    border-radius: 12px !important;
+  }
+
+  /* Encabezados más compactos */
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1.1rem !important; }
+
+  /* Tablas: scroll horizontal en lugar de overflow oculto */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+
+  /* Botones — ancho completo en móvil si están solos */
+  .mobile-full { width: 100% !important; }
+}
+
+/* Drawer deslizable — animación de entrada */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes slideOutLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* Clase xs personalizada para breakpoint 479px (usado en JSX) */
+@media (max-width: 479px) {
+  .xs\:hidden    { display: none !important; }
+}
+@media (min-width: 480px) {
+  .xs\:block     { display: block !important; }
+  .hidden.xs\:block { display: block !important; }
+}
+
+/* Prevenir el "bounce" del body en iOS cuando el drawer está abierto */
+body.drawer-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Padding inferior para safe area (iOS home indicator) */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.pt-safe { padding-top:    env(safe-area-inset-top,    0px); }
+

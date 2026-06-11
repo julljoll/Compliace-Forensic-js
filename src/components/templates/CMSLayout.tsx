@@ -1,38 +1,65 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut, Mail, Database, Trash2, Terminal, Sun, Moon,
-  Menu
+  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut,
+  Mail, Database, Trash2, Terminal, Sun, Moon, Menu, X,
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
 import { checkConnection } from '../../db/neonClient';
 
 const menuItems = [
-  { path: '/',                 label: 'Panel Principal',       icon: LayoutDashboard,  group: 'Principal' },
-  { path: '/casos',            label: 'Gestión de Casos',      icon: FolderOpen,       group: 'Principal' },
-  { path: '/control/seguimiento-compliance', label: 'Fases, Tareas & Compliance', icon: ShieldCheck, group: 'Control' },
-  { path: '/tareas',           label: 'Tablero de Tareas',     icon: ClipboardList,    group: 'Control' },
-  { path: '/correo-forense',   label: 'Correo Corporativo',    icon: Mail,             group: 'Control' },
-  
-  // Módulos Forenses
-  { path: '/forense/adb-backup', label: 'Colectas ADB',        icon: Terminal,         group: 'Módulos Forenses' },
-  { path: '/forense/apk-downgrade', label: 'APK Downgrade',    icon: Smartphone,       group: 'Módulos Forenses' },
-  { path: '/forense/whatsapp-parser', label: 'WhatsApp Parser', icon: Database,        group: 'Módulos Forenses' },
-  { path: '/forense/integridad', label: 'Integridad (.avilla)', icon: ShieldCheck,     group: 'Módulos Forenses' },
-
-  { path: '/manual-avilla',    label: 'Manual Avilla',         icon: Smartphone,       group: 'Sistema' },
-  { path: '/sistemas/correo-corporativo', label: 'Manual Correo', icon: BookOpen,      group: 'Sistema' },
-  { path: '/auditoria',        label: 'Auditoría',             icon: Activity,         group: 'Sistema' },
-  { path: '/personal',         label: 'Personal',              icon: Users,            group: 'Sistema' },
-  { path: '/manual-serverless', label: 'Manual Serverless',    icon: Database,         group: 'Sistema' },
-  { path: '/planillas/acta-obtencion', label: 'Acta de Obtención', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/planillas/prcc-derivacion', label: 'Planilla PRCC', icon: ClipboardList, group: 'Plantillas Oficiales' },
-  { path: '/normativas',       label: 'Normativas',            icon: BookOpen,         group: 'Plantillas Oficiales' },
+  { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Principal' },
+  { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
+  { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
+  { path: '/tareas',                             label: 'Tablero de Tareas',        icon: ClipboardList,   group: 'Control' },
+  { path: '/correo-forense',                     label: 'Correo Corporativo',       icon: Mail,            group: 'Control' },
+  { path: '/forense/adb-backup',                 label: 'Colectas ADB',             icon: Terminal,        group: 'Módulos Forenses' },
+  { path: '/forense/apk-downgrade',              label: 'APK Downgrade',            icon: Smartphone,      group: 'Módulos Forenses' },
+  { path: '/forense/whatsapp-parser',            label: 'WhatsApp Parser',          icon: Database,        group: 'Módulos Forenses' },
+  { path: '/forense/integridad',                 label: 'Integridad (.avilla)',      icon: ShieldCheck,     group: 'Módulos Forenses' },
+  { path: '/manual-avilla',                      label: 'Manual Avilla',            icon: Smartphone,      group: 'Sistema' },
+  { path: '/sistemas/correo-corporativo',        label: 'Manual Correo',            icon: BookOpen,        group: 'Sistema' },
+  { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
+  { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
+  { path: '/manual-serverless',                  label: 'Manual Serverless',        icon: Database,        group: 'Sistema' },
+  { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
+  { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
+  { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Plantillas Oficiales' },
 ];
 
 const groups = ['Principal', 'Control', 'Módulos Forenses', 'Sistema', 'Plantillas Oficiales'];
+
+/** Determina si un item está activo dado el pathname actual */
+function useIsActive(path: string) {
+  const location = useLocation();
+  const [itemPathname] = path.split('?');
+  if (location.pathname === itemPathname) return true;
+  return itemPathname !== '/' && location.pathname.startsWith(itemPathname + '/');
+}
+
+/** Item individual del sidebar (reutilizable en desktop y drawer) */
+function SidebarLink({
+  item,
+  onClick,
+}: {
+  item: typeof menuItems[number];
+  onClick?: () => void;
+}) {
+  const Icon = item.icon;
+  const active = useIsActive(item.path);
+  return (
+    <Link
+      to={item.path}
+      onClick={onClick}
+      className={`apple-sidebar-item min-h-[40px] ${active ? 'apple-sidebar-item-active' : ''}`}
+    >
+      <Icon size={17} strokeWidth={active ? 2.5 : 1.8} className={active ? 'text-[var(--apple-accent)]' : 'text-[#86868B]'} />
+      <span className="text-[14px]">{item.label}</span>
+    </Link>
+  );
+}
 
 export default function CMSLayout() {
   const location = useLocation();
@@ -41,16 +68,12 @@ export default function CMSLayout() {
   const { user, logout } = useAuthStore();
   const stats = getEstadisticas();
   const [dbOnline, setDbOnline] = useState<boolean | null>(null);
-  
-  // Tema Oscuro / Claro
-  const [isDark, setIsDark] = useState(() => {
-    return document.documentElement.classList.contains('dark') || 
-           localStorage.getItem('theme') === 'dark';
-  });
 
-  // Estado del menú móvil
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  /* ── Tema ── */
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains('dark') ||
+    localStorage.getItem('theme') === 'dark'
+  );
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
@@ -61,25 +84,44 @@ export default function CMSLayout() {
     }
   }, [isDark]);
 
-  const toggleTheme = () => {
-    setIsDark(prev => !prev);
-  };
+  /* ── Menú móvil ── */
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
+  // Bloquear scroll del body cuando el drawer está abierto
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  // Cerrar drawer al navegar
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+  // Cerrar con tecla Escape
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, []);
+
+  /* ── DB ── */
   const verificarDB = useCallback(async () => {
     const ok = await checkConnection();
     setDbOnline(ok);
   }, []);
-
   useEffect(() => {
     verificarDB();
-    const interval = setInterval(verificarDB, 30000);
-    return () => clearInterval(interval);
+    const id = setInterval(verificarDB, 30000);
+    return () => clearInterval(id);
   }, [verificarDB]);
 
-  useEffect(() => {
-    fetchCasos();
-  }, [fetchCasos]);
+  useEffect(() => { fetchCasos(); }, [fetchCasos]);
 
+  /* ── Utilidades ── */
   const limpiarDatos = () => {
     if (!window.confirm('¿Limpiar datos temporales (cookies, localStorage, sesión)? Se cerrará su sesión.')) return;
     localStorage.clear();
@@ -90,234 +132,229 @@ export default function CMSLayout() {
   };
 
   const getBreadcrumb = () => {
-    const activeItem = menuItems.find(item => {
-      const [itemPathname, itemSearch] = item.path.split('?');
-      if (itemSearch) {
-        return location.pathname === itemPathname && location.search.includes(itemSearch);
-      } else {
-        if (location.pathname === itemPathname) {
-          const hasSpecificMatch = menuItems.some(m => {
-            const [mPath, mSearch] = m.path.split('?');
-            return m.path !== item.path && mPath === itemPathname && mSearch && location.search.includes(mSearch);
-          });
-          return !hasSpecificMatch;
-        }
-        return false;
-      }
+    const match = menuItems.find(m => {
+      const [p] = m.path.split('?');
+      return p === location.pathname || (p !== '/' && location.pathname.startsWith(p + '/'));
     });
-    if (activeItem) return activeItem.label;
-
-    const fallbackItem = menuItems.find(m => {
-      const [mPath] = m.path.split('?');
-      return mPath === location.pathname || (mPath !== '/' && location.pathname.startsWith(mPath + '/'));
-    });
-    return fallbackItem ? fallbackItem.label : 'Panel Principal';
+    return match?.label ?? 'Panel Principal';
   };
 
-  return (
-    <div className="flex h-screen bg-[#F5F5F7] font-sans text-[#1D1D1F] overflow-hidden selection:bg-[#0071E3]/20">
-
-      {/* ── macOS Sidebar ─────────────────────────────────────────────── */}
-      <aside className="print:hidden w-[272px] apple-sidebar flex flex-col shrink-0 hidden sm:flex">
-
-        {/* Branding */}
-        <div className="px-5 pt-5 pb-3">
-          <div className="flex items-center gap-3">
-            <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-8 h-8" />
-            <div>
-              <h1 className="text-[14px] font-bold tracking-[-0.01em] text-[#1D1D1F] leading-tight">SHA256.US</h1>
-              <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
-            </div>
+  /* ── Contenido del sidebar (compartido entre desktop y drawer) ── */
+  const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
+    <>
+      {/* Branding */}
+      <div className="px-5 pt-5 pb-3 shrink-0">
+        <div className="flex items-center gap-3">
+          <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-9 h-9" />
+          <div>
+            <p className="text-[15px] font-bold tracking-[-0.01em] text-[var(--apple-text)] leading-tight">SHA256.US</p>
+            <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
           </div>
         </div>
+      </div>
 
-        <div className="apple-separator mx-4" />
+      <div className="apple-separator mx-4 shrink-0" />
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-5">
-          {groups.map(group => {
-            const items = menuItems.filter(m => m.group === group);
-            if (items.length === 0) return null;
-            return (
-              <div key={group}>
-                <p className="apple-section-header">{group}</p>
-                <div className="space-y-0.5 mt-1">
-                  {items.map(item => {
-                    const Icon = item.icon;
-                    const isActive = (() => {
-                      const [itemPathname, itemSearch] = item.path.split('?');
-                      if (itemSearch) {
-                        return location.pathname === itemPathname && location.search.includes(itemSearch);
-                      } else {
-                        if (location.pathname === itemPathname) {
-                          const hasSpecificMatch = menuItems.some(m => {
-                            const [mPath, mSearch] = m.path.split('?');
-                            return m.path !== item.path && mPath === itemPathname && mSearch && location.search.includes(mSearch);
-                          });
-                          return !hasSpecificMatch;
-                        }
-                        return itemPathname !== '/' && location.pathname.startsWith(itemPathname);
-                      }
-                    })();
-                    return (
-                      <Link
-                        key={item.path}
-                        to={item.path}
-                        className={`apple-sidebar-item ${isActive ? 'apple-sidebar-item-active' : ''}`}
-                      >
-                        <Icon size={16} strokeWidth={isActive ? 2.5 : 1.5} className={isActive ? 'text-[#0071E3]' : 'text-[#86868B]'} />
-                        <span>{item.label}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
+      {/* Navegación */}
+      <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-4">
+        {groups.map(group => {
+          const items = menuItems.filter(m => m.group === group);
+          if (!items.length) return null;
+          return (
+            <div key={group}>
+              <p className="apple-section-header">{group}</p>
+              <div className="space-y-0.5 mt-1">
+                {items.map(item => (
+                  <SidebarLink key={item.path} item={item} onClick={onNav} />
+                ))}
               </div>
-            );
-          })}
-        </nav>
+            </div>
+          );
+        })}
+      </nav>
 
-        {/* Stats & User Footer */}
-        <div className="px-4 py-3 border-t border-[rgba(0,0,0,0.06)] space-y-3">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
-              <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
-              <p className="text-[17px] font-bold text-[#0071E3] tracking-[-0.02em]">{stats.casosActivos}</p>
-            </div>
-            <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
-              <p className="text-[10px] font-semibold text-[#86868B]">Cumpl.</p>
-              <p className="text-[17px] font-bold text-[#248A3D] tracking-[-0.02em]">{stats.cumplimientoGeneral}%</p>
-            </div>
+      {/* Footer: Stats + Usuario */}
+      <div className="px-4 py-3 border-t border-[var(--apple-separator)] space-y-3 shrink-0">
+        <div className="grid grid-cols-2 gap-2">
+          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)] dark:bg-[rgba(255,255,255,0.04)]">
+            <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
+            <p className="text-[17px] font-bold text-[var(--apple-accent)] tracking-[-0.02em]">{stats.casosActivos}</p>
           </div>
-
-          <div className="flex items-center gap-2.5 px-2 py-1.5 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] transition-colors group cursor-default">
-            <img 
-              src={user?.profileImage || "https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png"} 
-              alt="" 
-              className="w-7 h-7 rounded-full object-cover bg-[rgba(0,0,0,0.03)]"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-semibold text-[#1D1D1F] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
-              <p className="text-[10px] text-[#86868B]">ID: PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
-            </div>
-            <button onClick={logout} title="Cerrar sesión"
-              className="p-1 rounded-[6px] hover:bg-red-500/10 text-[#86868B] hover:text-[#FF3B30] transition-colors opacity-0 group-hover:opacity-100">
-              <LogOut size={13} />
-            </button>
+          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)] dark:bg-[rgba(255,255,255,0.04)]">
+            <p className="text-[10px] font-semibold text-[#86868B]">Cumpl.</p>
+            <p className="text-[17px] font-bold text-[#248A3D] tracking-[-0.02em]">{stats.cumplimientoGeneral}%</p>
           </div>
         </div>
+
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors group cursor-default">
+          <img
+            src={user?.profileImage || 'https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png'}
+            alt=""
+            className="w-8 h-8 rounded-full object-cover bg-[rgba(0,0,0,0.03)]"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-semibold text-[var(--apple-text)] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
+            <p className="text-[10px] text-[#86868B]">PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
+          </div>
+          <button
+            onClick={logout}
+            title="Cerrar sesión"
+            className="p-2 rounded-[6px] hover:bg-red-500/10 text-[#86868B] hover:text-[#FF3B30] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+          >
+            <LogOut size={14} />
+          </button>
+        </div>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="flex h-screen bg-[var(--apple-bg)] font-sans text-[var(--apple-text)] overflow-hidden">
+
+      {/* ══════════════════════════════════════════════════════════
+          DESKTOP SIDEBAR — visible en sm y superior
+      ══════════════════════════════════════════════════════════ */}
+      <aside className="print:hidden w-[272px] apple-sidebar flex-col shrink-0 hidden sm:flex">
+        <SidebarContent />
       </aside>
 
-      {/* Mobile drawer */}
-      {isMobileMenuOpen && (
-        <>
-          <div className="fixed inset-0 bg-black/30 z-40" onClick={() => setIsMobileMenuOpen(false)}></div>
-          <aside className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-[#1C1C1E] transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
-            <div className="px-5 pt-5 pb-3">
-              <div className="flex items-center gap-3">
-                <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-8 h-8" />
-                <div>
-                  <h1 className="text-[14px] font-bold tracking-[-0.01em] text-[#1D1D1F] leading-tight">SHA256.US</h1>
-                  <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
-                </div>
-              </div>
-              <div className="apple-separator my-4" />
-              <nav className="py-3 space-y-5">
-                {groups.map(group => {
-                  const items = menuItems.filter(m => m.group === group);
-                  if (items.length === 0) return null;
-                  return (
-                    <div key={group}>
-                      <p className="apple-section-header">{group}</p>
-                      <div className="space-y-0.5 mt-1">
-                        {items.map(item => {
-                          const Icon = item.icon;
-                          return (
-                            <Link
-                              key={item.path}
-                              to={item.path}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className="apple-sidebar-item"
-                            >
-                              <Icon size={16} strokeWidth={1.5} className="text-[#86868B]" />
-                              <span>{item.label}</span>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
+      {/* ══════════════════════════════════════════════════════════
+          MOBILE DRAWER OVERLAY
+      ══════════════════════════════════════════════════════════ */}
+      {/* Backdrop */}
+      <div
+        className={`
+          fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px]
+          transition-opacity duration-300 sm:hidden
+          ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+        `}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* Drawer panel */}
+      <div
+        ref={drawerRef}
+        className={`
+          fixed inset-y-0 left-0 z-50 w-[280px] max-w-[85vw]
+          flex flex-col
+          bg-[var(--apple-sidebar-bg)] backdrop-blur-[40px]
+          border-r border-[var(--apple-border)]
+          shadow-[4px_0_24px_rgba(0,0,0,0.12)]
+          transform transition-transform duration-300 ease-out
+          sm:hidden
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+        aria-label="Menú de navegación"
+        role="dialog"
+        aria-modal="true"
+      >
+        {/* Botón cerrar en el drawer */}
+        <button
+          onClick={() => setMobileOpen(false)}
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[rgba(0,0,0,0.06)] dark:bg-[rgba(255,255,255,0.08)] text-[#86868B] hover:text-[var(--apple-text)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+          aria-label="Cerrar menú"
+        >
+          <X size={16} />
+        </button>
+
+        <SidebarContent onNav={() => setMobileOpen(false)} />
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════
+          ÁREA PRINCIPAL
+      ══════════════════════════════════════════════════════════ */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--apple-bg)] print:bg-white print:overflow-visible">
+
+        {/* ── Top Header ────────────────────────────────────────── */}
+        <header className="print:hidden shrink-0 border-b border-[var(--apple-border)] bg-[rgba(245,245,247,0.75)] dark:bg-[rgba(28,28,30,0.75)] backdrop-blur-[30px] z-10">
+          <div className="flex items-center justify-between px-4 sm:px-6 h-[54px]">
+
+            {/* Izquierda: hamburguesa (móvil) + breadcrumb */}
+            <div className="flex items-center gap-2 min-w-0">
+              {/* Botón hamburguesa — solo en móvil */}
+              <button
+                id="hamburger-btn"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Abrir menú de navegación"
+                aria-expanded={mobileOpen}
+                className="sm:hidden flex items-center justify-center w-10 h-10 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
+              >
+                <Menu size={22} strokeWidth={2} />
+              </button>
+
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-1.5 text-[13px] font-medium min-w-0" aria-label="Ubicación actual">
+                <Link to="/" className="apple-breadcrumb hidden xs:block shrink-0">SHA256.US</Link>
+                {location.pathname !== '/' && (
+                  <>
+                    <ChevronRight size={11} className="text-[#86868B] opacity-50 shrink-0 hidden xs:block" />
+                    <span className="apple-breadcrumb-active truncate text-[13px]">{getBreadcrumb()}</span>
+                  </>
+                )}
+                {/* En móvil muy pequeño: solo el nombre de la sección */}
+                <span className="apple-breadcrumb-active truncate text-[13px] xs:hidden">{getBreadcrumb()}</span>
               </nav>
             </div>
-          </aside>
-        </>
-      )}
 
-      {/* ── Main Content ──────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F5F5F7] print:bg-white print:overflow-visible">
+            {/* Derecha: controles */}
+            <div className="flex items-center gap-1 shrink-0">
+              {/* Estado DB — ocultar texto en móvil */}
+              <button
+                onClick={verificarDB}
+                title={dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon' : 'Sin conexión'}
+                className="flex items-center gap-1.5 text-[12px] font-medium px-2 py-2 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-all"
+              >
+                <div className={`w-2 h-2 rounded-full shrink-0 ${dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
+                <span className={`hidden md:inline ${dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
+                  {dbOnline ? 'En línea' : dbOnline === false ? 'Desconectado' : '...'}
+                </span>
+              </button>
 
-        {/* macOS Unified Toolbar */}
-        <header className="print:hidden h-[50px] border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between px-6 bg-[rgba(245,245,247,0.7)] backdrop-blur-[30px] z-10 shrink-0">
-          <div className="flex items-center gap-3">
-            <nav className="flex items-center gap-2 text-[13px] text-[#86868B] font-medium">
-              <Link to="/" className="apple-breadcrumb">SHA256.US</Link>
-              {location.pathname !== '/' && (
-                <>
-                  <ChevronRight size={11} className="text-[#86868B] opacity-50" />
-                  <span className="apple-breadcrumb-active">{getBreadcrumb()}</span>
-                </>
-              )}
-            </nav>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Hamburger for mobile */}
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              title="Abrir menú"
-              className="sm:hidden p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#0071E3] transition-all"
-            >
-              <Menu size={20} />
-            </button>
-            <button
-              onClick={toggleTheme}
-              title={isDark ? "Cambiar a Modo Claro" : "Cambiar a Modo Oscuro"}
-              className="p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#0071E3] transition-all"
-            >
-              {isDark ? <Sun size={13} /> : <Moon size={13} />}
-            </button>
-            <button
-              onClick={limpiarDatos}
-              title="Limpiar datos temporales y cookies"
-              className="p-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] text-[#86868B] hover:text-[#FF3B30] transition-all"
-            >
-              <Trash2 size={13} />
-            </button>
-            <button
-              onClick={verificarDB}
-              title={dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon Serverless' : 'Sin conexión a Neon'}
-              className="flex items-center gap-2 text-[12px] font-medium px-2.5 py-1.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.04)] transition-all"
-            >
-              <div className={`w-2 h-2 rounded-full ${dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
-              <span className={dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}>
-                {dbOnline === null ? 'Verificando...' : dbOnline ? 'Estado del Sistema' : 'Estado del Sistema'}
-              </span>
-            </button>
-            <div className="apple-badge-green">
-              <Activity size={11} />
-              <span>PRODUCCIÓN</span>
-            </div>
-            {/* Window Controls */}
-            <div className="flex items-center gap-1.5 ml-2 select-none print:hidden">
-              <span className="apple-window-close" />
-              <span className="apple-window-minimize" />
-              <span className="apple-window-zoom" />
+              {/* Badge Producción — ocultar en xs */}
+              <div className="apple-badge-green hidden sm:inline-flex">
+                <Activity size={11} />
+                <span>PROD</span>
+              </div>
+
+              {/* Tema */}
+              <button
+                onClick={() => setIsDark(p => !p)}
+                title={isDark ? 'Modo claro' : 'Modo oscuro'}
+                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
+              >
+                {isDark ? <Sun size={15} /> : <Moon size={15} />}
+              </button>
+
+              {/* Limpiar datos */}
+              <button
+                onClick={limpiarDatos}
+                title="Limpiar datos temporales"
+                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-red-500/10 hover:text-[#FF3B30] transition-all active:scale-95"
+              >
+                <Trash2 size={15} />
+              </button>
+
+              {/* Window controls — solo desktop */}
+              <div className="hidden sm:flex items-center gap-1.5 ml-1 select-none">
+                <span className="apple-window-close" />
+                <span className="apple-window-minimize" />
+                <span className="apple-window-zoom" />
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Content Area */}
-        <main className="flex-1 overflow-y-auto print:overflow-visible print:m-0 print:p-0">
-          <div className="max-w-6xl mx-auto p-5 sm:p-8 md:p-12 apple-fade-in print:max-w-none print:m-0 print:p-0">
+        {/* ── Contenido principal ─────────────────────────────── */}
+        <main className="flex-1 overflow-y-auto print:overflow-visible print:m-0 print:p-0 -webkit-overflow-scrolling-touch">
+          <div className="
+            w-full max-w-6xl mx-auto
+            px-4 py-5
+            sm:px-6 sm:py-8
+            md:px-10 md:py-12
+            apple-fade-in
+            print:max-w-none print:m-0 print:p-0
+          ">
             <Outlet />
           </div>
         </main>
