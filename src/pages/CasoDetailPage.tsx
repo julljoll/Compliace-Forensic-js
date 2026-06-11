@@ -332,7 +332,7 @@ export default function CasoDetailPage() {
                 className="apple-btn bg-[#0071E3] text-white font-extrabold hover:bg-[#0077ED] shadow-[0_0_15px_rgba(0,113,227,0.3)] px-6 py-3 text-xs uppercase tracking-widest flex items-center justify-center gap-2.5"
               >
                 <ShieldCheck size={18} strokeWidth={2.5} />
-                Fases, Tareas &amp; Compliance
+                Continuar el proceso
               </button>
               <div className="flex items-center gap-2 justify-end text-xs">
                 <span className="text-[#86868B]">Cumplimiento:</span>

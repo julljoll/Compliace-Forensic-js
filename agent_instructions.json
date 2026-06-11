@@ -15,18 +15,11 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-11 17:30:56",
-      "last_commit": "fdf3f68 - OOOOOO (2026-06-11)",
+      "timestamp": "2026-06-11 17:40:31",
+      "last_commit": "7dc035c - pppppp (2026-06-11)",
       "modified_files": [
-        "A  Rubbish/tmp/lock",
         "M  agent_instructions.json",
-        "M  src/App.tsx",
-        "M  src/components/templates/CMSLayout.tsx",
-        "D  src/pages/Forense/AdbBackupPage.tsx",
-        "D  src/pages/Forense/ApkDowngradePage.tsx",
-        "D  src/pages/Forense/IntegrityPage.tsx",
-        "A  src/pages/Forense/TutorialesForensesPage.tsx",
-        "D  src/pages/Forense/WhatsAppParserPage.tsx"
+        "M  src/pages/CasoDetailPage.tsx"
       ]
     }
   },
