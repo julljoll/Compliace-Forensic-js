@@ -15,14 +15,17 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 16:25:59",
-      "last_commit": "dead45a - df (2026-06-12)",
+      "timestamp": "2026-06-12 16:36:29",
+      "last_commit": "da5607c - ultima (2026-06-12)",
       "modified_files": [
-        "M  package-lock.json",
-        "M  package.json",
+        "M  .gitignore",
+        "M  agent_instructions.json",
         "M  src/index.css",
-        "M  src/pages/Forense/TutorialesForensesPage.tsx",
-        "M  tsconfig.json"
+        "D  src/pages/CompliancePage.tsx",
+        "D  src/pages/CorreoCorporativoManual.tsx",
+        "D  src/pages/CorreoForensePage.tsx",
+        "D  src/pages/ManualAvillaPage.tsx",
+        "D  src/pages/ManualServerlessPage.tsx"
       ]
     }
   },
