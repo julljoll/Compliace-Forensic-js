@@ -316,8 +316,8 @@ SHA-256, SHA-1, SHA-384, SHA-512, MD5
 
 ### Arquitectura Actual
 SHA256.US opera en **dos capas de enrutamiento**:
-- **CMS Compliance** (`/`): Dashboard, Casos, Compliance, Normativas, Auditoría, Manual Avilla
-- **Módulos Forenses** (`/forense/...`): Consignación, PRCC, Adquisición, Análisis, Informe, Disposición
+- **CMS Compliance** (`/`): Dashboard, Casos, Compliance, Normativas, Auditoría
+- **Módulos Forenses** (`/forense/...`): Consignación, PRCC, Adquisición, Análisis, Informe, Disposición, Manual Avilla, Manual Serverless
 
 ### Principio de Diseño
 > Avilla Forensics **NO reemplaza** las herramientas existentes, las **complementa**.  
@@ -331,7 +331,7 @@ SHA256.US opera en **dos capas de enrutamiento**:
 | `/compliance` | Panel de cumplimiento normativo | ✅ Implementado |
 | `/normativas` | Marco normativo (9 instrumentos) | ✅ Implementado |
 | `/auditoria` | Log de trazabilidad | ✅ Implementado |
-| `/manual-avilla` | Manual de uso Avilla Forensics | ✅ Implementado |
+| `/forense/manual-avilla` | Manual de uso Avilla Forensics | ✅ Implementado |
 | `/tareas` | Tareas & Fases | 🔄 Stub |
 | `/personal` | Registro de personal | 🔄 Stub |
 
@@ -347,10 +347,13 @@ src/
 ├── pages/
 │   ├── DashboardPage.tsx          # KPIs y panel de mando
 │   ├── CasosPage.tsx             # CRUD de casos
-│   ├── CompliancePage.tsx        # Evaluación de cumplimiento
+│   ├── CompliancePage.tsx        # Panel de cumplimiento normativo
 │   ├── NormativasPage.tsx        # Normativas agrupadas por tipo
 │   ├── AuditoriaPage.tsx         # Log de auditoría
-│   └── ManualAvillaPage.tsx      # Guía operativa Avilla
+│   └── Forense/
+│       ├── TutorialesForensesPage.tsx
+│       ├── ManualAvillaPage.tsx      # Guía operativa Avilla
+│       └── ManualServerlessPage.tsx  # Guía de Neon/Vercel
 └── store/
     ├── cmsStore.ts               # Estado CMS (persist)
     └── forenseStore.ts           # Estado forense original

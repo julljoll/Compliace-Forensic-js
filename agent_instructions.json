@@ -15,13 +15,18 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 12:42:26",
-      "last_commit": "37833e5 - jull (2026-06-12)",
+      "timestamp": "2026-06-12 13:44:59",
+      "last_commit": "97c8f5d - y (2026-06-12)",
       "modified_files": [
-        "R  \"RAG/Manual Unico de Cadena de Custodia de Evidencias Fisicas.yaml\" -> \"RAG/Procedimiento para extraccion y analisis de dispositivos Android (WhatsApp).yaml\"",
-        "D  RAG/manual-procedimiento.yaml",
-        "D  RAG/manual_unico_unificado.yaml",
-        "D  RAG/proceso-desarrollo-forense.yaml"
+        "M  RAG/skill_avilla.md",
+        "M  README.md",
+        "M  map_arquitectura.md",
+        "M  src/App.tsx",
+        "M  src/components/templates/CMSLayout.tsx",
+        "A  src/pages/Forense/ManualAvillaPage.tsx",
+        "A  src/pages/Forense/ManualServerlessPage.tsx",
+        "M  src/pages/ManualAvillaPage.tsx",
+        "M  src/pages/ManualServerlessPage.tsx"
       ]
     }
   },

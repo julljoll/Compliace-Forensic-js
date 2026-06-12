@@ -14,11 +14,11 @@ const menuItems = [
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
   { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
   { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Módulos Forenses' },
+  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'Módulos Forenses' },
+  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'Módulos Forenses' },
   { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Plantillas Oficiales' },
-  { path: '/manual-avilla',                      label: 'Manual Avilla',            icon: Smartphone,      group: 'Sistema' },
-  { path: '/manual-serverless',                  label: 'Manual Serverless',        icon: Database,        group: 'Sistema' },
   { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
   { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ];

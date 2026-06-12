@@ -94,7 +94,8 @@ USUARIO → Login → Dashboard → Casos → Seguimiento Compliance
 ├── /tareas                → TareasPage
 ├── /personal              → PersonalPage
 ├── /correo-forense        → CorreoForensePage
-├── /manual-avilla         → ManualAvillaPage
+├── /forense/manual-avilla → ManualAvillaPage
+├── /forense/manual-serverless → ManualServerlessPage
 └── /planillas/*           → Planillas imprimibles (Acta, PRCC, Seguimiento)
 ```
 

@@ -50,7 +50,7 @@ SHA256.US/
 │   │   ├── NormativasPage.tsx / AuditoriaPage.tsx
 │   │   ├── PersonalPage.tsx / TareasPage.tsx
 │   │   ├── CorreoForensePage.tsx
-│   │   ├── ManualAvillaPage.tsx
+│   │   ├── Forense/          # TutorialesForensesPage, ManualAvillaPage, ManualServerlessPage
 │   │   └── Planillas/    # ActaObtencionPage, PlanillaPRCCPage, SeguimientoPage
 │   ├── store/            # Zustand stores
 │   │   ├── cmsStore.ts   # Estado principal del CMS
@@ -86,7 +86,8 @@ SHA256.US/
 | `/correo-forense` | **Correo Corporativo** | Proc. técnico-jurídico para correos electrónicos |
 | `/planillas/acta-obtencion` | **Acta de Obtención** | Planilla imprimible para consignación |
 | `/planillas/prcc-derivacion` | **Planilla PRCC** | Cadena de custodia imprimible |
-| `/manual-avilla` | **Manual Avilla** | Referencia operativa forense |
+| `/forense/manual-avilla` | **Manual Avilla** | Referencia operativa forense |
+| `/forense/manual-serverless` | **Manual Serverless** | Guía de configuración Neon y Vercel |
 
 ---
 
