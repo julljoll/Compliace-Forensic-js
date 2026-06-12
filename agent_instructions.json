@@ -15,8 +15,8 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 10:21:41",
-      "last_commit": "2a60e2d - jjjjjjjjjjjjj (2026-06-11)",
+      "timestamp": "2026-06-12 11:00:03",
+      "last_commit": "f997a30 - ffg (2026-06-12)",
       "modified_files": [
         "M  src/pages/Forense/TutorialesForensesPage.tsx"
       ]
