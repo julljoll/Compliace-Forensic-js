@@ -15,10 +15,10 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 14:55:33",
-      "last_commit": "36435e9 - llkkk (2026-06-12)",
+      "timestamp": "2026-06-12 15:01:32",
+      "last_commit": "5f5c943 - oooooooo (2026-06-12)",
       "modified_files": [
-        "A  Rubbish/tmp/.getxfer.14948.5.mega"
+        "M  src/pages/Forense/TutorialesForensesPage.tsx"
       ]
     }
   },

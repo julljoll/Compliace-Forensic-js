@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import { useAuthStore } from '../../store/authStore';
@@ -9,7 +9,7 @@ import {
   Fingerprint, Lock, Search, MessageSquare,
   Terminal as TerminalIcon, Play, Save, Smartphone,
   Database, Mic, Upload, RefreshCw, Copy, Check, BookOpen, Users,
-  Award, Trophy, Gavel, Scale, ChevronDown, ChevronUp,
+  Award, Trophy, Scale, ChevronDown, ChevronUp,
   Key, Hash, Package, Camera
 } from '../../components/atoms/AppleIcon';
 
@@ -3631,7 +3631,6 @@ export default function TutorialesForensesPage() {
                           const key = `${mod.id}_${qIdx}`;
                           const selectedOption = quizAnswers[key];
                           const submitted = quizSubmitted[mod.id];
-                          const isCorrect = selectedOption === q.correctAnswer;
 
                           return (
                             <div key={qIdx} className="space-y-3 p-4 rounded-[12px] bg-[#F5F5F7]/60 dark:bg-[#2C2C2E]/30 border border-black/[0.03] dark:border-white/[0.03]">
