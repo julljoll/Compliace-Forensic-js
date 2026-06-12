@@ -10,7 +10,7 @@ import {
   Terminal as TerminalIcon, Play, Save, Smartphone,
   Database, Mic, Upload, RefreshCw, Copy, Check, BookOpen, Users,
   Award, Trophy, Gavel, Scale, ChevronDown, ChevronUp,
-  Key, Hash
+  Key, Hash, Package, Camera
 } from '../../components/atoms/AppleIcon';
 
 // ── TYPES & INTERFACES ────────────────────────────────────────────────────────
