@@ -452,6 +452,8 @@ const QUIZZES: Record<string, QuizQuestion[]> = {
     },
     {
       question: "¿Qué artículo de la Ley sobre Mensajes de Datos y Firmas Electrónicas de Venezuela respalda la validez probatoria de la evidencia firmada digitalmente?",
+      options: ["Artículo 1", "Artículo 4", "Artículo 12", "Artículo 25"],
+      correctAnswer: 1,
       explanation: "El Artículo 4 establece que los mensajes de datos firmados con tecnologías criptográficas tienen la misma eficacia y valor probatorio que los documentos físicos firmados por escrito."
     }
   ],
@@ -2526,21 +2528,21 @@ export default function TutorialesForensesPage() {
       </div>
 
       {/* ─── DASHBOARD ACADÉMICO DE GAMIFICACIÓN (ESTILO APPLE HIG PREMIUM) ─── */}
-      <div className="apple-card p-6 bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] text-white border-none relative overflow-hidden shadow-lg print:hidden">
+      <div className="apple-card p-6 bg-white dark:bg-gradient-to-br dark:from-[#1C1C1E] dark:to-[#2C2C2E] text-[#1D1D1F] dark:text-white border border-[#E5E5EA] dark:border-none relative overflow-hidden shadow-lg print:hidden">
         {/* Luces de fondo decorativas */}
         <div className="absolute right-0 top-0 w-[300px] h-[300px] bg-[var(--apple-accent)]/10 rounded-full blur-3xl -z-10" />
         <div className="absolute left-1/3 bottom-0 w-[200px] h-[200px] bg-green-500/5 rounded-full blur-3xl -z-10" />
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
           {/* Perfil & Nivel */}
-          <div className="lg:col-span-1 space-y-2 border-r border-white/10 pr-4">
+          <div className="lg:col-span-1 space-y-2 border-r border-black/5 dark:border-white/10 pr-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[var(--apple-accent)]/20 border border-[var(--apple-accent)]/40 flex items-center justify-center text-white">
+              <div className="w-12 h-12 rounded-full bg-[var(--apple-accent)]/15 dark:bg-[var(--apple-accent)]/20 border border-[var(--apple-accent)]/30 dark:border-[var(--apple-accent)]/40 flex items-center justify-center">
                 <Trophy size={24} className="text-[var(--apple-accent)] animate-pulse" />
               </div>
               <div>
-                <p className="text-xs text-[#86868B] font-bold uppercase tracking-wider">Perfil del Perito</p>
-                <h3 className="text-sm font-bold text-white truncate">{user?.nombre || 'Perito Informático'}</h3>
+                <p className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold uppercase tracking-wider">Perfil del Perito</p>
+                <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-white truncate">{user?.nombre || 'Perito Informático'}</h3>
               </div>
             </div>
             <div className="mt-3">
@@ -2554,28 +2556,28 @@ export default function TutorialesForensesPage() {
           <div className="lg:col-span-2 space-y-4 px-0 lg:px-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-xs text-[#86868B] font-bold uppercase tracking-wider mb-1">Módulos Certificados</p>
+                <p className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold uppercase tracking-wider mb-1">Módulos Certificados</p>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-black text-white">{totalCertified}</span>
-                  <span className="text-xs text-[#86868B] font-bold">/ {tutorialList.length} Aprobados</span>
+                  <span className="text-2xl font-black text-[#1D1D1F] dark:text-white">{totalCertified}</span>
+                  <span className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold">/ {tutorialList.length} Aprobados</span>
                 </div>
               </div>
               <div>
-                <p className="text-xs text-[#86868B] font-bold uppercase tracking-wider mb-1">Puntos de Habilidad (XP)</p>
+                <p className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold uppercase tracking-wider mb-1">Puntos de Habilidad (XP)</p>
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-2xl font-black text-[var(--apple-accent)]">{academyProgress.xp}</span>
-                  <span className="text-xs text-[#86868B] font-bold">XP Acumulados</span>
+                  <span className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold">XP Acumulados</span>
                 </div>
               </div>
             </div>
             
             {/* Barra de Progreso a Siguiente Nivel */}
             <div className="space-y-1">
-              <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-[#86868B]">
+              <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-[#86868B] dark:text-[#AEAEB2]">
                 <span>Progreso de Nivel</span>
                 <span>{academyProgress.xp} / 1000 XP</span>
               </div>
-              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-neutral-100 dark:bg-white/10 rounded-full overflow-hidden border border-black/[0.04] dark:border-none">
                 <div 
                   className="h-full bg-gradient-to-r from-[var(--apple-accent)] to-blue-400 transition-all duration-500" 
                   style={{ width: `${Math.min((academyProgress.xp / 1000) * 100, 100)}%` }}
@@ -2585,8 +2587,8 @@ export default function TutorialesForensesPage() {
           </div>
 
           {/* Insignias Desbloqueadas */}
-          <div className="lg:col-span-1 border-l border-white/10 pl-0 lg:pl-6 space-y-2">
-            <p className="text-xs text-[#86868B] font-bold uppercase tracking-wider">Insignias de Especialidad</p>
+          <div className="lg:col-span-1 lg:border-l border-t lg:border-t-0 border-black/5 dark:border-white/10 pt-4 lg:pt-0 pl-0 lg:pl-6 space-y-2">
+            <p className="text-xs text-[#86868B] dark:text-[#AEAEB2] font-bold uppercase tracking-wider">Insignias de Especialidad</p>
             <div className="flex flex-wrap gap-2.5">
               {tutorialList.map(tut => {
                 const isUnlocked = academyProgress.unlockedBadges.includes(`badge_${tut.id}`);
@@ -2597,8 +2599,8 @@ export default function TutorialesForensesPage() {
                     title={`${tut.badge}: ${isUnlocked ? 'Desbloqueado' : 'Bloqueado (Completa el examen para certificar)'}`}
                     className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all ${
                       isUnlocked 
-                        ? 'bg-[var(--apple-accent)]/20 border-[var(--apple-accent)] text-white scale-105 shadow-md shadow-[var(--apple-accent)]/20' 
-                        : 'bg-neutral-800/40 border-neutral-700 text-neutral-600 opacity-40'
+                        ? 'bg-[var(--apple-accent)]/20 border-[var(--apple-accent)] text-[#0071E3] dark:text-zinc-50 scale-105 shadow-md shadow-[var(--apple-accent)]/20' 
+                        : 'bg-neutral-100 dark:bg-neutral-800/40 border-neutral-200 dark:border-neutral-700 text-neutral-400 dark:text-neutral-600 opacity-40'
                     }`}
                   >
                     <Icon size={16} />
@@ -2712,36 +2714,36 @@ export default function TutorialesForensesPage() {
                   }}
                   className={`w-full p-3.5 rounded-[12px] text-left transition-all border flex gap-3 items-start relative overflow-hidden ${
                     isActive
-                      ? 'bg-[var(--apple-accent)] border-[var(--apple-accent)] text-white shadow-sm'
+                      ? 'bg-[var(--apple-accent)] border-[var(--apple-accent)] text-zinc-50 shadow-sm'
                       : 'bg-white border-[#D2D2D7] text-[#1D1D1F] hover:bg-[#F5F5F7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E] dark:text-[#E5E5EA] dark:hover:bg-[#2C2C2E]'
                   } ${isRecommended && !isActive ? 'ring-2 ring-orange-400/50' : ''}`}
                 >
                   {isRecommended && !isActive && (
                     <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-orange-400 rounded-bl-full" />
                   )}
-                  <div className={`p-2 rounded-[8px] shrink-0 ${isActive ? 'bg-white/10 text-white' : 'bg-[#0071E3]/10 text-[#0071E3]'}`}>
+                  <div className={`p-2 rounded-[8px] shrink-0 ${isActive ? 'bg-white/15 text-zinc-50' : 'bg-[#0071E3]/10 text-[#0071E3]'}`}>
                     <Icon size={16} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-1">
                       <p className="text-xs font-bold truncate leading-snug">{tut.label}</p>
                       {isCertified && (
-                        <CheckCircle2 size={12} className={isActive ? 'text-white' : 'text-green-500'} />
+                        <CheckCircle2 size={12} className={isActive ? 'text-zinc-50' : 'text-green-500'} />
                       )}
                     </div>
-                    <p className={`text-[10px] truncate mt-0.5 ${isActive ? 'text-white/80' : 'text-[#86868B]'}`}>{tut.sub}</p>
+                    <p className={`text-[10px] truncate mt-0.5 ${isActive ? 'text-zinc-200/90' : 'text-[#86868B]'}`}>{tut.sub}</p>
                     
                     <div className="flex flex-wrap items-center gap-1.5 mt-2">
                       <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${
-                        tut.complexity === 'Baja' ? (isActive ? 'bg-white/20 text-white' : 'bg-green-100 text-green-700 dark:bg-green-950/20 dark:text-green-400') :
-                        tut.complexity === 'Media' ? (isActive ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700 dark:bg-orange-950/20 dark:text-orange-400') :
-                        (isActive ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700 dark:bg-red-950/20 dark:text-red-400')
+                        tut.complexity === 'Baja' ? (isActive ? 'bg-white/20 text-zinc-50' : 'bg-green-100 text-green-700 dark:bg-green-950/20 dark:text-green-400') :
+                        tut.complexity === 'Media' ? (isActive ? 'bg-white/20 text-zinc-50' : 'bg-orange-100 text-orange-700 dark:bg-orange-950/20 dark:text-orange-400') :
+                        (isActive ? 'bg-white/20 text-zinc-50' : 'bg-red-100 text-red-700 dark:bg-red-950/20 dark:text-red-400')
                       }`}>
                         {tut.complexity}
                       </span>
                       {isRecommended && (
                         <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${
-                          isActive ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-700 dark:bg-orange-950/20 dark:text-orange-400'
+                          isActive ? 'bg-white/20 text-zinc-50' : 'bg-orange-100 text-orange-700 dark:bg-orange-950/20 dark:text-orange-400'
                         }`}>
                           Recomendado 🎯
                         </span>
@@ -3260,7 +3262,7 @@ export default function TutorialesForensesPage() {
                           
                           <div className="space-y-4 text-xs">
                             <div className="flex gap-3">
-                              <div className="w-5 h-5 rounded-full bg-[#34C759] text-white flex items-center justify-center font-bold">1</div>
+                              <div className="w-5 h-5 rounded-full bg-[#34C759] text-zinc-50 flex items-center justify-center font-bold">1</div>
                               <div>
                                 <p className="font-bold text-[#1D1D1F] dark:text-[#E5E5EA]">Selección de módulos a extraer</p>
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
@@ -3280,7 +3282,7 @@ export default function TutorialesForensesPage() {
                               </div>
                             </div>
                             <div className="flex gap-3">
-                              <div className="w-5 h-5 rounded-full bg-[#34C759] text-white flex items-center justify-center font-bold">2</div>
+                              <div className="w-5 h-5 rounded-full bg-[#34C759] text-zinc-50 flex items-center justify-center font-bold">2</div>
                               <div className="flex-1 min-w-0">
                                 <p className="font-bold text-[#1D1D1F] dark:text-[#E5E5EA] mb-2">Adquisición e Integridad</p>
                                 
@@ -3326,7 +3328,7 @@ export default function TutorialesForensesPage() {
                                   <button
                                     onClick={simularEjecucionAdb}
                                     disabled={adbEjecutando}
-                                    className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] text-xs py-2 px-4 flex items-center gap-1.5 text-white"
+                                    className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] text-xs py-2 px-4 flex items-center gap-1.5 text-zinc-50"
                                   >
                                     <Play size={12} />
                                     {adbEjecutando ? 'Colectando...' : 'Iniciar Colecta ADB'}
@@ -3423,8 +3425,8 @@ export default function TutorialesForensesPage() {
                                 return (
                                   <div key={idx} className="flex gap-4 relative items-start text-xs">
                                     <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 border transition-all z-10 ${
-                                      isActive ? 'bg-[#FF3B30] text-white border-[#FF3B30] animate-pulse' :
-                                      isSuccess ? 'bg-[#34C759] text-white border-[#34C759]' :
+                                      isActive ? 'bg-[#FF3B30] text-zinc-50 border-[#FF3B30] animate-pulse' :
+                                      isSuccess ? 'bg-[#34C759] text-zinc-50 border-[#34C759]' :
                                       'bg-white text-[#86868B] border-[#D2D2D7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E]'
                                     }`}>
                                       {isSuccess ? <Check size={16} /> : <span className="text-xs font-mono font-bold">{idx + 1}</span>}
@@ -3447,7 +3449,7 @@ export default function TutorialesForensesPage() {
                             <button
                               onClick={iniciarDowngrade}
                               disabled={downEjecutando || !downConsent}
-                              className="apple-btn apple-btn-primary bg-[#FF3B30] hover:bg-[#D32F2F] text-xs py-2 px-4 flex items-center gap-1.5 text-white"
+                              className="apple-btn apple-btn-primary bg-[#FF3B30] hover:bg-[#D32F2F] text-xs py-2 px-4 flex items-center gap-1.5 text-zinc-50"
                             >
                               <Play size={12} /> {downEjecutando ? 'Procesando Downgrade...' : 'Iniciar Downgrade Forense'}
                             </button>
@@ -3556,7 +3558,7 @@ export default function TutorialesForensesPage() {
                                   {wpSelectedChat.messages.map(msg => (
                                     <div key={msg.id} className={`flex flex-col max-w-[75%] ${msg.isOutgoing ? 'ml-auto items-end' : 'mr-auto items-start'}`}>
                                       <span className="text-[9px] text-[#86868B] mb-0.5">{msg.sender}</span>
-                                      <div className={`p-2.5 rounded-[12px] shadow-sm ${msg.isOutgoing ? 'bg-[#0071E3] text-white rounded-tr-none' : 'bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#E5E5EA] rounded-tl-none border dark:border-[#2C2C2E]'}`}>
+                                      <div className={`p-2.5 rounded-[12px] shadow-sm ${msg.isOutgoing ? 'bg-[#0071E3] text-zinc-50 rounded-tr-none' : 'bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#E5E5EA] rounded-tl-none border dark:border-[#2C2C2E]'}`}>
                                         {msg.type === 'audio' ? (
                                           <div className="space-y-1">
                                             <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#E5E5EA]">
@@ -3711,7 +3713,7 @@ export default function TutorialesForensesPage() {
                                     key={file.name}
                                     onClick={() => handleSelectPresetFile(file)}
                                     className={`px-2.5 py-1 rounded-full text-[10px] font-bold border transition-colors ${
-                                      intSelectedFile?.name === file.name ? 'bg-[#0071E3] border-[#0071E3] text-white' : 'bg-white border-[#D2D2D7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E]'
+                                      intSelectedFile?.name === file.name ? 'bg-[#0071E3] border-[#0071E3] text-zinc-50' : 'bg-white border-[#D2D2D7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E]'
                                     }`}
                                   >
                                     {file.name}
@@ -3730,7 +3732,7 @@ export default function TutorialesForensesPage() {
                                   <button
                                     onClick={calcularHashes}
                                     disabled={intCalculando || !intCasoId}
-                                    className="apple-btn apple-btn-primary text-[10px] py-1.5 px-3 flex items-center gap-1 text-white"
+                                    className="apple-btn apple-btn-primary text-[10px] py-1.5 px-3 flex items-center gap-1 text-zinc-50"
                                   >
                                     {intCalculando ? <RefreshCw size={10} className="animate-spin" /> : 'Calcular Hashes'}
                                   </button>
@@ -3781,7 +3783,7 @@ export default function TutorialesForensesPage() {
                                 <button
                                   onClick={generarFirmaAvilla}
                                   disabled={intGenerandoFirma}
-                                  className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] w-full py-2 flex items-center justify-center gap-1.5 text-white"
+                                  className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] w-full py-2 flex items-center justify-center gap-1.5 text-zinc-50"
                                 >
                                   <Lock size={12} /> {intGenerandoFirma ? 'Firmando Evidencia...' : 'Firmar y Generar Token (.avilla)'}
                                 </button>
@@ -3991,7 +3993,7 @@ export default function TutorialesForensesPage() {
       {/* ─── MODAL GLOBAL DE INSIGNIA DESBLOQUEADA (MICRO-ANIMACIÓN APPLE) ─── */}
       {unlockedModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="apple-card max-w-sm w-full bg-gradient-to-b from-[#1C1C1E] to-[#2C2C2E] text-white p-6 border-none text-center space-y-4 shadow-2xl relative overflow-hidden animate-scale-in">
+          <div className="apple-card max-w-sm w-full bg-white dark:bg-gradient-to-b dark:from-[#1C1C1E] dark:to-[#2C2C2E] text-[#1D1D1F] dark:text-white p-6 border border-[#E5E5EA] dark:border-none text-center space-y-4 shadow-2xl relative overflow-hidden animate-scale-in">
             {/* Destello de fondo */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--apple-accent)_0%,transparent_60%)] opacity-35" />
             
@@ -4006,15 +4008,15 @@ export default function TutorialesForensesPage() {
 
               <div className="space-y-1">
                 <p className="text-[10px] font-bold text-[var(--apple-accent)] uppercase tracking-widest">Insignia Desbloqueada</p>
-                <h3 className="text-lg font-black text-white">{unlockedModal.badgeTitle}</h3>
+                <h3 className="text-lg font-black text-[#1D1D1F] dark:text-white">{unlockedModal.badgeTitle}</h3>
                 <p className="text-xs text-[#86868B] px-4">
                   ¡Felicidades! Has respondido correctamente el 100% de las preguntas y certificado tu competencia pericial.
                 </p>
               </div>
 
-              <div className="bg-white/5 p-3 rounded-[8px] inline-flex items-center gap-1.5 text-xs font-bold border border-white/5">
+              <div className="bg-neutral-50 dark:bg-white/5 p-3 rounded-[8px] inline-flex items-center gap-1.5 text-xs font-bold border border-black/5 dark:border-white/5">
                 <span className="text-[var(--apple-accent)]">+{unlockedModal.xpGained} XP</span>
-                <span className="text-neutral-400">Puntos de Habilidad Forense</span>
+                <span className="text-neutral-500 dark:text-neutral-400">Puntos de Habilidad Forense</span>
               </div>
 
               <div className="pt-2">

@@ -593,6 +593,7 @@ html.dark ::-webkit-scrollbar-thumb {
 .apple-btn-primary, .apple-btn-primary *,
 .apple-btn-destructive, .apple-btn-destructive *,
 [class*="bg-apple-accent"], [class*="bg-apple-accent"] *,
+.bg-\[var\(--apple-accent\)\], .bg-\[var\(--apple-accent\)\] *,
 .bg-\[\#0071E3\], .bg-\[\#0071E3\] *,
 .bg-\[\#34C759\], .bg-\[\#34C759\] * {
   color: #ffffff !important;

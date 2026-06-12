@@ -15,23 +15,14 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 16:06:39",
-      "last_commit": "745cb0d - df (2026-06-12)",
+      "timestamp": "2026-06-12 16:25:59",
+      "last_commit": "dead45a - df (2026-06-12)",
       "modified_files": [
-        "A  \"RAG/MANUAL_\\303\\232NICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSI\\303\\223N_FINAL_29SEP17).md\"",
-        "D  RAG/manual_unico_unificado.yaml",
-        "A  RAG/perito-forense-digital/SKILL.md",
-        "A  RAG/perito-forense-digital/references/analisis-android-whatsapp.md",
-        "A  RAG/perito-forense-digital/references/analisis-correos.md",
-        "A  RAG/perito-forense-digital/references/analisis-disco-pc.md",
-        "A  RAG/perito-forense-digital/references/analisis-redes-sociales.md",
-        "A  RAG/perito-forense-digital/references/cadena-custodia-venezuela.md",
-        "A  RAG/perito-forense-digital/references/correos-electronicos.md",
-        "A  RAG/perito-forense-digital/references/discos-duros-iped.md",
-        "A  RAG/perito-forense-digital/references/informe-pericial-venezuela.md",
-        "A  RAG/perito-forense-digital/references/iped-guia-completa.md",
-        "A  RAG/perito-forense-digital/references/moviles-android-whatsapp.md",
-        "M  src/pages/Forense/TutorialesForensesPage.tsx"
+        "M  package-lock.json",
+        "M  package.json",
+        "M  src/index.css",
+        "M  src/pages/Forense/TutorialesForensesPage.tsx",
+        "M  tsconfig.json"
       ]
     }
   },
