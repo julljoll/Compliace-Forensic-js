@@ -31,25 +31,29 @@ const iconMap: Record<string, any> = {
   FileCheck
 };
 
-const PLANILLA_ROUTES: Record<string, string> = {
-  wp_step1: '/planillas/acta-obtencion',
-  wp_step2: '/planillas/prcc-derivacion',
-  wp_step3: '',
-  wp_step4: '/planillas/prcc-derivacion',
-  wp_step5: '',
-  wp_step6: '',
-  wp_step7: '/planillas/dictamen',
-  wp_step8: '/planillas/entrega-resultados',
-  wp_step9: '/planillas/entrega-resultados',
-};
-
-const PLANILLA_LABELS: Record<string, string> = {
-  wp_step1: 'Imprimir Acta de Obtención por Consignación',
-  wp_step2: 'Imprimir Planilla PRCC',
-  wp_step4: 'Imprimir Planilla PRCC',
-  wp_step7: 'Imprimir Dictamen Forense',
-  wp_step8: 'Imprimir Acta de Entrega de Resultados',
-  wp_step9: 'Imprimir Acta de Entrega de Resultados',
+const PLANILLA_DOCS: Record<string, { path: string; label: string }[]> = {
+  wp_step1: [
+    { path: '/planillas/acta-obtencion', label: 'Imprimir Acta de Obtención por Consignación' },
+    { path: '/planillas/acta-entrevista', label: 'Imprimir Acta de Entrevista' }
+  ],
+  wp_step2: [
+    { path: '/planillas/prcc-derivacion', label: 'Imprimir Planilla PRCC' }
+  ],
+  wp_step3: [],
+  wp_step4: [
+    { path: '/planillas/prcc-derivacion', label: 'Imprimir Planilla PRCC' }
+  ],
+  wp_step5: [],
+  wp_step6: [],
+  wp_step7: [
+    { path: '/planillas/dictamen', label: 'Imprimir Dictamen Forense' }
+  ],
+  wp_step8: [
+    { path: '/planillas/entrega-resultados', label: 'Imprimir Acta de Entrega de Resultados' }
+  ],
+  wp_step9: [
+    { path: '/planillas/entrega-resultados', label: 'Imprimir Acta de Entrega de Resultados' }
+  ],
 };
 
 // Helper types & configs for task list
@@ -1104,20 +1108,25 @@ export default function SeguimientoCompliancePage() {
                       )}
 
                       {/* Official templates printable link */}
-                      {PLANILLA_ROUTES[selectedStep.id] && (
-                        <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between">
+                      {PLANILLA_DOCS[selectedStep.id] && PLANILLA_DOCS[selectedStep.id].length > 0 && (
+                        <div className="pt-4 border-t border-black/[0.06] flex flex-col gap-2">
                           <span className="text-[10px] text-[#86868B] italic">
-                            Planilla oficial correspondiente a esta etapa:
+                            Planillas oficiales correspondientes a esta etapa:
                           </span>
-                          <Link
-                            to={PLANILLA_ROUTES[selectedStep.id]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
-                          >
-                            <Printer size={12} />
-                            <span>{PLANILLA_LABELS[selectedStep.id] || 'Imprimir Planilla Oficial'}</span>
-                          </Link>
+                          <div className="flex flex-wrap gap-2">
+                            {PLANILLA_DOCS[selectedStep.id].map((doc, idx) => (
+                              <Link
+                                key={idx}
+                                to={doc.path}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
+                              >
+                                <Printer size={12} />
+                                <span>{doc.label}</span>
+                              </Link>
+                            ))}
+                          </div>
                         </div>
                       )}
 

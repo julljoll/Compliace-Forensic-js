@@ -13,7 +13,7 @@ Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** q
 
 - **Crear y gestionar casos** con toda la metadata del dispositivo y las partes involucradas
 - **Controlar el cumplimiento normativo** paso a paso según 9 instrumentos legales precargados
-- **Imprimir planillas oficiales** en cada fase del proceso (Acta de Obtención, PRCC, Seguimiento Forense)
+- **Imprimir planillas oficiales** en cada fase del proceso (Acta de Obtención, Acta de Entrevista, PRCC, Seguimiento Forense)
 - **Auditar cada acción** con trazabilidad inmutable mediante encadenamiento de hashes SHA-256
 - **Generar reportes de auditoría** con línea de tiempo imprimible para presentar en tribunales
 
@@ -51,7 +51,7 @@ SHA256.US/
 │   │   ├── PersonalPage.tsx / TareasPage.tsx
 │   │   ├── CorreoForensePage.tsx
 │   │   ├── Forense/          # TutorialesForensesPage, ManualAvillaPage, ManualServerlessPage
-│   │   └── Planillas/    # ActaObtencionPage, PlanillaPRCCPage, SeguimientoPage
+│   │   └── Planillas/    # ActaObtencionPage, ActaEntrevistaPage, PlanillaPRCCPage, SeguimientoPage
 │   ├── store/            # Zustand stores
 │   │   ├── cmsStore.ts   # Estado principal del CMS
 │   │   ├── auditStore.ts # Auditoría con hash chain
@@ -85,6 +85,7 @@ SHA256.US/
 | `/personal` | **Personal** | Registro de peritos y roles |
 | `/correo-forense` | **Correo Corporativo** | Proc. técnico-jurídico para correos electrónicos |
 | `/planillas/acta-obtencion` | **Acta de Obtención** | Planilla imprimible para consignación |
+| `/planillas/acta-entrevista` | **Acta de Entrevista** | Planilla de entrevista judicial / voluntaria |
 | `/planillas/prcc-derivacion` | **Planilla PRCC** | Cadena de custodia imprimible |
 | `/forense/manual-avilla` | **Manual Avilla** | Referencia operativa forense |
 | `/forense/manual-serverless` | **Manual Serverless** | Guía de configuración Neon y Vercel |

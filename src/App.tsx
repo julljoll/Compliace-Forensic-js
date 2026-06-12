@@ -27,6 +27,7 @@ const ManualAvillaPage = lazy(() => import('./pages/Forense/ManualAvillaPage'));
 
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
+const ActaEntrevistaPage = lazy(() => import('./pages/Planillas/ActaEntrevistaPage'));
 const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage'));
 const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage'));
 const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
@@ -94,6 +95,7 @@ function App() {
           <Route path="sistemas/manual-avilla" element={<Navigate to="/forense/manual-avilla" replace />} />
           <Route path="manual-serverless" element={<Navigate to="/forense/manual-serverless" replace />} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
+          <Route path="planillas/acta-entrevista" element={<Suspense fallback={<PageLoader />}><ActaEntrevistaPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />

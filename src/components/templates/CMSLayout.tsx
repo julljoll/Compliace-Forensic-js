@@ -17,6 +17,7 @@ const menuItems = [
   { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'Módulos Forenses' },
   { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'Módulos Forenses' },
   { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
+  { path: '/planillas/acta-entrevista',          label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Plantillas Oficiales' },
   { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },

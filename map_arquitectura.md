@@ -96,7 +96,7 @@ USUARIO → Login → Dashboard → Casos → Seguimiento Compliance
 ├── /correo-forense        → CorreoForensePage
 ├── /forense/manual-avilla → ManualAvillaPage
 ├── /forense/manual-serverless → ManualServerlessPage
-└── /planillas/*           → Planillas imprimibles (Acta, PRCC, Seguimiento)
+└── /planillas/*           → Planillas imprimibles (Acta Obtención, Acta Entrevista, PRCC, Dictamen, Entrega)
 ```
 
 ---
