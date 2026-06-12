@@ -711,3 +711,57 @@
     font-style: italic;
   }
 }
+
+/* ── Mobile/PWA Responsiveness Overrides (Screen-only, non-print) ── */
+@media screen and (max-width: 820px) {
+  .planilla-container {
+    padding: 0 !important;
+  }
+
+  .planilla-container .page {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: unset !important;
+    padding: 4mm 6mm !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .planilla-container .grid-container {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+
+  .planilla-container .signature-section {
+    grid-template-columns: 1fr !important;
+    gap: 6mm !important;
+    margin-top: 6mm !important;
+    padding-bottom: 4mm !important;
+  }
+
+  .planilla-container .sig-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .planilla-container .thumb-box {
+    width: 100% !important;
+    max-width: 120px !important;
+    height: 80px !important;
+  }
+
+  .planilla-container .thumb-wrapper {
+    align-items: flex-start !important;
+  }
+
+  .planilla-container .evidence-table td {
+    font-size: 11px !important;
+    padding: 6px !important;
+  }
+
+  .planilla-container .evidence-table td:first-child {
+    width: 35% !important;
+    font-size: 10px !important;
+  }
+}
+

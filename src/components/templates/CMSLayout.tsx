@@ -204,7 +204,7 @@ export default function CMSLayout() {
   );
 
   return (
-    <div className="flex h-screen bg-[var(--apple-bg)] font-sans text-[var(--apple-text)] overflow-hidden">
+    <div className="flex h-[100dvh] bg-[var(--apple-bg)] font-sans text-[var(--apple-text)] overflow-hidden">
 
       {/* ══════════════════════════════════════════════════════════
           DESKTOP SIDEBAR — visible en sm y superior

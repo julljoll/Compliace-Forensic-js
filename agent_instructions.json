@@ -15,11 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 15:38:17",
-      "last_commit": "39f4b17 - 444444 (2026-06-12)",
+      "timestamp": "2026-06-12 15:51:22",
+      "last_commit": "00bd277 - desing (2026-06-12)",
       "modified_files": [
-        "D  Rubbish/tmp/.getxfer.14948.5.mega",
-        "M  src/index.css"
+        "M  index.html",
+        "M  src/components/templates/CMSLayout.tsx",
+        "M  src/index.css",
+        "M  src/pages/Planillas/Planillas.css"
       ]
     }
   },

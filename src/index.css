@@ -78,7 +78,7 @@
 
   #root {
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
   }
 
   * { box-sizing: border-box; }
@@ -563,6 +563,13 @@ html.dark ::-webkit-scrollbar-thumb {
 
 /* ── Print Styles ── */
 @media print {
+  body, html, #root, main, header, .flex-1, div[class*="overflow-hidden"] {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: static !important;
+    display: block !important;
+  }
   body {
     background-color: white !important;
     color: black !important;
