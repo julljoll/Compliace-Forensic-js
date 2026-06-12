@@ -1,0 +1,865 @@
+# ============================================
+# MANUAL ÚNICO DE CADENA DE CUSTODIA
+# Sistema de Gestión Forense - Venezuela 2017
+# ============================================
+#
+# FUENTES DOCUMENTALES:
+# - MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).pdf
+# - Ley Especial contra Delitos Informáticos (2001)
+# - Ley de Infogobierno
+# - Ley sobre Mensajes de Datos y Firmas Electrónicas
+# - Código Orgánico Procesal Penal
+# - Constitución Nacional
+# - ISO/IEC 27037:2012
+# - ISO/IEC 27042:2015
+# - NIST SP 800-101 r1
+# - ACPO Good Practice Guide v5
+# - El Peritaje Informático - Jeimy Cano Martínez
+# - La Criminología Una Ciencia Dinámica
+# ============================================
+
+meta:
+  titulo: "Manual Único de Cadena de Custodia de Evidencias"
+  version: "Versión Final 29SEP17"
+  pais: "Venezuela"
+  organismo: "Ministerio Público + MPPRIJP"
+  ano: 2017
+  descripcion: "Procedimiento integral para gestión forense de evidencias físicas y digitales"
+
+# ============================================
+# BASES LEGALES
+# ============================================
+
+bases_legales:
+  constitucion:
+    - "Art. 2: Estado democrático y social de Derecho y de Justicia"
+    - "Art. 49: Garantías del debido proceso"
+    - "Art. 253: Órganos del Sistema de Justicia"
+    - "Art. 285: Funciones del Ministerio Público"
+    - "Art. 48: Privacidad de las comunicaciones"
+    
+  copp:
+    referencia: "Código Orgánico Procesal Penal (2012)"
+    articulos:
+      - "Art. 187: Definición de cadena de custodia"
+      - "Art. 188: Resguardo de evidencias"
+      - "Art. 202: Obligatoriedad del manual"
+      - "Art. 283-289: Régimen de licitud de la prueba"
+    definicion_cadena_custodia: |
+      "... la garantía legal que permite el manejo idóneo de las evidencias digitales, físicas
+      o materiales, con el objeto de evitar su modificación, alteración o contaminación
+      desde el momento de su ubicación en el sitio del suceso o lugar del hallazgo, su
+      trayectoria por las distintas dependencias de investigaciones penales, criminalísticas
+      y forenses, la consignación de los resultados a la autoridad competente, hasta la
+      culminación del proceso..."
+      
+  leyes_especiales:
+    - nombre: "Ley Especial contra Delitos Informáticos (2001)"
+      gaceta: "Gaceta Oficial Nº 37.313"
+      descripcion: "Tipificación de delitos informáticos"
+      
+    - nombre: "Ley de Infogobierno (2013)"
+      gaceta: "40274"
+      descripcion: "Validez y seguridad de tecnologías de información"
+      
+    - nombre: "Ley sobre Mensajes de Datos y Firmas Electrónicas (2001)"
+      gaceta: "37.148"
+      articulos:
+        - "Art. 4: Eficacia probatoria de mensajes de datos"
+        - "Art. 7: Valor jurídico de la firma electrónica"
+        - "Art. 8: Igualdad de eficacia con documento escrito"
+
+# ============================================
+# ESTANDARES INTERNACIONALES
+# ============================================
+
+estandares_internacionales:
+  - identificador: "ISO/IEC 27037:2012"
+    titulo: "Guidelines for identification, collection, acquisition, and preservation of digital evidence"
+    descripcion: "Identificación, colección, adquisición y preservación de evidencia digital"
+    fases_cubiertas:
+      - "Identificación de evidencia digital"
+      - "Colección de evidencia"
+      - "Adquisición forense"
+      - "Preservación y almacenamiento"
+      
+  - identificador: "ISO/IEC 27042:2015"
+    titulo: "Guidelines for the analysis and interpretation of digital evidence"
+    descripcion: "Análisis e interpretación de evidencia digital"
+    fases_analisis:
+      - "Preparación del análisis"
+      - "Examen de la evidencia"
+      - "Análisis de datos"
+      - "Interpretación de resultados"
+      
+  - identificador: "NIST SP 800-101 r1"
+    titulo: "Guidelines on Mobile Device Forensics"
+    descripcion: "Guía para forensia de dispositivos móviles"
+    
+  - identificador: "ACPO v5"
+    titulo: "Good Practice Guide for Digital Evidence"
+    descripcion: "Guía de buenas prácticas para evidencia digital"
+
+# ============================================
+# SISTEMA DE CADENA DE CUSTODIA
+# Estructura basada en Teoría General de Sistemas
+# E = Entrada, P = Proceso, S = Salida
+# ============================================
+
+sistema_cadena_custodia:
+  fundamentacion: "Teoría General de Sistemas (Ludwig von Bertalanffy)"
+  formula: "ENTRADA → PROCESO → SALIDA"
+  
+  definicion: |
+    Es el conjunto ordenado de normas, procesos e instituciones que interactúan y se
+    interrelacionan de manera permanente para regular el funcionamiento de la Cadena
+    de Custodia de Evidencias Físicas en todas sus fases como garantía legal dentro
+    del proceso penal.
+    
+  estructura_fases:
+    - fase: "FASE INICIAL"
+      descripcion: "Fase génesis del sistema, integración de evidencia física a la cadena de custodia"
+      
+    - fase: "FASE DE LABORATORIO"
+      descripcion: "Fase intermedia destinada a la peritación de evidencias"
+      
+    - fase: "FASE DE DISPOSICIÓN JUDICIAL"
+      descripcion: "Presentación y valoración de evidencias en proceso judicial"
+      
+    - fase: "FASE DE DISPOSICIÓN FINAL"
+      descripcion: "Destino definitivo de las evidencias tras conclusión del proceso"
+
+  criterios_funcionamiento:
+    - "Criterio de Auditabilidad"
+    - "Criterio de Continuidad"
+    - "Criterio de Integridad"
+    - "Criterio de Sustentabilidad"
+    - "Criterio de Robustez"
+
+# ============================================
+# DEFINICIONES FUNDAMENTALES
+# ============================================
+
+definiciones:
+  evidencia_fisica: |
+    Elemento material relacionado con un presunto hecho punible susceptible de
+    procesamiento forense, del cual se puede obtener información para la
+    reconstrucción histórica del suceso.
+    
+  cadena_custodia: |
+    La cadena de custodia es el mecanismo que procura el debido tratamiento técnico,
+    científico y administrativo de las evidencias físicas (materiales o digitales)
+    vinculadas al proceso penal; mediante la aplicación de procesos y procedimientos
+    que garantizan la integridad y autenticidad de los elementos materiales, desde el
+    momento de su obtención hasta su disposición final.
+    
+  perito_informatico: |
+    Profesional con conocimientos especializados en tecnología que auxilia al juez
+    en la comprensión de aspectos técnicos relacionados con evidencia digital.
+    
+  evidencia_digital: |
+    Información almacenada o transmitida en formato digital que puede ser utilizada
+    en un proceso legal.
+
+# ============================================
+# FASE INICIAL - OBTENCIÓN
+# ============================================
+
+fase_inicial:
+  nombre: "Fase Inicial - Obtención"
+  definicion: |
+    Fase génesis del sistema, integradora de la evidencia física a la cadena de custodia,
+    que comprende el proceso de obtención con sus diversas formas y en la que se
+    inicia el proceso de resguardo de las evidencias físicas.
+    
+  proceso_obtencion:
+    definicion: |
+      Es el momento en el cual los operarios del manual pueden iniciar la cadena de
+      custodia de las evidencias; está constituido por cuatro formas.
+      
+    formas:
+      - tipo: "OBTENCIÓN TÉCNICA"
+        prioridad: 1
+        definicion: |
+          Cuando el personal especializado acudir al sitio del suceso o lugar de
+          ubicación de la evidencia mediante trabajo de campo planificado.
+        escenarios:
+          - "Sitio del suceso o lugar del hallazgo"
+          - "Personas asociadas al hecho"
+          - "Vehículos"
+          - "Cadáveres"
+          
+        procedimientos:
+          - nombre: "Protección Técnica"
+            descripcion: "Aislamiento y preservación del lugar"
+            actividades:
+              - "Delimitación: Evaluar y demarcar el área"
+              - "Preservación: Evitar modificaciones al lugar"
+            materiales:
+              - "Cintas o cuerdas (Acordonamiento)"
+              - "Conos, vehículos oficiales, bardas móviles"
+              - "Toldos, sombrillas, carpas (Superposición)"
+            responsables: ["Criminalistas", "Forenses", "Policías", "Investigadores Penales"]
+            
+          - nombre: "Observación Preliminar"
+            descripcion: "Recabar información para planificación del abordaje"
+            lineamientos:
+              - "Verificar idoneidad del procedimiento de protección"
+              - "Identificar condiciones inseguras"
+              - "Evaluar características físicas del sitio"
+              - "Definir ruta de ingreso y egreso"
+              - "Establecer patrones de búsqueda"
+            responsables: ["Perito Criminalista", "Investigador"]
+            
+          - nombre: "Fijación"
+            descripcion: "Dejar constancia del estado del lugar y evidencias"
+            tipos:
+              - tipo: "Fijación Fotográfica"
+                obligatoriedad: true
+                subtipos:
+                  - "De carácter general (vista amplia)"
+                  - "De carácter particular (con señalización)"
+                  - "De carácter en detalle (testigo flecha/métrico)"
+              - tipo: "Fijación Escrita"
+                obligatoriedad: true
+                lineamientos:
+                  - "Redactar de forma descriptiva en tercera persona"
+                  - "Considerar ubicación geográfica y condiciones atmosféricas"
+                  - "Establecer dos puntos fijos de referencia"
+              - tipo: "Fijación Planimétrica"
+                obligatoriedad: true
+                lineamientos:
+                  - "Representación gráfica a escala"
+                  - "Respetar reglas del dibujo técnico"
+              - tipo: "Fijación Videográfica"
+                obligatoriedad: false
+                
+          - nombre: "Colección"
+            descripcion: "Levantamiento de la evidencia de manera manual o instrumental"
+            tecnicas:
+              - "Levantamiento directo (manual, pinza)"
+              - "Estarcimiento (cinta adhesiva, reactivos)"
+              - "Aspirado / Barrido"
+              - "Macerado (hisopos, gasas)"
+              - "Raspado (bisturí, hojillas)"
+              - "Reproducción Fotográfica"
+              - "Reproducción por Moldeado"
+              - "Reproducción Digital"
+            responsables: ["Perito Coleccionista", "Técnico Forense"]
+            
+          - nombre: "Embalaje y Rotulación"
+            descripcion: "Acondicionamiento seguro con identificación clara"
+            principios:
+              - "Una evidencia = Un embalaje"
+              - "Evitar contaminación cruzada"
+              - "Material compatible con la evidencia"
+              - "Sello inviolable"
+            tipos_embalaje:
+              - "Bolsa de papel: Documentos, ropa seca"
+              - "Bolsa plástica: Objetos no biológicos"
+              - "Sobre de evidencia: Pequeñas muestras"
+              - "Caja de cartón: Objetos frágiles"
+              - "Contenedor estéril: Muestras biológicas"
+              - "Frasco de vidrio: Líquidos, tóxicos"
+              - "Bolsa Faraday: Evidencias digitales"
+            responsables: ["Criminalista", "Técnico"]
+            
+          - nombre: "Registro en PRCC"
+            descripcion: "Planilla de Registro de Cadena de Custodia"
+            es_documento_legal: true
+            campos:
+              - "Número de Actuación/NRO de Caso"
+              - "Fecha y hora de inicio"
+              - "Lugar de los hechos"
+              - "Naturaleza del hecho"
+              - "Organismo remitente"
+              - "Funcionario actuante (nombre, cédula, cargo)"
+              - "Tabla de evidencias"
+              - "Firmas"
+
+      - tipo: "OBTENCIÓN POR ASEGURAMIENTO"
+        prioridad: 2
+        definicion: |
+          Cuando se requiere asegurar evidencias en poder de terceros mediante
+          procedimientos legales.
+        escenarios:
+          - "Allanamientos"
+          - "Decomisos"
+          - "Presentaciones personales"
+          
+        procedimientos:
+          - nombre: "Búsqueda"
+            descripcion: "Localización sistemática de evidencias"
+            metodos: ["En espiral", "En cuadrícula", "Por zonas", "Lineal"]
+            
+          - nombre: "Posesión"
+            descripcion: "Toma de control legal de las evidencias"
+            requisitos_legales: ["Orden judicial", "Flagrancia", "Consentimiento"]
+
+      - tipo: "OBTENCIÓN POR CONSIGNACIÓN"
+        prioridad: 3
+        definicion: |
+          Cuando el propietario o poseedor entrega voluntariamente la evidencia al
+          organismo de investigación.
+        escenarios:
+          - "Entrega voluntaria del dispositivo móvil"
+          - "Consignación de evidencia digital por ciudadanos"
+          
+        procedimientos:
+          - nombre: "Recepción"
+            pasos:
+              - "Verificar identidad de quien consigna (cédula de identidad)"
+              - "Documentar motivo de la consignación"
+              - "Registrar datos del dispositivo"
+              - "Verificar estado físico del dispositivo"
+              
+          - nombre: "Fijación"
+            medios:
+              - "Fijación escrita: Acta de Obtención por Consignación"
+              - "Fijación fotográfica: estado del dispositivo, IMEI, pantalla"
+            datos_requeridos:
+              - "Marca y modelo"
+              - "IMEI y IMEI2"
+              - "Número de teléfono/línea"
+              - "Estado de la batería"
+              - "Daños físicos"
+              - "Estado de la pantalla (encendido/apagado)"
+              
+      - tipo: "OBTENCIÓN POR DERIVACIÓN"
+        prioridad: 4
+        definicion: |
+          Cuando del análisis de una evidencia principal se obtiene una nueva evidencia.
+        escenarios:
+          - "Por Separación: diferente naturaleza a la evidencia principal"
+          - "Por Segmentación: división de la evidencia principal"
+          - "Por Selección: discriminación para peritaje especializado"
+
+# ============================================
+# FASE DE LABORATORIO - PERITACIÓN
+# ============================================
+
+fase_laboratorio:
+  nombre: "Fase de Laboratorio - Peritación"
+  definicion: |
+    Fase intermedia destinada a la peritación de evidencias previamente obtenidas,
+    mediante la aplicación de métodos y técnicas técnico-científicas.
+    
+  proceso_peritacion:
+    definicion: |
+      Conjunto de procedimientos mediante los cuales se examina y analiza la evidencia
+      para determinar sus características y relación con el hecho investigado.
+      
+    procedimientos:
+      - nombre: "Recepción en Laboratorio"
+        pasos:
+          - "Verificar precintos de seguridad"
+          - "Recalcular Hash para confirmar integridad"
+          - "Cotejar PRCC con el embalaje"
+          - "Verificar correspondencia con oficio de remisión"
+        iso: "ISO/IEC 27042:2015"
+        
+      - nombre: "Designación de Perito"
+        pasos:
+          - "Registrar en sistema"
+          - "Asignar perito responsable según especialidad"
+          - "Firmar controles y PRCC"
+        especialidades:
+          - "Balística"
+          - "Biología Forense"
+          - "Química Forense"
+          - "Documentoscopía"
+          - "Informática Forense"
+          - "Dactiloscopia"
+          - "Fotografía Forense"
+          - "Toxicología"
+          - "Genética"
+          
+      - nombre: "Peritaje"
+        etapas:
+          - "Valoración: apreciar contexto y planificar técnicas"
+          - "Descripción: detallar características de la evidencia"
+          - "Análisis: aplicar métodos y técnicas"
+          - "Interpretación: evaluar datos resultantes"
+          - "Conclusión: juicio de valor técnico-científico"
+        productos:
+          - "Dictamen Pericial"
+          - "Anexos fotográficos"
+          - "Gráficos y planos"
+          - "Certificados de análisis"
+          
+      - nombre: "Remisión de Resultados"
+        pasos:
+          - "Entregar dictamen pericial"
+          - "Remitir evidencias y PRCC al despacho solicitante"
+          - "Acotar en PRCC la remisión"
+        destinos: ["Fiscalía", "Tribunal", "Organismo Investigador"]
+
+# ============================================
+# FASE DE DISPOSICIÓN JUDICIAL
+# ============================================
+
+fase_disposicion_judicial:
+  nombre: "Fase de Disposición Judicial"
+  definicion: |
+    Momento en que la evidencia pasa a disposición del Poder Judicial tras admitirse
+    la acusación.
+    
+  actividades:
+    - nombre: "Resguardo Judicial"
+      descripcion: "En áreas especializadas del Poder Judicial"
+      
+    - nombre: "Exhibición en Audiencia"
+      descripcion: "Cumplir procedimiento de traslado y transferencia"
+      documento: "Acta de Exhibición de Evidencias"
+      participantes: ["Juez", "Fiscal", "Defensa", "Víctima", "Perito"]
+
+# ============================================
+# FASE DE DISPOSICIÓN FINAL
+# ============================================
+
+fase_disposicion_final:
+  nombre: "Fase de Disposición Final - Cierre"
+  definicion: |
+    Fase final que pone fin al tratamiento de las evidencias.
+    
+  formas_cierre:
+    - tipo: "DEVOLUCIÓN"
+      descripcion: "Restituir a quien tenga legítimo derecho"
+      requisito: "Autorización judicial"
+      
+    - tipo: "ENTREGA"
+      descripcion: "Otorgar a persona jurídica autorizada"
+      requisito: "Autorización judicial"
+      
+    - tipo: "DESTRUCCIÓN"
+      descripcion: "Inutilizar evidencia sin interés"
+      requisito: "Autorización judicial"
+      
+    - tipo: "CONSUMIDA EN PERITAJE"
+      descripcion: "Agotada durante análisis"
+      
+  procedimientos:
+    - nombre: "Ejecución de Disposición"
+      descripcion: "Materializar devolución, entrega o destrucción"
+      
+    - nombre: "Cierre de PRCC"
+      descripcion: "Dejar constancia en observaciones y remitir al expediente"
+      
+  documento: "Acta de Disposición Final de Evidencias"
+
+# ============================================
+# PROCESOS DE CARÁCTER CONTINUO
+# ============================================
+
+procesos_continuos:
+  definicion: |
+    Procesos y procedimientos que se cumplen en cualquier fase del sistema.
+    
+  procesos:
+    - nombre: "Proceso de Resguardo"
+      definicion: "Protección y conservación en espacios especializados"
+      etapas:
+        - "Ingreso: verificar PRCC, identidad, condiciones de la evidencia"
+        - "Depósito: almacenamiento bajo condiciones óptimas"
+        - "Egreso: disposición expresa y por escrito del Fiscal o Tribunal"
+      lineamentos:
+        - "Solo personal autorizado"
+        - "Control de temperatura, humedad, seguridad"
+        - "Inventario periódico (máximo un año)"
+        
+    - nombre: "Procedimiento de Traslado"
+      lineamentos:
+        - "Verificar condiciones de evidencia y embalaje"
+        - "Seleccionar medio que minimice riesgos"
+        - "Asentar datos en PRCC"
+        
+    - nombre: "Actividad de Transferencia"
+      lineamentos:
+        - "Verificar condiciones físicas y precintos"
+        - "Verificar PRCC con rotulado"
+        - "Asentar datos de quien entrega y recibe"
+
+# ============================================
+# ÁREAS DE RESGUARDO
+# ============================================
+
+areas_resguardo:
+  areas:
+    - id: "area_ingreso"
+      nombre: "Área de Ingreso"
+      descripcion: "Recepción y verificación inicial"
+      
+    - id: "area_deposito"
+      nombre: "Área de Depósito"
+      descripcion: "Almacenamiento seguro con controles ambientales"
+      tipos:
+        - "Evidencias Generales"
+        - "Evidencias Biológicas"
+        - "Sustancias Químicas"
+        - "Armas y Municiones"
+        - "Evidencias Digitales (Bolsa Faraday)"
+        - "Valores y Efectivos"
+        
+    - id: "area_egreso"
+      nombre: "Área de Egreso"
+      descripcion: "Salida controlada de evidencias"
+      
+    - id: "traslado_interno"
+      nombre: "Traslado Interno"
+      descripcion: "Movimiento dentro del área de resguardo"
+
+# ============================================
+# HERRAMIENTAS FORENSES
+# ============================================
+
+herramientas_forenses:
+  andriller:
+    version: "v3.6.2+"
+    uso: "Extracción lógica y física en dispositivos Android"
+    caracteristicas:
+      - "Solo lectura (no destructivo)"
+      - "Forensemente sólido"
+    modos_extraccion:
+      - tipo: "lógica"
+        descripcion: "Extracción de datos accesibles sin root"
+      - tipo: "física"
+        descripcion: "Extracción bit-a-bit completa"
+        requerimiento: "Root o bootloader desbloqueado"
+        
+  aleapp:
+    version: "v2.1.0+"
+    nombre_completo: "Android Logs Events And Protobuf Parser"
+    uso: "Parseo de SQLite, Protobuf, reconstrucción de eventos"
+    artefactos:
+      whatsapp:
+        - "Mensajes enviados/recibidos"
+        - "Contactos de WhatsApp"
+        - "Llamadas VoIP"
+        - "Archivos multimedia"
+        - "Ubicaciones compartidas"
+        - "Estados/publicaciones"
+      sistema:
+        - "Llamadas telefónicas"
+        - "Contactos del dispositivo"
+        - "Mensajes SMS/MMS"
+        - "Historial de navegación"
+        - "Ubicación GPS"
+        - "Aplicaciones instaladas"
+        - "Archivos de medios"
+    formatos_salida:
+      - "HTML interactivo"
+      - "CSV/Excel"
+      - "JSON"
+      - "Timeline"
+
+# ============================================
+# DICTAMEN PERICIAL
+# ============================================
+
+dictamen_pericial:
+  estructura_obligatoria:
+    - seccion: "1. Motivo"
+      contenido: "Razón por la cual se practica la peritación"
+      
+    - seccion: "2. Descripción de la Evidencia"
+      contenido: "Estado en que se halló y recibió la evidencia"
+      
+    - seccion: "3. Exámenes Practicados"
+      contenido: "Detalle de softwares, técnicas y valores Hash"
+      datos_herramientas:
+        - "Andriller v3.6.2 - Extracción"
+        - "ALEAPP v2.1.0 - Análisis"
+        - "Hash SHA-256 original"
+        - "Hash SHA-256 copia"
+        
+    - seccion: "4. Resultados"
+      contenido: "Tabla con hallazgos del análisis"
+      columnas:
+        - "Nombre nativo del archivo/artefacto"
+        - "Fecha de creación/modificación"
+        - "Ruta de ubicación"
+        - "Tamaño en bytes"
+        - "Hash individual SHA-256"
+        - "Relevancia forense"
+        
+    - seccion: "5. Conclusiones"
+      contenido: "Juicio de valor técnico-científico"
+      caracteristicas:
+        - "Objetivas y basadas en hechos"
+        - "Responden a objetivos del peritaje"
+        - "Sin precalificación jurídica"
+        - "En lenguaje claro y preciso"
+        
+    - seccion: "6. Fundamentación Legal"
+      contenido: "Base legal del procedimiento"
+      leyes:
+        - "Constitución Nacional"
+        - "COPP Art. 188"
+        - "Ley Especial contra Delitos Informáticos"
+        - "Ley de Infogobierno"
+        - "Ley sobre Mensajes de Datos y Firmas Electrónicas"
+        - "ISO/IEC 27037:2012"
+        - "ISO/IEC 27042:2015"
+        - "NIST SP 800-101 r1"
+        
+    - seccion: "7. Consumo de Evidencia"
+      contenido: "Constancia de alteración o no de la evidencia"
+      opciones:
+        - "La evidencia NO fue alterada ni consumida"
+        - "Consumo parcial (especificar)"
+        
+  formalidades:
+    - "Presentación por escrito"
+    - "Firma del Perito Informático"
+    - "Sello del perito"
+    - "Versión exacta de herramientas usadas"
+    - "Fecha de emisión"
+
+# ============================================
+# DOCUMENTOS ASOCIADOS
+# ============================================
+
+documentos_asociados:
+  - "Acta Policial"
+  - "Acta de Investigación Penal"
+  - "Acta de Obtención Técnica"
+  - "Acta de Obtención por Aseguramiento"
+  - "Acta de Obtención por Consignación"
+  - "Acta de Obtención por Derivación"
+  - "Acta de Disposición Final"
+  - "Acta de Levantamiento de Cadáver"
+  - "Acta de Inspección"
+  - "Acta Pericial"
+  - "Planilla de Registro de Cadena de Custodia (PRCC)"
+  - "Dictamen Pericial"
+  - "Memorandos y Oficios"
+  - "Acta de Exhibición de Evidencias"
+
+# ============================================
+# PLANILLA DE REGISTRO CADENA DE CUSTODIA (PRCC)
+# ============================================
+
+planilla_prcc:
+  campos_encabezado:
+    - "Número de Actuación/NRO de Caso"
+    - "Fecha de Inicio"
+    - "Hora de Inicio"
+    - "Lugar de los Hechos"
+    - "Naturaleza del Hecho"
+    - "Organismo Remitente"
+    - "Dirección del Organismo"
+    - "Teléfono"
+    
+  campos_funcionario:
+    - "Nombre y Apellido del Funcionario"
+    - "Cédula de Identidad"
+    - "Cargo"
+    - "Correo Electrónico"
+    
+  tabla_evidencias:
+    columnas:
+      - "N°"
+      - "Descripción Detallada"
+      - "Cant."
+      - "Características (Marca, Modelo, Serie, Color)"
+      - "Peso/Medida"
+      - "Tipo de Embalaje"
+      - "Precinto/Sello"
+      - "Observaciones"
+      
+  campos_firma:
+    - "Firma del Funcionario Actuante"
+    - "Firma de Testigo Presencial (cuando aplique)"
+
+# ============================================
+# OPERARIOS / RESPONSABLES
+# ============================================
+
+operarios:
+  descripcion: "Personal autorizado para gestión de cadena de custodia"
+  lista:
+    - "Criminalistas y demás Forenses"
+    - "Policías"
+    - "Peritos"
+    - "Investigadores Penales"
+    - "Fiscales del Ministerio Público"
+    - "Jueces"
+    - "Militares en funciones de Investigación Penal"
+    - "Bomberos"
+    - "Rescatistas"
+    - "Peritos Informáticos"
+
+# ============================================
+# COMPUTADORIZACIÓN Y DIGITALIZACIÓN
+# ============================================
+
+computadorizacion:
+  descripcion: "El manual puede ser adaptado para implementación en sistemas automatizados"
+  requisitos_tecnicos:
+    - "Sistema de Base de Datos (SQL Server, MySQL, PostgreSQL)"
+    - "Software de Captura de Imágenes"
+    - "Escáner de Alta Resolución"
+    - "Impresora de Códigos de Barras"
+    - "Software de Gestión de Evidencias"
+    - "Firma Digital Certificada"
+    - "Sistema de Cifrado para datos sensibles"
+    
+  consideraciones:
+    - "Respaldo periódico de la información"
+    - "Control de acceso por usuarios y perfiles"
+    - "Bitácora de transacciones"
+    - "Integración con sistemas del Ministerio Público"
+
+# ============================================
+# INTEGRACIÓN TECNOLÓGICA
+# ============================================
+
+integracion_tecnologica:
+  servicios_externos:
+    - "Andriller: Extracción forense de dispositivos Android"
+    - "ALEAPP: Análisis de artefactos Android"
+    - "Sistema de Archivos: Lectura/escritura segura"
+    - "Cálculo de Hashes: SHA-256, MD5 para integridad"
+    
+  validacion_integridad:
+    - "Calcular SHA-256 de imagen original"
+    - "Calcular SHA-256 de copia obtenida"
+    - "Comparar hashes para verificar integridad"
+    - "Documentar valores en PRCC"
+
+# ============================================
+# VIGENCIA Y DESTINATARIOS
+# ============================================
+
+vigencia:
+  entrada_vigencia: "3 meses desde publicación en Gaceta Oficial"
+  aplicacion: "Obligatoria en todo el territorio nacional"
+  alcance: "Todas las instituciones vinculadas al sistema de justicia penal"
+
+destinatarios:
+  - "Todas las personas que participen en el tratamiento de evidencias físicas"
+  - "Personal no adscrito al sistema de justicia (autorizado)"
+  - "Talento humano debidamente autorizado y capacitado"
+
+# ============================================
+# FLUENT DESIGN SYSTEM
+# Sistema de Diseño UI/UX
+# ============================================
+
+fluent_design_system:
+  # ============================================
+  # FLUENT DESIGN SYSTEM (Microsoft)
+  # Sistema de Diseño UI/UX
+  # ============================================
+  
+  typography:
+    primary_font: "Segoe UI Variable, Segoe UI, system-ui, -apple-system, sans-serif"
+    line_height: 1.5
+    font_weight: 400
+    características: "Fuente muy legible, escalamiento integrado al sistema, optimizada para interfaces digitales"
+  
+  theme: "dark"
+  
+  colors:
+    background: "#202020"  # Mica
+    text:
+      primary: "#ffffff"
+      secondary: "rgba(255, 255, 255, 0.7)"
+    accent:
+      primary: "#0078D4"  # Classic Fluent
+      light: "#60CDFF"     # Windows 11 Dark Accent
+      dark: "#005FB8"
+    surface:
+      default: "rgba(255, 255, 255, 0.05)"
+      hover: "rgba(255, 255, 255, 0.08)"
+      active: "rgba(255, 255, 255, 0.03)"
+    border:
+      default: "rgba(255, 255, 255, 0.08)"
+    acrylic: "rgba(32, 32, 32, 0.7)"
+    
+  geometry:
+    border_radius:
+      button: "4px"
+      input: "4px"
+      card: "0.75rem"  # 12px
+      scrollbar: "9999px"
+      
+  elevation:
+    shadows:
+      default: "0 4px 8px 0 rgba(0,0,0,0.2), 0 1px 2px 0 rgba(0,0,0,0.1)"
+      elevated: "0 8px 16px 0 rgba(0,0,0,0.2), 0 2px 4px 0 rgba(0,0,0,0.1)"
+      button: "0 1px 2px rgba(0,0,0,0.14)"
+      
+  motion:
+    transition: "all"
+    duration: "167ms"  # Aproximadamente 10 frames a 60fps
+    timing_function: "cubic-bezier(0.1, 0.9, 0.2, 1)"  # Snappy pero fluido
+    
+  componentes:
+    card:
+      background: "surface.default"
+      border: "1px solid border.default"
+      border_radius: "geometry.border_radius.card"
+      shadow: "elevation.shadows.default"
+      backdrop_filter: "blur(20px)"
+    button:
+      primary:
+        background: "accent.primary"
+        color: "text.primary"
+        border_radius: "geometry.border_radius.button"
+      secondary:
+        background: "surface.default"
+        color: "text.primary"
+        border_radius: "geometry.border_radius.button"
+    input:
+      background: "surface.hover"
+      border: "1px solid border.default"
+      border_radius: "geometry.border_radius.input"
+      focus_border_bottom: "2px solid accent.primary"
+
+  principios:
+    luz:
+      - "Sombras elevadas para profundidad"
+      - "Bordes sutiles en elementos interactivos"
+      - "Iluminación progresiva en hover"
+    profundidad:
+      - "Capas visuales diferenciadas"
+      - "Efectos de elevación en cards"
+      - "Z-index estratégico para overlays"
+    movimiento:
+      - "Transiciones fluidas (167ms)"
+      - "Animaciones de entrada/salida"
+      - "Micro-interacciones en botones"
+    material:
+      - "Texturas sutiles en fondos"
+      - "Superficies con diferente elevación"
+      - "Bordes redondeados consistentes (4px-12px)"
+    escala:
+      - "Tipografía jerárquica clara (H1-H6)"
+      - "Espaciado basado en grid de 8px"
+      - "Iconos proporcionales (24px, 32px, 48px)"
+
+  implementacion:
+    descripcion: "La configuración depende de tailwind.config.js para mapear tokens a clases utilitarias"
+    archivos:
+      - "tailwind.config.js: Mapeo de tokens"
+      - "src/index.css: Componentes de nivel superior (.forensic-card, .forensic-btn, .forensic-input)"
+      - "src/components/: Componentes React con estilos Fluent"
+
+# ============================================
+# ANEXOS DEL SISTEMA
+# ============================================
+
+anexos:
+  - "Tabla 1: Obtención Técnica - Procedimiento de Protección"
+  - "Tabla 2: Obtención Técnica - Observación Preliminar"
+  - "Tabla 3: Obtención Técnica - Fijación Fotográfica"
+  - "Tabla 4: Obtención Técnica - Fijación Escrita"
+  - "Tabla 5: Obtención Técnica - Fijación Planimétrica"
+  - "Tabla 6: Obtención Técnica - Fijación Videográfica"
+  - "Tabla 7: Obtención Técnica - Colección"
+  - "Tabla 8: Obtención Técnica - Embalaje"
+  - "Tabla 9: Obtención Técnica - Rotulación"
+  - "Tabla 10: Obtención Técnica - Traslado"
+  - "Tabla 11: Proceso de Resguardo y Exhibición"
+  - "Tabla 12: Documentos Asociados"
