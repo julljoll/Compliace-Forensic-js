@@ -9,7 +9,8 @@ import {
   Fingerprint, Lock, Search, MessageSquare,
   Terminal as TerminalIcon, Play, Save, Smartphone,
   Database, Mic, Upload, RefreshCw, Copy, Check, BookOpen, Users,
-  Award, Trophy, Gavel, Scale
+  Award, Trophy, Gavel, Scale, ChevronDown, ChevronUp,
+  Key, Hash
 } from '../../components/atoms/AppleIcon';
 
 // ── TYPES & INTERFACES ────────────────────────────────────────────────────────
@@ -458,13 +459,325 @@ const QUIZZES: Record<string, QuizQuestion[]> = {
   ]
 };
 
-const MODULE_MANUALS: Record<string, {
+// ── TYPES & INTERFACES PARA EL MANUAL ────────────────────────────────────────
+
+type TagFase = {
+  label: string;
+  color: 'cyan' | 'green' | 'yellow' | 'red' | 'purple';
+};
+
+type AdvertenciaDetalle = {
+  titulo: string;
+  cuerpo: string;
+  nivel: 'warning' | 'critical' | 'info';
+};
+
+type PasoTutorial = {
+  id: string;
+  numero: string;
+  titulo: string;
+  descripcion: string;
+  items?: string[];
+  codigo?: { lang: string; contenido: string }[];
+  tags?: TagFase[];
+  advertencias?: AdvertenciaDetalle[];
+  icono: any;
+};
+
+type FaseTutorial = {
+  id: string;
+  numero: number;
+  titulo: string;
+  subtitulo: string;
+  icono: any;
+  color: string;
+  glowColor: string;
+  pasos: PasoTutorial[];
+};
+
+type ConfigTutorial = {
   muccPhase: string;
   legalBase: string;
   tools: string[];
-  procedureSteps: string[];
-  consoleCommands?: string[];
-}> = {
+  fases: FaseTutorial[];
+};
+
+// ── COMPONENTES AUXILIARES DEL MANUAL ────────────────────────────────────────
+
+function BadgeNormativa({ tag }: { tag: TagFase }) {
+  const colors: Record<TagFase['color'], string> = {
+    cyan:   'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]',
+    green:  'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]',
+    yellow: 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]',
+    red:    'bg-[#FF3B30]/10 border-[#FF3B30]/25 text-[#FF3B30]',
+    purple: 'bg-[#AF52DE]/10 border-[#AF52DE]/25 text-[#AF52DE]',
+  };
+  return (
+    <span className={`inline-flex items-center text-[8px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded border ${colors[tag.color]}`}>
+      {tag.label}
+    </span>
+  );
+}
+
+function AlertaForense({ adv }: { adv: AdvertenciaDetalle }) {
+  const cfg = {
+    critical: {
+      wrapper: 'bg-[#FF3B30]/[0.06] border-[#FF3B30]/25',
+      icon:    'text-[#FF3B30]',
+      titulo:  'text-[#FF3B30]',
+      cuerpo:  'text-[#1D1D1F]',
+      Icon:    AlertTriangle,
+    },
+    warning: {
+      wrapper: 'bg-[#FF9500]/[0.06] border-[#FF9500]/25',
+      icon:    'text-[#FF9500]',
+      titulo:  'text-[#FF9500]',
+      cuerpo:  'text-[#1D1D1F]',
+      Icon:    AlertTriangle,
+    },
+    info: {
+      wrapper: 'bg-[#007AFF]/[0.06] border-[#007AFF]/25',
+      icon:    'text-[#007AFF]',
+      titulo:  'text-[#007AFF]',
+      cuerpo:  'text-[#1D1D1F]',
+      Icon:    Shield,
+    },
+  }[adv.nivel];
+
+  return (
+    <div className={`flex items-start gap-3 p-4 rounded-lg border ${cfg.wrapper}`}>
+      <cfg.Icon size={14} className={`${cfg.icon} shrink-0 mt-0.5`} />
+      <div>
+        <p className={`text-[10px] font-bold uppercase tracking-wider mb-1 ${cfg.titulo}`}>
+          {adv.nivel === 'critical' ? '⚠️ CRÍTICO' : adv.nivel === 'warning' ? '⚠️ Advertencia' : 'ℹ️ Nota'}: {adv.titulo}
+        </p>
+        <p className={`text-[10px] leading-relaxed ${cfg.cuerpo}`}>{adv.cuerpo}</p>
+      </div>
+    </div>
+  );
+}
+
+function BloqueCode({ lang, contenido }: { lang: string; contenido: string }) {
+  const [copiado, setCopiado] = useState(false);
+  const copiar = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(contenido);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2200);
+    } catch {}
+  }, [contenido]);
+
+  const LANG_COLOR: Record<string, string> = {
+    bash:       'text-green-400/60',
+    powershell: 'text-blue-400/60',
+    sql:        'text-yellow-400/60',
+    python:     'text-cyan-400/60',
+  };
+
+  return (
+    <div className="rounded-lg overflow-hidden border border-white/[0.07] mt-3">
+      <div className="flex items-center justify-between px-4 py-2 bg-black/50 border-b border-white/[0.06]">
+        <div className="flex items-center gap-2">
+          <TerminalIcon size={11} className="text-white/25" />
+          <span className={`text-[9px] font-black uppercase tracking-[0.15em] ${LANG_COLOR[lang] || 'text-white/25'}`}>
+            {lang}
+          </span>
+        </div>
+        <button
+          onClick={copiar}
+          className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-wider px-2 py-1 rounded bg-white/[0.05] border border-white/[0.08] text-white/30 hover:text-cyan-400 hover:border-cyan-400/30 transition-all"
+        >
+          {copiado
+            ? <><Check size={10} className="text-green-400" /> Copiado</>
+            : <><Copy size={10} /> Copiar</>}
+        </button>
+      </div>
+      <pre className="overflow-x-auto px-4 py-4 bg-[#1E1E1E] text-[11px] leading-relaxed">
+        <code className="text-[#e4e4e7] font-mono whitespace-pre">{contenido}</code>
+      </pre>
+    </div>
+  );
+}
+
+function TarjetaPaso({
+  paso,
+  completado,
+  onToggle,
+}: {
+  paso: PasoTutorial;
+  completado: boolean;
+  onToggle: (id: string) => void;
+}) {
+  const [expandido, setExpandido] = useState(false);
+  const Icon = paso.icono;
+
+  return (
+    <div
+      className={`rounded-xl border transition-all duration-300 overflow-hidden ${
+        completado
+          ? 'border-[#34C759]/20 bg-[#34C759]/[0.03]'
+          : expandido
+          ? 'border-black/10 bg-white shadow-sm'
+          : 'border-black/[0.06] bg-white hover:border-black/10'
+      }`}
+    >
+      <button
+        className="w-full flex items-center gap-4 px-5 py-4 text-left group"
+        onClick={() => setExpandido(v => !v)}
+      >
+        <span className="text-[10px] font-bold text-[#86868B] font-mono shrink-0 w-8 tabular-nums">
+          {paso.numero}
+        </span>
+        <div className={`p-2 rounded-lg shrink-0 transition-all ${
+          completado ? 'bg-[#34C759]/10' : 'bg-black/[0.04] group-hover:bg-black/[0.06]'
+        }`}>
+          <Icon size={14} className={completado ? 'text-[#34C759]' : 'text-black/40'} />
+        </div>
+        <span className={`flex-1 text-[11px] font-bold uppercase tracking-wide ${
+          completado ? 'text-[#34C759]' : 'text-[#1D1D1F]/70 group-hover:text-[#1D1D1F]/90'
+        }`}>
+          {paso.titulo}
+        </span>
+        {!expandido && paso.tags && (
+          <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
+            {paso.tags.slice(0, 2).map(n => (
+              <BadgeNormativa key={n.label} tag={n} />
+            ))}
+          </div>
+        )}
+        {expandido
+          ? <ChevronUp size={14} className="text-black/35 shrink-0" />
+          : <ChevronDown size={14} className="text-black/20 shrink-0" />}
+      </button>
+
+      {expandido && (
+        <div className="px-5 pb-5 space-y-5 animate-fade-in">
+          <p className="text-[11px] text-[#1D1D1F]/60 leading-relaxed border-l-2 border-black/15 pl-4">
+            {paso.descripcion}
+          </p>
+
+          {paso.items && (
+            <ul className="space-y-2">
+              {paso.items.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-[11px] text-[#1D1D1F]/70 leading-relaxed">
+                  <span className="w-5 h-5 rounded-full bg-black/[0.04] border border-black/[0.06] flex items-center justify-center shrink-0 mt-0.5 text-[8px] font-bold text-[#86868B] tabular-nums">
+                    {i + 1}
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {paso.codigo?.map((c, i) => (
+            <BloqueCode key={i} lang={c.lang} contenido={c.contenido} />
+          ))}
+
+          {paso.tags && (
+            <div className="flex items-center gap-2 flex-wrap pt-1">
+              <span className="text-[9px] font-bold text-black/30 uppercase tracking-widest mr-1">
+                Base legal:
+              </span>
+              {paso.tags.map(n => (
+                <BadgeNormativa key={n.label} tag={n} />
+              ))}
+            </div>
+          )}
+
+          {paso.advertencias?.map((adv, i) => (
+            <AlertaForense key={i} adv={adv} />
+          ))}
+
+          <div className="pt-2 border-t border-black/5 flex justify-end">
+            <button
+              onClick={e => { e.stopPropagation(); onToggle(paso.id); }}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 ${
+                completado
+                  ? 'bg-[#34C759]/10 border border-[#34C759]/20 text-[#34C759] hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-500'
+                  : 'bg-black/[0.04] border border-black/[0.08] text-black/60 hover:bg-[#34C759]/10 hover:border-[#34C759]/20 hover:text-[#34C759]'
+              }`}
+            >
+              {completado
+                ? <><CheckCircle2 size={12} /> Completado — Desmarcar</>
+                : <><Circle size={12} /> Marcar como completado</>}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function StepperFase({
+  fase,
+  activa,
+  completada,
+  progreso,
+  onClick,
+}: {
+  fase: FaseTutorial;
+  activa: boolean;
+  completada: boolean;
+  progreso: number;
+  onClick: () => void;
+}) {
+  const Icon = fase.icono;
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-col items-center gap-2 group transition-all duration-200 min-w-0 flex-1"
+    >
+      <div
+        className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 shrink-0 ${
+          completada
+            ? 'border-[#34C759] bg-[#34C759]/10 shadow-sm'
+            : activa
+            ? `border-current ${fase.color} bg-white shadow-sm`
+            : 'border-black/10 bg-black/[0.03]'
+        }`}
+      >
+        {completada
+          ? <CheckCircle2 size={16} className="text-[#34C759]" />
+          : <Icon size={16} className={activa ? fase.color : 'text-[#86868B]'} />}
+      </div>
+      <div className="text-center px-1">
+        <p className={`text-[8px] font-bold uppercase tracking-[0.15em] ${
+          completada ? 'text-[#34C759]' : activa ? fase.color : 'text-[#86868B]'
+        }`}>
+          F{fase.numero}
+        </p>
+        <p className={`text-[9px] font-bold leading-tight hidden sm:block ${
+          completada ? 'text-[#1D1D1F]/60' : activa ? 'text-[#1D1D1F]/80' : 'text-[#86868B]'
+        }`}>
+          {fase.titulo.split(' ').slice(0, 2).join(' ')}
+        </p>
+      </div>
+      <div className="w-full h-0.5 bg-black/[0.05] rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${
+            completada ? 'bg-[#34C759]' : activa ? 'bg-current' : 'bg-transparent'
+          }`}
+          style={{
+            width: `${progreso}%`,
+            background: completada ? undefined : activa
+              ? fase.color.includes('[#0071E3]') || fase.color.includes('cyan') ? '#0071E3'
+              : fase.color.includes('[#34C759]') || fase.color.includes('green') ? '#34C759'
+              : fase.color.includes('[#30B0C7]') || fase.color.includes('emerald') ? '#30B0C7'
+              : fase.color.includes('[#FF9500]') || fase.color.includes('yellow') ? '#FF9500'
+              : fase.color.includes('[#007AFF]') || fase.color.includes('blue') ? '#007AFF'
+              : fase.color.includes('[#FF9500]') || fase.color.includes('orange') ? '#FF9500'
+              : '#FF3B30'
+              : undefined,
+          }}
+        />
+      </div>
+    </button>
+  );
+}
+
+// ── CONFIGURACIONES DE TUTORIALES CON FASES ──────────────────────────────────
+
+const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
   correo: {
     muccPhase: 'Fase Inicial: Obtención (por Consignación o Técnica)',
     legalBase: 'Artículo 49 CRBV (Debido Proceso), Artículos 187 y 188 COPP (Cadena de Custodia), Artículos 4 y 8 de la Ley de Mensajes de Datos y Firmas Electrónicas.',
@@ -474,22 +787,178 @@ const MODULE_MANUALS: Record<string, {
       'MFT Explorer (Análisis de la Master File Table de Windows)',
       'Wireshark (Auditoría de trazas y tráfico SMTP en red en tiempo real)'
     ],
-    procedureSteps: [
-      'Identificar la cuenta corporativa activa y su buzón local o en el servidor.',
-      'Documentar las IPs de conexión asociadas a las cabeceras utilizando herramientas de resolución DNS.',
-      'Exportar el mensaje en su formato original (.eml/.msg) sin abrir adjuntos ni enlaces sospechosos.',
-      'Calcular inmediatamente las firmas de integridad SHA-256 y MD5 y registrarlas en el acta de cadena de custodia.',
-      'Verificar las directivas SPF, firmas DKIM y políticas DMARC del encabezado SMTP para comprobar la legitimidad del remitente.'
-    ],
-    consoleCommands: [
-      '# Consulta del registro DKIM del remitente para validar autenticidad criptográfica',
-      'nslookup -type=txt google._domainkey.dominioexterno.com',
-      '',
-      '# Calcular hash SHA-256 de la evidencia exportada en PowerShell',
-      'Get-FileHash -Algorithm SHA256 .\\evidencia_correo.eml',
-      '',
-      '# Calcular hash en sistemas Unix',
-      'sha256sum evidencia_correo.eml'
+    fases: [
+      {
+        id: 'correo_f0',
+        numero: 0,
+        titulo: 'Identificación y Preservación',
+        subtitulo: 'Asegurando la inalterabilidad de la fuente original',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'correo_f0p1',
+            numero: '0.1',
+            titulo: 'Localización del Correo de Interés',
+            descripcion: 'Identificar el mensaje en su soporte o cliente original de correo electrónico sin realizar operaciones de apertura de adjuntos o enlaces.',
+            items: [
+              'Identificar la cuenta corporativa activa y su ruta del buzón local o en servidor.',
+              'Tomar captura de pantalla del mensaje en su contexto original.',
+              'Registrar en bitácora la fecha, hora e identificación del perito responsable.'
+            ],
+            tags: [
+              { label: 'ISO 27037 §6.1', color: 'purple' },
+              { label: 'Art. 187 COPP', color: 'cyan' }
+            ],
+            icono: Search
+          },
+          {
+            id: 'correo_f0p2',
+            numero: '0.2',
+            titulo: 'Exportación en Soporte Original',
+            descripcion: 'Realizar la exportación del archivo de correo en formato estructurado nativo preservando la totalidad de metadatos.',
+            items: [
+              'Exportar a formato .eml (Thunderbird/Gmail) o .msg (Outlook) según corresponda.',
+              'Crear una copia de trabajo idéntica para análisis y resguardar el original sellado criptográficamente.',
+              'Documentar el precinto y detalles en la planilla de cadena de custodia.'
+            ],
+            tags: [
+              { label: 'ISO 27037 §6.3', color: 'purple' },
+              { label: 'MUCC-2017', color: 'green' }
+            ],
+            icono: FileText
+          }
+        ]
+      },
+      {
+        id: 'correo_f1',
+        numero: 1,
+        titulo: 'Firma de Integridad',
+        subtitulo: 'Calculando el sello criptográfico inicial de la evidencia',
+        icono: Key,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'correo_f1p1',
+            numero: '1.1',
+            titulo: 'Cálculo de Hashes Criptográficos',
+            descripcion: 'Calcular el hash criptográfico del archivo de correo electrónico original como garantía de inmutabilidad.',
+            items: [
+              'Calcular el hash SHA-256 del archivo .eml/.msg exportado en la estación forense.',
+              'Calcular el hash MD5 adicional para propósitos de redundancia y auditoría.',
+              'Asegurar que los hashes de la copia de trabajo coincidan exactamente con la de origen.'
+            ],
+            codigo: [
+              {
+                lang: 'powershell',
+                contenido: '# Calcular hash SHA-256 de la evidencia exportada en PowerShell\nGet-FileHash -Algorithm SHA256 .\\evidencia_correo.eml'
+              },
+              {
+                lang: 'bash',
+                contenido: '# Calcular hash en sistemas Linux/macOS\nsha256sum evidencia_correo.eml'
+              }
+            ],
+            tags: [
+              { label: 'SHA-256 Integrity', color: 'yellow' },
+              { label: 'Art. 188 COPP', color: 'cyan' }
+            ],
+            icono: Key
+          }
+        ]
+      },
+      {
+        id: 'correo_f2',
+        numero: 2,
+        titulo: 'Análisis Técnico',
+        subtitulo: 'Examinando cabeceras SMTP y directivas de autenticación',
+        icono: Database,
+        color: 'text-[#30B0C7]',
+        glowColor: 'rgba(48,176,199,0.15)',
+        pasos: [
+          {
+            id: 'correo_f2p1',
+            numero: '2.1',
+            titulo: 'Extracción de Encabezados SMTP',
+            descripcion: 'Extraer los Internet Headers completos del correo para mapear la ruta técnica recorrida.',
+            items: [
+              'Extraer todos los saltos en los campos "Received".',
+              'Analizar el Message-ID y las fechas y horas registradas por cada servidor de correo.',
+              'Verificar las IPs de origen cruzándolas con registros DNS.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Consulta de registro DKIM para validar autenticidad\nnslookup -type=txt google._domainkey.dominioexterno.com'
+              }
+            ],
+            tags: [
+              { label: 'SMTP Headers', color: 'purple' },
+              { label: 'ISO 27042 §7', color: 'purple' }
+            ],
+            icono: Database
+          },
+          {
+            id: 'correo_f2p2',
+            numero: '2.2',
+            titulo: 'Auditoría SPF, DKIM y DMARC',
+            descripcion: 'Comprobar la legitimidad criptográfica y autorizaciones de servidores del correo bajo análisis.',
+            items: [
+              'Confirmar si la IP emisora está autorizada en el registro SPF del remitente.',
+              'Validar que la firma criptográfica DKIM corresponda al dominio del emisor.',
+              'Documentar cualquier fallo o alineación incorrecta que sugiera suplantación de identidad (Phishing/Spoofing).'
+            ],
+            tags: [
+              { label: 'DKIM/SPF Audit', color: 'yellow' },
+              { label: 'LMDyFE Art. 4', color: 'cyan' }
+            ],
+            icono: Lock
+          }
+        ]
+      },
+      {
+        id: 'correo_f3',
+        numero: 3,
+        titulo: 'Resultados y Dictamen',
+        subtitulo: 'Preservación de adjuntos y redacción del dictamen pericial',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'correo_f3p1',
+            numero: '3.1',
+            titulo: 'Extracción y Verificación de Adjuntos',
+            descripcion: 'Separar y catalogar todos los archivos adjuntos y enlaces contenidos en el mensaje de datos.',
+            items: [
+              'Extraer adjuntos calculando el hash SHA-256 individual de cada uno.',
+              'Escanear archivos en entornos seguros (sandbox) para descartar malware.',
+              'Expandir URLs cortas y documentar el destino de cada hipervínculo.'
+            ],
+            tags: [
+              { label: 'Evidence Extraction', color: 'green' }
+            ],
+            icono: Package
+          },
+          {
+            id: 'correo_f3p2',
+            numero: '3.2',
+            titulo: 'Redacción del Dictamen Pericial',
+            descripcion: 'Elaborar el informe pericial estructurado reuniendo los hallazgos y el cumplimiento normativo.',
+            items: [
+              'Completar el informe según los requisitos del Art. 225 del COPP.',
+              'Anexar la planilla PRCC y el registro de firmas criptográficas.',
+              'Registrar la entrega de resultados mediante el acta correspondiente.'
+            ],
+            tags: [
+              { label: 'Art. 225 COPP', color: 'cyan' },
+              { label: 'MUCC-2017 §Final', color: 'green' }
+            ],
+            icono: Scale
+          }
+        ]
+      }
     ]
   },
   adb: {
@@ -501,28 +970,149 @@ const MODULE_MANUALS: Record<string, {
       'Bolsa Faraday de aislamiento de radiofrecuencias',
       'Cable de datos USB 3.0 blindado y verificado'
     ],
-    procedureSteps: [
-      'Colocar el dispositivo en modo avión e introducirlo en una bolsa Faraday para evitar alteraciones remotas (bloqueo, borrado).',
-      'Habilitar el modo de Desarrollador tocando 7 veces el "Número de Compilación" en los Ajustes del dispositivo.',
-      'Activar la Depuración USB en el menú de Desarrollador.',
-      'Conectar el smartphone a la estación forense y autorizar la huella RSA en la pantalla del dispositivo.',
-      'Lanzar la consola y verificar el reconocimiento del hardware.',
-      'Ejecutar la extracción lógica del diagnóstico de servicios (Dumpsys) o búferes circulares de logs (Logcat) guardando el volcado.',
-      'Generar los hashes SHA-256 de las adquisiciones para el Libro de Custodia Forense.'
-    ],
-    consoleCommands: [
-      '# Verificar conexión del dispositivo y estado de autorización RSA',
-      'adb devices',
-      '',
-      '# Obtener información del modelo y versión de compilación del sistema',
-      'adb shell getprop ro.product.model',
-      'adb shell getprop ro.build.version.release',
-      '',
-      '# Realizar volcado del diagnóstico de servicios generales de Android',
-      'adb shell dumpsys > C:\\SHA256_Forense\\Adquisiciones\\dumpsys_completo.txt',
-      '',
-      '# Extraer buffer circular logcat para reconstrucción de eventos temporales',
-      'adb logcat -d > C:\\SHA256_Forense\\Adquisiciones\\android_logcat.log'
+    fases: [
+      {
+        id: 'adb_f0',
+        numero: 0,
+        titulo: 'Conexión y RSA',
+        subtitulo: 'Configuración del dispositivo y habilitación de ADB',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'adb_f0p1',
+            numero: '0.1',
+            titulo: 'Activación del Modo Desarrollador',
+            descripcion: 'Configurar el dispositivo móvil para habilitar el puente de depuración USB en Ajustes.',
+            items: [
+              'Ir a: Ajustes → Acerca del dispositivo → Número de Compilación.',
+              'Tocar 7 veces consecutivas para habilitar las opciones de desarrollador.',
+              'Ingresar al menú de desarrollador y activar el switch "Depuración USB".'
+            ],
+            tags: [
+              { label: 'Android Developer', color: 'cyan' }
+            ],
+            icono: Smartphone
+          },
+          {
+            id: 'adb_f0p2',
+            numero: '0.2',
+            titulo: 'Verificación del Enlace RSA',
+            descripcion: 'Conectar el teléfono a la Workstation forense y autorizar la huella de la llave pública.',
+            items: [
+              'Conectar mediante cable USB verificado.',
+              'Aceptar el prompt en el teléfono autorizando la clave RSA de la estación.',
+              'Ejecutar adb devices para certificar el estado de conexión.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Verificar conexión y estado del dispositivo\nadb devices -l'
+              }
+            ],
+            tags: [
+              { label: 'ADB Connection', color: 'green' }
+            ],
+            icono: Key
+          }
+        ]
+      },
+      {
+        id: 'adb_f1',
+        numero: 1,
+        titulo: 'Extracción de Datos',
+        subtitulo: 'Extrayendo bitácoras de eventos y diagnóstico de servicios',
+        icono: TerminalIcon,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'adb_f1p1',
+            numero: '1.1',
+            titulo: 'Volcado de Servicios (Dumpsys)',
+            descripcion: 'Ejecutar volcado completo del estado de los servicios del sistema para recabar configuraciones e información técnica.',
+            items: [
+              'Obtener metadatos de hardware como marcas, modelo y versión de API.',
+              'Ventanear el estado de cuentas activas y registros de conectividad Wi-Fi.',
+              'Salvar la salida directa en un archivo de texto plano en la partición forense.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Consultar datos de hardware\nadb shell getprop ro.product.model\n\n# Volcar estado de servicios dumpsys\nadb shell dumpsys > dumpsys_completo.txt'
+              }
+            ],
+            tags: [
+              { label: 'NIST SP 800-101', color: 'purple' },
+              { label: 'Dumpsys Dump', color: 'yellow' }
+            ],
+            icono: Database
+          },
+          {
+            id: 'adb_f1p2',
+            numero: '1.2',
+            titulo: 'Extracción de Logs (Logcat)',
+            descripcion: 'Volcar los buffers circulares de logs para la posterior reconstrucción cronológica de actividades.',
+            items: [
+              'Extraer el registro histórico mediante la consola de comandos.',
+              'Asegurar el guardado del archivo en la ruta de adquisición.',
+              'Fotografiar las terminales de consola mostrando el estado del proceso.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Volcar buffer circular de logcat\nadb logcat -d > android_logcat.log'
+              }
+            ],
+            tags: [
+              { label: 'Logcat Acquisition', color: 'yellow' }
+            ],
+            icono: TerminalIcon
+          }
+        ]
+      },
+      {
+        id: 'adb_f2',
+        numero: 2,
+        titulo: 'Integridad y Custodia',
+        subtitulo: 'Sellado criptográfico y rotulación reglamentaria',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'adb_f2p1',
+            numero: '2.1',
+            titulo: 'Firma SHA-256 de las Adquisiciones',
+            descripcion: 'Generar los hashes criptográficos SHA-256 individuales de todos los archivos recolectados.',
+            items: [
+              'Calcular el hash del archivo dumpsys y del logcat inmediatamente.',
+              'Guardar el archivo de hashes en carpeta separada como sello de inmutabilidad.',
+              'Garantizar la inalterabilidad de la evidencia local.'
+            ],
+            tags: [
+              { label: 'ISO 27037 §8.1', color: 'purple' }
+            ],
+            icono: Hash
+          },
+          {
+            id: 'adb_f2p2',
+            numero: '2.2',
+            titulo: 'Registro en la Planilla PRCC',
+            descripcion: 'Asentar la metadata técnica e identificadores en la Planilla de Registro de Cadena de Custodia.',
+            items: [
+              'Rotular y sellar la evidencia en bolsa Faraday.',
+              'Completar y firmar el formulario de traslado y custodia.',
+              'Ingresar la evidencia a la bóveda de resguardo del laboratorio.'
+            ],
+            tags: [
+              { label: 'MUCC-2017', color: 'green' }
+            ],
+            icono: Fingerprint
+          }
+        ]
+      }
     ]
   },
   downgrade: {
@@ -534,30 +1124,152 @@ const MODULE_MANUALS: Record<string, {
       'Firmas Legacy de la aplicación oficial (e.g. WhatsApp v2.11.431)',
       'ApkSigner (Herramienta para refirmar los instaladores)'
     ],
-    procedureSteps: [
-      'Obtener y hacer firmar el Acta de Consignación Oficial, que otorga el consentimiento explícito del custodio para un procedimiento invasivo.',
-      'Realizar un respaldo completo preventivo del contenedor de datos oficial mediante ADB.',
-      'Desinstalar la aplicación de producción manteniendo intactos los directorios de usuario del dispositivo mediante el comando pm.',
-      'Instalar el APK heredado (Legacy) compatible con la vulnerabilidad de respaldo sin cifrado.',
-      'Generar el respaldo del APK Downgrade obteniendo la base de datos SQLite descifrada.',
-      'Extraer el contenedor .ab, transformándolo en un tar y extrayendo `msgstore.db`. This is recorded as a Derivation (Obtención por Derivación).',
-      'Reinstalar la aplicación original y restaurar el respaldo de datos preventivo.'
-    ],
-    consoleCommands: [
-      '# 1. Respaldo de seguridad preventivo (Fase de Resguardo Inicial)',
-      'adb backup -f backup_preventivo.ab -apk com.whatsapp',
-      '',
-      '# 2. Desinstalación conservadora (Reteniendo directorios de datos /data/data)',
-      'adb shell pm uninstall -k com.whatsapp',
-      '',
-      '# 3. Instalación de la versión Legacy (Downgrade tolerado)',
-      'adb install -d -r whatsapp_legacy.apk',
-      '',
-      '# 4. Extraer el respaldo de datos descifrado de la versión antigua',
-      'adb backup -f whatsapp_descifrado.ab com.whatsapp',
-      '',
-      '# 5. Convertir el backup de Android (.ab) a archivo TAR mediante OpenSSL',
-      'dd if=whatsapp_descifrado.ab bs=24 skip=1 | openssl zlib -d > whatsapp_datos.tar'
+    fases: [
+      {
+        id: 'down_f0',
+        numero: 0,
+        titulo: 'Marco de Seguridad',
+        subtitulo: 'Autorización legal y copia de respaldo preventivo',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'down_f0p1',
+            numero: '0.1',
+            titulo: 'Acta de Consignación y Consentimiento',
+            descripcion: 'Obtener la firma del Acta de Consignación Oficial y Consentimiento Informado debido al carácter invasivo del procedimiento.',
+            items: [
+              'Documentar el consentimiento del custodio para la manipulación temporal de binarios.',
+              'Registrar el modelo, serial e IMEI del dispositivo en estudio.'
+            ],
+            tags: [
+              { label: 'Art. 49 CRBV', color: 'cyan' },
+              { label: 'MUCC-2017', color: 'green' }
+            ],
+            icono: FileText
+          },
+          {
+            id: 'down_f0p2',
+            numero: '0.2',
+            titulo: 'Copia de Respaldo Preventivo',
+            descripcion: 'Realizar un respaldo de seguridad del contenedor de la aplicación objetivo antes de alterar el sistema.',
+            items: [
+              'Ejecutar el comando adb backup para el paquete de la aplicación.',
+              'Salvar la copia en archivo .ab y calcular su hash de integridad.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Crear copia de respaldo de WhatsApp\nadb backup -f backup_preventivo.ab -apk com.whatsapp'
+              }
+            ],
+            tags: [
+              { label: 'ISO 27037 §8.2', color: 'purple' }
+            ],
+            icono: Shield
+          }
+        ]
+      },
+      {
+        id: 'down_f1',
+        numero: 1,
+        titulo: 'Ejecución del Downgrade',
+        subtitulo: 'Desinstalación conservadora e instalación de la versión Legacy',
+        icono: Lock,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'down_f1p1',
+            numero: '1.1',
+            titulo: 'Desinstalación Conservadora (-k)',
+            descripcion: 'Desinstalar la aplicación de producción manteniendo los directorios de bases de datos del usuario.',
+            items: [
+              'Utilizar el flag -k para indicarle a Android que preserve el directorio /data/data/com.app.',
+              'Asegurar que el proceso no borre las bases de datos locales.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Desinstalar aplicación manteniendo datos privados\nadb shell pm uninstall -k com.whatsapp'
+              }
+            ],
+            tags: [
+              { label: 'Package Manager', color: 'yellow' }
+            ],
+            icono: Lock
+          },
+          {
+            id: 'down_f1p2',
+            numero: '1.2',
+            titulo: 'Instalación de Versión Legacy',
+            descripcion: 'Instalar una versión antigua oficial vulnerable compatible con las copias adb backup sin cifrar.',
+            items: [
+              'Instalar el APK Legacy con bandera de downgrade.',
+              'Verificar en pantalla del dispositivo que no se presenten errores de firmas incompatibles.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Instalar versión legacy permitiendo downgrade y reemplazo\nadb install -d -r whatsapp_legacy.apk'
+              }
+            ],
+            tags: [
+              { label: 'Downgrade APK', color: 'cyan' }
+            ],
+            icono: Smartphone
+          }
+        ]
+      },
+      {
+        id: 'down_f2',
+        numero: 2,
+        titulo: 'Extracción y Cierre',
+        subtitulo: 'Adquisición de la base de datos y restauración del sistema',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'down_f2p1',
+            numero: '2.1',
+            titulo: 'Extracción de la Base de Datos Descifrada',
+            descripcion: 'Generar la copia del contenedor de datos descifrado de la aplicación legacy y transformarlo a formato compatible.',
+            items: [
+              'Crear backup de los datos descifrados mediante ADB.',
+              'Convertir el archivo de backup (.ab) a un formato TAR legible usando OpenSSL o herramientas de descompresión.',
+              'Extraer la base de datos SQLite y calcular su hash SHA-256 (Obtención por Derivación).'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Extraer respaldo de datos de la versión legacy\nadb backup -f whatsapp_descifrado.ab com.whatsapp\n\n# Convertir .ab a .tar con OpenSSL\ndd if=whatsapp_descifrado.ab bs=24 skip=1 | openssl zlib -d > whatsapp_datos.tar'
+              }
+            ],
+            tags: [
+              { label: 'ISO 27037 §8.4', color: 'purple' },
+              { label: 'Derivación MUCC', color: 'green' }
+            ],
+            icono: Database
+          },
+          {
+            id: 'down_f2p2',
+            numero: '2.2',
+            titulo: 'Restauración del Estado Original',
+            descripcion: 'Reinstalar la aplicación oficial de producción y restaurar los datos del usuario.',
+            items: [
+              'Instalar la última versión oficial de la aplicación desde el repositorio o adb.',
+              'Restaurar el respaldo preventivo generado en la Fase 0 para devolver el estado original de la cuenta.',
+              'Entregar el dispositivo al custodio y firmar el Acta de Devolución.'
+            ],
+            tags: [
+              { label: 'System Recovery', color: 'cyan' }
+            ],
+            icono: CheckCircle2
+          }
+        ]
+      }
     ]
   },
   whatsapp: {
@@ -569,23 +1281,139 @@ const MODULE_MANUALS: Record<string, {
       'FFmpeg (Transcodificador de códecs multimedia forenses)',
       'Python con librerías sqlite3 y pandas (Scripting forense)'
     ],
-    procedureSteps: [
-      'Trabajar estrictamente sobre una copia forense bit a bit de `msgstore.db` y `wa.db` para no alterar el original.',
-      'Montar la copia de trabajo en el gestor SQLite y mapear la tabla `message` (esquema nuevo) o `messages` (esquema antiguo).',
-      'Mapear la tabla `jid` para asociar números de teléfono reales con los IDs internos de las filas de mensajes.',
-      'Ejecutar sentencias SQL estructuradas para cribar conversaciones según palabras clave o rangos de tiempo.',
-      'Decodificar los ficheros de notas de voz en formato `.opus` extraídos del directorio de caché utilizando conversores de audio.',
-      'Documentar los resultados en el reporte técnico del laboratorio.'
-    ],
-    consoleCommands: [
-      '-- Consulta SQL: Filtrar mensajes e identificar remitente cruzando tablas en SQLite',
-      'SELECT j.user AS telefono_remitente, m.text AS contenido, datetime(m.timestamp/1000, \'unixepoch\') AS fecha_utc',
-      'FROM message m',
-      'JOIN jid j ON m.chat_row_id = j._id',
-      'WHERE m.text LIKE \'%comisión%\' OR m.text LIKE \'%transferencia%\';',
-      '',
-      '# Transcodificar audio opus de WhatsApp a formato WAV forense sin pérdida para transcripción',
-      'ffmpeg -i voice_note.opus -acodec pcm_s16le -ac 1 -ar 16000 output_forense.wav'
+    fases: [
+      {
+        id: 'wp_f0',
+        numero: 0,
+        titulo: 'Acceso a Base de Datos',
+        subtitulo: 'Montaje de archivos SQLite y cruce de tablas',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'wp_f0p1',
+            numero: '0.1',
+            titulo: 'Montaje en Copia de Trabajo',
+            descripcion: 'Montar una copia bit a bit de las bases de datos wa.db y msgstore.db en el gestor para no alterar los archivos originales.',
+            items: [
+              'Utilizar DB Browser for SQLite para el análisis.',
+              'Registrar los hashes de inmutabilidad antes de abrir las copias de trabajo.'
+            ],
+            tags: [
+              { label: 'ISO 27042 §6', color: 'purple' }
+            ],
+            icono: Database
+          },
+          {
+            id: 'wp_f0p2',
+            numero: '0.2',
+            titulo: 'Consultas SQL de Interés Criminalístico',
+            descripcion: 'Consultar y cruzar las tablas de mensajes y JIDs para mapear las conversaciones según palabras clave o números.',
+            items: [
+              'Mapear las tablas de usuarios y emparejarlas con los IDs de filas de mensajes.',
+              'Filtrar chats por términos específicos o ventanas de tiempo relevantes.'
+            ],
+            codigo: [
+              {
+                lang: 'sql',
+                contenido: '-- Query de ejemplo para filtrar chats en SQLite\nSELECT j.user AS telefono, m.text AS mensaje, datetime(m.timestamp/1000, \'unixepoch\') AS fecha\nFROM message m\nJOIN jid j ON m.chat_row_id = j._id\nWHERE m.text LIKE \'%urgente%\';'
+              }
+            ],
+            tags: [
+              { label: 'SQL Query', color: 'yellow' }
+            ],
+            icono: TerminalIcon
+          }
+        ]
+      },
+      {
+        id: 'wp_f1',
+        numero: 1,
+        titulo: 'Procesamiento de Archivos',
+        subtitulo: 'Validación de notas de voz opus y archivos EXIF de galería',
+        icono: TerminalIcon,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'wp_f1p1',
+            numero: '1.1',
+            titulo: 'Decodificación de Audios .opus',
+            descripcion: 'Localizar notas de voz en la caché y decodificar el formato Opus a MP3 o WAV forense para su presentación.',
+            items: [
+              'Extraer los archivos .opus y mantener sus hashes registrados.',
+              'Transcribir literalmente el contenido del audio.',
+              'Convertir una copia de trabajo a MP3 sin alterar la evidencia original.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Convertir nota de voz .opus a WAV con ffmpeg\nffmpeg -i voice_note.opus -acodec pcm_s16le -ac 1 -ar 16000 output_forense.wav'
+              }
+            ],
+            tags: [
+              { label: 'FFmpeg Audio', color: 'cyan' },
+              { label: 'Art. 225 COPP', color: 'cyan' }
+            ],
+            icono: Mic
+          },
+          {
+            id: 'wp_f1p2',
+            numero: '1.2',
+            titulo: 'Análisis EXIF de Imágenes',
+            descripcion: 'Extraer y verificar metadatos de imágenes adjuntas en los chats corporativos.',
+            items: [
+              'Verificar marcas de tiempo DateTimeOriginal y coordenadas GPS en las fotos.',
+              'Calcular hashes individuales de todas las imágenes presentadas en el dictamen.'
+            ],
+            tags: [
+              { label: 'EXIF Extraction', color: 'purple' },
+              { label: 'LMDyFE Art. 4', color: 'cyan' }
+            ],
+            icono: Camera
+          }
+        ]
+      },
+      {
+        id: 'wp_f2',
+        numero: 2,
+        titulo: 'Resultados y Reporte',
+        subtitulo: 'Línea de tiempo cronológica y entrega del dictamen',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'wp_f2p1',
+            numero: '2.1',
+            titulo: 'Reconstrucción de la Línea de Tiempo',
+            descripcion: 'Organizar los mensajes, llamadas y eventos multimedia en orden cronológico absoluto.',
+            items: [
+              'Generar la bitácora temporal del peritaje informático.',
+              'Correlacionar las fechas de bases de datos con los nombres de capturas del sistema.'
+            ],
+            tags: [
+              { label: 'ISO 27042 §8', color: 'purple' }
+            ],
+            icono: Scale
+          },
+          {
+            id: 'wp_f2p2',
+            numero: '2.2',
+            titulo: 'Elaboración de Reportes Técnicos',
+            descripcion: 'Generar el reporte consolidado de chats y firmarlo.',
+            items: [
+              'Exportar conversaciones verificadas con hash.',
+              'Adjuntar registros a la planilla de Cadena de Custodia.'
+            ],
+            tags: [
+              { label: 'Forensic Report', color: 'green' }
+            ],
+            icono: FileText
+          }
+        ]
+      }
     ]
   },
   integrity: {
@@ -596,22 +1424,99 @@ const MODULE_MANUALS: Record<string, {
       'GnuPG / PGP (Firmas asimétricas y certificados)',
       'Avilla Integrity Client (Módulo integrado de sellado criptográfico)'
     ],
-    procedureSteps: [
-      'Tomar el archivo de evidencia digital final (actas, bases de datos o reportes PDF).',
-      'Calcular y registrar simultáneamente los hashes MD5, SHA-1 y SHA-256 para evitar colisiones criptográficas.',
-      'Generar la firma criptográfica combinando el hash del archivo con el identificador del caso, la marca de tiempo exacta del perito y la clave privada.',
-      'Exportar el token de firma resultante (.avilla) y adjuntarlo formalmente al expediente de cadena de custodia.',
-      'Verificar periódicamente el token contra el archivo original para auditar que la cadena de custodia no haya sido vulnerada.'
-    ],
-    consoleCommands: [
-      '# Generar un hash SHA-256 robusto para un dictamen pericial',
-      'openssl dgst -sha256 dictamen_pericial_caso_102.pdf',
-      '',
-      '# Generar una firma simétrica HMAC-SHA256 simulada para el token de sellado',
-      'openssl dgst -sha256 -hmac "CLAVE_PRIVADA_PERITO" -out firma_expediente.avilla dictamen_pericial_caso_102.pdf',
-      '',
-      '# Comprobar la integridad de un archivo contrastando hashes',
-      'fciv.exe -sha256 dictamen_pericial_caso_102.pdf'
+    fases: [
+      {
+        id: 'int_f0',
+        numero: 0,
+        titulo: 'Hash y HMAC',
+        subtitulo: 'Cálculo de firma de integridad y sellado criptográfico',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'int_f0p1',
+            numero: '0.1',
+            titulo: 'Cálculo de Hashes Redundantes',
+            descripcion: 'Generar firmas de inmutabilidad (MD5, SHA-1 y SHA-256) sobre los archivos de la adquisición.',
+            items: [
+              'Generar los hashes correspondientes en la estación forense desconectada.',
+              'Documentar los valores resultantes en la bitácora del perito.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Calcular hash SHA-256 en OpenSSL\nopenssl dgst -sha256 dictamen_pericial_caso_102.pdf'
+              }
+            ],
+            tags: [
+              { label: 'Hash Verification', color: 'purple' }
+            ],
+            icono: Hash
+          },
+          {
+            id: 'int_f0p2',
+            numero: '0.2',
+            titulo: 'Generación de Firma HMAC',
+            descripcion: 'Calcular el código de autenticación de mensajes basado en hash (HMAC) con la clave privada del perito.',
+            items: [
+              'Combinar el hash del archivo con la clave privada asignada al peritaje.',
+              'Registrar la salida como el token de inmutabilidad del caso.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Generar HMAC-SHA256 con clave de perito\nopenssl dgst -sha256 -hmac "CLAVE_PRIVADA_PERITO" -out firma_expediente.avilla dictamen_pericial_caso_102.pdf'
+              }
+            ],
+            tags: [
+              { label: 'HMAC Security', color: 'yellow' },
+              { label: 'Art. 4 LMDyFE', color: 'cyan' }
+            ],
+            icono: Lock
+          }
+        ]
+      },
+      {
+        id: 'int_f1',
+        numero: 1,
+        titulo: 'Token y Custodia',
+        subtitulo: 'Sello final del archivo .avilla y auditoría inmutable',
+        icono: TerminalIcon,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'int_f1p1',
+            numero: '1.1',
+            titulo: 'Generación del Token .avilla',
+            descripcion: 'Guardar la metadata e integridad cifradas en un contenedor estructurado .avilla.',
+            items: [
+              'Escribir la información de metadatos del peritaje.',
+              'Adjuntar el archivo .avilla firmado al sobre de evidencias.'
+            ],
+            tags: [
+              { label: 'Avilla Token', color: 'green' }
+            ],
+            icono: Shield
+          },
+          {
+            id: 'int_f1p2',
+            numero: '1.2',
+            titulo: 'Verificación del Hash Chain',
+            descripcion: 'Registrar cada transacción en el log de auditoría inmutable del CMS.',
+            items: [
+              'Conectar la acción al store de auditoría con encadenamiento de hashes SHA-256.',
+              'Validar periódicamente la cadena para demostrar que la trazabilidad del peritaje está intacta.'
+            ],
+            tags: [
+              { label: 'Hash Chain Audit', color: 'purple' },
+              { label: 'Art. 188 COPP', color: 'cyan' }
+            ],
+            icono: Scale
+          }
+        ]
+      }
     ]
   }
 };
@@ -633,6 +1538,56 @@ export default function TutorialesForensesPage() {
     whatsapp: 'manual',
     integrity: 'manual'
   });
+
+  // Estado para la fase activa de cada tutorial
+  const [activePhases, setActivePhases] = useState<Record<string, string>>({
+    correo: 'correo_f0',
+    adb: 'adb_f0',
+    downgrade: 'down_f0',
+    whatsapp: 'wp_f0',
+    integrity: 'int_f0'
+  });
+
+  // Estado para pasos completados de todos los tutoriales
+  const [completadosTutoriales, setCompletadosTutoriales] = useState<Set<string>>(new Set());
+
+  // Cargar y guardar progreso de pasos completados en localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('avilla_tutoriales_progress_v2');
+      if (saved) setCompletadosTutoriales(new Set(JSON.parse(saved)));
+    } catch {}
+  }, []);
+
+  const togglePasoTutorial = useCallback((pasoId: string) => {
+    setCompletadosTutoriales(prev => {
+      const next = new Set(prev);
+      if (next.has(pasoId)) next.delete(pasoId);
+      else next.add(pasoId);
+      try {
+        localStorage.setItem('avilla_tutoriales_progress_v2', JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  const resetearProgresoTutorial = useCallback((moduleId: string) => {
+    if (!window.confirm('¿Reiniciar el progreso de este tutorial?')) return;
+    
+    const tutorialConfig = TUTORIAL_CONFIGS[moduleId];
+    if (!tutorialConfig) return;
+    const pasoIds = tutorialConfig.fases.flatMap(f => f.pasos.map(p => p.id));
+    
+    setCompletadosTutoriales(prev => {
+      const next = new Set(prev);
+      pasoIds.forEach(id => next.delete(id));
+      try {
+        localStorage.setItem('avilla_tutoriales_progress_v2', JSON.stringify([...next]));
+      } catch {}
+      return next;
+    });
+  }, []);
+
 
   const [academyProgress, setAcademyProgress] = useState<AcademyProgress>(() => {
     const saved = localStorage.getItem('avilla_academy_progress');
@@ -1248,6 +2203,43 @@ export default function TutorialesForensesPage() {
     });
   };
 
+  // ── Cálculos de progreso para el manual técnico activo ──────────────────────
+  const configTut = TUTORIAL_CONFIGS[activeTutorial];
+  
+  const totalPasosTut = useMemo(() => {
+    if (!configTut) return 0;
+    return configTut.fases.reduce((s, f) => s + f.pasos.length, 0);
+  }, [configTut]);
+
+  const totalCompletadosTut = useMemo(() => {
+    if (!configTut) return 0;
+    return configTut.fases.reduce(
+      (s, f) => s + f.pasos.filter(p => completadosTutoriales.has(p.id)).length,
+      0,
+    );
+  }, [configTut, completadosTutoriales]);
+
+  const pctGlobalTut = useMemo(() => {
+    if (totalPasosTut === 0) return 0;
+    return Math.round((totalCompletadosTut / totalPasosTut) * 100);
+  }, [totalCompletadosTut, totalPasosTut]);
+
+  const progresoPorFaseTut = useCallback((f: FaseTutorial) => {
+    if (!f.pasos.length) return 0;
+    const c = f.pasos.filter(p => completadosTutoriales.has(p.id)).length;
+    return Math.round((c / f.pasos.length) * 100);
+  }, [completadosTutoriales]);
+
+  const faseCompletadaTut = useCallback((f: FaseTutorial) => {
+    return progresoPorFaseTut(f) === 100;
+  }, [progresoPorFaseTut]);
+
+  const activePhaseId = activePhases[activeTutorial];
+  const faseActualTut = useMemo(() => {
+    if (!configTut) return null;
+    return configTut.fases.find(f => f.id === activePhaseId) ?? configTut.fases[0];
+  }, [configTut, activePhaseId]);
+
   // ─── RENDERING ─────────────────────────────────────────────────────────────
 
   return (
@@ -1507,7 +2499,7 @@ export default function TutorialesForensesPage() {
           {tutorialList.map((mod) => {
             if (activeTutorial !== mod.id) return null;
 
-            const manual = MODULE_MANUALS[mod.id];
+            const manual = TUTORIAL_CONFIGS[mod.id];
             const questions = QUIZZES[mod.id];
             const currentTab = subTabs[mod.id] || 'manual';
             const isCertified = academyProgress.completedQuizzes[mod.id];
@@ -1560,73 +2552,206 @@ export default function TutorialesForensesPage() {
                 {/* 1. MANUAL TÉCNICO */}
                 {currentTab === 'manual' && (
                   <div className="space-y-6 animate-fade-in">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                      
-                      {/* Metodología */}
-                      <div className="lg:col-span-2 space-y-4">
-                        <div className="apple-card p-5 space-y-3">
-                          <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider flex items-center gap-1.5">
-                            <BookOpen size={14} className="text-[var(--apple-accent)]" /> Procedimiento Operativo Estandarizado (SOP)
-                          </h3>
-                          <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
-                            Aplica rigurosamente los siguientes pasos en el laboratorio o sitio de recolección para salvaguardar el debido proceso:
-                          </p>
-                          <div className="space-y-3.5 pt-2">
-                            {manual.procedureSteps.map((step, idx) => (
-                              <div key={idx} className="flex gap-3 items-start text-xs">
-                                <div className="w-5 h-5 rounded-full bg-[var(--apple-accent)]/10 text-[var(--apple-accent)] flex items-center justify-center font-bold font-mono text-[10px] shrink-0">
-                                  {idx + 1}
-                                </div>
-                                <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed pt-0.5">{step}</p>
-                              </div>
-                            ))}
-                          </div>
+                    
+                    {/* Barra de progreso global del tutorial */}
+                    <div className="apple-card p-5 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--apple-accent)]/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[var(--apple-accent)]/[0.01] to-transparent pointer-events-none" />
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[9px] font-bold text-[#86868B] dark:text-[#86868B] uppercase tracking-widest">
+                          Progreso del Protocolo Operativo
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] font-bold text-[#6E6E73] dark:text-[#86868B] tabular-nums">
+                            {totalCompletadosTut}/{totalPasosTut} pasos
+                          </span>
+                          <span className={`text-sm font-bold tabular-nums ${
+                            pctGlobalTut === 100 ? 'text-[#34C759]' : pctGlobalTut > 0 ? 'text-[var(--apple-accent)]' : 'text-[#86868B]'
+                          }`}>
+                            {pctGlobalTut}%
+                          </span>
+                          {totalCompletadosTut > 0 && (
+                            <button
+                              onClick={() => resetearProgresoTutorial(mod.id)}
+                              className="flex items-center gap-1 text-[8px] font-bold text-[#86868B] hover:text-[#FF3B30] uppercase tracking-wider transition-colors"
+                              title="Reiniciar progreso de este manual"
+                            >
+                              <RefreshCw size={10} />
+                            </button>
+                          )}
                         </div>
                       </div>
-
-                      {/* Herramientas de Software */}
-                      <div className="lg:col-span-1 space-y-4">
-                        <div className="apple-card p-5 space-y-3">
-                          <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider flex items-center gap-1.5">
-                            <Gavel size={14} className="text-[var(--apple-accent)]" /> Programas del Laboratorio
-                          </h3>
-                          <p className="text-[10px] text-[#86868B]">
-                            Herramientas comerciales y de código abierto requeridas para llevar a cabo la tarea pericial:
-                          </p>
-                          <div className="space-y-2 pt-1">
-                            {manual.tools.map((tool, idx) => (
-                              <div key={idx} className="flex gap-2 items-center text-xs p-2.5 rounded-[8px] bg-[#F5F5F7] dark:bg-[#2C2C2E] border border-black/[0.03] dark:border-white/[0.03] font-semibold">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--apple-accent)]" />
-                                <span>{tool}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                      <div className="h-2 w-full bg-black/[0.05] dark:bg-white/[0.05] rounded-full overflow-hidden border border-black/[0.02] dark:border-white/[0.02]">
+                        <div
+                          className="h-full rounded-full transition-all duration-700 ease-out"
+                          style={{
+                            width: `${pctGlobalTut}%`,
+                            background: pctGlobalTut === 100
+                              ? 'linear-gradient(90deg, #34C759, #30D158)'
+                              : 'linear-gradient(90deg, #0071E3, #007AFF)',
+                            boxShadow: pctGlobalTut > 0
+                              ? pctGlobalTut === 100
+                                ? '0 0 8px rgba(52,199,89,0.2)'
+                                : '0 0 8px rgba(0,113,227,0.15)'
+                              : 'none',
+                          }}
+                        />
                       </div>
                     </div>
 
-                    {/* Consola / Comandos Exactos */}
-                    {manual.consoleCommands && (
-                      <div className="apple-card p-5 space-y-3">
-                        <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider flex items-center gap-1.5">
-                          <TerminalIcon size={14} className="text-[var(--apple-accent)]" /> Comandos de Consola Forense
-                        </h3>
-                        <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                          Comandos exactos de consola que debe dominar el perito informático:
-                        </p>
-                        <div className="relative rounded-[12px] overflow-hidden border border-neutral-300 dark:border-neutral-800">
-                          {/* Cabecera Consola macOS Sonoma */}
-                          <div className="bg-[#E5E5EA] dark:bg-[#2C2C2E] px-4 py-2 flex items-center gap-1.5">
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                            <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                            <span className="text-[9px] font-mono text-[#86868B] ml-2">Terminal forense — avilla_cli</span>
+                    {/* Stepper de Fases */}
+                    <div className="apple-card p-4 sm:p-5">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {configTut.fases.map((fase, idx) => (
+                          <div key={fase.id} className="flex items-center flex-1 min-w-0">
+                            <StepperFase
+                              fase={fase}
+                              activa={activePhaseId === fase.id}
+                              completada={faseCompletadaTut(fase)}
+                              progreso={progresoPorFaseTut(fase)}
+                              onClick={() => setActivePhases(prev => ({ ...prev, [mod.id]: fase.id }))}
+                            />
+                            {idx < configTut.fases.length - 1 && (
+                              <div className={`hidden sm:block h-px flex-1 mx-1 ${
+                                faseCompletadaTut(fase) ? 'bg-[#34C759]/30' : 'bg-black/[0.06] dark:bg-white/[0.06]'
+                              }`} />
+                            )}
                           </div>
-                          {/* Bloque de código */}
-                          <pre className="bg-[#1E1E1E] text-[#D2D2D7] p-4 font-mono text-xs leading-relaxed overflow-x-auto select-all max-h-[300px]">
-                            {manual.consoleCommands.join('\n')}
-                          </pre>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Fase Activa y Navegación */}
+                    {faseActualTut && (
+                      <div className="animate-fade-in" key={activePhaseId}>
+                        {/* Cabecera de la fase actual */}
+                        <div className="apple-card p-5 sm:p-6 mb-4 relative overflow-hidden">
+                          <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{ background: `radial-gradient(ellipse at top left, ${faseActualTut.glowColor}, transparent 60%)` }}
+                          />
+                          <div className="relative flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-4">
+                              <div className="p-3 rounded-[6px] bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] shrink-0">
+                                {(() => { const Icon = faseActualTut.icono; return <Icon size={22} className={faseActualTut.color} />; })()}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-3 mb-1">
+                                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] ${faseActualTut.color}`}>
+                                    Fase {faseActualTut.numero}
+                                  </span>
+                                  <span className={`text-[8px] font-bold px-2 py-0.5 rounded border ${
+                                    faseCompletadaTut(faseActualTut)
+                                      ? 'border-[#34C759]/25 bg-[#34C759]/10 text-[#34C759]'
+                                      : 'border-black/[0.07] dark:border-white/[0.07] bg-black/[0.02] dark:bg-white/[0.02] text-[#86868B]'
+                                  } uppercase tracking-wider`}>
+                                    {faseCompletadaTut(faseActualTut)
+                                      ? '✓ Completada'
+                                      : `${progresoPorFaseTut(faseActualTut)}% completado`}
+                                  </span>
+                                </div>
+                                <h2 className="text-base sm:text-lg font-bold text-[#1D1D1F] dark:text-white uppercase tracking-tight">
+                                  {faseActualTut.titulo}
+                                </h2>
+                                <p className="text-[10px] text-[#6E6E73] dark:text-[#86868B] font-medium mt-1">{faseActualTut.subtitulo}</p>
+                              </div>
+                            </div>
+                            
+                            {/* Navegación entre fases */}
+                            <div className="shrink-0 flex gap-2">
+                              <button
+                                onClick={() => {
+                                  const idx = configTut.fases.findIndex(f => f.id === activePhaseId);
+                                  if (idx > 0) {
+                                    setActivePhases(prev => ({ ...prev, [mod.id]: configTut.fases[idx - 1].id }));
+                                  }
+                                }}
+                                disabled={activePhaseId === configTut.fases[0].id}
+                                className="text-[9px] font-bold px-3 py-2 rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] text-[#86868B] hover:text-[#1D1D1F] dark:hover:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.05] transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider"
+                              >
+                                ← Anterior
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const idx = configTut.fases.findIndex(f => f.id === activePhaseId);
+                                  if (idx < configTut.fases.length - 1) {
+                                    setActivePhases(prev => ({ ...prev, [mod.id]: configTut.fases[idx + 1].id }));
+                                  }
+                                }}
+                                disabled={activePhaseId === configTut.fases[configTut.fases.length - 1].id}
+                                className="text-[9px] font-bold px-3 py-2 rounded-lg border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.02] text-[#86868B] hover:text-[#1D1D1F] dark:hover:text-white hover:bg-black/[0.05] dark:hover:bg-white/[0.05] transition-all disabled:opacity-20 disabled:cursor-not-allowed uppercase tracking-wider"
+                              >
+                                Siguiente →
+                              </button>
+                            </div>
+                          </div>
                         </div>
+
+                        {/* Lista de pasos de la fase */}
+                        <div className="space-y-3">
+                          {faseActualTut.pasos.map(paso => (
+                            <TarjetaPaso
+                              key={paso.id}
+                              paso={paso}
+                              completado={completadosTutoriales.has(paso.id)}
+                              onToggle={togglePasoTutorial}
+                            />
+                          ))}
+                        </div>
+
+                        {/* CTA Siguiente Fase */}
+                        {faseCompletadaTut(faseActualTut) && activePhaseId !== configTut.fases[configTut.fases.length - 1].id && (
+                          <div
+                            className="mt-5 p-5 rounded-xl border border-[#34C759]/20 bg-[#34C759]/[0.03] flex items-center justify-between gap-4 animate-fade-in"
+                          >
+                            <div className="flex items-center gap-3">
+                              <CheckCircle2 size={20} className="text-[#34C759] shrink-0" />
+                              <div>
+                                <p className="text-sm font-bold text-[#34C759] uppercase tracking-wide">
+                                  Fase {faseActualTut.numero} completada
+                                </p>
+                                <p className="text-[10px] text-[#34C759]/80">
+                                  Continúe con la siguiente fase del protocolo forense
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => {
+                                const idx = configTut.fases.findIndex(f => f.id === activePhaseId);
+                                if (idx < configTut.fases.length - 1) {
+                                  setActivePhases(prev => ({ ...prev, [mod.id]: configTut.fases[idx + 1].id }));
+                                }
+                              }}
+                              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#34C759]/10 border border-[#34C759]/30 text-[#34C759] text-[10px] font-bold uppercase tracking-wider hover:bg-[#34C759]/20 transition-all shrink-0"
+                            >
+                              Siguiente fase <Trophy size={12} />
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Mensaje final — protocolo completo */}
+                        {activePhaseId === configTut.fases[configTut.fases.length - 1].id && faseCompletadaTut(faseActualTut) && (
+                          <div className="mt-5 p-6 rounded-xl border border-[#0071E3]/20 bg-[#0071E3]/[0.02] text-center animate-fade-in relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[#0071E3]/[0.02] to-transparent pointer-events-none" />
+                            <div className="relative">
+                              <CheckCircle2 size={40} className="text-[#34C759] mx-auto mb-3" />
+                              <h3 className="text-base font-bold text-[#1D1D1F] dark:text-white uppercase tracking-tight mb-2">
+                                Protocolo Forense Completado
+                              </h3>
+                              <p className="text-[11px] text-[#6E6E73] dark:text-[#86868B] leading-relaxed max-w-2xl mx-auto mb-4">
+                                Ha completado exitosamente todas las fases del protocolo operativo para {mod.label} bajo los lineamientos periciales establecidos.
+                                ¡Excelente trabajo! Proceda con la simulación en el Laboratorio Virtual o tome el Examen de Certificación.
+                              </p>
+                              <div className="flex flex-wrap justify-center gap-2">
+                                {configTut.tools.slice(0, 3).map(toolName => (
+                                   <span key={toolName} className="text-[9px] px-3 py-1 rounded-full bg-[#34C759]/10 border border-[#34C759]/20 text-[#34C759] font-bold uppercase tracking-wider">
+                                    {toolName} ✓
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

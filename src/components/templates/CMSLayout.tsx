@@ -13,9 +13,9 @@ const menuItems = [
   { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Principal' },
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
   { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
-  { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Módulos Forenses' },
-  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'Módulos Forenses' },
-  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'Módulos Forenses' },
+  { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'TUTORIALES' },
+  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'TUTORIALES' },
+  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'TUTORIALES' },
   { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/planillas/acta-entrevista',          label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
@@ -24,7 +24,7 @@ const menuItems = [
   { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ];
 
-const groups = ['Principal', 'Control', 'Módulos Forenses', 'Plantillas Oficiales', 'Sistema'];
+const groups = ['Principal', 'Control', 'TUTORIALES', 'Plantillas Oficiales', 'Sistema'];
 
 /** Determina si un item está activo dado el pathname actual */
 function useIsActive(path: string) {
