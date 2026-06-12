@@ -311,19 +311,17 @@ export default function TutorialesForensesPage() {
   const addEntry = useAuditStore(state => state.addEntry);
   const { user } = useAuthStore();
 
-  // Pestaña principal de tutoriales
   const [activeTutorial, setActiveTutorial] = useState<'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity'>('correo');
 
   // ─── TABS / MENU DE TUTORIALES ───────────────────────────────────────────
   const tutorialList = [
-    { id: 'correo', label: 'Correo Corporativo', sub: 'Protocolo de 11 pasos periciales', icon: Mail, complexity: 'Baja', info: 'Normativa ISO 27037 y LMDF' },
-    { id: 'adb', label: 'Colectas ADB', sub: 'Adquisición lógica por consola', icon: TerminalIcon, complexity: 'Media', info: 'Extracción de logs y dumpsys' },
-    { id: 'downgrade', label: 'APK Downgrade', sub: 'Extracción invasiva en base de datos', icon: Smartphone, complexity: 'Alta', info: 'Acceso SQLite en Android sin root' },
-    { id: 'whatsapp', label: 'WhatsApp Parser', sub: 'Estructuras msgstore y audio opus', icon: Database, complexity: 'Media', info: 'Parseo de tablas y transcriptor Opus' },
-    { id: 'integrity', label: 'Integridad (.avilla)', sub: 'Sellado criptográfico y no-repudio', icon: Shield, complexity: 'Baja', info: 'Simulación AES-256 + HMAC-SHA256' },
+    { id: 'correo', label: 'Correo Corporativo', sub: 'Obtención por Consignación/Técnica', icon: Mail, complexity: 'Baja', info: 'ISO 27037, LMDF y MUCC-2017' },
+    { id: 'adb', label: 'Colectas ADB', sub: 'Obtención Técnica de Dispositivos', icon: TerminalIcon, complexity: 'Media', info: 'ISO 27037, NIST 800-101 y MUCC-2017' },
+    { id: 'downgrade', label: 'APK Downgrade', sub: 'Obtención por Consignación/Derivación', icon: Smartphone, complexity: 'Alta', info: 'SQLite en Android y MUCC-2017' },
+    { id: 'whatsapp', label: 'WhatsApp Parser', sub: 'Fase de Laboratorio - Peritación', icon: Database, complexity: 'Media', info: 'Examen de bases de datos wa.db/msgstore.db' },
+    { id: 'integrity', label: 'Integridad (.avilla)', sub: 'Fase de Resguardo - Inmutabilidad', icon: Shield, complexity: 'Baja', info: 'Cadena de Custodia (Art. 187/188 COPP)' },
   ] as const;
 
-  // ─── ESTADOS TUTORIAL 1: CORREO CORPORATIVO ─────────────────────────────
   const [correoCasoId, setCorreoCasoId] = useState('');
   const [correoProceso, setCorreoProceso] = useState<ProcesoCorreo | null>(null);
   const [correoShowForm, setCorreoShowForm] = useState(true);
@@ -427,7 +425,6 @@ export default function TutorialesForensesPage() {
     return acc;
   }, []);
 
-  // ─── ESTADOS TUTORIAL 2: COLECTAS ADB ────────────────────────────────────
   const [adbCasoId, setAdbCasoId] = useState('');
   const [adbSerial, setAdbSerial] = useState('ADB-77491-MOBILE');
   const [adbRuta, setAdbRuta] = useState('C:/SHA256_Forense/Adquisiciones/Colectas_ADB');
@@ -560,7 +557,6 @@ export default function TutorialesForensesPage() {
     link.click();
   };
 
-  // ─── ESTADOS TUTORIAL 3: APK DOWNGRADE ───────────────────────────────────
   const [downCasoId, setDownCasoId] = useState('');
   const [downApp, setDownApp] = useState<'whatsapp' | 'telegram' | 'signal'>('whatsapp');
   const [downPerito, setDownPerito] = useState(user?.nombre || 'Perito Judicial');
@@ -630,7 +626,6 @@ export default function TutorialesForensesPage() {
     setDownCompletado(true);
   };
 
-  // ─── ESTADOS TUTORIAL 4: WHATSAPP PARSER ─────────────────────────────────
   const [wpCasoId, setWpCasoId] = useState('');
   const [wpActiveTab, setWpActiveTab] = useState<'chats' | 'contacts' | 'audios' | 'search'>('chats');
   const [wpSelectedChatId, setWpSelectedChatId] = useState('c1');
@@ -678,7 +673,6 @@ export default function TutorialesForensesPage() {
     setWpAudioPlayingId(prev => prev === id ? null : id);
   };
 
-  // ─── ESTADOS TUTORIAL 5: INTEGRIDAD (.avilla) ────────────────────────────
   const [intCasoId, setIntCasoId] = useState('');
   const [intSelectedFile, setIntSelectedFile] = useState<FileDetail | null>(null);
   const [intCalculando, setIntCalculando] = useState(false);
@@ -805,11 +799,10 @@ export default function TutorialesForensesPage() {
   return (
     <div className="space-y-8 animate-fade-in print:bg-white print:p-0">
       
-      {/* ─── HEADER PRINCIPAL ──────────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E5E5EA] pb-6 print:hidden">
         <div>
-          <h1 className="text-3xl font-bold text-[#1D1D1F] tracking-tight">Centro de Guías & Tutoriales Forenses</h1>
-          <p className="text-sm text-[#86868B] font-medium max-w-2xl mt-1">
+          <h1 className="text-apple-title font-black text-[#1D1D1F]">Centro de Guías & Tutoriales Forenses</h1>
+          <p className="text-apple-body text-[#86868B] mt-1 max-w-2xl">
             Plataforma interactiva para la auto-capacitación y el cumplimiento pericial técnico-jurídico, estructurada bajo estándares internacionales.
           </p>
         </div>
@@ -823,10 +816,8 @@ export default function TutorialesForensesPage() {
         </div>
       </div>
 
-      {/* ─── LAYOUT DE DOS COLUMNAS ────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
         
-        {/* Barra Lateral Izquierda: Selector de Tutoriales */}
         <div className="lg:col-span-1 space-y-3 print:hidden">
           <p className="text-xs font-bold text-[#86868B] uppercase tracking-wider px-2">Guías de Procedimiento</p>
           <div className="flex flex-col gap-1.5">
@@ -838,7 +829,6 @@ export default function TutorialesForensesPage() {
                   key={tut.id}
                   onClick={() => {
                     setActiveTutorial(tut.id);
-                    // Resetear algunos estados específicos para fluidez
                     setIntVerificacionResultado(null);
                   }}
                   className={`w-full p-3.5 rounded-[12px] text-left transition-all border flex gap-3 items-start ${
@@ -869,24 +859,18 @@ export default function TutorialesForensesPage() {
           </div>
         </div>
 
-        {/* Panel de Contenido Derecho: Tutorial Activo */}
         <div className="lg:col-span-3 space-y-6">
 
-          {/* ════════════════════════════════════════════════════════════════
-              TUTORIAL 1: CORREO CORPORATIVO
-          ════════════════════════════════════════════════════════════════ */}
           {activeTutorial === 'correo' && (
             <div className="space-y-6">
               
-              {/* Bloque Informativo RAG */}
               <div className="apple-card p-5 border-l-4 border-[#0071E3] bg-[#0071E3]/5 print:hidden">
-                <h3 className="text-xs font-bold text-[#0071E3] uppercase tracking-wider mb-1">Fundamento RAG: Correo Corporativo</h3>
-                <p className="text-xs text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
-                  Bajo la <strong>ISO/IEC 27037:2012</strong>, la identificación y preservación de correos electrónicos requiere mantener intacto el soporte original. La <strong>Ley sobre Mensajes de Datos y Firmas Electrónicas (Art. 4 y 8)</strong> otorga plena eficacia probatoria a los correos, siempre que se verifique su integridad mediante hashes criptográficos y su procedencia mediante cabeceras SMTP (DKIM, SPF, DMARC) bajo cadena de custodia (Art. 187 COPP y MUCC-2017).
+                <h3 className="text-apple-subhead font-bold text-[#0071E3] uppercase tracking-wider mb-1">Fundamento RAG: Correo Corporativo (MUCC-2017 Obtención Técnica / Consignación)</h3>
+                <p className="text-apple-body text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
+                  Bajo la <strong>ISO/IEC 27037:2012</strong>, la identificación y preservación de correos electrónicos requiere mantener intacto el soporte original. La <strong>Ley sobre Mensajes de Datos y Firmas Electrónicas (Art. 4 y 8)</strong> otorga plena eficacia probatoria a los correos, siempre que se verifique su integridad mediante hashes criptográficos y su procedencia mediante cabeceras SMTP (DKIM, SPF, DMARC). Este procedimiento se enmarca como <strong>Obtención Técnica</strong> (si el perito accede al servidor) o <strong>Obtención por Consignación</strong> (si se realiza entrega voluntaria) bajo la cadena de custodia regulada en los <strong>Artículos 187 y 188 del COPP</strong>, salvaguardando el debido proceso (<strong>Art. 49 CRBV</strong>) y según los lineamientos del <strong>MUCC-2017</strong>.
                 </p>
               </div>
 
-              {/* Controles del Proceso */}
               <div className="apple-card p-5 print:hidden">
                 <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider mb-3 flex items-center gap-2">
                   <Mail size={16} className="text-[#0071E3]" /> Configuración de Auditoría de Correo
@@ -929,10 +913,10 @@ export default function TutorialesForensesPage() {
                       </div>
                       <div className="md:col-span-2">
                         <label className="apple-label">Message-ID</label>
-                        <input type="text" value={correoFormBasico.messageId} onChange={e => setCorreoFormBasico(p => ({ ...p, messageId: e.target.value }))} placeholder="<abc123456@mail.empresa.com>" className="apple-input w-full" />
+                        <input type="text" value={correoFormBasico.messageId} onChange={e => setCorreoFormBasico(p => ({ ...p, messageId: e.target.value }))} placeholder="&lt;abc123456@mail.empresa.com&gt;" className="apple-input w-full" />
                       </div>
                       <div className="md:col-span-2 flex justify-end">
-                        <button onClick={handleIniciarCorreo} className="apple-button-primary text-xs py-2 px-4">Iniciar Proceso Forense</button>
+                        <button onClick={handleIniciarCorreo} className="apple-btn apple-btn-primary text-xs py-2 px-4 text-white">Iniciar Proceso Forense</button>
                       </div>
                     </div>
                   )}
@@ -966,11 +950,9 @@ export default function TutorialesForensesPage() {
                 </div>
               </div>
 
-              {/* Guía Operativa Paso a Paso */}
               {correoProceso && (
                 <div className="space-y-6">
                   
-                  {/* Progreso del tutorial */}
                   <div className="apple-card p-4 flex items-center justify-between print:hidden">
                     <div className="flex-1">
                       <div className="flex justify-between items-baseline mb-1">
@@ -982,13 +964,12 @@ export default function TutorialesForensesPage() {
                       </div>
                     </div>
                     <div className="ml-4 shrink-0">
-                      <button onClick={imprimirCorreo} className="apple-button flex items-center gap-1 text-xs py-1.5 px-3">
+                      <button onClick={imprimirCorreo} className="apple-btn apple-btn-secondary flex items-center gap-1 text-xs py-1.5 px-3">
                         <Printer size={12} /> Imprimir Acta
                       </button>
                     </div>
                   </div>
 
-                  {/* Lista de Fases y Pasos */}
                   <div className="space-y-4">
                     {correoFases.map(fase => (
                       <div key={fase.fase} className="apple-card overflow-hidden">
@@ -1016,7 +997,6 @@ export default function TutorialesForensesPage() {
                                     <p className="text-[11px] text-[#86868B] mt-1">{paso.descripcion}</p>
                                     <p className="text-[10px] text-[#0071E3] font-semibold mt-1 font-mono">{paso.normativa}</p>
                                     
-                                    {/* Sublista de Acciones RAG */}
                                     <div className="mt-2 bg-[#F5F5F7] dark:bg-[#2C2C2E] p-2.5 rounded-[8px] text-[10px] text-neutral-700 dark:text-neutral-300 space-y-1">
                                       <p className="font-bold text-[#86868B] uppercase tracking-wider text-[9px] mb-1">Acciones Técnicas Estandarizadas:</p>
                                       {paso.acciones.map((act, idx) => (
@@ -1088,24 +1068,18 @@ export default function TutorialesForensesPage() {
 
                 </div>
               )}
-
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════════
-              TUTORIAL 2: COLECTAS ADB
-          ════════════════════════════════════════════════════════════════ */}
           {activeTutorial === 'adb' && (
             <div className="space-y-6">
-              
               <div className="apple-card p-5 border-l-4 border-[#34C759] bg-[#34C759]/5">
-                <h3 className="text-xs font-bold text-[#248A3D] uppercase tracking-wider mb-1">Fundamento RAG: Colectas ADB</h3>
-                <p className="text-xs text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
-                  Bajo la <strong>ISO/IEC 27037:2012</strong>, las colectas lógicas vía ADB requieren un canal de lectura no-destructivo. Es crítico documentar las propiedades de compilación (`getprop`) y volcar diagnósticos ordenadamente. Toda colecta debe sellarse con un hash SHA-256 e inscribirse en el log inmutable para impedir manipulaciones.
+                <h3 className="text-apple-subhead font-bold text-[#248A3D] uppercase tracking-wider mb-1">Fundamento RAG: Colectas ADB (MUCC-2017 Obtención Técnica)</h3>
+                <p className="text-apple-body text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
+                  Bajo la <strong>ISO/IEC 27037:2012</strong> y las directivas del <strong>MUCC-2017 (Obtención Técnica)</strong>, las colectas lógicas vía ADB requieren la aplicación de procedimientos de fijación, colección, embalaje y rotulación por personal especializado. Es crítico documentar las propiedades de compilación (`getprop`) y volcar diagnósticos ordenadamente en el sitio del suceso. Toda colecta técnica debe sellarse con un hash SHA-256 (<strong>Criterio de Integridad</strong>) e inscribirse en la Planilla de Registro de Cadena de Custodia (PRCC) y en la bitácora inmutable de auditoría (<strong>Criterio de Auditabilidad</strong>) según los <strong>Artículos 187 y 188 del COPP</strong> y el debido proceso (<strong>Art. 49 CRBV</strong>).
                 </p>
               </div>
 
-              {/* Parámetros */}
               <div className="apple-card p-5">
                 <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider mb-4 flex items-center gap-2">
                   <TerminalIcon size={16} className="text-[#34C759]" /> Parámetros de Adquisición
@@ -1131,7 +1105,6 @@ export default function TutorialesForensesPage() {
                 </div>
               </div>
 
-              {/* Guía didáctica paso a paso */}
               <div className="apple-card p-5 space-y-4">
                 <h4 className="text-xs font-bold text-[#86868B] uppercase tracking-wider">Línea de Tiempo del Procedimiento (ADB)</h4>
                 
@@ -1167,8 +1140,6 @@ export default function TutorialesForensesPage() {
                     <div className="w-5 h-5 rounded-full bg-[#34C759] text-white flex items-center justify-center font-bold">3</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-[#1D1D1F] dark:text-[#E5E5EA] mb-2">Adquisición e Integridad</p>
-                      
-                      {/* Consola Interactiva */}
                       <div className="bg-[#1E1E1E] rounded-[10px] p-4 font-mono text-[11px] leading-relaxed text-[#D2D2D7] h-[280px] overflow-y-auto flex flex-col">
                         {adbConsola.length === 0 ? (
                           <div className="flex-1 flex items-center justify-center text-[#86868B] italic">
@@ -1192,10 +1163,9 @@ export default function TutorialesForensesPage() {
                         <div ref={adbConsoleEndRef} />
                       </div>
 
-                      {/* Barra de progreso */}
                       {adbEjecutando && (
                         <div className="w-full h-1 bg-neutral-800 rounded-full overflow-hidden mt-2">
-                          <div className="h-full bg-[#34C759] transition-all duration-300" style={{ width: `${adbProgreso}%` }} />
+                           <div className="h-full bg-[#34C759] transition-all duration-300" style={{ width: `${adbProgreso}%` }} />
                         </div>
                       )}
 
@@ -1203,7 +1173,7 @@ export default function TutorialesForensesPage() {
                         <button
                           onClick={simularEjecucionAdb}
                           disabled={adbEjecutando}
-                          className="apple-button-primary bg-[#34C759] hover:bg-[#28a745] text-xs py-2 px-4 flex items-center gap-1.5"
+                          className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] text-xs py-2 px-4 flex items-center gap-1.5 text-white"
                         >
                           <Play size={12} />
                           {adbEjecutando ? 'Colectando...' : 'Iniciar Colecta ADB'}
@@ -1211,7 +1181,7 @@ export default function TutorialesForensesPage() {
                         <button
                           onClick={handleExportAdbConsole}
                           disabled={adbConsola.length === 0}
-                          className="apple-button text-xs py-2 px-4 flex items-center gap-1.5"
+                          className="apple-btn apple-btn-secondary text-xs py-2 px-4 flex items-center gap-1.5"
                         >
                           <Save size={12} /> Exportar Logs
                         </button>
@@ -1229,28 +1199,20 @@ export default function TutorialesForensesPage() {
                     </div>
                   </div>
                 </div>
-
               </div>
-
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════════
-              TUTORIAL 3: APK DOWNGRADE
-          ════════════════════════════════════════════════════════════════ */}
           {activeTutorial === 'downgrade' && (
             <div className="space-y-6">
-              
               <div className="apple-card p-5 border-l-4 border-[#FF3B30] bg-[#FF3B30]/5">
-                <h3 className="text-xs font-bold text-[#FF3B30] uppercase tracking-wider mb-1">Fundamento RAG: APK Downgrade</h3>
-                <p className="text-xs text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
-                  WhatsApp cifra sus bases de datos SQLite localmente (`msgstore.db` en crypt14/15) en las carpetas protegidas del sistema. El módulo **APK Downgrade** explota la posibilidad de instalar una versión heredada de la app (Legacy) que permitía respaldar datos a través de `adb backup` sin requerir permisos de Root, preservando en todo momento el directorio de usuario (protocolo de desinstalación conservadora `pm uninstall -k`).
+                <h3 className="text-apple-subhead font-bold text-[#FF3B30] uppercase tracking-wider mb-1">Fundamento RAG: APK Downgrade (MUCC-2017 Obtención por Consignación / Derivación)</h3>
+                <p className="text-apple-body text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
+                  WhatsApp cifra sus bases de datos SQLite localmente (`msgstore.db` en crypt14/15). El módulo <strong>APK Downgrade</strong> realiza un procedimiento técnico en el dispositivo del investigado. Enmarcado bajo el <strong>MUCC-2017 como Obtención por Consignación</strong> (entrega voluntaria y firmada), requiere obligatoriamente el consentimiento plasmado en el <strong>Acta de Consignación Oficial</strong>. Este método de desinstalación conservadora (`pm uninstall -k`) explota una vulnerabilidad legacy para extraer la base de datos (generando a su vez una nueva evidencia mediante <strong>Obtención por Derivación</strong>), siempre bajo estricto apego al debido proceso del <strong>Artículo 49 de la CRBV</strong> y la cadena de custodia (<strong>Art. 187 COPP</strong>).
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Formulario y Advertencia */}
                 <div className="md:col-span-1 space-y-6">
                   <div className="apple-card p-5 space-y-4">
                     <h3 className="text-xs font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider">Parámetros</h3>
@@ -1304,11 +1266,9 @@ export default function TutorialesForensesPage() {
                   </div>
                 </div>
 
-                {/* Línea de tiempo de pasos del Downgrade */}
                 <div className="md:col-span-2 apple-card p-5 flex flex-col justify-between">
                   <div className="space-y-4">
                     <h3 className="text-xs font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider mb-2">Procedimiento Técnico en Dispositivo</h3>
-                    
                     <div className="space-y-4 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-0.5 before:bg-neutral-200 dark:before:bg-neutral-800">
                       {downPasos.map((paso, idx) => {
                         const isActive = idx === downPasoActivo && downEjecutando;
@@ -1341,7 +1301,7 @@ export default function TutorialesForensesPage() {
                     <button
                       onClick={iniciarDowngrade}
                       disabled={downEjecutando || !downConsent}
-                      className="apple-button-primary bg-[#FF3B30] hover:bg-[#D32F2F] text-xs py-2 px-4 flex items-center gap-1.5"
+                      className="apple-btn apple-btn-primary bg-[#FF3B30] hover:bg-[#D32F2F] text-xs py-2 px-4 flex items-center gap-1.5 text-white"
                     >
                       <Play size={12} /> {downEjecutando ? 'Procesando Downgrade...' : 'Iniciar Downgrade Forense'}
                     </button>
@@ -1357,22 +1317,16 @@ export default function TutorialesForensesPage() {
                     )}
                   </div>
                 </div>
-
               </div>
-
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════════
-              TUTORIAL 4: WHATSAPP PARSER
-          ════════════════════════════════════════════════════════════════ */}
           {activeTutorial === 'whatsapp' && (
             <div className="space-y-6">
-              
               <div className="apple-card p-5 border-l-4 border-[#0071E3] bg-[#0071E3]/5">
-                <h3 className="text-xs font-bold text-[#0071E3] uppercase tracking-wider mb-1">Fundamento RAG: WhatsApp Parser</h3>
-                <p className="text-xs text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
-                  Avilla Forensics procesa la base SQLite `msgstore.db` usando dos esquemas de base de datos (<strong>Esquema Nuevo</strong> tabla `message` y <strong>Esquema Antiguo</strong> tabla `messages`). Para los contactos se recurre a `wa.db` y las fotos en `\f\Avatars`. Los audios se transcriben masivamente con API de reconocimiento de voz.
+                <h3 className="text-apple-subhead font-bold text-[#0071E3] uppercase tracking-wider mb-1">Fundamento RAG: WhatsApp Parser (MUCC-2017 Fase de Laboratorio - Peritación)</h3>
+                <p className="text-apple-body text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
+                  Enmarcado en la <strong>Fase de Laboratorio - Peritación</strong> de acuerdo al <strong>MUCC-2017</strong> e <strong>ISO/IEC 27042:2015</strong> (examen, análisis e interpretación), Avilla Forensics procesa la base SQLite `msgstore.db` y `wa.db` en copias de trabajo forenses para no alterar los originales. El perito informático realiza el parseo de tablas de mensajes (esquemas nuevo y antiguo) y la transcripción automática de audios `.opus`, documentando los hallazgos en el dictamen pericial sin emitir precalificaciones jurídicas, en estricto cumplimiento de la <strong>Ley de Mensajes de Datos y Firmas Electrónicas</strong>.
                 </p>
               </div>
 
@@ -1591,25 +1545,19 @@ export default function TutorialesForensesPage() {
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════════
-              TUTORIAL 5: INTEGRIDAD (.avilla)
-          ════════════════════════════════════════════════════════════════ */}
           {activeTutorial === 'integrity' && (
             <div className="space-y-6">
-              
               <div className="apple-card p-5 border-l-4 border-[#FF9F0A] bg-[#FF9F0A]/5">
-                <h3 className="text-xs font-bold text-[#FF9F0A] uppercase tracking-wider mb-1">Fundamento RAG: Integridad (.avilla)</h3>
-                <p className="text-xs text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
-                  Para asegurar el no-repudio técnico en el informe pericial, Avilla Forensics firma la evidencia usando algoritmos criptográficos. Se calcula el hash (<strong>MD5, SHA-1 y SHA-256</strong>) de la adquisición original. Con la firma `.avilla`, se encriptan el hash, la marca de tiempo del perito y el caso judicial, garantizando la inmutabilidad de la cadena de custodia (Art 188 COPP y directiva ISO 27037).
+                <h3 className="text-apple-subhead font-bold text-[#FF9F0A] uppercase tracking-wider mb-1">Fundamento RAG: Integridad (.avilla) (MUCC-2017 Fase de Resguardo - Criterios de Integridad y Auditabilidad)</h3>
+                <p className="text-apple-body text-[#1D1D1F] dark:text-[#E5E5EA] leading-relaxed">
+                  Para asegurar el <strong>Criterio de Integridad</strong> y el <strong>no-repudio técnico</strong> exigidos por la <strong>ISO/IEC 27037:2012</strong> y los lineamientos de la <strong>Fase de Resguardo del MUCC-2017</strong>, Avilla Forensics calcula y registra los hashes criptográficos (<strong>MD5, SHA-1 y SHA-256</strong>) de la adquisición original. La firma digital `.avilla` sella de manera inmutable el hash, la marca de tiempo y el perito responsable, vinculándolos al caso judicial. Esto garantiza la inmutabilidad de la cadena de custodia según el <strong>Art. 188 del COPP</strong> y otorga plena eficacia jurídica al mensaje de datos conforme al <strong>Art. 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                {/* Panel Izquierdo: Hashes y Firma */}
                 <div className="space-y-6">
                   
-                  {/* Selector y Drag Drop */}
                   <div className="apple-card p-5 space-y-4">
                     <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider flex items-center gap-1.5">
                       <Upload size={16} className="text-[#0071E3]" /> Registro de Archivo Pericial
@@ -1654,7 +1602,7 @@ export default function TutorialesForensesPage() {
                           <button
                             onClick={calcularHashes}
                             disabled={intCalculando || !intCasoId}
-                            className="apple-button-primary text-[10px] py-1.5 px-3 flex items-center gap-1"
+                            className="apple-btn apple-btn-primary text-[10px] py-1.5 px-3 flex items-center gap-1 text-white"
                           >
                             {intCalculando ? <RefreshCw size={10} className="animate-spin" /> : 'Calcular Hashes'}
                           </button>
@@ -1692,7 +1640,6 @@ export default function TutorialesForensesPage() {
                     )}
                   </div>
 
-                  {/* Firmado */}
                   {intHashes && (
                     <div className="apple-card p-5 space-y-4">
                       <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 text-[#34C759]">
@@ -1706,7 +1653,7 @@ export default function TutorialesForensesPage() {
                         <button
                           onClick={generarFirmaAvilla}
                           disabled={intGenerandoFirma}
-                          className="apple-button-primary bg-[#34C759] hover:bg-[#28a745] w-full py-2 flex items-center justify-center gap-1.5"
+                          className="apple-btn apple-btn-primary bg-[#34C759] hover:bg-[#28a745] w-full py-2 flex items-center justify-center gap-1.5 text-white"
                         >
                           <Lock size={12} /> {intGenerandoFirma ? 'Firmando Evidencia...' : 'Firmar y Generar Token (.avilla)'}
                         </button>
@@ -1729,7 +1676,6 @@ export default function TutorialesForensesPage() {
 
                 </div>
 
-                {/* Panel Derecho: Inspector de Cadena de Custodia */}
                 <div className="space-y-6">
                   <div className="apple-card p-5 space-y-4">
                     <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider flex items-center gap-2">
@@ -1747,7 +1693,7 @@ export default function TutorialesForensesPage() {
                       />
                       <button
                         onClick={verificarFirmaAvilla}
-                        className="apple-button w-full py-2 text-xs flex items-center justify-center gap-1.5"
+                        className="apple-btn apple-btn-secondary w-full py-2 text-xs flex items-center justify-center gap-1.5"
                       >
                         <Shield size={12} className="text-[#0071E3]" /> Verificar Cadena de Custodia
                       </button>
@@ -1799,7 +1745,6 @@ export default function TutorialesForensesPage() {
 
       </div>
 
-      {/* ─── PRINT STYLE OVERRIDES ─────────────────────────────────────────── */}
       <style>{`
         @media print {
           body { background: white !important; color: black !important; }

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-06-11",
+    "updated": "2026-06-12",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,12 +15,10 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-11 17:57:41",
-      "last_commit": "ee388eb - iiii (2026-06-11)",
+      "timestamp": "2026-06-12 10:21:41",
+      "last_commit": "2a60e2d - jjjjjjjjjjjjj (2026-06-11)",
       "modified_files": [
-        "M  src/pages/CompliancePage.tsx",
-        "M  src/pages/CorreoCorporativoManual.tsx",
-        "M  src/pages/CorreoForensePage.tsx"
+        "M  src/pages/Forense/TutorialesForensesPage.tsx"
       ]
     }
   },
