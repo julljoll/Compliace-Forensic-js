@@ -15,10 +15,15 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 11:00:03",
-      "last_commit": "f997a30 - ffg (2026-06-12)",
+      "timestamp": "2026-06-12 11:33:43",
+      "last_commit": "ae96bf4 - ooooo (2026-06-12)",
       "modified_files": [
-        "M  src/pages/Forense/TutorialesForensesPage.tsx"
+        "A  \"RAG/Manual Unico de Cadena de Custodia de Evidencias Fisicas.yaml\"",
+        "D  RAG/apple-ios-design.skill",
+        "R  skill_avilla.md -> RAG/skill_avilla.md",
+        "M  src/App.tsx",
+        "M  src/components/templates/CMSLayout.tsx",
+        "M  src/pages/DashboardPage.tsx"
       ]
     }
   },

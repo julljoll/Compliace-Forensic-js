@@ -1,0 +1,263 @@
+titulo: "Manual Unico de Cadena de Custodia de Evidencias Fisicas"
+descripcion: "Procedimiento para extraccion y analisis de dispositivos Android (WhatsApp) siguiendo el Manual de Cadena de Custodia Venezolano"
+
+# ============================================
+# FASE INICIAL: OBTENCION
+# ============================================
+
+fase_inicial:
+  nombre: "Fase Inicial - Obtencion"
+  definicion: "Fase donde se obtienen las evidencias fisicas para iniciar la cadena de custodia"
+  
+  formas_obtencion:
+    
+    # PRIORIDAD: OBTENCION POR CONSIGNACION
+    - tipo: "Obtencion por Consignacion"
+      definicion: "Cuando el propietario o poseedor entrega voluntariamente la evidencia al organismo de investigacion"
+      escenarios:
+        - "Entrega voluntaria del dispositivo movil"
+        - "Consignacion de evidencia digital por ciudadanos"
+      
+      procedimientos:
+        - nombre: "Recepcion"
+          pasos:
+            - "Verificar identidad de quien consigna (cedula de identidad)"
+            - "Documentar motivo de la consignacion"
+            - "Registrar datos del dispositivo (marca, modelo, IMEI, IMEI2, numero telefonico)"
+            - "Verificar estado fisico del dispositivo"
+            
+        - nombre: "Fijacion"
+          medios:
+            - "Fijacion escrita: Acta de Obtencion por Consignacion"
+            - "Fijacion fotografica: estado del dispositivo, IMEI, pantalla, puertos"
+          datos:
+            - "Marca y modelo"
+            - "IMEI y IMEI2"
+            - "Numero de telefono/linea"
+            - "Estado de la bateria"
+            - "Danos fisicos"
+            - "Estado de la pantalla (encendido/apagado)"
+            
+    # OBTENCION TECNICA
+    - tipo: "Obtencion Tecnica"
+      definicion: "Cuando el personal especializado acude al sitio del suceso o lugar de ubicacion de la evidencia"
+      procedimientos:
+        - "Proteccion: Aislar dispositivo (Modo Avion o Bolsa Faraday)"
+        - "Observacion Preliminar: Verificar estado del dispositivo"
+        - "Fijacion: Fotografias y actas"
+        - "Coleccion: Uso de write-blockers y extraccion con Andriller"
+        - "Embalaje y Rotulacion"
+        - "Registro en PRCC"
+        - "Traslado"
+      hash:
+        - "Calcular MD5 o SHA-256"
+        - "Garantizar inalterabilidad"
+        
+    # OBTENCION POR ASEGURAMIENTO
+    - tipo: "Obtencion por Aseguramiento"
+      definicion: "Cuando se requiere asegurar evidencias en poder de terceros mediante procedimientos legales"
+      
+    # OBTENCION POR DERIVACION
+    - tipo: "Obtencion por Derivacion"
+      definicion: "Cuando del analisis de una evidencia principal se obtiene una nueva evidencia"
+      escenarios:
+        - "Por Separacion: diferente naturaleza a la evidencia principal"
+        - "Por Segmentacion: division de la evidencia principal"
+        - "Por Seleccion: discriminacion para peritaje especializado"
+
+# ============================================
+# FASE DE LABORATORIO
+# ============================================
+
+fase_laboratorio:
+  nombre: "Fase de Laboratorio - Peritacion"
+  definicion: "Fase intermedia destinada a la peritacion de evidencias previamente obtenidas"
+  
+  proceso_peritacion:
+    
+    - paso: "Recepcion en Laboratorio"
+      acciones:
+        - "Verificar precintos de seguridad"
+        - "Recalcular Hash para confirmar integridad"
+        - "Cotejar PRCC con el embalaje"
+        - "Verificar correspondencia con oficio de remision"
+      iso: "ISO/IEC 27042:2015"
+      
+    - paso: "Designacion"
+      acciones:
+        - "Registrar en sistema manual o automatizado"
+        - "Asignar perito responsable"
+        - "Firmar controles y PRCC"
+        
+    - paso: "Peritaje"
+      etapas:
+        - "Valoracion: apreciar contexto y planificar tecnicas"
+        - "Descripcion: detallar caracteristicas de la evidencia"
+        - "Analisis: aplicar metodos y tecnicas (ALEAPP y Andriller)"
+        - "Interpretacion: evaluar datos resultantes"
+        - "Conclusion: juicio de valor tecnico-cientifico"
+      herramientas:
+        - "Andriller: extraccion logica y fisica"
+        - "ALEAPP: parseo de SQLite y Protobuf"
+        
+    - paso: "Remision"
+      acciones:
+        - "Entregar dictamen pericial"
+        - "Remitir evidencias y PRCC al despacho solicitante"
+        - "Acotar en PRCC la remision"
+
+# ============================================
+# FASE DE DISPOSICION JUDICIAL
+# ============================================
+
+fase_disposicion_judicial:
+  nombre: "Fase de Disposicion Judicial"
+  definicion: "Momento en que la evidencia pasa a disposicion del Poder Judicial tras admitirse la acusacion"
+  
+  procesos:
+    - "Resguardo Judicial: en areas especializadas del Poder Judicial"
+    - "Exhibicion en Audiencia: cumplir procedimiento de traslado y transferencia"
+  documento_asociado: "Acta de Exhibicion de Evidencias"
+
+# ============================================
+# FASE DE DISPOSICION FINAL
+# ============================================
+
+fase_disposicion_final:
+  nombre: "Fase de Disposicion Final - Cierre"
+  definicion: "Fase final que pone fin al tratamiento de las evidencias"
+  
+  formas_cierre:
+    - "Devolucion: restituir a quien tenga legitimo derecho (autorizacion judicial)"
+    - "Entrega: otorgar a persona juridica autorizada (autorizacion judicial)"
+    - "Destruccion: inutilizar evidencia sin interes (autorizacion judicial)"
+    - "Consumida en Peritaje: agotada durante analisis"
+    
+  procedimientos:
+    - "Ejecucion: materializar devolucion, entrega o destruccion"
+    - "Cierre de PRCC: dejar constancia en observaciones y remitir al expediente"
+    
+  documento_asociado: "Acta de Disposicion Final de Evidencias"
+
+# ============================================
+# FIGURAS DE CARACTER CONTINUO
+# ============================================
+
+figuras_continuas:
+  definicion: "Procesos y procedimientos que se cumplen en cualquier fase del sistema"
+  
+  procesos:
+    - nombre: "Proceso de Resguardo"
+      definicion: "Proteccion y conservacion en espacios especializados"
+      etapas:
+        - "Ingreso: verificar PRCC, identidad, condiciones de la evidencia"
+        - "Deposito: almacenamiento bajo condiciones optimas"
+        - "Egreso: disposicion expresa y por escrito del Fiscal o Tribunal"
+      lineamientos:
+        - "Solo personal autorizado"
+        - "Control de temperatura, humedad, seguridad"
+        - "Inventario periodico (maximo un ano)"
+        
+    - nombre: "Procedimiento de Traslado"
+      lineamientos:
+        - "Verificar condiciones de evidencia y embalaje"
+        - "Seleccionar medio que minimice riesgos"
+        - "Asentar datos en PRCC"
+        
+    - nombre: "Actividad de Transferencia"
+      lineamientos:
+        - "Verificar condiciones fisicas y precintos"
+        - "Verificar PRCC con rotulado"
+        - "Asentar datos de quien entrega y recibe"
+
+# ============================================
+# DOCUMENTOS ASOCIADOS
+# ============================================
+
+documentos_asociados:
+  - "Acta Policial"
+  - "Acta de Investigacion Penal"
+  - "Acta de Obtencion Tecnica"
+  - "Acta de Obtencion por Aseguramiento"
+  - "Acta de Obtencion por Consignacion (PRIORIDAD)"
+  - "Acta de Obtencion por Derivacion"
+  - "Acta de Disposicion Final"
+  - "Acta de Levantamiento de Cadáver"
+  - "Acta de Inspeccion"
+  - "Acta Pericial"
+  - "Planilla de Registro de Cadena de Custodia (PRCC)"
+  - "Dictamen Pericial"
+  - "Memorandos y Oficios"
+
+# ============================================
+# ESTRUCTURA DEL DICTAMEN PERICIAL
+# ============================================
+
+dictamen_pericial:
+  estructura_obligatoria:
+    - "Motivo: razon por la cual se practica la peritacion"
+    - "Descripcion: estado en que se hallo y recibio la evidencia"
+    - "Examenes Practicados: detalle de softwares (versiones Andriller y ALEAPP), tecnicas y valores Hash"
+    - "Resultados: tabla con nombre nativo, fechas, ruta, tamano y Hash individual"
+    - "Conclusiones: juicio de valor tecnico-cientifico sin precalificacion juridica"
+    - "Consumo de Evidencia: constancia si fue consumida o alterada"
+  
+  formalidades:
+    - "Presentacion por escrito"
+    - "Firma del Perito Informatico"
+    - "Sello del perito"
+    - "Version exacta de herramientas usadas"
+
+# ============================================
+# MARCO LEGAL VENEZOLANO
+# ============================================
+
+marco_legal:
+  constitucion:
+    - "Debido proceso"
+    - "Tutela judicial efectiva"
+    - "Privacidad de las comunicaciones"
+    
+  leyes:
+    - nombre: "COPP (Codigo Organico Procesal Penal)"
+      articulos:
+        - "Art. 188: Resguardo de evidencias"
+        - "Regimen de licitud de la prueba"
+        - "Obligatoriedad de cadena de custodia"
+        
+    - nombre: "Ley Especial contra Delitos Informaticos (2001)"
+      descripcion: "Tipifica delitos ciberneticos"
+      
+    - nombre: "Ley de Infogobierno"
+      descripcion: "Validez y seguridad de tecnologias de informacion"
+      
+    - nombre: "Ley sobre Mensajes de Datos y Firmas Electronicas"
+      articulos:
+        - "Art. 4 y 8: eficacia probatoria de mensajes de datos"
+        - "Misma eficacia que documento escrito"
+
+# ============================================
+# ESTANDARES INTERNACIONALES
+# ============================================
+
+estandares:
+  - "ISO/IEC 27037:2012: Identificacion, coleccion, adquisicion y preservacion"
+  - "ISO/IEC 27042:2015: Analisis e interpretacion de pruebas digitales"
+  - "NIST SP 800-101 r1: Guia para forensia de dispositivos moviles"
+
+# ============================================
+# HERRAMIENTAS FORENSES AUTORIZADAS
+# ============================================
+
+herramientas:
+  andriller:
+    uso: "Extraccion logica y fisica en dispositivos Android"
+    caracteristicas:
+      - "Solo lectura (no destructivo)"
+      - "Forensemente solido"
+    version: "Documentar version exacta usada"
+    
+  aleapp:
+    uso: "Android Logs Events And Protobuf Parser"
+    funcion: "Parseo de SQLite, Protobuf, reconstruccion de eventos WhatsApp"
+    version: "Documentar version exacta usada"

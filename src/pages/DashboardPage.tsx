@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   useCMSStore,
   type TareaForense,
@@ -53,22 +53,6 @@ const PRIORIDAD_CONFIG: Record<PrioridadCaso, { label: string; dot: string; bg: 
 };
 
 export default function DashboardPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const [activeSegment, setActiveSegment] = useState<'resumen' | 'tareas'>(() => {
-    if (location.pathname === '/tareas') return 'tareas';
-    return 'resumen';
-  });
-
-  useEffect(() => {
-    if (location.pathname === '/tareas') {
-      setActiveSegment('tareas');
-    } else {
-      setActiveSegment('resumen');
-    }
-  }, [location.pathname]);
-
   const casos = useCMSStore(state => state.casos);
   const tareas = useCMSStore(state => state.tareas);
   const normativas = useCMSStore(state => state.normativas);
@@ -102,7 +86,7 @@ export default function DashboardPage() {
       return auditLogs.slice(0, 6);
     }
     return storeLogs.slice(0, 6);
-  }, [auditLogs, tareas]); // Se recalcula cuando cambian las tareas o logs
+  }, [auditLogs, tareas]);
 
   const tareasUrgentes = useMemo(() => {
     return tareas.filter(t => t.estado !== 'completada' && t.prioridad === 'critica').slice(0, 4);
@@ -169,6 +153,47 @@ export default function DashboardPage() {
     return caso ? `${caso.numeroCaso} — ${caso.titulo}` : casoId;
   };
 
+  // Si no hay casos registrados, mostrar el estado vacío global
+  if (casos.length === 0) {
+    return (
+      <div className="space-y-8 apple-fade-in">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(0,0,0,0.06)] pb-6">
+          <div>
+            <h1 className="text-[32px] md:text-[40px] font-bold text-[#1D1D1F] tracking-[-0.03em] leading-tight">
+              Centro de Control
+            </h1>
+            <div className="text-[14px] text-[#86868B] font-normal max-w-lg mt-1 leading-relaxed">
+              <span>Monitoreo forense bajo los marcos normativos <span className="text-[#0071E3] font-semibold">ISO 27037</span> y <span className="text-[#0071E3] font-semibold">MUCC-2017</span>.</span>
+            </div>
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-semibold text-[#86868B] uppercase tracking-[0.04em]">Estado del Sistema</span>
+            <span className="text-[14px] font-bold text-[#248A3D] flex items-center gap-1.5">
+              <Activity size={14} /> EN LÍNEA
+            </span>
+          </div>
+        </div>
+
+        {/* Empty State */}
+        <div className="apple-card p-16 text-center border-dashed border-[rgba(0,0,0,0.1)]">
+          <div className="w-20 h-20 bg-[rgba(0,113,227,0.08)] rounded-full flex items-center justify-center mx-auto mb-6 border border-[rgba(0,113,227,0.15)]">
+            <Gavel size={40} className="text-[#0071E3]" />
+          </div>
+          <h3 className="text-[24px] font-bold text-[#1D1D1F] mb-3 tracking-[-0.02em]">Inicialización del Sistema Complete</h3>
+          <p className="text-[#86868B] text-[14px] mb-8 max-w-xl mx-auto leading-relaxed">
+            Plataforma centralizada para gestión pericial digital, control de cadena de custodia 
+            y monitoreo de cumplimiento <span className="font-semibold text-[#1D1D1F]">ISO/IEC</span>.
+          </p>
+          <Link to="/casos" className="apple-btn apple-btn-primary px-10 py-2.5 text-[14px] font-semibold inline-flex items-center gap-2">
+            <FolderOpen size={18} />
+            Iniciar Gestión de Registros
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 apple-fade-in">
 
@@ -176,392 +201,387 @@ export default function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[rgba(0,0,0,0.06)] pb-6">
         <div>
           <h1 className="text-[32px] md:text-[40px] font-bold text-[#1D1D1F] tracking-[-0.03em] leading-tight">
-            {activeSegment === 'resumen' ? 'Centro de Control' : 'Control de Tareas y Fases'}
+            Centro de Control
           </h1>
           <div className="text-[14px] text-[#86868B] font-normal max-w-lg mt-1 leading-relaxed">
-            {activeSegment === 'resumen' ? (
-              <span>Monitoreo forense bajo los marcos normativos <span className="text-[#0071E3] font-semibold">ISO 27037</span> y <span className="text-[#0071E3] font-semibold">MUCC-2017</span>.</span>
-            ) : (
-              <span>Gestión del flujo de trabajo forense bajo la metodología de seguimiento de fases de <span className="text-[#0071E3] font-semibold">MUCC-2017</span> e <span className="text-[#0071E3] font-semibold">ISO 27037</span>.</span>
-            )}
+            <span>Monitoreo forense bajo los marcos normativos <span className="text-[#0071E3] font-semibold">ISO 27037</span> y <span className="text-[#0071E3] font-semibold">MUCC-2017</span>.</span>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Segmented control */}
-          <div className="flex bg-[rgba(0,0,0,0.04)] dark:bg-[rgba(255,255,255,0.04)] p-1 rounded-lg border border-[rgba(0,0,0,0.08)] shadow-sm">
-            <button
-              onClick={() => {
-                setActiveSegment('resumen');
-                navigate('/');
-              }}
-              className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeSegment === 'resumen' ? 'bg-[#0071E3] text-white shadow-sm' : 'text-[#86868B] hover:text-[#1D1D1F]'}`}
-            >
-              <Activity size={14} /> Resumen
-            </button>
-            <button
-              onClick={() => {
-                setActiveSegment('tareas');
-                navigate('/tareas');
-              }}
-              className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeSegment === 'tareas' ? 'bg-[#0071E3] text-white shadow-sm' : 'text-[#86868B] hover:text-[#1D1D1F]'}`}
-            >
-              <ClipboardList size={14} /> Tareas
-            </button>
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-col items-end border-r border-[rgba(0,0,0,0.08)] dark:border-white/[0.08] pr-4">
+            <span className="text-[10px] font-semibold text-[#86868B] uppercase tracking-[0.04em]">Estado del Sistema</span>
+            <span className="text-[14px] font-bold text-[#248A3D] flex items-center gap-1.5">
+              <Activity size={14} /> EN LÍNEA
+            </span>
           </div>
 
-          {activeSegment === 'tareas' && (
-            <button
-              onClick={() => setShowModal(true)}
-              className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-md hover:translate-y-[-1px] transition-all"
-            >
-              <Plus size={16} strokeWidth={2.5} />
-              Nueva Tarea
-            </button>
-          )}
+          <button
+            onClick={() => setShowModal(true)}
+            className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-md hover:translate-y-[-1px] transition-all"
+          >
+            <Plus size={16} strokeWidth={2.5} />
+            Nueva Tarea
+          </button>
+        </div>
+      </div>
 
-          {activeSegment === 'resumen' && (
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-semibold text-[#86868B] uppercase tracking-[0.04em]">Estado del Sistema</span>
-              <span className="text-[14px] font-bold text-[#248A3D] flex items-center gap-1.5">
-                <Activity size={14} /> EN LÍNEA
-              </span>
+      {/* ── KPIs Generales ──────────────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard title="Total de Casos" value={stats.totalCasos} sub={`${stats.casosActivos} activos`} icon={FolderOpen} />
+        <KpiCard title="Procesando" value={stats.casosActivos} sub="En fase técnica" icon={TrendingUp} color="text-[#0071E3]" />
+        <KpiCard title="Cumplimiento" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} validados`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-[#248A3D]' : stats.cumplimientoGeneral >= 50 ? 'text-[#C93400]' : 'text-[#BF2D24]'} />
+        <KpiCard title="Alertas" value={stats.tareasPendientes} sub="Requieren acción inmediata" icon={AlertTriangle} color="text-[#FF9500]" />
+      </div>
+
+      {/* ── Grid: Casos y Normativas ────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Actualizaciones Recientes */}
+        <div className="lg:col-span-2 apple-card overflow-hidden">
+          <div className="p-5 border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between">
+            <h2 className="font-semibold text-[15px] text-[#1D1D1F] dark:text-white flex items-center gap-2">
+              <FileSearch size={18} className="text-[#0071E3]" />
+              Actualizaciones Recientes
+            </h2>
+            <Link to="/casos" className="text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">Ver todos</Link>
+          </div>
+          <div className="divide-y divide-[rgba(0,0,0,0.05)]">
+            {recientes.length === 0 ? (
+              <div className="py-16 text-center">
+                <FolderOpen size={40} className="text-[#86868B] mx-auto mb-4 opacity-20" />
+                <p className="text-[14px] text-[#86868B]">No hay actividad reciente.</p>
+              </div>
+            ) : recientes.map(caso => {
+              const estado = ESTADO_LABEL[caso.estado] || ESTADO_LABEL.iniciado;
+              const cumpl = CUMPLIMIENTO_CONFIG[caso.nivelCumplimientoGeneral] || CUMPLIMIENTO_CONFIG.no_aplica;
+              const CumplIcon = cumpl.icon;
+              return (
+                <Link to={`/casos/${caso.id}`} key={caso.id}
+                  className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(0,0,0,0.015)] dark:hover:bg-[rgba(255,255,255,0.015)] transition-all group">
+                  <div className={`w-1 h-10 rounded-full ${PRIORIDAD_COLOR[caso.prioridad]} shrink-0`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-mono text-[11px] font-semibold text-[#0071E3] tracking-tight">{caso.numeroCaso}</span>
+                      <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-semibold ${estado.color}`}>{estado.label}</span>
+                    </div>
+                    <p className="text-[14px] font-semibold text-[#1D1D1F] dark:text-white truncate">{caso.titulo}</p>
+                    <p className="text-[11px] text-[#86868B]">{caso.peritoLider}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div className={`p-1.5 rounded-[6px] ${cumpl.color.replace('text', 'bg')}/10`}>
+                      <CumplIcon size={14} className={cumpl.color} />
+                    </div>
+                    <div className="text-[10px] font-mono text-[#86868B]">{caso.porcentajeCompletado}%</div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Panel Lateral Derecha */}
+        <div className="space-y-5">
+          {/* Normativas */}
+          <div className="apple-card p-5">
+            <h3 className="font-semibold text-[14px] text-[#1D1D1F] dark:text-white flex items-center gap-2 mb-5">
+              <Scale size={16} className="text-[#0071E3]" />
+              Marcos Normativos
+            </h3>
+            <div className="space-y-3.5">
+              {normativas.filter(n => n.activa).slice(0, 5).map(n => (
+                <div key={n.id} className="flex items-center justify-between group">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0071E3]/40 group-hover:bg-[#0071E3] transition-colors" />
+                    <span className="text-[12px] font-medium text-[#86868B] group-hover:text-[#1D1D1F] dark:group-hover:text-white transition-colors truncate">{n.codigo}</span>
+                  </div>
+                  <span className="text-[8px] font-semibold px-2 py-0.5 rounded-[4px] bg-[rgba(0,0,0,0.04)] dark:bg-[rgba(255,255,255,0.04)] text-[#86868B] uppercase tracking-[0.02em]">{n.tipo}</span>
+                </div>
+              ))}
+              <div className="pt-4 border-t border-[rgba(0,0,0,0.06)] dark:border-white/[0.06]">
+                <Link to="/normativas" className="block text-center text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">
+                  Biblioteca de Normativas
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Acciones Críticas */}
+          {tareasUrgentes.length > 0 && (
+            <div className="apple-card p-5 border-[rgba(255,59,48,0.2)] bg-[rgba(255,59,48,0.015)]">
+              <h3 className="font-semibold text-[14px] text-[#BF2D24] flex items-center gap-2 mb-4">
+                <AlertTriangle size={16} />
+                Acciones Críticas
+              </h3>
+              <div className="space-y-2.5">
+                {tareasUrgentes.map(t => (
+                  <div key={t.id} className="text-[12px] p-3.5 rounded-[10px] bg-white dark:bg-[#1C1C1E] border border-[rgba(0,0,0,0.05)] dark:border-white/[0.05]">
+                    <p className="text-[#1D1D1F] dark:text-white font-medium mb-1">{t.titulo}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[#86868B]">{t.asignadoA}</span>
+                      <span className="text-[9px] font-semibold text-[#BF2D24] bg-[rgba(255,59,48,0.08)] px-1.5 py-0.5 rounded-[4px]">Crítica</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* ── KPIs ───────────────────────────────────────── */}
-      {activeSegment === 'resumen' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <KpiCard title="Total de Casos" value={stats.totalCasos} sub={`${stats.casosActivos} activos`} icon={FolderOpen} />
-          <KpiCard title="Procesando" value={stats.casosActivos} sub="En fase técnica" icon={TrendingUp} color="text-[#0071E3]" />
-          <KpiCard title="Cumplimiento" value={`${stats.cumplimientoGeneral}%`} sub={`${stats.casosConformidad} validados`} icon={ShieldCheck} accent color={stats.cumplimientoGeneral >= 80 ? 'text-[#248A3D]' : stats.cumplimientoGeneral >= 50 ? 'text-[#C93400]' : 'text-[#BF2D24]'} />
-          <KpiCard title="Alertas" value={stats.tareasPendientes} sub="Requieren acción inmediata" icon={AlertTriangle} color="text-[#FF9500]" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in">
-          <KpiCard title="Tareas Totales" value={kpis.total} sub={`${kpis.enProgreso} en progreso`} icon={ClipboardList} />
-          <KpiCard title="Pendientes" value={kpis.pendientes} sub="Esperando asignación" icon={Clock} color="text-[#FF9500]" />
-          <KpiCard title="Completadas" value={kpis.completadas} sub={`${kpis.progreso}% de progreso general`} icon={CheckCircle2} color="text-[#34C759]" accent />
-          <KpiCard title="Bloqueadas" value={kpis.bloqueadas} sub="Requieren atención" icon={AlertTriangle} color="text-[#FF3B30]" />
-        </div>
-      )}
+      {/* ── Separador y Tablero de Tareas ────────────────── */}
+      <div className="apple-separator" />
 
-      {/* ── Body ───────────────────────────────────────── */}
-      {activeSegment === 'resumen' ? (
-        /* ── Pestaña: Resumen General ── */
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
-          {/* Actualizaciones Recientes */}
-          <div className="lg:col-span-2 apple-card overflow-hidden">
+      <div className="space-y-6">
+        <div className="border-b border-[rgba(0,0,0,0.06)] dark:border-white/[0.06] pb-4">
+          <h2 className="text-[22px] font-bold text-[#1D1D1F] dark:text-white tracking-[-0.02em] flex items-center gap-2.5">
+            <ClipboardList size={22} className="text-[#0071E3]" />
+            Tablero de Tareas y Fases Técnicas
+          </h2>
+          <p className="text-xs text-[#86868B] mt-1">
+            Gestión del flujo de trabajo forense bajo la metodología de seguimiento de fases de <span className="text-[#0071E3] font-semibold">MUCC-2017</span> e <span className="text-[#0071E3] font-semibold">ISO 27037</span>.
+          </p>
+        </div>
+
+        {/* Tareas KPIs */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="apple-card p-4 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">Tareas Totales</p>
+              <p className="text-[20px] font-bold text-[#1D1D1F] dark:text-white">{kpis.total}</p>
+            </div>
+            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-600">
+              <ClipboardList size={16} />
+            </div>
+          </div>
+          <div className="apple-card p-4 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">Pendientes</p>
+              <p className="text-[20px] font-bold text-[#FF9500]">{kpis.pendientes}</p>
+            </div>
+            <div className="p-2 bg-[#FF9500]/10 rounded-lg text-[#FF9500]">
+              <Clock size={16} />
+            </div>
+          </div>
+          <div className="apple-card p-4 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">Completadas</p>
+              <p className="text-[20px] font-bold text-[#34C759]">{kpis.completadas}</p>
+            </div>
+            <div className="p-2 bg-[#34C759]/10 rounded-lg text-[#34C759]">
+              <CheckCircle2 size={16} />
+            </div>
+          </div>
+          <div className="apple-card p-4 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">Bloqueadas</p>
+              <p className="text-[20px] font-bold text-[#FF3B30]">{kpis.bloqueadas}</p>
+            </div>
+            <div className="p-2 bg-[#FF3B30]/10 rounded-lg text-[#FF3B30]">
+              <AlertTriangle size={16} />
+            </div>
+          </div>
+        </div>
+
+        {/* Filtros */}
+        <div className="apple-card p-4 flex flex-col md:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B]" />
+            <input
+              type="text"
+              placeholder="Buscar tareas por título, descripción o responsable..."
+              value={busqueda}
+              onChange={e => setBusqueda(e.target.value)}
+              className="apple-input pl-9"
+            />
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <select
+              value={filtroEstado}
+              onChange={e => setFiltroEstado(e.target.value as EstadoTarea | 'todos')}
+              className="apple-input w-auto min-w-[130px]"
+            >
+              <option value="todos">Todos los Estados</option>
+              {Object.entries(ESTADO_TAREA).map(([k, v]) => (
+                <option key={k} value={k}>{v.label}</option>
+              ))}
+            </select>
+            <select
+              value={filtroPrioridad}
+              onChange={e => setFiltroPrioridad(e.target.value as PrioridadCaso | 'todos')}
+              className="apple-input w-auto min-w-[120px]"
+            >
+              <option value="todos">Todas las Prioridades</option>
+              {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
+                <option key={k} value={k}>{v.label}</option>
+              ))}
+            </select>
+            <select
+              value={filtroCaso}
+              onChange={e => setFiltroCaso(e.target.value)}
+              className="apple-input w-auto min-w-[160px]"
+            >
+              <option value="todos">Todos los Casos</option>
+              {casos.map(c => (
+                <option key={c.id} value={c.id}>{c.numeroCaso}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Lista de Tareas */}
+        <div className="space-y-3">
+          {tareasFiltradas.length === 0 ? (
+            <div className="apple-card p-12 text-center border-dashed border-black/10 dark:border-white/10">
+              <div className="w-16 h-16 bg-black/[0.02] dark:bg-white/[0.02] rounded-full flex items-center justify-center mx-auto mb-4">
+                <ClipboardList size={32} className="text-[#86868B] opacity-20" />
+              </div>
+              <h3 className="text-lg font-bold text-[#1D1D1F] dark:text-white mb-1">No se encontraron tareas</h3>
+              <p className="text-[#86868B] text-xs max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
+                Ninguna tarea forense coincide con los criterios de búsqueda. Cree una nueva tarea para iniciar el seguimiento del flujo de trabajo.
+              </p>
+            </div>
+          ) : (
+            tareasFiltradas.map(tarea => {
+              const estado = ESTADO_TAREA[tarea.estado];
+              const pr = PRIORIDAD_CONFIG[tarea.prioridad];
+              const EstadoIcon = estado.icon;
+              return (
+                <div
+                  key={tarea.id}
+                  className="apple-card p-0 overflow-hidden group"
+                >
+                  <div className="flex items-stretch">
+                    {/* Barra de Prioridad */}
+                    <div className={`w-1.5 ${pr.dot} shrink-0`} />
+
+                    {/* Contenido */}
+                    <div className="flex-1 p-5 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`p-1.5 rounded-md ${estado.color.split(' ')[0]}`}>
+                            <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-white truncate">{tarea.titulo}</h3>
+                            <p className="text-[10px] text-[#86868B] font-mono uppercase tracking-tight">
+                              {getCasoLabel(tarea.casoId)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>
+                            {estado.label}
+                          </span>
+                          <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${pr.bg}`}>
+                            {pr.label}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-[#86868B] mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
+
+                      {/* Metadatos */}
+                      <div className="flex flex-wrap items-center gap-4 text-[10px] text-[#86868B] font-medium">
+                        <span className="flex items-center gap-1.5">
+                          <User size={11} /> {tarea.asignadoA || 'Sin asignar'}
+                        </span>
+                        {tarea.fechaVencimiento && (
+                          <span className="flex items-center gap-1.5">
+                            <Calendar size={11} /> {new Date(tarea.fechaVencimiento).toLocaleDateString('es')}
+                          </span>
+                        )}
+                        {tarea.normativasRelacionadas.length > 0 && (
+                          <span className="flex items-center gap-1.5">
+                            <BookOpen size={11} />
+                            {tarea.normativasRelacionadas.map(nId => {
+                              const n = normativas.find(x => x.id === nId);
+                              return n?.codigo || nId;
+                            }).join(', ')}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1.5">
+                          <BarChart3 size={11} /> {tarea.porcentaje}%
+                        </span>
+                        {tarea.pasoId && (
+                          <span className="flex items-center gap-1.5 text-[#0071E3]">
+                            <span className="text-[8px] font-black uppercase tracking-wider">Paso:</span>
+                            {tarea.pasoId}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Barra de Progreso */}
+                      <div className="mt-3 w-full bg-black/[0.08] dark:bg-white/[0.08] rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className="h-full bg-[#0071E3] rounded-full transition-all duration-500"
+                          style={{ width: `${tarea.porcentaje}%` }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Acciones Rápidas */}
+                    <div className="flex flex-col gap-1 p-3 border-l border-black/[0.06] dark:border-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <select
+                        value={tarea.estado}
+                        onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
+                        className="text-[10px] bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 rounded px-1.5 py-1 text-[#1D1D1F] dark:text-white outline-none cursor-pointer"
+                        title="Cambiar estado"
+                      >
+                        {Object.entries(ESTADO_TAREA).map(([k, v]) => (
+                          <option key={k} value={k}>{v.label}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={() => handleDeleteTarea(tarea)}
+                        className="p-1.5 rounded hover:bg-red-500/10 text-[#86868B] hover:text-red-600 transition-colors"
+                        title="Eliminar tarea"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
+      {/* ── Auditoría y Trazabilidad ────────────────────── */}
+      {logsRecientes.length > 0 && (
+        <>
+          <div className="apple-separator" />
+          <div className="apple-card overflow-hidden">
             <div className="p-5 border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between">
-              <h2 className="font-semibold text-[15px] text-[#1D1D1F] flex items-center gap-2">
-                <FileSearch size={18} className="text-[#0071E3]" />
-                Actualizaciones Recientes
+              <h2 className="font-semibold text-[15px] text-[#1D1D1F] dark:text-white flex items-center gap-2">
+                <Activity size={18} className="text-[#0071E3]" />
+                Auditoría y Trazabilidad
               </h2>
-              <Link to="/casos" className="text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">Ver todos</Link>
+              <Link to="/auditoria" className="text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">Ver historial</Link>
             </div>
             <div className="divide-y divide-[rgba(0,0,0,0.05)]">
-              {recientes.length === 0 ? (
-                <div className="py-16 text-center">
-                  <FolderOpen size={40} className="text-[#86868B] mx-auto mb-4 opacity-20" />
-                  <p className="text-[14px] text-[#86868B]">No hay actividad reciente.</p>
-                </div>
-              ) : recientes.map(caso => {
-                const estado = ESTADO_LABEL[caso.estado] || ESTADO_LABEL.iniciado;
-                const cumpl = CUMPLIMIENTO_CONFIG[caso.nivelCumplimientoGeneral] || CUMPLIMIENTO_CONFIG.no_aplica;
-                const CumplIcon = cumpl.icon;
-                return (
-                  <Link to={`/casos/${caso.id}`} key={caso.id}
-                    className="flex items-center gap-4 px-6 py-4 hover:bg-[rgba(0,0,0,0.015)] transition-all group">
-                    <div className={`w-1 h-10 rounded-full ${PRIORIDAD_COLOR[caso.prioridad]} shrink-0`} />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono text-[11px] font-semibold text-[#0071E3] tracking-tight">{caso.numeroCaso}</span>
-                        <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-semibold ${estado.color}`}>{estado.label}</span>
-                      </div>
-                      <p className="text-[14px] font-semibold text-[#1D1D1F] truncate">{caso.titulo}</p>
-                      <p className="text-[11px] text-[#86868B]">{caso.peritoLider}</p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1.5 shrink-0">
-                      <div className={`p-1.5 rounded-[6px] ${cumpl.color.replace('text', 'bg')}/10`}>
-                        <CumplIcon size={14} className={cumpl.color} />
-                      </div>
-                      <div className="text-[10px] font-mono text-[#86868B]">{caso.porcentajeCompletado}%</div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Panel Lateral Derecha */}
-          <div className="space-y-5">
-            {/* Normativas */}
-            <div className="apple-card p-5">
-              <h3 className="font-semibold text-[14px] text-[#1D1D1F] flex items-center gap-2 mb-5">
-                <Scale size={16} className="text-[#0071E3]" />
-                Marcos Normativos
-              </h3>
-              <div className="space-y-3.5">
-                {normativas.filter(n => n.activa).slice(0, 5).map(n => (
-                  <div key={n.id} className="flex items-center justify-between group">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#0071E3]/40 group-hover:bg-[#0071E3] transition-colors" />
-                      <span className="text-[12px] font-medium text-[#86868B] group-hover:text-[#1D1D1F] transition-colors truncate">{n.codigo}</span>
-                    </div>
-                    <span className="text-[8px] font-semibold px-2 py-0.5 rounded-[4px] bg-[rgba(0,0,0,0.04)] text-[#86868B] uppercase tracking-[0.02em]">{n.tipo}</span>
-                  </div>
-                ))}
-                <div className="pt-4 border-t border-[rgba(0,0,0,0.06)]">
-                  <Link to="/normativas" className="block text-center text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">
-                    Biblioteca de Normativas
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Acciones Críticas */}
-            {tareasUrgentes.length > 0 && (
-              <div className="apple-card p-5 border-[rgba(255,59,48,0.2)] bg-[rgba(255,59,48,0.015)]">
-                <h3 className="font-semibold text-[14px] text-[#BF2D24] flex items-center gap-2 mb-4">
-                  <AlertTriangle size={16} />
-                  Acciones Críticas
-                </h3>
-                <div className="space-y-2.5">
-                  {tareasUrgentes.map(t => (
-                    <div key={t.id} className="text-[12px] p-3.5 rounded-[10px] bg-white border border-[rgba(0,0,0,0.05)]">
-                      <p className="text-[#1D1D1F] font-medium mb-1">{t.titulo}</p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-[#86868B]">{t.asignadoA}</span>
-                        <span className="text-[9px] font-semibold text-[#BF2D24] bg-[rgba(255,59,48,0.08)] px-1.5 py-0.5 rounded-[4px]">Crítica</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* ── Pestaña: Tareas y Fases ── */
-        <div className="space-y-6 animate-fade-in">
-          {/* Filtros */}
-          <div className="apple-card p-4 flex flex-col md:flex-row gap-3">
-            <div className="relative flex-1">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#86868B]" />
-              <input
-                type="text"
-                placeholder="Buscar tareas por título, descripción o responsable..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
-                className="apple-input pl-9"
-              />
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              <select
-                value={filtroEstado}
-                onChange={e => setFiltroEstado(e.target.value as EstadoTarea | 'todos')}
-                className="apple-input w-auto min-w-[130px]"
-              >
-                <option value="todos">Todos los Estados</option>
-                {Object.entries(ESTADO_TAREA).map(([k, v]) => (
-                  <option key={k} value={k}>{v.label}</option>
-                ))}
-              </select>
-              <select
-                value={filtroPrioridad}
-                onChange={e => setFiltroPrioridad(e.target.value as PrioridadCaso | 'todos')}
-                className="apple-input w-auto min-w-[120px]"
-              >
-                <option value="todos">Todas las Prioridades</option>
-                {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
-                  <option key={k} value={k}>{v.label}</option>
-                ))}
-              </select>
-              <select
-                value={filtroCaso}
-                onChange={e => setFiltroCaso(e.target.value)}
-                className="apple-input w-auto min-w-[160px]"
-              >
-                <option value="todos">Todos los Casos</option>
-                {casos.map(c => (
-                  <option key={c.id} value={c.id}>{c.numeroCaso}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Lista de Tareas */}
-          <div className="space-y-3">
-            {tareasFiltradas.length === 0 ? (
-              <div className="apple-card p-20 text-center border-dashed border-black/10">
-                <div className="w-20 h-20 bg-black/[0.02] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ClipboardList size={40} className="text-[#86868B] opacity-20" />
-                </div>
-                <h3 className="text-xl font-bold text-[#1D1D1F] mb-2">No se encontraron tareas</h3>
-                <p className="text-[#86868B] text-sm max-w-sm mx-auto font-medium opacity-60 leading-relaxed">
-                  Ninguna tarea forense coincide con los criterios de búsqueda. Cree una nueva tarea para iniciar el seguimiento del flujo de trabajo.
-                </p>
-              </div>
-            ) : (
-              tareasFiltradas.map(tarea => {
-                const estado = ESTADO_TAREA[tarea.estado];
-                const pr = PRIORIDAD_CONFIG[tarea.prioridad];
-                const EstadoIcon = estado.icon;
-                return (
-                  <div
-                    key={tarea.id}
-                    className="apple-card p-0 overflow-hidden group"
-                  >
-                    <div className="flex items-stretch">
-                      {/* Barra de Prioridad */}
-                      <div className={`w-1.5 ${pr.dot} shrink-0`} />
-
-                      {/* Contenido */}
-                      <div className="flex-1 p-5 min-w-0">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div className={`p-1.5 rounded-md ${estado.color.split(' ')[0]}`}>
-                              <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
-                            </div>
-                            <div className="min-w-0">
-                              <h3 className="text-sm font-bold text-[#1D1D1F] truncate">{tarea.titulo}</h3>
-                              <p className="text-[10px] text-[#86868B] font-mono uppercase tracking-tight">
-                                {getCasoLabel(tarea.casoId)}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${estado.color}`}>
-                              {estado.label}
-                            </span>
-                            <span className={`text-[9px] px-2 py-0.5 rounded-[4px] border font-bold uppercase tracking-tight ${pr.bg}`}>
-                              {pr.label}
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="text-xs text-[#86868B] mb-4 line-clamp-2 leading-relaxed">{tarea.descripcion}</p>
-
-                        {/* Metadatos */}
-                        <div className="flex flex-wrap items-center gap-4 text-[10px] text-[#86868B] font-medium">
-                          <span className="flex items-center gap-1.5">
-                            <User size={11} /> {tarea.asignadoA || 'Sin asignar'}
-                          </span>
-                          {tarea.fechaVencimiento && (
-                            <span className="flex items-center gap-1.5">
-                              <Calendar size={11} /> {new Date(tarea.fechaVencimiento).toLocaleDateString('es')}
-                            </span>
-                          )}
-                          {tarea.normativasRelacionadas.length > 0 && (
-                            <span className="flex items-center gap-1.5">
-                              <BookOpen size={11} />
-                              {tarea.normativasRelacionadas.map(nId => {
-                                const n = normativas.find(x => x.id === nId);
-                                return n?.codigo || nId;
-                              }).join(', ')}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1.5">
-                            <BarChart3 size={11} /> {tarea.porcentaje}%
-                          </span>
-                          {tarea.pasoId && (
-                            <span className="flex items-center gap-1.5 text-[#0071E3]">
-                              <span className="text-[8px] font-black uppercase tracking-wider">Paso:</span>
-                              {tarea.pasoId}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Barra de Progreso */}
-                        <div className="mt-3 w-full bg-black/[0.08] dark:bg-white/[0.08] rounded-full h-1.5 overflow-hidden">
-                          <div
-                            className="h-full bg-[#0071E3] rounded-full transition-all duration-500"
-                            style={{ width: `${tarea.porcentaje}%` }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Acciones Rápidas */}
-                      <div className="flex flex-col gap-1 p-3 border-l border-black/[0.06] dark:border-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                        <select
-                          value={tarea.estado}
-                          onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
-                          className="text-[10px] bg-black/[0.02] dark:bg-white/[0.02] border border-black/10 dark:border-white/10 rounded px-1.5 py-1 text-[#1D1D1F] dark:text-white outline-none cursor-pointer"
-                          title="Cambiar estado"
-                        >
-                          {Object.entries(ESTADO_TAREA).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label}</option>
-                          ))}
-                        </select>
-                        <button
-                          onClick={() => handleDeleteTarea(tarea)}
-                          className="p-1.5 rounded hover:bg-red-500/10 text-[#86868B] hover:text-red-600 transition-colors"
-                          title="Eliminar tarea"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ── Audit Log (Solo en Resumen) ──────────────────────────────────── */}
-      {activeSegment === 'resumen' && logsRecientes.length > 0 && (
-        <div className="apple-card overflow-hidden">
-          <div className="p-5 border-b border-[rgba(0,0,0,0.06)] flex items-center justify-between">
-            <h2 className="font-semibold text-[15px] text-[#1D1D1F] flex items-center gap-2">
-              <Activity size={18} className="text-[#0071E3]" />
-              Auditoría y Trazabilidad
-            </h2>
-            <Link to="/auditoria" className="text-[11px] font-medium text-[#0071E3] hover:text-[#0077ED] transition-colors">Ver historial</Link>
-          </div>
-          <div className="divide-y divide-[rgba(0,0,0,0.05)]">
-            {logsRecientes.map((log: any) => (
-              <div key={log.id} className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 px-4 sm:px-6 py-3.5 hover:bg-[rgba(0,0,0,0.01)] transition-colors">
-                <div className={`w-2 h-2 rounded-full shrink-0 hidden sm:block ${
-                  log.accion.includes('ERROR') ? 'bg-[#FF3B30]' :
-                  log.accion.includes('ELIMINAD') ? 'bg-[#FF9500]' :
-                  'bg-[#0071E3]'
-                }`} />
-                <div className="w-full sm:w-44 shrink-0 flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full shrink-0 sm:hidden ${
+              {logsRecientes.map((log: any) => (
+                <div key={log.id} className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 px-4 sm:px-6 py-3.5 hover:bg-[rgba(0,0,0,0.01)] transition-colors">
+                  <div className={`w-2 h-2 rounded-full shrink-0 hidden sm:block ${
                     log.accion.includes('ERROR') ? 'bg-[#FF3B30]' :
                     log.accion.includes('ELIMINAD') ? 'bg-[#FF9500]' :
                     'bg-[#0071E3]'
                   }`} />
-                  <span className="font-mono text-[10px] font-semibold text-[#0071E3] tracking-tight">{log.accion}</span>
+                  <div className="w-full sm:w-44 shrink-0 flex items-center gap-2">
+                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 sm:hidden ${
+                      log.accion.includes('ERROR') ? 'bg-[#FF3B30]' :
+                      log.accion.includes('ELIMINAD') ? 'bg-[#FF9500]' :
+                      'bg-[#0071E3]'
+                    }`} />
+                    <span className="font-mono text-[10px] font-semibold text-[#0071E3] tracking-tight">{log.accion}</span>
+                  </div>
+                  <span className="text-[12px] text-[#86868B] flex-1 truncate">{log.detalle}</span>
+                  <span className="hidden sm:block text-[10px] font-mono text-[#86868B]/60 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
                 </div>
-                <span className="text-[12px] text-[#86868B] flex-1 truncate">{log.detalle}</span>
-                <span className="hidden sm:block text-[10px] font-mono text-[#86868B]/60 shrink-0 tabular-nums">{new Date(log.timestamp).toLocaleString('es')}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-
-      {/* ── Empty State (Solo en Resumen) ────────────────────────────────── */}
-      {activeSegment === 'resumen' && casos.length === 0 && (
-        <div className="apple-card p-16 text-center border-dashed border-[rgba(0,0,0,0.1)]">
-          <div className="w-20 h-20 bg-[rgba(0,113,227,0.08)] rounded-full flex items-center justify-center mx-auto mb-6 border border-[rgba(0,113,227,0.15)]">
-            <Gavel size={40} className="text-[#0071E3]" />
-          </div>
-          <h3 className="text-[24px] font-bold text-[#1D1D1F] mb-3 tracking-[-0.02em]">Inicialización del Sistema Completa</h3>
-          <p className="text-[#86868B] text-[14px] mb-8 max-w-xl mx-auto leading-relaxed">
-            Plataforma centralizada para gestión pericial digital, control de cadena de custodia 
-            y monitoreo de cumplimiento <span className="font-semibold text-[#1D1D1F]">ISO/IEC</span>.
-          </p>
-          <Link to="/casos" className="apple-btn apple-btn-primary px-10 py-2.5 text-[14px] font-semibold">
-            <FolderOpen size={18} />
-            Iniciar Gestión de Registros
-          </Link>
-        </div>
+        </>
       )}
 
       {/* ── MODAL NUEVA TAREA ────────────────────────────────────────────── */}

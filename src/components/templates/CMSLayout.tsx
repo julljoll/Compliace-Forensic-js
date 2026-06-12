@@ -13,18 +13,17 @@ const menuItems = [
   { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Principal' },
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
   { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
-  { path: '/tareas',                             label: 'Tablero de Tareas',        icon: ClipboardList,   group: 'Control' },
   { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Módulos Forenses' },
-  { path: '/manual-avilla',                      label: 'Manual Avilla',            icon: Smartphone,      group: 'Sistema' },
-  { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
-  { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
-  { path: '/manual-serverless',                  label: 'Manual Serverless',        icon: Database,        group: 'Sistema' },
   { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
   { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Plantillas Oficiales' },
+  { path: '/manual-avilla',                      label: 'Manual Avilla',            icon: Smartphone,      group: 'Sistema' },
+  { path: '/manual-serverless',                  label: 'Manual Serverless',        icon: Database,        group: 'Sistema' },
+  { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
+  { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ];
 
-const groups = ['Principal', 'Control', 'Módulos Forenses', 'Sistema', 'Plantillas Oficiales'];
+const groups = ['Principal', 'Control', 'Módulos Forenses', 'Plantillas Oficiales', 'Sistema'];
 
 /** Determina si un item está activo dado el pathname actual */
 function useIsActive(path: string) {
