@@ -1,0 +1,1161 @@
+# Arquitectura del Sistema de Gestión de Cadena de Custodia de Evidencias
+# Basado en el Manual Único de Cadena de Custodia de Evidencias (Venezuela 2017)
+# Stack: React + Vite + Electron + TailwindCSS
+
+meta:
+  nombre: "Sistema de Cadena de Custodia de Evidencias"
+  version: "1.0.0"
+  descripcion: "Plataforma para gestión integral del proceso de cadena de custodia según Manual Único venezolano"
+  fuente_documental: "MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).pdf"
+  stack_tecnologico:
+    frontend: "React 18 + Vite + TypeScript"
+    styling: "TailwindCSS + HeadlessUI"
+    desktop: "Electron + electron-builder"
+    pwa: "vite-plugin-pwa + Workbox"
+    despliegue:
+      desktop: "GitHub Actions (.deb, .exe, .dmg)"
+
+# =============================================================================
+# FLUJO PRINCIPAL DEL SISTEMA (Basado en las 4 Fases del Manual)
+# =============================================================================
+flujo_principal:
+  nombre: "Flujo de Cadena de Custodia"
+  descripcion: "Secuencia de procesos desde la obtención hasta la disposición final"
+  
+  fases:
+    - id: "fase_inicial"
+      nombre: "FASE INICIAL"
+      icono: "clipboard-document-check"
+      color: "blue"
+      descripcion: "Obtención y aseguramiento de evidencias en escena o por consignación"
+      
+      tipos_obtencion:
+        - tipo: "OBTENCIÓN TÉCNICA"
+          escenarios: ["Escena del crimen", "Lugar de los hechos"]
+          procedimientos:
+            - id: "proteccion_tecnica"
+              nombre: "Protección Técnica"
+              descripcion: "Aislamiento y preservación del lugar"
+              pasos:
+                - "Delimitar área (círculos concéntricos)"
+                - "Controlar acceso de personas"
+                - "Registrar personas que entran/salen"
+                - "Usar elementos de protección personal"
+              responsables: ["Policía Científica", "Funcionario actuante"]
+              campos_formulario:
+                - { id: "fecha_hora_proteccion", label: "Fecha y Hora de Protección", type: "datetime-local", required: true }
+                - { id: "lugar_proteccion", label: "Lugar/Locación", type: "text", required: true }
+                - { id: "coordenadas", label: "Coordenadas GPS", type: "text", required: false }
+                - { id: "funcionario_responsable", label: "Funcionario Responsable", type: "text", required: true }
+                - { id: "organismo", label: "Organismo", type: "select", options: ["CICPC", "GNB", "PNB", "Policía Estadal"], required: true }
+              
+            - id: "observacion_preliminar"
+              nombre: "Observación Preliminar"
+              descripcion: "Evaluación inicial del sitio y determinación de técnicas"
+              pasos:
+                - "Observar sin modificar"
+                - "Evaluar características físicas del sitio"
+                - "Identificar evidencias potenciales"
+                - "Determinar técnicas de fijación y colección"
+              responsables: ["Perito Criminalista", "Investigador"]
+              campos_formulario:
+                - { id: "descripcion_sitio", label: "Descripción del Sitio", type: "textarea", required: true }
+                - { id: "condiciones_climaticas", label: "Condiciones Climáticas", type: "text", required: true }
+                - { id: "iluminacion", label: "Condiciones de Iluminación", type: "select", options: ["Natural", "Artificial", "Mixta"], required: true }
+                - { id: "evidencias_identificadas", label: "Evidencias Identificadas", type: "array", required: true }
+                
+            - id: "fijacion"
+              nombre: "Fijación"
+              descripcion: "Registro permanente mediante fotografía, video, planimetría"
+              tecnicas: ["Fotográfica", "Videográfica", "Planimétrica", "Descripción escrita"]
+              pasos:
+                - "Fijación externa (vista general)"
+                - "Fijación interna (vista media y detalle)"
+                - "Usar testigo métrico y numerador"
+                - "Registrar coordenadas y puntos cardinales"
+              responsables: ["Fotógrafo Forense", "Topógrafo"]
+              campos_formulario:
+                - { id: "tipo_fijacion", label: "Tipo de Fijación", type: "multiselect", options: ["Fotográfica", "Videográfica", "Planimétrica"], required: true }
+                - { id: "cantidad_fotos", label: "Cantidad de Fotografías", type: "number", required: true }
+                - { id: "equipo_utilizado", label: "Equipo Utilizado", type: "text", required: true }
+                - { id: "operador", label: "Operador del Equipo", type: "text", required: true }
+                
+            - id: "coleccion"
+              nombre: "Colección"
+              descripcion: "Recolección física de evidencias usando técnicas apropiadas"
+              tecnicas_coleccion:
+                - { nombre: "Directa",适用: "Objetos grandes y visibles" }
+                - { nombre: "Barrido/Aspiración",适用: "Partículas pequeñas" }
+                - { nombre: "Levantamiento",适用: "Huellas y rastros" }
+                - { nombre: "Hisopado",适用: "Fluidos biológicos" }
+                - { nombre: "Raspado",适用: "Sustancias adheridas" }
+              pasos:
+                - "Usar guantes y cambiar entre evidencias"
+                - "Coleccionar de lo menos contaminante a lo más"
+                - "Evitar contaminación cruzada"
+                - "Documentar posición original"
+              responsables: ["Perito Coleccionista", "Técnico Forense"]
+              campos_formulario:
+                - { id: "tecnica_coleccion", label: "Técnica de Colección", type: "select", options: ["Directa", "Barrido", "Levantamiento", "Hisopado", "Raspado"], required: true }
+                - { id: "materiales_usados", label: "Materiales Usados", type: "array", required: true }
+                - { id: "precauciones", label: "Precauciones Tomadas", type: "textarea", required: true }
+                
+            - id: "embalaje_rotulacion"
+              nombre: "Embalaje y Rotulación"
+              descripcion: "Acondicionamiento seguro con identificación clara"
+              principios:
+                - "Un evidencia = Un embalaje"
+                - "Evitar contaminación cruzada"
+                - "Material compatible con la evidencia"
+                - "Sello inviolable"
+              campos_etiqueta:
+                - { id: "numero_evidencia", label: "Número de Evidencia", type: "text", pattern: "EVD-[YYYY]-[NNNN]", required: true }
+                - { id: "descripcion_evidencia", label: "Descripción", type: "textarea", required: true }
+                - { id: "marca", label: "Marca", type: "text", required: false }
+                - { id: "modelo", label: "Modelo", type: "text", required: false }
+                - { id: "serie", label: "Número de Serie", type: "text", required: false }
+                - { id: "color", label: "Color", type: "text", required: false }
+                - { id: "peso", label: "Peso/Medida", type: "text", required: false }
+                - { id: "fecha_hora_embalaje", label: "Fecha y Hora", type: "datetime-local", required: true }
+                - { id: "remitente", label: "Remitente", type: "text", required: true }
+                - { id: "cargo_remitente", label: "Cargo", type: "text", required: true }
+                - { id: "firma_remitente", label: "Firma Digital", type: "signature", required: true }
+              tipos_embalaje:
+                - { tipo: "Bolsa de papel",适用: "Documentos, ropa seca" }
+                - { tipo: "Bolsa plástica",适用: "Objetos no biológicos" }
+                - { tipo: "Sobre de evidencia",适用: "Pequeñas muestras" }
+                - { tipo: "Caja de cartón",适用: "Objetos frágiles" }
+                - { tipo: "Contenedor estéril",适用: "Muestras biológicas" }
+                - { tipo: "Frasco de vidrio",适用: "Líquidos, tóxicos" }
+                
+            - id: "registro_planilla"
+              nombre: "Registro en Planilla de Cadena de Custodia"
+              descripcion: "Documentación oficial del inicio de la cadena"
+              es_documento_legal: true
+              campos_planilla:
+                # Encabezado
+                - { id: "numero_actuacion", label: "Número de Actuación/NRO de Caso", type: "text", required: true, placeholder: "Ej: MP-2024-001234" }
+                - { id: "fecha_inicio", label: "Fecha de Inicio", type: "date", required: true }
+                - { id: "hora_inicio", label: "Hora de Inicio", type: "time", required: true }
+                - { id: "lugar_hechos", label: "Lugar de los Hechos", type: "textarea", required: true }
+                - { id: "naturaleza_hecho", label: "Naturaleza del Hecho", type: "select", options: ["Homicidio", "Robo", "Droga", "Delito Informático", "Violencia", "Otros"], required: true }
+                
+                # Datos del organismo
+                - { id: "organismo_remitente", label: "Organismo Remitente", type: "text", required: true }
+                - { id: "direccion_organismo", label: "Dirección del Organismo", type: "textarea", required: true }
+                - { id: "telefono", label: "Teléfono", type: "tel", required: false }
+                
+                # Datos del funcionario actuante
+                - { id: "nombre_funcionario", label: "Nombre y Apellido del Funcionario", type: "text", required: true }
+                - { id: "cedula_funcionario", label: "Cédula de Identidad", type: "text", required: true }
+                - { id: "cargo_funcionario", label: "Cargo", type: "text", required: true }
+                - { id: "correo_funcionario", label: "Correo Electrónico", type: "email", required: false }
+                
+                # Tabla de evidencias (múltiples registros)
+                - { id: "tabla_evidencias", label: "Tabla de Evidencias", type: "table", columns: [
+                    { key: "numero", label: "N°", width: "w-16" },
+                    { key: "descripcion", label: "Descripción Detallada", width: "w-64" },
+                    { key: "cantidad", label: "Cant.", width: "w-16" },
+                    { key: "caracteristicas", label: "Características (Marca, Modelo, Serie, Color)", width: "w-80" },
+                    { key: "peso_medida", label: "Peso/Medida", width: "w-24" },
+                    { key: "tipo_embalaje", label: "Tipo de Embalaje", width: "w-32" },
+                    { key: "precinto", label: "Precinto/Sello", width: "w-24" },
+                    { key: "observaciones", label: "Observaciones", width: "w-48" }
+                  ], required: true }
+                
+                # Firmas iniciales
+                - { id: "firma_funcionario_actuante", label: "Firma del Funcionario Actuante", type: "signature", required: true }
+                - { id: "firma_testigo_presencial", label: "Firma de Testigo Presencial", type: "signature", required: false, nota: "Cuando aplique" }
+                
+              validaciones:
+                - "Todos los campos obligatorios deben estar completos"
+                - "Las firmas deben ser digitales certificadas"
+                - "El número de actuación debe ser único"
+                - "La hora debe ser coherente con la secuencia de eventos"
+                
+            - id: "traslado_inicial"
+              nombre: "Traslado a Área de Resguardo o Laboratorio"
+              descripcion: "Transporte seguro manteniendo integridad"
+              requisitos:
+                - "Vehículo oficial acondicionado"
+                - "Funcionario armado si aplica"
+                - "Evidencias aseguradas contra movimiento"
+                - "Ruta registrada"
+              campos_formulario:
+                - { id: "fecha_hora_salida", label: "Fecha y Hora de Salida", type: "datetime-local", required: true }
+                - { id: "origen", label: "Lugar de Origen", type: "text", required: true }
+                - { id: "destino", label: "Lugar de Destino", type: "select", options: ["Área de Resguardo", "Laboratorio de Criminalística", "Fiscalía"], required: true }
+                - { id: "funcionario_traslado", label: "Funcionario Responsable del Traslado", type: "text", required: true }
+                - { id: "vehiculo", label: "Vehículo/Placa", type: "text", required: true }
+                - { id: "kilometraje", label: "Kilometraje", type: "number", required: false }
+                - { id: "ruta_utilizada", label: "Ruta Utilizada", type: "textarea", required: false }
+                - { id: "incidentes", label: "Incidentes en el Trayecto", type: "textarea", required: false }
+                
+        - tipo: "OBTENCIÓN POR ASEGURAMIENTO"
+          escenarios: ["Allanamientos", "Decomisos", "Presentaciones personales"]
+          procedimientos:
+            - id: "busqueda"
+              nombre: "Búsqueda"
+              descripcion: "Localización sistemática de evidencias"
+              metodos: ["En espiral", "En cuadrícula", "Por zonas", "Lineal"]
+              
+            - id: "posesion"
+              nombre: "Posesión"
+              descripcion: "Toma de control legal de las evidencias"
+              requisitos_legales: ["Orden judicial", "Flagrancia", "Consentimiento"]
+              
+        - tipo: "OBTENCIÓN POR CONSIGNACIÓN"
+          escenarios: ["Entrega voluntaria", "Remisión de otros organismos"]
+          procedimientos:
+            - id: "recepcion_consignacion"
+              nombre: "Recepción"
+              descripcion: "Verificación y aceptación de evidencias consignadas"
+              pasos:
+                - "Verificar documentación de acompañamiento"
+                - "Inspeccionar estado de embalajes"
+                - "Confirmar sellos intactos"
+                - "Generar acta de recepción"
+                
+        - tipo: "OBTENCIÓN POR DERIVACIÓN"
+          escenarios: ["Solicitud de peritaje específico", "Reenvío entre laboratorios"]
+          
+    - id: "fase_laboratorio"
+      nombre: "FASE DE LABORATORIO"
+      icono: "microscope"
+      color: "purple"
+      descripcion: "Análisis pericial de las evidencias"
+      
+      procedimientos:
+        - id: "recepcion_laboratorio"
+          nombre: "Recepción en Laboratorio"
+          descripcion: "Verificación de condiciones de llegada"
+          responsable: "Jefe de Laboratorio / Recepcionista"
+          pasos:
+            - "Verificar correspondencia con solicitud"
+            - "Inspeccionar integridad de sellos"
+            - "Confirmar cadena de custodia previa"
+            - "Asignar número de laboratorio"
+          campos_formulario:
+            - { id: "numero_lab", label: "Número de Laboratorio", type: "text", pattern: "LAB-[YYYY]-[NNNN]", required: true }
+            - { id: "fecha_recepcion", label: "Fecha de Recepción", type: "date", required: true }
+            - { id: "hora_recepcion", label: "Hora de Recepción", type: "time", required: true }
+            - { id: "estado_sellos", label: "Estado de Sellos", type: "select", options: ["Intactos", "Dañados", "Ausentes"], required: true }
+            - { id: "observaciones_recepcion", label: "Observaciones", type: "textarea", required: false }
+            - { id: "recibido_por", label: "Recibido Por", type: "text", required: true }
+            
+        - id: "designacion_perito"
+          nombre: "Designación de Perito"
+          descripcion: "Asignación de especialista según tipo de evidencia"
+          responsable: "Director de Laboratorio"
+          especialidades:
+            - "Balística"
+            - "Biología Forense"
+            - "Química Forense"
+            - "Documentoscopía"
+            - "Informática Forense"
+            - "Dactiloscopia"
+            - "Fotografía Forense"
+          campos_formulario:
+            - { id: "perito_designado", label: "Perito Designado", type: "text", required: true }
+            - { id: "especialidad", label: "Especialidad", type: "select", options: ["Balística", "Biología", "Química", "Documentoscopía", "Informática", "Dactiloscopia"], required: true }
+            - { id: "fecha_designacion", label: "Fecha de Designación", type: "date", required: true }
+            - { id: "tipo_examen", label: "Tipo de Examen Solicitado", type: "textarea", required: true }
+            
+        - id: "peritaje"
+          nombre: "Peritaje"
+          descripcion: "Análisis técnico-científico de la evidencia"
+          responsable: "Perito Especialista"
+          etapas:
+            - "Examen externo"
+            - "Pruebas preliminares"
+            - "Análisis de laboratorio"
+            - "Interpretación de resultados"
+            - "Emisión de conclusiones"
+          campos_formulario:
+            - { id: "metodologia", label: "Metodología Aplicada", type: "textarea", required: true }
+            - { id: "equipos_utilizados", label: "Equipos Utilizados", type: "array", required: true }
+            - { id: "resultados", label: "Resultados Obtenidos", type: "textarea", required: true }
+            - { id: "conclusiones", label: "Conclusiones", type: "textarea", required: true }
+            - { id: "fecha_elaboracion", label: "Fecha de Elaboración", type: "date", required: true }
+            - { id: "firmas_perito", label: "Firma del Perito", type: "signature", required: true }
+          productos:
+            - "Informe Pericial"
+            - "Anexos fotográficos"
+            - "Gráficos y planos"
+            - "Certificados de análisis"
+            
+        - id: "remision_resultados"
+          nombre: "Remisión de Resultados"
+          descripcion: "Envío del informe pericial al solicitante"
+          responsable: "Jefe de Laboratorio"
+          destinos: ["Fiscalía", "Tribunal", "Organismo Investigador"]
+          campos_formulario:
+            - { id: "oficio_remision", label: "Número de Oficio", type: "text", required: true }
+            - { id: "fecha_remision", label: "Fecha de Remisión", type: "date", required: true }
+            - { id: "dirigido_a", label: "Dirigido A", type: "text", required: true }
+            - { id: "cargo_destinatario", label: "Cargo del Destinatario", type: "text", required: true }
+            - { id: "organismo_destino", label: "Organismo Destino", type: "text", required: true }
+            - { id: "medio_envio", label: "Medio de Envío", type: "select", options: ["Físico", "Digital Certificado", "Ambos"], required: true }
+            
+    - id: "fase_disposicion_judicial"
+      nombre: "FASE DE DISPOSICIÓN JUDICIAL"
+      icono: "gavel"
+      color: "amber"
+      descripcion: "Presentación y valoración de evidencias en proceso judicial"
+      
+      actividades:
+        - id: "exhibicion_audiencia"
+          nombre: "Exhibición en Audiencia"
+          descripcion: "Presentación física de evidencias ante el tribunal"
+          participantes: ["Juez", "Fiscal", "Defensa", "Víctima", "Perito"]
+          requisitos:
+            - "Citar al custodio de la evidencia"
+            - "Verificar cadena de custodia completa"
+            - "Garantizar contradicción y defensa"
+          campos_registro:
+            - { id: "numero_audiencia", label: "Número de Audiencia", type: "text", required: true }
+            - { id: "fecha_audiencia", label: "Fecha de Audiencia", type: "date", required: true }
+            - { id: "tribunal", label: "Tribunal", type: "text", required: true }
+            - { id: "juez_presentador", label: "Juez de Control", type: "text", required: true }
+            - { id: "evidencias_exhibidas", label: "Evidencias Exhibidas", type: "array", required: true }
+            - { id: "incidencias", label: "Incidencias", type: "textarea", required: false }
+            
+        - id: "valoracion_probatoria"
+          nombre: "Valoración Probatoria"
+          descripcion: "Evaluación judicial del valor probatorio"
+          criterios: ["Licitud", "Pertinencia", "Utilidad", "Autenticidad"]
+          
+    - id: "fase_disposicion_final"
+      nombre: "FASE DE DISPOSICIÓN FINAL"
+      icono: "archive-box"
+      color: "gray"
+      descripcion: "Destino definitivo de las evidencias tras conclusión del proceso"
+      
+      tipos_disposicion:
+        - tipo: "DEVOLUCIÓN"
+          aplicacion: "Bienes lícitos a propietarios legítimos"
+          requisitos: ["Orden judicial", "Identificación del propietario", "Acta de entrega"]
+          
+        - tipo: "DESTRUCCIÓN"
+          aplicacion: "Sustancias ilícitas, armas, objetos peligrosos"
+          requisitos: ["Orden judicial", "Acta de destrucción", "Testigos", "Registro fotográfico"]
+          
+        - tipo: "INCORPORACIÓN AL ESTADO"
+          aplicacion: "Bienes decomisados sin dueño conocido"
+          requisitos: ["Sentencia firme", "Inventario", "Transferencia institucional"]
+          
+        - tipo: "PERMANENCIA EN RESGUARDO"
+          aplicacion: "Casos activos, recursos pendientes"
+          requisitos: ["Actualización periódica", "Verificación de estado"]
+      
+      procedimientos_cierre:
+        - id: "ejecucion_disposicion"
+          nombre: "Ejecución de Disposición"
+          descripcion: "Materialización del destino ordenado"
+          campos_formulario:
+            - { id: "tipo_disposicion", label: "Tipo de Disposición", type: "select", options: ["Devolución", "Destrucción", "Incorporación", "Permanencia"], required: true }
+            - { id: "orden_judicial_numero", label: "Número de Orden Judicial", type: "text", required: true }
+            - { id: "fecha_ejecucion", label: "Fecha de Ejecución", type: "date", required: true }
+            - { id: "funcionario_ejecutor", label: "Funcionario Ejecutor", type: "text", required: true }
+            - { id: "testigos", label: "Testigos Presenciales", type: "array", required: true }
+            - { id: "acta_numero", label: "Número de Acta", type: "text", required: true }
+            
+        - id: "cierre_planilla"
+          nombre: "Cierre de Planilla de Cadena de Custodia"
+          descripcion: "Finalización documental del proceso"
+          campos_formulario:
+            - { id: "fecha_cierre", label: "Fecha de Cierre", type: "date", required: true }
+            - { id: "motivo_cierre", label: "Motivo de Cierre", type: "select", options: ["Sentencia Firme", "Sobreseimiento", "Prescripción", "Devoción Completa"], required: true }
+            - { id: "responsable_cierre", label: "Responsable del Cierre", type: "text", required: true }
+            - { id: "firma_cierre", label: "Firma de Cierre", type: "signature", required: true }
+            - { id: "archivo_ubacion", label: "Ubicación del Archivo", type: "text", required: true }
+
+# =============================================================================
+# SISTEMA DE RESGUARDO (Transversal a todas las fases)
+# =============================================================================
+sistema_resguardo:
+  nombre: "Sistema de Resguardo de Evidencias"
+  descripcion: "Gestión de almacenamiento temporal seguro"
+  
+  areas:
+    - id: "area_ingreso"
+      nombre: "Área de Ingreso"
+      descripcion: "Recepción y verificación inicial"
+      procedimientos:
+        - id: "ingreso_evidencia"
+          nombre: "Ingreso de Evidencia"
+          pasos:
+            - "Verificar planilla de cadena de custodia"
+            - "Inspeccionar embalaje y sellos"
+            - "Fotografiar evidencia ingresada"
+            - "Asignar ubicación física"
+            - "Registrar en sistema"
+          campos_formulario:
+            - { id: "numero_ingreso", label: "Número de Ingreso", type: "text", pattern: "ING-[YYYY]-[NNNN]", required: true }
+            - { id: "fecha_ingreso", label: "Fecha de Ingreso", type: "datetime-local", required: true }
+            - { id: "proviene_de", label: "Proviene De", type: "text", required: true }
+            - { id: "funcionario_entrega", label: "Funcionario que Entrega", type: "text", required: true }
+            - { id: "administrador_recibe", label: "Administrador que Recibe", type: "text", required: true }
+            - { id: "estado_aparente", label: "Estado Aparente", type: "select", options: ["Bueno", "Regular", "Dañado"], required: true }
+            - { id: "ubicacion_asignada", label: "Ubicación Asignada (Estante/Estante/Caja)", type: "text", required: true }
+            
+    - id: "area_deposito"
+      nombre: "Área de Depósito"
+      descripcion: "Almacenamiento seguro con controles ambientales"
+      tipos_deposito:
+        - { tipo: "Evidencias Generales", condiciones: "Temperatura ambiente, humedad controlada" }
+        - { tipo: "Evidencias Biológicas", condiciones: "Refrigeración 4°C o congelación -20°C" }
+        - { tipo: "Sustancias Químicas", condiciones: "Área ventilada, contenedores especiales" }
+        - { tipo: "Armas y Municiones", condiciones: "Armero blindado, control estricto" }
+        - { tipo: "Evidencias Digitales", condiciones: "Bolsas Faraday, sin campos magnéticos" }
+        - { tipo: "Valores y Efectivos", condiciones: "Caja fuerte, doble llave" }
+      controles:
+        - "Control de temperatura y humedad"
+        - "Acceso restringido con registro"
+        - "Cámaras de seguridad 24/7"
+        - "Inventario periódico"
+        
+    - id: "area_egreso"
+      nombre: "Área de Egreso"
+      descripcion: "Salida controlada de evidencias"
+      tipos_egreso:
+        - "Para peritaje"
+        - "Para exhibición en audiencia"
+        - "Para devolución"
+        - "Para destrucción"
+      campos_formulario:
+        - { id: "numero_egreso", label: "Número de Egreso", type: "text", required: true }
+        - { id: "fecha_egreso", label: "Fecha de Egreso", type: "datetime-local", required: true }
+        - { id: "motivo_egreso", label: "Motivo de Egreso", type: "select", options: ["Peritaje", "Audiencia", "Devolución", "Destrucción", "Traslado"], required: true }
+        - { id: "autoriza_egreso", label: "Autoriza (Fiscal/Juez)", type: "text", required: true }
+        - { id: "numero_oficio", label: "Número de Oficio/Autorización", type: "text", required: true }
+        - { id: "recibe_evidencia", label: "Persona que Recibe", type: "text", required: true }
+        - { id: "cedula_recibe", label: "Cédula de quien Recibe", type: "text", required: true }
+        - { id: "firma_recibe", label: "Firma de Recibido", type: "signature", required: true }
+        - { id: "fecha_retorno_estimada", label: "Fecha de Retorno Estimada", type: "date", required: false }
+        
+    - id: "area_traslado_interno"
+      nombre: "Traslado Interno"
+      descripcion: "Movimiento dentro del área de resguardo"
+      campos_registro:
+        - { id: "origen_traslado", label: "Ubicación de Origen", type: "text", required: true }
+        - { id: "destino_traslado", label: "Ubicación de Destino", type: "text", required: true }
+        - { id: "motivo_traslado", label: "Motivo", type: "text", required: true }
+        - { id: "fecha_traslado", label: "Fecha y Hora", type: "datetime-local", required: true }
+        - { id: "responsable_traslado", label: "Responsable", type: "text", required: true }
+
+# =============================================================================
+# ARQUITECTURA DE INTERFAZ DE USUARIO
+# =============================================================================
+interfaz_usuario:
+  framework: "React + TypeScript + TailwindCSS"
+  componentes_principales:
+    
+    # Layout Principal
+    layout:
+      tipo: "Dashboard Layout"
+      regiones:
+        - region: "Sidebar"
+          posicion: "left"
+          ancho: "w-64"
+          colapsable: true
+          secciones:
+            - { nombre: "Inicio", icono: "home", ruta: "/" }
+            - { nombre: "Nueva Cadena", icono: "plus-circle", ruta: "/cadena/nueva" }
+            - { nombre: "Mis Cadenas", icono: "folder", ruta: "/cadena/lista" }
+            - { nombre: "Resguardo", icono: "archive", ruta: "/resguardo" }
+            - { nombre: "Laboratorio", icono: "microscope", ruta: "/laboratorio" }
+            - { nombre: "Reportes", icono: "chart-bar", ruta: "/reportes" }
+            - divider: true }
+            - { nombre: "Configuración", icono: "cog", ruta: "/config" }
+            - { nombre: "Ayuda", icono: "question-mark-circle", ruta: "/ayuda" }
+            
+        - region: "Header"
+          posicion: "top"
+          alto: "h-16"
+          elementos:
+            - { tipo: "search", placeholder: "Buscar por N° de caso, evidencia...", atajo: "Ctrl+K" }
+            - { tipo: "notifications", icono: "bell", badge: true }
+            - { tipo: "user-menu", mostrar: ["avatar", "nombre", "rol"] }
+            
+        - region: "Main Content"
+          posicion: "center"
+          scrollable: true
+          
+        - region: "Quick Actions"
+          posicion: "floating-bottom-right"
+          acciones:
+            - { accion: "Nueva Evidencia", icono: "plus", color: "blue" }
+            - { accion: "Escanear Código", icono: "qr-code", color: "green" }
+            - { accion: "Imprimir Etiquetas", icono: "printer", color: "gray" }
+
+    # Vistas Principales
+    vistas:
+      - id: "dashboard"
+        ruta: "/"
+        titulo: "Panel Principal"
+        componentes:
+          - tipo: "StatsCards"
+            tarjetas:
+              - { titulo: "Cadenas Activas", valor: "dinámico", icono: "clipboard", color: "blue" }
+              - { titulo: "Evidencias en Resguardo", valor: "dinámico", icono: "archive", color: "green" }
+              - { titulo: "Peritajes en Curso", valor: "dinámico", icono: "microscope", color: "purple" }
+              - { titulo: "Alertas de Vencimiento", valor: "dinámico", icono: "exclamation", color: "red" }
+              
+          - tipo: "RecentActivity"
+            titulo: "Actividad Reciente"
+            limite: 10
+            mostrar: ["tipo_accion", "evidencia", "usuario", "fecha"]
+            
+          - tipo: "PhaseProgress"
+            titulo: "Progreso por Fase"
+            visualizacion: "kanban"
+            columnas: ["Inicial", "Laboratorio", "Judicial", "Disposición Final"]
+            
+      - id: "nueva_cadena"
+        ruta: "/cadena/nueva"
+        titulo: "Nueva Cadena de Custodia"
+        tipo: "wizard"
+        pasos:
+          - paso: 1
+            titulo: "Datos del Caso"
+            campos:
+              - { id: "numero_actuacion", label: "Número de Actuación", type: "text", required: true, validation: "unico" }
+              - { id: "naturaleza_hecho", label: "Naturaleza del Hecho", type: "select", required: true }
+              - { id: "fecha_hecho", label: "Fecha del Hecho", type: "datetime-local", required: true }
+              - { id: "lugar_hechos", label: "Lugar de los Hechos", type: "textarea", required: true }
+              - { id: "organismo_actuante", label: "Organismo Actuante", type: "select", required: true }
+              - { id: "funcionario_responsable", label: "Funcionario Responsable", type: "text", required: true, autopopulate: true }
+            botones: ["Cancelar", "Siguiente"]
+            
+          - paso: 2
+            titulo: "Tipo de Obtención"
+            opciones:
+              - { valor: "tecnica", label: "Obtención Técnica", icono: "search", descripcion: "Escena del crimen, lugar de los hechos" }
+              - { valor: "aseguramiento", label: "Aseguramiento", icono: "shield-check", descripcion: "Allanamientos, decomisos" }
+              - { valor: "consignacion", label: "Consignación", icono: "document-arrow-down", descripcion: "Entrega voluntaria, remisión" }
+              - { valor: "derivacion", label: "Derivación", icono: "arrow-right", descripcion: "Solicitud de peritaje específico" }
+            botones: ["Atrás", "Cancelar", "Siguiente"]
+            
+          - paso: 3
+            titulo: "Procedimientos Realizados"
+            descripcion: "Seleccione los procedimientos aplicados según el tipo de obtención"
+            componente: "ProcedureChecklist"
+            dinamicos: true
+            dependiente_de: "paso_2"
+            botones: ["Atrás", "Cancelar", "Siguiente"]
+            
+          - paso: 4
+            titulo: "Registro de Evidencias"
+            componente: "EvidenceTable"
+            caracteristicas:
+              - "Filas dinámicas (agregar/eliminar)"
+              - "Autocompletado de descripciones"
+              - "Generación automática de números de evidencia"
+              - "Captura de fotos desde cámara/webcam"
+              - "Escaneo de códigos de barras/QR"
+            columnas_tabla:
+              - { key: "numero", editable: false, auto: true }
+              - { key: "descripcion", editable: true, required: true }
+              - { key: "cantidad", editable: true, type: "number", default: 1 }
+              - { key: "caracteristicas", editable: true, modal: true }
+              - { key: "peso_medida", editable: true }
+              - { key: "tipo_embalaje", editable: true, select: true }
+              - { key: "acciones", buttons: ["ver", "editar", "eliminar", "foto"] }
+            botones: ["Atrás", "Cancelar", "Guardar Borrador", "Generar Planilla"]
+            
+          - paso: 5
+            titulo: "Firmas y Validación"
+            componente: "SignaturePad"
+            campos:
+              - { id: "firma_funcionario", label: "Firma del Funcionario Actuante", required: true }
+              - { id: "firma_testigo", label: "Firma de Testigo (opcional)", required: false }
+              - { id: "huella_digital", label: "Huella Digital", required: false, dispositivo: "lector_biometrico" }
+            resumen:
+              mostrar: ["numero_actuacion", "total_evidencias", "fecha_creacion"]
+            botones: ["Atrás", "Cancelar", "Finalizar y Registrar"]
+            
+          - paso: 6
+            titulo: "Confirmación"
+            componente: "SuccessMessage"
+            acciones_disponibles:
+              - "Imprimir Planilla"
+              - "Generar PDF"
+              - "Imprimir Etiquetas de Evidencias"
+              - "Registrar Traslado"
+              - "Volver al Inicio"
+              
+      - id: "lista_cadenas"
+        ruta: "/cadena/lista"
+        titulo: "Cadenas de Custodia"
+        componente: "DataTable"
+        filtros:
+          - { campo: "numero_actuacion", tipo: "text", label: "N° de Actuación" }
+          - { campo: "fecha_desde", tipo: "date", label: "Desde" }
+          - { campo: "fecha_hasta", tipo: "date", label: "Hasta" }
+          - { campo: "fase", tipo: "select", label: "Fase", opciones: ["Inicial", "Laboratorio", "Judicial", "Disposición Final"] }
+          - { campo: "organismo", tipo: "select", label: "Organismo" }
+          - { campo: "estado", tipo: "select", label: "Estado", opciones: ["Activa", "Cerrada", "Archivada"] }
+        columnas:
+          - { key: "numero_actuacion", sortable: true, clickable: true }
+          - { key: "naturaleza_hecho", sortable: true }
+          - { key: "fecha_inicio", sortable: true, format: "date" }
+          - { key: "total_evidencias", sortable: true }
+          - { key: "fase_actual", sortable: true, badge: true }
+          - { key: "organismo", sortable: true }
+          - { key: "ultima_actualizacion", sortable: true, format: "datetime" }
+          - { key: "acciones", buttons: ["ver", "editar", "duplicar", "imprimir", "eliminar"] }
+        acciones_masivas: ["Exportar selección", "Imprimir selected", "Cambiar estado"]
+        
+      - id: "detalle_cadena"
+        ruta: "/cadena/:id"
+        titulo: "Detalle de Cadena de Custodia"
+        tabs:
+          - tab: "General"
+            secciones:
+              - { titulo: "Información del Caso", componente: "CaseInfoCard" }
+              - { titulo: "Línea de Tiempo", componente: "Timeline", mostrar_eventos: true }
+              - { titulo: "Evidencias", componente: "EvidenceGrid", vista: ["grid", "lista"] }
+              
+          - tab: "Planilla"
+            componente: "PlanillaViewer"
+            acciones: ["Ver", "Descargar PDF", "Imprimir", "Compartir"]
+            formato: "oficial_manual"
+            
+          - tab: "Historial"
+            componente: "AuditLog"
+            mostrar: ["timestamp", "usuario", "accion", "campo_modificado", "valor_anterior", "valor_nuevo", "ip"]
+            filtrable: true
+            
+          - tab: "Documentos"
+            componente: "DocumentList"
+            tipos_documento: ["Planilla", "Fotografías", "Informes Periciales", "Actas", "Oficios"]
+            acciones: ["Subir", "Ver", "Descargar", "Eliminar"]
+            
+      - id: "resguardo_dashboard"
+        ruta: "/resguardo"
+        titulo: "Gestión de Resguardo"
+        subtabs:
+          - tab: "Ingresos"
+            componente: "IngresoForm"
+            flujo: "Escaneo → Verificación → Asignación Ubicación → Registro"
+            
+          - tab: "Ubicaciones"
+            componente: "StorageMap"
+            visualizacion: ["mapa_2d", "lista", "treeview"]
+            niveles: ["Área", "Estante", "Nivel", "Caja/Contenedor"]
+            estados: ["Disponible", "Ocupado", "Reservado", "Mantenimiento"]
+            
+          - tab: "Egresos"
+            componente: "EgresoForm"
+            validaciones: ["Autorización requerida", "Verificar vencimientos"]
+            
+          - tab: "Inventario"
+            componente: "InventoryTable"
+            acciones: ["Conteo físico", "Conciliación", "Reporte de discrepancias"]
+            filtros_avanzados: true
+            
+          - tab: "Alertas"
+            componente: "AlertList"
+            tipos_alerta:
+              - { tipo: "vencimiento_retorno", severidad: "warning", dias_limite: 3 }
+              - { tipo: "temperatura", severidad: "critical", umbrales: { min: 2, max: 8, unidad: "°C" } }
+              - { tipo: "capacidad", severidad: "info", porcentaje_aviso: 80 }
+              
+      - id: "laboratorio_gestion"
+        ruta: "/laboratorio"
+        titulo: "Gestión de Laboratorio"
+        subtabs:
+          - tab: "Recepción"
+            componente: "LabReceptionForm"
+            checklist: ["Verificar solicitud", "Inspeccionar sellos", "Confirmar evidencias"]
+            
+          - tab: "Asignación"
+            componente: "AssignmentBoard"
+            estilo: "drag-and-drop"
+            carriles: ["Pendiente", "Asignado", "En Proceso", "Completado"]
+            
+          - tab: "Peritajes"
+            componente: "ExpertiseManager"
+            plantillas_informe: true
+            editor_rico: true
+            anexos_multimedia: true
+            
+          - tab: "Calendario"
+            componente: "LabCalendar"
+            vistas: ["mes", "semana", "día"]
+            recordatorios: true
+            
+      - id: "reportes"
+        ruta: "/reportes"
+        titulo: "Reportes y Estadísticas"
+        tipos_reporte:
+          - categoria: "Operativos"
+            reportes:
+              - { nombre: "Cadenas por Fase", tipo: "bar_chart", periodo: true }
+              - { nombre: "Tiempo Promedio por Fase", tipo: "line_chart", periodo: true }
+              - { nombre: "Evidencias por Tipo", tipo: "pie_chart" }
+              - { nombre: "Productividad por Funcionario", tipo: "table", exportable: true }
+              
+          - categoria: "Judiciales"
+            reportes:
+              - { nombre: "Casos Cerrados vs Activos", tipo: "donut_chart" }
+              - { nombre: "Tipos de Disposición Final", tipo: "stacked_bar" }
+              - { nombre: "Audiencias Programadas", tipo: "calendar_heatmap" }
+              
+          - categoria: "Cumplimiento"
+            reportes:
+              - { nombre: "Incidentes de Cadena Rota", tipo: "alert_list", severidad: true }
+              - { nombre: "Vencimientos de Términos", tipo: "countdown_list" }
+              - { nombre: "Auditoría de Accesos", tipo: "log_table", filtrable: true }
+              
+        export_formats: ["PDF", "Excel", "CSV", "JSON"]
+        agendamiento: true
+        envio_automatico: ["email", "webhook"]
+
+# =============================================================================
+# MODELO DE DATOS
+# =============================================================================
+modelo_datos:
+  entidades:
+    
+    CadenaCustodia:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "numero_actuacion", tipo: "String", unique: true, index: true }
+        - { nombre: "naturaleza_hecho", tipo: "Enum" }
+        - { nombre: "fecha_hecho", tipo: "DateTime" }
+        - { nombre: "lugar_hechos", tipo: "Text" }
+        - { nombre: "coordenadas", tipo: "GeoPoint", nullable: true }
+        - { nombre: "organismo_actuante_id", tipo: "ForeignKey", ref: "Organismo" }
+        - { nombre: "funcionario_responsable_id", tipo: "ForeignKey", ref: "Usuario" }
+        - { nombre: "tipo_obtencion", tipo: "Enum" }
+        - { nombre: "fase_actual", tipo: "Enum", default: "INICIAL" }
+        - { nombre: "estado", tipo: "Enum", default: "ACTIVA" }
+        - { nombre: "fecha_creacion", tipo: "DateTime", auto: true }
+        - { nombre: "fecha_cierre", tipo: "DateTime", nullable: true }
+        - { nombre: "motivo_cierre", tipo: "String", nullable: true }
+        - { nombre: "metadata", tipo: "JSONB", nullable: true }
+      relaciones:
+        - { tipo: "hasMany", entidad: "Evidencia" }
+        - { tipo: "hasMany", entidad: "EventoCadena" }
+        - { tipo: "hasMany", entidad: "Documento" }
+        
+    Evidencia:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "cadena_custodia_id", tipo: "ForeignKey", ref: "CadanaCustodia" }
+        - { nombre: "numero_evidencia", tipo: "String", unique: true }
+        - { nombre: "descripcion", tipo: "Text" }
+        - { nombre: "cantidad", tipo: "Integer", default: 1 }
+        - { nombre: "marca", tipo: "String", nullable: true }
+        - { nombre: "modelo", tipo: "String", nullable: true }
+        - { nombre: "numero_serie", tipo: "String", nullable: true }
+        - { nombre: "color", tipo: "String", nullable: true }
+        - { nombre: "peso_medida", tipo: "String", nullable: true }
+        - { nombre: "tipo_embalaje", tipo: "Enum" }
+        - { nombre: "precinto_sello", tipo: "String" }
+        - { nombre: "observaciones", tipo: "Text", nullable: true }
+        - { nombre: "ubicacion_actual", tipo: "String" }
+        - { nombre: "estado_conservacion", tipo: "Enum" }
+        - { nombre: "codigo_barras", tipo: "String", unique: true }
+        - { nombre: "fotos", tipo: "Array<String>", nullable: true }
+      relaciones:
+        - { tipo: "belongsTo", entidad: "CadanaCustodia" }
+        - { tipo: "hasMany", entidad: "MovimientoEvidencia" }
+        - { tipo: "hasMany", entidad: "Peritaje" }
+        
+    EventoCadena:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "cadena_custodia_id", tipo: "ForeignKey", ref: "CadanaCustodia" }
+        - { nombre: "tipo_evento", tipo: "Enum" }
+        - { nombre: "fecha_hora", tipo: "DateTime" }
+        - { nombre: "descripcion", tipo: "Text" }
+        - { nombre: "usuario_id", tipo: "ForeignKey", ref: "Usuario" }
+        - { nombre: "organismo_id", tipo: "ForeignKey", ref: "Organismo", nullable: true }
+        - { nombre: "ubicacion_origen", tipo: "String", nullable: true }
+        - { nombre: "ubicacion_destino", tipo: "String", nullable: true }
+        - { nombre: "datos_adicionales", tipo: "JSONB", nullable: true }
+        - { nombre: "firma_digital", tipo: "String", nullable: true }
+      relaciones:
+        - { tipo: "belongsTo", entidad: "CadanaCustodia" }
+        - { tipo: "belongsTo", entidad: "Usuario" }
+        
+    MovimientoEvidencia:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "evidencia_id", tipo: "ForeignKey", ref: "Evidencia" }
+        - { nombre: "fecha_hora_salida", tipo: "DateTime" }
+        - { nombre: "fecha_hora_llegada", tipo: "DateTime", nullable: true }
+        - { nombre: "origen_tipo", tipo: "Enum" }
+        - { nombre: "origen_id", tipo: "UUID" }
+        - { nombre: "destino_tipo", tipo: "Enum" }
+        - { nombre: "destino_id", tipo: "UUID" }
+        - { nombre: "motivo", tipo: "Enum" }
+        - { nombre: "autorizacion_numero", tipo: "String", nullable: true }
+        - { nombre: "funcionario_responsable_id", tipo: "ForeignKey", ref: "Usuario" }
+        - { nombre: "estado", tipo: "Enum", default: "EN_TRANSITO" }
+        - { nombre: "observaciones", tipo: "Text", nullable: true }
+      relaciones:
+        - { tipo: "belongsTo", entidad: "Evidencia" }
+        
+    Peritaje:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "evidencia_id", tipo: "ForeignKey", ref: "Evidencia" }
+        - { nombre: "numero_lab", tipo: "String", unique: true }
+        - { nombre: "perito_designado_id", tipo: "ForeignKey", ref: "Usuario" }
+        - { nombre: "especialidad", tipo: "Enum" }
+        - { nombre: "tipo_examen", tipo: "Text" }
+        - { nombre: "metodologia", tipo: "Text" }
+        - { nombre: "equipos_utilizados", tipo: "Array<String>" }
+        - { nombre: "resultados", tipo: "Text" }
+        - { nombre: "conclusiones", tipo: "Text" }
+        - { nombre: "fecha_designacion", tipo: "DateTime" }
+        - { nombre: "fecha_elaboracion", tipo: "DateTime", nullable: true }
+        - { nombre: "estado", tipo: "Enum", default: "PENDIENTE" }
+        - { nombre: "informe_pdf", tipo: "String", nullable: true }
+      relaciones:
+        - { tipo: "belongsTo", entidad: "Evidencia" }
+        - { tipo: "belongsTo", entidad: "Usuario", as: "perito" }
+        
+    Usuario:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "cedula", tipo: "String", unique: true }
+        - { nombre: "nombre", tipo: "String" }
+        - { nombre: "apellido", tipo: "String" }
+        - { nombre: "correo", tipo: "String", unique: true }
+        - { nombre: "telefono", tipo: "String", nullable: true }
+        - { nombre: "cargo", tipo: "String" }
+        - { nombre: "organismo_id", tipo: "ForeignKey", ref: "Organismo" }
+        - { nombre: "rol", tipo: "Enum" }
+        - { nombre: "especialidad", tipo: "Enum", nullable: true }
+        - { nombre: "firma_digital", tipo: "String", nullable: true }
+        - { nombre: "activo", tipo: "Boolean", default: true }
+        - { nombre: "ultimo_acceso", tipo: "DateTime", nullable: true }
+      relaciones:
+        - { tipo: "belongsTo", entidad: "Organismo" }
+        - { tipo: "hasMany", entidad: "EventoCadena" }
+        
+    Organismo:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "nombre", tipo: "String", unique: true }
+        - { nombre: "codigo", tipo: "String", unique: true }
+        - { nombre: "tipo", tipo: "Enum" }
+        - { nombre: "direccion", tipo: "Text" }
+        - { nombre: "telefono", tipo: "String" }
+        - { nombre: "correo", tipo: "String" }
+        - { nombre: "activo", tipo: "Boolean", default: true }
+      relaciones:
+        - { tipo: "hasMany", entidad: "Usuario" }
+        
+    UbicacionResguardo:
+      campos:
+        - { nombre: "id", tipo: "UUID", primary_key: true }
+        - { nombre: "codigo", tipo: "String", unique: true }
+        - { nombre: "nombre", tipo: "String" }
+        - { nombre: "tipo", tipo: "Enum" }
+        - { nombre: "area", tipo: "String" }
+        - { nombre: "estante", tipo: "String", nullable: true }
+        - { nombre: "nivel", tipo: "Integer", nullable: true }
+        - { nombre: "capacidad_maxima", tipo: "Integer" }
+        - { nombre: "condiciones_especiales", tipo: "JSONB", nullable: true }
+        - { nombre: "estado", tipo: "Enum", default: "DISPONIBLE" }
+        - { nombre: "coordenadas_mapa", tipo: "JSONB", nullable: true }
+      relaciones:
+        - { tipo: "hasMany", entidad: "Evidencia", as: "evidencias_almacenadas" }
+
+  enums:
+    NaturalezaHecho:
+      - "HOMICIDIO"
+      - "LESIONES"
+      - "ROBO"
+      - "HURTO"
+      - "DROGA"
+      - "DELITO_INFORMATICO"
+      - "VIOLENCIA_GENERO"
+      - "ABUSO SEXUAL"
+      - "ESTUPEFACIENTES"
+      - "ARMAS"
+      - "OTROS"
+      
+    TipoObtencion:
+      - "TECNICA"
+      - "ASEGURAMIENTO"
+      - "CONSIGNACION"
+      - "DERIVACION"
+      
+    FaseCadena:
+      - "INICIAL"
+      - "LABORATORIO"
+      - "JUDICIAL"
+      - "DISPOSICION_FINAL"
+      
+    EstadoCadena:
+      - "ACTIVA"
+      - "SUSPENDIDA"
+      - "CERRADA"
+      - "ARCHIVADA"
+      
+    TipoEmbala je:
+      - "BOLSA_PAPEL"
+      - "BOLSA_PLASTICA"
+      - "SOBRE_EVIDENCIA"
+      - "CAJA_CARTON"
+      - "CONTENEDOR_ESTEROIL"
+      - "FRASCO_VIDRIO"
+      - "TUBO_ENSAYO"
+      - "ARMA_BLINDADA"
+      - "BOLSA_FARADAY"
+      - "OTRO"
+      
+    TipoEvento:
+      - "CREACION"
+      - "REGISTRO_EVIDENCIA"
+      - "TRASLADO"
+      - "INGRESO_RESGUARDO"
+      - "EGRESO_RESGUARDO"
+      - "RECEPCION_LABORATORIO"
+      - "DESIGNACION_PERITO"
+      - "PERITAJE_COMPLETADO"
+      - "EXHIBICION_AUDIENCIA"
+      - "DISPOSICION_FINAL"
+      - "CIERRE"
+      
+    RolUsuario:
+      - "ADMINISTRADOR_SISTEMA"
+      - "FUNCIONARIO_ACTUANTE"
+      - "PERITO"
+      - "ADMINISTRADOR_RESGUARDO"
+      - "FISCAL"
+      - "JUEZ"
+      - "AUDITOR"
+      
+    EstadoEvidencia:
+      - "NUEVA"
+      - "EN_PROCESO"
+      - "EN_RES GUARDO"
+      - "EN_LABORATORIO"
+      - "EN_AUDIENCIA"
+      - "DISPOSICION_PENDIENTE"
+      - "DISPUESTA"
+      
+    EspecialidadPerito:
+      - "BALISTICA"
+      - "BIOLOGIA_FORENSE"
+      - "QUIMICA_FORENSE"
+      - "DOCUMENTOSCOPIA"
+      - "INFORMATICA_FORENSE"
+      - "DACTILOSCOPIA"
+      - "FOTOGRAFIA_FORENSE"
+      - "TOXICOLOGIA"
+      - "GENETICA"
+
+# =============================================================================
+# SEGURIDAD Y AUDITORÍA
+# =============================================================================
+seguridad:
+  autenticacion:
+    metodo: "JWT + Refresh Tokens"
+    providers: ["local", "oauth2_gobierno"]
+    mfa:
+      habilitado: true
+      metodos: ["totp", "sms", "email"]
+    session:
+      timeout: 900 # 15 minutos
+      renew_on_activity: true
+      
+  autorizacion:
+    modelo: "RBAC + ABAC"
+    roles:
+      ADMINISTRADOR_SISTEMA:
+        permisos: ["*"]
+      FUNCIONARIO_ACTUANTE:
+        permisos:
+          - "cadena:create"
+          - "cadena:read:own"
+          - "evidencia:create"
+          - "evidencia:update:own"
+          - "planilla:generate"
+          - "traslado:request"
+      PERITO:
+        permisos:
+          - "cadena:read:assigned"
+          - "evidencia:read:assigned"
+          - "peritaje:create"
+          - "peritaje:update:own"
+          - "informe:generate"
+      ADMINISTRADOR_RESGUARDO:
+        permisos:
+          - "evidencia:read:all"
+          - "resguardo:ingreso"
+          - "resguardo:egreso"
+          - "resguardo:traslado"
+          - "inventario:manage"
+          - "ubicaciones:manage"
+      FISCAL:
+        permisos:
+          - "cadena:read:all"
+          - "evidencia:read:all"
+          - "peritaje:read:all"
+          - "audiencia:schedule"
+          - "disposicion:solicitar"
+      JUEZ:
+        permisos:
+          - "cadena:read:all"
+          - "evidencia:read:all"
+          - "disposicion:ordenar"
+          - "audiencia:presidir"
+      AUDITOR:
+        permisos:
+          - "cadena:read:all"
+          - "audit:read"
+          - "reportes:all"
+          - "logs:export"
+          
+  auditoria:
+    log_todo: true
+    campos_auditar:
+      - "todos_los_campos_críticos"
+      - "firmas"
+      - "cambios_de_estado"
+      - "movimientos_de_evidencia"
+    retencion_logs: "10_años"
+    inmutabilidad: "blockchain_hash"
+    
+  cifrado:
+    datos_en_reposo: "AES-256-GCM"
+    datos_en_transito: "TLS 1.3"
+    firmas_digitales: "RSA-4096 / ECDSA P-384"
+    hashes: "SHA-256"
+
+# =============================================================================
+# INTEGRACIONES
+# =============================================================================
+integraciones:
+  hardware:
+    - dispositivo: "Lector de Códigos de Barras"
+      protocolo: "HID"
+      uso: "Registro rápido de evidencias"
+      
+    - dispositivo: "Impresora de Etiquetas"
+      protocolo: "ESC/POS"
+      uso: "Impresión de etiquetas con código de barras/QR"
+      
+    - dispositivo: "Cámara Fotográfica"
+      protocolo: "PTP/MTP"
+      uso: "Captura directa de evidencias"
+      
+    - dispositivo: "Lector de Huellas"
+      protocolo: "BioAPI"
+      uso: "Autenticación biométrica"
+      
+    - dispositivo: "Báscula Digital"
+      protocolo: "Serial/USB"
+      uso: "Pesado automático de evidencias"
+      
+  software:
+    - sistema: "Sistema de Gestión Fiscal"
+      metodo: "REST API"
+      datos: ["números_de_caso", "órdenes_judiciales", "disposiciones"]
+      
+    - sistema: "Registro Civil"
+      metodo: "SOAP"
+      datos: ["validación_de_cédulas", "datos_personales"]
+      
+    - sistema: "PGR (Ministerio Público)"
+      metodo: "Web Service"
+      datos: ["actuaciones", "fiscales_asignados"]
+
+# =============================================================================
+# CONFIGURACIÓN DE BUILD Y DESPLIEGUE
+# =============================================================================
+build_config:
+  web_pwa:
+    output_dir: "dist"
+    optimizaciones:
+      - "code_splitting"
+      - "tree_shaking"
+      - "image_optimization"
+      - "lazy_loading"
+    pwa:
+      offline_support: true
+      background_sync: true
+      push_notifications: true
+      install_prompt: true
+      
+  electron:
+    comando: "npm run electron:build:all"
+    plataformas:
+      linux:
+        formats: [".deb", ".rpm", ".AppImage"]
+        arch: ["x64", "arm64"]
+      windows:
+        formats: [".exe", ".msi"]
+        arch: ["x64"]
+      macos:
+        formats: [".dmg", ".pkg"]
+        arch: ["x64", "arm64"]
+    configuracion_deb:
+      package_name: "cadena-custodia-ve"
+      maintainer: "Sistema de Justicia Venezolano"
+      section: "utils"
+      priority: "optional"
+      dependencies:
+        - "libgtk-3-0"
+        - "libnotify4"
+        - "libnss3"
+        - "libxss1"
+        - "libxtst6"
+        - "xdg-utils"
+        - "libatspi2.0-0"
+        - "libdrm2"
+        - "libgbm1"
+        
+  ci_cd:
+    provider: "GitHub Actions"
+    triggers:
+      - "push to main"
+      - "release tags"
+    jobs:
+      - name: "test"
+        steps: ["install", "lint", "test", "build"]
+      - name: "build-electron"
+        steps: ["build-linux", "build-windows", "build-macos"]
+        steps: ["build-web", "deploy"]
+      - name: "release"
+        steps: ["create-release", "upload-artifacts"]
+
+# =============================================================================
+# ACCESIBILIDAD
+# =============================================================================
+accesibilidad:
+  nivel: "WCAG 2.1 AA"
+  caracteristicas:
+    - "Soporte completo para lectores de pantalla"
+    - "Navegación por teclado"
+    - "Contraste mínimo 4.5:1"
+    - "Textos alternativos en imágenes"
+    - "Focus indicators visibles"
+    - "Skip links"
+    - "ARIA labels completos"
+    - "Responsive design"
+    - "Modo alto contraste"
+    - "Tamaño de fuente ajustable"
+
+# =============================================================================
+# INTERNACIONALIZACIÓN
+# =============================================================================
+i18n:
+  idiomas_soportados:
+    - code: "es-VE"
+      nombre: "Español (Venezuela)"
+      default: true
+  formatos:
+    fecha: "DD/MM/YYYY"
+    hora: "HH:mm"
+    moneda: "VES"
+    zona_horaria: "America/Caracas"

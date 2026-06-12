@@ -1,0 +1,2207 @@
+- SOLICITUD ANÁLISIS INFORMÁTICO FORENSE:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      Fill: =ColorValue("#202020")
+      BorderColor: =ColorValue("#3a3a3a")
+      BorderThickness: =1
+      Width: =1024
+      Height: =1696.75
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutJustifyContent: =LayoutJustifyContent.Start
+      LayoutAlignItems: =LayoutAlignItems.Start
+      LayoutMinHeight: =0
+      LayoutMinWidth: =0
+      RadiusTopLeft: =fmuAppTheme.Radius.MD
+      RadiusTopRight: =fmuAppTheme.Radius.MD
+      RadiusBottomLeft: =fmuAppTheme.Radius.MD
+      RadiusBottomRight: =fmuAppTheme.Radius.MD
+      DropShadow: =DropShadow.None
+      AlignInContainer: =AlignInContainer.Start
+    Children:
+      - Main:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            FillPortions: =false
+            Height: =1603.75
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+            LayoutAlignItems: =LayoutAlignItems.End
+            LayoutGap: =fmuAppTheme.Spacing.XL4
+            PaddingLeft: =fmuAppTheme.Spacing.XL5
+            PaddingRight: =fmuAppTheme.Spacing.XL5
+            PaddingTop: =fmuAppTheme.Spacing.XL5
+            PaddingBottom: =fmuAppTheme.Spacing.XL5
+            LayoutMinHeight: =0
+            LayoutMinWidth: =0
+            RadiusTopLeft: =fmuAppTheme.Radius.None
+            RadiusTopRight: =fmuAppTheme.Radius.None
+            RadiusBottomLeft: =fmuAppTheme.Radius.None
+            RadiusBottomRight: =fmuAppTheme.Radius.None
+            DropShadow: =DropShadow.None
+            AlignInContainer: =AlignInContainer.Stretch
+          Children:
+            - Logo:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =ColorValue("#202020")
+                  BorderColor: =ColorValue("#3a3a3a")
+                  BorderThickness: =2
+                  FillPortions: =false
+                  Width: =296
+                  Height: =126
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.End
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  PaddingLeft: =fmuAppTheme.Spacing.XL5
+                  PaddingRight: =fmuAppTheme.Spacing.XL5
+                  PaddingTop: =fmuAppTheme.Spacing.XL5
+                  PaddingBottom: =fmuAppTheme.Spacing.XL5
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.LG
+                  RadiusTopRight: =fmuAppTheme.Radius.LG
+                  RadiusBottomLeft: =fmuAppTheme.Radius.LG
+                  RadiusBottomRight: =fmuAppTheme.Radius.LG
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.End
+                Children:
+                  - Frame 7:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Width: =216
+                        Height: =46
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        LayoutGap: =10
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Start
+                      Children:
+                        - TextCanvas:
+                            Control: Text@0.0.50
+                            Properties:
+                              Text: ="sha256.us"
+                              Size: =40
+                              Weight: ='TextCanvas.Weight'.Bold
+                              AutoHeight: =true
+                              FillPortions: =false
+                              Width: =216
+                              Height: =28
+                              AlignInContainer: =AlignInContainer.Start
+                        - TextCanvas2:
+                            Control: Text@0.0.50
+                            Properties:
+                              Text: ="Forensic Laboratory"
+                              Size: =12
+                              Weight: ='TextCanvas.Weight'.Regular
+                              AutoHeight: =true
+                              FillPortions: =false
+                              Width: =137
+                              Height: =8
+                              AlignInContainer: =AlignInContainer.Start
+            - Section - ApplicantAuthorization:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Height: =408.75
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  LayoutGap: =fmuAppTheme.Spacing.XL
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Stretch
+                Children:
+                  - HorizontalBorder:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#3a3a3a")
+                        FillPortions: =false
+                        Height: =37
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        PaddingBottom: =fmuAppTheme.Spacing.MD
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Heading 2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =28
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas3:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="I. Datos del Solicitante y Autorización"
+                                    Size: =18
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#0078D4")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =942
+                                    Height: =28
+                                    AlignInContainer: =AlignInContainer.Stretch
+                  - Container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutGap: =fmuAppTheme.Spacing.XL3
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Container2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Start
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas4:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Nombre Completo"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =459
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =42
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =fmuAppTheme.Spacing.MD
+                                    PaddingBottom: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container3:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas5:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="JULL RODRIGUEZ RODRIGUEZ"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =433
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Stretch
+                        - Container4:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Start
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas6:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Cédula / Identificación"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =459
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input2:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =41
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =10
+                                    PaddingBottom: =10
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container5:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =19
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas7:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="V-16.816.003"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =433
+                                                Height: =19
+                                                AlignInContainer: =AlignInContainer.Stretch
+                  - Container6:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutGap: =fmuAppTheme.Spacing.XL3
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Container7:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Start
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label3:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas8:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Ciudad"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =459
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input3:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =42
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =fmuAppTheme.Spacing.MD
+                                    PaddingBottom: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container8:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas9:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="QUIBOR-LARA"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =433
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Stretch
+                        - Container9:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Start
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label4:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas10:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="TELEFONO"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =459
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input4:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =41
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =10
+                                    PaddingBottom: =10
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container10:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =19
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas11:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="04245585474"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =433
+                                                Height: =19
+                                                AlignInContainer: =AlignInContainer.Stretch
+                  - Container11:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutGap: =fmuAppTheme.Spacing.XL3
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Container12:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Start
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label5:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas12:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Dirección completa"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =942
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input5:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =42
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =fmuAppTheme.Spacing.MD
+                                    PaddingBottom: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container13:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas13:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Calle 9 / av 9 y 10"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =916
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Stretch
+                  - Legal Waiver Container:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#0078D4")
+                        FillPortions: =false
+                        Height: =121.75
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        PaddingLeft: =fmuAppTheme.Spacing.XL
+                        PaddingRight: =fmuAppTheme.Spacing.XL
+                        PaddingTop: =14.75
+                        PaddingBottom: =fmuAppTheme.Spacing.XL
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Container14:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =91
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas14:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: =""Yo, el arriba identificado, en pleno uso de mis facultades mentales AUTORIZO EXPRESA Y VOLUNTARIAMENTE su acceso, exploración y extracción forense de datos. Para ello, renuncio temporalmente a mi derecho al secreto de las comunicaciones (Arts. 48 y 60 de la Constitución de la República Bolivariana de Venezuela), única y exclusivamente a favor de los expertos designados y para los fines técnicos aquí descritos.""
+                                    Size: =14
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =906
+                                    Height: =91
+                                    AlignInContainer: =AlignInContainer.Stretch
+            - Section - DeviceDetails:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Height: =293
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  LayoutGap: =fmuAppTheme.Spacing.XL
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Stretch
+                Children:
+                  - HorizontalBorder2:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =59
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        PaddingBottom: =fmuAppTheme.Spacing.MD
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Heading 22:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#3a3a3a")
+                              FillPortions: =false
+                              Height: =28
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas15:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="II. Descripción del Dispositivo (Dispositivo Matriz)"
+                                    Size: =18
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#0078D4")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =942
+                                    Height: =28
+                                    AlignInContainer: =AlignInContainer.Stretch
+                        - Legal Waiver Container2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Width: =906
+                              Height: =23
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Start
+                            Children:
+                              - Container15:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Width: =906
+                                    Height: =23
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Start
+                                  Children:
+                                    - TextCanvas16:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Hago entrega material voluntaria del siguiente equipo bajo la figura de Obtención por Consignación."
+                                          Size: =14
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#ffffff")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =906
+                                          Height: =23
+                                          AlignInContainer: =AlignInContainer.Start
+                  - TextCanvas17:
+                      Control: Text@0.0.50
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Stretch
+                        Text: ="Marca"
+                        Size: =12
+                        Weight: ='TextCanvas.Weight'.Bold
+                        FontColor: =ColorValue("#a1a1a1")
+                        Width: =942
+                        Height: =218
+            - Section - ScopeExtraction:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Height: =177
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  LayoutGap: =fmuAppTheme.Spacing.XL
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Stretch
+                Children:
+                  - HorizontalBorder3:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#3a3a3a")
+                        FillPortions: =false
+                        Height: =37
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        PaddingBottom: =fmuAppTheme.Spacing.MD
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Heading 23:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =28
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas18:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="III. Alcance de la Extracción y Análisis"
+                                    Size: =18
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#0078D4")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =942
+                                    Height: =28
+                                    AlignInContainer: =AlignInContainer.Stretch
+                  - Container16:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Width: =906
+                        Height: =46
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Start
+                      Children:
+                        - TextCanvas19:
+                            Control: Text@0.0.50
+                            Properties:
+                              Text: ="Solicito la aplicación de herramientas forenses para la extracción lógica/física de "Mensajes de Datos", delimitado estrictamente a:"
+                              Size: =14
+                              Weight: ='TextCanvas.Weight'.Bold
+                              FontColor: =ColorValue("#ffffff")
+                              AutoHeight: =true
+                              FillPortions: =false
+                              Width: =906
+                              Height: =46
+                              AlignInContainer: =AlignInContainer.Start
+                  - Container17:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutGap: =fmuAppTheme.Spacing.XL3
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Container18:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =62
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label6:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas20:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Aplicación Objeto"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =298
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Border:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =42
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.MD
+                                    PaddingRight: =fmuAppTheme.Spacing.MD
+                                    PaddingTop: =fmuAppTheme.Spacing.MD
+                                    PaddingBottom: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container19:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Width: =82.66999816894531
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Center
+                                        Children:
+                                          - TextCanvas21:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="WhatsApp"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Bold
+                                                FontColor: =ColorValue("#16a34a")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =82.66999816894531
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Start
+                        - Container20:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =62
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label7:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas22:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Número de Contacto Específico"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =298
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Input6:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    Fill: =ColorValue("#2b2b2b")
+                                    BorderColor: =ColorValue("#3a3a3a")
+                                    BorderThickness: =1
+                                    FillPortions: =false
+                                    Height: =42
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =fmuAppTheme.Spacing.LG
+                                    PaddingRight: =fmuAppTheme.Spacing.LG
+                                    PaddingTop: =fmuAppTheme.Spacing.MD
+                                    PaddingBottom: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                    RadiusTopRight: =fmuAppTheme.Radius.SM
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                    RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Container21:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas23:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="041215555555"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =272
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Stretch
+                        - Container22:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =54
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutGap: =fmuAppTheme.Spacing.XS
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - Label8:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =16
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - TextCanvas24:
+                                        Control: Text@0.0.50
+                                        Properties:
+                                          Text: ="Rango de Fechas (Desde - Hasta)"
+                                          Size: =12
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          FontColor: =ColorValue("#a1a1a1")
+                                          AutoHeight: =true
+                                          FillPortions: =false
+                                          Width: =298
+                                          Height: =16
+                                          AlignInContainer: =AlignInContainer.Stretch
+                              - Container23:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutGap: =fmuAppTheme.Spacing.MD
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                  Children:
+                                    - Input7:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          Fill: =ColorValue("#2b2b2b")
+                                          BorderColor: =ColorValue("#3a3a3a")
+                                          BorderThickness: =1
+                                          FillPortions: =false
+                                          Height: =34
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          PaddingLeft: =fmuAppTheme.Spacing.LG
+                                          PaddingRight: =fmuAppTheme.Spacing.LG
+                                          PaddingTop: =fmuAppTheme.Spacing.MD
+                                          PaddingBottom: =fmuAppTheme.Spacing.MD
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                          RadiusTopRight: =fmuAppTheme.Radius.SM
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                          RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - Container24:
+                                              Control: GroupContainer@1.3.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                FillPortions: =false
+                                                Height: =16
+                                                LayoutDirection: =LayoutDirection.Vertical
+                                                LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutMinHeight: =0
+                                                LayoutMinWidth: =0
+                                                RadiusTopLeft: =fmuAppTheme.Radius.None
+                                                RadiusTopRight: =fmuAppTheme.Radius.None
+                                                RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                                RadiusBottomRight: =fmuAppTheme.Radius.None
+                                                DropShadow: =DropShadow.None
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                              Children:
+                                                - TextCanvas25:
+                                                    Control: Text@0.0.50
+                                                    Properties:
+                                                      Text: ="04/06/2024"
+                                                      Size: =12
+                                                      Weight: ='TextCanvas.Weight'.Regular
+                                                      FontColor: =ColorValue("#ffffff")
+                                                      AutoHeight: =true
+                                                      FillPortions: =false
+                                                      Width: =68.7699966430664
+                                                      Height: =16
+                                                      AlignInContainer: =AlignInContainer.Stretch
+                                    - Container25:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Width: =12.859999656677246
+                                          Height: =24
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Center
+                                        Children:
+                                          - TextCanvas26:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="al"
+                                                Size: =16
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#a1a1a1")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =12.859999656677246
+                                                Height: =24
+                                                AlignInContainer: =AlignInContainer.Start
+                                    - Input8:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          Fill: =ColorValue("#2b2b2b")
+                                          BorderColor: =ColorValue("#3a3a3a")
+                                          BorderThickness: =1
+                                          FillPortions: =false
+                                          Height: =34
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          PaddingLeft: =fmuAppTheme.Spacing.LG
+                                          PaddingRight: =fmuAppTheme.Spacing.LG
+                                          PaddingTop: =fmuAppTheme.Spacing.MD
+                                          PaddingBottom: =fmuAppTheme.Spacing.MD
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.SM
+                                          RadiusTopRight: =fmuAppTheme.Radius.SM
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                                          RadiusBottomRight: =fmuAppTheme.Radius.SM
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - Container26:
+                                              Control: GroupContainer@1.3.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                FillPortions: =false
+                                                Height: =16
+                                                LayoutDirection: =LayoutDirection.Vertical
+                                                LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutMinHeight: =0
+                                                LayoutMinWidth: =0
+                                                RadiusTopLeft: =fmuAppTheme.Radius.None
+                                                RadiusTopRight: =fmuAppTheme.Radius.None
+                                                RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                                RadiusBottomRight: =fmuAppTheme.Radius.None
+                                                DropShadow: =DropShadow.None
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                              Children:
+                                                - TextCanvas27:
+                                                    Control: Text@0.0.50
+                                                    Properties:
+                                                      Text: ="04/06/2025"
+                                                      Size: =12
+                                                      Weight: ='TextCanvas.Weight'.Regular
+                                                      FontColor: =ColorValue("#ffffff")
+                                                      AutoHeight: =true
+                                                      FillPortions: =false
+                                                      Width: =68.30999755859375
+                                                      Height: =16
+                                                      AlignInContainer: =AlignInContainer.Stretch
+            - Section - TechnicalRequirements:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Height: =115
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  LayoutGap: =fmuAppTheme.Spacing.XL
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Stretch
+                Children:
+                  - HorizontalBorder4:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =ColorValue("#3a3a3a")
+                        FillPortions: =false
+                        Height: =37
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Start
+                        PaddingBottom: =fmuAppTheme.Spacing.MD
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Heading 24:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Height: =28
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas28:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="IV. Requerimientos Técnicos y de Preservación"
+                                    Size: =18
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#0078D4")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =942
+                                    Height: =28
+                                    AlignInContainer: =AlignInContainer.Stretch
+                  - Container27:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutGap: =fmuAppTheme.Spacing.XL
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Border2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#3a3a3a")
+                              BorderThickness: =1
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutGap: =fmuAppTheme.Spacing.LG
+                              PaddingLeft: =fmuAppTheme.Spacing.LG
+                              PaddingRight: =fmuAppTheme.Spacing.LG
+                              PaddingTop: =fmuAppTheme.Spacing.LG
+                              PaddingBottom: =fmuAppTheme.Spacing.LG
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.XS
+                              RadiusTopRight: =fmuAppTheme.Radius.XS
+                              RadiusBottomLeft: =fmuAppTheme.Radius.XS
+                              RadiusBottomRight: =fmuAppTheme.Radius.XS
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextInputCanvas:
+                                  Control: TextInput@0.0.53
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Width: =16
+                                    Height: =20
+                              - Container28:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Width: =410
+                                    Height: =36
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Center
+                                  Children:
+                                    - Container29:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =20
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas29:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Aislamiento de Señal (Modo Avión/Bolsa Faraday)"
+                                                Size: =14
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =454
+                                                Height: =20
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                    - Container30:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =16
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas30:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Asegura que el dispositivo no reciba datos remotos durante el análisis."
+                                                Size: =12
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =399.5799865722656
+                                                Height: =16
+                                                AlignInContainer: =AlignInContainer.Stretch
+                        - Border3:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =ColorValue("#3a3a3a")
+                              BorderThickness: =1
+                              FillPortions: =false
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutGap: =fmuAppTheme.Spacing.LG
+                              PaddingLeft: =fmuAppTheme.Spacing.LG
+                              PaddingRight: =fmuAppTheme.Spacing.LG
+                              PaddingTop: =fmuAppTheme.Spacing.LG
+                              PaddingBottom: =fmuAppTheme.Spacing.LG
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.XS
+                              RadiusTopRight: =fmuAppTheme.Radius.XS
+                              RadiusBottomLeft: =fmuAppTheme.Radius.XS
+                              RadiusBottomRight: =fmuAppTheme.Radius.XS
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextInputCanvas2:
+                                  Control: TextInput@0.0.53
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Center
+                                    Width: =16
+                                    Height: =20
+                              - Container31:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Width: =400.04998779296875
+                                    Height: =36
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Center
+                                  Children:
+                                    - Container32:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =20
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas31:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Cálculo de Algoritmos de Integridad (HASH)"
+                                                Size: =14
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =400
+                                                Height: =20
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                    - Container33:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =16
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Start
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas32:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Generación de huella digital SHA-256 o MD5 para cadena de custodia."
+                                                Size: =12
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#ffffff")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =400.04998779296875
+                                                Height: =16
+                                                AlignInContainer: =AlignInContainer.Stretch
+            - Section - SignatureArea:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Height: =244
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutGap: =fmuAppTheme.Spacing.XL6
+                  PaddingTop: =fmuAppTheme.Spacing.XL4
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Stretch
+                Children:
+                  - Applicant Box:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.Start
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Overlay+Border:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =ColorValue("#2b2b2b")
+                              BorderColor: =ColorValue("#3a3a3a")
+                              BorderThickness: =2
+                              FillPortions: =false
+                              Height: =160
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.XS
+                              RadiusTopRight: =fmuAppTheme.Radius.XS
+                              RadiusBottomLeft: =fmuAppTheme.Radius.XS
+                              RadiusBottomRight: =fmuAppTheme.Radius.XS
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas33:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="Firma y Huella (Dactilar)"
+                                    Size: =10
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#a1a1a1")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =144.02999877929688
+                                    Height: =15
+                                    AlignInContainer: =AlignInContainer.Center
+                        - Margin:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Width: =189.08999633789062
+                              Height: =52
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              PaddingTop: =fmuAppTheme.Spacing.XL
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Center
+                            Children:
+                              - Container34:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Width: =189.08999633789062
+                                    Height: =36
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Start
+                                  Children:
+                                    - Container35:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =20
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas34:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="EL SOLICITANTE"
+                                                Size: =14
+                                                Weight: ='TextCanvas.Weight'.Bold
+                                                FontColor: =ColorValue("#a1a1a1")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =112.91000366210938
+                                                Height: =20
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                    - Container36:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =16
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas35:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="JULL RODRIGUEZ RODRIGUEZ"
+                                                Size: =12
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#a1a1a1")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =189.08999633789062
+                                                Height: =16
+                                                AlignInContainer: =AlignInContainer.Stretch
+                  - Experts Box:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =false
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.Start
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.None
+                        RadiusTopRight: =fmuAppTheme.Radius.None
+                        RadiusBottomLeft: =fmuAppTheme.Radius.None
+                        RadiusBottomRight: =fmuAppTheme.Radius.None
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Stretch
+                      Children:
+                        - Overlay+Border2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =ColorValue("#2b2b2b")
+                              BorderColor: =ColorValue("#3a3a3a")
+                              BorderThickness: =2
+                              FillPortions: =false
+                              Height: =160
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.XS
+                              RadiusTopRight: =fmuAppTheme.Radius.XS
+                              RadiusBottomLeft: =fmuAppTheme.Radius.XS
+                              RadiusBottomRight: =fmuAppTheme.Radius.XS
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Stretch
+                            Children:
+                              - TextCanvas36:
+                                  Control: Text@0.0.50
+                                  Properties:
+                                    Text: ="Sello y Firma Institucional"
+                                    Size: =10
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    FontColor: =ColorValue("#a1a1a1")
+                                    AutoHeight: =true
+                                    FillPortions: =false
+                                    Width: =156.8300018310547
+                                    Height: =15
+                                    AlignInContainer: =AlignInContainer.Stretch
+                        - Margin2:
+                            Control: GroupContainer@1.3.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =false
+                              Width: =197.58999633789062
+                              Height: =52
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              LayoutAlignItems: =LayoutAlignItems.Start
+                              PaddingTop: =fmuAppTheme.Spacing.XL
+                              LayoutMinHeight: =0
+                              LayoutMinWidth: =0
+                              RadiusTopLeft: =fmuAppTheme.Radius.None
+                              RadiusTopRight: =fmuAppTheme.Radius.None
+                              RadiusBottomLeft: =fmuAppTheme.Radius.None
+                              RadiusBottomRight: =fmuAppTheme.Radius.None
+                              DropShadow: =DropShadow.None
+                              AlignInContainer: =AlignInContainer.Center
+                            Children:
+                              - Container37:
+                                  Control: GroupContainer@1.3.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    FillPortions: =false
+                                    Width: =197.58999633789062
+                                    Height: =36
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    LayoutAlignItems: =LayoutAlignItems.Start
+                                    LayoutMinHeight: =0
+                                    LayoutMinWidth: =0
+                                    RadiusTopLeft: =fmuAppTheme.Radius.None
+                                    RadiusTopRight: =fmuAppTheme.Radius.None
+                                    RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                    RadiusBottomRight: =fmuAppTheme.Radius.None
+                                    DropShadow: =DropShadow.None
+                                    AlignInContainer: =AlignInContainer.Start
+                                  Children:
+                                    - Container38:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =20
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas37:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="EXPERTOS FORENSES"
+                                                Size: =14
+                                                Weight: ='TextCanvas.Weight'.Bold
+                                                FontColor: =ColorValue("#a1a1a1")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =152
+                                                Height: =20
+                                                AlignInContainer: =AlignInContainer.Stretch
+                                    - Container39:
+                                        Control: GroupContainer@1.3.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          FillPortions: =false
+                                          Height: =16
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutMinHeight: =0
+                                          LayoutMinWidth: =0
+                                          RadiusTopLeft: =fmuAppTheme.Radius.None
+                                          RadiusTopRight: =fmuAppTheme.Radius.None
+                                          RadiusBottomLeft: =fmuAppTheme.Radius.None
+                                          RadiusBottomRight: =fmuAppTheme.Radius.None
+                                          DropShadow: =DropShadow.None
+                                          AlignInContainer: =AlignInContainer.Stretch
+                                        Children:
+                                          - TextCanvas38:
+                                              Control: Text@0.0.50
+                                              Properties:
+                                                Text: ="Área de Análisis de Telefonía Móvil"
+                                                Size: =12
+                                                Weight: ='TextCanvas.Weight'.Regular
+                                                FontColor: =ColorValue("#a1a1a1")
+                                                AutoHeight: =true
+                                                FillPortions: =false
+                                                Width: =197.58999633789062
+                                                Height: =16
+                                                AlignInContainer: =AlignInContainer.Stretch
+      - FooterActions:
+          Control: GroupContainer@1.3.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =ColorValue("#020617")
+            BorderColor: =ColorValue("#3a3a3a")
+            FillPortions: =false
+            Height: =91
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutAlignItems: =LayoutAlignItems.Start
+            LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+            LayoutGap: =115.41999816894531
+            PaddingLeft: =fmuAppTheme.Spacing.XL3
+            PaddingRight: =fmuAppTheme.Spacing.XL3
+            PaddingTop: =fmuAppTheme.Spacing.XL3
+            PaddingBottom: =fmuAppTheme.Spacing.XL3
+            LayoutMinHeight: =0
+            LayoutMinWidth: =0
+            RadiusTopLeft: =fmuAppTheme.Radius.None
+            RadiusTopRight: =fmuAppTheme.Radius.None
+            RadiusBottomLeft: =fmuAppTheme.Radius.None
+            RadiusBottomRight: =fmuAppTheme.Radius.None
+            DropShadow: =DropShadow.None
+            AlignInContainer: =AlignInContainer.Stretch
+          Children:
+            - Container40:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Width: =384
+                  Height: =32
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  PaddingRight: =8.390000343322754
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Center
+                Children:
+                  - TextCanvas39:
+                      Control: Text@0.0.50
+                      Properties:
+                        Text: ="Nota: Este documento tiene validez legal al ser consignado ante el
+Ministerio Público o Tribunales competentes."
+                        Size: =12
+                        Weight: ='TextCanvas.Weight'.Regular
+                        FontColor: =ColorValue("#a1a1a1")
+                        AutoHeight: =true
+                        FillPortions: =false
+                        Width: =375.6099853515625
+                        Height: =32
+                        AlignInContainer: =AlignInContainer.Start
+            - Container41:
+                Control: GroupContainer@1.3.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =false
+                  Width: =222.72999572753906
+                  Height: =42
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutAlignItems: =LayoutAlignItems.Start
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutGap: =12.010000228881836
+                  LayoutMinHeight: =0
+                  LayoutMinWidth: =0
+                  RadiusTopLeft: =fmuAppTheme.Radius.None
+                  RadiusTopRight: =fmuAppTheme.Radius.None
+                  RadiusBottomLeft: =fmuAppTheme.Radius.None
+                  RadiusBottomRight: =fmuAppTheme.Radius.None
+                  DropShadow: =DropShadow.None
+                  AlignInContainer: =AlignInContainer.Center
+                Children:
+                  - Button:
+                      Control: GroupContainer@1.3.0
+                      Variant: AutoLayout
+                      Properties:
+                        Fill: =ColorValue("#0ea871")
+                        FillPortions: =false
+                        Width: =222.72999572753906
+                        Height: =42
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        PaddingLeft: =fmuAppTheme.Spacing.XL3
+                        PaddingRight: =fmuAppTheme.Spacing.XL3
+                        PaddingTop: =9
+                        PaddingBottom: =9
+                        LayoutMinHeight: =0
+                        LayoutMinWidth: =0
+                        RadiusTopLeft: =fmuAppTheme.Radius.SM
+                        RadiusTopRight: =fmuAppTheme.Radius.SM
+                        RadiusBottomLeft: =fmuAppTheme.Radius.SM
+                        RadiusBottomRight: =fmuAppTheme.Radius.SM
+                        DropShadow: =DropShadow.None
+                        AlignInContainer: =AlignInContainer.Start
+                      Children:
+                        - TextCanvas40:
+                            Control: Text@0.0.50
+                            Properties:
+                              Text: ="Imprimir"
+                              Size: =16
+                              Weight: ='TextCanvas.Weight'.Semibold
+                              FontColor: =ColorValue("#ffffff")
+                              AutoHeight: =true
+                              FillPortions: =false
+                              Width: =174.72999572753906
+                              Height: =24
+                              AlignInContainer: =AlignInContainer.Center

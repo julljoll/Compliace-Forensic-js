@@ -1,0 +1,720 @@
+# Arquitectura del Sitio Web - Portal de Informática Forense y Delitos Informáticos
+# Basado en la documentación legal y técnica recopilada
+
+site:
+  name: "Portal de Informática Forense"
+  description: "Recurso integral sobre informática forense, delitos informáticos y marco legal venezolano"
+  language: es
+  theme:
+    primary_color: "#1a5f7a"
+    secondary_color: "#159895"
+    accent_color: "#57c5b6"
+    background: "#f8f9fa"
+    text: "#212529"
+
+# Estructura de navegación principal
+navigation:
+  main_menu:
+    - id: home
+      title: "Inicio"
+      path: "/"
+      icon: "home"
+    
+    - id: marco_legal
+      title: "Marco Legal"
+      path: "/marco-legal/"
+      icon: "scale"
+      children:
+        - id: constitucion
+          title: "Constitución Nacional"
+          path: "/marco-legal/constitucion/"
+        - id: ley_infogobierno
+          title: "Ley de Infogobierno"
+          path: "/marco-legal/infogobierno/"
+        - id: ley_delitos_informaticos
+          title: "Ley Especial de Delitos Informáticos"
+          path: "/marco-legal/delitos-informaticos/"
+        - id: ley_mensajes_datos
+          title: "Ley de Mensajes de Datos y Firmas Electrónicas"
+          path: "/marco-legal/mensajes-datos/"
+        - id: codigo_penal
+          title: "Código Penal"
+          path: "/marco-legal/codigo-penal/"
+        - id: copp
+          title: "Código Orgánico Procesal Penal"
+          path: "/marco-legal/copp/"
+        - id: creacion_cenif
+          title: "Creación del CENIF"
+          path: "/marco-legal/cenif/"
+    
+    - id: normas_tecnicas
+      title: "Normas Técnicas"
+      path: "/normas-tecnicas/"
+      icon: "clipboard-check"
+      children:
+        - id: iso_27037
+          title: "ISO/IEC 27037:2012"
+          path: "/normas-tecnicas/iso-27037/"
+          description: "Identificación, colección, adquisición y preservación de evidencia digital"
+        - id: iso_27042
+          title: "ISO/IEC 27042:2015"
+          path: "/normas-tecnicas/iso-27042/"
+          description: "Análisis e interpretación de evidencia digital"
+        - id: nist_800_101
+          title: "NIST SP 800-101"
+          path: "/normas-tecnicas/nist-800-101/"
+          description: "Guía de forense en dispositivos móviles"
+        - id: acpo_guide
+          title: "ACPO Good Practice Guide"
+          path: "/normas-tecnicas/acpo/"
+          description: "Guía de buenas prácticas para evidencia digital"
+    
+    - id: peritaje
+      title: "Peritaje Informático"
+      path: "/peritaje/"
+      icon: "file-text"
+      children:
+        - id: conceptos_basicos
+          title: "Conceptos Básicos"
+          path: "/peritaje/conceptos/"
+        - id: evidencia_digital
+          title: "Evidencia Digital"
+          path: "/peritaje/evidencia-digital/"
+        - id: casos_practicos
+          title: "Casos Prácticos"
+          path: "/peritaje/casos-practicos/"
+        - id: informes_periciales
+          title: "Informes Periciales"
+          path: "/peritaje/informes/"
+    
+    - id: cadena_custodia
+      title: "Cadena de Custodia"
+      path: "/cadena-custodia/"
+      icon: "link"
+      children:
+        - id: manual_cadena_custodia
+          title: "Manual Único de Cadena de Custodia"
+          path: "/cadena-custodia/manual/"
+        - id: procedimientos
+          title: "Procedimientos"
+          path: "/cadena-custodia/procedimientos/"
+        - id: formatos
+          title: "Formatos y Plantillas"
+          path: "/cadena-custodia/formatos/"
+    
+    - id: criminologia
+      title: "Criminología"
+      path: "/criminologia/"
+      icon: "users"
+      children:
+        - id: ciencia_dinamica
+          title: "La Criminología como Ciencia Dinámica"
+          path: "/criminologia/ciencia-dinamica/"
+        - id: delitos_informaticos_tipos
+          title: "Tipos de Delitos Informáticos"
+          path: "/criminologia/tipos-delitos/"
+    
+    - id: economia_digital
+      title: "Economía Digital"
+      path: "/economia-digital/"
+      icon: "globe"
+      children:
+        - id: normalizacion
+          title: "Normalización en Economía Digital"
+          path: "/economia-digital/normalizacion/"
+        - id: areas_clave
+          title: "Áreas Clave de Normalización"
+          path: "/economia-digital/areas-clave/"
+    
+    - id: recursos
+      title: "Recursos"
+      path: "/recursos/"
+      icon: "download"
+      children:
+        - id: biblioteca
+          title: "Biblioteca Documental"
+          path: "/recursos/biblioteca/"
+        - id: glosario
+          title: "Glosario de Términos"
+          path: "/recursos/glosario/"
+        - id: enlaces
+          title: "Enlaces de Interés"
+          path: "/recursos/enlaces/"
+
+# Páginas principales con su estructura de contenido
+pages:
+  home:
+    template: "homepage.html"
+    sections:
+      - hero:
+          title: "Informática Forense y Delitos Informáticos"
+          subtitle: "Portal integral de referencia sobre investigación forense digital y marco legal venezolano"
+          cta_button: "Explorar Recursos"
+      
+      - featured_topics:
+          title: "Temas Destacados"
+          cards:
+            - title: "Marco Legal Venezolano"
+              icon: "book"
+              description: "Conoce las leyes que regulan los delitos informáticos en Venezuela"
+              link: "/marco-legal/"
+            - title: "Normas ISO"
+              icon: "certificate"
+              description: "Estándares internacionales para el manejo de evidencia digital"
+              link: "/normas-tecnicas/"
+            - title: "Cadena de Custodia"
+              icon: "shield"
+              description: "Procedimientos para garantizar la integridad de la evidencia"
+              link: "/cadena-custodia/"
+            - title: "Peritaje Informático"
+              icon: "search"
+              description: "Metodologías y técnicas de investigación forense"
+              link: "/peritaje/"
+      
+      - latest_documents:
+          title: "Documentos Recientes"
+          source: "biblioteca"
+          limit: 6
+      
+      - statistics:
+          title: "Estadísticas del Portal"
+          metrics:
+            - label: "Documentos Legales"
+              value: "8"
+            - label: "Normas Técnicas"
+              value: "4"
+            - label: "Guías y Manuales"
+              value: "4"
+      
+      - newsletter:
+          title: "Suscríbete"
+          description: "Recibe actualizaciones sobre normativa y mejores prácticas"
+
+  marco_legal_landing:
+    template: "category-landing.html"
+    parent: "marco_legal"
+    sections:
+      - header:
+          title: "Marco Legal Venezolano"
+          description: "Compilación completa de la legislación venezolana relacionada con informática, delitos digitales y procesos penales"
+      
+      - document_grid:
+          documents:
+            - id: constitucion
+              title: "Constitución de la República Bolivariana de Venezuela"
+              year: "1999"
+              type: "Constitución"
+              relevance: "Base fundamental del ordenamiento jurídico"
+            - id: ley_infogobierno
+              title: "Ley de Infogobierno"
+              year: "2013"
+              type: "Ley"
+              relevance: "Uso de tecnologías de información en el Poder Público"
+            - id: ley_delitos_informaticos
+              title: "Ley Especial Contra los Delitos Informáticos"
+              year: "2001"
+              type: "Ley Especial"
+              relevance: "Tipificación de delitos informáticos"
+            - id: ley_mensajes_datos
+              title: "Ley sobre Mensajes de Datos y Firmas Electrónicas"
+              year: "2001"
+              type: "Ley"
+              relevance: "Validez jurídica de documentos electrónicos"
+            - id: codigo_penal
+              title: "Código Penal de Venezuela"
+              year: "2000"
+              type: "Código"
+              relevance: "Disposiciones penales generales"
+            - id: copp
+              title: "Código Orgánico Procesal Penal"
+              year: "Actualizado"
+              type: "Código Procesal"
+              relevance: "Procedimiento penal aplicable"
+            - id: cenif
+              title: "Creación del CENIF"
+              year: "2012"
+              type: "Decreto"
+              relevance: "Centro Nacional de Informática Forense"
+
+  norma_iso_27037:
+    template: "standard-detail.html"
+    parent: "normas_tecnicas"
+    metadata:
+      standard_number: "ISO/IEC 27037:2012"
+      title: "Guidelines for identification, collection, acquisition, and preservation of digital evidence"
+      organization: "ISO/IEC"
+      year: "2012"
+      category: "Seguridad de la Información"
+    sections:
+      - overview:
+          title: "Descripción General"
+          content: "Esta norma proporciona directrices para las actividades específicas de identificación, colección, adquisición y preservación de evidencia digital"
+      
+      - key_principles:
+          title: "Principios Clave"
+          principles:
+            - "Minimizar el manejo de evidencia digital original"
+            - "Personal competente debe realizar todas las acciones"
+            - "Auditoría completa de todo el proceso"
+            - "Preservar la integridad de la evidencia"
+      
+      - process_flow:
+          title: "Flujo del Proceso"
+          steps:
+            - "Identificación de evidencia digital"
+            - "Colección de evidencia"
+            - "Adquisición forense"
+            - "Preservación y almacenamiento"
+      
+      - related_standards:
+          title: "Normas Relacionadas"
+          links:
+            - "ISO/IEC 27042:2015"
+            - "NIST SP 800-101"
+
+  norma_iso_27042:
+    template: "standard-detail.html"
+    parent: "normas_tecnicas"
+    metadata:
+      standard_number: "ISO/IEC 27042:2015"
+      title: "Guidelines for the analysis and interpretation of digital evidence"
+      organization: "ISO/IEC"
+      year: "2015"
+      category: "Seguridad de la Información"
+    sections:
+      - overview:
+          title: "Descripción General"
+          content: "Directrices para el análisis e interpretación de evidencia digital en investigaciones forenses"
+      
+      - analysis_phases:
+          title: "Fases del Análisis"
+          phases:
+            - "Preparación del análisis"
+            - "Examen de la evidencia"
+            - "Análisis de datos"
+            - "Interpretación de resultados"
+      
+      - documentation:
+          title: "Documentación Requerida"
+          items:
+            - "Registro de todas las acciones realizadas"
+            - "Herramientas utilizadas y su validación"
+            - "Resultados obtenidos"
+            - "Conclusiones del análisis"
+
+  peritaje_conceptos:
+    template: "content-page.html"
+    parent: "peritaje"
+    metadata:
+      title: "Conceptos Básicos de Peritaje Informático"
+      author: "Jeimy José Cano Martínez"
+      source: "El Peritaje Informático y la Evidencia Digital en Colombia"
+    sections:
+      - introduction:
+          title: "Introducción al Peritaje Informático"
+          content: |
+            El peritaje informático es el proceso mediante el cual un experto en tecnología de la información 
+            analiza evidencia digital para proporcionar testimonio especializado en procesos judiciales.
+      
+      - definitions:
+          title: "Definiciones Fundamentales"
+          terms:
+            - term: "Perito Informático"
+              definition: "Profesional con conocimientos especializados en tecnología que auxilia al juez en la comprensión de aspectos técnicos"
+            - term: "Evidencia Digital"
+              definition: "Información almacenada o transmitida en formato digital que puede ser utilizada en un proceso legal"
+            - term: "Cadena de Custodia"
+              definition: "Procedimiento documentado que garantiza la integridad de la evidencia desde su hallazgo hasta su presentación en juicio"
+      
+      - competencies:
+          title: "Competencias del Perito"
+          list:
+            - "Conocimientos técnicos en informática forense"
+            - "Dominio de normas ISO relacionadas"
+            - "Comprensión del marco legal aplicable"
+            - "Capacidad de redacción de informes técnicos"
+            - "Ética profesional e imparcialidad"
+
+  cadena_custodia_manual:
+    template: "manual-page.html"
+    parent: "cadena_custodia"
+    metadata:
+      title: "Manual Único de Cadena de Custodia de Evidencias"
+      version: "Versión Final 29SEP17"
+      type: "Manual Oficial"
+    sections:
+      - introduction:
+          title: "Introducción"
+          content: "Este manual establece los procedimientos estandarizados para el manejo de evidencias físicas y digitales"
+      
+      - procedures:
+          title: "Procedimientos de Cadena de Custodia"
+          steps:
+            - number: 1
+              name: "Identificación y recolección"
+              description: "Localización y aseguramiento inicial de la evidencia"
+            - number: 2
+              name: "Embalaje y etiquetado"
+              description: "Protección física y identificación única de la evidencia"
+            - number: 3
+              name: "Transporte seguro"
+              description: "Traslado manteniendo las condiciones de integridad"
+            - number: 4
+              name: "Almacenamiento controlado"
+              description: "Guardado en instalaciones seguras con acceso restringido"
+            - number: 5
+              name: "Transferencias documentadas"
+              description: "Cada cambio de custodia debe quedar registrado"
+      
+      - forms:
+          title: "Formatos de Registro"
+          forms_list:
+            - "Acta de recolección de evidencia"
+            - "Cadena de custodia"
+            - "Solicitud de análisis"
+            - "Informe de transferencia"
+
+  criminologia_ciencia:
+    template: "article-page.html"
+    parent: "criminologia"
+    metadata:
+      title: "La Criminología: Una Ciencia Dinámica"
+      category: "Criminología"
+    sections:
+      - content:
+          title: "La Criminología como Ciencia Dinámica"
+          subsections:
+            - title: "Evolución de la Criminología"
+              content: "La criminología ha evolucionado para adaptarse a nuevas formas de criminalidad, incluyendo los delitos informáticos"
+            - title: "Aplicación en Delitos Digitales"
+              content: "Análisis de factores causales, prevención y tratamiento de la delincuencia informática"
+            - title: "Interdisciplinariedad"
+              content: "Relación con la informática forense, derecho penal y psicología criminal"
+
+  economia_digital_normalizacion:
+    template: "report-page.html"
+    parent: "economia_digital"
+    metadata:
+      title: "Normalización en la Economía Digital"
+      source: "Informes de Normalización UNE"
+      type: "Informe Técnico"
+    sections:
+      - introduction:
+          title: "Las Normas Técnicas en la Economía Digital"
+          content: "Importancia de la normalización para el desarrollo del mercado digital"
+      
+      - key_areas:
+          title: "Áreas de Normalización Clave"
+          areas:
+            - "Seguridad de la información"
+            - "Protección de datos personales"
+            - "Comercio electrónico"
+            - "Identidad digital"
+            - "Cloud computing"
+            - "Internet de las cosas (IoT)"
+      
+      - risks:
+          title: "Riesgos de No Participar en Normalización"
+          risks_list:
+            - "Pérdida de competitividad"
+            - "Incompatibilidad tecnológica"
+            - "Vulnerabilidades de seguridad"
+            - "Barreras comerciales"
+
+  biblioteca_documental:
+    template: "library.html"
+    parent: "recursos"
+    metadata:
+      title: "Biblioteca Documental"
+      description: "Repositorio completo de documentos legales, normas técnicas y guías"
+    filters:
+      - type: "categoria"
+        options: ["Marco Legal", "Normas Técnicas", "Guías", "Manuales", "Artículos"]
+      - type: "anio"
+        range: [2000, 2025]
+      - type: "tipo_documento"
+        options: ["Ley", "Norma ISO", "Decreto", "Código", "Guía", "Manual", "Artículo"]
+    documents:
+      - id: doc_001
+        filename: "constitucion-nacional-20191205135853.pdf"
+        title: "Constitución de la República Bolivariana de Venezuela"
+        year: 1999
+        category: "Marco Legal"
+        type: "Constitución"
+        pages: "TBD"
+      - id: doc_002
+        filename: "Ley-de-infogobierno.pdf"
+        title: "Ley de Infogobierno"
+        year: 2013
+        category: "Marco Legal"
+        type: "Ley"
+        gaceta: "40274"
+      - id: doc_003
+        filename: "Ley Especial de Delitos informáticos (2001). Publicado en Gaceta Oficial Nº 37.313 .pdf"
+        title: "Ley Especial Contra los Delitos Informáticos"
+        year: 2001
+        category: "Marco Legal"
+        type: "Ley Especial"
+        gaceta: "37.313"
+      - id: doc_004
+        filename: "Ley-sobre-Mensajes-de-Datos-y-Firmas-Electronicas.pdf"
+        title: "Ley sobre Mensajes de Datos y Firmas Electrónicas"
+        year: 2001
+        category: "Marco Legal"
+        type: "Ley"
+        gaceta: "37.148"
+      - id: doc_005
+        filename: "codigo penal.pdf"
+        title: "Código Penal de Venezuela"
+        year: 2000
+        category: "Marco Legal"
+        type: "Código"
+        gaceta: "5.494 Extraordinario"
+      - id: doc_006
+        filename: "codigo organico procesal penal.pdf"
+        title: "Código Orgánico Procesal Penal"
+        year: "Actualizado"
+        category: "Marco Legal"
+        type: "Código Procesal"
+      - id: doc_007
+        filename: "Creación del CENIF (2012). Centro Nacional de Informática Forense. Publicado en Gaceta Oficial N° 39.847 de fecha 20 de enero..pdf"
+        title: "Creación del CENIF"
+        year: 2012
+        category: "Marco Legal"
+        type: "Decreto"
+        gaceta: "39.847"
+      - id: doc_008
+        filename: "ISO IEC 27037-2012.pdf"
+        title: "ISO/IEC 27037:2012 - Guidelines for identification, collection, acquisition, and preservation of digital evidence"
+        year: 2012
+        category: "Normas Técnicas"
+        type: "Norma ISO"
+        organization: "ISO/IEC"
+      - id: doc_009
+        filename: "ISO-IEC 27042 2015.pdf"
+        title: "ISO/IEC 27042:2015 - Guidelines for the analysis and interpretation of digital evidence"
+        year: 2015
+        category: "Normas Técnicas"
+        type: "Norma ISO"
+        organization: "ISO/IEC"
+      - id: doc_010
+        filename: "Guidelines on Mobile Device-NIST Special Publication 800-101.pdf"
+        title: "NIST SP 800-101 Revision 1 - Guidelines on Mobile Device Forensics"
+        year: "Revisión 1"
+        category: "Normas Técnicas"
+        type: "Publicación NIST"
+        organization: "NIST"
+      - id: doc_011
+        filename: "ACPO_Good_Practice_Guide_for_Digital_Evidence_v5.pdf"
+        title: "ACPO Good Practice Guide for Digital Evidence v5"
+        year: 2012
+        category: "Guías"
+        type: "Guía de Buenas Prácticas"
+        organization: "ACPO"
+      - id: doc_012
+        filename: "MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).pdf"
+        title: "Manual Único de Cadena de Custodia de Evidencias"
+        year: 2017
+        category: "Manuales"
+        type: "Manual Oficial"
+      - id: doc_013
+        filename: "el peritaje informático.pdf"
+        title: "El Peritaje Informático y la Evidencia Digital en Colombia"
+        author: "Jeimy José Cano Martínez"
+        category: "Artículos"
+        type: "Libro/Estudio"
+      - id: doc_014
+        filename: "LA_CRIMINOLOGÍA_UNA_CIENCIA_DINAMICA.pdf"
+        title: "La Criminología: Una Ciencia Dinámica"
+        category: "Artículos"
+        type: "Artículo Académico"
+      - id: doc_015
+        filename: "Normalizacion_economia_digital.pdf"
+        title: "Informes de Normalización - Economía Digital"
+        category: "Informes"
+        type: "Informe Técnico"
+        organization: "UNE"
+      - id: doc_016
+        filename: "cyb_ecu_delitos_inform.pdf"
+        title: "Delitos Informáticos: Generalidades"
+        author: "Dr. Santiago Acurio Del Pino"
+        category: "Artículos"
+        type: "Documento Académico"
+
+  glosario:
+    template: "glossary.html"
+    parent: "recursos"
+    metadata:
+      title: "Glosario de Términos"
+      description: "Diccionario de términos técnicos y legales relacionados con informática forense"
+    terms:
+      - term: "Adquisición Forense"
+        definition: "Proceso de copiado bit a bit de un dispositivo de almacenamiento para preservar la evidencia digital original"
+        category: "Técnico"
+      - term: "Cadena de Custodia"
+        definition: "Procedimiento documentado que registra el manejo de evidencia desde su recolección hasta su presentación en juicio"
+        category: "Legal"
+      - term: "Evidencia Digital"
+        definition: "Información almacenada o transmitida en formato digital que tiene valor probatorio en un proceso legal"
+        category: "Legal"
+      - term: "Hash Criptográfico"
+        definition: "Función matemática que genera un valor único para verificar la integridad de datos digitales"
+        category: "Técnico"
+      - term: "Imagen Forense"
+        definition: "Copia exacta bit a bit de un medio de almacenamiento utilizada para análisis forense"
+        category: "Técnico"
+      - term: "Perito Informático"
+        definition: "Experto en tecnología de la información que proporciona testimonio especializado en procesos judiciales"
+        category: "Legal"
+      - term: "Write Blocker"
+        definition: "Dispositivo hardware o software que previene la escritura en un dispositivo durante la adquisición forense"
+        category: "Técnico"
+      - term: "Volatilidad de Datos"
+        definition: "Característica de ciertos datos digitales que pueden perderse rápidamente si no se preservan adecuadamente"
+        category: "Técnico"
+
+# Configuración de búsqueda y SEO
+search:
+  enabled: true
+  engine: "elasticsearch"
+  indexed_fields:
+    - "title"
+    - "content"
+    - "metadata.author"
+    - "metadata.keywords"
+  filters:
+    - "category"
+    - "year"
+    - "document_type"
+
+seo:
+  default_title: "Portal de Informática Forense - Delitos Informáticos y Marco Legal"
+  default_description: "Recurso integral sobre informática forense, delitos informáticos, normas ISO 27037 y 27042, y legislación venezolana"
+  keywords:
+    - "informática forense"
+    - "delitos informáticos"
+    - "evidencia digital"
+    - "ISO 27037"
+    - "ISO 27042"
+    - "cadena de custodia"
+    - "peritaje informático"
+    - "ley de infogobierno"
+    - "venezuela"
+  open_graph:
+    enabled: true
+    image: "/images/og-default.jpg"
+  sitemap:
+    enabled: true
+    changefreq: "weekly"
+  robots:
+    allow_all: true
+
+# Configuración de usuarios y permisos
+user_roles:
+  - id: visitor
+    name: "Visitante"
+    permissions:
+      - "view_public_content"
+      - "search"
+      - "download_documents"
+  
+  - id: registered
+    name: "Usuario Registrado"
+    permissions:
+      - "view_public_content"
+      - "search"
+      - "download_documents"
+      - "save_favorites"
+      - "comment"
+  
+  - id: expert
+    name: "Experto"
+    permissions:
+      - "view_public_content"
+      - "search"
+      - "download_documents"
+      - "save_favorites"
+      - "comment"
+      - "publish_articles"
+      - "edit_glossary"
+  
+  - id: admin
+    name: "Administrador"
+    permissions:
+      - "all"
+
+# API Endpoints
+api:
+  version: "v1"
+  base_path: "/api/v1"
+  endpoints:
+    - path: "/documents"
+      methods: ["GET", "POST"]
+      description: "Listar y crear documentos"
+    - path: "/documents/{id}"
+      methods: ["GET", "PUT", "DELETE"]
+      description: "Operaciones en documento específico"
+    - path: "/search"
+      methods: ["GET", "POST"]
+      description: "Búsqueda de contenido"
+    - path: "/categories"
+      methods: ["GET"]
+      description: "Listar categorías"
+    - path: "/glossary"
+      methods: ["GET", "POST"]
+      description: "Gestión del glosario"
+    - path: "/users"
+      methods: ["GET", "POST"]
+      description: "Gestión de usuarios"
+    - path: "/auth/login"
+      methods: ["POST"]
+      description: "Autenticación"
+    - path: "/auth/logout"
+      methods: ["POST"]
+      description: "Cerrar sesión"
+
+# Tecnologías recomendadas
+tech_stack:
+  frontend:
+    framework: "React"
+    css: "Tailwind CSS"
+    state_management: "Redux Toolkit"
+    routing: "React Router"
+  
+  backend:
+    framework: "Node.js con Express"
+    database: "PostgreSQL"
+    search_engine: "Elasticsearch"
+    cache: "Redis"
+  
+  cms:
+    option: "Strapi (Headless CMS)"
+    alternative: "Contentful"
+  
+  deployment:
+    ci_cd: "GitHub Actions"
+    containerization: "Docker"
+
+# Analytics y monitoreo
+analytics:
+  google_analytics:
+    enabled: true
+    version: "GA4"
+  matomo:
+    enabled: false
+  custom_events:
+    - "document_download"
+    - "search_query"
+    - "page_view_category"
+    - "glossary_term_view"
+
+# Accesibilidad
+accessibility:
+  wcag_level: "AA"
+  features:
+    - "keyboard_navigation"
+    - "screen_reader_support"
+    - "high_contrast_mode"
+    - "text_resizing"
+    - "alt_text_images"
+    - "aria_labels"

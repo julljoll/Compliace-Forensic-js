@@ -467,7 +467,7 @@ export default function SeguimientoCompliancePage() {
             <div className="p-2 rounded-[4px] bg-[#0071E3]/10 border border-[#0071E3]/20">
               <ShieldCheck className="text-[#0071E3]" size={26} strokeWidth={2.5} />
             </div>
-            Fases, Tareas & Compliance
+            Etapas de los casos
           </h1>
           <p className="text-xs md:text-sm text-[#86868B] font-medium max-w-lg mt-2 leading-relaxed">
             Consolidado forense estructurado, control de tareas asociadas y validaciones normativas de control (ISO/IEC 27037/27042, NIST, MUCCEF).

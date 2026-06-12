@@ -10,9 +10,9 @@ import { useAuthStore } from '../../store/authStore';
 import { checkConnection } from '../../db/neonClient';
 
 const menuItems = [
-  { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Principal' },
-  { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Principal' },
-  { path: '/control/seguimiento-compliance',     label: 'Fases, Tareas & Compliance', icon: ShieldCheck,   group: 'Control' },
+  { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
+  { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
+  { path: '/control/seguimiento-compliance',     label: 'Etapas de los casos',      icon: ShieldCheck,   group: 'Control' },
   { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'TUTORIALES' },
   { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'TUTORIALES' },
   { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'TUTORIALES' },
@@ -24,7 +24,7 @@ const menuItems = [
   { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ];
 
-const groups = ['Principal', 'Control', 'TUTORIALES', 'Plantillas Oficiales', 'Sistema'];
+const groups = ['Control', 'TUTORIALES', 'Plantillas Oficiales', 'Sistema'];
 
 /** Determina si un item está activo dado el pathname actual */
 function useIsActive(path: string) {
