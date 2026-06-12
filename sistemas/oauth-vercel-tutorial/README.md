@@ -1,6 +1,6 @@
-﻿# Vercel OAuth Authentication Integration Tutorial
+# Vercel OAuth Authentication Integration Tutorial
 
-This tutorial provides a step-by-step guide to setting up Vercel OAuth authentication for the sha256.deb forensic laboratory management system.
+This tutorial provides a step-by-step guide to setting up Vercel OAuth authentication for the sha256.us forensic laboratory management system.
 
 ## Overview
 
@@ -10,7 +10,7 @@ The application uses Vercel OAuth for secure authentication, allowing users to s
 
 1. A Vercel account
 2. Node.js 16+ installed
-3. Access to the sha256.deb repository
+3. Access to the sha256.us repository
 4. Basic understanding of OAuth 2.0 flows
 
 ## Step 1: Create Vercel OAuth Application
@@ -19,7 +19,7 @@ The application uses Vercel OAuth for secure authentication, allowing users to s
 2. Go to **Settings** → **Applications** → **OAuth Applications**
 3. Click **"New OAuth Application"**
 4. Fill in the form:
-   - **Application Name**: sha256-deb-forensic-lab (or your preferred name)
+   - **Application Name**: sha256-us-forensic-lab (or your preferred name)
    - **Redirect URI**: http://localhost:5173/auth/vercel-callback (for development)
    - **Description**: Forensic Laboratory Management System - OAuth Authentication
 5. Click **"Create Application"**
@@ -187,7 +187,7 @@ npm audit
 
 ## Conclusion
 
-You have successfully integrated Vercel OAuth authentication into the sha256.deb forensic laboratory management system. Users can now securely sign in using their Vercel credentials, and their authentication state is managed throughout the application.
+You have successfully integrated Vercel OAuth authentication into the sha256.us forensic laboratory management system. Users can now securely sign in using their Vercel credentials, and their authentication state is managed throughout the application.
 
 For further assistance, refer to:
 - Vercel OAuth Documentation: https://vercel.com/docs/concepts/accounts/teams-oauth

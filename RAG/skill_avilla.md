@@ -390,7 +390,7 @@ Z:\bin\                              # Drive virtual herramientas
 ## 📚 Referencias y Recursos
 
 - **Repositorio oficial**: https://github.com/AvillaDaniel/AvillaForensics
-- **Proyecto SHA256.US**: https://github.com/julljoll/SHA256.deb.git
+- **Proyecto SHA256.US**: https://github.com/julljoll/SHA256.us.git
 - **Academia de Forense Digital (AFD)**: https://academiadeforensedigital.com.br
 - **Certificación oficial**: https://loja.academiadeforensedigital.com.br
 - **LinkedIn autor**: https://www.linkedin.com/in/daniel-a-avilla-0987/
