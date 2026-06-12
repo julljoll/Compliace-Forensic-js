@@ -452,9 +452,55 @@ const QUIZZES: Record<string, QuizQuestion[]> = {
     },
     {
       question: "¿Qué artículo de la Ley sobre Mensajes de Datos y Firmas Electrónicas de Venezuela respalda la validez probatoria de la evidencia firmada digitalmente?",
-      options: ["Artículo 4 (Eficacia del Mensaje de Datos)", "Artículo 20 (Definición de Proveedor)", "Artículo 50 (Sanciones)", "Artículo 187"],
-      correctAnswer: 0,
       explanation: "El Artículo 4 establece que los mensajes de datos firmados con tecnologías criptográficas tienen la misma eficacia y valor probatorio que los documentos físicos firmados por escrito."
+    }
+  ],
+  iped: [
+    {
+      question: "¿Qué organismo desarrolló originalmente la herramienta de código abierto IPED (Indexador e Processador de Evidências Digitais) y quién la avala internacionalmente?",
+      options: [
+        "La Policía Nacional de Colombia / Europol",
+        "La Policía Federal de Brasil / Interpol",
+        "El Ministerio Público de Venezuela / CICPC",
+        "La NSA / FBI"
+      ],
+      correctAnswer: 1,
+      explanation: "IPED fue desarrollada por la Policía Federal de Brasil en 2012 (código abierto en 2019) y está recomendada oficialmente por Interpol para el procesamiento e indexación en laboratorios forenses."
+    },
+    {
+      question: "Al procesar una imagen forense con IPED por consola, ¿cuál es el perfil de procesamiento recomendado para un análisis judicial completo en Venezuela?",
+      options: [
+        "triage",
+        "fastmode",
+        "blind",
+        "forensic"
+      ],
+      correctAnswer: 3,
+      explanation: "El perfil '-profile forensic' ejecuta todas las tareas necesarias para el peritaje judicial, incluyendo cálculo de hashes, OCR, data carving e indexación masiva."
+    }
+  ],
+  cadena: [
+    {
+      question: "Según el MUCC-2017 y el COPP, ¿qué procedimiento técnico obligatorio se debe aplicar antes de conectar un dispositivo físico de evidencia digital a una estación de análisis?",
+      options: [
+        "Encender el dispositivo para verificar batería",
+        "Conectar un bloqueador de escritura físico o lógico y calcular el hash original",
+        "Copiar los archivos directamente con el explorador",
+        "Llenar el Acta de Disposición Final"
+      ],
+      correctAnswer: 1,
+      explanation: "La ISO/IEC 27037 y el MUCC-2017 exigen el uso de bloqueadores de escritura (write blockers) para impedir la modificación accidental del original, y el cálculo del hash SHA-256 inicial para garantizar inmutabilidad."
+    },
+    {
+      question: "¿Qué consecuencia procesal penal establece el Artículo 181 del COPP ante una ruptura grave de la cadena de custodia de una evidencia digital?",
+      options: [
+        "Una multa al perito forense",
+        "El traslado de la evidencia a otro custodio",
+        "La nulidad absoluta de la prueba por ilicitud procesal",
+        "La convalidación automática en el juicio"
+      ],
+      correctAnswer: 2,
+      explanation: "El Artículo 181 del COPP regula la licitud de la prueba. Si la cadena de custodia se rompe de forma grave (ej. hashes discrepantes), la prueba deviene ilícita y el juez debe decretar su nulidad absoluta."
     }
   ]
 };
@@ -1518,6 +1564,216 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         ]
       }
     ]
+  },
+  iped: {
+    muccPhase: 'Fase de Laboratorio - Peritación',
+    legalBase: 'Artículos 187 y 225 del COPP, Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas (Integridad Criptográfica).',
+    tools: [
+      'IPED Digital Forensic Tool v4.0.0+',
+      'Java JDK 11 (Entorno de Ejecución)',
+      'Tesseract OCR (Reconocimiento Óptico de Texto)'
+    ],
+    fases: [
+      {
+        id: 'iped_f0',
+        numero: 0,
+        titulo: 'Configuración e Indexación',
+        subtitulo: 'Configurar el entorno forense y lanzar el procesamiento',
+        icono: Search,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'iped_f0p1',
+            numero: '0.1',
+            titulo: 'Ajuste del Archivo LocalConfig.txt',
+            descripcion: 'Configurar directorios temporales y la ruta del binario Java en la estación de trabajo para evitar desbordamiento de memoria.',
+            items: [
+              'Localizar y editar LocalConfig.txt en la carpeta principal de IPED.',
+              'Definir tmpDir en una unidad con almacenamiento rápido (SSD) y suficiente espacio.',
+              'Comprobar que javaBin apunta a la instalación correcta del Java JDK 11.'
+            ],
+            tags: [
+              { label: 'IPED Config', color: 'purple' }
+            ],
+            icono: FileText
+          },
+          {
+            id: 'iped_f0p2',
+            numero: '0.2',
+            titulo: 'Procesamiento e Indexación por Consola',
+            descripcion: 'Lanzar el comando de IPED para procesar la imagen forense original con el perfil forensic.',
+            items: [
+              'Asegurar el soporte original y trabajar sobre la copia de trabajo.',
+              'Lanzar IPED especificando el archivo de entrada (-d) y la carpeta del caso (-o).',
+              'Verificar que el procesamiento se complete sin errores en los parsers.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Procesar una imagen forense E01 con perfil forense completo\njava -jar iped.jar -d /evidencias/disco_copia.E01 -o /casos/caso_001/ -profile forensic'
+              }
+            ],
+            tags: [
+              { label: 'Indexación', color: 'green' },
+              { label: 'Art. 223 COPP', color: 'cyan' }
+            ],
+            icono: TerminalIcon
+          }
+        ]
+      },
+      {
+        id: 'iped_f1',
+        numero: 1,
+        titulo: 'Búsqueda e Informe',
+        subtitulo: 'Análisis mediante interfaz de búsqueda y reporte',
+        icono: Database,
+        color: 'text-[#30B0C7]',
+        glowColor: 'rgba(48,176,199,0.15)',
+        pasos: [
+          {
+            id: 'iped_f1p1',
+            numero: '1.1',
+            titulo: 'Búsqueda de Evidencia en la Interfaz Gráfica',
+            descripcion: 'Abrir el caso indexado y buscar términos clave, correos y expresiones regulares.',
+            items: [
+              'Lanzar la interfaz gráfica de búsqueda con iped-search-app.jar.',
+              'Buscar números de cédula utilizando regex: \\b[0-9]{7,8}\\b.',
+              'Filtrar chats de WhatsApp, adjuntos y archivos borrados mediante data carving.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Abrir el buscador de IPED para el caso analizado\njava -jar iped-search-app.jar /casos/caso_001/'
+              }
+            ],
+            tags: [
+              { label: 'Búsqueda Regex', color: 'yellow' },
+              { label: 'ISO 27042 §8', color: 'purple' }
+            ],
+            icono: Search
+          },
+          {
+            id: 'iped_f1p2',
+            numero: '1.2',
+            titulo: 'Generación del Informe Forense',
+            descripcion: 'Exportar la lista de evidencias y marcas de tiempo a un informe estructurado.',
+            items: [
+              'Marcar los elementos relevantes encontrados como evidencia.',
+              'Generar un informe en formato HTML/PDF desde el menú exportar de IPED.',
+              'Comprobar e incluir los hashes SHA-256 de todas las evidencias procesadas.'
+            ],
+            tags: [
+              { label: 'Informe Técnico', color: 'green' },
+              { label: 'Art. 226 COPP', color: 'cyan' }
+            ],
+            icono: FileText
+          }
+        ]
+      }
+    ]
+  },
+  cadena: {
+    muccPhase: 'Fase Inicial y Procesos de Carácter Continuo',
+    legalBase: 'Artículo 49 de la CRBV (Debido Proceso), Artículos 187, 188 y 226 del COPP, Manual Único de Cadena de Custodia (2017).',
+    tools: [
+      'Bloqueador de Escritura de Hardware (Write Blocker)',
+      'dcfldd / dc3dd (Clonado Forense y Hash)',
+      'sha256sum / md5sum (Verificación)'
+    ],
+    fases: [
+      {
+        id: 'cadena_f0',
+        numero: 0,
+        titulo: 'Aseguramiento y Clonado',
+        subtitulo: 'Proteger y copiar bit a bit el soporte original',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'cadena_f0p1',
+            numero: '0.1',
+            titulo: 'Uso de Bloqueador de Escritura',
+            descripcion: 'Asegurar que la evidencia se conecte usando protección de solo lectura física o lógica.',
+            items: [
+              'Conectar la evidencia a través de un bloqueador de escritura de hardware verificado.',
+              'Verificar que el estado de solo lectura esté activo en el sistema operativo forense.'
+            ],
+            tags: [
+              { label: 'Write Blocker', color: 'red' },
+              { label: 'ISO 27037 §5.4', color: 'purple' }
+            ],
+            icono: Lock
+          },
+          {
+            id: 'cadena_f0p2',
+            numero: '0.2',
+            titulo: 'Clonado Bit-a-Bit con Generación de Hash',
+            descripcion: 'Duplicar forensicamente la evidencia original calculando simultáneamente el hash SHA-256.',
+            items: [
+              'Ejecutar dcfldd configurando el algoritmo de hash sha256.',
+              'Calcular el hash del dispositivo físico original de forma previa.',
+              'Verificar que el hash de la imagen resultante coincida bit-a-bit con el original.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Realizar copia forense con dcfldd y hash SHA-256\ndcfldd if=/dev/sdb of=/casos/disco.dd hash=sha256 hashlog=/casos/hash_log.txt bs=512 conv=noerror,sync'
+              }
+            ],
+            tags: [
+              { label: 'Clonado Forense', color: 'green' },
+              { label: 'Art. 187 COPP', color: 'cyan' }
+            ],
+            icono: TerminalIcon
+          }
+        ]
+      },
+      {
+        id: 'cadena_f1',
+        numero: 1,
+        titulo: 'Documentación y Dictamen',
+        subtitulo: 'Registrar la trazabilidad y redactar el informe oficial',
+        icono: Scale,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'cadena_f1p1',
+            numero: '1.1',
+            titulo: 'Llenado de la Planilla PRCC',
+            descripcion: 'Registrar la trazabilidad continua de la evidencia en la planilla oficial.',
+            items: [
+              'Describir minuciosamente la evidencia en la Planilla de Registro de Cadena de Custodia.',
+              'Registrar marcas, modelos, series y el hash SHA-256 calculado.',
+              'Firmar y documentar de forma clara cada traspaso de custodia.'
+            ],
+            tags: [
+              { label: 'Formulario PRCC', color: 'yellow' },
+              { label: 'MUCC-2017', color: 'green' }
+            ],
+            icono: FileText
+          },
+          {
+            id: 'cadena_f1p2',
+            numero: '1.2',
+            titulo: 'Redacción del Dictamen Pericial',
+            descripcion: 'Formular el dictamen pericial final garantizando los apartados formales exigidos.',
+            items: [
+              'Redactar de forma objetiva los hallazgos y conclusiones sin precalificación jurídica.',
+              'Exponer el cálculo y comparación de los hashes de control del inicio y fin.',
+              'Firmar y sellar el documento final prestando el Juramento de Ley.'
+            ],
+            tags: [
+              { label: 'Dictamen Pericial', color: 'cyan' },
+              { label: 'Art. 226 COPP', color: 'cyan' }
+            ],
+            icono: Award
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -1527,7 +1783,7 @@ export default function TutorialesForensesPage() {
   const addEntry = useAuditStore(state => state.addEntry);
   const { user } = useAuthStore();
 
-  const [activeTutorial, setActiveTutorial] = useState<'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity'>('correo');
+  const [activeTutorial, setActiveTutorial] = useState<'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity' | 'iped' | 'cadena'>('correo');
   
   // ─── ESTADO DE LA ACADEMIA (PROGRESS & PERSISTENCE) ───────────────────────
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
@@ -1536,7 +1792,9 @@ export default function TutorialesForensesPage() {
     adb: 'manual',
     downgrade: 'manual',
     whatsapp: 'manual',
-    integrity: 'manual'
+    integrity: 'manual',
+    iped: 'manual',
+    cadena: 'manual'
   });
 
   // Estado para la fase activa de cada tutorial
@@ -1545,7 +1803,9 @@ export default function TutorialesForensesPage() {
     adb: 'adb_f0',
     downgrade: 'down_f0',
     whatsapp: 'wp_f0',
-    integrity: 'int_f0'
+    integrity: 'int_f0',
+    iped: 'iped_f0',
+    cadena: 'cadena_f0'
   });
 
   // Estado para pasos completados de todos los tutoriales
@@ -1636,6 +1896,8 @@ export default function TutorialesForensesPage() {
       { id: 'downgrade', label: 'APK Downgrade', sub: 'Consignación / Derivación', icon: Smartphone, complexity: 'Alta', badge: 'SQLite Extractor' },
       { id: 'whatsapp', label: 'WhatsApp Parser', sub: 'Fase de Laboratorio - Peritación', icon: Database, complexity: 'Media', badge: 'WhatsApp Parser' },
       { id: 'integrity', label: 'Integridad (.avilla)', sub: 'Fase de Resguardo', icon: Shield, complexity: 'Baja', badge: 'Oficial de Custodia' },
+      { id: 'iped', label: 'Indexador IPED', sub: 'Procesamiento Masivo', icon: Search, complexity: 'Media', badge: 'Perito Indexador' },
+      { id: 'cadena', label: 'Cadena de Custodia', sub: 'Garantía e Integridad', icon: Scale, complexity: 'Alta', badge: 'Perito Judicial' },
     ] as const;
   }, []);
 
