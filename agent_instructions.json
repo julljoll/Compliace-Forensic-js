@@ -15,15 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 11:33:43",
-      "last_commit": "ae96bf4 - ooooo (2026-06-12)",
+      "timestamp": "2026-06-12 12:42:26",
+      "last_commit": "37833e5 - jull (2026-06-12)",
       "modified_files": [
-        "A  \"RAG/Manual Unico de Cadena de Custodia de Evidencias Fisicas.yaml\"",
-        "D  RAG/apple-ios-design.skill",
-        "R  skill_avilla.md -> RAG/skill_avilla.md",
-        "M  src/App.tsx",
-        "M  src/components/templates/CMSLayout.tsx",
-        "M  src/pages/DashboardPage.tsx"
+        "R  \"RAG/Manual Unico de Cadena de Custodia de Evidencias Fisicas.yaml\" -> \"RAG/Procedimiento para extraccion y analisis de dispositivos Android (WhatsApp).yaml\"",
+        "D  RAG/manual-procedimiento.yaml",
+        "D  RAG/manual_unico_unificado.yaml",
+        "D  RAG/proceso-desarrollo-forense.yaml"
       ]
     }
   },
