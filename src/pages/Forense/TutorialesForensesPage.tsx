@@ -356,6 +356,7 @@ const CASES_STUDY: CaseStudy[] = [
   }
 ];
 
+
 const QUIZZES: Record<string, QuizQuestion[]> = {
   correo: [
     {
@@ -503,6 +504,78 @@ const QUIZZES: Record<string, QuizQuestion[]> = {
       ],
       correctAnswer: 2,
       explanation: "El Artículo 181 del COPP regula la licitud de la prueba. Si la cadena de custodia se rompe de forma grave (ej. hashes discrepantes), la prueba deviene ilícita y el juez debe decretar su nulidad absoluta."
+    }
+  ],
+  kali_whatsapp: [
+    {
+      question: "¿Qué comando se utiliza para transferir la carpeta de bases de datos de WhatsApp desde el almacenamiento externo de un Android a la carpeta del caso en Kali Linux?",
+      options: [
+        "adb push /sdcard/WhatsApp/Databases/ /casos/adquisicion/databases/",
+        "adb pull /sdcard/WhatsApp/Databases/ /casos/KL-2024-001/adquisicion/databases/",
+        "adb shell ls /sdcard/WhatsApp/Databases/",
+        "adb backup com.whatsapp"
+      ],
+      correctAnswer: 1,
+      explanation: "El comando 'adb pull' permite copiar directorios y archivos de manera segura desde el dispositivo Android hacia la estación de trabajo forense Kali Linux."
+    },
+    {
+      question: "¿Cuál es el formato de cifrado de base de datos de WhatsApp más moderno y qué herramienta se emplea comúnmente en Kali para su descifrado?",
+      options: [
+        "crypt12 y se descifra con SQLite Browser",
+        "crypt15 y se descifra con wa-crypt-tools",
+        "crypt8 y se descifra con WHAPA directamente",
+        "no tiene cifrado en almacenamiento externo"
+      ],
+      correctAnswer: 1,
+      explanation: "El formato crypt15 es el esquema de cifrado AES-256-GCM actual (2023+). Se requiere wa-crypt-tools con la clave obtenida para descifrarlo en 'msgstore.db'."
+    }
+  ],
+  caine_whatsapp: [
+    {
+      question: "¿Cuál es la principal ventaja metodológica de CAINE Linux frente a Kali Linux en el análisis de evidencia informática?",
+      options: [
+        "Es mucho más rápida para descifrar contraseñas",
+        "CAINE monta todos los discos en modo solo lectura por defecto, evitando alteraciones accidentales",
+        "Trae por defecto más controladores de tarjetas de video",
+        "Su interfaz de usuario es idéntica a la de Windows 11"
+      ],
+      correctAnswer: 1,
+      explanation: "La ventaja fundamental de CAINE es la protección de la evidencia mediante el montaje automático de solo lectura (Write Blocker por software), cumpliendo directamente con la norma ISO 27037."
+    },
+    {
+      question: "¿Qué utilidad o comando nativo se utiliza en CAINE Linux para documentar en un log continuo cada comando pericial ejecutado?",
+      options: [
+        "history | tee log.txt",
+        "script -a /casos/logs/sesion.log",
+        "autopsy --log",
+        "guymager -o log"
+      ],
+      correctAnswer: 1,
+      explanation: "La utilidad 'script' de Linux permite capturar en tiempo real todo lo que se digita e imprime en la consola, sirviendo como registro de trazabilidad en la cadena de custodia."
+    }
+  ],
+  cambridge_forenses: [
+    {
+      question: "¿Cuál es la diferencia fundamental entre datos volátiles y datos persistentes en el peritaje técnico-científico?",
+      options: [
+        "Los datos volátiles se guardan en el disco y los persistentes en la memoria RAM",
+        "Los datos volátiles (como RAM o red) se pierden al apagar el equipo; los persistentes (disco, logs) perduran tras el corte eléctrico",
+        "Los datos persistentes se modifican fácilmente y los volátiles son inmutables",
+        "No existe diferencia; ambos tipos de datos se adquieren de la misma forma exacta"
+      ],
+      correctAnswer: 1,
+      explanation: "La volatilidad define el orden de adquisición. La RAM, tablas de enrutamiento y conexiones activas deben colectarse primero antes de que la desconexión eléctrica las destruya."
+    },
+    {
+      question: "¿Bajo qué precepto legal del COPP venezolano se fundamenta la realización y entrega del dictamen pericial?",
+      options: [
+        "Artículo 187 (Cadena de Custodia)",
+        "Artículo 225 (Requisitos y Fundamentación del Dictamen Pericial)",
+        "Artículo 196 (Orden de Allanamiento)",
+        "Artículo 49 de la Constitución"
+      ],
+      correctAnswer: 1,
+      explanation: "El Artículo 225 del Código Orgánico Procesal Penal de Venezuela establece la obligación del perito de fundamentar sus conclusiones, detallar el estado de las cosas y los principios científicos aplicados."
     }
   ]
 };
@@ -1776,6 +1849,474 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         ]
       }
     ]
+  },
+  kali_whatsapp: {
+    muccPhase: 'Fase de Laboratorio - Peritación / Obtención Técnica',
+    legalBase: 'Artículos 187 y 225 del COPP, Manual Único de Cadena de Custodia (2017), ISO/IEC 27037:2012 y ISO/IEC 27042.',
+    tools: [
+      'ADB (Android Debug Bridge)',
+      'WHAPA (WhatsApp Parser Toolset)',
+      'Andriller (extracción forense)',
+      'SQLite Browser (visualizador DB)',
+      'IPED (análisis masivo)',
+      'ExifTool (metadatos multimedia)'
+    ],
+    fases: [
+      {
+        id: 'kali_f0',
+        numero: 0,
+        titulo: 'Preparación y Activación',
+        subtitulo: 'Entorno forense y depuración USB',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'kali_f0p1',
+            numero: '0.1',
+            titulo: 'Preparar Estación Kali Linux',
+            descripcion: 'Instalar herramientas de análisis y extracción y preparar directorios seguros del caso.',
+            items: [
+              'Actualizar paquetes e instalar ADB, SQLite browser y utilidades Python.',
+              'Clonar e instalar los repositorios oficiales de WHAPA y Andriller.',
+              'Crear la estructura del caso en un directorio seguro del sistema (/casos/KL-2024-001/).'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Instalar dependencias base\nsudo apt install -y adb android-tools-adb sqlite3 sqlitebrowser git python3-pip\n\n# Crear directorios del caso\nsudo mkdir -p /casos/KL-2024-001/{evidencias,adquisicion,analisis,hashes}'
+              }
+            ],
+            tags: [
+              { label: 'Kali Workstation', color: 'purple' },
+              { label: 'Setup', color: 'green' }
+            ],
+            icono: TerminalIcon
+          },
+          {
+            id: 'kali_f0p2',
+            numero: '0.2',
+            titulo: 'Activar Depuración USB',
+            descripcion: 'Habilitar la depuración USB en el dispositivo Android para permitir comunicación lógica forense.',
+            items: [
+              'Tocar 7 veces el número de compilación en Ajustes para habilitar Opciones de desarrollador.',
+              'Activar la Depuración USB y conectar el cable a la estación forense.',
+              'Ejecutar "adb devices" y aceptar la llave digital en la pantalla del dispositivo.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Verificar conexión lógica con el dispositivo Android\nadb devices\n\n# Registrar propiedades del móvil para el informe\nadb shell getprop ro.product.model'
+              }
+            ],
+            tags: [
+              { label: 'ADB Connection', color: 'yellow' },
+              { label: 'Android Developer', color: 'cyan' }
+            ],
+            icono: Smartphone
+          }
+        ]
+      },
+      {
+        id: 'kali_f1',
+        numero: 1,
+        titulo: 'Extracción y Descifrado',
+        subtitulo: 'Volcado de base de datos com.whatsapp',
+        icono: Key,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'kali_f1p1',
+            numero: '1.1',
+            titulo: 'Colectar Base de Datos crypt15',
+            descripcion: 'Extraer los archivos cifrados de WhatsApp desde el almacenamiento externo (/sdcard).',
+            items: [
+              'Listar los archivos de base de datos disponibles usando comandos ADB shell.',
+              'Extraer todos los ficheros .crypt15 a la carpeta de adquisición del caso.',
+              'Calcular de forma inmediata los hashes SHA-256 de control de integridad.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Extraer bases de datos de WhatsApp\nadb pull /sdcard/WhatsApp/Databases/ /casos/KL-2024-001/adquisicion/databases/\n\n# Calcular hashes de control\nfind /casos/KL-2024-001/adquisicion/ -type f -exec sha256sum {} +'
+              }
+            ],
+            tags: [
+              { label: 'Obtención Técnica', color: 'cyan' },
+              { label: 'SHA-256 Hash', color: 'yellow' }
+            ],
+            icono: Database
+          },
+          {
+            id: 'kali_f1p2',
+            numero: '1.2',
+            titulo: 'Descifrar msgstore.db',
+            descripcion: 'Descifrar la base de datos msgstore.db.crypt15 usando wa-crypt-tools y la llave de seguridad.',
+            items: [
+              'Obtener la llave criptográfica mediante backup lógico u obtención colaborativa.',
+              'Ejecutar decrypt15 con el archivo key para obtener la base de datos SQL abierta.',
+              'Calcular el hash del archivo msgstore.db descifrado y registrarlo como copia de trabajo.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Descifrar msgstore.db.crypt15 usando wa-crypt-tools\ndecrypt15 /casos/KL-2024-001/adquisicion/databases/msgstore.db.crypt15 /casos/KL-2024-001/adquisicion/databases/msgstore.db --keyfile /casos/KL-2024-001/adquisicion/key'
+              }
+            ],
+            tags: [
+              { label: 'Descifrado', color: 'red' },
+              { label: 'AES-256-GCM', color: 'purple' }
+            ],
+            icono: Key
+          }
+        ]
+      },
+      {
+        id: 'kali_f2',
+        numero: 2,
+        titulo: 'Análisis y Reporte',
+        subtitulo: 'Procesamiento e Informe Judicial',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'kali_f2p1',
+            numero: '2.1',
+            titulo: 'Análisis WHAPA e IPED',
+            descripcion: 'Parsear los chats and metadatos del caso con WHAPA y realizar consultas directas con SQLite Browser.',
+            items: [
+              'Ejecutar whapa.py para generar reportes estructurados HTML.',
+              'Correr consultas SQL para filtrar mensajes del número extorsionador.',
+              'Indexar en IPED para correlación y metadatos exif.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Ejecutar WHAPA parser para generar informe\npython3 whapa.py -m /casos/KL-2024-001/adquisicion/databases/msgstore.db -w /casos/KL-2024-001/adquisicion/databases/wa.db -o /casos/KL-2024-001/analisis/reporte/'
+              }
+            ],
+            tags: [
+              { label: 'Análisis Forense', color: 'cyan' },
+              { label: 'SQLite Queries', color: 'purple' }
+            ],
+            icono: Search
+          },
+          {
+            id: 'kali_f2p2',
+            numero: '2.2',
+            titulo: 'Generación de Dictamen Pericial',
+            descripcion: 'Redactar el dictamen pericial forense final para entregar a la Fiscalía 5ª.',
+            items: [
+              'Organizar la estructura formal con descripción, metodología y hallazgos.',
+              'Incluir capturas numeradas y la correspondencia horaria UTC y VET (GMT-4).',
+              'Exponer la comparación de hashes y formalizar con el Juramento del Perito.'
+            ],
+            tags: [
+              { label: 'Art. 225 COPP', color: 'cyan' },
+              { label: 'Dictamen Final', color: 'green' }
+            ],
+            icono: Award
+          }
+        ]
+      }
+    ]
+  },
+  caine_whatsapp: {
+    muccPhase: 'Fase de Laboratorio - Peritación / Preservación y Análisis',
+    legalBase: 'Artículos 187, 188 y 225 del COPP, Manual Único de Cadena de Custodia (2017), ISO/IEC 27037.',
+    tools: [
+      'CAINE Linux (OS Live)',
+      'Mounter (bloqueador de escritura)',
+      'Autopsy (suite forense)',
+      'Guymager (adquisición)',
+      'ADB (Android Debug Bridge)',
+      'SQLite Browser (visualizador DB)'
+    ],
+    fases: [
+      {
+        id: 'caine_f0',
+        numero: 0,
+        titulo: 'Entorno Seguro y Carga de Evidencia',
+        subtitulo: 'Configuración de solo lectura en CAINE',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'caine_f0p1',
+            numero: '0.1',
+            titulo: 'Arranque Forense CAINE',
+            descripcion: 'Iniciar el sistema live CAINE garantizando el bloqueo de escritura por software.',
+            items: [
+              'Arrancar la estación de trabajo mediante el dispositivo USB de CAINE Linux.',
+              'Verificar con lsblk que todos los discos están montados en modo de solo lectura (RO=1).',
+              'Crear los directorios del caso /casos/CA-2024-002/ y habilitar el registro de sesión.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Verificar estado de solo lectura (RO) de los discos\nlsblk -o NAME,SIZE,RO,FSTYPE,MOUNTPOINT\n\n# Iniciar sesión con log automático de cadena de custodia\nscript -a /casos/CA-2024-002/logs/sesion_pericial_2024.log'
+              }
+            ],
+            tags: [
+              { label: 'CAINE Live OS', color: 'purple' },
+              { label: 'Write Blocker', color: 'red' }
+            ],
+            icono: Lock
+          },
+          {
+            id: 'caine_f0p2',
+            numero: '0.2',
+            titulo: 'Documentar y Fotografiar el Teléfono',
+            descripcion: 'Realizar la recepción formal de la evidencia y documentar el estado físico.',
+            items: [
+              'Llenar el formulario oficial de cadena de custodia detallando IMEI, modelo y marca.',
+              'Fotografiar con escala métrica forense el empaque precintado y el dispositivo móvil.',
+              'Documentar el estado de bloqueo de pantalla y la oportunidad técnica.'
+            ],
+            tags: [
+              { label: 'Evidencia Física', color: 'yellow' },
+              { label: 'Fotografía Forense', color: 'cyan' }
+            ],
+            icono: Camera
+          }
+        ]
+      },
+      {
+        id: 'caine_f1',
+        numero: 1,
+        titulo: 'Adquisición y Procesamiento con Autopsy',
+        subtitulo: 'Extracción de base de datos WhatsApp y análisis',
+        icono: Database,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'caine_f1p1',
+            numero: '1.1',
+            titulo: 'Extracción Lógica y Backup ADB',
+            descripcion: 'Realizar la colecta digital de las bases de datos msgstore y wa.db mediante ADB pull.',
+            items: [
+              'Extraer la base de datos de mensajes y de contactos de WhatsApp al directorio seguro.',
+              'Realizar un backup completo del sistema con adb backup para preservación adicional.',
+              'Calcular el hash SHA-256 e ingresar los registros a la bitácora del caso.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Extraer bases de datos de WhatsApp\nadb pull /sdcard/WhatsApp/Databases/ /casos/CA-2024-002/adquisicion/databases/\n\n# Realizar un backup completo lógica vía ADB\nadb backup -all -shared -apk -f /casos/CA-2024-002/adquisicion/backup_completo.ab'
+              }
+            ],
+            tags: [
+              { label: 'ADB Backup', color: 'yellow' },
+              { label: 'Obtención Técnica', color: 'cyan' }
+            ],
+            icono: TerminalIcon
+          },
+          {
+            id: 'caine_f1p2',
+            numero: '1.2',
+            titulo: 'Procesamiento en Autopsy',
+            descripcion: 'Cargar la evidencia en Autopsy y procesar con los módulos del analizador Android.',
+            items: [
+              'Iniciar Autopsy y crear el nuevo caso judicial "CA-2024-002".',
+              'Agregar como fuente de datos lógicos la carpeta del caso en /casos/.',
+              'Habilitar el "Android Analyzer" para parsear llamadas, contactos y logs.'
+            ],
+            tags: [
+              { label: 'Autopsy Suite', color: 'purple' },
+              { label: 'Android Analyzer', color: 'green' }
+            ],
+            icono: Search
+          }
+        ]
+      },
+      {
+        id: 'caine_f2',
+        numero: 2,
+        titulo: 'Dictamen y Cierre',
+        subtitulo: 'Verificar hashes e integridad del proceso',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'caine_f2p1',
+            numero: '2.1',
+            titulo: 'Verificación del Log e Integridad',
+            descripcion: 'Calcular los hashes finales y cerrar la sesión grabada con script.',
+            items: [
+              'Calcular el hash final del caso y compararlo con el inicial.',
+              'Cerrar el archivo de registro automatizado con el comando "exit".',
+              'Verificar que no existan discrepancias entre los ficheros analizados.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Verificar hashes de integridad final\nfind /casos/CA-2024-002/ -type f -exec sha256sum {} +\n\n# Finalizar grabación de sesión pericial\nexit'
+              }
+            ],
+            tags: [
+              { label: 'Integridad Final', color: 'green' },
+              { label: 'Art. 188 COPP', color: 'cyan' }
+            ],
+            icono: CheckCircle2
+          }
+        ]
+      }
+    ]
+  },
+  cambridge_forenses: {
+    muccPhase: 'Todas las Fases - Formación Profesional de Ciencias Forenses Digitales',
+    legalBase: 'Artículos 181, 187, 188, 223, 225 y 226 del COPP, Ley Especial contra los Delitos Informáticos, ISO/IEC 27037/27041/27042.',
+    tools: [
+      'LiME (Linux Memory Extractor)',
+      'Volatility 3 (RAM analysis)',
+      'Autopsy (HDD analysis)',
+      'eml-analyzer (email parsing)',
+      'Wireshark (tráfico SMTP)',
+      'dcfldd (adquisición física)'
+    ],
+    fases: [
+      {
+        id: 'cambridge_f0',
+        numero: 0,
+        titulo: 'Fundamentos y Laboratorio',
+        subtitulo: 'Entorno de Ciencias Forenses',
+        icono: Shield,
+        color: 'text-[#007AFF]',
+        glowColor: 'rgba(0,122,255,0.15)',
+        pasos: [
+          {
+            id: 'cambridge_f0p1',
+            numero: '0.1',
+            titulo: 'Configurar el Entorno Forense',
+            descripcion: 'Establecer una estación de trabajo que garantice repetibilidad y reproducibilidad de los resultados.',
+            items: [
+              'Instalar herramientas principales de adquisición, análisis, metadatos y red.',
+              'Calcular y resguardar hashes de control del software de análisis pericial.',
+              'Revisar las normativas ISO aplicables (ISO 27037, 27041, 27042, 27043).'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Instalar herramientas forenses clave\nsudo apt install -y dcfldd guymager autopsy volatility3 sqlitebrowser exiftool wireshark\n\n# Verificar el hash del ejecutable dcfldd\nsha256sum /usr/bin/dcfldd'
+              }
+            ],
+            tags: [
+              { label: 'Reproducibilidad', color: 'purple' },
+              { label: 'ISO 27041', color: 'purple' }
+            ],
+            icono: TerminalIcon
+          },
+          {
+            id: 'cambridge_f0p2',
+            numero: '0.2',
+            titulo: 'Adquisición Física y Preservación',
+            descripcion: 'Realizar el clonado físico bit-a-bit de un disco duro calculando hash simultáneo con dcfldd.',
+            items: [
+              'Calcular el hash del disco de origen antes de realizar la copia.',
+              'Ejecutar dcfldd para clonar la evidencia a un archivo de imagen .dd.',
+              'Verificar que el hash posterior de origen coincida para certificar inmutabilidad.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Clonado bit-a-bit con dcfldd y hash SHA-256\ndcfldd if=/dev/sdb of=/casos/perez_soto/evidencia_disco.dd hash=sha256 hashlog=/casos/perez_soto/hashes/hash_disco.txt bs=512 conv=noerror,sync'
+              }
+            ],
+            tags: [
+              { label: 'Adquisición Física', color: 'cyan' },
+              { label: 'ISO 27037 §7.2', color: 'purple' }
+            ],
+            icono: Database
+          }
+        ]
+      },
+      {
+        id: 'cambridge_f1',
+        numero: 1,
+        titulo: 'Análisis de Correos y Memoria',
+        subtitulo: 'Correo corporativo y RAM volátil',
+        icono: Key,
+        color: 'text-[#34C759]',
+        glowColor: 'rgba(52,199,89,0.15)',
+        pasos: [
+          {
+            id: 'cambridge_f1p1',
+            numero: '1.1',
+            titulo: 'Análisis de Correos Electrónicos (.eml)',
+            descripcion: 'Extraer encabezados de los 47 correos sospechosos para verificar DKIM/SPF y la dirección IP de origen.',
+            items: [
+              'Calcular hash SHA-256 de los ficheros de correo original.',
+              'Parsear cabeceras SMTP identificando saltos en servidores "Received".',
+              'Validar el dominio emisor con nslookup/dig y verificar firmas DKIM.'
+            ],
+            codigo: [
+              {
+                lang: 'python',
+                contenido: '# Parser Python rápido para extraer cabeceras SMTP\nimport email\nmsg = email.message_from_file(open("phishing_muestra.eml"))\nfor header in ["From", "To", "Date", "Received", "Message-ID", "DKIM-Signature"]:\n    print(f"{header}: {msg.get(header)}")'
+              }
+            ],
+            tags: [
+              { label: 'SMTP Analysis', color: 'yellow' }
+            ],
+            icono: Mail
+          },
+          {
+            id: 'cambridge_f1p2',
+            numero: '1.2',
+            titulo: 'Análisis de Volcado de RAM',
+            descripcion: 'Extraer y analizar procesos y conexiones de red en el volcado de memoria RAM usando Volatility 3.',
+            items: [
+              'Cargar la captura de RAM de 8GB en Volatility 3.',
+              'Listar los procesos de sistema activos al momento del volcado.',
+              'Buscar conexiones de red, puertos abiertos y contraseñas en LSASS.'
+            ],
+            codigo: [
+              {
+                lang: 'bash',
+                contenido: '# Listar procesos activos en Volatility 3\nvol3 -f /casos/perez_soto/ram_dump.lime windows.pslist\n\n# Obtener conexiones de red activas\nvol3 -f /casos/perez_soto/ram_dump.lime windows.netstat'
+              }
+            ],
+            tags: [
+              { label: 'RAM Analysis', color: 'yellow' },
+              { label: 'Volatility 3', color: 'purple' }
+            ],
+            icono: TerminalIcon
+          }
+        ]
+      },
+      {
+        id: 'cambridge_f2',
+        numero: 2,
+        titulo: 'Ética y Dictamen',
+        subtitulo: 'Ética pericial y cierre del caso',
+        icono: Scale,
+        color: 'text-[#FF9500]',
+        glowColor: 'rgba(255,149,0,0.15)',
+        pasos: [
+          {
+            id: 'cambridge_f2p1',
+            numero: '2.1',
+            titulo: 'Ética y Responsabilidad Legal',
+            descripcion: 'Gestionar dilemas éticos (hallazgos incidentales, imparcialidad) y formalizar la experticia conforme al Art. 225 del COPP.',
+            items: [
+              'Estructurar las conclusiones numeradas correlacionando los 4 elementos de prueba.',
+              'Establecer el juramento de perito informático.',
+              'Firmar y foliar la totalidad de actas y formularios periciales.'
+            ],
+            tags: [
+              { label: 'Ética Pericial', color: 'red' },
+              { label: 'Art. 225 COPP', color: 'cyan' }
+            ],
+            icono: Award
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -1785,7 +2326,7 @@ export default function TutorialesForensesPage() {
   const addEntry = useAuditStore(state => state.addEntry);
   const { user } = useAuthStore();
 
-  const [activeTutorial, setActiveTutorial] = useState<'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity' | 'iped' | 'cadena'>('correo');
+  const [activeTutorial, setActiveTutorial] = useState<'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity' | 'iped' | 'cadena' | 'kali_whatsapp' | 'caine_whatsapp' | 'cambridge_forenses'>('correo');
   
   // ─── ESTADO DE LA ACADEMIA (PROGRESS & PERSISTENCE) ───────────────────────
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
@@ -1796,7 +2337,10 @@ export default function TutorialesForensesPage() {
     whatsapp: 'manual',
     integrity: 'manual',
     iped: 'manual',
-    cadena: 'manual'
+    cadena: 'manual',
+    kali_whatsapp: 'manual',
+    caine_whatsapp: 'manual',
+    cambridge_forenses: 'manual'
   });
 
   // Estado para la fase activa de cada tutorial
@@ -1807,7 +2351,10 @@ export default function TutorialesForensesPage() {
     whatsapp: 'wp_f0',
     integrity: 'int_f0',
     iped: 'iped_f0',
-    cadena: 'cadena_f0'
+    cadena: 'cadena_f0',
+    kali_whatsapp: 'kali_f0',
+    caine_whatsapp: 'caine_f0',
+    cambridge_forenses: 'cambridge_f0'
   });
 
   // Estado para pasos completados de todos los tutoriales
@@ -1873,7 +2420,7 @@ export default function TutorialesForensesPage() {
   const [quizScore, setQuizScore] = useState<Record<string, number>>({});
   const [unlockedModal, setUnlockedModal] = useState<{
     badgeTitle: string;
-    badgeIcon: 'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity';
+    badgeIcon: 'correo' | 'adb' | 'downgrade' | 'whatsapp' | 'integrity' | 'iped' | 'cadena' | 'kali_whatsapp' | 'caine_whatsapp' | 'cambridge_forenses';
     xpGained: number;
   } | null>(null);
 
@@ -1900,6 +2447,9 @@ export default function TutorialesForensesPage() {
       { id: 'integrity', label: 'Integridad (.avilla)', sub: 'Fase de Resguardo', icon: Shield, complexity: 'Baja', badge: 'Oficial de Custodia' },
       { id: 'iped', label: 'Indexador IPED', sub: 'Procesamiento Masivo', icon: Search, complexity: 'Media', badge: 'Perito Indexador' },
       { id: 'cadena', label: 'Cadena de Custodia', sub: 'Garantía e Integridad', icon: Scale, complexity: 'Alta', badge: 'Perito Judicial' },
+      { id: 'kali_whatsapp', label: 'WhatsApp Kali Linux', sub: 'WhatsApp Android sin Root', icon: TerminalIcon, complexity: 'Alta', badge: 'Especialista Kali' },
+      { id: 'caine_whatsapp', label: 'WhatsApp CAINE Linux', sub: 'Entorno Forense Nativo', icon: Shield, complexity: 'Alta', badge: 'Perito CAINE' },
+      { id: 'cambridge_forenses', label: 'Ciencias Forenses Cambridge', sub: 'Investigación Científica', icon: Award, complexity: 'Alta', badge: 'Científico Forense' },
     ] as const;
   }, []);
 
@@ -3867,6 +4417,17 @@ export default function TutorialesForensesPage() {
                       </div>
                     )}
 
+                    {/* fallback para laboratorios sin simulador interactivo */}
+                    {!['correo', 'adb', 'downgrade', 'whatsapp', 'integrity'].includes(mod.id) && (
+                      <div className="apple-card p-6 text-center space-y-4 max-w-lg mx-auto">
+                        <TerminalIcon size={40} className="mx-auto text-[var(--apple-accent)] opacity-80" />
+                        <h3 className="text-sm font-bold uppercase tracking-wider text-[#1D1D1F] dark:text-white">Laboratorio de {mod.label}</h3>
+                        <p className="text-xs text-[#86868B] leading-relaxed">
+                          Este módulo requiere ejecutar herramientas directamente sobre un sistema operativo vivo o especializado (como {mod.id.includes('kali') ? 'Kali Linux' : mod.id.includes('caine') ? 'CAINE Linux' : 'su estación forense'}). Siga las instrucciones paso a paso detalladas en la pestaña de <strong>Manual Técnico</strong> en su terminal forense real.
+                        </p>
+                      </div>
+                    )}
+
                   </div>
                 )}
 
@@ -4004,6 +4565,11 @@ export default function TutorialesForensesPage() {
                 {unlockedModal.badgeIcon === 'downgrade' && <Smartphone size={32} />}
                 {unlockedModal.badgeIcon === 'whatsapp' && <Database size={32} />}
                 {unlockedModal.badgeIcon === 'integrity' && <Shield size={32} />}
+                {unlockedModal.badgeIcon === 'iped' && <Search size={32} />}
+                {unlockedModal.badgeIcon === 'cadena' && <Scale size={32} />}
+                {unlockedModal.badgeIcon === 'kali_whatsapp' && <TerminalIcon size={32} />}
+                {unlockedModal.badgeIcon === 'caine_whatsapp' && <Shield size={32} />}
+                {unlockedModal.badgeIcon === 'cambridge_forenses' && <Award size={32} />}
               </div>
 
               <div className="space-y-1">

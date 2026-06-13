@@ -15,15 +15,10 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 22:26:14",
-      "last_commit": "34fc27e - actualizacion de leyes (2026-06-12)",
+      "timestamp": "2026-06-12 22:26:21",
+      "last_commit": "a23462f - 12 pm (2026-06-12)",
       "modified_files": [
-        "M  RAG/perito-forense-digital/SKILL.md",
-        "A  RAG/perito-forense-digital/references/curso-cambridge-forense-digital.md",
-        "A  RAG/perito-forense-digital/references/curso-whatsapp-caine-linux.md",
-        "A  RAG/perito-forense-digital/references/curso-whatsapp-kali-linux.md",
-        "M agent_instructions.json",
-        "M src/pages/Forense/TutorialesForensesPage.tsx"
+        "M  src/pages/Forense/TutorialesForensesPage.tsx"
       ]
     }
   },
