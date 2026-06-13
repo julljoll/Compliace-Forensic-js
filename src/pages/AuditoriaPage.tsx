@@ -93,7 +93,7 @@ export default function AuditoriaPage() {
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black uppercase text-[#86868B]/60 tracking-wider">Filtrar por Proyecto:</span>
             <select value={casoSeleccionado || ''} onChange={(e) => setCasoSeleccionado(e.target.value || null)}
-              className="bg-white border border-[rgba(0,113,227,0.2)] rounded-lg text-xs font-bold text-[#0071E3] px-4 py-2.5 outline-none hover:border-[rgba(0,113,227,0.5)] focus:border-[#0071E3] transition-all min-w-[220px] cursor-pointer">
+              className="bg-white dark:bg-[#2C2C2E] border border-[rgba(0,113,227,0.2)] dark:border-white/10 rounded-lg text-xs font-bold text-[#0071E3] dark:text-[#0A84FF] px-4 py-2.5 outline-none hover:border-[rgba(0,113,227,0.5)] dark:hover:border-white/20 focus:border-[#0071E3] transition-all min-w-[220px] cursor-pointer">
               <option value="">-- Todos los Eventos (Log General) --</option>
               {casos.map(c => (<option key={c.id} value={c.id}>{c.numeroCaso} - {c.titulo}</option>))}
             </select>

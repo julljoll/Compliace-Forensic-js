@@ -831,12 +831,12 @@ export default function SeguimientoCompliancePage() {
                                       toggleComplianceCheck(item.id, item.subId || '');
                                     }
                                   }}
-                                  className="w-full flex items-center gap-2.5 p-2 rounded border border-black/[0.04] bg-white/40 hover:bg-white hover:border-[#FF9500]/30 hover:shadow-sm text-left transition-all group"
+                                  className="w-full flex items-center gap-2.5 p-2 rounded border border-black/[0.04] dark:border-white/10 bg-white/40 hover:bg-white dark:bg-white/[0.04] dark:hover:bg-white/[0.08] hover:border-[#FF9500]/30 hover:shadow-sm text-left transition-all group"
                                 >
-                                  <div className="w-[14px] h-[14px] rounded border border-black/25 flex items-center justify-center bg-white group-hover:border-[#FF9500] group-hover:text-[#FF9500] shrink-0 transition-all">
+                                  <div className="w-[14px] h-[14px] rounded border border-black/25 dark:border-white/30 flex items-center justify-center bg-white dark:bg-[#1C1C1E] group-hover:border-[#FF9500] group-hover:text-[#FF9500] shrink-0 transition-all">
                                     <span className="w-1.5 h-1.5 rounded-full bg-transparent group-hover:bg-[#FF9500]/40 transition-all" />
                                   </div>
-                                  <span className="text-[10px] text-[#1D1D1F] font-medium leading-tight">
+                                  <span className="text-[10px] text-[#1D1D1F] dark:text-[#E5E5EA] font-medium leading-tight">
                                     {item.text}
                                   </span>
                                 </button>

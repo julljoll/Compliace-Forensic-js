@@ -339,7 +339,7 @@ export default function CasoDetailPage() {
                 <select 
                   value={caso.nivelCumplimientoGeneral}
                   onChange={(e) => handleCumplimientoChange(e.target.value as NivelCumplimiento)}
-                  className="bg-white border border-black/[0.08] text-[#1D1D1F] text-[11px] font-bold rounded-lg px-2 py-1.5 outline-none focus:border-[#0071E3]"
+                  className="bg-white dark:bg-[#2C2C2E] border border-black/[0.08] dark:border-white/[0.08] text-[#1D1D1F] dark:text-white text-[11px] font-bold rounded-lg px-2 py-1.5 outline-none focus:border-[#0071E3]"
                 >
                   <option value="conforme">Conforme</option>
                   <option value="parcial">Parcial</option>
@@ -370,7 +370,7 @@ export default function CasoDetailPage() {
             <select 
               value={caso.estado}
               onChange={(e) => handleEstadoChange(e.target.value as EstadoCaso)}
-              className="w-full bg-white border border-black/[0.08] rounded-lg p-2 text-sm font-bold text-[#1D1D1F] outline-none focus:border-[#0071E3]"
+              className="w-full bg-white dark:bg-[#2C2C2E] border border-black/[0.08] dark:border-white/[0.08] rounded-lg p-2 text-sm font-bold text-[#1D1D1F] dark:text-white outline-none focus:border-[#0071E3]"
             >
               {ESTADO_OPCIONES.map(e => (
                 <option key={e.value} value={e.value}>{e.label}</option>
@@ -388,7 +388,7 @@ export default function CasoDetailPage() {
             <select 
               value={caso.prioridad}
               onChange={(e) => handlePrioridadChange(e.target.value as PrioridadCaso)}
-              className="w-full bg-white border border-black/[0.08] rounded-lg p-2 text-sm font-bold text-[#1D1D1F] outline-none focus:border-[#0071E3]"
+              className="w-full bg-white dark:bg-[#2C2C2E] border border-black/[0.08] dark:border-white/[0.08] rounded-lg p-2 text-sm font-bold text-[#1D1D1F] dark:text-white outline-none focus:border-[#0071E3]"
             >
               {PRIORIDAD_OPCIONES.map(p => (
                 <option key={p.value} value={p.value}>{p.label}</option>
