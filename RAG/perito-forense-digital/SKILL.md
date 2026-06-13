@@ -200,3 +200,32 @@ usa `web_search` con términos como:
 - `"ISO 27037" evidencia digital procedimiento paso`
 
 Integra los resultados encontrados en el formato de tutorial estructurado arriba.
+
+---
+
+## Cursos y Referencias Adicionales
+
+Cuando el usuario solicite cursos específicos, consultar estos archivos:
+
+| Curso / Contenido | Archivo |
+|---|---|
+| **CURSO**: WhatsApp Android con Kali Linux (sin root, judicial) | `references/curso-whatsapp-kali-linux.md` |
+| **CURSO**: WhatsApp Android con CAINE Linux (sin root, judicial) | `references/curso-whatsapp-caine-linux.md` |
+| **CURSO**: Ciencias Forenses Digitales (estilo Cambridge/edX, 8 semanas) | `references/curso-cambridge-forense-digital.md` |
+| Análisis correos electrónicos | `references/analisis-correos.md` |
+| Análisis disco duro / PC | `references/analisis-disco-pc.md` |
+| Análisis Android + WhatsApp | `references/analisis-android-whatsapp.md` |
+| Redes sociales y OSINT | `references/analisis-redes-sociales.md` |
+| IPED guía completa | `references/iped-guia-completa.md` |
+| Cadena de custodia Venezuela | `references/cadena-custodia-venezuela.md` |
+| Informe pericial estructura | `references/informe-pericial-venezuela.md` |
+
+## Recursos Online para Investigar
+
+Si el usuario pide buscar tutoriales actualizados, buscar en:
+- https://github.com/sepinf-inc/IPED/wiki (documentación oficial IPED)
+- https://github.com/B16f00t/whapa (WHAPA documentation)
+- https://www.caine-live.net/documentation (CAINE official docs)
+- https://www.sans.org/blog/digital-forensics/ (SANS DFIR blog)
+- https://github.com/cugu/awesome-forensics (lista curada de herramientas)
+- https://informaticaforense.com (recursos Venezuela Raymond Orta)

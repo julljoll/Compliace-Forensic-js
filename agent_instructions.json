@@ -15,26 +15,15 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-12 17:06:44",
-      "last_commit": "e1312e5 - leyes organizadas (2026-06-12)",
+      "timestamp": "2026-06-12 22:26:14",
+      "last_commit": "34fc27e - actualizacion de leyes (2026-06-12)",
       "modified_files": [
-        "D  RAG/ACPO_Good_Practice_Guide_for_Digital_Evidence_v5.pdf",
-        "D  \"RAG/Creaci\\303\\263n del CENIF (2012). Centro Nacional de Inform\\303\\241tica Forense. Publicado en Gaceta Oficial N\\302\\260 39.847 de fecha 20 de enero..pdf\"",
-        "D  \"RAG/Guidelines on Mobile Device-NIST Special Publication 800-101.pdf\"",
-        "D  \"RAG/ISO IEC 27037-2012.pdf\"",
-        "D  \"RAG/ISO-IEC 27042 2015.pdf\"",
-        "D  \"RAG/LA_CRIMINOLOG\\303\\215A_UNA_CIENCIA_DINAMICA.pdf\"",
-        "D  \"RAG/Ley Especial de Delitos inform\\303\\241ticos (2001). Publicado en Gaceta Oficial N\\302\\272 37.313 .pdf\"",
-        "D  RAG/Ley-de-infogobierno.pdf",
-        "D  RAG/Ley-sobre-Mensajes-de-Datos-y-Firmas-Electronicas.pdf",
-        "D  \"RAG/MANUAL_\\303\\232NICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSI\\303\\223N_FINAL_29SEP17).pdf\"",
-        "D  RAG/Normalizacion_economia_digital.pdf",
-        "D  \"RAG/analisis forense en android con avilla forensics.pdf\"",
-        "D  \"RAG/codigo organico procesal penal.pdf\"",
-        "D  \"RAG/codigo penal.pdf\"",
-        "D  RAG/constitucion-nacional-20191205135853.pdf",
-        "D  RAG/cyb_ecu_delitos_inform.pdf",
-        "D  \"RAG/el peritaje inform\\303\\241tico.pdf\""
+        "M  RAG/perito-forense-digital/SKILL.md",
+        "A  RAG/perito-forense-digital/references/curso-cambridge-forense-digital.md",
+        "A  RAG/perito-forense-digital/references/curso-whatsapp-caine-linux.md",
+        "A  RAG/perito-forense-digital/references/curso-whatsapp-kali-linux.md",
+        "M agent_instructions.json",
+        "M src/pages/Forense/TutorialesForensesPage.tsx"
       ]
     }
   },
