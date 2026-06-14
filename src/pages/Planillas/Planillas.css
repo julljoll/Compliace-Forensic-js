@@ -1,10 +1,11 @@
+/* ── Planilla & Report Container (Apple Corporate PDF Style) ── */
 .planilla-container {
-  font-family: "Times New Roman", Georgia, serif;
-  line-height: 1.3;
-  color: #000000;
-  background: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Inter, sans-serif;
+  line-height: 1.45;
+  color: #1D1D1F; /* Apple charcoal */
+  background: #F5F5F7; /* Apple secondary background for screen viewing */
   margin: 0;
-  padding: 10px;
+  padding: 20px 10px;
   font-size: 12px;
 }
 
@@ -12,24 +13,27 @@
   box-sizing: border-box;
 }
 
+/* Page Card representation on screen */
 .planilla-container .page {
   width: 216mm;
   min-height: 356mm;
-  padding: 8mm 12mm;
-  margin: 0 auto 12px;
+  padding: 12mm 15mm;
+  margin: 0 auto 16px;
   background: #ffffff;
-  color: #000000;
+  color: #1D1D1F;
   position: relative;
-  border: 1px solid #000000;
+  border: 1px solid #D2D2D7; /* Apple hairline gray */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .planilla-container header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 2px solid #000000;
-  padding-bottom: 4px;
-  margin-bottom: 8px;
+  border-bottom: 1.5px solid #D2D2D7;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .planilla-container .logo-container {
@@ -38,114 +42,126 @@
 }
 
 .planilla-container .logo-text {
-  font-size: 16px;
-  font-weight: 800;
-  color: #000000;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1D1D1F;
   text-transform: uppercase;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .planilla-container .logo-subtext {
-  font-size: 7.5px;
+  font-size: 8.5px;
   font-weight: 600;
-  color: #444444;
+  color: #515154;
   text-transform: uppercase;
-  margin: 1px 0;
+  margin: 3px 0;
   letter-spacing: 0.02em;
 }
 
 .planilla-container .address-text {
-  font-size: 6.5px;
-  color: #444444;
-  max-width: 300px;
-  line-height: 1.2;
+  font-size: 7.5px;
+  color: #86868B;
+  max-width: 320px;
+  line-height: 1.35;
 }
 
-.planilla-container .acta-header { text-align: right; }
+.planilla-container .acta-header { 
+  text-align: right; 
+}
 
 .planilla-container .acta-title {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
-  color: #000000;
-  letter-spacing: 0.01em;
+  color: #1D1D1F;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 .planilla-container .acta-nro {
-  font-family: "Courier New", "SF Mono", Menlo, Monaco, "Roboto Mono", monospace;
+  font-family: Menlo, Monaco, Consolas, "SF Mono", monospace;
   font-size: 10px;
-  margin-top: 3px;
+  margin-top: 5px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
+  color: #515154;
 }
 
 .planilla-container .section-title {
-  border-left: 4px solid #000000;
-  color: #000000;
-  padding: 3px 6px;
-  font-size: 8.5px;
+  border-left: 3.5px solid #0071E3; /* Apple Blue Accent */
+  color: #1D1D1F;
+  padding: 4px 8px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 4px;
-  letter-spacing: 0.02em;
-  border-bottom: 1px solid #cccccc;
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #E5E5EA;
 }
 
 .planilla-container .section {
-  margin-bottom: 7px;
+  margin-bottom: 12px;
 }
 
 .planilla-container .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
+  gap: 6px;
 }
 
 .planilla-container .form-group {
-  border: 1px solid #000000;
-  padding: 3px 6px;
+  border: 1px solid #E5E5EA;
+  background-color: #F5F5F7; /* Apple muted gray input bg */
+  padding: 5px 10px;
+  border-radius: 6px;
 }
 
 .planilla-container .label {
-  color: #444444;
-  font-size: 6.5px;
+  color: #86868B;
+  font-size: 7.5px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 2px;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
 }
 
 .planilla-container .value {
-  color: #000000;
-  border-bottom: 1px dotted #999999;
-  font-size: 11px;
-  min-height: 16px;
-  line-height: 1.2;
+  color: #1D1D1F;
+  font-size: 11.5px;
+  font-weight: 500;
+  min-height: 18px;
+  line-height: 1.35;
 }
 
 .planilla-container .box-inline {
   display: inline-block;
-  border: 1px solid #000000;
+  border: 1px solid #C7C7CC;
+  border-radius: 4px;
   min-width: 50px;
-  height: 18px;
+  height: 20px;
   vertical-align: middle;
-  margin: 0 3px;
+  margin: 0 4px;
+  background-color: #FFFFFF;
 }
 
-.planilla-container .evidence-table {
+.planilla-container .evidence-table,
+.planilla-container .transfer-table {
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid #E5E5EA;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .planilla-container .evidence-table td {
-  border: 1px solid #000000;
-  color: #000000;
-  padding: 3px 6px;
-  font-size: 9px;
+  border: 1px solid #E5E5EA;
+  color: #1D1D1F;
+  padding: 5px 8px;
+  font-size: 10px;
 }
 
 .planilla-container .evidence-table td:first-child {
@@ -153,69 +169,72 @@
   font-weight: 600;
   font-size: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.planilla-container .transfer-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 5px;
+  letter-spacing: 0.03em;
+  background-color: #F5F5F7;
+  color: #515154;
 }
 
 .planilla-container .transfer-table td {
-  border: 1px solid #000000;
-  color: #000000;
-  padding: 3px 6px;
-  font-size: 10px;
+  border: 1px solid #E5E5EA;
+  color: #1D1D1F;
+  padding: 5px 8px;
+  font-size: 9.5px;
   vertical-align: top;
 }
 
 .planilla-container .transfer-header {
   font-weight: 700;
-  font-size: 7px;
+  font-size: 8px;
   text-transform: uppercase;
+  background-color: #F5F5F7;
+  color: #515154;
 }
 
 .planilla-container .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 2px;
+  gap: 8px;
+  margin-top: 3px;
 }
 
 .planilla-container .check-item {
   display: flex;
   align-items: center;
-  gap: 3px;
-  font-size: 8px;
-  color: #000000;
+  gap: 5px;
+  font-size: 9px;
+  color: #1D1D1F;
 }
 
 .planilla-container .box {
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid #000000;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #AEAEB2;
+  border-radius: 3px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 7px;
+  font-size: 8px;
   line-height: 1;
+  background-color: #FFFFFF;
 }
 
 .planilla-container .legal-text {
-  font-size: 8px;
+  font-size: 8.5px;
   text-align: justify;
-  padding: 5px;
-  border: 1px solid #000000;
-  margin: 5px 0;
-  line-height: 1.3;
+  padding: 8px 10px;
+  border: 1px solid #E5E5EA;
+  border-radius: 6px;
+  background-color: #F5F5F7;
+  color: #515154;
+  margin: 6px 0;
+  line-height: 1.4;
 }
 
 .planilla-container .signature-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10mm;
+  gap: 12mm;
   margin-top: 8mm;
   padding-bottom: 8mm;
 }
@@ -228,8 +247,10 @@
 }
 
 .planilla-container .sig-card {
-  border: 1px solid #000000;
-  padding: 8px;
+  border: 1px solid #E5E5EA;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #FFFFFF;
 }
 
 .planilla-container .sig-row {
@@ -243,31 +264,35 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 3px;
+  gap: 4px;
 }
 
 .planilla-container .sig-box {
   flex: 1;
-  height: 85px;
-  border: 1px dashed #000000;
+  height: 80px;
+  border: 1px dashed #C7C7CC;
+  border-radius: 4px;
+  background-color: #F5F5F7;
 }
 
 .planilla-container .thumb-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
 
 .planilla-container .thumb-box {
-  width: 65px;
-  height: 85px;
-  border: 1px dashed #000000;
+  width: 60px;
+  height: 80px;
+  border: 1px dashed #C7C7CC;
+  border-radius: 4px;
+  background-color: #F5F5F7;
 }
 
 .planilla-container .thumb-label {
   font-size: 7.5px;
-  color: #444444;
+  color: #86868B;
   text-align: center;
   font-weight: 600;
   text-transform: uppercase;
@@ -276,117 +301,139 @@
 
 .planilla-container .sig-label {
   text-align: center;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
-  color: #000000;
+  color: #1D1D1F;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .planilla-container .sig-label + .sig-sub {
   font-size: 8px;
-  color: #444444;
-  margin-top: 2px;
+  color: #86868B;
+  margin-top: 3px;
 }
 
 .planilla-container .sig-sub {
   font-size: 8px;
-  color: #444444;
-  margin-top: 1px;
+  color: #86868B;
+  margin-top: 2px;
 }
 
 .planilla-container .sig-detail-card {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 6px 8px;
-  border: 1px solid #000000;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid #E5E5EA;
+  border-radius: 8px;
+  background-color: #FFFFFF;
 }
 
 .planilla-container .sig-detail-card .sig-detail-label {
   font-size: 9px;
   font-weight: 700;
-  color: #000000;
+  color: #1D1D1F;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   text-align: center;
-  padding-bottom: 2px;
-  border-bottom: 1px solid #000000;
-  margin-bottom: 1px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #E5E5EA;
+  margin-bottom: 2px;
 }
 
 .planilla-container .sig-detail-card .sig-line {
-  border-bottom: 1px solid #000000;
-  height: 18px;
+  border-bottom: 1px solid #D2D2D7;
+  height: 20px;
   width: 100%;
 }
 
 .planilla-container .sig-detail-card .sig-line-label {
   font-size: 7px;
-  color: #444444;
+  color: #86868B;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-top: 0;
+  margin-top: 1px;
 }
 
 .planilla-container .sig-detail-card .sig-field {
   display: flex;
   align-items: center;
-  gap: 3px;
-  font-size: 7.5px;
-  color: #000000;
+  gap: 4px;
+  font-size: 8px;
+  color: #515154;
 }
 
 .planilla-container .sig-detail-card .sig-field .sig-underline {
   flex: 1;
-  border-bottom: 1px dashed #999999;
-  min-height: 14px;
-  padding: 0 3px;
-  font-size: 8px;
+  border-bottom: 1px dashed #C7C7CC;
+  min-height: 16px;
+  padding: 0 4px;
+  font-size: 9px;
   font-weight: 600;
-  color: #000000;
+  color: #1D1D1F;
 }
 
 .planilla-container .sig-detail-card .fingerprint-row {
   display: flex;
   gap: 8px;
   justify-content: center;
-  margin-top: 3px;
-  padding-top: 3px;
-  border-top: 1px dotted #999999;
+  margin-top: 4px;
+  padding-top: 5px;
+  border-top: 1px dotted #E5E5EA;
 }
 
 .planilla-container .footer {
   position: absolute;
   bottom: 6mm;
-  left: 12mm;
-  right: 12mm;
+  left: 15mm;
+  right: 15mm;
   text-align: center;
-  font-size: 6.5px;
-  color: #444444;
-  border-top: 1px solid #000000;
-  padding-top: 2px;
-  line-height: 1.2;
+  font-size: 7px;
+  color: #86868B;
+  border-top: 1px solid #E5E5EA;
+  padding-top: 4px;
+  line-height: 1.3;
 }
 
-.planilla-container .form-header-info { text-align: right; }
-.planilla-container .form-title-main { font-size: 11px; font-weight: 700; margin: 0; text-transform: uppercase; color: #000000; letter-spacing: 0.01em; }
-.planilla-container .form-nro { font-family: "Courier New", "SF Mono", Menlo, Monaco, "Roboto Mono", monospace; font-size: 10px; margin-top: 3px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.planilla-container .form-header-info { 
+  text-align: right; 
+}
+.planilla-container .form-title-main { 
+  font-size: 13px; 
+  font-weight: 700; 
+  margin: 0; 
+  text-transform: uppercase; 
+  color: #1D1D1F; 
+  letter-spacing: -0.01em; 
+}
+.planilla-container .form-nro { 
+  font-family: Menlo, Monaco, Consolas, "SF Mono", monospace; 
+  font-size: 10px; 
+  margin-top: 5px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end; 
+  gap: 4px; 
+  color: #515154; 
+}
 
 .planilla-container .anexo-derivacion {
-  border: 2px solid #000000;
-  padding: 6px;
-  margin-top: 8px;
+  border: 1.5px solid #D2D2D7;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #FFFFFF;
 }
 
 .planilla-container .anexo-header {
   font-weight: 700;
-  font-size: 8px;
-  color: #000000;
-  border-bottom: 1px solid #000000;
-  padding-bottom: 3px;
-  margin-bottom: 4px;
+  font-size: 9px;
+  color: #1D1D1F;
+  border-bottom: 1px solid #E5E5EA;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
   text-transform: uppercase;
 }
 
@@ -396,7 +443,7 @@
   left: 50%;
   transform: translate(-50%, -50%) rotate(-45deg);
   font-size: 80px;
-  color: rgba(0, 0, 0, 0.03);
+  color: rgba(0, 0, 0, 0.02);
   font-weight: 900;
   pointer-events: none;
   z-index: 0;
@@ -406,32 +453,48 @@
 
 .planilla-container footer {
   text-align: center;
-  font-size: 6.5px;
-  color: #444444;
-  margin-top: 6px;
-  border-top: 1px solid #000000;
-  padding-top: 3px;
+  font-size: 7px;
+  color: #86868B;
+  margin-top: 10px;
+  border-top: 1px solid #E5E5EA;
+  padding-top: 5px;
 }
 
 .planilla-container .no-print button,
 .planilla-container .print-button {
-  color: #000000;
-  border: 1px solid #000000;
-  padding: 10px 24px;
+  color: #0071E3;
+  border: 1px solid #0071E3;
+  border-radius: 8px;
+  padding: 8px 20px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  font-family: "Times New Roman", serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  background-color: #FFFFFF;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.planilla-container .timeline-print-layout { display: none; }
+.planilla-container .no-print button:hover,
+.planilla-container .print-button:hover {
+  background-color: #0071E3/10;
+  border-color: #0071E3;
+  transform: scale(0.98);
+}
 
+.planilla-container .timeline-print-layout { 
+  display: none; 
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PRINT MEDIA STYLES (Apple HIG crisp high-contrast layout)
+   ══════════════════════════════════════════════════════════════════════════ */
 @media print {
   html, body {
     background: white !important;
-    color: black !important;
+    color: #1D1D1F !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Inter, sans-serif !important;
   }
 
   .planilla-container {
@@ -444,15 +507,17 @@
     width: 100% !important;
     min-height: 0 !important;
     height: auto !important;
-    padding: 10mm 14mm !important;
+    padding: 10mm 12mm !important;
     margin: 0 !important;
     border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
     overflow: hidden !important;
   }
 
   .planilla-container header {
-    border-bottom: 2px solid #000 !important;
-    padding-bottom: 3px !important;
+    border-bottom: 1.5px solid #8E8E93 !important;
+    padding-bottom: 6px !important;
   }
 
   .planilla-container .logo-text,
@@ -461,7 +526,7 @@
   .planilla-container .sig-label,
   .planilla-container .anexo-header,
   .planilla-container .section-title {
-    color: #000000 !important;
+    color: #1D1D1F !important;
   }
 
   .planilla-container .logo-subtext,
@@ -470,37 +535,39 @@
   .planilla-container .sig-sub,
   .planilla-container .footer,
   .planilla-container footer,
-  .planilla-container .thumb-label {
-    color: #444444 !important;
+  .planilla-container .thumb-label,
+  .planilla-container .sig-line-label {
+    color: #515154 !important;
   }
 
   .planilla-container .section-title {
-    border-left: 4px solid #000 !important;
-    padding: 2px 4px !important;
-    font-size: 7.5px !important;
-    margin-bottom: 3px !important;
+    border-left: 3.5px solid #0071E3 !important;
+    padding: 3px 6px !important;
+    font-size: 8.5px !important;
+    margin-bottom: 4px !important;
+    border-bottom: 1px solid #D2D2D7 !important;
   }
 
   .planilla-container .section {
-    margin-bottom: 4px !important;
+    margin-bottom: 8px !important;
   }
 
   .planilla-container .grid-container {
-    gap: 3px !important;
+    gap: 4px !important;
   }
 
   .planilla-container .label {
-    font-size: 6px !important;
+    font-size: 7px !important;
     margin-bottom: 1px !important;
   }
 
   .planilla-container .check-item {
-    font-size: 7px !important;
-    gap: 2px !important;
+    font-size: 8px !important;
+    gap: 4px !important;
   }
 
   .planilla-container .checkbox-group {
-    gap: 4px !important;
+    gap: 6px !important;
     margin-top: 1px !important;
   }
 
@@ -511,152 +578,162 @@
   }
 
   .planilla-container .sig-card {
-    padding: 4px !important;
+    padding: 6px !important;
+    border: 1px solid #D2D2D7 !important;
+    border-radius: 6px !important;
   }
 
   .planilla-container .sig-label {
-    font-size: 8px !important;
+    font-size: 8.5px !important;
   }
 
   .planilla-container .logo-text {
-    font-size: 14px !important;
+    font-size: 16px !important;
   }
 
   .planilla-container .logo-subtext {
-    font-size: 6.5px !important;
+    font-size: 7.5px !important;
   }
 
   .planilla-container .address-text {
-    font-size: 6px !important;
+    font-size: 7px !important;
   }
 
   .planilla-container .acta-title,
   .planilla-container .form-title-main {
-    font-size: 10px !important;
+    font-size: 11px !important;
   }
 
   .planilla-container .acta-nro,
   .planilla-container .form-nro {
     font-size: 9px !important;
-    margin-top: 2px !important;
+    margin-top: 3px !important;
   }
 
   .planilla-container footer {
-    font-size: 6px !important;
-    margin-top: 4px !important;
-    padding-top: 2px !important;
+    font-size: 6.5px !important;
+    margin-top: 6px !important;
+    padding-top: 3px !important;
+  }
+
+  .planilla-container .evidence-table,
+  .planilla-container .transfer-table {
+    border: 1px solid #D2D2D7 !important;
   }
 
   .planilla-container .evidence-table td,
   .planilla-container .transfer-table td {
-    border: 1px solid #000 !important;
-    color: #000 !important;
-    padding: 2px 4px !important;
-    font-size: 8px !important;
+    border: 1px solid #D2D2D7 !important;
+    color: #1D1D1F !important;
+    padding: 4px 6px !important;
+    font-size: 8.5px !important;
   }
 
   .planilla-container .evidence-table td:first-child {
-    font-size: 7px !important;
+    font-size: 7.5px !important;
+    background-color: #F5F5F7 !important;
   }
 
   .planilla-container .form-group {
-    border: 1px solid #000 !important;
-    padding: 2px 4px !important;
+    border: 1px solid #D2D2D7 !important;
+    background-color: #F5F5F7 !important;
+    padding: 3px 6px !important;
+    border-radius: 4px !important;
   }
 
   .planilla-container .value {
-    border-bottom: 1px dotted #999 !important;
     font-size: 10px !important;
     min-height: 14px !important;
   }
 
   .planilla-container .legal-text {
-    border: 1px solid #000 !important;
-    padding: 3px !important;
-    font-size: 7px !important;
-    margin: 3px 0 !important;
+    border: 1px solid #D2D2D7 !important;
+    background-color: #F5F5F7 !important;
+    padding: 5px 8px !important;
+    font-size: 7.5px !important;
+    margin: 4px 0 !important;
   }
 
   .planilla-container .box {
-    border: 1.5px solid #000 !important;
-    width: 9px !important;
-    height: 9px !important;
+    border: 1px solid #8E8E93 !important;
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 2px !important;
   }
 
   .planilla-container .box-inline {
-    border: 1px solid #000 !important;
-    height: 14px !important;
+    border: 1px solid #8E8E93 !important;
+    height: 16px !important;
     min-width: 40px !important;
-  }
-
-  .planilla-container .sig-card {
-    border: 1px solid #000 !important;
+    border-radius: 3px !important;
   }
 
   .planilla-container .sig-box {
-    border: 1px dashed #000 !important;
-    height: 80px !important;
+    border: 1px dashed #AEAEB2 !important;
+    height: 70px !important;
   }
 
   .planilla-container .thumb-box {
-    border: 1px dashed #000 !important;
-    width: 60px !important;
-    height: 80px !important;
+    border: 1px dashed #AEAEB2 !important;
+    width: 50px !important;
+    height: 70px !important;
   }
 
   .planilla-container .thumb-label {
-    color: #444 !important;
-    font-size: 7px !important;
+    color: #515154 !important;
+    font-size: 6.5px !important;
   }
 
   .planilla-container .sig-detail-card {
-    border: 1px solid #000 !important;
-    padding: 4px 6px !important;
-    gap: 2px !important;
+    border: 1px solid #D2D2D7 !important;
+    border-radius: 6px !important;
+    padding: 6px 8px !important;
+    gap: 3px !important;
   }
 
   .planilla-container .sig-detail-card .sig-detail-label {
-    color: #000 !important;
-    border-bottom-color: #000 !important;
+    color: #1D1D1F !important;
+    border-bottom-color: #D2D2D7 !important;
     font-size: 8px !important;
-    padding-bottom: 1px !important;
+    padding-bottom: 2px !important;
   }
 
   .planilla-container .sig-detail-card .sig-line {
-    border-bottom: 1px solid #000 !important;
-    height: 14px !important;
+    border-bottom: 1px solid #8E8E93 !important;
+    height: 16px !important;
   }
 
   .planilla-container .sig-detail-card .sig-line-label {
-    color: #444 !important;
+    color: #515154 !important;
     font-size: 6px !important;
   }
 
   .planilla-container .sig-detail-card .sig-field {
-    color: #000 !important;
-    font-size: 7px !important;
+    color: #515154 !important;
+    font-size: 7.5px !important;
   }
 
   .planilla-container .sig-detail-card .sig-field .sig-underline {
-    border-bottom: 1px dotted #999 !important;
-    color: #000 !important;
+    border-bottom: 1px dotted #AEAEB2 !important;
+    color: #1D1D1F !important;
     min-height: 12px !important;
-    font-size: 7px !important;
+    font-size: 8px !important;
   }
 
   .planilla-container .sig-detail-card .fingerprint-row {
-    border-top-color: #999 !important;
+    border-top-color: #D2D2D7 !important;
     gap: 6px !important;
-    margin-top: 2px !important;
-    padding-top: 2px !important;
+    margin-top: 3px !important;
+    padding-top: 3px !important;
   }
 
   .planilla-container .watermark {
-    color: rgba(0, 0, 0, 0.02) !important;
+    color: rgba(0, 0, 0, 0.01) !important;
   }
 
   .planilla-container .anexo-derivacion {
-    border: 2px solid #000 !important;
+    border: 1.5px solid #8E8E93 !important;
+    border-radius: 6px !important;
   }
 
   .planilla-container button,
@@ -675,14 +752,14 @@
   }
 
   .planilla-container .timeline-print-title {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
-    margin-bottom: 12px;
-    border-bottom: 2px solid #000;
+    margin-bottom: 10px;
+    border-bottom: 1.5px solid #8E8E93;
     padding-bottom: 4px;
-    color: #000 !important;
+    color: #1D1D1F !important;
   }
 
   .planilla-container .timeline-print-table {
@@ -693,21 +770,22 @@
 
   .planilla-container .timeline-print-table th,
   .planilla-container .timeline-print-table td {
-    border: 1px solid #000 !important;
-    padding: 6px;
-    font-size: 9px;
-    color: #000 !important;
+    border: 1px solid #D2D2D7 !important;
+    padding: 5px;
+    font-size: 8.5px;
+    color: #1D1D1F !important;
     vertical-align: top;
   }
 
   .planilla-container .timeline-print-table th {
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 8px;
+    font-size: 7.5px;
+    background-color: #F5F5F7 !important;
   }
 
   .planilla-container .timeline-print-table tr.pending-row td {
-    color: #555 !important;
+    color: #86868B !important;
     font-style: italic;
   }
 }
@@ -725,6 +803,7 @@
     padding: 4mm 6mm !important;
     border: none !important;
     box-shadow: none !important;
+    border-radius: 0 !important;
   }
 
   .planilla-container .grid-container {
@@ -775,12 +854,12 @@
   html.dark .planilla-container .page {
     background: #2C2C2E !important;
     color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
   }
 
   html.dark .planilla-container header {
-    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
   }
 
   html.dark .planilla-container .logo-text,
@@ -810,22 +889,23 @@
   }
 
   html.dark .planilla-container .form-group {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
   }
 
   html.dark .planilla-container .value {
     color: #FFFFFF !important;
-    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   html.dark .planilla-container .box-inline {
-    border-color: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
   }
 
   html.dark .planilla-container .evidence-table td,
   html.dark .planilla-container .transfer-table td {
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
     color: #FFFFFF !important;
   }
 
@@ -840,32 +920,34 @@
   }
 
   html.dark .planilla-container .box {
-    border-color: rgba(255, 255, 255, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
   }
 
   html.dark .planilla-container .legal-text {
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    background-color: rgba(255, 255, 255, 0.01) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
   }
 
   html.dark .planilla-container .sig-card,
   html.dark .planilla-container .sig-detail-card {
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
     background-color: rgba(255, 255, 255, 0.02) !important;
   }
 
   html.dark .planilla-container .sig-box,
   html.dark .planilla-container .thumb-box {
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
   }
 
   html.dark .planilla-container .sig-detail-card .sig-detail-label {
     color: #FFFFFF !important;
-    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
   }
 
   html.dark .planilla-container .sig-detail-card .sig-line {
-    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
   }
 
   html.dark .planilla-container .sig-detail-card .sig-field {
@@ -873,34 +955,33 @@
   }
 
   html.dark .planilla-container .sig-detail-card .sig-field .sig-underline {
-    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
     color: #FFFFFF !important;
   }
 
   html.dark .planilla-container .sig-detail-card .fingerprint-row {
-    border-top-color: rgba(255, 255, 255, 0.12) !important;
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   html.dark .planilla-container .watermark {
-    color: rgba(255, 255, 255, 0.015) !important;
+    color: rgba(255, 255, 255, 0.01) !important;
   }
 
   html.dark .planilla-container .anexo-derivacion {
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
   }
 
   html.dark .planilla-container .no-print button,
   html.dark .planilla-container .print-button {
-    color: #FFFFFF !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    color: #0A84FF !important;
+    border-color: #0A84FF !important;
+    background: rgba(10, 132, 255, 0.05) !important;
   }
 
   html.dark .planilla-container .no-print button:hover,
   html.dark .planilla-container .print-button:hover {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(10, 132, 255, 0.1) !important;
     border-color: #0A84FF !important;
-    color: #0A84FF !important;
   }
 }
-

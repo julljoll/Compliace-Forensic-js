@@ -15,11 +15,12 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-13 19:26:26",
-      "last_commit": "091c0e3 - apple (2026-06-13)",
+      "timestamp": "2026-06-13 19:45:19",
+      "last_commit": "2cb64b9 - dark (2026-06-13)",
       "modified_files": [
+        "A  \"RAG/CURSOS FORENSES/Brochure-Analisis-forense-evidencia-digital-con-IPED-17noviembre2025-1080x1920px.pdf\"",
         "M  agent_instructions.json",
-        "M  dev-dist/sw.js"
+        "M  src/pages/Planillas/Planillas.css"
       ]
     }
   },
