@@ -65,17 +65,21 @@ export default function CMSLayout() {
   const [dbOnline, setDbOnline] = useState<boolean | null>(null);
 
   /* ── Tema ── */
-  const [isDark, setIsDark] = useState(() =>
-    document.documentElement.classList.contains('dark') ||
-    localStorage.getItem('theme') === 'dark'
-  );
+  const [isDark, setIsDark] = useState(() => {
+    const theme = localStorage.getItem('theme');
+    if (theme === null) return true; // Por defecto modo oscuro
+    return theme === 'dark';
+  });
   useEffect(() => {
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
     if (isDark) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      if (metaTheme) metaTheme.setAttribute('content', '#1C1C1E');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      if (metaTheme) metaTheme.setAttribute('content', '#F5F5F7');
     }
   }, [isDark]);
 

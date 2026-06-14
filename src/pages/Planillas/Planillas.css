@@ -765,3 +765,142 @@
   }
 }
 
+/* ── Screen Dark Mode Overrides (Only applied to html.dark in screen view) ── */
+@media screen {
+  html.dark .planilla-container {
+    color: #FFFFFF !important;
+    background: #1C1C1E !important;
+  }
+
+  html.dark .planilla-container .page {
+    background: #2C2C2E !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  html.dark .planilla-container header {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  html.dark .planilla-container .logo-text,
+  html.dark .planilla-container .acta-title,
+  html.dark .planilla-container .form-title-main,
+  html.dark .planilla-container .sig-label,
+  html.dark .planilla-container .anexo-header,
+  html.dark .planilla-container .timeline-print-title {
+    color: #FFFFFF !important;
+  }
+
+  html.dark .planilla-container .logo-subtext,
+  html.dark .planilla-container .address-text,
+  html.dark .planilla-container .label,
+  html.dark .planilla-container .sig-sub,
+  html.dark .planilla-container .footer,
+  html.dark .planilla-container footer,
+  html.dark .planilla-container .thumb-label,
+  html.dark .planilla-container .sig-line-label {
+    color: #AEAEB2 !important;
+  }
+
+  html.dark .planilla-container .section-title {
+    border-left-color: #0A84FF !important;
+    color: #FFFFFF !important;
+    border-bottom-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  html.dark .planilla-container .form-group {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+  }
+
+  html.dark .planilla-container .value {
+    color: #FFFFFF !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  html.dark .planilla-container .box-inline {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  html.dark .planilla-container .evidence-table td,
+  html.dark .planilla-container .transfer-table td {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #FFFFFF !important;
+  }
+
+  html.dark .planilla-container .evidence-table td:first-child,
+  html.dark .planilla-container .transfer-header {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    color: #0A84FF !important;
+  }
+
+  html.dark .planilla-container .check-item {
+    color: #FFFFFF !important;
+  }
+
+  html.dark .planilla-container .box {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  html.dark .planilla-container .legal-text {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.01) !important;
+  }
+
+  html.dark .planilla-container .sig-card,
+  html.dark .planilla-container .sig-detail-card {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+  }
+
+  html.dark .planilla-container .sig-box,
+  html.dark .planilla-container .thumb-box {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  html.dark .planilla-container .sig-detail-card .sig-detail-label {
+    color: #FFFFFF !important;
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  html.dark .planilla-container .sig-detail-card .sig-line {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  html.dark .planilla-container .sig-detail-card .sig-field {
+    color: #FFFFFF !important;
+  }
+
+  html.dark .planilla-container .sig-detail-card .sig-field .sig-underline {
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+    color: #FFFFFF !important;
+  }
+
+  html.dark .planilla-container .sig-detail-card .fingerprint-row {
+    border-top-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  html.dark .planilla-container .watermark {
+    color: rgba(255, 255, 255, 0.015) !important;
+  }
+
+  html.dark .planilla-container .anexo-derivacion {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  html.dark .planilla-container .no-print button,
+  html.dark .planilla-container .print-button {
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  html.dark .planilla-container .no-print button:hover,
+  html.dark .planilla-container .print-button:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: #0A84FF !important;
+    color: #0A84FF !important;
+  }
+}
+
