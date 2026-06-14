@@ -15,14 +15,11 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-13 19:20:27",
-      "last_commit": "9ff330b - okh (2026-06-12)",
+      "timestamp": "2026-06-13 19:26:26",
+      "last_commit": "091c0e3 - apple (2026-06-13)",
       "modified_files": [
         "M  agent_instructions.json",
-        "M  index.html",
-        "M  src/components/templates/CMSLayout.tsx",
-        "M  src/pages/LoginPage.tsx",
-        "M  src/pages/Planillas/Planillas.css"
+        "M  dev-dist/sw.js"
       ]
     }
   },
