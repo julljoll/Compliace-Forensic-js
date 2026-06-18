@@ -6,12 +6,13 @@ import {
   type PrioridadCaso,
   type EstadoTarea,
 } from '../store/cmsStore';
-import { getPasosPorTipo } from '../data/tiposProyecto';
+import { getTareasPorDefecto } from '../data/tiposProyecto';
+import NuevoCasoModal from '../components/organisms/Casos/NuevoCasoModal';
 import {
   FolderOpen, ShieldCheck, AlertTriangle, Clock,
   TrendingUp, Activity, FileSearch, Gavel, Scale,
-  ClipboardList, Plus, Search, CheckCircle2, Pause, Trash2, X,
-  Calendar, User, BookOpen, BarChart3, CheckCheck
+  ClipboardList, Plus, Search, CheckCircle2, Pause, Trash2,
+  Calendar, User, BookOpen, BarChart3
 } from '../components/atoms/AppleIcon';
 import KpiCard from '../components/molecules/KpiCard';
 
@@ -60,6 +61,8 @@ export default function DashboardPage() {
   const updateTarea = useCMSStore(state => state.updateTarea);
   const deleteTarea = useCMSStore(state => state.deleteTarea);
   const addAuditLog = useCMSStore(state => state.addAuditLog);
+  const addCaso = useCMSStore(state => state.addCaso);
+  const initSteps = useCMSStore(state => state.initSteps);
 
   // ── Resumen General (Dashboard) ──
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
@@ -98,6 +101,68 @@ export default function DashboardPage() {
   const [filtroPrioridad, setFiltroPrioridad] = useState<PrioridadCaso | 'todos'>('todos');
   const [filtroCaso, setFiltroCaso] = useState<string>('todos');
   const [showModal, setShowModal] = useState(false);
+  const [savingCaso, setSavingCaso] = useState(false);
+
+  const ESTADOS_OPCIONES = useMemo(() => [
+    { value: 'todos' as const, label: 'Todos' },
+    { value: 'iniciado' as const, label: 'Iniciado' },
+    { value: 'en_proceso' as const, label: 'En Proceso' },
+    { value: 'analisis' as const, label: 'Análisis' },
+    { value: 'informe' as const, label: 'Informe' },
+    { value: 'cerrado' as const, label: 'Cerrado' },
+    { value: 'archivado' as const, label: 'Archivado' },
+  ], []);
+
+  const PRIORIDADES_OPCIONES = useMemo(() => [
+    { value: 'todos' as const, label: 'Todas' },
+    { value: 'critica' as const, label: 'Crítica' },
+    { value: 'alta' as const, label: 'Alta' },
+    { value: 'media' as const, label: 'Media' },
+    { value: 'baja' as const, label: 'Baja' },
+  ], []);
+
+  const handleCreateCaso = async (formData: any) => {
+    setSavingCaso(true);
+    try {
+      const id = await addCaso(formData);
+      if (id) {
+        const tipo = formData.tipoProyecto || 'forense_whatsapp';
+        const tareasDefecto = getTareasPorDefecto(tipo);
+
+        initSteps(id);
+
+        tareasDefecto.forEach(t => {
+          addTarea({
+            casoId: id,
+            pasoId: t.pasoId,
+            titulo: t.titulo,
+            descripcion: '',
+            asignadoA: formData.peritoLider || '',
+            estado: 'pendiente',
+            prioridad: 'media',
+            fechaVencimiento: undefined,
+            normativasRelacionadas: [],
+            observaciones: '',
+            porcentaje: 0,
+          });
+        });
+
+        addAuditLog({
+          accion: 'CASO_CREADO',
+          detalle: `Caso "${formData.titulo}" creado exitosamente desde el panel principal`,
+          nivel: 'success',
+          casoId: id,
+          usuario: formData.peritoLider || 'sistema',
+        });
+
+        setShowModal(false);
+      } else {
+        alert('Error al registrar el caso.');
+      }
+    } finally {
+      setSavingCaso(false);
+    }
+  };
 
   const tareasFiltradas = useMemo(() => {
     return tareas.filter(t => {
@@ -221,7 +286,7 @@ export default function DashboardPage() {
             className="apple-btn apple-btn-primary flex items-center gap-2.5 shadow-md hover:translate-y-[-1px] transition-all"
           >
             <Plus size={16} strokeWidth={2.5} />
-            Nueva Tarea
+            Nuevo Caso
           </button>
         </div>
       </div>
@@ -584,242 +649,17 @@ export default function DashboardPage() {
         </>
       )}
 
-      {/* ── MODAL NUEVA TAREA ────────────────────────────────────────────── */}
+      {/* ── MODAL NUEVO CASO ────────────────────────────────────────────── */}
       {showModal && (
-        <NuevaTareaModal
+        <NuevoCasoModal
           onClose={() => setShowModal(false)}
-          onSubmit={(data) => {
-            addTarea(data);
-            addAuditLog({
-              accion: 'TAREA_CREADA',
-              detalle: `Tarea "${data.titulo}" creada para caso ${getCasoLabel(data.casoId)}`,
-              nivel: 'success',
-              casoId: data.casoId,
-              usuario: data.asignadoA,
-            });
-            setShowModal(false);
-          }}
-          casos={casos}
+          onSubmit={handleCreateCaso}
+          saving={savingCaso}
           normativas={normativas}
+          estados={ESTADOS_OPCIONES}
+          prioridades={PRIORIDADES_OPCIONES}
         />
       )}
-    </div>
-  );
-}
-
-// ── Modal de Creación de Tarea ──
-interface ModalProps {
-  onClose: () => void;
-  onSubmit: (data: Omit<TareaForense, 'id' | 'fechaCreacion'>) => void;
-  casos: any[];
-  normativas: any[];
-}
-
-function NuevaTareaModal({ onClose, onSubmit, casos, normativas }: ModalProps) {
-  const [form, setForm] = useState({
-    casoId: casos[0]?.id || '',
-    pasoId: '',
-    titulo: '',
-    descripcion: '',
-    asignadoA: '',
-    estado: 'pendiente' as EstadoTarea,
-    prioridad: 'media' as PrioridadCaso,
-    fechaVencimiento: '',
-    normativasRelacionadas: [] as string[],
-    observaciones: '',
-    porcentaje: 0,
-  });
-
-  const casoSeleccionado = casos.find(c => c.id === form.casoId);
-  const pasosDisponibles = casoSeleccionado
-    ? getPasosPorTipo((casoSeleccionado as any).tipoProyecto || 'forense_whatsapp')
-    : [];
-
-  const toggleNormativa = (id: string) => {
-    setForm(prev => ({
-      ...prev,
-      normativasRelacionadas: prev.normativasRelacionadas.includes(id)
-        ? prev.normativasRelacionadas.filter(n => n !== id)
-        : [...prev.normativasRelacionadas, id],
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.casoId || !form.titulo) return;
-    onSubmit({
-      ...form,
-      pasoId: form.pasoId || undefined,
-      fechaVencimiento: form.fechaVencimiento || undefined,
-      fechaCompletada: undefined,
-    });
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div
-        className="bg-white dark:bg-[#1C1C1E] border border-black/[0.08] dark:border-white/[0.08] rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-[0_32px_64px_rgba(0,0,0,0.12)] flex flex-col apple-scale-in animate-fade-in"
-        onClick={e => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between p-5 border-b border-black/[0.06] dark:border-white/[0.06]">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-[#0071E3]/10">
-              <ClipboardList size={18} className="text-[#0071E3]" />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-[#1D1D1F] dark:text-white">Nueva Tarea Forense</h2>
-              <p className="text-[10px] text-[#86868B] font-medium">Art. 187 COPP — Registro de Actividad Técnica</p>
-            </div>
-          </div>
-          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/[0.04] dark:hover:bg-white/[0.04] text-[#86868B] hover:text-[#1D1D1F] dark:hover:text-white transition-colors">
-            <X size={16} />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-5 space-y-4">
-          <div>
-            <label className="apple-label">Caso Asociado *</label>
-            <select
-              value={form.casoId}
-              onChange={e => setForm(p => ({ ...p, casoId: e.target.value }))}
-              className="apple-input"
-              required
-            >
-              <option value="">Seleccione un caso...</option>
-              {casos.map(c => (
-                <option key={c.id} value={c.id}>{c.numeroCaso} — {c.titulo}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="apple-label">Paso / Etapa Técnica</label>
-            <select
-              value={form.pasoId}
-              onChange={e => setForm(p => ({ ...p, pasoId: e.target.value }))}
-              className="apple-input"
-            >
-              <option value="">-- No vinculado a un paso --</option>
-              {pasosDisponibles.map(p => (
-                <option key={p.id} value={p.id}>Paso {p.num}: {p.titulo}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="apple-label">Título de la Tarea *</label>
-            <input
-              type="text"
-              value={form.titulo}
-              onChange={e => setForm(p => ({ ...p, titulo: e.target.value }))}
-              className="apple-input"
-              placeholder="Ej: Extraer msgstore.db con APK Downgrade"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="apple-label">Descripción</label>
-            <textarea
-              value={form.descripcion}
-              onChange={e => setForm(p => ({ ...p, descripcion: e.target.value }))}
-              className="apple-input min-h-[80px] resize-y"
-              placeholder="Detalle los objetivos técnicos o alcances de la tarea..."
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="apple-label">Asignar Perito</label>
-              <input
-                type="text"
-                value={form.asignadoA}
-                onChange={e => setForm(p => ({ ...p, asignadoA: e.target.value }))}
-                className="apple-input"
-                placeholder="Nombre del perito"
-              />
-            </div>
-            <div>
-              <label className="apple-label">Prioridad</label>
-              <select
-                value={form.prioridad}
-                onChange={e => setForm(p => ({ ...p, prioridad: e.target.value as PrioridadCaso }))}
-                className="apple-input"
-              >
-                {Object.entries(PRIORIDAD_CONFIG).map(([k, v]) => (
-                  <option key={k} value={k}>{v.label}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="apple-label">Fecha de Vencimiento</label>
-            <input
-              type="date"
-              value={form.fechaVencimiento}
-              onChange={e => setForm(p => ({ ...p, fechaVencimiento: e.target.value }))}
-              className="apple-input"
-            />
-          </div>
-
-          <div>
-            <label className="apple-label">Normativas Relacionadas</label>
-            <div className="grid grid-cols-3 gap-2 mt-1">
-              {normativas.map(n => (
-                <label
-                  key={n.id}
-                  className={`flex items-center gap-2 text-[10px] font-bold p-2 rounded-md border cursor-pointer transition-all ${
-                    form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-[#0071E3]/10 border-[#0071E3]/30 text-[#0071E3]'
-                      : 'bg-black/[0.02] dark:bg-white/[0.02] border-black/[0.06] dark:border-white/[0.06] text-[#86868B] hover:bg-black/[0.04] dark:hover:bg-white/[0.04]'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={form.normativasRelacionadas.includes(n.id)}
-                    onChange={() => toggleNormativa(n.id)}
-                    className="hidden"
-                  />
-                  <div className={`w-3 h-3 rounded-sm border flex items-center justify-center shrink-0 ${
-                    form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-[#0071E3] border-[#0071E3]'
-                      : 'border-black/20 dark:border-white/20'
-                  }`}>
-                    {form.normativasRelacionadas.includes(n.id) && (
-                      <CheckCheck size={8} className="text-white" />
-                    )}
-                  </div>
-                  <span className="truncate">{n.codigo}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="apple-label">Observaciones</label>
-            <textarea
-              value={form.observaciones}
-              onChange={e => setForm(p => ({ ...p, observaciones: e.target.value }))}
-              className="apple-input min-h-[60px] resize-y"
-              placeholder="Notas u observaciones técnicas adicionales..."
-            />
-          </div>
-
-          <div className="flex justify-end gap-3 pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
-            <button type="button" onClick={onClose} className="apple-btn apple-btn-secondary text-sm">
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={!form.casoId || !form.titulo}
-              className="apple-btn apple-btn-primary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              Registrar Tarea
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
   );
 }

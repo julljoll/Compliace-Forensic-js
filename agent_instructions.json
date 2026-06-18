@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-06-13",
+    "updated": "2026-06-18",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,12 +15,11 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-06-13 19:45:19",
-      "last_commit": "2cb64b9 - dark (2026-06-13)",
+      "timestamp": "2026-06-18 15:26:32",
+      "last_commit": "7c89989 - plantilas (2026-06-13)",
       "modified_files": [
-        "A  \"RAG/CURSOS FORENSES/Brochure-Analisis-forense-evidencia-digital-con-IPED-17noviembre2025-1080x1920px.pdf\"",
         "M  agent_instructions.json",
-        "M  src/pages/Planillas/Planillas.css"
+        "M  src/pages/DashboardPage.tsx"
       ]
     }
   },
