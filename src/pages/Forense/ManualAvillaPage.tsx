@@ -1179,8 +1179,23 @@ export default function ManualAvillaForensics() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LS_KEY);
-      if (saved) setCompletados(new Set(JSON.parse(saved)));
-    } catch {}
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const realStepIds = new Set(FASES.flatMap(f => f.pasos.map(p => p.id)));
+        const loadedArray = Array.isArray(parsed) ? parsed : [];
+        const isValid = loadedArray.every(id => realStepIds.has(id));
+
+        if (!Array.isArray(parsed) || !isValid) {
+          console.info('[ManualAvilla] Schema de progreso desactualizado o corrupto — reiniciando progreso');
+          localStorage.removeItem(LS_KEY);
+          setCompletados(new Set());
+        } else {
+          setCompletados(new Set(loadedArray));
+        }
+      }
+    } catch {
+      localStorage.removeItem(LS_KEY);
+    }
   }, []);
 
   const toggleCompletado = useCallback((pasoId: string) => {

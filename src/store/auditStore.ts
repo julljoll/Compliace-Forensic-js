@@ -110,9 +110,11 @@ export const useAuditStore = create<AuditState>()((set, get) => ({
     const logs = get().logs;
     if (logs.length === 0) return { valid: true };
 
-    const sorted = [...logs].sort(
-      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-    );
+    const sorted = [...logs].sort((a, b) => {
+      const timeDiff = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+      if (timeDiff !== 0) return timeDiff;
+      return (a.hashAnterior || '').localeCompare(b.hashAnterior || '');
+    });
 
     for (let i = 0; i < sorted.length; i++) {
       const entry = sorted[i];

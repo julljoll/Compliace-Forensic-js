@@ -1,0 +1,686 @@
+{
+  "meta": {
+    "prompt_id": "sha256-cms-v3-apple-professional",
+    "version": "3.0.0",
+    "fecha": "2026-06-18",
+    "autor": "Senior UX/UI + Frontend Engineer",
+    "repositorio": "https://github.com/julljoll/SHA256.git",
+    "objetivo": "Transformar SHA256.US en una aplicación profesional de nivel enterprise con diseño idéntico a las apps nativas de Apple (macOS Sequoia / iOS 18 HIG), enfocada en el rol de Compliance Officer de peritaje digital forense."
+  },
+
+  "analisis_actual": {
+    "fortalezas": [
+      "Stack moderno: React 19 + TypeScript + Vite 8 + Zustand + PWA",
+      "Sistema de tokens CSS Apple HIG ya definido (--apple-bg, --apple-accent, etc.)",
+      "Tailwind configurado con escala tipográfica Apple (apple-title, apple-body, etc.)",
+      "Dark/Light mode funcional con transición suave",
+      "Atomic Design aplicado: atoms / molecules / organisms / templates",
+      "Fuente del sistema Apple (-apple-system, SF Pro) correctamente declarada",
+      "Animaciones spring cubic-bezier(0.16, 1, 0.3, 1) — auténtico Apple spring",
+      "PWA completa con Service Worker Workbox",
+      "Hash chain SHA-256 para trazabilidad forense inmutable",
+      "Normativas precargadas (ISO 27037, NIST 800-101, MUCC-2017, COPP, etc.)"
+    ],
+    "problemas_criticos": [
+      "Inconsistencia visual: mezcla de clases hardcoded (#FF3B30) con tokens CSS (var(--apple-accent)) en el mismo archivo",
+      "Sidebar con grupos en MAYÚSCULAS ('TUTORIALES') — antipatrón Apple HIG, debe ser Title Case con separadores finos",
+      "Dashboard sobrecargado: métricas KPI, tareas, logs de auditoría y filtros en una sola página sin jerarquía visual clara",
+      "LoginPage usa gradientes orgánicos que no son parte del HIG oficial — crear login tipo macOS Lock Screen con campo centrado y SF Pro Display",
+      "Sin skeleton loading states — las páginas muestran spinner genérico que no respeta el layout de destino",
+      "Cards sin hover state con depth — falta la elevación progresiva macOS (shadow-apple → shadow-apple-elevated al hover)",
+      "Formularios sin feedback inline de validación — Apple HIG exige error inline debajo del campo, nunca modal de alerta",
+      "Sin Command Palette (⌘K) — feature obligatorio en apps de productividad enterprise Apple",
+      "Ausencia de empty states con ilustraciones SF Symbols — la app muestra 'sin datos' sin guía de acción",
+      "Planillas imprimibles sin print stylesheet dedicado — la impresión rompe el layout",
+      "Sin keyboard navigation (Tab, Enter, Escape, Arrow keys) en modales y listas",
+      "Breadcrumb solo muestra el nombre de la sección — debe mostrar jerarquía completa: Panel > Casos > ID-2024-001",
+      "Auditoría log sin paginación virtual — con muchos registros, el rendimiento cae",
+      "Sin confirmación biométrica simulada para acciones destructivas (eliminar caso, borrar evidencia)",
+      "No hay onboarding ni tooltips de primera vez para el Compliance Officer nuevo"
+    ],
+    "deuda_tecnica": [
+      "Hardcoded colors (#007AFF, #34C759, #FF3B30) deben migrarse a tokens Apple HIG semánticos",
+      "window.electronAPI referenciado pero la app es web — dead code que confunde",
+      "Scripts fix-imports.js y fix-imports-relative.js son parches manuales — deben eliminarse con paths correctos en tsconfig",
+      "desktop.ini en el repositorio — artifact de Windows que no debe estar en git",
+      "Rubbish/ folder en el repositorio — directorio de trabajo no versionado",
+      "neonClient.ts sin manejo de reconexión exponential backoff",
+      "auditStore.ts y cmsStore.ts comparten responsabilidades — separar en slice pattern Zustand",
+      "Sin tests unitarios ni de integración",
+      "agent_instructions.json de 40KB en el root — mover a /config/agent/ o eliminarlo del repo público"
+    ]
+  },
+
+  "sistema_de_diseño": {
+    "filosofia": "Apple Human Interface Guidelines 2024 — Clarity, Deference, Depth. La interfaz debe desaparecer para que el Compliance Officer se concentre en el caso, no en la app.",
+
+    "paleta_de_colores": {
+      "descripcion": "Usar EXCLUSIVAMENTE tokens CSS semánticos. Prohibido hardcodear colores.",
+      "tokens_obligatorios": {
+        "--co-bg": "#F2F2F7 (light) / #000000 (dark) — fondo raíz macOS",
+        "--co-surface-1": "#FFFFFF (light) / #1C1C1E (dark) — cards primer nivel",
+        "--co-surface-2": "#F2F2F7 (light) / #2C2C2E (dark) — cards segundo nivel",
+        "--co-surface-3": "#E5E5EA (light) / #3A3A3C (dark) — cards tercer nivel",
+        "--co-accent": "#0071E3 (light) / #0A84FF (dark) — acción principal",
+        "--co-accent-fg": "#FFFFFF — texto sobre accent",
+        "--co-red": "#FF3B30 (light) / #FF453A (dark) — destructivo / crítico",
+        "--co-orange": "#FF9500 (light) / #FF9F0A (dark) — advertencia / alta prioridad",
+        "--co-yellow": "#FFCC00 (light) / #FFD60A (dark) — media prioridad",
+        "--co-green": "#34C759 (light) / #30D158 (dark) — éxito / conforme",
+        "--co-blue": "#007AFF (light) / #0A84FF (dark) — informativo",
+        "--co-purple": "#AF52DE (light) / #BF5AF2 (dark) — análisis / estado especial",
+        "--co-indigo": "#5856D6 (light) / #5E5CE6 (dark) — informe / documentos",
+        "--co-gray-1": "#8E8E93 — texto secundario",
+        "--co-gray-2": "#AEAEB2 — texto terciario / placeholder",
+        "--co-gray-3": "#C7C7CC — bordes suaves",
+        "--co-gray-4": "#D1D1D6 — separadores",
+        "--co-gray-5": "#E5E5EA — bordes de inputs",
+        "--co-gray-6": "#F2F2F7 — fondos alternativos",
+        "--co-separator": "rgba(60,60,67,0.12) (light) / rgba(255,255,255,0.1) (dark)",
+        "--co-vibrancy": "rgba(246,246,246,0.82) (light) / rgba(28,28,30,0.82) (dark) — sidebar blur"
+      },
+      "uso_semantico": {
+        "peligro_critico": "var(--co-red)",
+        "prioridad_alta": "var(--co-orange)",
+        "prioridad_media": "var(--co-yellow)",
+        "conforme_ok": "var(--co-green)",
+        "informativo": "var(--co-blue)",
+        "en_analisis": "var(--co-purple)",
+        "documentos_informes": "var(--co-indigo)"
+      }
+    },
+
+    "tipografia": {
+      "fuente_principal": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif",
+      "fuente_mono": "'SF Mono', 'Fira Code', 'JetBrains Mono', monospace — para hashes SHA-256 y código",
+      "escala_requerida": {
+        "large_title": "34px / weight 700 / tracking -0.5px — títulos de página principales",
+        "title_1": "28px / weight 700 / tracking -0.3px — encabezados de sección",
+        "title_2": "22px / weight 700 / tracking -0.2px — subtítulos de tarjeta",
+        "title_3": "20px / weight 600 / tracking -0.1px",
+        "headline": "17px / weight 600 / tracking 0 — etiquetas de campo, cabeceras de tabla",
+        "body": "17px / weight 400 / tracking 0 — texto de párrafo principal",
+        "callout": "16px / weight 400 / tracking 0",
+        "subheadline": "15px / weight 400 / tracking 0",
+        "footnote": "13px / weight 400 / tracking 0 — metadatos, timestamps",
+        "caption_1": "12px / weight 400 / tracking 0",
+        "caption_2": "11px / weight 600 / tracking 0.06em uppercase — labels de categoría, badges"
+      },
+      "reglas": [
+        "No usar font-weight 800 ni 900 — Apple usa máximo 700",
+        "Letter-spacing negativo SOLO en títulos grandes",
+        "line-height 1.47 para body (SF Pro standard)",
+        "Los hashes SHA-256 SIEMPRE en font-mono, color --co-gray-1, truncados con '...' en el medio"
+      ]
+    },
+
+    "espaciado": {
+      "base_unit": "4px (0.25rem)",
+      "escala": [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96],
+      "reglas": [
+        "Padding de cards: 20px (desktop) / 16px (mobile)",
+        "Gap entre cards en grid: 16px (desktop) / 12px (mobile)",
+        "Padding de sidebar: 16px horizontal",
+        "Altura mínima de botones: 44px (touch target Apple HIG)",
+        "Altura de inputs: 44px en mobile, 36px en desktop",
+        "Margen superior de página: 24px desde el header"
+      ]
+    },
+
+    "bordes_y_radios": {
+      "btn_small": "8px",
+      "btn_medium": "10px",
+      "btn_large": "12px",
+      "input": "10px",
+      "card": "16px",
+      "panel": "20px",
+      "modal": "20px",
+      "sidebar": "0",
+      "badge": "9999px (pill)",
+      "regla": "Nunca usar border-radius: 4px — es un patrón Material Design, no Apple"
+    },
+
+    "sombras": {
+      "level_0": "none",
+      "level_1": "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)",
+      "level_2": "0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+      "level_3": "0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)",
+      "modal": "0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.08)",
+      "regla_dark": "En dark mode, multiplicar opacidad de sombras x3 para que sean visibles",
+      "hover_elevacion": "Al hacer hover en una card, animar de level_1 a level_2 con transition: box-shadow 0.2s ease"
+    },
+
+    "animaciones": {
+      "easing_spring": "cubic-bezier(0.16, 1, 0.3, 1) — entrada de modales, dropdowns",
+      "easing_ease_out": "cubic-bezier(0.2, 0, 0, 1) — salida de elementos",
+      "easing_linear": "linear — spinners, progress bars",
+      "duraciones": {
+        "micro": "100ms — hover states, focus rings",
+        "fast": "200ms — badge updates, tooltips",
+        "medium": "300ms — modales, drawers",
+        "slow": "400ms — page transitions, onboarding"
+      },
+      "reglas": [
+        "NUNCA animar color de fondo — solo opacity, transform, box-shadow",
+        "prefer-reduced-motion: respetar con @media (prefers-reduced-motion: reduce)",
+        "Page transitions: fadeUp (translateY 8px → 0, opacity 0 → 1) en 400ms spring",
+        "Modal: scaleIn (scale 0.96 → 1, opacity 0 → 1) en 280ms spring + backdrop opacity 0 → 1"
+      ]
+    },
+
+    "efectos_vibrancy": {
+      "descripcion": "El sidebar y los modales deben usar backdrop-filter blur para el efecto vitrage característico de macOS",
+      "sidebar": "backdrop-filter: blur(30px) saturate(1.8); background: var(--co-vibrancy)",
+      "modal_backdrop": "background: rgba(0,0,0,0.4); backdrop-filter: blur(8px)",
+      "navbar_mobile": "backdrop-filter: blur(20px) saturate(1.6); background: var(--co-vibrancy)",
+      "nota": "Siempre incluir fallback sin backdrop-filter para Firefox"
+    }
+  },
+
+  "arquitectura_ui": {
+    "layout_principal": {
+      "tipo": "Three-panel layout estilo macOS Finder / Apple Mail",
+      "estructura": {
+        "sidebar": {
+          "ancho": "240px fijo en desktop, drawer en mobile",
+          "comportamiento": "Fixed position, scroll independiente del contenido principal",
+          "vibrancy": true,
+          "separador_derecho": "1px solid var(--co-separator)",
+          "branding_area": {
+            "altura": "60px",
+            "contenido": "Logo 32x32 + 'SHA256.US' (SF Pro Display 15px bold) + 'CMS Forense' (11px / --co-gray-1)"
+          },
+          "grupos_navegacion": {
+            "estilo": "Etiqueta de grupo en 11px uppercase tracking-widest --co-gray-2, padding 16px 16px 4px",
+            "separacion_entre_grupos": "8px de espacio vertical",
+            "items": {
+              "altura": "40px",
+              "padding": "0 12px",
+              "border_radius": "10px",
+              "icono": "17px / strokeWidth 1.8 normal, 2.2 activo",
+              "estado_activo": "background var(--co-surface-2), icono color var(--co-accent), texto color var(--apple-text) weight 600",
+              "hover": "background var(--co-surface-2) opacity 60%",
+              "badge_contador": "pill badge a la derecha, background var(--co-accent)/15, color var(--co-accent), 11px"
+            }
+          },
+          "footer_sidebar": {
+            "contenido": "Avatar + nombre usuario + rol + indicador DB online/offline + botón logout",
+            "indicador_db": "dot 6px: verde=#34C759 online, rojo=#FF3B30 offline, gris=checking"
+          }
+        },
+        "area_principal": {
+          "padding_desktop": "24px 32px",
+          "padding_mobile": "16px",
+          "header_pagina": {
+            "contenido": "Breadcrumb + Título Large Title + Subtítulo + Acciones contextuales a la derecha",
+            "breadcrumb": "Panel Principal > Casos > #2024-001 (13px / --co-gray-1, separador '>')",
+            "titulo": "font-size 28px, weight 700, tracking -0.3px",
+            "acciones": "Botones de acción primaria (azul) y secundaria (gris) a la derecha del header"
+          },
+          "content_area": "Scroll independiente, max-width 1200px centrado"
+        }
+      }
+    },
+
+    "componentes_criticos": {
+      "apple_button": {
+        "variantes": {
+          "primary": {
+            "background": "var(--co-accent)",
+            "color": "var(--co-accent-fg)",
+            "border": "none",
+            "hover": "brightness(1.08)",
+            "active": "scale(0.97)"
+          },
+          "secondary": {
+            "background": "var(--co-surface-2)",
+            "color": "var(--apple-text)",
+            "border": "none",
+            "hover": "brightness(0.95)"
+          },
+          "destructive": {
+            "background": "var(--co-red)",
+            "color": "#FFFFFF",
+            "hover": "brightness(1.08)"
+          },
+          "ghost": {
+            "background": "transparent",
+            "color": "var(--co-accent)",
+            "hover": "background var(--co-accent)/10"
+          }
+        },
+        "sizes": {
+          "sm": "height 32px, padding 0 14px, font 13px",
+          "md": "height 40px, padding 0 18px, font 15px",
+          "lg": "height 48px, padding 0 22px, font 17px"
+        },
+        "icon_button": "width = height, padding 0, border-radius 10px"
+      },
+
+      "apple_card": {
+        "base": "background var(--co-surface-1), border 1px solid var(--co-separator), border-radius 16px, padding 20px",
+        "hover": "box-shadow level_2, transform translateY(-1px), transition 200ms ease-out",
+        "activo_seleccionado": "border-color var(--co-accent)/40, box-shadow 0 0 0 3px var(--co-accent)/15",
+        "header_card": "titulo 15px weight 600 + descripcion 13px --co-gray-1 + acciones right",
+        "divider_intra_card": "border-top 1px solid var(--co-separator), margin 12px 0"
+      },
+
+      "apple_input": {
+        "base": "background var(--co-surface-2), border 1px solid var(--co-gray-5), border-radius 10px, padding 10px 14px, font 15px",
+        "focus": "border-color var(--co-accent), box-shadow 0 0 0 3px var(--co-accent)/20, outline none",
+        "error": "border-color var(--co-red), box-shadow 0 0 0 3px var(--co-red)/15",
+        "error_message": "13px var(--co-red), margin-top 4px, con icono alertCircle 12px",
+        "label": "11px weight 600 uppercase tracking 0.05em var(--co-gray-1), margin-bottom 6px",
+        "placeholder": "var(--co-gray-2)"
+      },
+
+      "apple_badge": {
+        "base": "pill shape, padding 2px 8px, font 11px weight 600 uppercase tracking 0.04em",
+        "variantes": {
+          "critica": "background var(--co-red)/12, color var(--co-red), border 1px solid var(--co-red)/20",
+          "alta": "background var(--co-orange)/12, color var(--co-orange), border 1px solid var(--co-orange)/20",
+          "media": "background var(--co-yellow)/12, color #A0830F, border 1px solid var(--co-yellow)/30",
+          "baja": "background var(--co-green)/12, color var(--co-green), border 1px solid var(--co-green)/20",
+          "conforme": "background var(--co-green)/12, color var(--co-green), border 1px solid var(--co-green)/20",
+          "parcial": "background var(--co-orange)/12, color var(--co-orange), border 1px solid var(--co-orange)/20",
+          "no_conforme": "background var(--co-red)/12, color var(--co-red), border 1px solid var(--co-red)/20",
+          "neutro": "background var(--co-gray-5), color var(--co-gray-1), border 1px solid var(--co-gray-4)"
+        }
+      },
+
+      "apple_modal": {
+        "overlay": "fixed inset-0, background rgba(0,0,0,0.4), backdrop-filter blur(8px), z-index 1000",
+        "panel": "background var(--co-surface-1), border-radius 20px, box-shadow modal, max-width 560px, width calc(100% - 32px), padding 28px",
+        "header": "titulo 20px weight 700 + descripcion 15px --co-gray-1 + botón X arriba derecha",
+        "footer": "border-top var(--co-separator), padding-top 20px, justify-end, gap 12px",
+        "animacion": "scaleIn 280ms spring al abrir, scaleOut 200ms ease-out al cerrar",
+        "cerrar_con_escape": true,
+        "cerrar_click_overlay": true
+      },
+
+      "apple_table": {
+        "header": "background var(--co-surface-2), font 11px weight 600 uppercase tracking 0.05em var(--co-gray-1), height 36px, sticky top-0",
+        "row": "height 52px, border-bottom 1px solid var(--co-separator), hover background var(--co-surface-2)",
+        "row_selected": "background var(--co-accent)/8",
+        "cell_padding": "0 16px",
+        "sortable_header": "cursor pointer, hover color var(--co-accent), con icono chevron 12px"
+      },
+
+      "apple_toast": {
+        "posicion": "bottom-center con margin-bottom 24px, o bottom-right en desktop",
+        "base": "background var(--co-surface-1), border 1px solid var(--co-separator), border-radius 12px, padding 12px 16px, box-shadow level_3, backdrop-filter blur(20px)",
+        "icono": "16px a la izquierda: check verde para éxito, x rojo para error, info azul para información",
+        "duracion": "4000ms auto-dismiss con progress bar opcional",
+        "apilamiento": "max 3 toasts visibles, las más viejas salen por abajo",
+        "animacion": "slideUp 300ms spring al entrar, fadeOut 200ms al salir"
+      },
+
+      "kpi_card": {
+        "layout": "grid auto-fill minmax(200px, 1fr)",
+        "estructura": "Icono 32px (fondo color/10) + Valor numérico 28px bold + Etiqueta 13px --co-gray-1 + Delta opcional",
+        "colores_icono": "Usar SF Symbol equivalente + color semántico del dato",
+        "hover": "elevación level_2 + translateY(-2px)"
+      },
+
+      "hash_display": {
+        "descripcion": "Componente dedicado para mostrar hashes SHA-256",
+        "fuente": "SF Mono / JetBrains Mono",
+        "tamano": "12px",
+        "color": "var(--co-gray-1)",
+        "background": "var(--co-surface-2)",
+        "padding": "4px 10px",
+        "border_radius": "6px",
+        "display": "Mostrar solo los primeros 8 chars + '...' + últimos 8 chars en UI compacta",
+        "copiable": "Botón copy icon a la derecha, tooltip 'Copiado!' al hacer click",
+        "tooltip_full_hash": "Al hover mostrar el hash completo en un tooltip"
+      }
+    }
+  },
+
+  "mejoras_por_pantalla": {
+    "login_page": {
+      "concepto": "macOS Lock Screen — fondo oscuro con gradiente sutil, formulario centrado en tarjeta de vidrio",
+      "fondo": "Gradiente radial oscuro #0A0A0F → #1C1C2E, sin los blobs de colores actuales",
+      "card": "max-width 380px, vibrancy glass effect, border 1px solid rgba(255,255,255,0.1)",
+      "logo": "80px circular, SF Symbol 'shield.lefthalf.filled' o el favicon actual",
+      "titulo": "SHA256.US — 28px SF Pro Display Bold",
+      "subtitulo": "Sistema de Cumplimiento Forense — 15px --co-gray-1",
+      "campos": "Labels uppercase 11px + inputs 44px altura",
+      "boton": "Ancho completo, 48px altura, primary style",
+      "footer": "Versión 2.0.0 en 11px --co-gray-2",
+      "eliminar": "Los gradientes de color (azul/púrpura/naranja) actuales que son decorativos y distraen"
+    },
+
+    "dashboard": {
+      "concepto": "Apple System Preferences style — secciones claras, KPIs destacados, actividad reciente",
+      "seccion_kpis": {
+        "layout": "grid 4 columnas en desktop, 2 en tablet, 1 en mobile",
+        "kpis_principales": [
+          "Casos Activos (ícono folder, color blue)",
+          "Cumplimiento % (ícono shield.fill, color green)",
+          "Tareas Críticas Pendientes (ícono exclamationmark.triangle, color red)",
+          "Casos en Informe (ícono doc.text, color indigo)"
+        ]
+      },
+      "seccion_actividad": {
+        "layout": "grid 2 columnas: Casos Recientes (izquierda) + Auditoría Reciente (derecha)",
+        "casos_recientes": "Tabla compacta con 5 filas: ID + Nombre + Estado badge + Prioridad dot + fecha",
+        "auditoria": "Lista de eventos con icono de acción + texto + timestamp relativo ('hace 2 min')"
+      },
+      "seccion_tareas": "Separar en página propia /tareas — no en dashboard",
+      "eliminar_del_dashboard": "Los filtros de tareas, modal de nueva tarea y la lista completa de tareas"
+    },
+
+    "casos_page": {
+      "concepto": "Apple Finder list/grid view — toggle entre lista y cuadrícula",
+      "toolbar": {
+        "izquierda": "Título 'Casos Forenses' + contador '23 casos'",
+        "centro": "Barra de búsqueda con SF Symbol lupa (280px ancho)",
+        "derecha": "Toggle List/Grid + Filtros dropdown + Botón '+ Nuevo Caso' primary"
+      },
+      "filtros": {
+        "implementar": "FilterBar horizontal con pills seleccionables (Estado + Prioridad + Tipo de dispositivo)",
+        "estado_activo_filtro": "Pill con fondo var(--co-accent)/15 y color var(--co-accent)"
+      },
+      "vista_lista": "Tabla con columnas: # | Expediente | Dispositivo | Estado | Prioridad | Compliance % | Asignado | Última actualización",
+      "vista_grid": "Cards 300px con: ID + título + badge estado + indicador prioridad + progress bar compliance + peritos asignados",
+      "empty_state": {
+        "ilustracion": "SF Symbol 'folder.badge.plus' en 64px --co-gray-3",
+        "titulo": "Sin casos forenses",
+        "descripcion": "Crea el primer caso para comenzar el seguimiento de cumplimiento normativo.",
+        "cta": "Botón primary '+ Crear Primer Caso'"
+      }
+    },
+
+    "caso_detail_page": {
+      "concepto": "Apple Notes / Mail detail — panel master-detail con tabs laterales",
+      "header_caso": {
+        "contenido": "ID Expediente (monospace) + Título + Badge Estado + Prioridad + Fecha creación + Peritos asignados (avatares)",
+        "acciones": "Botones: Imprimir PRCC | Editar | ··· menu contextual"
+      },
+      "tabs_principales": [
+        "Resumen — métricas del caso, evidencias adjuntas",
+        "Cumplimiento — checklist normativo paso a paso",
+        "Evidencias — galería de evidencias con hashes",
+        "Tareas — kanban o lista de tareas del caso",
+        "Auditoría — log de cambios con hash chain",
+        "Planillas — acceso rápido a imprimir actas"
+      ],
+      "tab_cumplimiento": {
+        "estructura": "Normativa selector (pills) → Etapas en timeline vertical → Checklist por etapa",
+        "timeline_etapas": "Círculo indicador (vacío/en progreso/completado) + línea vertical conectora + nombre etapa",
+        "checklist_item": "Checkbox + requisito + nivel cumplimiento (dropdown) + observaciones (expandible)"
+      }
+    },
+
+    "auditoria_page": {
+      "concepto": "Console.app de macOS — lista densa, filtros potentes, colores semánticos",
+      "toolbar": "Búsqueda + Filtro por acción + Filtro por caso + Export CSV/PDF",
+      "lista": "Virtual scroll para performance con miles de registros",
+      "item_log": {
+        "columnas": "Timestamp | Acción | Caso | Usuario | Hash (truncado)",
+        "colores_accion": {
+          "CREAR": "var(--co-green)",
+          "MODIFICAR": "var(--co-blue)",
+          "ELIMINAR": "var(--co-red)",
+          "VERIFICAR": "var(--co-purple)",
+          "IMPRIMIR": "var(--co-indigo)"
+        }
+      },
+      "hash_chain_visualizer": "Componente que muestra el encadenamiento de hashes con flechas → entre bloques"
+    },
+
+    "normativas_page": {
+      "concepto": "Apple Settings / Configuración — lista de normativas como preferencias del sistema",
+      "layout": "Sidebar izquierdo con lista de normativas + Panel derecho con detalle",
+      "item_normativa": {
+        "icono": "SF Symbol según tipo: book.closed (ISO), doc.text (LEY), checkmark.shield (NIST)",
+        "info": "Código + Nombre + Tipo badge + Estado activo/inactivo toggle",
+        "detalle": "Artículos relevantes, etapas asociadas, fecha vigencia, URL referencia"
+      }
+    },
+
+    "planillas": {
+      "concepto": "Pages.app de Apple — editor de documentos limpio con preview y print",
+      "header_planilla": "Toolbar con: Regresar | Nombre planilla | Botón Imprimir (⌘P) | Botón PDF",
+      "area_documento": {
+        "max_width": "794px (A4)",
+        "background": "white",
+        "box_shadow": "level_3",
+        "border_radius": "4px (los documentos tienen esquinas casi cuadradas)",
+        "padding": "48px"
+      },
+      "print_stylesheet": {
+        "reglas_criticas": [
+          "@media print { sidebar, toolbar, nav { display: none !important } }",
+          "@media print { .planilla-container { max-width: 100% !important; box-shadow: none !important } }",
+          "@media print { @page { margin: 20mm; size: A4 } }",
+          "Asegurar que los hashes SHA-256 se impriman en font-mono sin truncar"
+        ]
+      }
+    },
+
+    "personal_page": {
+      "concepto": "Contacts.app de macOS — grid de cards con foto/avatar + info",
+      "card_perito": "Avatar circular 48px (iniciales si no hay foto) + Nombre + Cargo + Rol badge + Email + Teléfono",
+      "rol_badge_colors": {
+        "perito_lider": "var(--co-blue)",
+        "compliance_officer": "var(--co-purple)",
+        "fiscal": "var(--co-indigo)",
+        "coordinador": "var(--co-green)"
+      }
+    }
+  },
+
+  "features_nuevas_a_implementar": {
+    "command_palette": {
+      "descripcion": "Modal de búsqueda universal estilo Spotlight / Alfred — atajo ⌘K",
+      "funcionalidad": [
+        "Buscar casos por ID, nombre, dispositivo",
+        "Navegar a cualquier sección",
+        "Crear nuevo caso rápidamente",
+        "Buscar en normativas"
+      ],
+      "ui": "Input de búsqueda grande + lista de resultados agrupados por tipo + atajos de teclado visibles",
+      "animacion": "Backdrop blur + modal desde el top, slide-down 300ms spring"
+    },
+
+    "skeleton_loading": {
+      "descripcion": "Reemplazar todos los spinners genéricos con skeleton screens que replican el layout de la página destino",
+      "implementar_en": ["DashboardPage", "CasosPage", "AuditoriaPage", "NormativasPage"],
+      "estilo": "Rectángulos redondeados con gradient shimmer animation de izquierda a derecha",
+      "colores": "var(--co-surface-2) base, var(--co-surface-3) shimmer highlight"
+    },
+
+    "empty_states": {
+      "descripcion": "Cada sección sin datos debe tener un empty state con guía de acción",
+      "estructura": "Icono SF Symbol 64px --co-gray-3 + Título 17px bold + Descripción 15px --co-gray-1 + CTA button",
+      "paginas": {
+        "casos": "folder.badge.plus — 'Aún no hay casos forenses'",
+        "tareas": "checklist — 'Sin tareas asignadas'",
+        "auditoria": "shield.fill — 'El log de auditoría está vacío'",
+        "personal": "person.2.fill — 'Sin peritos registrados'"
+      }
+    },
+
+    "quick_actions_toolbar": {
+      "descripcion": "Barra de acciones rápidas flotante cuando se seleccionan múltiples casos",
+      "posicion": "Bottom center, aparece con animación slideUp",
+      "acciones": "Cambiar estado bulk | Asignar perito | Exportar selección | Eliminar"
+    },
+
+    "keyboard_navigation": {
+      "atajos_globales": {
+        "cmd_k": "Command Palette",
+        "cmd_n": "Nuevo caso",
+        "cmd_f": "Búsqueda en página",
+        "cmd_p": "Imprimir planilla actual",
+        "escape": "Cerrar modal/drawer activo",
+        "arrow_up_down": "Navegar lista de casos"
+      },
+      "focus_management": "Al abrir un modal, el focus debe ir al primer campo. Al cerrar, volver al elemento que lo abrió."
+    },
+
+    "onboarding": {
+      "descripcion": "Tour guiado para nuevos Compliance Officers — se activa en el primer login",
+      "pasos": [
+        "Bienvenida — explicar qué es SHA256.US CMS Forense",
+        "Crear primer caso — resaltar el botón con spotlight overlay",
+        "Normativas — explicar el sistema de cumplimiento",
+        "Auditoría — explicar el hash chain e inmutabilidad",
+        "Planillas — explicar cómo imprimir actas oficiales"
+      ],
+      "ui": "Overlay semi-transparente + tooltip con flecha apuntando al elemento + botones Anterior/Siguiente/Saltar"
+    },
+
+    "estado_conexion_db": {
+      "descripcion": "Indicador visual del estado de la conexión a Neon PostgreSQL",
+      "ubicacion": "Footer del sidebar — punto de 8px con animación pulse cuando está online",
+      "estados": {
+        "online": "dot verde animado + 'Base de datos conectada'",
+        "offline": "dot rojo + 'Sin conexión — datos en modo local'",
+        "reconectando": "dot amarillo animado + 'Reconectando...'",
+        "error": "dot rojo + mensaje de error + botón 'Reintentar'"
+      }
+    },
+
+    "export_pdf_report": {
+      "descripcion": "Generar PDF de informe de compliance del caso con un click",
+      "contenido": "Portada + Resumen ejecutivo + Checklist normativo + Log de auditoría + Hashes de integridad",
+      "implementacion": "Usar print CSS media query con @page configurado para A4"
+    }
+  },
+
+  "migracion_codigo": {
+    "paso_1_tokens": {
+      "descripcion": "Migrar TODOS los colores hardcoded a tokens CSS semánticos",
+      "antes": "#007AFF, #34C759, #FF3B30, #FF9500, #AF52DE",
+      "despues": "var(--co-blue), var(--co-green), var(--co-red), var(--co-orange), var(--co-purple)",
+      "herramienta": "Buscar y reemplazar con regex: /#([0-9A-F]{6})/gi en todos los .tsx y .css"
+    },
+    "paso_2_componentes_atomicos": {
+      "descripcion": "Crear componentes base reutilizables que encapsulen el diseño Apple",
+      "componentes_a_crear": [
+        "Button.tsx — todas las variantes",
+        "Input.tsx — con label, error state, helpText",
+        "Card.tsx — con header, body, footer slots",
+        "Badge.tsx — con todas las variantes semánticas",
+        "Modal.tsx — con overlay, animación y focus trap",
+        "Toast.tsx — sistema de notificaciones",
+        "Skeleton.tsx — loading states",
+        "EmptyState.tsx — estados vacíos",
+        "HashDisplay.tsx — componente para hashes SHA-256",
+        "StatusDot.tsx — indicador de estado con animación pulse"
+      ]
+    },
+    "paso_3_layout_refactor": {
+      "descripcion": "Refactorizar CMSLayout.tsx para separar responsabilidades",
+      "estructura": {
+        "AppShell.tsx": "Layout contenedor, maneja sidebar + main area",
+        "Sidebar.tsx": "Navegación con grupos, branding, footer",
+        "PageHeader.tsx": "Breadcrumb + título + acciones por página",
+        "CommandPalette.tsx": "Modal de búsqueda global (⌘K)"
+      }
+    },
+    "paso_4_eliminar_dead_code": {
+      "archivos_a_eliminar": [
+        "fix-imports.js",
+        "fix-imports-relative.js",
+        "desktop.ini",
+        "Rubbish/"
+      ],
+      "codigo_a_eliminar": [
+        "Todas las referencias a window.electronAPI en archivos web",
+        "agent_instructions.json del root (mover a /docs/ si es necesario)"
+      ]
+    },
+    "paso_5_performance": {
+      "virtual_scroll": "Implementar en AuditoriaPage con @tanstack/react-virtual",
+      "memo_y_callbacks": "useMemo para listas filtradas, useCallback para handlers en stores",
+      "code_splitting": "Lazy imports ya implementados — verificar que los chunks sean < 200KB",
+      "indexeddb_optimizacion": "Añadir índices en casos por estado, fecha, prioridad"
+    }
+  },
+
+  "accesibilidad": {
+    "wcag_target": "WCAG 2.1 AA — requisito para apps de uso gubernamental/forense",
+    "reglas": [
+      "Todos los inputs deben tener label asociado con htmlFor",
+      "Todos los botones de ícono deben tener aria-label descriptivo",
+      "Modales deben tener role='dialog', aria-modal='true', aria-labelledby",
+      "Badges de estado deben tener aria-label='Estado: Conforme' para lectores de pantalla",
+      "Contraste de color mínimo 4.5:1 para texto normal, 3:1 para texto grande",
+      "focus-visible ring: 3px solid var(--co-accent) con offset 2px",
+      "Tabindex coherente — modales deben trapear el focus",
+      "Anunciar cambios de estado con aria-live='polite'",
+      "Los hashes SHA-256 deben tener title con el hash completo"
+    ]
+  },
+
+  "responsive_design": {
+    "breakpoints": {
+      "mobile": "< 768px — sidebar como drawer, single column",
+      "tablet": "768px - 1024px — sidebar colapsado, 2 columnas",
+      "desktop": "1024px - 1440px — sidebar visible, 3-4 columnas",
+      "wide": "> 1440px — max-width 1200px centrado"
+    },
+    "mobile_specifics": [
+      "Bottom navigation bar con 4-5 items principales en iOS style (altura 83px con safe area)",
+      "Swipe gesture para abrir/cerrar sidebar drawer",
+      "Cards full width en mobile",
+      "Touch targets mínimo 44x44px en todos los botones e inputs",
+      "Font size mínimo 15px en mobile para legibilidad"
+    ]
+  },
+
+  "checklist_entrega": {
+    "diseno": [
+      "☐ Todos los colores usan tokens CSS semánticos (0 colores hardcoded)",
+      "☐ Sidebar con vibrancy blur y grupos en Title Case",
+      "☐ Login page estilo macOS Lock Screen",
+      "☐ Dashboard con KPIs grid 4 columnas + secciones separadas",
+      "☐ Skeleton loaders en todas las páginas con datos async",
+      "☐ Empty states con SF Symbol + CTA en todas las secciones",
+      "☐ Modales con backdrop blur + animación spring",
+      "☐ Toasts en bottom center con auto-dismiss",
+      "☐ Hash display truncado con botón de copy",
+      "☐ Print stylesheet para todas las planillas"
+    ],
+    "funcional": [
+      "☐ Command Palette ⌘K operativo con búsqueda de casos",
+      "☐ Keyboard navigation completo (Tab, Escape, Arrow keys)",
+      "☐ Dark/Light mode sin flicker en primera carga",
+      "☐ Virtual scroll en AuditoriaPage",
+      "☐ Export PDF de informe de compliance",
+      "☐ Indicador de estado DB en sidebar footer",
+      "☐ Onboarding de 5 pasos para primer login",
+      "☐ Breadcrumb dinámico con jerarquía completa"
+    ],
+    "codigo": [
+      "☐ 0 referencias a window.electronAPI en archivos web",
+      "☐ Dead code eliminado (fix-imports, desktop.ini, Rubbish/)",
+      "☐ Componentes base creados (Button, Input, Card, Badge, Modal, Toast, Skeleton, EmptyState)",
+      "☐ TypeScript strict: 0 errores, 0 warnings",
+      "☐ Lighthouse Performance > 90",
+      "☐ Lighthouse Accessibility > 95"
+    ]
+  },
+
+  "instrucciones_para_agente_ia": {
+    "contexto_del_usuario": "El usuario es el Compliance Officer de un laboratorio de peritaje digital forense. Su flujo diario: (1) Revisar casos activos en el Dashboard, (2) Marcar pasos del checklist normativo por caso, (3) Imprimir planillas oficiales cuando se completa cada fase, (4) Exportar el log de auditoría para presentar en tribunales. Cada acción que realiza es potencialmente un documento judicial — la trazabilidad y la claridad visual son críticas.",
+    "prioridades_del_rediseno": [
+      "1. COHERENCIA VISUAL — Eliminar la mezcla de estilos. Apple HIG es la única referencia.",
+      "2. CLARIDAD DE DATOS — El Compliance Officer debe ver el estado del caso en < 3 segundos.",
+      "3. CONFIANZA — El diseño debe comunicar seriedad, precisión y autoridad institucional.",
+      "4. EFICIENCIA — Minimizar clicks para las tareas más frecuentes (marcar paso, imprimir acta).",
+      "5. INTEGRIDAD — Los hashes SHA-256 deben ser siempre visibles y verificables."
+    ],
+    "restricciones": [
+      "NO usar Material Design, Fluent Design ni Bootstrap como referencia — solo Apple HIG",
+      "NO agregar animaciones decorativas — solo funcionales (feedback, transiciones)",
+      "NO usar colores fuera de la paleta Apple System (SF Palette iOS/macOS)",
+      "NO romper la funcionalidad existente del hash chain de auditoría",
+      "NO requerir servicios externos nuevos — la app debe funcionar offline como PWA"
+    ]
+  }
+}

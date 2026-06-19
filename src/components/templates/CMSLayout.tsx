@@ -3,28 +3,40 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut,
-  Database, Trash2, Sun, Moon, Menu, X,
+  Database, Trash2, Sun, Moon, Menu, X, Search
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
-import { checkConnection } from '../../db/neonClient';
+import { checkConnection, isNeonConfigured } from '../../db/neonClient';
+import StatusDot from '../atoms/StatusDot';
+import CommandPalette from '../organisms/CommandPalette';
 
 const menuItems = [
   { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
-  { path: '/control/seguimiento-compliance',     label: 'Etapas de los casos',      icon: ShieldCheck,   group: 'Control' },
-  { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'TUTORIALES' },
-  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'TUTORIALES' },
-  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'TUTORIALES' },
-  { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Plantillas Oficiales' },
-  { path: '/planillas/acta-entrevista',          label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Plantillas Oficiales' },
-  { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Plantillas Oficiales' },
-  { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Plantillas Oficiales' },
+  { path: '/control/seguimiento-compliance',     label: 'Etapas de Casos',          icon: ShieldCheck,     group: 'Control' },
+  { path: '/forense/tutoriales',                 label: 'Academia Forense',         icon: BookOpen,        group: 'Formación' },
+  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'Formación' },
+  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'Formación' },
+  { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Planillas Oficiales' },
+  { path: '/planillas/acta-entrevista',          label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Planillas Oficiales' },
+  { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Planillas Oficiales' },
+  { path: '/planillas/dictamen',                 label: 'Acta Dictamen',            icon: ClipboardList,   group: 'Planillas Oficiales' },
+  { path: '/planillas/entrega-resultados',       label: 'Entrega de Resultados',    icon: ClipboardList,   group: 'Planillas Oficiales' },
+  { path: '/normativas',                         label: 'Normativas',               icon: BookOpen,        group: 'Planillas Oficiales' },
   { path: '/auditoria',                          label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
   { path: '/personal',                           label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ];
 
-const groups = ['Control', 'TUTORIALES', 'Plantillas Oficiales', 'Sistema'];
+const groups = ['Control', 'Formación', 'Planillas Oficiales', 'Sistema'];
+
+const groupMeta: Record<string, { emoji: string }> = {
+  'Control':              { emoji: '📊' },
+  'Formación':           { emoji: '🎓' },
+  'Planillas Oficiales':  { emoji: '📄' },
+  'Sistema':              { emoji: '⚙️' },
+};
+
 
 /** Determina si un item está activo dado el pathname actual */
 function useIsActive(path: string) {
@@ -64,10 +76,23 @@ export default function CMSLayout() {
   const stats = getEstadisticas();
   const [dbOnline, setDbOnline] = useState<boolean | null>(null);
 
+  /* ── Command Palette (⌘K) ── */
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   /* ── Tema ── */
   const [isDark, setIsDark] = useState(() => {
     const theme = localStorage.getItem('theme');
-    if (theme === null) return true; // Por defecto modo oscuro
+    if (theme === null) return false; // Por defecto modo claro
     return theme === 'dark';
   });
   useEffect(() => {
@@ -155,14 +180,21 @@ export default function CMSLayout() {
       <div className="apple-separator mx-4 shrink-0" />
 
       {/* Navegación */}
-      <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-4">
-        {groups.map(group => {
+      <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
+        {groups.map((group, groupIdx) => {
           const items = menuItems.filter(m => m.group === group);
           if (!items.length) return null;
+          const meta = groupMeta[group];
           return (
             <div key={group}>
-              <p className="apple-section-header">{group}</p>
-              <div className="space-y-0.5 mt-1">
+              {groupIdx > 0 && (
+                <div className="mx-2 my-2.5 h-px bg-[var(--apple-separator)]" />
+              )}
+              <p className="apple-section-header flex items-center gap-1.5 mb-1">
+                <span>{meta.emoji}</span>
+                <span>{group}</span>
+              </p>
+              <div className="space-y-0.5">
                 {items.map(item => (
                   <SidebarLink key={item.path} item={item} onClick={onNav} />
                 ))}
@@ -193,7 +225,37 @@ export default function CMSLayout() {
           />
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-[var(--apple-text)] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
-            <p className="text-[10px] text-[#86868B]">PER-{user?.id?.toString().slice(0, 4) || '2025'}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              {!isNeonConfigured ? (
+                <>
+                  <StatusDot status="reconectando" size={6} />
+                  <p className="text-[10px] text-[#FF9500] truncate">
+                    Sin configurar (local)
+                  </p>
+                </>
+              ) : dbOnline === null ? (
+                <>
+                  <StatusDot status={null} size={6} />
+                  <p className="text-[10px] text-[#86868B] truncate">
+                    Verificando Neon DB...
+                  </p>
+                </>
+              ) : dbOnline ? (
+                <>
+                  <StatusDot status="online" size={6} />
+                  <p className="text-[10px] text-[#34C759] truncate">
+                    Conectado
+                  </p>
+                </>
+              ) : (
+                <>
+                  <StatusDot status="offline" size={6} />
+                  <p className="text-[10px] text-[#FF3B30] truncate">
+                    Error de conexión Neon
+                  </p>
+                </>
+              )}
+            </div>
           </div>
           <button
             onClick={logout}
@@ -298,15 +360,24 @@ export default function CMSLayout() {
 
             {/* Derecha: controles */}
             <div className="flex items-center gap-1 shrink-0">
+              {/* Spotlight Trigger */}
+              <button
+                onClick={() => setCommandPaletteOpen(true)}
+                title="Buscador Spotlight (⌘K)"
+                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
+              >
+                <Search size={15} />
+              </button>
+
               {/* Estado DB — ocultar texto en móvil */}
               <button
                 onClick={verificarDB}
-                title={dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon' : 'Sin conexión'}
+                title={!isNeonConfigured ? 'Modo local: datos no sincronizados en la nube' : dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon' : 'Error de conexión'}
                 className="flex items-center gap-1.5 text-[12px] font-medium px-2 py-2 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-all"
               >
-                <div className={`w-2 h-2 rounded-full shrink-0 ${dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
-                <span className={`hidden md:inline ${dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
-                  {dbOnline ? 'En línea' : dbOnline === false ? 'Desconectado' : '...'}
+                <div className={`w-2 h-2 rounded-full shrink-0 ${!isNeonConfigured ? 'bg-[#FF9500] animate-pulse' : dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
+                <span className={`hidden md:inline ${!isNeonConfigured ? 'text-[#FF9500]' : dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
+                  {!isNeonConfigured ? 'Local (Sin Neon)' : dbOnline ? 'En línea' : dbOnline === false ? 'Desconectado' : '...'}
                 </span>
               </button>
 
@@ -358,6 +429,9 @@ export default function CMSLayout() {
           </div>
         </main>
       </div>
+
+      {/* Spotlight command palette */}
+      <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
     </div>
   );
 }

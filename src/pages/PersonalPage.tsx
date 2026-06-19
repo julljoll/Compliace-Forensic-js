@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useCMSStore } from '../store/cmsStore';
+import { platformAPI } from '../db/platformAPI';
 import { getPasosPorTipo } from '../data/tiposProyecto';
 import { 
   Key, User, Camera, Star, UserPlus, Shield, Award, 
@@ -45,8 +46,8 @@ export default function PersonalPage() {
 
   const loadUsers = async () => {
     try {
-      if (window.electronAPI?.db?.getUsers) {
-        const users = await window.electronAPI.db.getUsers();
+      if (platformAPI.db?.getUsers) {
+        const users = await platformAPI.db.getUsers();
         setPersonal(users.filter((u: any) => u.username !== 'admin'));
       } else {
         setPersonal(cmsPersonal.filter((u: any) => u.username !== 'admin'));
@@ -66,8 +67,8 @@ export default function PersonalPage() {
     reader.onloadend = async () => {
       if (typeof reader.result === 'string') {
         updateProfileImage(reader.result);
-        if (window.electronAPI?.db?.updateUser && user?.id) {
-          await window.electronAPI.db.updateUser(user.id, user.id, { profile_image: reader.result });
+        if (platformAPI.db?.updateUser && user?.id) {
+          await platformAPI.db.updateUser(user.id, user.id, { profile_image: reader.result });
         }
       }
     };
@@ -105,11 +106,29 @@ export default function PersonalPage() {
     const userData: any = { nombre, apellido, ci, cargo, rol, despacho, email, telefono, username, activo: 1 };
     if (passwordColab) userData.password = passwordColab;
     
-    if (window.electronAPI?.db) {
-      if (isEditing) { await window.electronAPI.db.updateUser(user?.id || 0, Number(isEditing), userData); }
+    if (platformAPI.db) {
+      if (isEditing) { 
+        await platformAPI.db.updateUser(user?.id || 0, Number(isEditing), userData); 
+        updatePersonal(isEditing.toString(), {
+          nombre, apellido, ci, cargo, rol: rol as any, despacho, email, telefono
+        });
+      }
       else {
-        const res = await window.electronAPI.db.addUser(user?.id || 0, userData);
+        const res = await platformAPI.db.addUser(user?.id || 0, userData);
         if (!res.success) { alert('Error: ' + res.error); return; }
+        addPersonal({
+          nombre,
+          apellido,
+          ci,
+          cargo,
+          rol: rol as any,
+          organismo: 'MP',
+          despacho,
+          email,
+          telefono,
+          activo: true,
+          ranking: 0,
+        });
       }
       await loadUsers();
     } else {
@@ -145,8 +164,9 @@ export default function PersonalPage() {
 
   const handleToggleActive = async (id: number | string, currentStatus: any) => {
     const nextStatus = (currentStatus === 1 || currentStatus === true) ? false : true;
-    if (window.electronAPI?.db?.updateUser && user?.id) {
-      await window.electronAPI.db.updateUser(user.id, Number(id), { activo: nextStatus ? 1 : 0 });
+    if (platformAPI.db?.updateUser && user?.id) {
+      await platformAPI.db.updateUser(user.id, Number(id), { activo: nextStatus ? 1 : 0 });
+      updatePersonal(id.toString(), { activo: nextStatus });
       await loadUsers();
     } else {
       updatePersonal(id.toString(), { activo: nextStatus });
@@ -154,8 +174,9 @@ export default function PersonalPage() {
   };
 
   const handleSetRanking = async (id: number | string, stars: number) => {
-    if (window.electronAPI?.db?.updateUser && user?.id) {
-      await window.electronAPI.db.updateUser(user.id, Number(id), { ranking: stars });
+    if (platformAPI.db?.updateUser && user?.id) {
+      await platformAPI.db.updateUser(user.id, Number(id), { ranking: stars });
+      updatePersonal(id.toString(), { ranking: stars });
       await loadUsers();
     } else {
       updatePersonal(id.toString(), { ranking: stars });
@@ -171,8 +192,8 @@ export default function PersonalPage() {
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[rgba(0,0,0,0.08)] pb-6">
         <div>
-          <h1 className="text-3xl font-black text-[#1D1D1F] tracking-tight">Panel de Personal</h1>
-          <p className="text-sm text-[#86868B] mt-1 font-medium">
+          <h1 className="text-apple-title-1 font-bold text-[var(--apple-text)]">Panel de Personal</h1>
+          <p className="text-[15px] text-[var(--co-gray-1)] mt-1 font-medium">
             Seguridad de tu perfil, gestión de colaboradores y métricas de desempeño del equipo.
           </p>
         </div>
@@ -396,54 +417,76 @@ export default function PersonalPage() {
                   <p className="text-sm font-medium">No se han registrado colaboradores técnicos en el CMS.</p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {personal.map(p => (
-                    <div key={p.id}
-                      className={`apple-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 ${!p.activo ? 'opacity-50' : ''}`}>
-                      <div className="flex items-start gap-3.5">
-                        <div className="w-12 h-12 rounded-full bg-[rgba(0,0,0,0.03)] border border-[rgba(0,0,0,0.08)] flex items-center justify-center font-bold text-[#0071E3] text-sm self-start md:self-auto overflow-hidden">
-                          {p.profile_image ? (
-                            <img src={p.profile_image} alt={p.nombre} className="w-full h-full object-cover" />
-                          ) : (
-                            <>{p.nombre?.charAt(0)}{p.apellido?.charAt(0)}</>
-                          )}
-                        </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-bold text-[#1D1D1F] text-sm">{p.nombre} {p.apellido} <span className="text-xs text-[#86868B] font-normal">(@{p.username})</span></span>
-                            <span className="text-[9px] bg-[rgba(0,0,0,0.06)] px-1.5 py-0.5 rounded text-[#6E6E73] uppercase font-semibold">
-                              {ROLES.find(r => r.value === p.rol)?.label || p.rol}
-                            </span>
-                            {(p.activo === 0 || p.activo === false) && (
-                              <span className="text-[9px] bg-[rgba(255,59,48,0.1)] text-[#FF3B30] px-1.5 py-0.5 rounded uppercase font-semibold">Inactivo</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {personal.map(p => {
+                    const isColabActive = p.activo === 1 || p.activo === true || p.activo === '1';
+                    return (
+                      <div key={p.id}
+                        className={`apple-card p-5 border border-black/[0.06] rounded-2xl bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300 ${!isColabActive ? 'opacity-60' : ''}`}>
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full bg-black/[0.03] border border-black/[0.08] flex items-center justify-center font-bold text-[#0071E3] text-sm overflow-hidden shrink-0">
+                              {p.profile_image ? (
+                                <img src={p.profile_image} alt={p.nombre} className="w-full h-full object-cover" />
+                              ) : (
+                                <>{p.nombre?.charAt(0)}{p.apellido?.charAt(0)}</>
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <h4 className="font-bold text-[#1D1D1F] text-[14px] truncate">
+                                {p.nombre} {p.apellido}
+                              </h4>
+                              <p className="text-[11px] text-[#86868B] font-medium truncate">@{p.username}</p>
+                            </div>
+                          </div>
+
+                          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/[0.04] text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                            {ROLES.find(r => r.value === p.rol)?.label || p.rol}
+                          </div>
+
+                          <div className="space-y-2 text-xs text-[#6E6E73] border-t border-black/[0.05] pt-3">
+                            {p.cargo && (
+                              <div className="flex items-center gap-2">
+                                <Briefcase size={12} className="text-[#86868B]" />
+                                <span className="truncate">{p.cargo}</span>
+                              </div>
+                            )}
+                            {p.email && (
+                              <div className="flex items-center gap-2">
+                                <Mail size={12} className="text-[#86868B]" />
+                                <span className="truncate" title={p.email}>{p.email}</span>
+                              </div>
+                            )}
+                            {p.telefono && (
+                              <div className="flex items-center gap-2">
+                                <Phone size={12} className="text-[#86868B]" />
+                                <span>{p.telefono}</span>
+                              </div>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#86868B]">
-                            {p.cargo && <span className="flex items-center gap-1"><Briefcase size={12} /> {p.cargo}</span>}
-                            {p.email && <span className="flex items-center gap-1"><Mail size={12} /> {p.email}</span>}
-                            {p.telefono && <span className="flex items-center gap-1"><Phone size={12} /> {p.telefono}</span>}
+                        </div>
+
+                        <div className="flex items-center justify-between border-t border-black/[0.05] mt-4 pt-3">
+                          <div className="flex items-center gap-0.5 text-[#0071E3]">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <button key={i} type="button" onClick={() => handleSetRanking(p.id, i + 1)} className="hover:scale-115 transition-transform">
+                                <Star size={13} fill={i < (p.ranking || 0) ? "currentColor" : "none"} className="cursor-pointer" />
+                              </button>
+                            ))}
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <button onClick={() => handleEditClick(p)} className="p-1.5 rounded-lg text-[#86868B] hover:text-[#0071E3] hover:bg-black/[0.04] transition-colors" title="Editar">
+                              <Edit size={14} />
+                            </button>
+                            <button onClick={() => handleToggleActive(p.id, p.activo)} className="p-1.5 rounded-lg text-[#86868B] hover:text-[#FF3B30] hover:bg-black/[0.04] transition-colors" title={isColabActive ? 'Desactivar' : 'Activar'}>
+                              {isColabActive ? <ShieldOff size={14} /> : <Check size={14} />}
+                            </button>
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col items-start md:items-end justify-center gap-2">
-                        <div className="flex items-center gap-2">
-                          <button onClick={() => handleEditClick(p)} className="text-[#86868B] hover:text-[#0071E3] p-1 rounded transition-colors" title="Editar">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleToggleActive(p.id, p.activo)} className="text-[#86868B] hover:text-[#FF3B30] p-1 rounded transition-colors" title={p.activo ? 'Desactivar' : 'Activar'}>
-                            {p.activo ? <ShieldOff size={16} /> : <Check size={16} />}
-                          </button>
-                        </div>
-                        <div className="flex items-center gap-0.5 text-[#0071E3]">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <button key={i} type="button" onClick={() => handleSetRanking(p.id, i + 1)} className="hover:scale-115 transition-transform">
-                              <Star size={14} fill={i < (p.ranking || 0) ? "currentColor" : "none"} className="cursor-pointer" />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

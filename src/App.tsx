@@ -31,6 +31,8 @@ const ActaEntrevistaPage = lazy(() => import('./pages/Planillas/ActaEntrevistaPa
 const PlanillaPRCCPage = lazy(() => import('./pages/Planillas/PlanillaPRCCPage'));
 const ActaDictamenPage = lazy(() => import('./pages/Planillas/ActaDictamenPage'));
 const ActaEntregaResultadosPage = lazy(() => import('./pages/Planillas/ActaEntregaResultadosPage'));
+const TimelineCompliancePage = lazy(() => import('./pages/Planillas/TimelineCompliancePage'));
+
 
 // ── Fallback Loader ─────────────────────────────────────────────────────────
 const PageLoader = () => (
@@ -49,9 +51,17 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 function App() {
   const { isAuthenticated } = useAuthStore();
 
-  // Migrar datos al cargar la app (v2 → v3: completed_steps → steps)
+  // Migrar datos al cargar la app (v2 → v3: completed_steps → steps) and initialize theme
   useEffect(() => {
     useCMSStore.getState().migrateStepsData();
+    
+    // Inicializar tema desde localStorage (por defecto claro si no está configurado)
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   return (
@@ -99,6 +109,7 @@ function App() {
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />
           <Route path="planillas/dictamen" element={<Suspense fallback={<PageLoader />}><ActaDictamenPage /></Suspense>} />
           <Route path="planillas/entrega-resultados" element={<Suspense fallback={<PageLoader />}><ActaEntregaResultadosPage /></Suspense>} />
+          <Route path="planillas/timeline-compliance" element={<Suspense fallback={<PageLoader />}><TimelineCompliancePage /></Suspense>} />
           <Route path="planillas/seguimiento" element={<Navigate to="/control/seguimiento-compliance" replace />} />
           <Route path="correo-forense" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="sistemas/correo-electronico" element={<Navigate to="/forense/tutoriales" replace />} />

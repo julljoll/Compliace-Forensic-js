@@ -1,5 +1,5 @@
 const DB_NAME = 'sha256_forense';
-const DB_VERSION = 1;
+const DB_VERSION = 2; // Incrementado a 2 para agregar el store 'correos_forenses'
 
 type StoreSchema = {
   name: string;

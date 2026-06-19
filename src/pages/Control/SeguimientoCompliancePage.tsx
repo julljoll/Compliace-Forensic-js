@@ -209,12 +209,15 @@ export default function SeguimientoCompliancePage() {
     return casos.find(c => c.id === casoSeleccionado) || null;
   }, [casos, casoSeleccionado]);
 
-  // Autoselect first case if none is selected
+  // Synchronize URL search params (casoId) with selected case, or autoselect first
   useEffect(() => {
-    if (!casoSeleccionado && casos.length > 0) {
+    const searchCasoId = searchParams.get('casoId');
+    if (searchCasoId && searchCasoId !== casoSeleccionado) {
+      seleccionarCaso(searchCasoId);
+    } else if (!casoSeleccionado && casos.length > 0) {
       seleccionarCaso(casos[0].id);
     }
-  }, [casos, casoSeleccionado, seleccionarCaso]);
+  }, [searchParams, casos, casoSeleccionado, seleccionarCaso]);
 
   // Initialize steps if case has no steps or if they are empty
   useEffect(() => {
@@ -480,7 +483,13 @@ export default function SeguimientoCompliancePage() {
           </span>
           <select
             value={casoSeleccionado || ''}
-            onChange={(e) => seleccionarCaso(e.target.value)}
+            onChange={(e) => {
+              seleccionarCaso(e.target.value);
+              setSearchParams(prev => {
+                prev.set('casoId', e.target.value);
+                return prev;
+              });
+            }}
             className="apple-input text-xs font-semibold min-w-[220px]"
           >
             {casos.map(c => (
@@ -1117,7 +1126,7 @@ export default function SeguimientoCompliancePage() {
                             {PLANILLA_DOCS[selectedStep.id].map((doc, idx) => (
                               <Link
                                 key={idx}
-                                to={doc.path}
+                                to={casoSeleccionado ? `${doc.path}?casoId=${casoSeleccionado}` : doc.path}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
@@ -1141,29 +1150,32 @@ export default function SeguimientoCompliancePage() {
                         <div className="flex items-center gap-3">
                           {!completado && (
                             <button
-                              disabled={!stepValidation.canComplete}
-                              onClick={() => {
-                                if (estado === 'disponible') {
-                                  startStep(selectedStep.id);
-                                }
-                                completeStep(selectedStep.id);
+                               onClick={() => {
+                                 if (estado === 'disponible') {
+                                   startStep(selectedStep.id);
+                                 }
+                                 const res = completeStep(selectedStep.id);
+                                 if (res && !res.success) {
+                                   alert(`No se puede completar la fase. Requisitos pendientes:\n${res.missing?.map(m => `• ${m}`).join('\n')}`);
+                                   return;
+                                 }
 
-                                // Auto-navegar al siguiente paso disponible
-                                setTimeout(() => {
-                                  const pasos = metrics.pasos;
-                                  const currentIdx = pasos.findIndex((p: any) => p.id === selectedStep.id);
-                                  if (currentIdx !== -1 && currentIdx < pasos.length - 1) {
-                                    const nextPaso = pasos[currentIdx + 1];
-                                    if (nextPaso) setSelectedStepId(nextPaso.id);
-                                  }
-                                }, 150);
-                              }}
-                              className={`apple-btn text-[9px] font-semibold uppercase tracking-wider transition-all ${
-                                stepValidation.canComplete
-                                  ? 'bg-[#007AFF]/15 border border-[#007AFF]/25 text-[#007AFF] hover:bg-[#007AFF]/25 cursor-pointer shadow-sm'
-                                  : 'bg-black/[0.04] border border-black/[0.08] text-[#86868B] cursor-not-allowed opacity-50'
-                              }`}
-                            >
+                                 // Auto-navegar al siguiente paso disponible
+                                 setTimeout(() => {
+                                   const pasos = metrics.pasos;
+                                   const currentIdx = pasos.findIndex((p: any) => p.id === selectedStep.id);
+                                   if (currentIdx !== -1 && currentIdx < pasos.length - 1) {
+                                     const nextPaso = pasos[currentIdx + 1];
+                                     if (nextPaso) setSelectedStepId(nextPaso.id);
+                                   }
+                                 }, 150);
+                               }}
+                               className={`apple-btn text-[9px] font-semibold uppercase tracking-wider transition-all ${
+                                 stepValidation.canComplete
+                                   ? 'bg-[#007AFF]/15 border border-[#007AFF]/25 text-[#007AFF] hover:bg-[#007AFF]/25 cursor-pointer shadow-sm'
+                                   : 'bg-[#FF9500]/15 border border-[#FF9500]/25 text-[#FF9500] hover:bg-[#FF9500]/25 cursor-pointer shadow-sm'
+                               }`}
+                             >
                               <Play size={12} />
                               <span>Paso Siguiente</span>
                             </button>
@@ -1416,9 +1428,9 @@ function NuevaTareaModal({
     porcentaje: 0,
   });
 
-  const casoSeleccionado = casos.find(c => c.id === form.casoId);
-  const pasosDisponibles = casoSeleccionado
-    ? getPasosPorTipo((casoSeleccionado as any).tipoProyecto || 'forense_whatsapp')
+  const casoDelFormulario = casos.find(c => c.id === form.casoId);
+  const pasosDisponibles = casoDelFormulario
+    ? getPasosPorTipo((casoDelFormulario as any).tipoProyecto || 'forense_whatsapp')
     : [];
 
   const toggleNormativa = (id: string) => {

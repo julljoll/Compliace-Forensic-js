@@ -32,11 +32,11 @@ const ICONS: Record<ToastType, any> = {
   info: Info,
 };
 
-const COLORS: Record<ToastType, string> = {
-  success: 'bg-white border border-[rgba(52,199,89,0.2)] text-[#248A3D]',
-  error: 'bg-white border border-[rgba(255,59,48,0.2)] text-[#BF2D24]',
-  warning: 'bg-white border border-[rgba(255,149,0,0.2)] text-[#C93400]',
-  info: 'bg-white border border-[rgba(0,113,227,0.2)] text-[#0071E3]',
+const ICON_COLORS: Record<ToastType, string> = {
+  success: 'text-[var(--co-green)]',
+  error: 'text-[var(--co-red)]',
+  warning: 'text-[var(--co-orange)]',
+  info: 'text-[var(--co-accent)]',
 };
 
 function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
@@ -50,14 +50,23 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   }, [toast.duration, onClose]);
 
   return (
-    <div className={`flex items-start gap-3 p-3.5 rounded-[12px] shadow-[0_0_1px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.04)] apple-fade-in ${COLORS[toast.type]}`}>
-      <Icon size={16} className="shrink-0 mt-0.5" />
+    <div className={`
+      flex items-start gap-3 p-3.5 rounded-[12px] 
+      bg-[var(--co-surface-1)] border border-[var(--co-separator)]
+      shadow-[var(--co-shadow-3)] backdrop-blur-[20px]
+      transition-all duration-300 transform translate-y-0 opacity-100 apple-fade-in
+      max-w-sm w-full select-none
+    `}>
+      <Icon size={18} className={`shrink-0 mt-0.5 ${ICON_COLORS[toast.type]}`} />
       <div className="flex-1 min-w-0">
-        <p className="text-[13px] font-semibold text-[#1D1D1F]">{toast.title}</p>
-        {toast.message && <p className="text-[11px] text-[#86868B] mt-0.5">{toast.message}</p>}
+        <p className="text-[13px] font-semibold text-[var(--apple-text)]">{toast.title}</p>
+        {toast.message && <p className="text-[11px] text-[var(--co-gray-1)] mt-0.5 leading-normal">{toast.message}</p>}
       </div>
-      <button onClick={onClose} className="shrink-0 p-0.5 rounded-[6px] hover:bg-[rgba(0,0,0,0.05)] transition-colors text-[#86868B]">
-        <X size={13} />
+      <button 
+        onClick={onClose} 
+        className="shrink-0 p-1 rounded-[6px] hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)] transition-colors text-[var(--co-gray-1)] hover:text-[var(--apple-text)] active:scale-95"
+      >
+        <X size={12} />
       </button>
     </div>
   );
@@ -68,7 +77,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-    setToasts(prev => [...prev, { ...toast, id }]);
+    setToasts(prev => {
+      const list = [...prev, { ...toast, id }];
+      if (list.length > 3) {
+        return list.slice(list.length - 3);
+      }
+      return list;
+    });
   }, []);
 
   const removeToast = useCallback((id: string) => {
@@ -78,9 +93,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+      <div className="fixed bottom-6 inset-x-0 z-[9999] flex flex-col items-center gap-2 pointer-events-none px-4 sm:bottom-8 sm:right-8 sm:left-auto sm:items-end">
         {toasts.map(toast => (
-          <div key={toast.id} className="pointer-events-auto">
+          <div key={toast.id} className="pointer-events-auto w-full max-w-sm shadow-[var(--co-shadow-3)] rounded-[12px]">
             <ToastItem toast={toast} onClose={() => removeToast(toast.id)} />
           </div>
         ))}

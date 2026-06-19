@@ -1,0 +1,459 @@
+{
+  "meta": {
+    "prompt_id": "sha256-cms-bugfix-v1",
+    "version": "1.0.0",
+    "fecha": "2026-06-18",
+    "repositorio": "https://github.com/julljoll/SHA256.git",
+    "descripcion": "JSON de corrección de errores detectados mediante análisis profundo de todo el código fuente de SHA256.US CMS Forense. Cubre: autenticación rota, conexión Neon DB no funcional en web, Compliance Manager con pérdida de datos, Tutoriales con bugs de IndexedDB, Auditoría sin carga real, PersonalPage con datos duales inconsistentes, y más."
+  },
+
+  "resumen_critico": {
+    "errores_bloqueantes": 5,
+    "errores_graves": 8,
+    "errores_moderados": 6,
+    "advertencias": 4,
+    "total": 23
+  },
+
+  "errores": [
+
+    {
+      "id": "BUG-001",
+      "severidad": "BLOQUEANTE",
+      "categoria": "Autenticación",
+      "archivo": "src/store/authStore.ts",
+      "lineas": "31-48",
+      "titulo": "Login completamente roto en modo web/PWA — siempre falla",
+      "descripcion": "El método `login()` del authStore comprueba primero `if (!window.electronAPI?.auth)` y retorna error si no está disponible. Pero en el flujo web, `window.electronAPI.auth` SÍ existe porque lo crea el shim en main.tsx. El verdadero problema es que retorna `{ success: false, message: 'Sistema de autenticación no disponible' }` en cualquier caso donde la condición sea falsa. Además, si el usuario intenta hacer login antes de que el shim de main.tsx esté completamente inicializado (race condition en el primer render), `window.electronAPI` puede ser undefined y el login falla.",
+      "impacto": "El Compliance Officer NO puede ingresar a la aplicación si hay algún retraso en la inicialización del shim de main.tsx.",
+      "reproducir": "1. Cargar la app en un navegador fresco. 2. Intentar login inmediatamente antes de que main.tsx termine de ejecutar seedInitialUsers(). 3. Login falla con 'Sistema de autenticación no disponible'.",
+      "fix": {
+        "archivo": "src/store/authStore.ts",
+        "cambio": "Agregar un retry con delay si window.electronAPI no está disponible aún, y manejar el caso donde el shim no haya terminado de inicializarse.",
+        "codigo_antes": "login: async (username, password) => {\n  set({ isLoading: true, error: null });\n  if (!window.electronAPI?.auth) {\n    set({ error: 'Sistema de autenticación no disponible', isLoading: false });\n    return false;\n  }\n  try {\n    const result = await window.electronAPI.auth.login({ username, password });",
+        "codigo_despues": "login: async (username, password) => {\n  set({ isLoading: true, error: null });\n  // Esperar hasta 2s a que el shim de main.tsx esté listo\n  let attempts = 0;\n  while (!window.electronAPI?.auth && attempts < 20) {\n    await new Promise(r => setTimeout(r, 100));\n    attempts++;\n  }\n  if (!window.electronAPI?.auth) {\n    set({ error: 'Error al inicializar el sistema. Recarga la página.', isLoading: false });\n    return false;\n  }\n  try {\n    const result = await window.electronAPI.auth.login({ username, password });"
+      }
+    },
+
+    {
+      "id": "BUG-002",
+      "severidad": "BLOQUEANTE",
+      "categoria": "Base de Datos Neon",
+      "archivo": "src/db/neonClient.ts",
+      "lineas": "1-15",
+      "titulo": "Neon DB nunca se conecta en el navegador — DATABASE_URL vacía no lanza error claro",
+      "descripcion": "Cuando `VITE_DATABASE_URL` no está configurado en el .env (caso más común en desarrollo y en el deployment de Vercel sin configurar), `DATABASE_URL` es un string vacío `''`. El código hace `neon('')` que lanza una excepción silenciosa capturada por el try/catch, dejando `sqlClient = null`. A partir de ahí, TODAS las funciones de neonClient.ts caen silenciosamente al fallback de localStorage sin notificar al usuario. El indicador de DB en el sidebar siempre muestra 'offline' aunque el usuario crea que está configurado.",
+      "impacto": "Los casos creados se guardan SOLO en localStorage. Si el usuario limpia el navegador, pierde TODOS los casos. No hay advertencia visible de que Neon no está conectado.",
+      "reproducir": "1. No configurar VITE_DATABASE_URL. 2. Crear un caso nuevo. 3. Borrar localStorage. 4. Recargar — todos los casos desaparecen.",
+      "fix": {
+        "archivos": ["src/db/neonClient.ts", "src/components/templates/CMSLayout.tsx"],
+        "cambio_neonClient": "Exponer un flag `isNeonConfigured` que indique si la URL está configurada, y distinguir entre 'no configurado' y 'error de conexión'.",
+        "codigo_neonClient_antes": "const DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';\nlet sqlClient: any = null;\ntry {\n  if (typeof fetch !== 'undefined') {\n    sqlClient = neon(DATABASE_URL);\n  }\n} catch (e) {\n  console.error('Error al inicializar el cliente Neon:', e);\n}",
+        "codigo_neonClient_despues": "const DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';\nexport const isNeonConfigured: boolean = !!DATABASE_URL && DATABASE_URL.startsWith('postgresql://');\nlet sqlClient: any = null;\nif (isNeonConfigured) {\n  try {\n    if (typeof fetch !== 'undefined') {\n      sqlClient = neon(DATABASE_URL);\n    }\n  } catch (e) {\n    console.error('[NeonDB] Error al inicializar cliente:', e);\n  }\n} else {\n  console.warn('[NeonDB] VITE_DATABASE_URL no configurada — operando en modo local (localStorage). Los datos no se sincronizan con la nube.');\n}",
+        "cambio_CMSLayout": "En el sidebar footer, mostrar tres estados diferenciados: 'Sin configurar (local)', 'Conectado', 'Error de conexión'. Importar isNeonConfigured de neonClient.",
+        "codigo_CMSLayout_nuevo_indicador": "import { checkConnection, isNeonConfigured } from '../../db/neonClient';\n// En el JSX del footer:\n{!isNeonConfigured ? (\n  <span className=\"text-[10px] text-[#FF9500] flex items-center gap-1\">\n    <span className=\"w-1.5 h-1.5 rounded-full bg-[#FF9500] inline-block\" />\n    Base de datos: modo local\n  </span>\n) : dbOnline === null ? (\n  <span className=\"text-[10px] text-[#86868B] flex items-center gap-1\">\n    <span className=\"w-1.5 h-1.5 rounded-full bg-[#86868B] animate-pulse inline-block\" />\n    Verificando Neon DB...\n  </span>\n) : dbOnline ? (\n  <span className=\"text-[10px] text-[#34C759] flex items-center gap-1\">\n    <span className=\"w-1.5 h-1.5 rounded-full bg-[#34C759] animate-pulse inline-block\" />\n    Neon DB conectada\n  </span>\n) : (\n  <span className=\"text-[10px] text-[#FF3B30] flex items-center gap-1\">\n    <span className=\"w-1.5 h-1.5 rounded-full bg-[#FF3B30] inline-block\" />\n    Error de conexión Neon\n  </span>\n)}"
+      }
+    },
+
+    {
+      "id": "BUG-003",
+      "severidad": "BLOQUEANTE",
+      "categoria": "Gestor de Cumplimiento (Compliance)",
+      "archivo": "src/store/cmsStore.ts",
+      "lineas": "350-430 (fetchCasos), 440-500 (addCaso)",
+      "titulo": "fetchCasos y addCaso NUNCA persisten en Neon — solo usan Neon si window.electronAPI.db existe, pero no llaman a neonClient directamente",
+      "descripcion": "El flujo real es: `fetchCasos()` llama a `window.electronAPI.db.getCasos()` → el shim de main.tsx mapea eso a `getCasosDB()` de neonClient. Esto funciona SI main.tsx ya ejecutó el shim. PERO: `addCaso()` llama a `window.electronAPI.db.addCaso()` → shim → `addCasoDB()`. El problema crítico es que si `addCasoDB()` falla (Neon sin configurar), `addCasoDB` llama a `saveCasoLocal()` que guarda en localStorage como `sha256_pwa_casos`. Pero `fetchCasos()` también llama a `getCasosDB()` que llama a `loadCasosLocal()` que lee de `sha256_pwa_casos`. El conflicto: el estado Zustand persiste en `cms-neon-storage` (localStorage también), mientras que el fallback de Neon usa `sha256_pwa_casos`. Son dos stores diferentes de localStorage. Al recargar, `fetchCasos()` lee de `sha256_pwa_casos` y sobreescribe el state Zustand con datos potencialmente diferentes o vacíos.",
+      "impacto": "Los casos creados pueden desaparecer o duplicarse al recargar la página. El Compliance Officer pierde el trabajo.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts — función fetchCasos",
+        "descripcion": "Unificar la fuente de verdad: si Neon no está configurado, usar exclusivamente el estado Zustand persistido (cms-neon-storage). Eliminar la doble escritura en sha256_pwa_casos.",
+        "codigo_fetchCasos_reemplazar": "fetchCasos: async () => {\n  try {\n    // Si hay DB disponible (electronAPI.db), sincronizar desde allí\n    if (window.electronAPI?.db) {\n      const casosDB = await window.electronAPI.db.getCasos(1);\n      if (casosDB && casosDB.length > 0) {\n        // ... mapeo existente ...\n        set({ casos: mapeados });\n        return;\n      }\n    }\n    // Si no hay DB o está vacía, el estado Zustand ya tiene los datos\n    // (persistidos en cms-neon-storage via persist middleware)\n    // No sobreescribir con array vacío\n    console.info('[CMS] Sin conexión DB — usando datos persistidos localmente.');\n  } catch (err) {\n    console.error('Error fetching casos', err);\n    // NO hacer set({ casos: [] }) en caso de error\n  }\n}",
+        "nota": "Eliminar la llamada a saveCasoLocal() en addCasoDB cuando Neon falla — la persistencia ya la maneja el middleware persist de Zustand en cms-neon-storage."
+      }
+    },
+
+    {
+      "id": "BUG-004",
+      "severidad": "BLOQUEANTE",
+      "categoria": "Gestor de Cumplimiento (Compliance)",
+      "archivo": "src/store/cmsStore.ts",
+      "lineas": "530-560 (neonStorage)",
+      "titulo": "neonStorage en Zustand persist llama a window.electronAPI.db.saveState — guarda TODO el estado como un blob de JSON gigante",
+      "descripcion": "El middleware `persist` de Zustand usa el storage personalizado `neonStorage`. Su método `setItem` llama a `window.electronAPI.db.saveState(1, JSON.parse(value))` que guarda el estado completo (todos los casos, tareas, fases, normativas, etc.) en un único registro de localStorage llamado `sha256_pwa_state_1`. Esto crea TRES copias de los mismos datos: (1) `cms-neon-storage`, (2) `sha256_pwa_casos`, (3) `sha256_pwa_state_1`. Si estas copias divergen, la app muestra datos inconsistentes.",
+      "impacto": "Inconsistencia de datos, posible corrupción del estado, y triple consumo de espacio en localStorage (riesgo de exceder el límite de 5MB en casos con muchos datos).",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts",
+        "descripcion": "Simplificar neonStorage para que SOLO use localStorage estándar y eliminar el triple almacenamiento.",
+        "codigo_neonStorage_reemplazar": "const neonStorage = {\n  getItem: async (name: string): Promise<string | null> => {\n    return localStorage.getItem(name);\n  },\n  setItem: async (name: string, value: string): Promise<void> => {\n    localStorage.setItem(name, value);\n    // Sincronización con Neon en background (solo casos modificados, no todo el estado)\n    // Esta sincronización se hace individualmente en addCaso/updateCaso/deleteCaso\n  },\n  removeItem: async (name: string): Promise<void> => {\n    localStorage.removeItem(name);\n  },\n};"
+      }
+    },
+
+    {
+      "id": "BUG-005",
+      "severidad": "BLOQUEANTE",
+      "categoria": "Tutoriales Forenses",
+      "archivo": "src/pages/Forense/TutorialesForensesPage.tsx",
+      "lineas": "2465-2540",
+      "titulo": "IndexedDB store 'correos_forenses' falla silenciosamente — no existe en el schema de indexedDB.ts",
+      "descripcion": "TutorialesForensesPage usa `indexedDBStorage.getAll<ProcesoCorreo>('correos_forenses')` y `indexedDBStorage.setItem('correos_forenses', nuevo)`. El store 'correos_forenses' SÍ está declarado en indexedDB.ts (línea visible en el análisis), pero con DB_VERSION = 1. Si el usuario ya tenía la DB abierta con una versión anterior sin ese store, el `onupgradeneeded` no se ejecuta de nuevo y el store no existe, causando un error `DOMException: The operation failed because the requested database object could not be found`.",
+      "impacto": "El módulo de tutoriales de correo electrónico falla silenciosamente — los procesos de correo no se guardan y el componente queda en estado inconsistente.",
+      "fix": {
+        "archivo": "src/db/indexedDB.ts",
+        "descripcion": "Incrementar DB_VERSION a 2 para forzar la migración y asegurar que el store correos_forenses se crea en todos los browsers que ya tenían la versión 1.",
+        "codigo_antes": "const DB_NAME = 'sha256_forense';\nconst DB_VERSION = 1;",
+        "codigo_despues": "const DB_NAME = 'sha256_forense';\nconst DB_VERSION = 2; // v2: agregado store correos_forenses"
+      }
+    },
+
+    {
+      "id": "BUG-006",
+      "severidad": "GRAVE",
+      "categoria": "Gestor de Cumplimiento (Compliance)",
+      "archivo": "src/pages/Control/SeguimientoCompliancePage.tsx",
+      "lineas": "213-217",
+      "titulo": "Auto-selección de caso al montar el componente — seleccionarCaso() borra el complianceChecklist del caso anterior",
+      "descripcion": "El useEffect en SeguimientoCompliancePage hace `seleccionarCaso(casos[0].id)` cuando no hay caso seleccionado. Pero `seleccionarCaso()` en cmsStore sobrescribe `complianceChecklist` con los datos del nuevo caso. Si el usuario venía navegando y tenía el compliance del caso X en memoria, al ir a esta página y no tener `casoSeleccionado`, se selecciona automáticamente el caso 0 y se pierde el contexto. Además, si `casos[0]` cambia de orden (por re-fetch o filtro), el usuario queda en el caso incorrecto.",
+      "impacto": "Pérdida del contexto del compliance al navegar entre páginas. El usuario puede marcar items de cumplimiento en el caso equivocado.",
+      "fix": {
+        "archivo": "src/pages/Control/SeguimientoCompliancePage.tsx",
+        "descripcion": "Agregar un selector de caso explícito al inicio de la página en lugar de auto-seleccionar. Si ya hay un casoSeleccionado en el store, respetarlo.",
+        "codigo_antes": "useEffect(() => {\n  if (!casoSeleccionado && casos.length > 0) {\n    seleccionarCaso(casos[0].id);\n  }\n}, [casos, casoSeleccionado, seleccionarCaso]);",
+        "codigo_despues": "// Eliminar el auto-selección. Solo restaurar el caso si el store ya tenía uno seleccionado y aún existe.\nuseEffect(() => {\n  if (casoSeleccionado && !casos.find(c => c.id === casoSeleccionado)) {\n    // El caso seleccionado ya no existe, limpiar\n    seleccionarCaso(null);\n  }\n}, [casos, casoSeleccionado, seleccionarCaso]);\n// En el JSX, mostrar un empty state claro cuando no hay caso seleccionado:\n// 'Selecciona un caso de la lista de arriba para ver su seguimiento de compliance.'"
+      }
+    },
+
+    {
+      "id": "BUG-007",
+      "severidad": "GRAVE",
+      "categoria": "Gestor de Cumplimiento (Compliance)",
+      "archivo": "src/store/cmsStore.ts — toggleComplianceCheck",
+      "lineas": "660-720",
+      "titulo": "toggleComplianceCheck tiene race condition — dos setTimeouts posteriores pueden ejecutarse con estado desactualizado",
+      "descripcion": "La función `toggleComplianceCheck` actualiza el estado síncronamente con `set()`, luego usa dos `setTimeout()` separados para: (1) persistir en DB, (2) agregar entry de auditoría. El problema es que el setTimeout de 150ms que llama a `window.electronAPI.db.updateCaso()` lee `get().casos` (lectura fresca). Pero el setTimeout de 100ms del audit log usa closures que capturan `casoId` del scope externo, que fue capturado ANTES del set(). Si se hacen dos toggles rápidos (usuario hace click doble), el segundo setTimeout puede ejecutarse con datos del primer toggle ya revertido.",
+      "impacto": "El log de auditoría puede registrar 'verificado' y 'desverificado' en el orden incorrecto. La persistencia en DB puede guardar un estado intermedio incorrecto.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts — toggleComplianceCheck",
+        "descripcion": "Eliminar los setTimeouts y hacer la operación completamente síncrona para el estado, con una única persistencia en DB al final.",
+        "codigo_reemplazar_timeouts": "// DESPUÉS del set() síncrono, una sola persistencia asíncrona:\nconst persistAndLog = async () => {\n  const updatedCaso = get().casos.find(c => c.id === casoId);\n  if (updatedCaso?.compliance_checklist && window.electronAPI?.db) {\n    await window.electronAPI.db.updateCaso(casoId, { compliance_checklist: updatedCaso.compliance_checklist });\n  }\n  useAuditStore.getState().addEntry({\n    accion: newChecked ? 'CUMPLIMIENTO_VERIFICADO' : 'CUMPLIMIENTO_DESVERIFICADO',\n    detalle: `Requisito ${stageId} (normativa ${normativaId}) ${newChecked ? 'verificado' : 'desmarcado'}`,\n    usuario: 'Perito de Guardia',\n    nivel: newChecked ? 'success' : 'info',\n    casoId: casoId || undefined,\n  });\n};\nif (casoId) persistAndLog();"
+      }
+    },
+
+    {
+      "id": "BUG-008",
+      "severidad": "GRAVE",
+      "categoria": "Auditoría",
+      "archivo": "src/pages/AuditoriaPage.tsx",
+      "lineas": "28-40",
+      "titulo": "AuditoriaPage solo carga logs de window.electronAPI — ignora completamente useAuditStore (IndexedDB)",
+      "descripcion": "La función `loadLogs()` en AuditoriaPage hace `window.electronAPI.db.getAuditLogs()` que llama al shim → `getAuditLogsDB()` → Neon o localStorage (sha256_pwa_audit_logs). PERO el useAuditStore guarda los logs con hash chain en IndexedDB (`audit_logs` store). Son dos repositorios de auditoría completamente separados y AuditoriaPage solo muestra UNO de ellos. Los logs con hash SHA-256 verificable quedan invisibles en la UI.",
+      "impacto": "El Compliance Officer ve una auditoría incompleta. Los logs forenses con hash chain (los más importantes para presentar en tribunales) no aparecen en la página de auditoría.",
+      "fix": {
+        "archivo": "src/pages/AuditoriaPage.tsx",
+        "descripcion": "Cargar logs de AMBAS fuentes y mostrarlos unificados, ordenados por timestamp.",
+        "codigo_loadLogs_reemplazar": "const { logs: auditStoreLogs, loadLogs: loadAuditStoreLogs } = useAuditStore();\n\nconst loadLogs = async () => {\n  setLoading(true);\n  try {\n    // 1. Cargar logs del AuditStore (IndexedDB con hash chain)\n    await loadAuditStoreLogs();\n    \n    // 2. Cargar logs del CMS store (localStorage/Neon)\n    let neonLogs: any[] = [];\n    if (window.electronAPI?.db?.getAuditLogs) {\n      neonLogs = await window.electronAPI.db.getAuditLogs();\n    }\n    \n    // 3. Unificar y deduplicar por id+timestamp\n    const combinedMap = new Map<string, any>();\n    [...auditStoreLogs, ...neonLogs].forEach(log => {\n      const key = log.id || `${log.timestamp}_${log.accion}`;\n      if (!combinedMap.has(key)) combinedMap.set(key, log);\n    });\n    \n    const filtered = [...combinedMap.values()]\n      .filter((l: any) => !SESSION_ACTIONS.has(l.accion))\n      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());\n    \n    setAuditLogs(filtered);\n  } catch (err) {\n    console.error('Error cargando audit logs:', err);\n  } finally {\n    setLoading(false);\n  }\n};\n\nuseEffect(() => { loadLogs(); }, []);"
+      }
+    },
+
+    {
+      "id": "BUG-009",
+      "severidad": "GRAVE",
+      "categoria": "PersonalPage",
+      "archivo": "src/pages/PersonalPage.tsx",
+      "lineas": "47-65",
+      "titulo": "PersonalPage tiene dos fuentes de personal inconsistentes — estado local vs cmsStore",
+      "descripcion": "PersonalPage mantiene un estado local `personal` (useState) que carga desde `window.electronAPI.db.getUsers()`, Y también accede a `useCMSStore().personal` (la lista de Personal del store Zustand). Al agregar un colaborador, se llama a `window.electronAPI.db.addUser()` (localStorage `sha256_pwa_users`) pero NO se llama a `useCMSStore().addPersonal()`. El resultado: la lista en PersonalPage se actualiza con `loadUsers()`, pero el store global no se actualiza. Otras páginas que usen `cmsStore.personal` ven una lista desactualizada.",
+      "impacto": "Los peritos agregados en PersonalPage no aparecen en el selector de 'asignado a' en SeguimientoCompliancePage ni en el formulario de tareas del Dashboard.",
+      "fix": {
+        "archivo": "src/pages/PersonalPage.tsx — handleSubmit",
+        "descripcion": "Después de addUser via electronAPI, sincronizar con cmsStore.addPersonal().",
+        "codigo_handleSubmit_agregar": "// Después de result.success en handleSubmit:\nif (result.success) {\n  // Sincronizar con el store global\n  addPersonal({\n    nombre,\n    apellido,\n    ci,\n    cargo,\n    rol: rol as any,\n    organismo: '',\n    despacho,\n    email,\n    telefono,\n    activo: true,\n  });\n  loadUsers();\n  resetForm();\n}"
+      }
+    },
+
+    {
+      "id": "BUG-010",
+      "severidad": "GRAVE",
+      "categoria": "Gestor de Casos",
+      "archivo": "src/pages/CasosPage.tsx",
+      "lineas": "handleCreateCaso",
+      "titulo": "addCaso() retorna null cuando Neon no está configurado — error no comunicado al usuario",
+      "descripcion": "En CasosPage, `handleCreateCaso` llama a `addCaso()` del store y espera un ID. Si Neon no está configurado y `window.electronAPI.db.addCaso()` falla, `addCaso` en el store hace `return null`. Pero el caso YA fue creado en IndexedDB/localStorage por el shim. El ID devuelto es null, el store NO llama a `set(s => ({ casos: [...s.casos, nuevo] }))` porque la línea `if (result && result.success)` falla. El caso queda en la DB pero no en la UI. Al recargar aparece, pero el usuario ve que 'no se guardó'.",
+      "impacto": "El Compliance Officer ve que el caso 'no se creó' cuando en realidad sí se guardó. Puede crear el mismo caso múltiples veces.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts — addCaso",
+        "descripcion": "El shim de main.tsx siempre retorna { success: true, id: newId } incluso con Neon offline. Pero si el shim falla con excepción, debemos capturar e igual agregar el caso al store local.",
+        "codigo_addCaso_catch": "} catch (e) {\n  console.error('Error addCaso DB:', e);\n  // Aunque falle la DB, crear el caso localmente para no perder el trabajo del usuario\n  const fallbackId = uid();\n  const fallbackCaso: CasoCMS = {\n    ...caso,\n    tipoProyecto: caso.tipoProyecto || 'forense_whatsapp',\n    id: fallbackId,\n    fechaCreacion: now(),\n    fechaUltimaActualizacion: now(),\n  };\n  set(s => ({ casos: [...s.casos, fallbackCaso] }));\n  get().addAuditLog({ accion: 'CASO_CREADO_LOCAL', detalle: `Caso ${caso.numeroCaso} guardado localmente (sin conexión a Neon)`, nivel: 'warning', casoId: fallbackId, usuario: caso.peritoLider });\n  return fallbackId; // Retornar ID válido incluso sin Neon\n}"
+      }
+    },
+
+    {
+      "id": "BUG-011",
+      "severidad": "GRAVE",
+      "categoria": "Compliance Manager — Validación de Pasos",
+      "archivo": "src/store/cmsStore.ts — verifyStepCompletion",
+      "lineas": "610-660",
+      "titulo": "verifyStepCompletion requiere caso seleccionado globalmente — falla si se llama desde fuera de la selección",
+      "descripcion": "El método `verifyStepCompletion(stepId)` lee `get().casoSeleccionado` para encontrar el caso. Si se llama desde un componente que renderiza múltiples casos simultáneamente, o si el usuario cambió el `casoSeleccionado` entre renders, el método opera sobre el caso incorrecto. No acepta un `casoId` como parámetro, lo que es un diseño rígido y propenso a bugs.",
+      "impacto": "El chequeo de completitud de pasos puede validar el caso equivocado en escenarios de navegación rápida.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts",
+        "descripcion": "Modificar verifyStepCompletion para aceptar un casoId opcional como parámetro.",
+        "firma_nueva": "verifyStepCompletion: (stepId: string, casoIdOverride?: string) => { ... }",
+        "cambio": "Reemplazar `if (!casoSeleccionado)` con:\nconst effectiveCasoId = casoIdOverride || casoSeleccionado;\nif (!effectiveCasoId) return { canComplete: false, missing: ['No hay caso seleccionado'], missingObjects: [] };\nconst caso = casos.find(c => c.id === effectiveCasoId);"
+      }
+    },
+
+    {
+      "id": "BUG-012",
+      "severidad": "GRAVE",
+      "categoria": "Tutoriales Forenses — Tutorial ADB",
+      "archivo": "src/pages/Forense/TutorialesForensesPage.tsx",
+      "lineas": "2577-2690",
+      "titulo": "Simulación ADB Backup usa setInterval con closure stale — progreso puede quedar atascado al 60%",
+      "descripcion": "El tutorial ADB tiene una simulación de progreso con `setInterval`. El interval usa `setAdbProgreso(prev => prev + delta)` correctamente, pero la lógica de `adbConsola` usa un array con `useState` cuyo valor se captura en el closure en el momento de crear el interval. Si el componente re-renderiza entre ticks (por un cambio de estado externo), el closure del setInterval tiene una referencia stale a `adbConsola` del primer render y no agrega las líneas correctas.",
+      "impacto": "La consola del tutorial ADB puede mostrar líneas duplicadas o no mostrar nada después del 60% de progreso.",
+      "fix": {
+        "archivo": "src/pages/Forense/TutorialesForensesPage.tsx",
+        "descripcion": "Usar useRef para la consola en lugar de depender del closure del interval.",
+        "codigo_patron": "const adbConsolaRef = useRef<ConsoleLine[]>([]);\n// Al actualizar la consola:\nconst newLine = { text: '...', type: 'success', timestamp: new Date().toISOString() };\nadbConsolaRef.current = [...adbConsolaRef.current, newLine];\nsetAdbConsola([...adbConsolaRef.current]);"
+      }
+    },
+
+    {
+      "id": "BUG-013",
+      "severidad": "MODERADO",
+      "categoria": "Compliance Manager",
+      "archivo": "src/store/cmsStore.ts — completeStep",
+      "lineas": "680-715",
+      "titulo": "completeStep falla silenciosamente cuando el step está en estado 'disponible' sin haber pasado por 'en_progreso'",
+      "descripcion": "El método `completeStep()` solo acepta pasos en estado `en_progreso` o `disponible`. Pero la validación con `verifyStepCompletion()` puede retornar `canComplete: false` por requisitos normativas pendientes, y en ese caso el método simplemente retorna sin hacer nada ni notificar al usuario que exactamente qué falta. El audit log dice 'PASO_BLOQUEADO' pero la UI no muestra ese mensaje al Compliance Officer.",
+      "impacto": "El usuario hace click en 'Completar Paso', no pasa nada, no sabe por qué.",
+      "fix": {
+        "archivos": ["src/store/cmsStore.ts", "src/pages/Control/SeguimientoCompliancePage.tsx"],
+        "descripcion": "Retornar el resultado de verifyStepCompletion desde completeStep para que la UI pueda mostrar el detalle de qué falta.",
+        "cambio_cmsStore": "completeStep: (stepId) => {\n  // ... validaciones ...\n  const verification = get().verifyStepCompletion(stepId);\n  if (!verification.canComplete) {\n    // Log de auditoría (ya existe)\n    // NUEVO: retornar los objetos faltantes para que la UI los muestre\n    return { success: false, missing: verification.missing, missingObjects: verification.missingObjects };\n  }\n  // ... completar paso ...\n  return { success: true };\n}",
+        "cambio_ui": "En SeguimientoCompliancePage, al llamar completeStep():\nconst result = completeStep(selectedStep.id);\nif (result && !result.success) {\n  setMissingItemsAlert(result.missing); // Mostrar panel de advertencia con items pendientes\n}"
+      }
+    },
+
+    {
+      "id": "BUG-014",
+      "severidad": "MODERADO",
+      "categoria": "Migración de Datos",
+      "archivo": "src/store/cmsStore.ts — migrateStepsData",
+      "lineas": "555-590",
+      "titulo": "migrateStepsData puede ejecutarse dos veces en modo estricto de React — duplica la lógica de migración",
+      "descripcion": "El guard `if (_dataMigrated || casos.length === 0) return;` es correcto, pero en React 18 StrictMode los useEffect se ejecutan dos veces en development. Si `migrateStepsData` se llama desde un useEffect (como en App.tsx línea con `migrateStepsData()`), el segundo call encuentra `_dataMigrated = false` aún porque el primer set() asíncrono no completó. El resultado son dos migrations paralelas que pueden dejar el estado en un medio migrado.",
+      "impacto": "En desarrollo (StrictMode), algunos casos pueden quedar con `steps` parcialmente migrados. En producción no ocurre.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts",
+        "descripcion": "Usar una variable de módulo (no de estado) como mutex de migración.",
+        "codigo": "let migrationRunning = false;\n\nmigrateStepsData: () => {\n  const { casos, _dataMigrated } = get();\n  if (_dataMigrated || casos.length === 0 || migrationRunning) return;\n  migrationRunning = true;\n  // ... lógica de migración ...\n  set({ casos: migratedCasos as CasoCMS[], _dataMigrated: true });\n  migrationRunning = false;\n}"
+      }
+    },
+
+    {
+      "id": "BUG-015",
+      "severidad": "MODERADO",
+      "categoria": "Dashboard",
+      "archivo": "src/pages/DashboardPage.tsx",
+      "lineas": "66-77",
+      "titulo": "Dashboard carga auditLogs con window.electronAPI.db.getAuditLogs en useEffect sin cleanup — memory leak",
+      "descripcion": "El useEffect que carga los audit logs para el Dashboard no tiene cleanup function. Si el componente se desmonta mientras la promesa está pendiente (ej: el usuario navega antes de que carguen los logs), `setAuditLogs(logs)` se llama sobre un componente desmontado, causando un warning de React y potencial memory leak.",
+      "impacto": "Warning de React en consola: 'Can't perform a React state update on an unmounted component'. En casos extremos, memory leak.",
+      "fix": {
+        "archivo": "src/pages/DashboardPage.tsx",
+        "codigo_antes": "useEffect(() => {\n  if (window.electronAPI?.db?.getAuditLogs) {\n    window.electronAPI.db.getAuditLogs().then((logs: any) => {\n      setAuditLogs(logs);\n    });\n  }\n}, []);",
+        "codigo_despues": "useEffect(() => {\n  let mounted = true;\n  if (window.electronAPI?.db?.getAuditLogs) {\n    window.electronAPI.db.getAuditLogs().then((logs: any) => {\n      if (mounted) setAuditLogs(logs);\n    }).catch(() => {});\n  }\n  return () => { mounted = false; };\n}, []);"
+      }
+    },
+
+    {
+      "id": "BUG-016",
+      "severidad": "MODERADO",
+      "categoria": "Planillas",
+      "archivo": "src/pages/Planillas/*.tsx",
+      "lineas": "General en todas las planillas",
+      "titulo": "Las planillas no tienen validación antes de imprimir — se pueden imprimir con campos vacíos",
+      "descripcion": "ActaObtencionPage, ActaEntrevistaPage, PlanillaPRCCPage, ActaDictamenPage y ActaEntregaResultadosPage permiten imprimir con campos en blanco. No hay validación de campos obligatorios (número de caso, fecha, nombres de los firmantes) antes de llamar a `window.print()`. Los documentos impresos quedan con líneas en blanco donde debería haber datos.",
+      "impacto": "Documentos forenses oficiales impresos con datos incompletos, potencialmente inválidos para presentar en tribunales.",
+      "fix": {
+        "descripcion": "Agregar función de validación antes de window.print() en cada planilla.",
+        "codigo_validacion": "const camposRequeridos = [\n  { valor: numeroCaso, nombre: 'Número de Caso' },\n  { valor: fechaActa, nombre: 'Fecha del Acta' },\n  { valor: peritoLider, nombre: 'Nombre del Perito Líder' },\n  { valor: fiscal, nombre: 'Fiscal' },\n];\nconst faltantes = camposRequeridos.filter(c => !c.valor?.trim());\nif (faltantes.length > 0) {\n  alert(`Campos obligatorios sin completar:\\n${faltantes.map(f => `• ${f.nombre}`).join('\\n')}`);\n  return;\n}\nwindow.print();"
+      }
+    },
+
+    {
+      "id": "BUG-017",
+      "severidad": "MODERADO",
+      "categoria": "Seguimiento Compliance — Tareas",
+      "archivo": "src/pages/Control/SeguimientoCompliancePage.tsx",
+      "lineas": "1419-1450",
+      "titulo": "Variable local casoSeleccionado en TaskModal colisiona con la del store global",
+      "descripcion": "En la parte final de SeguimientoCompliancePage hay un componente de tareas inline. Línea 1419: `const casoSeleccionado = casos.find(c => c.id === form.casoId)`. Esta variable local `casoSeleccionado` tiene el mismo nombre que la variable destructurada del store al inicio del componente (línea 177). Aunque JavaScript scoping las diferencia, es confuso y puede causar bugs si alguien refactoriza el código o usa la variable equivocada.",
+      "impacto": "Bug potencial en refactorizaciones futuras. Confusión de mantenimiento.",
+      "fix": {
+        "descripcion": "Renombrar la variable local a `casoDelFormulario` o `casoParaTarea` para evitar la colisión de nombres.",
+        "codigo_antes": "const casoSeleccionado = casos.find(c => c.id === form.casoId);",
+        "codigo_despues": "const casoDelFormulario = casos.find(c => c.id === form.casoId);"
+      }
+    },
+
+    {
+      "id": "BUG-018",
+      "severidad": "MODERADO",
+      "categoria": "AuditStore",
+      "archivo": "src/store/auditStore.ts — verifyChain",
+      "lineas": "85-115",
+      "titulo": "verifyChain recalcula los hashes en el orden incorrecto — los logs ordenados por timestamp asc pueden tener el mismo timestamp",
+      "descripcion": "El método `verifyChain()` ordena los logs por timestamp ASC para verificar la cadena. Sin embargo, el hash de cada entry incluye el hash del anterior (encadenamiento). Si dos entries tienen exactamente el mismo timestamp (posible si se crean en el mismo millisegundo, lo cual ocurre en bulk operations), el orden de `sort()` es indeterminado y la verificación puede fallar falsamente.",
+      "impacto": "La verificación de integridad de la cadena de auditoría puede reportar 'cadena rota' cuando en realidad está intacta. Esto es crítico para la admisibilidad del log en tribunales.",
+      "fix": {
+        "archivo": "src/store/auditStore.ts",
+        "descripcion": "Ordenar por timestamp Y por un tiebreaker secundario (ej: hashAnterior) para hacer el sort determinístico.",
+        "codigo_sort_nuevo": "const sorted = [...logs].sort((a, b) => {\n  const timeDiff = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();\n  if (timeDiff !== 0) return timeDiff;\n  // Tiebreaker: orden por hashAnterior (el que tiene el hash anterior correcto va primero)\n  return a.hashAnterior.localeCompare(b.hashAnterior);\n});"
+      }
+    },
+
+    {
+      "id": "BUG-019",
+      "severidad": "MODERADO",
+      "categoria": "Tutoriales Forenses — WhatsApp Parser",
+      "archivo": "src/pages/Forense/TutorialesForensesPage.tsx",
+      "lineas": "2761-2808",
+      "titulo": "El simulador de WhatsApp Chat usa datos hardcodeados con fechas del pasado — confunde al usuario",
+      "descripcion": "El tutorial de WhatsApp Parser tiene sesiones de chat simuladas con fechas hardcodeadas. Cuando el usuario ve las conversaciones simuladas, los timestamps muestran fechas de 2024 sin indicar claramente que son datos de DEMOSTRACIÓN. Un Compliance Officer inexperto podría confundir los datos simulados con evidencia real.",
+      "impacto": "Riesgo de confusión entre datos reales y simulados en un contexto de evidencia forense.",
+      "fix": {
+        "descripcion": "Agregar banner visible de DATOS DE DEMOSTRACIÓN sobre el chat simulado.",
+        "codigo_banner": "<div className=\"mb-3 px-3 py-2 rounded-lg bg-[#FF9500]/10 border border-[#FF9500]/20 flex items-center gap-2\">\n  <AlertTriangle size={14} className=\"text-[#FF9500] shrink-0\" />\n  <p className=\"text-[11px] font-semibold text-[#FF9500]\">\n    DATOS DE DEMOSTRACIÓN — Estas conversaciones son simuladas con fines educativos. No representan evidencia real.\n  </p>\n</div>"
+      }
+    },
+
+    {
+      "id": "BUG-020",
+      "severidad": "MODERADO",
+      "categoria": "Planillas — Print CSS",
+      "archivo": "src/pages/Planillas/Planillas.css",
+      "lineas": "General",
+      "titulo": "Print stylesheet falta para el modo oscuro — las planillas se imprimen con fondo negro",
+      "descripcion": "Si el usuario tiene el modo oscuro activado, al imprimir cualquier planilla el navegador puede aplicar los colores dark (fondo #1C1C1E, texto blanco) al documento impreso, desperdiciando tinta y produciendo documentos ilegibles. Los @media print en AuditoriaPage tienen el fix pero las planillas en Planillas.css no lo implementan universalmente.",
+      "impacto": "Documentos forenses impresos con fondo negro y texto blanco — imposibles de leer y no aptos para presentar en tribunales.",
+      "fix": {
+        "archivo": "src/pages/Planillas/Planillas.css",
+        "codigo_agregar": "@media print {\n  * {\n    -webkit-print-color-adjust: exact !important;\n    print-color-adjust: exact !important;\n    color-scheme: light !important;\n  }\n  \n  body, html {\n    background: white !important;\n    color: black !important;\n  }\n  \n  /* Forzar modo claro en todas las variables CSS */\n  :root, html.dark {\n    --apple-bg: #F5F5F7 !important;\n    --apple-bg-secondary: #FFFFFF !important;\n    --apple-surface: #FFFFFF !important;\n    --apple-text: #1D1D1F !important;\n    --apple-text-muted: #6E6E73 !important;\n    --apple-border: rgba(0,0,0,0.12) !important;\n    --apple-separator: rgba(0,0,0,0.08) !important;\n  }\n  \n  .no-print, nav, aside, .sidebar, header button {\n    display: none !important;\n  }\n}"
+      }
+    },
+
+    {
+      "id": "BUG-021",
+      "severidad": "ADVERTENCIA",
+      "categoria": "Seguridad",
+      "archivo": "src/main.tsx",
+      "lineas": "109-115",
+      "titulo": "seedInitialUsers crea usuario 'admin' con contraseña 'admin' — credenciales por defecto inseguras",
+      "descripcion": "La función `seedInitialUsers()` en main.tsx crea el usuario admin con password='admin' si no existe. Aunque el README documenta esto como credenciales por defecto, en un CMS forense de uso profesional las credenciales débiles son inaceptables. Un actor malicioso que acceda a la URL puede entrar inmediatamente.",
+      "impacto": "Riesgo de acceso no autorizado al CMS forense.",
+      "fix": {
+        "descripcion": "Al primer inicio, redirigir al usuario a una pantalla de configuración inicial donde DEBA cambiar la contraseña antes de acceder.",
+        "codigo_authStore": "// En authStore, agregar flag:\nisFirstLogin: boolean;\n\n// En login exitoso:\nif (result.user.username === 'admin') {\n  set({ ...state, isFirstLogin: true });\n}\n\n// En LoginPage, después de login exitoso:\nif (isFirstLogin) {\n  navigate('/setup/change-password');\n}"
+      }
+    },
+
+    {
+      "id": "BUG-022",
+      "severidad": "ADVERTENCIA",
+      "categoria": "Performance",
+      "archivo": "src/store/cmsStore.ts — persist middleware",
+      "lineas": "Toda la configuración del persist",
+      "titulo": "partialize: (state) => state persiste TODO el estado incluyendo funciones — puede crecer indefinidamente",
+      "descripcion": "La configuración `partialize: (state) => state` persiste el estado COMPLETO incluyendo `auditLogs` (array que crece con cada acción), `evidencias`, `tareas`, `fases`, etc. Zustand serialize correctamente las funciones, pero con el tiempo `auditLogs` puede tener cientos de entradas grandes. El límite de `auditLogs.slice(0, 500)` en addAuditLog ayuda, pero otros arrays no tienen límite.",
+      "impacto": "Con muchos casos y evidencias, el localStorage puede superar los 5MB y comenzar a fallar con DOMException: QuotaExceededError.",
+      "fix": {
+        "archivo": "src/store/cmsStore.ts",
+        "codigo_partialize_nuevo": "partialize: (state) => ({\n  // Solo persistir datos esenciales\n  casos: state.casos,\n  personal: state.personal,\n  normativas: state.normativas,\n  // Excluir datos que se recargan desde DB o IndexedDB\n  // auditLogs -> se leen de IndexedDB via auditStore\n  // evidencias, tareas -> se pueden derivar de los casos o recargar\n  casoSeleccionado: state.casoSeleccionado,\n  filtroEstado: state.filtroEstado,\n  filtroPrioridad: state.filtroPrioridad,\n  busqueda: state.busqueda,\n  _dataMigrated: state._dataMigrated,\n})"
+      }
+    },
+
+    {
+      "id": "BUG-023",
+      "severidad": "ADVERTENCIA",
+      "categoria": "Tutoriales — Manual Avilla",
+      "archivo": "src/pages/Forense/ManualAvillaPage.tsx",
+      "lineas": "General",
+      "titulo": "ManualAvillaPage usa LS_KEY localStorage para progreso pero no limpia al cambiar de versión",
+      "descripcion": "ManualServerlessPage usa `const LS_KEY = 'manual_serverless_progress_v2'` para persistir el progreso del manual. Pero si el schema del progreso cambia (más pasos, nuevos campos), los datos de `v2` persisten con la estructura antigua. ManualAvillaPage hace lo mismo pero con su propia clave. No hay versionado robusto del schema almacenado.",
+      "impacto": "Si se agregan pasos al manual, los usuarios con progreso guardado pueden ver inconsistencias (paso marcado como completado que no existe, o nuevo paso que no aparece como disponible).",
+      "fix": {
+        "descripcion": "Agregar validación del schema al cargar el progreso. Si la estructura no coincide, hacer reset del progreso guardado.",
+        "codigo_cargar_progreso": "const loadedProgress = JSON.parse(localStorage.getItem(LS_KEY) || 'null');\n// Validar que tiene la misma cantidad de pasos que la versión actual\nif (loadedProgress && Object.keys(loadedProgress).length !== PASOS.length) {\n  console.info('[ManualAvilla] Schema de progreso desactualizado — reiniciando progreso');\n  localStorage.removeItem(LS_KEY);\n  return {};\n}\nreturn loadedProgress || {};"
+      }
+    }
+
+  ],
+
+  "correccion_neon_db_completa": {
+    "descripcion": "Guía paso a paso para que la conexión con Neon DB funcione correctamente en la app web/PWA",
+    "problema_raiz": "La app fue diseñada originalmente para Electron (app de escritorio) y usa window.electronAPI como abstracción. En web, el shim de main.tsx simula esa API. Neon DB se conecta SOLO si VITE_DATABASE_URL está configurada. Sin esta variable, TODO va a localStorage.",
+    "pasos_verificacion": [
+      {
+        "paso": 1,
+        "accion": "Verificar que .env tiene VITE_DATABASE_URL configurada",
+        "comando": "cat .env | grep VITE_DATABASE_URL",
+        "esperado": "VITE_DATABASE_URL=postgresql://usuario:password@ep-xxx.us-east-1.aws.neon.tech/neondb?sslmode=require"
+      },
+      {
+        "paso": 2,
+        "accion": "Verificar que la URL tiene el formato correcto (no la URL directa, sino la de pooler o HTTP)",
+        "nota": "Neon Serverless en browser REQUIERE la URL de HTTP endpoint, no la TCP. La URL debe ser del tipo: https://ep-xxx.us-east-1.aws.neon.tech/neondb o el pooler con ?sslmode=require"
+      },
+      {
+        "paso": 3,
+        "accion": "Agregar las tablas a Neon si no existen — ejecutar initDatabase() manualmente",
+        "codigo": "// En la consola del navegador con la app corriendo:\nawait window.__sha256_initDB?.(); // Agregar este helper en main.tsx"
+      },
+      {
+        "paso": 4,
+        "accion": "Verificar CORS en Neon — el cliente @neondatabase/serverless hace fetch directo al endpoint HTTP de Neon que soporta CORS por defecto",
+        "nota": "Si hay error de CORS, verificar que se está usando la URL de HTTP (https://ep-...) y no la TCP (postgres://)"
+      },
+      {
+        "paso": 5,
+        "accion": "Verificar en la consola del navegador si hay errores de inicialización",
+        "buscar": "Error al inicializar el cliente Neon | Error de conexión a Neon | [NeonDB]"
+      }
+    ],
+    "fix_neonClient_fetch_mode": {
+      "descripcion": "Neon Serverless en browser puede necesitar configuración adicional para CORS",
+      "codigo_neonClient_mejorado": "import { neon, neonConfig } from '@neondatabase/serverless';\n\n// Configuración necesaria para browser\nneonConfig.fetchConnectionCache = true;\n\nconst DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';\nexport const isNeonConfigured: boolean = !!DATABASE_URL && DATABASE_URL.includes('neon.tech');\n\nlet sqlClient: any = null;\nif (isNeonConfigured) {\n  try {\n    sqlClient = neon(DATABASE_URL);\n    console.info('[NeonDB] Cliente inicializado correctamente.');\n  } catch (e) {\n    console.error('[NeonDB] Error al inicializar:', e);\n  }\n}"
+    }
+  },
+
+  "orden_de_correccion": {
+    "descripcion": "Aplicar los fixes en este orden para evitar dependencias rotas",
+    "fase_1_critica": ["BUG-001", "BUG-002", "BUG-003", "BUG-004", "BUG-005"],
+    "fase_2_datos": ["BUG-006", "BUG-007", "BUG-008", "BUG-009", "BUG-010"],
+    "fase_3_compliance": ["BUG-011", "BUG-013", "BUG-016", "BUG-017"],
+    "fase_4_tutoriales": ["BUG-012", "BUG-019", "BUG-023"],
+    "fase_5_calidad": ["BUG-014", "BUG-015", "BUG-018", "BUG-020", "BUG-021", "BUG-022"]
+  },
+
+  "instrucciones_para_claude": {
+    "contexto": "Este es un CMS de Cumplimiento Forense (SHA256.US) para Compliance Officers de peritaje digital. Los casos son expedientes judiciales reales. Los errores en la persistencia de datos pueden resultar en pérdida de evidencia forense y afectar procesos judiciales.",
+    "prioridad_absoluta": "BUG-001 al BUG-005 son BLOQUEANTES — sin estos fixes la app no funciona correctamente en ningún escenario web.",
+    "no_romper": [
+      "El hash chain del auditStore (auditStore.ts) — es la garantía de inmutabilidad forense",
+      "El sistema de pasos secuenciales (initSteps, startStep, completeStep, unlockNextStep) — es el flujo compliance",
+      "La migración de datos v1→v2→v3 en main.tsx — hay usuarios con datos legacy",
+      "Los seedInitialCasos — son los casos de demostración que el usuario ve al entrar"
+    ],
+    "verificacion_post_fix": [
+      "1. Login con admin/admin debe funcionar sin recargar la página",
+      "2. Crear un caso nuevo debe aparecer en la lista inmediatamente",
+      "3. Marcar un item de compliance en el caso 1, navegar al Dashboard, volver — el check debe persistir",
+      "4. La página de Auditoría debe mostrar logs de AMBAS fuentes (IndexedDB + localStorage)",
+      "5. Imprimir una planilla en modo oscuro debe producir un documento con fondo blanco",
+      "6. El indicator de Neon DB en el sidebar debe mostrar 'modo local' si no hay VITE_DATABASE_URL"
+    ]
+  }
+}

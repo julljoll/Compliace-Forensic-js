@@ -1,17 +1,33 @@
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
+
+// Configuración necesaria para browser
+try {
+  neonConfig.fetchConnectionCache = true;
+} catch (e) {
+  console.error('Error al configurar neonConfig:', e);
+}
 
 // URL de conexión desde variable de entorno
 // En producción, definir VITE_DATABASE_URL en .env
 const DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';
+export const isNeonConfigured: boolean = !!DATABASE_URL && (DATABASE_URL.startsWith('postgresql://') || DATABASE_URL.startsWith('postgres://') || DATABASE_URL.includes('neon.tech'));
 
-// Inicializar el cliente Neon si fetch está disponible (entorno navegador)
+// Inicializar el cliente Neon si fetch está disponible (entorno navegador) y está configurado
 let sqlClient: any = null;
-try {
-  if (typeof fetch !== 'undefined') {
-    sqlClient = neon(DATABASE_URL);
+if (isNeonConfigured) {
+  try {
+    if (typeof fetch !== 'undefined') {
+      const rawClient = neon(DATABASE_URL);
+      sqlClient = (query: string, params?: any[]) => {
+        return rawClient.query(query, params);
+      };
+      console.info('[NeonDB] Cliente inicializado correctamente.');
+    }
+  } catch (e) {
+    console.error('[NeonDB] Error al inicializar cliente:', e);
   }
-} catch (e) {
-  console.error('Error al inicializar el cliente Neon:', e);
+} else {
+  console.warn('[NeonDB] VITE_DATABASE_URL no configurada — operando en modo local (localStorage/Zustand). Los datos no se sincronizan con la nube.');
 }
 
 // Verificar conexión a la base de datos Neon

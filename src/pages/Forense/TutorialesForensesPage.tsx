@@ -2440,18 +2440,28 @@ export default function TutorialesForensesPage() {
   // Lista de tutoriales para renderizado del selector lateral
   const tutorialList = useMemo(() => {
     return [
-      { id: 'correo', label: 'Correo Corporativo', sub: 'Consignación / Técnica', icon: Mail, complexity: 'Baja', badge: 'Auditor de Correo' },
-      { id: 'adb', label: 'Colectas ADB', sub: 'Obtención Técnica', icon: TerminalIcon, complexity: 'Media', badge: 'Analista Móvil ADB' },
-      { id: 'downgrade', label: 'APK Downgrade', sub: 'Consignación / Derivación', icon: Smartphone, complexity: 'Alta', badge: 'SQLite Extractor' },
-      { id: 'whatsapp', label: 'WhatsApp Parser', sub: 'Fase de Laboratorio - Peritación', icon: Database, complexity: 'Media', badge: 'WhatsApp Parser' },
-      { id: 'integrity', label: 'Integridad (.avilla)', sub: 'Fase de Resguardo', icon: Shield, complexity: 'Baja', badge: 'Oficial de Custodia' },
-      { id: 'iped', label: 'Indexador IPED', sub: 'Procesamiento Masivo', icon: Search, complexity: 'Media', badge: 'Perito Indexador' },
-      { id: 'cadena', label: 'Cadena de Custodia', sub: 'Garantía e Integridad', icon: Scale, complexity: 'Alta', badge: 'Perito Judicial' },
-      { id: 'kali_whatsapp', label: 'WhatsApp Kali Linux', sub: 'WhatsApp Android sin Root', icon: TerminalIcon, complexity: 'Alta', badge: 'Especialista Kali' },
-      { id: 'caine_whatsapp', label: 'WhatsApp CAINE Linux', sub: 'Entorno Forense Nativo', icon: Shield, complexity: 'Alta', badge: 'Perito CAINE' },
-      { id: 'cambridge_forenses', label: 'Ciencias Forenses Cambridge', sub: 'Investigación Científica', icon: Award, complexity: 'Alta', badge: 'Científico Forense' },
+      // ─── Técnicos (procedimentales) ───
+      { id: 'correo', label: 'Correo Forense', sub: 'Consignación / Técnica', icon: Mail, complexity: 'Baja', badge: 'Auditor de Correo', categoria: 'tecnico' as const, desc: 'Adquisición, preservación y análisis de mensajes de datos (.eml/.msg) con cabeceras SMTP, DKIM y SPF.' },
+      { id: 'adb', label: 'Colectas ADB', sub: 'Obtención Técnica Android', icon: TerminalIcon, complexity: 'Media', badge: 'Analista Móvil ADB', categoria: 'tecnico' as const, desc: 'Extracción lógica de datos desde dispositivos Android mediante Android Debug Bridge (USB).' },
+      { id: 'downgrade', label: 'APK Downgrade', sub: 'Consignación / Derivación', icon: Smartphone, complexity: 'Alta', badge: 'SQLite Extractor', categoria: 'tecnico' as const, desc: 'Extracción invasiva de la base de datos protegida de WhatsApp mediante instalación de versión anterior del APK.' },
+      { id: 'whatsapp', label: 'WhatsApp Parser', sub: 'Fase de Laboratorio', icon: Database, complexity: 'Media', badge: 'WhatsApp Parser', categoria: 'tecnico' as const, desc: 'Parseo y consultas SQL sobre msgstore.db y wa.db extraídos, con herramientas WHAPA y SQLite Browser.' },
+      { id: 'kali_whatsapp', label: 'Kali Linux Forense', sub: 'WhatsApp Android sin Root', icon: TerminalIcon, complexity: 'Alta', badge: 'Especialista Kali', categoria: 'tecnico' as const, desc: 'Extracción y descifrado de bases de datos WhatsApp (crypt15) en distribución Kali Linux con wa-crypt-tools.' },
+      { id: 'caine_whatsapp', label: 'CAINE Linux Forense', sub: 'Entorno Forense Nativo', icon: Shield, complexity: 'Alta', badge: 'Perito CAINE', categoria: 'tecnico' as const, desc: 'Adquisición de evidencias en CAINE Linux con montaje en modo solo lectura, Autopsy y Guymager.' },
+      { id: 'iped', label: 'Indexador IPED', sub: 'Procesamiento Masivo', icon: Search, complexity: 'Media', badge: 'Perito Indexador', categoria: 'tecnico' as const, desc: 'Indexación e investigación masiva de imágenes forenses con IPED (Policía Federal de Brasil / Interpol).' },
+      // ─── Teóricos (normativos/conceptuales) ───
+      { id: 'cadena', label: 'Cadena de Custodia', sub: 'MUCC-2017 y COPP', icon: Scale, complexity: 'Alta', badge: 'Perito Judicial', categoria: 'teorico' as const, desc: 'Principios, procedimientos y consecuencias del MUCC-2017: fases, formularios, transferencias y art. 181/187 COPP.' },
+      { id: 'integrity', label: 'Integridad SHA-256', sub: 'Hashing y Firma Digital', icon: Hash, complexity: 'Baja', badge: 'Oficial de Custodia', categoria: 'teorico' as const, desc: 'Conceptos de hashing criptográfico SHA-256, firmas digitales .avilla, verificación e inmutabilidad de evidencia.' },
+      { id: 'cambridge_forenses', label: 'Ciencias Forenses Cambridge', sub: 'Investigación Científica', icon: Award, complexity: 'Alta', badge: 'Científico Forense', categoria: 'teorico' as const, desc: 'Fundamentos científicos del peritaje digital: datos volátiles vs. persistentes, metodología y dictamen art. 225 COPP.' },
     ] as const;
   }, []);
+
+  // Tab de Categoría de Tutoriales (Técnicos / Teóricos)
+  const [tutorialCategoria, setTutorialCategoria] = useState<'tecnico' | 'teorico'>('tecnico');
+
+  const tutorialesFiltrados = useMemo(() => {
+    return tutorialList.filter(t => t.categoria === tutorialCategoria);
+  }, [tutorialList, tutorialCategoria]);
+
 
   // ─── ESTADOS DEL SIMULADOR / LABS (PRESERVADO) ───────────────────────────
   const [correoCasoId, setCorreoCasoId] = useState('');
@@ -2573,6 +2583,7 @@ export default function TutorialesForensesPage() {
   const [adbConsola, setAdbConsola] = useState<ConsoleLine[]>([]);
   const [adbHash, setAdbHash] = useState('');
   const adbConsoleEndRef = useRef<HTMLDivElement>(null);
+  const adbConsolaRef = useRef<ConsoleLine[]>([]);
 
   useEffect(() => {
     if (adbConsoleEndRef.current) {
@@ -2582,7 +2593,9 @@ export default function TutorialesForensesPage() {
 
   const pushAdbLog = (text: string, type: ConsoleLine['type'] = 'info') => {
     const time = new Date().toLocaleTimeString();
-    setAdbConsola(prev => [...prev, { text, type, timestamp: time }]);
+    const newLine: ConsoleLine = { text, type, timestamp: time };
+    adbConsolaRef.current = [...adbConsolaRef.current, newLine];
+    setAdbConsola([...adbConsolaRef.current]);
   };
 
   const simularEjecucionAdb = async () => {
@@ -2593,6 +2606,7 @@ export default function TutorialesForensesPage() {
     setAdbEjecutando(true);
     setAdbCompletado(false);
     setAdbProgreso(0);
+    adbConsolaRef.current = [];
     setAdbConsola([]);
     setAdbHash('');
 
@@ -2680,7 +2694,7 @@ export default function TutorialesForensesPage() {
   };
 
   const handleExportAdbConsole = () => {
-    const contenido = adbConsola.map(c => `[${c.timestamp}] [${c.type.toUpperCase()}] ${c.text}`).join('\n');
+    const contenido = adbConsolaRef.current.map(c => `[${c.timestamp}] [${c.type.toUpperCase()}] ${c.text}`).join('\n');
     const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -3243,9 +3257,52 @@ export default function TutorialesForensesPage() {
         
         {/* Barra Lateral Izquierda: Selector de Módulos */}
         <div className="lg:col-span-1 space-y-3 print:hidden">
-          <p className="text-xs font-bold text-[#86868B] uppercase tracking-wider px-2">Módulos de Formación</p>
+
+          {/* Tab switcher Técnicos / Teóricos */}
+          <div className="flex rounded-[12px] overflow-hidden border border-[var(--co-separator)] bg-[var(--co-surface-2)] p-1 gap-1">
+            <button
+              onClick={() => {
+                setTutorialCategoria('tecnico');
+                const firstTec = tutorialList.find(t => t.categoria === 'tecnico');
+                if (firstTec) setActiveTutorial(firstTec.id);
+              }}
+              className={`flex-1 py-2 px-2 rounded-[9px] text-[12px] font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                tutorialCategoria === 'tecnico'
+                  ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm'
+                  : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'
+              }`}
+            >
+              <TerminalIcon size={13} /> Técnicos
+            </button>
+            <button
+              onClick={() => {
+                setTutorialCategoria('teorico');
+                const firstTeo = tutorialList.find(t => t.categoria === 'teorico');
+                if (firstTeo) setActiveTutorial(firstTeo.id);
+              }}
+              className={`flex-1 py-2 px-2 rounded-[9px] text-[12px] font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${
+                tutorialCategoria === 'teorico'
+                  ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm'
+                  : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'
+              }`}
+            >
+              <Scale size={13} /> Teóricos
+            </button>
+          </div>
+
+          {/* Label de la categoría */}
+          <p className="text-[11px] font-bold text-[var(--co-gray-2)] uppercase tracking-wider px-1 mt-2">
+            {tutorialCategoria === 'tecnico' ? '🔧 Módulos Técnicos' : '📚 Módulos Teóricos'}
+          </p>
+          <p className="text-[10px] text-[var(--co-gray-2)] px-1">
+            {tutorialCategoria === 'tecnico'
+              ? 'Procedimientos prácticos de adquisición y análisis forense'
+              : 'Fundamentos normativos, marco legal y cadena de custodia'
+            }
+          </p>
+
           <div className="flex flex-col gap-1.5">
-            {tutorialList.map((tut) => {
+            {tutorialesFiltrados.map((tut) => {
               const Icon = tut.icon;
               const isActive = activeTutorial === tut.id;
               const isCertified = academyProgress.completedQuizzes[tut.id];
@@ -4021,6 +4078,12 @@ export default function TutorialesForensesPage() {
                     {/* LAB: WHATSAPP PARSER */}
                     {mod.id === 'whatsapp' && (
                       <div className="space-y-6">
+                        <div className="mb-3 px-3 py-2 rounded-lg bg-[#FF9500]/10 border border-[#FF9500]/20 flex items-center gap-2">
+                          <AlertTriangle size={14} className="text-[#FF9500] shrink-0" />
+                          <p className="text-[11px] font-semibold text-[#FF9500]">
+                            DATOS DE DEMOSTRACIÓN — Estas conversaciones son simuladas con fines educativos. No representan evidencia real.
+                          </p>
+                        </div>
                         <div className="apple-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                           <div className="flex-1 max-w-xs text-xs">
                             <label className="apple-label">Caso Judicial Vinculado</label>

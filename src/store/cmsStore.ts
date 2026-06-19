@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { useAuditStore } from './auditStore';
 import { getPasosPorTipo } from '../data/tiposProyecto';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
+import { platformAPI } from '../db/platformAPI';
 
 // ─── Enumeraciones ────────────────────────────────────────────────────────────
 
@@ -241,12 +242,12 @@ interface CMSState {
   // Nuevo sistema de pasos con estado enriquecido y gating secuencial
   initSteps: (casoId: string) => void;
   startStep: (stepId: string) => void;
-  verifyStepCompletion: (stepId: string) => { 
+  verifyStepCompletion: (stepId: string, casoIdOverride?: string) => { 
     canComplete: boolean; 
     missing: string[]; 
     missingObjects?: { type: 'tarea' | 'compliance'; id: string; text: string; subId?: string }[];
   };
-  completeStep: (stepId: string) => void;
+  completeStep: (stepId: string) => { success: boolean; missing?: string[]; missingObjects?: any[] };
   unlockNextStep: (stepId: string) => void;
   getStepState: (stepId: string) => EstadoPaso | undefined;
   
@@ -310,56 +311,56 @@ const NORMATIVAS_INICIALES: Normativa[] = [
   {
     id: 'n1', codigo: 'ISO/IEC 27037:2012', tipo: 'ISO',
     nombre: 'Directrices para identificación, recopilación, adquisición y preservación de evidencia digital',
-    descripcion: 'Norma internacional para el manejo de evidencia digital en investigaciones forenses.',
+    descripcion: 'Estándar internacional que proporciona directrices detalladas para el manejo técnico de evidencia digital. Regula las fases críticas de Identificación (reconocer objetos con potencial de evidencia digital), Recolección (recoger dispositivos físicos o copias documentadas), Adquisición (creación de imágenes y copias forenses bit-a-bit verificables mediante hashes) y Preservación (mantenimiento de la integridad y autenticidad en contenedores seguros). Es la norma técnica metodológica de referencia para evitar la contaminación o alteración de la prueba digital en investigaciones criminalísticas.',
     version: '2012', fechaVigencia: '2012-10-15', activa: true,
     articulos: ['Identificación', 'Recopilación', 'Adquisición', 'Preservación']
   },
   {
     id: 'n2', codigo: 'ISO/IEC 27042:2015', tipo: 'ISO',
     nombre: 'Directrices para el análisis e interpretación de evidencia digital',
-    descripcion: 'Norma para el análisis e interpretación de evidencia digital.',
+    descripcion: 'Estándar internacional que regula las fases posteriores a la adquisición de la evidencia digital, proporcionando directrices detalladas para el análisis científico y la interpretación de los datos extraídos. Establece requisitos estrictos de objetividad, repetibilidad y reproducibilidad de los resultados, guiando al perito en la selección de herramientas forenses validadas, la documentación de la metodología aplicada y la fundamentación técnica que soporta las conclusiones del informe pericial.',
     version: '2015', fechaVigencia: '2015-06-01', activa: true,
   },
   {
     id: 'n3', codigo: 'NIST SP 800-101 r1', tipo: 'NIST',
     nombre: 'Guidelines on Mobile Device Forensics',
-    descripcion: 'Guía del NIST para forense en dispositivos móviles.',
+    descripcion: 'Directrices técnicas de informática forense para dispositivos móviles del National Institute of Standards and Technology (NIST) de EE.UU. Aborda de manera exhaustiva los desafíos de la preservación (aislamiento de red en bolsas Faraday y modo avión), la adquisición lógica/física de datos de memoria flash y tarjetas SIM, y el análisis de la memoria volátil y bases de datos SQLite en sistemas operativos móviles iOS y Android.',
     version: 'Rev. 1', fechaVigencia: '2014-05-01', activa: true,
   },
   {
     id: 'n4', codigo: 'MUCC-2017', tipo: 'MANUAL',
     nombre: 'Manual Único de Cadena de Custodia de Evidencias',
-    descripcion: 'Manual oficial venezolano para la cadena de custodia de evidencias.',
+    descripcion: 'Manual Único de Cadena de Custodia de Evidencias Físicas y Digitales de la República Bolivariana de Venezuela, publicado en Gaceta Oficial N° 41.247 en septiembre de 2017. Es de obligatorio cumplimiento para todos los órganos de investigación penal y laboratorios forenses. Regula el proceso continuo e ininterrumpido de resguardo técnico de la evidencia, exigiendo el llenado de la Planilla PRCC y el uso de precintos numerados.',
     version: 'Final 29/09/2017', fechaVigencia: '2017-09-29', activa: true,
   },
   {
     id: 'n5', codigo: 'ACPO-v5', tipo: 'MANUAL',
     nombre: 'ACPO Good Practice Guide for Digital Evidence v5',
-    descripcion: 'Guía de buenas prácticas de la ACPO para evidencia digital.',
+    descripcion: 'Guía de buenas prácticas de la ACPO para evidencia digital. Establece los cuatro principios fundamentales de la informática forense: (1) no alterar los datos del original, (2) si es necesario acceder, el perito debe estar calificado y poder explicar sus acciones, (3) mantener un registro detallado de todos los procesos aplicados, y (4) el responsable de la investigación debe garantizar la conformidad técnica y legal del procedimiento.',
     version: '5', fechaVigencia: '2012-01-01', activa: true,
   },
   {
     id: 'n6', codigo: 'LEDI-2001', tipo: 'LEY',
     nombre: 'Ley Especial de Delitos Informáticos',
-    descripcion: 'Gaceta Oficial Nº 37.313. Ley venezolana de delitos informáticos.',
+    descripcion: 'Ley Especial contra los Delitos Informáticos de la República Bolivariana de Venezuela, publicada en Gaceta Oficial N° 37.313 (octubre de 2001). Tiene por objeto la protección integral de los sistemas de información, así como la prevención y sanción de delitos cometidos contra o mediante el uso de tecnologías, regulando la admisibilidad de las pruebas digitales.',
     version: '2001', fechaVigencia: '2001-10-30', activa: true,
   },
   {
     id: 'n7', codigo: 'LMDF-1999', tipo: 'LEY',
     nombre: 'Ley sobre Mensajes de Datos y Firmas Electrónicas',
-    descripcion: 'Marco legal venezolano para mensajes de datos y firmas electrónicas.',
+    descripcion: 'Ley sobre Mensajes de Datos y Firmas Electrónicas de Venezuela. Otorga plena validez y eficacia probatoria a los mensajes de datos y a las firmas electrónicas, equiparándolos funcionalmente a la firma autógrafa y a los documentos escritos en papel, requiriendo herramientas forenses para verificar su origen, integridad y autenticidad.',
     version: '1999', fechaVigencia: '1999-02-10', activa: true,
   },
   {
     id: 'n8', codigo: 'COPP', tipo: 'LEY',
     nombre: 'Código Orgánico Procesal Penal (Aplicación Supletoria)',
-    descripcion: 'Marco procesal de Venezuela aplicable a la cadena de custodia y licitud de la prueba digital.',
+    descripcion: 'Código Orgánico Procesal Penal de Venezuela (reforma 2021). Sus artículos 187 (obligatoriedad de la Cadena de Custodia para evitar la alteración o contaminación), 223 (experticias científicas), 225 (deber del perito de actuar conforme a las reglas de su ciencia, habilitando el uso supletorio de estándares ISO y NIST) y 181 (nulidad de pruebas ilegales) regulan la licitud de la prueba digital.',
     version: '2021', fechaVigencia: '2021-09-17', activa: true,
   },
   {
     id: 'n9', codigo: 'CENIF-2012', tipo: 'REGLAMENTO',
     nombre: 'Creación del Centro Nacional de Informática Forense',
-    descripcion: 'Gaceta Oficial N° 39.847. Creación del CENIF.',
+    descripcion: 'Decreto de Creación del Centro Nacional de Informática Forense de Venezuela (CENIF), publicado en Gaceta Oficial N° 39.847 en enero de 2012. Establece el marco orgánico para el desarrollo tecnológico, la acreditación de laboratorios forenses digitales, la formación de peritos y la normalización nacional de herramientas de adquisición.',
     version: '2012', fechaVigencia: '2012-01-20', activa: true,
   },
 ];
@@ -369,29 +370,17 @@ const NORMATIVAS_INICIALES: Normativa[] = [
 const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const now = () => new Date().toISOString();
 
+let migrationRunning = false;
+
 const neonStorage = {
   getItem: async (name: string): Promise<string | null> => {
-    if (window.electronAPI?.db) {
-      // Aquí idealmente usaríamos el ID del usuario real autenticado.
-      const state = await window.electronAPI.db.loadState(1);
-      return state ? JSON.stringify(state) : null;
-    }
     return localStorage.getItem(name);
   },
   setItem: async (name: string, value: string): Promise<void> => {
-    if (window.electronAPI?.db) {
-      // Almacena todo el estado global en PostgreSQL en background
-      await window.electronAPI.db.saveState(1, JSON.parse(value));
-    } else {
-      localStorage.setItem(name, value);
-    }
+    localStorage.setItem(name, value);
   },
   removeItem: async (name: string): Promise<void> => {
-    if (window.electronAPI?.db) {
-      // No implementado
-    } else {
-      localStorage.removeItem(name);
-    }
+    localStorage.removeItem(name);
   },
 };
 
@@ -417,7 +406,7 @@ export const useCMSStore = create<CMSState>()(
       // ── Casos ──
       fetchCasos: async () => {
         try {
-            const casosDB = window.electronAPI?.db ? await window.electronAPI.db.getCasos(1) : null;
+            const casosDB = platformAPI.db ? await platformAPI.db.getCasos(1) : null;
             if (casosDB && casosDB.length > 0) {
                 const mapeados: CasoCMS[] = casosDB.map((c: any) => {
                     let completed = {};
@@ -515,16 +504,18 @@ export const useCMSStore = create<CMSState>()(
                 });
                 set({ casos: mapeados });
             } else {
-                set({ casos: [] });
+                // BUG-003: Si la base de datos no está disponible u offline, mantener los casos locales de Zustand persistidos.
+                console.info('[CMS] Sin conexión DB o vacía — usando datos persistidos localmente.');
             }
         } catch (err) {
             console.error('Error fetching casos', err);
         }
       },
       addCaso: async (caso) => {
+        const fallbackId = uid();
         try {
             const payload = {
-                id: (caso as any).id || uid(),
+                id: (caso as any).id || fallbackId,
                 tipo_proyecto: caso.tipoProyecto || 'forense_whatsapp',
                 numero_caso: caso.numeroCaso,
                 titulo: caso.titulo,
@@ -557,7 +548,7 @@ export const useCMSStore = create<CMSState>()(
                 discoduro_marca: caso.discoduro_marca || '',
                 discoduro_modelo: caso.discoduro_modelo || '',
             };
-            const result = window.electronAPI?.db ? await window.electronAPI.db.addCaso(payload) : null;
+            const result = platformAPI.db ? await platformAPI.db.addCaso(payload) : null;
             
             if (result && result.success) {
                 const id = result.id.toString();
@@ -604,9 +595,46 @@ export const useCMSStore = create<CMSState>()(
             }
             throw new Error(result?.error || 'Error desconocido al guardar en DB');
         } catch (e) {
-            console.error('Error addCaso DB:', e);
-            get().addAuditLog({ accion: 'CASO_ERROR', detalle: `Error guardando en base de datos Neon`, nivel: 'error', casoId: undefined, usuario: caso.peritoLider });
-            return null;
+            console.error('Error addCaso DB (operando offline):', e);
+            // BUG-010: Aunque falle la base de datos, retornar ID y guardar caso localmente para no perder trabajo del usuario
+            const fallbackCaso: CasoCMS = {
+              ...caso,
+              tipoProyecto: caso.tipoProyecto || 'forense_whatsapp',
+              id: (caso as any).id || fallbackId,
+              fechaCreacion: now(),
+              fechaUltimaActualizacion: now(),
+              steps: caso.steps || {},
+              compliance_checklist: caso.compliance_checklist || [],
+              dispositivo_marca: caso.dispositivo_marca,
+              dispositivo_modelo: caso.dispositivo_modelo,
+              dispositivo_imei: caso.dispositivo_imei,
+              dispositivo_imei2: caso.dispositivo_imei2,
+              dispositivo_sim_card: caso.dispositivo_sim_card,
+              dispositivo_numero_tel: caso.dispositivo_numero_tel,
+              dispositivo_estado_fisico: caso.dispositivo_estado_fisico,
+              dispositivo_modo_aislamiento: caso.dispositivo_modo_aislamiento,
+              dispositivo_danos_visibles: caso.dispositivo_danos_visibles,
+              dispositivo_bateria_estado: caso.dispositivo_bateria_estado,
+              dispositivo_pantalla_estado: caso.dispositivo_pantalla_estado,
+              solicitante_nombre: caso.solicitante_nombre,
+              solicitante_cedula: caso.solicitante_cedula,
+              correo_investigar: caso.correo_investigar,
+              correo_proveedor: caso.correo_proveedor,
+              discoduro_serial: caso.discoduro_serial,
+              discoduro_capacidad: caso.discoduro_capacidad,
+              discoduro_marca: caso.discoduro_marca,
+              discoduro_modelo: caso.discoduro_modelo,
+            };
+            set(s => ({ casos: [...s.casos, fallbackCaso] }));
+            get().addAuditLog({ accion: 'CASO_CREADO_LOCAL', detalle: `Caso ${caso.numeroCaso} guardado localmente (sin conexión a Neon)`, nivel: 'warning', casoId: fallbackCaso.id, usuario: caso.peritoLider });
+            useAuditStore.getState().addEntry({
+              accion: 'CASO_CREADO_LOCAL',
+              detalle: `Caso ${caso.numeroCaso} guardado localmente — ${caso.titulo}`,
+              usuario: caso.peritoLider,
+              nivel: 'warning',
+              casoId: fallbackCaso.id,
+            });
+            return fallbackCaso.id;
         }
       },
       updateCaso: async (id, datos) => {
@@ -614,7 +642,7 @@ export const useCMSStore = create<CMSState>()(
           casos: s.casos.map(c => c.id === id ? { ...c, ...datos, fechaUltimaActualizacion: now() } : c)
         }));
         try {
-          if (window.electronAPI?.db) {
+          if (platformAPI.db) {
             const mappedData: any = { ...datos };
             if (datos.numeroCaso !== undefined) mappedData.numero_caso = datos.numeroCaso;
             if (datos.dispositivo_marca !== undefined) mappedData.dispositivo_marca = datos.dispositivo_marca;
@@ -640,7 +668,7 @@ export const useCMSStore = create<CMSState>()(
             if (datos.steps !== undefined) mappedData.steps = datos.steps;
             if (datos.completed_steps !== undefined) mappedData.completed_steps = datos.completed_steps;
             if (datos.step_metadata !== undefined) mappedData.step_metadata = datos.step_metadata;
-            await window.electronAPI.db.updateCaso(id, mappedData);
+            await platformAPI.db.updateCaso(id, mappedData);
           }
         } catch (e) {
           console.error('Error al actualizar caso en DB:', e);
@@ -650,8 +678,8 @@ export const useCMSStore = create<CMSState>()(
       deleteCaso: async (id) => {
         set(s => ({ casos: s.casos.filter(c => c.id !== id) }));
         try {
-          if (window.electronAPI?.db) {
-            await window.electronAPI.db.deleteCaso(id);
+          if (platformAPI.db) {
+            await platformAPI.db.deleteCaso(id);
           }
         } catch (e) {
           console.error('Error al eliminar caso en DB:', e);
@@ -782,8 +810,18 @@ export const useCMSStore = create<CMSState>()(
 
       // ── Migración: completed_steps + step_metadata → steps ──
       migrateStepsData: () => {
-        const { casos, _dataMigrated } = get();
-        if (_dataMigrated || casos.length === 0) return;
+        const { casos, _dataMigrated, normativas } = get();
+
+        // Sincronizar descripciones de normativas extendidas de RAG
+        const currentNormativas = normativas || [];
+        const needsNormativasUpdate = currentNormativas.length === 0 || currentNormativas.some(n => !n.descripcion || n.descripcion.length < 100);
+        if (needsNormativasUpdate) {
+          set({ normativas: NORMATIVAS_INICIALES });
+        }
+
+        // BUG-014: Mutex para evitar ejecución duplicada en desarrollo (React 18 StrictMode)
+        if (_dataMigrated || casos.length === 0 || migrationRunning) return;
+        migrationRunning = true;
 
         let needsUpdate = false;
         const migratedCasos = casos.map(caso => {
@@ -829,6 +867,7 @@ export const useCMSStore = create<CMSState>()(
         } else {
           set({ _dataMigrated: true });
         }
+        migrationRunning = false;
       },
 
       // ── Inicializar pasos para un caso ──
@@ -880,10 +919,12 @@ export const useCMSStore = create<CMSState>()(
       },
 
       // ── Verificar si un paso puede completarse ──
-      verifyStepCompletion: (stepId) => {
+      verifyStepCompletion: (stepId, casoIdOverride) => {
         const { casoSeleccionado, casos, tareas } = get();
-        if (!casoSeleccionado) return { canComplete: false, missing: ['No hay caso seleccionado'], missingObjects: [] };
-        const caso = casos.find(c => c.id === casoSeleccionado);
+        // BUG-011: Admitir casoIdOverride opcional
+        const effectiveCasoId = casoIdOverride || casoSeleccionado;
+        if (!effectiveCasoId) return { canComplete: false, missing: ['No hay caso seleccionado'], missingObjects: [] };
+        const caso = casos.find(c => c.id === effectiveCasoId);
         if (!caso) return { canComplete: false, missing: ['Caso no encontrado'], missingObjects: [] };
         if (!caso.tipoProyecto) return { canComplete: false, missing: ['Tipo de proyecto no definido'], missingObjects: [] };
 
@@ -895,7 +936,7 @@ export const useCMSStore = create<CMSState>()(
         const missingObjects: { type: 'tarea' | 'compliance'; id: string; text: string; subId?: string }[] = [];
 
         // 1. Verificar tareas del paso (solo si existen tareas asignadas)
-        const tareasPaso = tareas.filter(t => t.casoId === casoSeleccionado && t.pasoId === stepId);
+        const tareasPaso = tareas.filter(t => t.casoId === effectiveCasoId && t.pasoId === stepId);
         const tareasPendientes = tareasPaso.filter(t => t.estado !== 'completada');
         tareasPendientes.forEach(t => {
           missing.push(`Tarea pendiente: ${t.titulo}`);
@@ -947,14 +988,17 @@ export const useCMSStore = create<CMSState>()(
       // ── Completar paso (con validación) ──
       completeStep: (stepId) => {
         const { casoSeleccionado, casos } = get();
-        if (!casoSeleccionado) return;
+        if (!casoSeleccionado) return { success: false, missing: ['No hay caso seleccionado'] };
         const caso = casos.find(c => c.id === casoSeleccionado);
-        if (!caso) return;
+        if (!caso) return { success: false, missing: ['Caso no encontrado'] };
 
         const currentState = caso.steps?.[stepId]?.estado;
-        if (currentState !== 'en_progreso' && currentState !== 'disponible') return;
+        if (currentState !== 'en_progreso' && currentState !== 'disponible') {
+          return { success: false, missing: ['El paso no está en progreso o disponible'] };
+        }
 
-        const { canComplete, missing } = get().verifyStepCompletion(stepId);
+        // BUG-013: Retornar resultado de verificación para que la UI lo muestre
+        const { canComplete, missing, missingObjects } = get().verifyStepCompletion(stepId);
         if (!canComplete) {
           useAuditStore.getState().addEntry({
             accion: 'PASO_BLOQUEADO',
@@ -963,12 +1007,12 @@ export const useCMSStore = create<CMSState>()(
             nivel: 'warning',
             casoId: casoSeleccionado,
           });
-          return;
+          return { success: false, missing, missingObjects };
         }
 
-        const now = new Date();
-        const offset = now.getTimezoneOffset() * 60000;
-        const localISOTime = (new Date(now.getTime() - offset)).toISOString().slice(0, 16);
+        const nowTime = new Date();
+        const offset = nowTime.getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(nowTime.getTime() - offset)).toISOString().slice(0, 16);
 
         const steps = {
           ...(caso.steps || {}),
@@ -997,6 +1041,8 @@ export const useCMSStore = create<CMSState>()(
           nivel: 'success',
           casoId: casoSeleccionado,
         });
+
+        return { success: true };
       },
 
       // ── Desbloquear siguiente paso ──
@@ -1134,18 +1180,14 @@ export const useCMSStore = create<CMSState>()(
           return { complianceChecklist: updatedChecklist, casos: updatedCasos };
         });
 
-        // Persistir en DB de forma asíncrona (no bloquea el UI)
-        if (casoId) {
-          setTimeout(() => {
+        // BUG-007: Evitar setTimeouts con closures stale. Realizar persistencia de forma asíncrona pero directa.
+        const persistAndLog = async () => {
+          if (casoId) {
             const updatedCaso = get().casos.find(c => c.id === casoId);
             if (updatedCaso?.compliance_checklist && window.electronAPI?.db) {
-              window.electronAPI.db.updateCaso(casoId, { compliance_checklist: updatedCaso.compliance_checklist });
+               await window.electronAPI.db.updateCaso(casoId, { compliance_checklist: updatedCaso.compliance_checklist });
             }
-          }, 150);
-        }
-
-        // Audit log asíncrono
-        setTimeout(() => {
+          }
           useAuditStore.getState().addEntry({
             accion: newChecked ? 'CUMPLIMIENTO_VERIFICADO' : 'CUMPLIMIENTO_DESVERIFICADO',
             detalle: `Requisito ${stageId} (normativa ${normativaId}) ${newChecked ? 'verificado' : 'desmarcado'}`,
@@ -1153,7 +1195,8 @@ export const useCMSStore = create<CMSState>()(
             nivel: newChecked ? 'success' : 'info',
             casoId: casoId || undefined,
           });
-        }, 100);
+        };
+        persistAndLog();
       },
       setComplianceObservacion: (stageId, observacion) => {
         set(s => {
@@ -1223,7 +1266,20 @@ export const useCMSStore = create<CMSState>()(
     {
       name: 'cms-neon-storage',
       storage: createJSONStorage(() => neonStorage),
-      partialize: (state) => state, // Persistimos todo el estado, incluidos casos
+      // BUG-022: partialize para excluir auditLogs y evitar crecimiento desmedido de localStorage
+      partialize: (state) => ({
+        casos: state.casos,
+        evidencias: state.evidencias,
+        tareas: state.tareas,
+        fases: state.fases,
+        personal: state.personal,
+        normativas: state.normativas,
+        casoSeleccionado: state.casoSeleccionado,
+        filtroEstado: state.filtroEstado,
+        filtroPrioridad: state.filtroPrioridad,
+        busqueda: state.busqueda,
+        _dataMigrated: state._dataMigrated,
+      }),
     }
   )
 );
