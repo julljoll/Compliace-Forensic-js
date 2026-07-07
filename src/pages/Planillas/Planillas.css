@@ -1,11 +1,11 @@
-/* ── Planilla & Report Container (Apple Corporate PDF Style) ── */
+/* ── Planilla & Report Container (Microsoft Word Legal Style - Letter Size) ── */
 .planilla-container {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Inter, sans-serif;
-  line-height: 1.45;
-  color: var(--apple-text);
-  background: var(--co-bg);
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  line-height: 1.5;
+  color: #1d1d1f;
+  background: var(--co-bg, #f5f5f7);
   margin: 0;
-  padding: 20px 10px;
+  padding: 30px 10px;
   font-size: 12px;
 }
 
@@ -13,27 +13,27 @@
   box-sizing: border-box;
 }
 
-/* Page Card representation on screen */
+/* Page Card representation on screen (Letter Size: 216mm x 279mm) */
 .planilla-container .page {
   width: 216mm;
-  min-height: 356mm;
-  padding: 12mm 15mm;
-  margin: 0 auto 16px;
-  background: var(--co-surface-1);
-  color: var(--apple-text);
+  min-height: 279mm;
+  /* Margins mimicking papel sellado: Left: 30mm, Right: 15mm, Top: 20mm, Bottom: 20mm */
+  padding: 20mm 15mm 20mm 30mm;
+  margin: 0 auto 24px;
+  background: #ffffff;
+  color: #1d1d1f;
   position: relative;
-  border: 1px solid var(--apple-border);
-  border-radius: 12px;
-  box-shadow: var(--co-shadow-2);
+  border: 1px solid #d2d2d7;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .planilla-container header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border-bottom: 1.5px solid var(--apple-border);
-  padding-bottom: 10px;
-  margin-bottom: 14px;
+  border-bottom: 2px solid #1d1d1f;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .planilla-container .logo-container {
@@ -44,36 +44,70 @@
 .planilla-container .logo-branding {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 3px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .planilla-container .logo-img {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   display: inline-block;
 }
 
 .planilla-container .logo-text {
   font-size: 18px;
   font-weight: 700;
-  color: var(--apple-text);
+  color: #1d1d1f;
   text-transform: uppercase;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
 .planilla-container .logo-subtext {
-  font-size: 8.5px;
-  font-weight: 600;
-  color: var(--apple-text-muted);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #515154;
   text-transform: uppercase;
-  margin: 3px 0;
-  letter-spacing: 0.02em;
+  margin: 4px 0;
+}
+
+.planilla-container .address-text {
+  font-size: 8.5px;
+  color: #515154;
+  max-width: 350px;
+  line-height: 1.4;
+}
+
+.planilla-container .acta-header,
+.planilla-container .form-header-info { 
+  text-align: right; 
+}
+
+.planilla-container .acta-title,
+.planilla-container .form-title-main {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  color: #1d1d1f;
+  line-height: 1.3;
+}
+
+.planilla-container .acta-nro,
+.planilla-container .form-nro {
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  color: #1d1d1f;
+  font-weight: 700;
 }
 
 .planilla-container .placeholder-field {
-  color: var(--co-gray-1) !important;
+  color: #8e8e93 !important;
   font-style: italic;
   font-weight: 400 !important;
 }
@@ -84,204 +118,161 @@
   }
 }
 
-.planilla-container .address-text {
-  font-size: 7.5px;
-  color: var(--apple-text-muted);
-  max-width: 320px;
-  line-height: 1.35;
-}
-
-.planilla-container .acta-header { 
-  text-align: right; 
-}
-
-.planilla-container .acta-title {
-  font-size: 13px;
-  font-weight: 700;
-  margin: 0;
-  text-transform: uppercase;
-  color: var(--apple-text);
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-}
-
-.planilla-container .acta-nro {
-  font-family: Menlo, Monaco, Consolas, "SF Mono", monospace;
-  font-size: 10px;
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  color: var(--apple-text-muted);
-}
-
 .planilla-container .section-title {
-  border-left: 3.5px solid var(--apple-accent);
-  color: var(--apple-text);
-  padding: 4px 8px;
-  font-size: 9px;
+  border-bottom: 1.5px solid #1d1d1f;
+  color: #1d1d1f;
+  padding: 4px 0;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 6px;
-  letter-spacing: 0.03em;
-  border-bottom: 1px solid var(--apple-border);
+  margin-top: 16px;
+  margin-bottom: 10px;
 }
 
 .planilla-container .section {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .planilla-container .grid-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
+  gap: 10px;
 }
 
 .planilla-container .form-group {
-  border: 1px solid var(--apple-border);
-  background-color: var(--co-surface-2);
-  padding: 5px 10px;
-  border-radius: 6px;
+  border: 1px solid #8e8e93;
+  background-color: #ffffff;
+  padding: 6px 12px;
 }
 
 .planilla-container .label {
-  color: var(--apple-text-muted);
-  font-size: 7.5px;
-  font-weight: 600;
+  color: #515154;
+  font-size: 9.5px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .planilla-container .value {
-  color: var(--apple-text);
-  font-size: 11.5px;
-  font-weight: 500;
-  min-height: 18px;
-  line-height: 1.35;
+  color: #1d1d1f;
+  font-size: 12px;
+  font-weight: 400;
+  min-height: 20px;
+  line-height: 1.5;
 }
 
 .planilla-container .box-inline {
   display: inline-block;
-  border: 1px solid var(--co-gray-3);
-  border-radius: 4px;
-  min-width: 50px;
-  height: 20px;
+  border: 1px solid #1d1d1f;
+  min-width: 60px;
+  height: 22px;
   vertical-align: middle;
-  margin: 0 4px;
-  background-color: var(--co-surface-1);
+  margin: 0 6px;
+  background-color: #ffffff;
 }
 
 .planilla-container .evidence-table,
 .planilla-container .transfer-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--apple-border);
-  border-radius: 6px;
-  overflow: hidden;
+  border: 1px solid #1d1d1f;
+  margin-top: 6px;
 }
 
-.planilla-container .evidence-table td {
-  border: 1px solid var(--apple-border);
-  color: var(--apple-text);
-  padding: 5px 8px;
-  font-size: 10px;
+.planilla-container .evidence-table td,
+.planilla-container .transfer-table td {
+  border: 1px solid #1d1d1f;
+  color: #1d1d1f;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
 }
 
 .planilla-container .evidence-table td:first-child {
   width: 30%;
-  font-weight: 600;
-  font-size: 8px;
+  font-weight: 700;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  background-color: var(--co-surface-2);
-  color: var(--apple-text-muted);
+  background-color: #f2f2f7;
+  color: #1d1d1f;
 }
 
 .planilla-container .transfer-table td {
-  border: 1px solid var(--apple-border);
-  color: var(--apple-text);
-  padding: 5px 8px;
-  font-size: 9.5px;
   vertical-align: top;
 }
 
 .planilla-container .transfer-header {
   font-weight: 700;
-  font-size: 8px;
+  font-size: 10px;
   text-transform: uppercase;
-  background-color: var(--co-surface-2);
-  color: var(--apple-text-muted);
+  background-color: #f2f2f7;
+  color: #1d1d1f;
 }
 
 .planilla-container .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 3px;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .planilla-container .check-item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 9px;
-  color: var(--apple-text);
+  gap: 8px;
+  font-size: 11px;
+  color: #1d1d1f;
 }
 
 .planilla-container .box {
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--co-gray-2);
-  border-radius: 3px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #1d1d1f;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 8px;
+  font-size: 9px;
   line-height: 1;
-  background-color: var(--co-surface-1);
+  background-color: #ffffff;
 }
 
 .planilla-container .legal-text {
-  font-size: 8.5px;
+  font-size: 11px;
   text-align: justify;
-  padding: 8px 10px;
-  border: 1px solid var(--apple-border);
-  border-radius: 6px;
-  background-color: var(--co-surface-2);
-  color: var(--apple-text-muted);
-  margin: 6px 0;
-  line-height: 1.4;
+  padding: 10px 14px;
+  border: 1px solid #1d1d1f;
+  background-color: #ffffff;
+  color: #1d1d1f;
+  margin: 10px 0;
+  line-height: 1.5;
 }
 
 .planilla-container .signature-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12mm;
-  margin-top: 8mm;
-  padding-bottom: 8mm;
+  gap: 15mm;
+  margin-top: 10mm;
+  padding-bottom: 10mm;
 }
 
 .planilla-container .signature-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-top: 5px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .planilla-container .sig-card {
-  border: 1px solid var(--apple-border);
-  border-radius: 8px;
-  padding: 10px;
-  background-color: var(--co-surface-1);
+  border: 1px solid #1d1d1f;
+  padding: 12px;
+  background-color: #ffffff;
 }
 
 .planilla-container .sig-row {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .planilla-container .sig-firma-col {
@@ -289,176 +280,148 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 4px;
+  gap: 6px;
 }
 
 .planilla-container .sig-box {
   flex: 1;
-  height: 80px;
-  border: 1px dashed var(--co-gray-3);
-  border-radius: 4px;
-  background-color: var(--co-surface-2);
+  height: 90px;
+  border: 1px dashed #8e8e93;
+  background-color: #ffffff;
 }
 
 .planilla-container .thumb-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 
 .planilla-container .thumb-box {
-  width: 60px;
-  height: 80px;
-  border: 1px dashed var(--co-gray-3);
-  border-radius: 4px;
-  background-color: var(--co-surface-2);
+  width: 70px;
+  height: 90px;
+  border: 1px dashed #8e8e93;
+  background-color: #ffffff;
 }
 
 .planilla-container .thumb-label {
-  font-size: 7.5px;
-  color: var(--apple-text-muted);
+  font-size: 8.5px;
+  color: #515154;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
 
 .planilla-container .sig-label {
   text-align: center;
-  font-size: 9.5px;
+  font-size: 10.5px;
   font-weight: 700;
-  color: var(--apple-text);
+  color: #1d1d1f;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
 .planilla-container .sig-label + .sig-sub {
-  font-size: 8px;
-  color: var(--apple-text-muted);
-  margin-top: 3px;
+  font-size: 9px;
+  color: #515154;
+  margin-top: 4px;
 }
 
 .planilla-container .sig-sub {
-  font-size: 8px;
-  color: var(--apple-text-muted);
-  margin-top: 2px;
+  font-size: 9px;
+  color: #515154;
+  margin-top: 3px;
 }
 
 .planilla-container .sig-detail-card {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 10px;
-  border: 1px solid var(--apple-border);
-  border-radius: 8px;
-  background-color: var(--co-surface-1);
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid #1d1d1f;
+  background-color: #ffffff;
 }
 
 .planilla-container .sig-detail-card .sig-detail-label {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--apple-text);
+  color: #1d1d1f;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
   text-align: center;
-  padding-bottom: 3px;
-  border-bottom: 1px solid var(--apple-border);
-  margin-bottom: 2px;
+  padding-bottom: 4px;
+  border-bottom: 1.5px solid #1d1d1f;
+  margin-bottom: 4px;
 }
 
 .planilla-container .sig-detail-card .sig-line {
-  border-bottom: 1px solid var(--apple-border);
-  height: 20px;
+  border-bottom: 1px solid #1d1d1f;
+  height: 24px;
   width: 100%;
 }
 
 .planilla-container .sig-detail-card .sig-line-label {
-  font-size: 7px;
-  color: var(--apple-text-muted);
+  font-size: 8px;
+  color: #515154;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 1px;
+  margin-top: 2px;
+  font-weight: 700;
 }
 
 .planilla-container .sig-detail-card .sig-field {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 8px;
-  color: var(--apple-text-muted);
+  gap: 6px;
+  font-size: 10px;
+  color: #1d1d1f;
+  font-weight: 700;
 }
 
 .planilla-container .sig-detail-card .sig-field .sig-underline {
   flex: 1;
-  border-bottom: 1px dashed var(--co-gray-3);
-  min-height: 16px;
-  padding: 0 4px;
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--apple-text);
+  border-bottom: 1px dashed #8e8e93;
+  min-height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #1d1d1f;
 }
 
 .planilla-container .sig-detail-card .fingerprint-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   justify-content: center;
-  margin-top: 4px;
-  padding-top: 5px;
-  border-top: 1px dotted var(--apple-border);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dotted #1d1d1f;
 }
 
 .planilla-container .footer {
   position: absolute;
-  bottom: 6mm;
-  left: 15mm;
+  bottom: 10mm;
+  left: 30mm;
   right: 15mm;
   text-align: center;
-  font-size: 7px;
-  color: var(--apple-text-muted);
-  border-top: 1px solid var(--apple-border);
-  padding-top: 4px;
-  line-height: 1.3;
-}
-
-.planilla-container .form-header-info { 
-  text-align: right; 
-}
-.planilla-container .form-title-main { 
-  font-size: 13px; 
-  font-weight: 700; 
-  margin: 0; 
-  text-transform: uppercase; 
-  color: var(--apple-text); 
-  letter-spacing: -0.01em; 
-}
-.planilla-container .form-nro { 
-  font-family: Menlo, Monaco, Consolas, "SF Mono", monospace; 
-  font-size: 10px; 
-  margin-top: 5px; 
-  display: flex; 
-  align-items: center; 
-  justify-content: flex-end; 
-  gap: 4px; 
-  color: var(--apple-text-muted); 
+  font-size: 8.5px;
+  color: #515154;
+  border-top: 1px solid #1d1d1f;
+  padding-top: 6px;
+  line-height: 1.4;
 }
 
 .planilla-container .anexo-derivacion {
-  border: 1.5px solid var(--apple-border);
-  border-radius: 8px;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: var(--co-surface-1);
+  border: 1.5px solid #1d1d1f;
+  padding: 12px;
+  margin-top: 12px;
+  background-color: #ffffff;
 }
 
 .planilla-container .anexo-header {
   font-weight: 700;
-  font-size: 9px;
-  color: var(--apple-text);
-  border-bottom: 1px solid var(--apple-border);
-  padding-bottom: 4px;
-  margin-bottom: 6px;
+  font-size: 11px;
+  color: #1d1d1f;
+  border-bottom: 1.5px solid #1d1d1f;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
   text-transform: uppercase;
 }
 
@@ -467,9 +430,9 @@
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-45deg);
-  font-size: 80px;
-  color: var(--apple-border);
-  opacity: 0.15;
+  font-size: 70px;
+  color: #1d1d1f;
+  opacity: 0.04;
   font-weight: 900;
   pointer-events: none;
   z-index: 0;
@@ -479,32 +442,30 @@
 
 .planilla-container footer {
   text-align: center;
-  font-size: 7px;
-  color: var(--apple-text-muted);
-  margin-top: 10px;
-  border-top: 1px solid var(--apple-border);
-  padding-top: 5px;
+  font-size: 8.5px;
+  color: #515154;
+  margin-top: 12px;
+  border-top: 1px solid #1d1d1f;
+  padding-top: 6px;
 }
 
 .planilla-container .no-print button,
 .planilla-container .print-button {
-  color: var(--apple-accent);
-  border: 1px solid var(--apple-accent);
-  border-radius: 8px;
-  padding: 8px 20px;
+  color: #ffffff;
+  border: 1px solid #1d1d1f;
+  padding: 10px 24px;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
-  background-color: var(--co-surface-1);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  background-color: #1d1d1f;
+  transition: all 0.15s ease-in-out;
 }
 
 .planilla-container .no-print button:hover,
 .planilla-container .print-button:hover {
-  background-color: var(--apple-btn-sec-bg);
-  border-color: var(--apple-accent);
-  transform: scale(0.98);
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
 }
 
 .planilla-container .timeline-print-layout { 
@@ -512,7 +473,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   PRINT MEDIA STYLES (Apple HIG crisp high-contrast layout — Hoja Oficio/Legal)
+   PRINT MEDIA STYLES (Microsoft Word Style - Letter Size & Legal Margins)
    ══════════════════════════════════════════════════════════════════════════ */
 @media print {
   * {
@@ -522,86 +483,46 @@
   }
   
   body, html {
-    background: white !important;
-    color: black !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
   }
   
-  /* Forzar modo claro en todas las variables CSS */
-  :root, html.dark {
-    --apple-bg: #F5F5F7 !important;
-    --apple-bg-secondary: #FFFFFF !important;
-    --apple-surface: #FFFFFF !important;
-    --apple-text: #1D1D1F !important;
-    --apple-text-muted: #6E6E73 !important;
-    --apple-border: rgba(0,0,0,0.12) !important;
-    --apple-separator: rgba(0,0,0,0.08) !important;
-  }
-  
-  .no-print, nav, aside, .sidebar, header button {
+  .no-print, nav, aside, .sidebar, header button, .print-button {
     display: none !important;
   }
 
   @page {
-    size: legal;
-    margin: 5mm 8mm;
-  }
-
-  html, body {
-    background: white !important;
-    color: #1D1D1F !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Inter, sans-serif !important;
+    size: letter;
+    /* Margins mimicking papel sellado: Top: 20mm, Right: 15mm, Bottom: 20mm, Left: 30mm */
+    margin: 20mm 15mm 20mm 30mm;
   }
 
   .planilla-container {
-    background: white !important;
+    background: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;
-    /* Force light mode variables for printing, preventing dark-mode printouts */
-    --co-bg: #FFFFFF !important;
-    --co-surface-1: #FFFFFF !important;
-    --co-surface-2: #F5F5F7 !important;
-    --co-surface-3: #E5E5EA !important;
-    --co-accent: #0071E3 !important;
-    --co-accent-fg: #FFFFFF !important;
-    --co-red: #FF3B30 !important;
-    --co-orange: #FF9500 !important;
-    --co-yellow: #FFCC00 !important;
-    --co-green: #34C759 !important;
-    --co-blue: #007AFF !important;
-    --co-purple: #AF52DE !important;
-    --co-indigo: #5856D6 !important;
-    --co-gray-1: #8E8E93 !important;
-    --co-gray-2: #AEAEB2 !important;
-    --co-gray-3: #C7C7CC !important;
-    --co-gray-4: #D1D1D6 !important;
-    --co-gray-5: #E5E5EA !important;
-    --co-gray-6: #F2F2F7 !important;
-    --co-separator: rgba(60, 60, 67, 0.12) !important;
-    --apple-text: #1D1D1F !important;
-    --apple-border: #D2D2D7 !important;
-    --apple-text-muted: #8E8E93 !important;
-    --apple-btn-sec-bg: rgba(0, 0, 0, 0.05) !important;
-    --apple-accent: #0071E3 !important;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
   }
 
   .planilla-container .page {
     width: 100% !important;
     min-height: 0 !important;
     height: auto !important;
-    padding: 4mm 6mm !important;
+    padding: 0 !important; /* Managed by browser @page margins */
     margin: 0 !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .planilla-container header {
-    border-bottom: 0.75px solid #AEAEB2 !important;
-    padding-bottom: 5px !important;
-    margin-bottom: 8px !important;
+    border-bottom: 2px solid #000000 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 18px !important;
   }
 
   .planilla-container .logo-text,
@@ -610,7 +531,7 @@
   .planilla-container .sig-label,
   .planilla-container .anexo-header,
   .planilla-container .section-title {
-    color: #1D1D1F !important;
+    color: #000000 !important;
   }
 
   .planilla-container .logo-subtext,
@@ -621,209 +542,206 @@
   .planilla-container footer,
   .planilla-container .thumb-label,
   .planilla-container .sig-line-label {
-    color: #515154 !important;
+    color: #000000 !important;
   }
 
   .planilla-container .section-title {
-    border-left: 2.5px solid #0071E3 !important;
-    padding: 2px 5px !important;
-    font-size: 7.5px !important;
-    margin-bottom: 3px !important;
-    border-bottom: 0.5px solid #D2D2D7 !important;
+    border-left: none !important;
+    border-bottom: 1.5px solid #000000 !important;
+    padding: 3px 0 !important;
+    font-size: 12px !important;
+    margin-bottom: 8px !important;
+    font-weight: 700 !important;
   }
 
   .planilla-container .section {
-    margin-bottom: 4px !important;
+    margin-bottom: 12px !important;
   }
 
   .planilla-container .grid-container {
-    gap: 3px !important;
+    gap: 8px !important;
   }
 
   .planilla-container .label {
-    font-size: 6.5px !important;
-    margin-bottom: 1px !important;
+    font-size: 9.5px !important;
+    margin-bottom: 3px !important;
   }
 
   .planilla-container .check-item {
-    font-size: 7.5px !important;
-    gap: 3px !important;
+    font-size: 11px !important;
+    gap: 6px !important;
   }
 
   .planilla-container .checkbox-group {
-    gap: 5px !important;
-    margin-top: 1px !important;
+    gap: 10px !important;
+    margin-top: 3px !important;
   }
 
   .planilla-container .signature-section {
-    margin-top: 3mm !important;
-    padding-bottom: 3mm !important;
-    gap: 6mm !important;
+    margin-top: 8mm !important;
+    padding-bottom: 6mm !important;
+    gap: 12mm !important;
+    page-break-inside: avoid !important;
   }
 
   .planilla-container .sig-card {
-    padding: 5px !important;
-    border: 0.5px solid #D2D2D7 !important;
-    border-radius: 5px !important;
+    padding: 10px !important;
+    border: 1px solid #000000 !important;
   }
 
   .planilla-container .sig-label {
-    font-size: 8px !important;
+    font-size: 10.5px !important;
   }
 
   .planilla-container .logo-text {
-    font-size: 15px !important;
+    font-size: 18px !important;
   }
 
   .planilla-container .logo-subtext {
-    font-size: 6.5px !important;
+    font-size: 9.5px !important;
   }
 
   .planilla-container .address-text {
-    font-size: 6.5px !important;
+    font-size: 8.5px !important;
   }
 
   .planilla-container .acta-title,
   .planilla-container .form-title-main {
-    font-size: 10px !important;
+    font-size: 14px !important;
   }
 
   .planilla-container .acta-nro,
   .planilla-container .form-nro {
-    font-size: 8px !important;
-    margin-top: 2px !important;
+    font-size: 11px !important;
+    margin-top: 4px !important;
   }
 
   .planilla-container footer {
-    font-size: 6px !important;
-    margin-top: 4px !important;
-    padding-top: 2px !important;
-    border-top: 0.5px solid #D2D2D7 !important;
+    font-size: 8.5px !important;
+    margin-top: 10px !important;
+    padding-top: 4px !important;
+    border-top: 1px solid #000000 !important;
   }
 
   .planilla-container .evidence-table,
   .planilla-container .transfer-table {
-    border: 0.5px solid #D2D2D7 !important;
+    border: 1px solid #000000 !important;
   }
 
   .planilla-container .evidence-table td,
   .planilla-container .transfer-table td {
-    border: 0.5px solid #D2D2D7 !important;
-    color: #1D1D1F !important;
-    padding: 2px 5px !important;
-    font-size: 7.5px !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    padding: 6px 10px !important;
+    font-size: 11.5px !important;
   }
 
   .planilla-container .evidence-table td:first-child {
-    font-size: 7px !important;
-    background-color: #F5F5F7 !important;
+    font-size: 10px !important;
+    background-color: #f2f2f7 !important;
   }
 
   .planilla-container .form-group {
-    border: 0.5px solid #D2D2D7 !important;
-    background-color: #F5F5F7 !important;
-    padding: 2px 5px !important;
-    border-radius: 3px !important;
+    border: 1px solid #8e8e93 !important;
+    background-color: #ffffff !important;
+    padding: 4px 8px !important;
   }
 
   .planilla-container .value {
-    font-size: 9px !important;
-    min-height: 12px !important;
+    font-size: 12px !important;
+    min-height: 18px !important;
   }
 
   .planilla-container .legal-text {
-    border: 0.5px solid #D2D2D7 !important;
-    background-color: #F5F5F7 !important;
-    padding: 4px 6px !important;
-    font-size: 7px !important;
-    margin: 3px 0 !important;
-    line-height: 1.35 !important;
+    border: 1px solid #000000 !important;
+    background-color: #ffffff !important;
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+    margin: 8px 0 !important;
+    line-height: 1.5 !important;
   }
 
   .planilla-container .box {
-    border: 0.5px solid #8E8E93 !important;
-    width: 9px !important;
-    height: 9px !important;
-    border-radius: 2px !important;
+    border: 1px solid #000000 !important;
+    width: 13px !important;
+    height: 13px !important;
   }
 
   .planilla-container .box-inline {
-    border: 0.5px solid #8E8E93 !important;
-    height: 14px !important;
-    min-width: 36px !important;
-    border-radius: 2px !important;
+    border: 1px solid #000000 !important;
+    height: 20px !important;
+    min-width: 50px !important;
   }
 
   .planilla-container .sig-box {
-    border: 0.5px dashed #AEAEB2 !important;
-    height: 38px !important;
+    border: 1px dashed #8e8e93 !important;
+    height: 80px !important;
   }
 
   .planilla-container .thumb-box {
-    border: 0.5px dashed #AEAEB2 !important;
-    width: 30px !important;
-    height: 38px !important;
+    border: 1px dashed #8e8e93 !important;
+    width: 60px !important;
+    height: 80px !important;
   }
 
   .planilla-container .thumb-label {
-    color: #515154 !important;
-    font-size: 6px !important;
+    color: #000000 !important;
+    font-size: 8.5px !important;
   }
 
   .planilla-container .sig-detail-card {
-    border: 0.5px solid #D2D2D7 !important;
-    border-radius: 5px !important;
-    padding: 4px 6px !important;
-    gap: 2px !important;
+    border: 1px solid #000000 !important;
+    padding: 10px !important;
+    gap: 4px !important;
   }
 
   .planilla-container .sig-detail-card .sig-detail-label {
-    color: #1D1D1F !important;
-    border-bottom-color: #D2D2D7 !important;
-    font-size: 7px !important;
-    padding-bottom: 2px !important;
+    color: #000000 !important;
+    border-bottom-color: #000000 !important;
+    font-size: 11px !important;
+    padding-bottom: 4px !important;
   }
 
   .planilla-container .sig-detail-card .sig-line {
-    border-bottom: 0.5px solid #8E8E93 !important;
-    height: 14px !important;
+    border-bottom: 1px solid #000000 !important;
+    height: 20px !important;
   }
 
   .planilla-container .sig-detail-card .sig-line-label {
-    color: #515154 !important;
-    font-size: 5.5px !important;
+    color: #000000 !important;
+    font-size: 8px !important;
   }
 
   .planilla-container .sig-detail-card .sig-field {
-    color: #515154 !important;
-    font-size: 7px !important;
+    color: #000000 !important;
+    font-size: 10px !important;
   }
 
   .planilla-container .sig-detail-card .sig-field .sig-underline {
-    border-bottom: 0.5px dotted #AEAEB2 !important;
-    color: #1D1D1F !important;
-    min-height: 10px !important;
-    font-size: 7.5px !important;
+    border-bottom: 1px dashed #8e8e93 !important;
+    color: #000000 !important;
+    min-height: 18px !important;
+    font-size: 11px !important;
   }
 
   .planilla-container .sig-detail-card .fingerprint-row {
-    border-top-color: #D2D2D7 !important;
-    gap: 5px !important;
-    margin-top: 2px !important;
-    padding-top: 2px !important;
+    border-top-color: #000000 !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
+    padding-top: 4px !important;
   }
 
   .planilla-container .watermark {
-    color: rgba(0, 0, 0, 0.01) !important;
+    color: rgba(0, 0, 0, 0.02) !important;
   }
 
   .planilla-container .anexo-derivacion {
-    border: 0.5px solid #8E8E93 !important;
-    border-radius: 5px !important;
+    border: 1px solid #000000 !important;
   }
 
   .planilla-container button,
-  .planilla-container .no-print {
+  .planilla-container .no-print,
+  .planilla-container .print-button {
     display: none !important;
   }
 
@@ -834,44 +752,45 @@
   .planilla-container .timeline-print-layout {
     display: block !important;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 15px;
   }
 
   .planilla-container .timeline-print-title {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
-    margin-bottom: 6px;
-    border-bottom: 0.75px solid #8E8E93;
-    padding-bottom: 3px;
-    color: #1D1D1F !important;
+    margin-bottom: 10px;
+    border-bottom: 1.5px solid #000000;
+    padding-bottom: 4px;
+    color: #000000 !important;
   }
 
   .planilla-container .timeline-print-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 5px;
+    margin-top: 8px;
   }
 
   .planilla-container .timeline-print-table th,
   .planilla-container .timeline-print-table td {
-    border: 0.5px solid #D2D2D7 !important;
-    padding: 3px 4px;
-    font-size: 7.5px;
-    color: #1D1D1F !important;
+    border: 1px solid #000000 !important;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: #000000 !important;
     vertical-align: top;
+    line-height: 1.4;
   }
 
   .planilla-container .timeline-print-table th {
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 6.5px;
-    background-color: #F5F5F7 !important;
+    font-size: 9.5px;
+    background-color: #f2f2f7 !important;
   }
 
   .planilla-container .timeline-print-table tr.pending-row td {
-    color: #86868B !important;
+    color: #515154 !important;
     font-style: italic;
   }
 }
@@ -886,7 +805,7 @@
     width: 100% !important;
     min-width: 0 !important;
     min-height: unset !important;
-    padding: 4mm 6mm !important;
+    padding: 15mm 10mm 15mm 15mm !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
@@ -894,25 +813,25 @@
 
   .planilla-container .grid-container {
     grid-template-columns: 1fr !important;
-    gap: 6px !important;
+    gap: 10px !important;
   }
 
   .planilla-container .signature-section {
     grid-template-columns: 1fr !important;
-    gap: 6mm !important;
-    margin-top: 6mm !important;
-    padding-bottom: 4mm !important;
+    gap: 10px !important;
+    margin-top: 8mm !important;
+    padding-bottom: 6mm !important;
   }
 
   .planilla-container .sig-row {
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 10px !important;
   }
 
   .planilla-container .thumb-box {
     width: 100% !important;
     max-width: 120px !important;
-    height: 80px !important;
+    height: 90px !important;
   }
 
   .planilla-container .thumb-wrapper {
@@ -920,12 +839,12 @@
   }
 
   .planilla-container .evidence-table td {
-    font-size: 11px !important;
-    padding: 6px !important;
+    font-size: 12px !important;
+    padding: 8px !important;
   }
 
   .planilla-container .evidence-table td:first-child {
     width: 35% !important;
-    font-size: 10px !important;
+    font-size: 11px !important;
   }
 }
