@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
+import { downloadPlanillaZip } from './downloadPlanillaZip';
 
 const ActaDictamenPage = () => {
   const [searchParams] = useSearchParams();
@@ -229,9 +230,12 @@ const ActaDictamenPage = () => {
         </div>
       </div>
 
-      <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px' }}>
+      <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px', 'display': 'flex', 'justifyContent': 'center', 'gap': '10px' }}>
         <button onClick={handlePrint} className="print-button">
           🖨️ Imprimir Dictamen (Tamaño Carta)
+        </button>
+        <button onClick={() => downloadPlanillaZip(`DictamenPericial_${caso?.numeroCaso || 'caso'}`, 'Dictamen Pericial Informático')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
+          📦 Descargar ZIP (HTML + Word)
         </button>
       </div>
     </div>

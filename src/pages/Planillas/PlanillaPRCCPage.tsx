@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
+import { downloadPlanillaZip } from './downloadPlanillaZip';
 
 const PlanillaPRCCPage = () => {
   const [searchParams] = useSearchParams();
@@ -275,8 +276,11 @@ const PlanillaPRCCPage = () => {
 
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }} className="no-print">
+      <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }} className="no-print">
         <button onClick={handlePrint} className="print-button">🖨️ IMPRIMIR PLANILLA (TAMAÑO CARTA)</button>
+        <button onClick={() => downloadPlanillaZip(`PRCC_${caso?.numeroCaso || 'caso'}`, 'Planilla de Registro de Cadena de Custodia')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
+          📦 DESCARGAR ZIP (HTML + WORD)
+        </button>
       </div>
     </div>
   );

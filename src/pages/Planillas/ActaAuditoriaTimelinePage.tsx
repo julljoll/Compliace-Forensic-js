@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
+import { downloadPlanillaZip } from './downloadPlanillaZip';
 
 const ActaAuditoriaTimelinePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -306,9 +307,12 @@ const ActaAuditoriaTimelinePage = () => {
         </div>
       </div>
 
-      <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px' }}>
+      <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <button onClick={handlePrint} className="print-button">
           🖨️ Imprimir Timeline de Auditoría (Tamaño Carta)
+        </button>
+        <button onClick={() => downloadPlanillaZip(`AuditoriaTimeline_${caso?.numeroCaso || 'caso'}`, 'Acta de Auditoría e Inmutabilidad de Línea de Tiempo')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
+          📦 Descargar ZIP (HTML + Word)
         </button>
       </div>
     </div>
