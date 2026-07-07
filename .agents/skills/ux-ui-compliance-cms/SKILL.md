@@ -42,6 +42,28 @@ description: >
 - Animaciones de entrada `fade-in` y `slide-up` para carga progresiva de contenido
 - Efecto de pulsación sutil en indicadores de estado activo
 
+### Stack de Estilos (Obligatorio)
+
+#### Tailwind CSS — Sistema Primario de Estilos
+- **ÚNICO framework de CSS permitido** en el proyecto — no usar styled-components, Sass ni CSS-in-JS
+- Usar clases de utilidad de Tailwind para todos los estilos de layout, espaciado, tipografía y colores
+- Integrar con CSS custom properties (`var(--co-*)`) para los design tokens específicos del CMS
+- Los archivos `.css` se limitan a: reset global, tokens de diseño y estilos de impresión de planillas
+
+#### Patrones Tailwind Permitidos en el CMS
+- **Dark mode permanente**: usar `dark:` prefix; la clase `dark` siempre está activa en `<html>`
+- **Glassmorphism**: `backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl`
+- **Gradientes corporativos**: `bg-gradient-to-r from-[#00FF41]/10 to-transparent`
+- **Transiciones suaves**: `transition-all duration-200 ease-in-out`
+- **Hover/focus interactivos**: `hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#00FF41]/50`
+- **Tipografía monoespaciada**: `font-mono` — siempre mapear a `'Courier New', Courier, monospace`
+
+#### Restricciones de Estilos
+- **NUNCA** usar `style={{}}` inline para valores que puedan expresarse con clases Tailwind
+- **NUNCA** usar `@apply` en exceso — preferir clases directas en JSX para mantener coherencia
+- La excepción permitida para estilos inline son: valores dinámicos calculados en JavaScript (ej.: `width: `${pct}%``)
+- Los tokens de color del CMS (`#00FF41`, `#FECF06`, `#524000`) deben definirse como `extend` en `tailwind.config`
+
 ### Componentes UX Especializados
 
 #### Dashboard de Compliance

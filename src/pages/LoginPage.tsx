@@ -195,26 +195,6 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Clean Flex Divider */}
-          <div className="flex items-center my-6">
-            <div className="flex-1 border-t border-[var(--co-separator)] dark:border-white/10" />
-            <span className="px-3 text-[10px] font-bold text-[var(--co-gray-1)] tracking-wider uppercase">O</span>
-            <div className="flex-1 border-t border-[var(--co-separator)] dark:border-white/10" />
-          </div>
-
-          <button
-            onClick={() => {
-              const apiUrl = import.meta.env.VITE_API_URL || '/api/oauth/vercel';
-              window.location.href = apiUrl;
-            }}
-            type="button"
-            className="apple-btn w-full py-2.5 text-[13px] font-semibold bg-white/60 dark:bg-white/5 border border-[var(--co-separator)] dark:border-white/10 text-[var(--apple-text)] hover:bg-white/90 dark:hover:bg-white/10 transition-all active:scale-[0.98]"
-          >
-            <svg viewBox="0 0 24 24" width={15} height={15} fill="currentColor" className="shrink-0 text-[var(--apple-text)] dark:text-white mr-2">
-              <path d="M12 2L22 21H2L12 2Z" />
-            </svg>
-            Iniciar sesión con Vercel
-          </button>
         </div>
 
         <div className="mt-8 w-full text-center space-y-4">

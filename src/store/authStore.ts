@@ -19,7 +19,6 @@ interface AuthState {
   isFirstLogin?: boolean;
 
   login: (username: string, password: string) => Promise<boolean>;
-  vercelLogin: (user: AuthUser) => void;
   logout: () => void;
   validateSession: () => Promise<boolean>;
   clearError: () => void;
@@ -77,9 +76,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      vercelLogin: (user) => {
-        set({ user, isAuthenticated: true, isLoading: false, error: null, isFirstLogin: false });
-      },
+
 
       logout: async () => {
         const { user } = get();
