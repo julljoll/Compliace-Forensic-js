@@ -888,3 +888,60 @@
   padding: 0 !important;
   display: block !important;
 }
+
+/* Estilos de Edición Interactiva (Solo en Pantalla) */
+.planilla-container [contenteditable="true"] {
+  outline: none;
+  cursor: text;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  min-height: 1.2em;
+}
+
+.planilla-container [contenteditable="true"]:hover {
+  background-color: rgba(10, 132, 255, 0.05);
+  border-bottom: 1px dashed #0a84ff;
+}
+
+.planilla-container [contenteditable="true"]:focus {
+  background-color: rgba(10, 132, 255, 0.08);
+  border-bottom: 1.5px solid #0a84ff;
+}
+
+.planilla-container .check-item,
+.planilla-container .box {
+  cursor: pointer;
+}
+
+.planilla-container .check-item:hover .box {
+  border-color: #0a84ff;
+  background-color: rgba(10, 132, 255, 0.05);
+}
+
+.planilla-container .placeholder-field {
+  color: #8e8e93 !important;
+  font-style: italic;
+  border-bottom: 1px dashed #aeaeb2;
+}
+
+/* Premium Web Representation (Sleek dark shadow and rounded edges on screen) */
+.planilla-container .page {
+  border-radius: 12px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease;
+}
+
+/* Ocultar decoraciones de edición al imprimir */
+@media print {
+  .planilla-container .page {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  .planilla-container [contenteditable="true"] {
+    border-bottom: none !important;
+    background-color: transparent !important;
+  }
+}

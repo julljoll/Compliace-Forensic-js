@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
+import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 const ActaObtencionPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,39 +13,61 @@ const ActaObtencionPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Manejador interactivo para marcar casillas con una "X" al hacer clic
+    const handleCheckboxClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const box = target.closest('.check-item .box, .check-item');
+      if (box) {
+        const spanBox = box.classList.contains('box') ? box : box.querySelector('.box');
+        if (spanBox) {
+          if (spanBox.textContent === 'X') {
+            spanBox.textContent = '';
+          } else {
+            spanBox.textContent = 'X';
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleCheckboxClick);
+    return () => {
+      document.removeEventListener('click', handleCheckboxClick);
+    };
   }, []);
 
   const fallbackCaso = {
-    numeroCaso: 'N/A',
-    solicitante_nombre: 'N/A',
-    solicitante_cedula: 'N/A',
-    dispositivo_marca: 'N/A',
-    dispositivo_modelo: 'N/A',
-    dispositivo_imei: 'N/A',
-    dispositivo_imei2: 'N/A',
-    dispositivo_numero_tel: 'N/A',
-    dispositivo_sim_card: 'N/A',
-    dispositivo_estado_fisico: 'N/A',
-    dispositivo_bateria_estado: 'N/A',
-    descripcion: 'N/A',
+    numeroCaso: '',
+    solicitante_nombre: '',
+    solicitante_cedula: '',
+    dispositivo_marca: '',
+    dispositivo_modelo: '',
+    dispositivo_imei: '',
+    dispositivo_imei2: '',
+    dispositivo_numero_tel: '',
+    dispositivo_sim_card: '',
+    dispositivo_estado_fisico: '',
+    dispositivo_bateria_estado: '',
+    descripcion: '',
     peritoLider: 'Carlos Mendoza',
     tipoProyecto: '',
-    discoduro_serial: 'N/A',
-    discoduro_capacidad: 'N/A',
-    discoduro_marca: 'N/A',
-    discoduro_modelo: 'N/A',
+    discoduro_serial: '',
+    discoduro_capacidad: '',
+    discoduro_marca: '',
+    discoduro_modelo: '',
   };
 
   const c = caso || fallbackCaso;
   const isDiscoDuro = c.tipoProyecto === 'forense_discoduro';
 
+  const camposRequeridos = [
+    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
+    { valor: caso?.solicitante_nombre, nombre: 'Nombre del Consignante' },
+    { valor: caso?.solicitante_cedula, nombre: 'Cédula del Consignante' },
+    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Receptor' },
+  ];
+
   const handlePrint = () => {
-    const camposRequeridos = [
-      { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-      { valor: caso?.solicitante_nombre, nombre: 'Nombre del Consignante' },
-      { valor: caso?.solicitante_cedula, nombre: 'Cédula del Consignante' },
-      { valor: caso?.peritoLider, nombre: 'Nombre del Perito Receptor' },
-    ];
     const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
     if (faltantes.length > 0) {
       const confirmar = window.confirm(
@@ -69,7 +92,9 @@ const ActaObtencionPage = () => {
           </div>
           <div className="acta-header">
             <h1 className="acta-title">Acta de Obtención por Consignación</h1>
-            <div className="acta-nro">N° EXPEDIENTE: <span className="box-inline" style={{ 'minWidth': '120px', 'textAlign': 'center', 'fontWeight': 'bold' }}>{caso?.numeroCaso ? caso.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span></div>
+            <div className="acta-nro">
+              N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
+            </div>
           </div>
         </header>
 
@@ -77,10 +102,30 @@ const ActaObtencionPage = () => {
         <div className="section">
           <div className="section-title">I. Datos del Consignante (Propietario/Poseedor)</div>
           <div className="grid-container">
-            <div className="form-group"><div className="label">Apellidos y Nombres</div><div className="value">{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}</div></div>
-            <div className="form-group"><div className="label">Cédula de Identidad</div><div className="value">{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</div></div>
-            <div className="form-group"><div className="label">Teléfono</div><div className="value">{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}</div></div>
-            <div className="form-group"><div className="label">Dirección</div><div className="value"><span className="placeholder-field">[Dirección de Residencia]</span></div></div>
+            <div className="form-group">
+              <div className="label">Apellidos y Nombres</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Cédula de Identidad</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Teléfono</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Dirección</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Dirección de Residencia]</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -91,19 +136,27 @@ const ActaObtencionPage = () => {
             <tbody>
               <tr>
                 <td>Marca / Modelo</td>
-                <td>{caso?.dispositivo_marca || caso?.dispositivo_modelo ? `${caso.dispositivo_marca || ''} ${caso.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}
+                </td>
               </tr>
               <tr>
                 <td>IMEI 1 / Serial</td>
-                <td>{caso?.dispositivo_imei ? caso.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI del Dispositivo]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI del Dispositivo]</span>}
+                </td>
               </tr>
               <tr>
                 <td>IMEI 2</td>
-                <td>{caso?.dispositivo_imei2 ? caso.dispositivo_imei2 : <span className="placeholder-field">[Segundo IMEI (Si aplica)]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei2 ? c.dispositivo_imei2 : <span className="placeholder-field">[Segundo IMEI (Si aplica)]</span>}
+                </td>
               </tr>
               <tr>
                 <td>Nro. de Línea / Operadora</td>
-                <td>{caso?.dispositivo_numero_tel || caso?.dispositivo_sim_card ? `${caso.dispositivo_numero_tel || ''} (SIM: ${caso.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. de Línea / Operadora / SIM]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_numero_tel || c.dispositivo_sim_card ? `${c.dispositivo_numero_tel || ''} (SIM: ${c.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. de Línea / Operadora / SIM]</span>}
+                </td>
               </tr>
               <tr>
                 <td>Estado Físico</td>
@@ -115,7 +168,14 @@ const ActaObtencionPage = () => {
                   </div>
                 </td>
               </tr>
-              <tr><td>Nivel Batería (%)</td><td><span className="box-inline" style={{ 'minWidth': '40px', 'textAlign': 'center' }}><span className="placeholder-field">{caso?.dispositivo_bateria_estado ? caso.dispositivo_bateria_estado : '___'}</span></span> %</td></tr>
+              <tr>
+                <td>Nivel Batería (%)</td>
+                <td>
+                  <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '40px', textAlign: 'center' }}>
+                    <span className="placeholder-field">{c.dispositivo_bateria_estado ? c.dispositivo_bateria_estado : '___'}</span>
+                  </span> %
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -129,10 +189,10 @@ const ActaObtencionPage = () => {
           </div>
           <div className="form-group">
             <div className="label">Alcance de la Autorización (Marque uno)</div>
-            <div className="checkbox-group" style={{ 'margin': '5px 0' }}>
+            <div className="checkbox-group" style={{ margin: '5px 0' }}>
               <div className="check-item"><span className="box"></span> <strong>ANÁLISIS TÉCNICO COMPLETO</strong> (Todo el contenido del dispositivo)</div>
             </div>
-            <div className="checkbox-group" style={{ 'margin': '5px 0' }}>
+            <div className="checkbox-group" style={{ margin: '5px 0' }}>
               <div className="check-item"><span className="box"></span> <strong>ANÁLISIS DELIMITADO</strong> (Únicamente chats de <strong>WHATSAPP</strong>)</div>
             </div>
           </div>
@@ -145,7 +205,7 @@ const ActaObtencionPage = () => {
             <div className="form-group">
               <div className="label">Bloqueo de Pantalla</div>
               <div className="checkbox-group">
-                <div className="check-item"><span className="box"></span> PIN / Patrón: __________</div>
+                <div className="check-item"><span className="box"></span> PIN / Patrón: <span contentEditable suppressContentEditableWarning style={{ borderBottom: '1px dashed #515154', minWidth: '60px', display: 'inline-block' }}></span></div>
                 <div className="check-item"><span className="box"></span> Sin Bloqueo</div>
               </div>
             </div>
@@ -162,22 +222,22 @@ const ActaObtencionPage = () => {
         {/*  V. MOTIVO  */}
         <div className="section">
           <div className="section-title">V. Motivo de la Consignación</div>
-          <div className="form-group motive-box">
-            <span className="placeholder-field">{caso?.descripcion ? caso.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
+          <div className="form-group motive-box" contentEditable suppressContentEditableWarning>
+            <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
           </div>
         </div>
 
         {/*  VI. FIRMAS  */}
-        <div className="signature-section" style={{ 'gap': '14mm' }}>
+        <div className="signature-section" style={{ gap: '14mm' }}>
           <div className="sig-detail-card">
             <div className="sig-detail-label">EL CONSIGNANTE</div>
             <div className="sig-line" />
             <div className="sig-line-label">Firma</div>
             <div className="sig-field">
-              C.I.: <span className="sig-underline">{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula del Consignante]</span>}</span>
+              C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Consignante]</span>}</span>
             </div>
             <div className="sig-field">
-              Teléfono: <span className="sig-underline">{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
+              Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -195,10 +255,10 @@ const ActaObtencionPage = () => {
             <div className="sig-line" />
             <div className="sig-line-label">Firma</div>
             <div className="sig-field">
-              Nombre: <span className="sig-underline">{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito Receptor]</span>}</span>
+              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Receptor]</span>}</span>
             </div>
             <div className="sig-field">
-              Cargo: <span className="sig-underline"><span className="placeholder-field">[Experto Informático Forense]</span></span>
+              Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -219,14 +279,13 @@ const ActaObtencionPage = () => {
         </div>
       </div>
 
-      <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px', 'display': 'flex', 'justifyContent': 'center', 'gap': '10px' }}>
-        <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Acta PDF (Tamaño Carta)
-        </button>
-        <button onClick={() => downloadPlanillaZip(`ActaObtencion_${caso?.numeroCaso || 'caso'}`, 'Acta de Obtención por Consignación')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
-          📦 Descargar ZIP (HTML + Word)
-        </button>
-      </div>
+      <PlanillaToolbar
+        onPrint={handlePrint}
+        onDownloadZip={() => downloadPlanillaZip(`ActaObtencion_${c.numeroCaso || 'caso'}`, 'Acta de Obtención por Consignación')}
+        tituloDocumento="Acta de Obtención por Consignación"
+        camposRequeridos={camposRequeridos}
+        casoId={casoId}
+      />
     </div>
   );
 };

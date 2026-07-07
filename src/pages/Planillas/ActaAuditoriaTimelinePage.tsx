@@ -4,6 +4,7 @@ import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
+import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 const ActaAuditoriaTimelinePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +22,27 @@ const ActaAuditoriaTimelinePage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadStoreLogs();
+
+    // Manejador interactivo para marcar casillas con una "X" al hacer clic
+    const handleCheckboxClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const box = target.closest('.check-item .box, .check-item');
+      if (box) {
+        const spanBox = box.classList.contains('box') ? box : box.querySelector('.box');
+        if (spanBox) {
+          if (spanBox.textContent === 'X') {
+            spanBox.textContent = '';
+          } else {
+            spanBox.textContent = 'X';
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleCheckboxClick);
+    return () => {
+      document.removeEventListener('click', handleCheckboxClick);
+    };
   }, [loadStoreLogs]);
 
   const SESSION_ACTIONS = new Set(['INICIO_SESION', 'SISTEMA_INICIADO', 'SESION_CERRADA']);
@@ -57,12 +79,21 @@ const ActaAuditoriaTimelinePage = () => {
     hour: '2-digit', minute: '2-digit'
   });
 
+  const fallbackCaso = {
+    numeroCaso: '',
+    titulo: '',
+    peritoLider: 'Carlos Mendoza',
+  };
+
+  const c = caso || fallbackCaso;
+
+  const camposRequeridos = [
+    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
+    { valor: caso?.titulo, nombre: 'Título del Caso' },
+    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Responsable' },
+  ];
+
   const handlePrint = () => {
-    const camposRequeridos = [
-      { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-      { valor: caso?.titulo, nombre: 'Título del Caso' },
-      { valor: caso?.peritoLider, nombre: 'Nombre del Perito Responsable' },
-    ];
     const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
     if (faltantes.length > 0) {
       const confirmar = window.confirm(
@@ -111,15 +142,15 @@ const ActaAuditoriaTimelinePage = () => {
             }}
           >
             <option value="">-- Seleccione un caso/expediente --</option>
-            {casos.map(c => (
-              <option key={c.id} value={c.id}>
-                {c.numeroCaso || 'Sin Nro'} - {c.titulo}
+            {casos.map(el => (
+              <option key={el.id} value={el.id}>
+                {el.numeroCaso || 'Sin Nro'} - {el.titulo}
               </option>
             ))}
           </select>
         </div>
-        <button onClick={handlePrint} className="print-button" style={{ margin: 0, padding: '6px 16px', fontSize: '13px' }}>
-          🖨️ Imprimir Timeline de Auditoría
+        <button onClick={handlePrint} className="print-button" style={{ margin: 0, padding: '6px 16px', fontSize: '12px', borderRadius: '8px' }}>
+          🖨️ Imprimir Timeline
         </button>
       </div>
 
@@ -137,8 +168,8 @@ const ActaAuditoriaTimelinePage = () => {
           <div className="acta-header">
             <h1 className="acta-title">Acta de Auditoría Forense — Timeline del Caso</h1>
             <div className="acta-nro">
-              N° EXPEDIENTE: <span className="box-inline" style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>
-                <span className="placeholder-field">{caso?.numeroCaso || '[EXPEDIENTE]'}</span>
+              N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>
+                <span className="placeholder-field">{c.numeroCaso ? c.numeroCaso : '[EXPEDIENTE]'}</span>
               </span>
             </div>
           </div>
@@ -150,11 +181,11 @@ const ActaAuditoriaTimelinePage = () => {
           <div className="grid-container">
             <div className="form-group">
               <div className="label">Caso / Expediente</div>
-              <div className="value"><span className="placeholder-field">{caso?.numeroCaso || '[N° Expediente]'}</span></div>
+              <div className="value" contentEditable suppressContentEditableWarning><span className="placeholder-field">{c.numeroCaso ? c.numeroCaso : '[N° Expediente]'}</span></div>
             </div>
             <div className="form-group">
               <div className="label">Título del Caso</div>
-              <div className="value"><span className="placeholder-field">{caso?.titulo || '[Título del Caso]'}</span></div>
+              <div className="value" contentEditable suppressContentEditableWarning><span className="placeholder-field">{c.titulo ? c.titulo : '[Título del Caso]'}</span></div>
             </div>
             <div className="form-group">
               <div className="label">Total de Eventos Registrados</div>
@@ -162,7 +193,7 @@ const ActaAuditoriaTimelinePage = () => {
             </div>
             <div className="form-group">
               <div className="label">Fecha de Impresión del Acta</div>
-              <div className="value">{fechaImpresion}</div>
+              <div className="value" contentEditable suppressContentEditableWarning>{fechaImpresion}</div>
             </div>
             {logsDelCaso.length > 0 && (
               <>
@@ -188,7 +219,7 @@ const ActaAuditoriaTimelinePage = () => {
           <div className="section-title">II. Sellado Criptográfico de la Cadena SHA-256</div>
           <div className="legal-text">
             <strong>Resguardo de Integridad:</strong> La presente cadena de auditoría ha sido sellada criptográficamente mediante el algoritmo SHA-256 conforme a la norma <strong>ISO/IEC 27037:2012</strong> y al <strong>Manual Único de Cadena de Custodia de Evidencias (MUCC-2017)</strong>. La verificación de cualquier registro garantiza la inalterabilidad del historial completo.
-            <div style={{ fontFamily: 'monospace', marginTop: '5px', fontSize: '8px', fontWeight: 'bold' }}>
+            <div style={{ fontFamily: 'monospace', marginTop: '5px', fontSize: '8px', fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>
               Hash SHA-256 Inicial: <span className="placeholder-field">{hashInicial.length > 20 ? `${hashInicial.substring(0, 32)}...${hashInicial.substring(hashInicial.length - 8)}` : hashInicial}</span><br />
               Hash SHA-256 Final (Cadena): <span className="placeholder-field">{hashFinalCadena.length > 20 ? `${hashFinalCadena.substring(0, 32)}...${hashFinalCadena.substring(hashFinalCadena.length - 8)}` : hashFinalCadena}</span>
             </div>
@@ -232,8 +263,8 @@ const ActaAuditoriaTimelinePage = () => {
                         {getActionLabel(log.accion)}
                       </span>
                     </td>
-                    <td>{log.detalle}</td>
-                    <td>{log.usuario}</td>
+                    <td contentEditable suppressContentEditableWarning>{log.detalle}</td>
+                    <td contentEditable suppressContentEditableWarning>{log.usuario}</td>
                     <td style={{ fontFamily: 'monospace', fontSize: '6px', wordBreak: 'break-all' }}>
                       {log.hashActual
                         ? `${log.hashActual.substring(0, 12)}...${log.hashActual.substring(log.hashActual.length - 6)}`
@@ -262,10 +293,10 @@ const ActaAuditoriaTimelinePage = () => {
             <div className="sig-line" />
             <div className="sig-line-label">Firma</div>
             <div className="sig-field">
-              Nombre: <span className="sig-underline">{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
+              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
             </div>
             <div className="sig-field">
-              C.I.: <span className="sig-underline"><span className="placeholder-field">[Cédula de Identidad]</span></span>
+              C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula de Identidad]</span></span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -283,10 +314,10 @@ const ActaAuditoriaTimelinePage = () => {
             <div className="sig-line" />
             <div className="sig-line-label">Firma del Supervisor</div>
             <div className="sig-field">
-              Nombre: <span className="sig-underline"><span className="placeholder-field">[Nombre del Supervisor]</span></span>
+              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Nombre del Supervisor]</span></span>
             </div>
             <div className="sig-field">
-              Cargo: <span className="sig-underline"><span className="placeholder-field">[Compliance Officer / Coordinador]</span></span>
+              Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Compliance Officer / Coordinador]</span></span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -307,14 +338,13 @@ const ActaAuditoriaTimelinePage = () => {
         </div>
       </div>
 
-      <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Timeline de Auditoría (Tamaño Carta)
-        </button>
-        <button onClick={() => downloadPlanillaZip(`AuditoriaTimeline_${caso?.numeroCaso || 'caso'}`, 'Acta de Auditoría e Inmutabilidad de Línea de Tiempo')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
-          📦 Descargar ZIP (HTML + Word)
-        </button>
-      </div>
+      <PlanillaToolbar
+        onPrint={handlePrint}
+        onDownloadZip={() => downloadPlanillaZip(`AuditoriaTimeline_${c.numeroCaso || 'caso'}`, 'Acta de Auditoría e Inmutabilidad de Línea de Tiempo')}
+        tituloDocumento="Acta de Auditoría Forense — Timeline"
+        camposRequeridos={camposRequeridos}
+        casoId={casoId}
+      />
     </div>
   );
 };

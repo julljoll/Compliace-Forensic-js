@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
+import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 const ActaEntrevistaPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,15 +13,51 @@ const ActaEntrevistaPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Manejador interactivo para marcar casillas con una "X" al hacer clic
+    const handleCheckboxClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const box = target.closest('.check-item .box, .check-item');
+      if (box) {
+        const spanBox = box.classList.contains('box') ? box : box.querySelector('.box');
+        if (spanBox) {
+          if (spanBox.textContent === 'X') {
+            spanBox.textContent = '';
+          } else {
+            spanBox.textContent = 'X';
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleCheckboxClick);
+    return () => {
+      document.removeEventListener('click', handleCheckboxClick);
+    };
   }, []);
 
+  const fallbackCaso = {
+    numeroCaso: '',
+    solicitante_nombre: '',
+    solicitante_cedula: '',
+    dispositivo_marca: '',
+    dispositivo_modelo: '',
+    dispositivo_imei: '',
+    dispositivo_numero_tel: '',
+    correo_investigar: '',
+    peritoLider: 'Carlos Mendoza',
+  };
+
+  const c = caso || fallbackCaso;
+
+  const camposRequeridos = [
+    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
+    { valor: caso?.solicitante_nombre, nombre: 'Nombre del Entrevistado' },
+    { valor: caso?.solicitante_cedula, nombre: 'Cédula del Entrevistado' },
+    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Forense' },
+  ];
+
   const handlePrint = () => {
-    const camposRequeridos = [
-      { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-      { valor: caso?.solicitante_nombre, nombre: 'Nombre del Entrevistado' },
-      { valor: caso?.solicitante_cedula, nombre: 'Cédula del Entrevistado' },
-      { valor: caso?.peritoLider, nombre: 'Nombre del Perito Forense' },
-    ];
     const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
     if (faltantes.length > 0) {
       const confirmar = window.confirm(
@@ -45,25 +82,50 @@ const ActaEntrevistaPage = () => {
               Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.
             </span>
           </div>
-            <div className="acta-header">
-              <h1 className="acta-title">Acta de Entrevista de Testigo / Víctima</h1>
-              <div className="acta-nro">
-                N° EXPEDIENTE: <span className="box-inline" style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{caso?.numeroCaso ? caso.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
-              </div>
+          <div className="acta-header">
+            <h1 className="acta-title">Acta de Entrevista de Testigo / Víctima</h1>
+            <div className="acta-nro">
+              N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
             </div>
+          </div>
         </header>
 
         {/* I. IDENTIFICACIÓN DEL ENTREVISTADO */}
         <div className="section">
           <div className="section-title">I. Datos e Identificación del Entrevistado</div>
           <div className="grid-container">
-            <div className="form-group"><div className="label">Apellidos y Nombres</div><div className="value">{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres]</span>}</div></div>
-            <div className="form-group"><div className="label">Cédula de Identidad / Pasaporte</div><div className="value">{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</div></div>
-            <div className="form-group"><div className="label">Teléfono de Contacto</div><div className="value">{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}</div></div>
-            <div className="form-group"><div className="label">Correo Electrónico</div><div className="value">{caso?.correo_investigar ? caso.correo_investigar : <span className="placeholder-field">[Correo Electrónico]</span>}</div></div>
+            <div className="form-group">
+              <div className="label">Apellidos y Nombres</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Cédula de Identidad / Pasaporte</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Teléfono de Contacto</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Correo Electrónico</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.correo_investigar ? c.correo_investigar : <span className="placeholder-field">[Correo Electrónico]</span>}
+              </div>
+            </div>
           </div>
           <div className="grid-container" style={{ marginTop: '5px' }}>
-            <div className="form-group" style={{ gridColumn: 'span 2' }}><div className="label">Dirección de Habitación Habitual</div><div className="value"><span className="placeholder-field">[Dirección de Habitación]</span></div></div>
+            <div className="form-group" style={{ gridColumn: 'span 2' }}>
+              <div className="label">Dirección de Habitación Habitual</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Dirección de Habitación]</span>
+              </div>
+            </div>
           </div>
           <div className="form-group" style={{ marginTop: '5px' }}>
             <div className="label">Condición / Rol en la Investigación</div>
@@ -83,15 +145,15 @@ const ActaEntrevistaPage = () => {
             <tbody>
               <tr>
                 <td>Dispositivo Móvil / Almacenamiento</td>
-                <td>
-                  Marca/Modelo: <strong className="placeholder-field">{caso?.dispositivo_marca || caso?.dispositivo_modelo ? `${caso.dispositivo_marca || ''} ${caso.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial / IMEI: <strong className="placeholder-field">{caso?.dispositivo_imei ? caso.dispositivo_imei : '[Serial / IMEI]'}</strong>
+                <td contentEditable suppressContentEditableWarning>
+                  Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Serial / IMEI: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial / IMEI]'}</strong>
                 </td>
               </tr>
               <tr>
                 <td>Línea Activa</td>
-                <td>
-                  Nro. Telefónico: <strong className="placeholder-field">{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : '[Nro. Telefónico]'}</strong>
+                <td contentEditable suppressContentEditableWarning>
+                  Nro. Telefónico: <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico]'}</strong>
                   &nbsp;&nbsp;&nbsp;&nbsp; Operadora: <strong className="placeholder-field">[Operadora]</strong>
                 </td>
               </tr>
@@ -102,7 +164,9 @@ const ActaEntrevistaPage = () => {
                     <div className="check-item"><span className="box"></span> WhatsApp</div>
                     <div className="check-item"><span className="box"></span> Telegram</div>
                     <div className="check-item"><span className="box"></span> Correo Electrónico</div>
-                    <div className="check-item"><span className="box"></span> Cuenta ID: <span style={{ textDecoration: 'underline' }} className="placeholder-field">[Cuenta / ID de la Aplicación]</span></div>
+                    <div className="check-item">
+                      <span className="box"></span> Cuenta ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Cuenta / ID de la Aplicación]</span>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -128,10 +192,10 @@ const ActaEntrevistaPage = () => {
         {/* IV. NARRATIVA Y RELATO DE LOS HECHOS */}
         <div className="section">
           <div className="section-title">IV. Narrativa del Entrevistado y Relato de los Hechos de Interés Forense</div>
-          <div style={{ fontSize: '9px', fontStyle: 'italic', color: 'var(--apple-text-muted)', marginBottom: '4px' }}>
+          <div style={{ fontSize: '9px', fontStyle: 'italic', color: '#515154', marginBottom: '4px' }}>
             Indique de manera cronológica y detallada el origen de las comunicaciones de interés, contextualización de los chats, personas involucradas y la relación del dispositivo en estudio:
           </div>
-          <div className="narrativa-box">
+          <div className="narrativa-box" contentEditable suppressContentEditableWarning>
             <p style={{ margin: 0, fontWeight: 'medium' }}>
               <strong>Relato inicial:</strong> <span className="placeholder-field">[Describa detalladamente el relato de los hechos]</span>
             </p>
@@ -150,10 +214,10 @@ const ActaEntrevistaPage = () => {
             <div className="sig-line" />
             <div className="sig-line-label">Firma del Entrevistado</div>
             <div className="sig-field">
-              C.I.: <span className="sig-underline">{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[C.I. del Entrevistado]</span>}</span>
+              C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[C.I. del Entrevistado]</span>}</span>
             </div>
             <div className="sig-field">
-              Nombre: <span className="sig-underline">{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Nombre del Entrevistado]</span>}</span>
+              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Entrevistado]</span>}</span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -171,10 +235,10 @@ const ActaEntrevistaPage = () => {
             <div className="sig-line" />
             <div className="sig-line-label">Firma del Experto Forense</div>
             <div className="sig-field">
-              Nombre: <span className="sig-underline">{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
+              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
             </div>
             <div className="sig-field">
-              Cargo: <span className="sig-underline"><span className="placeholder-field">[Experto Informático Forense]</span></span>
+              Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
             </div>
             <div className="fingerprint-row">
               <div className="thumb-wrapper">
@@ -195,14 +259,13 @@ const ActaEntrevistaPage = () => {
         </div>
       </div>
 
-      <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Acta de Entrevista PDF (Tamaño Carta)
-        </button>
-        <button onClick={() => downloadPlanillaZip(`ActaEntrevista_${caso?.numeroCaso || 'caso'}`, 'Acta de Entrevista Forense')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
-          📦 Descargar ZIP (HTML + Word)
-        </button>
-      </div>
+      <PlanillaToolbar
+        onPrint={handlePrint}
+        onDownloadZip={() => downloadPlanillaZip(`ActaEntrevista_${c.numeroCaso || 'caso'}`, 'Acta de Entrevista Forense')}
+        tituloDocumento="Acta de Entrevista de Testigo / Víctima"
+        camposRequeridos={camposRequeridos}
+        casoId={casoId}
+      />
     </div>
   );
 };

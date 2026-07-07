@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
+import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 const PlanillaPRCCPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,15 +13,54 @@ const PlanillaPRCCPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Manejador interactivo para marcar casillas con una "X" al hacer clic
+    const handleCheckboxClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const box = target.closest('.check-item .box, .check-item');
+      if (box) {
+        const spanBox = box.classList.contains('box') ? box : box.querySelector('.box');
+        if (spanBox) {
+          if (spanBox.textContent === 'X') {
+            spanBox.textContent = '';
+          } else {
+            spanBox.textContent = 'X';
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleCheckboxClick);
+    return () => {
+      document.removeEventListener('click', handleCheckboxClick);
+    };
   }, []);
 
+  const fallbackCaso = {
+    numeroCaso: '',
+    numeroPRCC: '',
+    solicitante_nombre: '',
+    solicitante_cedula: '',
+    dispositivo_marca: '',
+    dispositivo_modelo: '',
+    dispositivo_imei: '',
+    dispositivo_imei2: '',
+    dispositivo_numero_tel: '',
+    dispositivo_sim_card: '',
+    peritoLider: 'Carlos Mendoza',
+  };
+
+  const c = caso || fallbackCaso;
+
+  const camposRequeridos = [
+    { valor: caso?.numeroPRCC, nombre: 'Número de Planilla PRCC' },
+    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
+    { valor: caso?.solicitante_nombre, nombre: 'Nombre del Consignante' },
+    { valor: caso?.solicitante_cedula, nombre: 'Cédula del Consignante' },
+    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Forense' },
+  ];
+
   const handlePrint = () => {
-    const camposRequeridos = [
-      { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-      { valor: caso?.solicitante_nombre, nombre: 'Nombre del Consignante' },
-      { valor: caso?.solicitante_cedula, nombre: 'Cédula del Consignante' },
-      { valor: caso?.peritoLider, nombre: 'Nombre del Perito Forense' },
-    ];
     const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
     if (faltantes.length > 0) {
       const confirmar = window.confirm(
@@ -47,7 +87,9 @@ const PlanillaPRCCPage = () => {
           </div>
           <div className="form-header-info">
             <h1 className="form-title-main">Planilla de Registro de Cadena de Custodia (PRCC)</h1>
-             <div className="form-nro">N° PRCC: <span style={{ marginLeft: '8px', borderBottom: '1px solid var(--border-color)', minWidth: '150px', display: 'inline-block', textAlign: 'center', fontWeight: 'bold' }}>{caso?.numeroPRCC ? caso.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}</span></div>
+            <div className="form-nro">
+              N° PRCC: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}</span>
+            </div>
           </div>
         </header>
 
@@ -55,15 +97,60 @@ const PlanillaPRCCPage = () => {
         <div className="section">
           <div className="section-title">I. Datos del Consignante, del Caso y Organismo</div>
           <div className="grid-container">
-            <div className="form-group"><div className="label">Apellidos y Nombres del Consignante</div><div className="value">{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}</div></div>
-            <div className="form-group"><div className="label">Cédula de Identidad</div><div className="value">{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</div></div>
-            <div className="form-group"><div className="label">Teléfono de Contacto</div><div className="value">{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}</div></div>
-            <div className="form-group"><div className="label">N° de Expediente / Caso</div><div className="value">{caso?.numeroCaso ? caso.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</div></div>
-            <div className="form-group"><div className="label">N° PRCC</div><div className="value">{caso?.numeroPRCC ? caso.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}</div></div>
-            <div className="form-group"><div className="label">Organismo / Despacho que instruye</div><div className="value"><span className="placeholder-field">[Organismo / Despacho que instruye]</span></div></div>
-            <div className="form-group"><div className="label">Lugar de Obtención (Dirección)</div><div className="value"><span className="placeholder-field">[Lugar de Obtención (Dirección)]</span></div></div>
-            <div className="form-group"><div className="label">Fecha de Recepción</div><div className="value"><span className="placeholder-field">[Fecha]</span></div></div>
-            <div className="form-group"><div className="label">Hora de Recepción</div><div className="value"><span className="placeholder-field">[Hora]</span></div></div>
+            <div className="form-group">
+              <div className="label">Apellidos y Nombres del Consignante</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Cédula de Identidad</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Teléfono de Contacto</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">N° de Expediente / Caso</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">N° PRCC</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                {c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Organismo / Despacho que instruye</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Organismo / Despacho que instruye]</span>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Lugar de Obtención (Dirección)</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Lugar de Obtención (Dirección)]</span>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Fecha de Recepción</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Fecha]</span>
+              </div>
+            </div>
+            <div className="form-group">
+              <div className="label">Hora de Recepción</div>
+              <div className="value" contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[Hora]</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -72,7 +159,7 @@ const PlanillaPRCCPage = () => {
           <div className="section-title">II. Forma de Obtención (MUCC-2017)</div>
           <div className="form-group">
             <div className="checkbox-group">
-              <div className="check-item"><span className="box"></span> <u>CONSIGNACIÓN</u> <span style={{ fontSize: '7px', color: 'var(--text-muted)' }}>(Entrega voluntaria)</span></div>
+              <div className="check-item"><span className="box"></span> <u>CONSIGNACIÓN</u> <span style={{ fontSize: '7px', color: '#8e8e93' }}>(Entrega voluntaria)</span></div>
               <div className="check-item"><span className="box"></span> TÉCNICA</div>
               <div className="check-item"><span className="box"></span> ASEGURAMIENTO</div>
               <div className="check-item"><span className="box"></span> DERIVACIÓN</div>
@@ -86,7 +173,7 @@ const PlanillaPRCCPage = () => {
           <div className="signature-grid">
             <div className="sig-card">
               <div className="label">A. Fijación (Nombre y Credencial)</div>
-              <div className="value" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</div>
+              <div className="value" contentEditable suppressContentEditableWarning style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</div>
               <div className="sig-row">
                 <div className="sig-firma-col">
                   <div className="sig-box" />
@@ -100,7 +187,7 @@ const PlanillaPRCCPage = () => {
             </div>
             <div className="sig-card">
               <div className="label">B. Colección (Nombre y Credencial)</div>
-              <div className="value" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</div>
+              <div className="value" contentEditable suppressContentEditableWarning style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }}>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</div>
               <div className="sig-row">
                 <div className="sig-firma-col">
                   <div className="sig-box" />
@@ -133,27 +220,39 @@ const PlanillaPRCCPage = () => {
               </tr>
               <tr>
                 <td>Marca / Modelo</td>
-                <td>{caso?.dispositivo_marca || caso?.dispositivo_modelo ? `${caso.dispositivo_marca || ''} ${caso.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}
+                </td>
               </tr>
               <tr>
                 <td>IMEI 1</td>
-                <td>{caso?.dispositivo_imei ? caso.dispositivo_imei : <span className="placeholder-field">[IMEI 1 / Serial]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[IMEI 1 / Serial]</span>}
+                </td>
               </tr>
               <tr>
                 <td>IMEI 2</td>
-                <td>{caso?.dispositivo_imei2 ? caso.dispositivo_imei2 : <span className="placeholder-field">[IMEI 2]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei2 ? c.dispositivo_imei2 : <span className="placeholder-field">[IMEI 2]</span>}
+                </td>
               </tr>
               <tr>
                 <td>N° de Serie / Serial</td>
-                <td>{caso?.dispositivo_imei ? caso.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI]</span>}
+                </td>
               </tr>
               <tr>
                 <td>N° de Línea / Teléfono</td>
-                <td>{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
+                </td>
               </tr>
               <tr>
                 <td>Tarjeta SIM</td>
-                <td>{caso?.dispositivo_sim_card ? caso.dispositivo_sim_card : <span className="placeholder-field">[Tarjeta SIM]</span>}</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_sim_card ? c.dispositivo_sim_card : <span className="placeholder-field">[Tarjeta SIM]</span>}
+                </td>
               </tr>
               <tr>
                 <td>Estado Físico</td>
@@ -177,18 +276,24 @@ const PlanillaPRCCPage = () => {
                   </div>
                 </td>
               </tr>
-              <tr><td>N° Precinto / Sello de Seguridad</td><td><span className="placeholder-field">[N° Precinto]</span></td></tr>
+              <tr>
+                <td>N° Precinto / Sello de Seguridad</td>
+                <td contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Precinto]</span></td>
+              </tr>
               <tr>
                 <td>Tipo de Embalaje</td>
                 <td>
-                    <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
                     <div className="check-item"><span className="box"></span> Bolsa Antiestática / Faraday</div>
                     <div className="check-item"><span className="box"></span> Caja de Cartón</div>
                     <div className="check-item"><span className="box"></span> Sobre de Evidencia</div>
                   </div>
                 </td>
               </tr>
-              <tr><td>Accesorios Incluidos</td><td><span className="placeholder-field">[Accesorios Incluidos]</span></td></tr>
+              <tr>
+                <td>Accesorios Incluidos</td>
+                <td contentEditable suppressContentEditableWarning><span className="placeholder-field">[Accesorios Incluidos]</span></td>
+              </tr>
             </tbody>
           </table>
           <div style={{ textAlign: 'right', marginTop: '5px', fontSize: '9px' }}>
@@ -212,14 +317,14 @@ const PlanillaPRCCPage = () => {
                 <td style={{ width: '35%', verticalAlign: 'top' }}>
                   <div className="sig-detail-card" style={{ minHeight: 'auto', border: 'none', padding: '0', background: 'transparent', gap: '4px' }}>
                     <div className="label">ENTREGA (Consignante)</div>
-                    <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }}>{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Nombre]</span>}</span></div>
+                    <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre]</span>}</span></div>
                     <div className="sig-line" style={{ height: '24px' }} />
                     <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma</div>
                     <div className="sig-field" style={{ fontSize: '8px' }}>
-                      C.I.: <span className="sig-underline" style={{ minHeight: '16px' }}>{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula]</span>}</span>
+                      C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula]</span>}</span>
                     </div>
                     <div className="sig-field" style={{ fontSize: '8px' }}>
-                      Teléfono: <span className="sig-underline" style={{ minHeight: '16px' }}>{caso?.dispositivo_numero_tel ? caso.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
+                      Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
                     </div>
                     <div className="fingerprint-row" style={{ marginTop: '4px', paddingTop: '4px' }}>
                       <div className="thumb-wrapper">
@@ -236,14 +341,14 @@ const PlanillaPRCCPage = () => {
                 <td style={{ width: '35%', verticalAlign: 'top' }}>
                   <div className="sig-detail-card" style={{ minHeight: 'auto', border: 'none', padding: '0', background: 'transparent', gap: '4px' }}>
                     <div className="label">RECIBE (Perito Informático)</div>
-                    <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }}>{caso?.peritoLider ? caso.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span></div>
+                    <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span></div>
                     <div className="sig-line" style={{ height: '24px' }} />
                     <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma</div>
                     <div className="sig-field" style={{ fontSize: '8px' }}>
-                      C.I.: <span className="sig-underline" style={{ minHeight: '16px' }}><span className="placeholder-field">[Cédula]</span></span>
+                      C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cédula]</span></span>
                     </div>
                     <div className="sig-field" style={{ fontSize: '8px' }}>
-                      Cargo: <span className="sig-underline" style={{ minHeight: '16px' }}><span className="placeholder-field">[Cargo]</span></span>
+                      Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cargo]</span></span>
                     </div>
                     <div className="fingerprint-row" style={{ marginTop: '4px', paddingTop: '4px' }}>
                       <div className="thumb-wrapper">
@@ -264,8 +369,8 @@ const PlanillaPRCCPage = () => {
 
         {/*  DECLARACIÓN  */}
         <div className="section">
-          <p style={{ fontSize: '7px', color: 'var(--text-muted)', textAlign: 'justify', marginTop: '5px', lineHeight: '1.2' }}>
-            Yo, <strong style={{ borderBottom: '1px solid var(--border-color)', minWidth: '200px', display: 'inline-block' }}>{caso?.solicitante_nombre ? caso.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}</strong>, titular de la cédula de identidad N° <strong style={{ borderBottom: '1px solid var(--border-color)', minWidth: '120px', display: 'inline-block' }}>{caso?.solicitante_cedula ? caso.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</strong>, 
+          <p style={{ fontSize: '7px', color: '#8e8e93', textAlign: 'justify', marginTop: '5px', lineHeight: '1.2' }}>
+            Yo, <strong style={{ borderBottom: '1px solid #1d1d1f', minWidth: '200px', display: 'inline-block' }} contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}</strong>, titular de la cédula de identidad N° <strong style={{ borderBottom: '1px solid #1d1d1f', minWidth: '120px', display: 'inline-block' }} contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</strong>, 
             en pleno uso de mis facultades, declaro que hago entrega voluntaria del dispositivo móvil descrito en la Sección IV para su revisión técnica forense. 
             Autorizo al Laboratorio SHA256.US a realizar las pruebas técnicas necesarias sobre el equipo y su contenido digital, 
             conforme al <strong>Manual Único de Cadena de Custodia de Evidencias (MUCC-2017)</strong>, los <strong>Arts. 187 y 225 del COPP</strong>, 
@@ -276,12 +381,13 @@ const PlanillaPRCCPage = () => {
 
       </div>
 
-      <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }} className="no-print">
-        <button onClick={handlePrint} className="print-button">🖨️ IMPRIMIR PLANILLA (TAMAÑO CARTA)</button>
-        <button onClick={() => downloadPlanillaZip(`PRCC_${caso?.numeroCaso || 'caso'}`, 'Planilla de Registro de Cadena de Custodia')} className="print-button" style={{ backgroundColor: '#0071E3', borderColor: '#0071E3' }}>
-          📦 DESCARGAR ZIP (HTML + WORD)
-        </button>
-      </div>
+      <PlanillaToolbar
+        onPrint={handlePrint}
+        onDownloadZip={() => downloadPlanillaZip(`PRCC_${c.numeroCaso || 'caso'}`, 'Planilla de Registro de Cadena de Custodia')}
+        tituloDocumento="Planilla de Registro de Cadena de Custodia (PRCC)"
+        camposRequeridos={camposRequeridos}
+        casoId={casoId}
+      />
     </div>
   );
 };
