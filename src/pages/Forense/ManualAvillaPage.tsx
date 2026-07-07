@@ -79,7 +79,7 @@ const FASES: Fase[] = [
     subtitulo: 'Documentación legal antes de tocar el dispositivo',
     icono: FileText,
     color: 'text-[#007AFF]',
-    glowColor: 'rgba(0,122,255,0.15)',
+    glowColor: 'rgba(10,132,255,0.15)',
     pasos: [
       {
         id: 'f0p1',
@@ -524,7 +524,7 @@ const FASES: Fase[] = [
     subtitulo: 'Mensajes, imágenes, audios .opus y capturas de pantalla',
     icono: Eye,
     color: 'text-[#007AFF]',
-    glowColor: 'rgba(0,122,255,0.15)',
+    glowColor: 'rgba(10,132,255,0.15)',
     pasos: [
       {
         id: 'f4p1',
@@ -872,11 +872,11 @@ const FASES: Fase[] = [
 /** Badge de normativa con color */
 function BadgeNormativa({ tag }: { tag: NormativaTag }) {
   const colors: Record<NormativaTag['color'], string> = {
-    cyan:   'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]',
-    green:  'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]',
-    yellow: 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]',
-    red:    'bg-[#FF3B30]/10 border-[#FF3B30]/25 text-[#FF3B30]',
-    purple: 'bg-[#AF52DE]/10 border-[#AF52DE]/25 text-[#AF52DE]',
+    cyan:   'bg-[var(--co-blue)]/10 border-[var(--co-blue)]/25 text-[var(--co-blue)]',
+    green:  'bg-[var(--co-green)]/10 border-[var(--co-green)]/25 text-[var(--co-green)]',
+    yellow: 'bg-[var(--co-orange)]/10 border-[var(--co-orange)]/25 text-[var(--co-orange)]',
+    red:    'bg-[var(--co-red)]/10 border-[var(--co-red)]/25 text-[var(--co-red)]',
+    purple: 'bg-[var(--co-purple)]/10 border-[var(--co-purple)]/25 text-[var(--co-purple)]',
   };
   return (
     <span className={`inline-flex items-center text-[8px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded border ${colors[tag.color]}`}>
@@ -903,10 +903,10 @@ function AlertaForense({ adv }: { adv: Advertencia }) {
       Icon:    AlertTriangle,
     },
     info: {
-      wrapper: 'bg-[#007AFF]/[0.06] border-[#007AFF]/25',
-      icon:    'text-[#007AFF]',
-      titulo:  'text-[#007AFF]',
-      cuerpo:  'text-[#1D1D1F]',
+      wrapper: 'bg-[var(--co-blue)]/[0.06] border-[var(--co-blue)]/25',
+      icon:    'text-[var(--co-blue)]',
+      titulo:  'text-[var(--co-blue)]',
+      cuerpo:  'text-[var(--apple-text)]',
       Icon:    Info,
     },
   }[adv.nivel];
@@ -937,7 +937,7 @@ function BloqueCode({ lang, contenido }: { lang: string; contenido: string }) {
 
   const LANG_COLOR: Record<string, string> = {
     bash:       'text-green-400/60',
-    powershell: 'text-blue-400/60',
+    powershell: 'text-[var(--co-blue)]/60',
     sql:        'text-yellow-400/60',
     python:     'text-cyan-400/60',
   };
@@ -1151,13 +1151,12 @@ function StepperFase({
             width: `${progreso}%`,
             color: activa ? fase.color.replace('text-', '') : undefined,
             background: completada ? undefined : activa
-              ? fase.color.includes('[#0071E3]') || fase.color.includes('cyan') ? '#0071E3'
-              : fase.color.includes('[#34C759]') || fase.color.includes('green') ? '#34C759'
-              : fase.color.includes('[#30B0C7]') || fase.color.includes('emerald') ? '#30B0C7'
-              : fase.color.includes('[#FF9500]') || fase.color.includes('yellow') ? '#FF9500'
-              : fase.color.includes('[#007AFF]') || fase.color.includes('blue') ? '#007AFF'
-              : fase.color.includes('[#FF9500]') || fase.color.includes('orange') ? '#FF9500'
-              : '#FF3B30'
+              ? fase.color.includes('co-accent') || fase.color.includes('cyan') ? 'var(--co-accent)'
+              : fase.color.includes('co-green') || fase.color.includes('green') ? 'var(--co-green)'
+              : fase.color.includes('co-blue') || fase.color.includes('blue') ? 'var(--co-blue)'
+              : fase.color.includes('co-orange') || fase.color.includes('orange') ? 'var(--co-orange)'
+              : fase.color.includes('co-yellow') || fase.color.includes('yellow') ? 'var(--co-yellow)'
+              : 'var(--co-red)'
               : undefined,
           }}
         />
@@ -1309,12 +1308,12 @@ export default function ManualAvillaForensics() {
                 style={{
                   width: `${pctGlobal}%`,
                   background: pctGlobal === 100
-                    ? 'linear-gradient(90deg, #34C759, #30D158)'
-                    : 'linear-gradient(90deg, #0071E3, #007AFF)',
+                    ? 'linear-gradient(90deg, var(--co-green), #30D158)'
+                    : 'linear-gradient(90deg, var(--co-accent), var(--co-blue))',
                   boxShadow: pctGlobal > 0
                     ? pctGlobal === 100
-                      ? '0 0 8px rgba(52,199,89,0.2)'
-                      : '0 0 8px rgba(0,113,227,0.15)'
+                      ? '0 0 8px rgba(48,209,88,0.2)'
+                      : '0 0 8px rgba(10,132,255,0.15)'
                     : 'none',
                 }}
               />

@@ -627,11 +627,11 @@ type ConfigTutorial = {
 
 function BadgeNormativa({ tag }: { tag: TagFase }) {
   const colors: Record<TagFase['color'], string> = {
-    cyan:   'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]',
-    green:  'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]',
-    yellow: 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]',
-    red:    'bg-[#FF3B30]/10 border-[#FF3B30]/25 text-[#FF3B30]',
-    purple: 'bg-[#AF52DE]/10 border-[#AF52DE]/25 text-[#AF52DE]',
+    cyan:   'bg-[var(--co-blue)]/10 border-[var(--co-blue)]/25 text-[var(--co-blue)]',
+    green:  'bg-[var(--co-green)]/10 border-[var(--co-green)]/25 text-[var(--co-green)]',
+    yellow: 'bg-[var(--co-orange)]/10 border-[var(--co-orange)]/25 text-[var(--co-orange)]',
+    red:    'bg-[var(--co-red)]/10 border-[var(--co-red)]/25 text-[var(--co-red)]',
+    purple: 'bg-[var(--co-purple)]/10 border-[var(--co-purple)]/25 text-[var(--co-purple)]',
   };
   return (
     <span className={`inline-flex items-center text-[8px] font-bold uppercase tracking-[0.15em] px-2 py-0.5 rounded border ${colors[tag.color]}`}>
@@ -657,10 +657,10 @@ function AlertaForense({ adv }: { adv: AdvertenciaDetalle }) {
       Icon:    AlertTriangle,
     },
     info: {
-      wrapper: 'bg-[#007AFF]/[0.06] border-[#007AFF]/25',
-      icon:    'text-[#007AFF]',
-      titulo:  'text-[#007AFF]',
-      cuerpo:  'text-[#1D1D1F]',
+      wrapper: 'bg-[var(--co-blue)]/[0.06] border-[var(--co-blue)]/25',
+      icon:    'text-[var(--co-blue)]',
+      titulo:  'text-[var(--co-blue)]',
+      cuerpo:  'text-[var(--apple-text)]',
       Icon:    Shield,
     },
   }[adv.nivel];
@@ -881,13 +881,12 @@ function StepperFase({
           style={{
             width: `${progreso}%`,
             background: completada ? undefined : activa
-              ? fase.color.includes('[#0071E3]') || fase.color.includes('cyan') ? '#0071E3'
-              : fase.color.includes('[#34C759]') || fase.color.includes('green') ? '#34C759'
-              : fase.color.includes('[#30B0C7]') || fase.color.includes('emerald') ? '#30B0C7'
-              : fase.color.includes('[#FF9500]') || fase.color.includes('yellow') ? '#FF9500'
-              : fase.color.includes('[#007AFF]') || fase.color.includes('blue') ? '#007AFF'
-              : fase.color.includes('[#FF9500]') || fase.color.includes('orange') ? '#FF9500'
-              : '#FF3B30'
+              ? fase.color.includes('co-accent') || fase.color.includes('cyan') ? 'var(--co-accent)'
+              : fase.color.includes('co-green') || fase.color.includes('green') ? 'var(--co-green)'
+              : fase.color.includes('co-blue') || fase.color.includes('blue') ? 'var(--co-blue)'
+              : fase.color.includes('co-orange') || fase.color.includes('orange') ? 'var(--co-orange)'
+              : fase.color.includes('co-yellow') || fase.color.includes('yellow') ? 'var(--co-yellow)'
+              : 'var(--co-red)'
               : undefined,
           }}
         />
@@ -915,8 +914,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Identificación y Preservación',
         subtitulo: 'Asegurando la inalterabilidad de la fuente original',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'correo_f0p1',
@@ -1098,8 +1097,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Conexión y RSA',
         subtitulo: 'Configuración del dispositivo y habilitación de ADB',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'adb_f0p1',
@@ -1252,8 +1251,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Marco de Seguridad',
         subtitulo: 'Autorización legal y copia de respaldo preventivo',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'down_f0p1',
@@ -1409,8 +1408,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Acceso a Base de Datos',
         subtitulo: 'Montaje de archivos SQLite y cruce de tablas',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'wp_f0p1',
@@ -1552,8 +1551,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Hash y HMAC',
         subtitulo: 'Cálculo de firma de integridad y sellado criptográfico',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'int_f0p1',
@@ -1655,8 +1654,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Configuración e Indexación',
         subtitulo: 'Configurar el entorno forense y lanzar el procesamiento',
         icono: Search,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'iped_f0p1',
@@ -1763,8 +1762,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Aseguramiento y Clonado',
         subtitulo: 'Proteger y copiar bit a bit el soporte original',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'cadena_f0p1',
@@ -1868,8 +1867,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Preparación y Activación',
         subtitulo: 'Entorno forense y depuración USB',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'kali_f0p1',
@@ -2041,8 +2040,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Entorno Seguro y Carga de Evidencia',
         subtitulo: 'Configuración de solo lectura en CAINE',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'caine_f0p1',
@@ -2186,8 +2185,8 @@ const TUTORIAL_CONFIGS: Record<string, ConfigTutorial> = {
         titulo: 'Fundamentos y Laboratorio',
         subtitulo: 'Entorno de Ciencias Forenses',
         icono: Shield,
-        color: 'text-[#007AFF]',
-        glowColor: 'rgba(0,122,255,0.15)',
+        color: 'text-[var(--co-blue)]',
+        glowColor: 'rgba(10,132,255,0.15)',
         pasos: [
           {
             id: 'cambridge_f0p1',
@@ -3143,7 +3142,7 @@ export default function TutorialesForensesPage() {
               </div>
               <div className="w-full h-2 bg-neutral-100 dark:bg-white/10 rounded-full overflow-hidden border border-black/[0.04] dark:border-none">
                 <div 
-                  className="h-full bg-gradient-to-r from-[var(--apple-accent)] to-blue-400 transition-all duration-500" 
+                  className="h-full bg-gradient-to-r from-[var(--apple-accent)] to-[var(--co-blue)] transition-all duration-500" 
                   style={{ width: `${Math.min((academyProgress.xp / 1000) * 100, 100)}%` }}
                 />
               </div>
@@ -3163,7 +3162,7 @@ export default function TutorialesForensesPage() {
                     title={`${tut.badge}: ${isUnlocked ? 'Desbloqueado' : 'Bloqueado (Completa el examen para certificar)'}`}
                     className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all ${
                       isUnlocked 
-                        ? 'bg-[var(--apple-accent)]/20 border-[var(--apple-accent)] text-[#0071E3] dark:text-zinc-50 scale-105 shadow-md shadow-[var(--apple-accent)]/20' 
+                        ? 'bg-[var(--apple-accent)]/20 border-[var(--apple-accent)] text-[var(--co-accent)] dark:text-zinc-50 scale-105 shadow-md shadow-[var(--apple-accent)]/20' 
                         : 'bg-neutral-100 dark:bg-neutral-800/40 border-neutral-200 dark:border-neutral-700 text-neutral-400 dark:text-neutral-600 opacity-40'
                     }`}
                   >
@@ -3328,7 +3327,7 @@ export default function TutorialesForensesPage() {
                   {isRecommended && !isActive && (
                     <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-orange-400 rounded-bl-full" />
                   )}
-                  <div className={`p-2 rounded-[8px] shrink-0 ${isActive ? 'bg-white/15 text-zinc-50' : 'bg-[#0071E3]/10 text-[#0071E3]'}`}>
+                  <div className={`p-2 rounded-[8px] shrink-0 ${isActive ? 'bg-white/15 text-zinc-50' : 'bg-[var(--co-accent)]/10 text-[var(--co-accent)]'}`}>
                     <Icon size={16} />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -3459,7 +3458,7 @@ export default function TutorialesForensesPage() {
                             width: `${pctGlobalTut}%`,
                             background: pctGlobalTut === 100
                               ? 'linear-gradient(90deg, #34C759, #30D158)'
-                              : 'linear-gradient(90deg, #0071E3, #007AFF)',
+                              : 'linear-gradient(90deg, var(--co-accent), var(--co-blue))',
                             boxShadow: pctGlobalTut > 0
                               ? pctGlobalTut === 100
                                 ? '0 0 8px rgba(52,199,89,0.2)'
@@ -3602,8 +3601,8 @@ export default function TutorialesForensesPage() {
 
                         {/* Mensaje final — protocolo completo */}
                         {activePhaseId === configTut.fases[configTut.fases.length - 1].id && faseCompletadaTut(faseActualTut) && (
-                          <div className="mt-5 p-6 rounded-xl border border-[#0071E3]/20 bg-[#0071E3]/[0.02] text-center animate-fade-in relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-br from-[#0071E3]/[0.02] to-transparent pointer-events-none" />
+                          <div className="mt-5 p-6 rounded-xl border border-[var(--co-accent)]/20 bg-[var(--co-accent)]/[0.02] text-center animate-fade-in relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-[var(--co-accent)]/[0.02] to-transparent pointer-events-none" />
                             <div className="relative">
                               <CheckCircle2 size={40} className="text-[#34C759] mx-auto mb-3" />
                               <h3 className="text-base font-bold text-[#1D1D1F] dark:text-white uppercase tracking-tight mb-2">
@@ -3638,7 +3637,7 @@ export default function TutorialesForensesPage() {
                         {/* Controles del Proceso */}
                         <div className="apple-card p-5 print:hidden">
                           <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider mb-3 flex items-center gap-2">
-                            <Mail size={16} className="text-[#0071E3]" /> Configuración de Auditoría de Correo
+                            <Mail size={16} className="text-[var(--co-accent)]" /> Configuración de Auditoría de Correo
                           </h3>
                           <div className="space-y-4">
                             <div>
@@ -3699,7 +3698,7 @@ export default function TutorialesForensesPage() {
                                         setCorreoShowForm(false);
                                       }}
                                       className={`w-full text-left text-xs p-2.5 rounded-[8px] border transition-colors flex items-center justify-between ${
-                                        correoProceso?.id === p.id ? 'bg-[#0071E3]/5 border-[#0071E3]/20 text-[#0071E3]' : 'bg-[#F5F5F7] border-transparent hover:bg-[#E5E5EA] dark:bg-[#2C2C2E]'
+                                        correoProceso?.id === p.id ? 'bg-[var(--co-accent)]/5 border-[var(--co-accent)]/20 text-[var(--co-accent)]' : 'bg-[#F5F5F7] border-transparent hover:bg-[#E5E5EA] dark:bg-[#2C2C2E]'
                                       }`}
                                     >
                                       <span>{p.asunto || '(sin asunto)'} — {p.remitente}</span>
@@ -3708,7 +3707,7 @@ export default function TutorialesForensesPage() {
                                       </span>
                                     </button>
                                   ))}
-                                  <button onClick={() => setCorreoShowForm(true)} className="text-xs text-[#0071E3] hover:underline mt-2 inline-block font-semibold">+ Iniciar nuevo proceso</button>
+                                  <button onClick={() => setCorreoShowForm(true)} className="text-xs text-[var(--co-accent)] hover:underline mt-2 inline-block font-semibold">+ Iniciar nuevo proceso</button>
                                 </div>
                               </div>
                             )}
@@ -3722,7 +3721,7 @@ export default function TutorialesForensesPage() {
                               <div className="flex-1">
                                 <div className="flex justify-between items-baseline mb-1">
                                   <span className="text-xs font-bold text-[#1D1D1F] dark:text-[#E5E5EA]">Progreso del Protocolo de Correo</span>
-                                  <span className="text-xs font-mono font-bold text-[#0071E3]">{correoPorcentaje}%</span>
+                                  <span className="text-xs font-mono font-bold text-[var(--co-accent)]">{correoPorcentaje}%</span>
                                 </div>
                                 <div className="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
                                   <div className="h-full bg-[#34C759] transition-all duration-300" style={{ width: `${correoPorcentaje}%` }} />
@@ -3760,13 +3759,13 @@ export default function TutorialesForensesPage() {
                                                 {paso.titulo}
                                               </h5>
                                               <p className="text-[11px] text-[#86868B] mt-1">{paso.descripcion}</p>
-                                              <p className="text-[10px] text-[#0071E3] font-semibold mt-1 font-mono">{paso.normativa}</p>
+                                              <p className="text-[10px] text-[var(--co-accent)] font-semibold mt-1 font-mono">{paso.normativa}</p>
                                               
                                               <div className="mt-2 bg-[#F5F5F7] dark:bg-[#2C2C2E] p-2.5 rounded-[8px] text-[10px] text-neutral-700 dark:text-neutral-300 space-y-1">
                                                 <p className="font-bold text-[#86868B] uppercase tracking-wider text-[9px] mb-1">Acciones Técnicas Estandarizadas:</p>
                                                 {paso.acciones.map((act, idx) => (
                                                   <div key={idx} className="flex gap-1.5 items-start">
-                                                    <span className="text-[#0071E3] font-bold">•</span>
+                                                    <span className="text-[var(--co-accent)] font-bold">•</span>
                                                     <span>{act}</span>
                                                   </div>
                                                 ))}
@@ -3911,7 +3910,7 @@ export default function TutorialesForensesPage() {
                                         <div key={idx} className="flex gap-2 items-start">
                                           <span className="text-[#86868B] select-none text-[9px] shrink-0 pt-0.5">[{line.timestamp}]</span>
                                           <span className={`break-all ${
-                                            line.type === 'command' ? 'text-[#007AFF] font-bold' :
+                                            line.type === 'command' ? 'text-[var(--co-blue)] font-bold' :
                                             line.type === 'success' ? 'text-[#30D158]' :
                                             line.type === 'warning' ? 'text-[#FF9F0A]' :
                                             line.type === 'error' ? 'text-[#FF453A]' : 'text-[#FFFFFF]'
@@ -4136,7 +4135,7 @@ export default function TutorialesForensesPage() {
                                     key={chat.id}
                                     onClick={() => setWpSelectedChatId(chat.id)}
                                     className={`w-full p-3.5 flex gap-2.5 text-left transition-colors ${
-                                      wpSelectedChatId === chat.id ? 'bg-white dark:bg-[#2C2C2E] border-l-4 border-[#0071E3]' : 'hover:bg-white/40'
+                                      wpSelectedChatId === chat.id ? 'bg-white dark:bg-[#2C2C2E] border-l-4 border-[var(--co-accent)]' : 'hover:bg-white/40'
                                     }`}
                                   >
                                     <img src={chat.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
@@ -4171,7 +4170,7 @@ export default function TutorialesForensesPage() {
                                   {wpSelectedChat.messages.map(msg => (
                                     <div key={msg.id} className={`flex flex-col max-w-[75%] ${msg.isOutgoing ? 'ml-auto items-end' : 'mr-auto items-start'}`}>
                                       <span className="text-[9px] text-[#86868B] mb-0.5">{msg.sender}</span>
-                                      <div className={`p-2.5 rounded-[12px] shadow-sm ${msg.isOutgoing ? 'bg-[#0071E3] text-zinc-50 rounded-tr-none' : 'bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#E5E5EA] rounded-tl-none border dark:border-[#2C2C2E]'}`}>
+                                      <div className={`p-2.5 rounded-[12px] shadow-sm ${msg.isOutgoing ? 'bg-[var(--co-accent)] text-zinc-50 rounded-tr-none' : 'bg-white dark:bg-[#2C2C2E] text-[#1D1D1F] dark:text-[#E5E5EA] rounded-tl-none border dark:border-[#2C2C2E]'}`}>
                                         {msg.type === 'audio' ? (
                                           <div className="space-y-1">
                                             <div className="flex items-center gap-2 text-[#1D1D1F] dark:text-[#E5E5EA]">
@@ -4274,7 +4273,7 @@ export default function TutorialesForensesPage() {
                                     {wpMensajesEncontrados.map(({ chatName, msg }) => (
                                       <div key={msg.id} className="p-3 border dark:border-[#2C2C2E] rounded-[8px] bg-neutral-50 dark:bg-[#2C2C2E] hover:bg-neutral-100 transition-all">
                                         <div className="flex justify-between items-baseline mb-1">
-                                          <span className="text-xs font-bold text-[#0071E3]">{chatName}</span>
+                                          <span className="text-xs font-bold text-[var(--co-accent)]">{chatName}</span>
                                           <span className="text-[9px] text-[#86868B] font-mono">{msg.timestamp}</span>
                                         </div>
                                         <p className="text-xs text-neutral-800 dark:text-neutral-200">
@@ -4303,7 +4302,7 @@ export default function TutorialesForensesPage() {
                         <div className="space-y-6">
                           <div className="apple-card p-5 space-y-4">
                             <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-[#E5E5EA] uppercase tracking-wider flex items-center gap-1.5">
-                              <Upload size={16} className="text-[#0071E3]" /> Registro de Archivo Pericial
+                              <Upload size={16} className="text-[var(--co-accent)]" /> Registro de Archivo Pericial
                             </h3>
                             
                             <div className="text-xs">
@@ -4316,7 +4315,7 @@ export default function TutorialesForensesPage() {
                               </select>
                             </div>
 
-                            <div className="border-2 border-dashed border-[#D2D2D7] dark:border-[#2C2C2E] hover:border-[#0071E3] rounded-[12px] p-6 text-center bg-[#F5F5F7]/30 hover:bg-[#0071E3]/5 transition-all text-xs">
+                            <div className="border-2 border-dashed border-[#D2D2D7] dark:border-[#2C2C2E] hover:border-[var(--co-accent)] rounded-[12px] p-6 text-center bg-[#F5F5F7]/30 hover:bg-[var(--co-accent)]/5 transition-all text-xs">
                               <Upload size={24} className="mx-auto text-[#86868B] mb-1.5" />
                               <p className="text-xs font-bold">Arrastre y suelte el archivo de evidencia</p>
                               <p className="text-[9px] text-[#86868B] mt-0.5">O seleccione un preset de auditoría:</p>
@@ -4326,7 +4325,7 @@ export default function TutorialesForensesPage() {
                                     key={file.name}
                                     onClick={() => handleSelectPresetFile(file)}
                                     className={`px-2.5 py-1 rounded-full text-[10px] font-bold border transition-colors ${
-                                      intSelectedFile?.name === file.name ? 'bg-[#0071E3] border-[#0071E3] text-zinc-50' : 'bg-white border-[#D2D2D7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E]'
+                                      intSelectedFile?.name === file.name ? 'bg-[var(--co-accent)] border-[var(--co-accent)] text-zinc-50' : 'bg-white border-[#D2D2D7] dark:bg-[#1C1C1E] dark:border-[#2C2C2E]'
                                     }`}
                                   >
                                     {file.name}
@@ -4357,7 +4356,7 @@ export default function TutorialesForensesPage() {
                                     <div className="flex items-center justify-between bg-white dark:bg-[#1C1C1E] p-1.5 rounded border dark:border-[#2C2C2E]">
                                       <span className="font-bold text-[#86868B] w-12">MD5:</span>
                                       <span className="truncate flex-1 text-right pr-2">{intHashes.md5}</span>
-                                      <button onClick={() => copyToClipboard(intHashes.md5!, 'md5')} className="text-[#86868B] hover:text-[#0071E3]">
+                                      <button onClick={() => copyToClipboard(intHashes.md5!, 'md5')} className="text-[#86868B] hover:text-[var(--co-accent)]">
                                         {intCopiadoIdx === 'md5' ? <Check size={12} className="text-[#34C759]" /> : <Copy size={12} />}
                                       </button>
                                     </div>
@@ -4365,15 +4364,15 @@ export default function TutorialesForensesPage() {
                                     <div className="flex items-center justify-between bg-white dark:bg-[#1C1C1E] p-1.5 rounded border dark:border-[#2C2C2E]">
                                       <span className="font-bold text-[#86868B] w-12">SHA-1:</span>
                                       <span className="truncate flex-1 text-right pr-2">{intHashes.sha1}</span>
-                                      <button onClick={() => copyToClipboard(intHashes.sha1!, 'sha1')} className="text-[#86868B] hover:text-[#0071E3]">
+                                      <button onClick={() => copyToClipboard(intHashes.sha1!, 'sha1')} className="text-[#86868B] hover:text-[var(--co-accent)]">
                                         {intCopiadoIdx === 'sha1' ? <Check size={12} className="text-[#34C759]" /> : <Copy size={12} />}
                                       </button>
                                     </div>
                                     {/* SHA256 */}
-                                    <div className="flex items-center justify-between bg-white dark:bg-[#1C1C1E] p-1.5 rounded border border-l-4 border-l-[#0071E3] dark:border-[#2C2C2E]">
-                                      <span className="font-bold text-[#0071E3] w-12">SHA256:</span>
-                                      <span className="truncate flex-1 text-right font-bold pr-2 text-[#0071E3]">{intHashes.sha256}</span>
-                                      <button onClick={() => copyToClipboard(intHashes.sha256!, 'sha256')} className="text-[#86868B] hover:text-[#0071E3]">
+                                    <div className="flex items-center justify-between bg-white dark:bg-[#1C1C1E] p-1.5 rounded border border-l-4 border-l-[var(--co-accent)] dark:border-[#2C2C2E]">
+                                      <span className="font-bold text-[var(--co-accent)] w-12">SHA256:</span>
+                                      <span className="truncate flex-1 text-right font-bold pr-2 text-[var(--co-accent)]">{intHashes.sha256}</span>
+                                      <button onClick={() => copyToClipboard(intHashes.sha256!, 'sha256')} className="text-[#86868B] hover:text-[var(--co-accent)]">
                                         {intCopiadoIdx === 'sha256' ? <Check size={12} className="text-[#34C759]" /> : <Copy size={12} />}
                                       </button>
                                     </div>
@@ -4437,7 +4436,7 @@ export default function TutorialesForensesPage() {
                                 onClick={verificarFirmaAvilla}
                                 className="apple-btn apple-btn-secondary w-full py-2 text-xs flex items-center justify-center gap-1.5"
                               >
-                                <Shield size={12} className="text-[#0071E3]" /> Verificar Cadena de Custodia
+                                <Shield size={12} className="text-[var(--co-accent)]" /> Verificar Cadena de Custodia
                               </button>
                             </div>
 
