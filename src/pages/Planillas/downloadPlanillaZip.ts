@@ -30,7 +30,7 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
       margin: 0;
       padding: 0;
       background: #ffffff;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Ubuntu', sans-serif;
     }
     .page {
       border: none !important;
@@ -71,7 +71,7 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
       margin: 20mm 15mm 20mm 30mm;
     }
     body {
-      font-family: 'Courier New', Courier, monospace;
+      font-family: 'Ubuntu', sans-serif;
       font-size: 12pt;
       line-height: 1.5;
     }

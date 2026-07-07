@@ -27,7 +27,7 @@ import Modal from '../components/atoms/Modal';
 import Input from '../components/atoms/Input';
 
 const ESTADO_OPCIONES: { value: EstadoCaso; label: string; color: string }[] = [
-  { value: 'iniciado',    label: 'Iniciado',    color: 'bg-blue-500/10 text-[#007AFF] border-blue-500/20' },
+  { value: 'iniciado',    label: 'Iniciado',    color: 'bg-[var(--co-blue)]/10 text-[var(--co-blue)] border-[var(--co-blue)]/20' },
   { value: 'en_proceso',  label: 'En Proceso',  color: 'bg-yellow-500/10 text-[#FF9500] border-yellow-500/20' },
   { value: 'analisis',    label: 'Análisis',    color: 'bg-purple-500/10 text-[#AF52DE] border-purple-500/20' },
   { value: 'informe',     label: 'Informe',     color: 'bg-indigo-500/10 text-[#5856D6] border-indigo-500/20' },
