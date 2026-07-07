@@ -7,7 +7,7 @@ export interface IconProps {
   fill?: string;
 }
 
-export type LucideIcon = (props: IconProps) => React.JSX.Element;
+export type CMSIcon = (props: IconProps) => React.JSX.Element;
 
 // Helper para renderizar los iconos utilizando Google Material Design (Font)
 function MaterialIcon({

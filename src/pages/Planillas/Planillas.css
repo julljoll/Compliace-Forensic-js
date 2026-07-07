@@ -868,3 +868,23 @@
     font-size: 11px !important;
   }
 }
+
+/* Reset de encabezados globales para planillas oficiales (aislamiento de Dark Mode y colores de pantalla) */
+.planilla-container h1,
+.planilla-container h1 *,
+.planilla-container h2,
+.planilla-container h2 *,
+.planilla-container h3,
+.planilla-container h3 *,
+.planilla-container h4,
+.planilla-container h4 *,
+.planilla-container h5,
+.planilla-container h5 *,
+.planilla-container h6,
+.planilla-container h6 * {
+  color: #1d1d1f !important;
+  background-color: transparent !important;
+  border-left: none !important;
+  padding: 0 !important;
+  display: block !important;
+}

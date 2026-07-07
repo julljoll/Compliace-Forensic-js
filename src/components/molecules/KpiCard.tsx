@@ -1,10 +1,10 @@
-import { LucideIcon } from '../atoms/AppleIcon';
+import { CMSIcon } from '../atoms/AppleIcon';
 
 interface KpiCardProps {
   title: string;
   value: string | number;
   sub?: string;
-  icon: LucideIcon;
+  icon: CMSIcon;
   accent?: boolean;
   color?: string;
 }
