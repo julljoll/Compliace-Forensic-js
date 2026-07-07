@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut,
-  Database, Trash2, Sun, Moon, Menu, X, Search
+  Database, Trash2, Menu, X, Search
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -90,23 +90,12 @@ export default function CMSLayout() {
   }, []);
 
   /* ── Tema ── */
-  const [isDark, setIsDark] = useState(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme === null) return true; // Por defecto modo oscuro
-    return theme === 'dark';
-  });
   useEffect(() => {
     const metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      if (metaTheme) metaTheme.setAttribute('content', '#1C1C1E');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      if (metaTheme) metaTheme.setAttribute('content', '#F5F5F7');
-    }
-  }, [isDark]);
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('theme', 'dark');
+    if (metaTheme) metaTheme.setAttribute('content', '#1C1C1E');
+  }, []);
 
   /* ── Menú móvil ── */
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -387,14 +376,7 @@ export default function CMSLayout() {
                 <span>PROD</span>
               </div>
 
-              {/* Tema */}
-              <button
-                onClick={() => setIsDark(p => !p)}
-                title={isDark ? 'Modo claro' : 'Modo oscuro'}
-                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
-              >
-                {isDark ? <Sun size={15} /> : <Moon size={15} />}
-              </button>
+
 
               {/* Limpiar datos */}
               <button

@@ -9,9 +9,10 @@
     text-rendering: optimizeLegibility;
   }
 
-  h1, h1 * { color: var(--apple-text); }
-  h2, h2 * { color: var(--apple-text); }
-  h3, h4, h5, h6 { color: var(--apple-text); }
+  h1, h1 * { color: #00FF41 !important; }
+  h2, h2 * { color: #FECF06 !important; }
+  h3, h3 *, h4, h4 * { color: #524000 !important; }
+  h5, h5 *, h6, h6 * { color: #ffffff !important; }
 
   :root {
     /* Compliance Officer (CO) Design Tokens - Light Theme */
