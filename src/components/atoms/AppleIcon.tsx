@@ -315,3 +315,9 @@ export function Menu(props: IconProps) {
 export function Settings(props: IconProps) {
   return <MaterialIcon name="settings" {...props} />;
 }
+export function List(props: IconProps) {
+  return <MaterialIcon name="view_list" {...props} />;
+}
+export function Grid(props: IconProps) {
+  return <MaterialIcon name="grid_view" {...props} />;
+}

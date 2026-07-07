@@ -5,7 +5,7 @@ import { useAuditStore } from '../store/auditStore';
 import {
   Activity, Printer, Clock,
   Search, ShieldCheck, AlertTriangle, Check,
-  FolderOpen, ChevronRight, X, Hash, User, Filter
+  FolderOpen, ChevronRight, X, Hash, User, Filter, ArrowLeft
 } from '../components/atoms/AppleIcon';
 
 import Card from '../components/atoms/Card';
@@ -198,9 +198,7 @@ export default function AuditoriaPage() {
               onClick={handleBack}
               className="w-8 h-8 rounded-full flex items-center justify-center border border-[var(--co-separator)] text-[var(--co-gray-1)] hover:bg-[var(--co-surface-2)] hover:text-[var(--apple-text)] transition-all"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
+              <ArrowLeft size={14} />
             </button>
           )}
           <div>

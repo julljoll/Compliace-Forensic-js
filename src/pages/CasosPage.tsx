@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useCMSStore, EstadoCaso, PrioridadCaso, TipoProyecto, CasoCMS } from '../store/cmsStore';
 import { 
   FolderOpen, Smartphone, Mail, HardDrive, BookOpen,
-  ChevronRight, Trash2, Search, ArrowLeft, User, Plus, X
+  ChevronRight, Trash2, Search, ArrowLeft, User, Plus, X,
+  List, Grid
 } from '../components/atoms/AppleIcon';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { getTiposProyecto, getFasesPorTipo, getTipoProyectoConfig, getTareasPorDefecto } from '../data/tiposProyecto';
@@ -845,27 +846,20 @@ export default function CasosPage() {
             />
           </div>
 
-          {/* List/Grid toggle buttons */}
           <div className="flex items-center bg-[var(--co-surface-2)] border border-[var(--co-separator)] rounded-[10px] p-0.5">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-[8px] transition-all cursor-pointer ${viewMode === 'list' ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm' : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'}`}
+              className={`p-1.5 rounded-[8px] transition-all cursor-pointer flex items-center justify-center ${viewMode === 'list' ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm' : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'}`}
               title="Vista de Lista"
             >
-              <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2.5}>
-                <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
+              <List size={15} />
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-[8px] transition-all cursor-pointer ${viewMode === 'grid' ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm' : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'}`}
+              className={`p-1.5 rounded-[8px] transition-all cursor-pointer flex items-center justify-center ${viewMode === 'grid' ? 'bg-[var(--co-surface-1)] text-[var(--co-accent)] shadow-sm' : 'text-[var(--co-gray-1)] hover:text-[var(--apple-text)]'}`}
               title="Vista de Cuadrícula"
             >
-              <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2.5}>
-                <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
-              </svg>
+              <Grid size={15} />
             </button>
           </div>
         </div>

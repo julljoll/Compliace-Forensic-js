@@ -1,20 +1,9 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#F5F5F7" />
-    <script>
-      (function() {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-          // Cambiar dinámicamente el color de la barra del sistema
-          const metaTheme = document.querySelector('meta[name="theme-color"]');
-          if (metaTheme) metaTheme.setAttribute('content', '#1C1C1E');
-        }
-      })();
-    </script>
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="SHA256.US — CMS de Compliance Forense para gestión normativa y control del proceso técnico-forense en dispositivos móviles" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -24,7 +13,6 @@
     <link rel="apple-touch-icon" href="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
     <title>SHA256.US — Compliance Forense CMS</title>
   </head>

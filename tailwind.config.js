@@ -11,6 +11,12 @@ module.exports = {
         'xs': '480px', // extra-small — teléfonos pequeños
       },
       colors: {
+        // ── Compliance Officer Core Palette ──
+        compliance: {
+          matrix: '#00FF41',
+          gold: '#FECF06',
+          darkGold: '#524000',
+        },
         // ── Apple HIG Design System ──
         apple: {
           bg: {
