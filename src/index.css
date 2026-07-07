@@ -11,7 +11,14 @@
 
   h1, h1 * { color: #00FF41 !important; }
   h2, h2 * { color: #FECF06 !important; }
-  h3, h3 *, h4, h4 * { color: #524000 !important; }
+  h3, h3 *, h4, h4 * {
+    color: #524000 !important;
+    background-color: rgba(254, 207, 6, 0.18) !important;
+    padding: 2px 8px !important;
+    border-radius: 4px !important;
+    border-left: 3px solid #FECF06 !important;
+    display: inline-block !important;
+  }
   h5, h5 *, h6, h6 * { color: #ffffff !important; }
 
   :root {
