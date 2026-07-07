@@ -74,7 +74,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Helvetica Neue"', 'Inter', 'sans-serif'],
+        sans: ['"Courier New"', 'Courier', 'monospace'],
       },
       fontSize: {
         'apple-title':   ['2rem',   { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.025em' }],
