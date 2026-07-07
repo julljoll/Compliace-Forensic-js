@@ -313,6 +313,7 @@ const NORMATIVAS_INICIALES: Normativa[] = [
     nombre: 'Directrices para identificación, recopilación, adquisición y preservación de evidencia digital',
     descripcion: 'Estándar internacional que proporciona directrices detalladas para el manejo técnico de evidencia digital. Regula las fases críticas de Identificación (reconocer objetos con potencial de evidencia digital), Recolección (recoger dispositivos físicos o copias documentadas), Adquisición (creación de imágenes y copias forenses bit-a-bit verificables mediante hashes) y Preservación (mantenimiento de la integridad y autenticidad en contenedores seguros). Es la norma técnica metodológica de referencia para evitar la contaminación o alteración de la prueba digital en investigaciones criminalísticas.',
     version: '2012', fechaVigencia: '2012-10-15', activa: true,
+    urlReferencia: 'normativas_rag/ISO IEC 27037-2012.md',
     articulos: ['Identificación', 'Recopilación', 'Adquisición', 'Preservación']
   },
   {
@@ -320,48 +321,56 @@ const NORMATIVAS_INICIALES: Normativa[] = [
     nombre: 'Directrices para el análisis e interpretación de evidencia digital',
     descripcion: 'Estándar internacional que regula las fases posteriores a la adquisición de la evidencia digital, proporcionando directrices detalladas para el análisis científico y la interpretación de los datos extraídos. Establece requisitos estrictos de objetividad, repetibilidad y reproducibilidad de los resultados, guiando al perito en la selección de herramientas forenses validadas, la documentación de la metodología aplicada y la fundamentación técnica que soporta las conclusiones del informe pericial.',
     version: '2015', fechaVigencia: '2015-06-01', activa: true,
+    urlReferencia: 'normativas_rag/ISO-IEC 27042 2015.md',
   },
   {
     id: 'n3', codigo: 'NIST SP 800-101 r1', tipo: 'NIST',
     nombre: 'Guidelines on Mobile Device Forensics',
     descripcion: 'Directrices técnicas de informática forense para dispositivos móviles del National Institute of Standards and Technology (NIST) de EE.UU. Aborda de manera exhaustiva los desafíos de la preservación (aislamiento de red en bolsas Faraday y modo avión), la adquisición lógica/física de datos de memoria flash y tarjetas SIM, y el análisis de la memoria volátil y bases de datos SQLite en sistemas operativos móviles iOS y Android.',
     version: 'Rev. 1', fechaVigencia: '2014-05-01', activa: true,
+    urlReferencia: 'normativas_rag/Guidelines on Mobile Device-NIST Special Publication 800-101.md',
   },
   {
     id: 'n4', codigo: 'MUCC-2017', tipo: 'MANUAL',
     nombre: 'Manual Único de Cadena de Custodia de Evidencias',
     descripcion: 'Manual Único de Cadena de Custodia de Evidencias Físicas y Digitales de la República Bolivariana de Venezuela, publicado en Gaceta Oficial N° 41.247 en septiembre de 2017. Es de obligatorio cumplimiento para todos los órganos de investigación penal y laboratorios forenses. Regula el proceso continuo e ininterrumpido de resguardo técnico de la evidencia, exigiendo el llenado de la Planilla PRCC y el uso de precintos numerados.',
     version: 'Final 29/09/2017', fechaVigencia: '2017-09-29', activa: true,
+    urlReferencia: 'normativas_rag/MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).md',
   },
   {
     id: 'n5', codigo: 'ACPO-v5', tipo: 'MANUAL',
     nombre: 'ACPO Good Practice Guide for Digital Evidence v5',
     descripcion: 'Guía de buenas prácticas de la ACPO para evidencia digital. Establece los cuatro principios fundamentales de la informática forense: (1) no alterar los datos del original, (2) si es necesario acceder, el perito debe estar calificado y poder explicar sus acciones, (3) mantener un registro detallado de todos los procesos aplicados, y (4) el responsable de la investigación debe garantizar la conformidad técnica y legal del procedimiento.',
     version: '5', fechaVigencia: '2012-01-01', activa: true,
+    urlReferencia: 'normativas_rag/ACPO_Good_Practice_Guide_for_Digital_Evidence_v5.md',
   },
   {
     id: 'n6', codigo: 'LEDI-2001', tipo: 'LEY',
     nombre: 'Ley Especial de Delitos Informáticos',
     descripcion: 'Ley Especial contra los Delitos Informáticos de la República Bolivariana de Venezuela, publicada en Gaceta Oficial N° 37.313 (octubre de 2001). Tiene por objeto la protección integral de los sistemas de información, así como la prevención y sanción de delitos cometidos contra o mediante el uso de tecnologías, regulando la admisibilidad de las pruebas digitales.',
     version: '2001', fechaVigencia: '2001-10-30', activa: true,
+    urlReferencia: 'normativas_rag/Ley Especial de Delitos informáticos (2001). Publicado en Gaceta Oficial Nº 37.313 .md',
   },
   {
     id: 'n7', codigo: 'LMDF-1999', tipo: 'LEY',
     nombre: 'Ley sobre Mensajes de Datos y Firmas Electrónicas',
     descripcion: 'Ley sobre Mensajes de Datos y Firmas Electrónicas de Venezuela. Otorga plena validez y eficacia probatoria a los mensajes de datos y a las firmas electrónicas, equiparándolos funcionalmente a la firma autógrafa y a los documentos escritos en papel, requiriendo herramientas forenses para verificar su origen, integridad y autenticidad.',
     version: '1999', fechaVigencia: '1999-02-10', activa: true,
+    urlReferencia: 'normativas_rag/Ley-sobre-Mensajes-de-Datos-y-Firmas-Electronicas.md',
   },
   {
     id: 'n8', codigo: 'COPP', tipo: 'LEY',
     nombre: 'Código Orgánico Procesal Penal (Aplicación Supletoria)',
     descripcion: 'Código Orgánico Procesal Penal de Venezuela (reforma 2021). Sus artículos 187 (obligatoriedad de la Cadena de Custodia para evitar la alteración o contaminación), 223 (experticias científicas), 225 (deber del perito de actuar conforme a las reglas de su ciencia, habilitando el uso supletorio de estándares ISO y NIST) y 181 (nulidad de pruebas ilegales) regulan la licitud de la prueba digital.',
     version: '2021', fechaVigencia: '2021-09-17', activa: true,
+    urlReferencia: 'normativas_rag/codigo-organico-procesal-penal.md',
   },
   {
     id: 'n9', codigo: 'CENIF-2012', tipo: 'REGLAMENTO',
     nombre: 'Creación del Centro Nacional de Informática Forense',
     descripcion: 'Decreto de Creación del Centro Nacional de Informática Forense de Venezuela (CENIF), publicado en Gaceta Oficial N° 39.847 en enero de 2012. Establece el marco orgánico para el desarrollo tecnológico, la acreditación de laboratorios forenses digitales, la formación de peritos y la normalización nacional de herramientas de adquisición.',
     version: '2012', fechaVigencia: '2012-01-20', activa: true,
+    urlReferencia: 'normativas_rag/Creación del CENIF (2012). Centro Nacional de Informática Forense. Publicado en Gaceta Oficial N° 39.847 de fecha 20 de enero..md',
   },
 ];
 

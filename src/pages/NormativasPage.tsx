@@ -76,7 +76,7 @@ export default function NormativasPage() {
             </div>
             <div>
               <h2 className="font-bold text-[#1D1D1F] text-[15px] tracking-tight">Normativas</h2>
-              <p className="text-[10px] text-[#86868B] font-semibold uppercase tracking-wider">{normativas.length} Referencias RAG</p>
+              <p className="text-[10px] text-[#86868B] font-semibold uppercase tracking-wider">{normativas.length} Referencias normativas_rag</p>
             </div>
           </div>
           
@@ -254,7 +254,7 @@ export default function NormativasPage() {
         <div className="mt-8 pt-5 border-t border-black/[0.06] flex gap-3 text-xs text-[#86868B] leading-relaxed">
           <Info size={16} className="text-[#0071E3] shrink-0 mt-0.5" />
           <p>
-            Los documentos normativos originales se encuentran intactos en el repositorio <code className="font-mono text-[#0071E3] bg-[#0071E3]/10 px-1.5 py-0.5 rounded-md">RAG/</code>.
+            Los documentos normativos originales se encuentran intactos en el repositorio <code className="font-mono text-[#0071E3] bg-[#0071E3]/10 px-1.5 py-0.5 rounded-md">normativas_rag/</code>.
             Este panel los referencia para mantener la inalterabilidad y validar el compliance de auditoría en los flujos forenses.
           </p>
         </div>
