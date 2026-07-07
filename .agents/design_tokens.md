@@ -7,11 +7,11 @@ Este documento define los tokens de diseño (Design Tokens) utilizados en la apl
 
 ---
 
-## 1. Tipografía (Courier New System)
+## 1. Tipografía (Ubuntu System)
 
-El proyecto utiliza una fuente de ancho fijo (monospace) a nivel de sistema para dar un aspecto técnico y limpio de terminal/forense.
+El proyecto utiliza la tipografía Ubuntu a nivel de sistema para dar un aspecto moderno, legible y premium.
 
-* **Familia Tipográfica:** `'Courier New', Courier, monospace`
+* **Familia Tipográfica:** `'Ubuntu', sans-serif`
 * **Interlineado Base (UI):** `1.6`
 * **Interlineado Planillas (Print):** `1.5`
 

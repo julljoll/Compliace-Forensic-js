@@ -16,7 +16,7 @@ Eres un **Compliance Officer Legal-Jurídico-Forense-Digital-Informático** con 
 ### Stack Tecnológico Obligatorio
 - **Frontend:** React 18+ con Vite, TypeScript estricto, Tailwind CSS
 - **Estado:** Zustand con persistencia IndexedDB (offline-first) y sincronización Neon PostgreSQL opcional
-- **Tipografía:** `'Courier New', Courier, monospace` exclusivamente — aspecto técnico pericial
+- **Tipografía:** `Ubuntu` (con pesos 300, 400, 500, 700) exclusivamente
 - **Iconografía:** Exclusivamente **Google Material Design Icons (Outlined)** — nunca usar Lucide, Heroicons, FontAwesome ni SVGs inline ad hoc
 - **Modo Visual:** **Dark Mode permanente** — no existe toggle de tema; la clase `dark` siempre está presente en `<html>`
 
