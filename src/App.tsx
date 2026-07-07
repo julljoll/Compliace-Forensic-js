@@ -55,8 +55,8 @@ function App() {
   useEffect(() => {
     useCMSStore.getState().migrateStepsData();
     
-    // Inicializar tema desde localStorage (por defecto claro si no está configurado)
-    const theme = localStorage.getItem('theme');
+    // Inicializar tema desde localStorage (por defecto oscuro si no está configurado)
+    const theme = localStorage.getItem('theme') || 'dark';
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {

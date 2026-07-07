@@ -92,7 +92,7 @@ export default function CMSLayout() {
   /* ── Tema ── */
   const [isDark, setIsDark] = useState(() => {
     const theme = localStorage.getItem('theme');
-    if (theme === null) return false; // Por defecto modo claro
+    if (theme === null) return true; // Por defecto modo oscuro
     return theme === 'dark';
   });
   useEffect(() => {
