@@ -220,7 +220,7 @@ const ActaObtencionPage = () => {
 
       <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px' }}>
         <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Acta PDF (Tamaño Oficio)
+          🖨️ Imprimir Acta PDF (Tamaño Carta)
         </button>
       </div>
     </div>

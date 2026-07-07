@@ -396,16 +396,15 @@
 }
 
 .planilla-container .footer {
-  position: absolute;
-  bottom: 10mm;
-  left: 30mm;
-  right: 15mm;
-  text-align: center;
-  font-size: 8.5px;
-  color: #515154;
+  position: relative;
+  margin-top: 24px;
+  padding-top: 8px;
   border-top: 1px solid #1d1d1f;
-  padding-top: 6px;
+  text-align: center;
+  font-size: 9px;
+  color: #515154;
   line-height: 1.4;
+  clear: both;
 }
 
 .planilla-container .anexo-derivacion {
@@ -616,11 +615,20 @@
     margin-top: 4px !important;
   }
 
+  .planilla-container .footer,
   .planilla-container footer {
-    font-size: 8.5px !important;
-    margin-top: 10px !important;
-    padding-top: 4px !important;
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-top: 24px !important;
+    padding-top: 8px !important;
     border-top: 1px solid #000000 !important;
+    font-size: 9px !important;
+    text-align: center !important;
+    color: #000000 !important;
+    clear: both !important;
+    page-break-inside: avoid !important;
   }
 
   .planilla-container .evidence-table,
@@ -792,6 +800,18 @@
   .planilla-container .timeline-print-table tr.pending-row td {
     color: #515154 !important;
     font-style: italic;
+  }
+
+  /* Prevent split of structural blocks during page breaking */
+  .planilla-container table,
+  .planilla-container tr,
+  .planilla-container .form-group,
+  .planilla-container .section,
+  .planilla-container .sig-card,
+  .planilla-container .sig-detail-card,
+  .planilla-container .anexo-derivacion {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
 

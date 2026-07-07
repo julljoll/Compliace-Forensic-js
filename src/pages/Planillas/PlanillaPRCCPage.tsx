@@ -276,7 +276,7 @@ const PlanillaPRCCPage = () => {
       </div>
 
       <div style={{ textAlign: 'center', marginTop: '20px', marginBottom: '20px' }} className="no-print">
-        <button onClick={handlePrint} className="print-button">🖨️ IMPRIMIR PLANILLA (TAMAÑO OFICIO)</button>
+        <button onClick={handlePrint} className="print-button">🖨️ IMPRIMIR PLANILLA (TAMAÑO CARTA)</button>
       </div>
     </div>
   );

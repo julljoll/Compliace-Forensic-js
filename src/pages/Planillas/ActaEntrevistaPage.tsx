@@ -196,7 +196,7 @@ const ActaEntrevistaPage = () => {
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px' }}>
         <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Acta de Entrevista PDF (Tamaño Oficio)
+          🖨️ Imprimir Acta de Entrevista PDF (Tamaño Carta)
         </button>
       </div>
     </div>

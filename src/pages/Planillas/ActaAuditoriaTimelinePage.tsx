@@ -308,7 +308,7 @@ const ActaAuditoriaTimelinePage = () => {
 
       <div className="no-print" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '20px' }}>
         <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Timeline de Auditoría (Tamaño Oficio)
+          🖨️ Imprimir Timeline de Auditoría (Tamaño Carta)
         </button>
       </div>
     </div>

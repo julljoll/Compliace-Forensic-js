@@ -231,7 +231,7 @@ const ActaDictamenPage = () => {
 
       <div className="no-print" style={{ 'textAlign': 'center', 'marginTop': '10px', 'marginBottom': '20px' }}>
         <button onClick={handlePrint} className="print-button">
-          🖨️ Imprimir Dictamen (Tamaño Oficio)
+          🖨️ Imprimir Dictamen (Tamaño Carta)
         </button>
       </div>
     </div>
