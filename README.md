@@ -3,7 +3,7 @@
 **Sistema de gestión de cumplimiento normativo para procesos de peritaje digital.**  
 Diseñado para que el **Compliance Officer** lleve el seguimiento comprobable de cada caso, genere los reportes exigidos por la ley e imprima las planillas oficiales en cada etapa del proceso.
 
-> Basado en: Manual Único de Cadena de Custodia (Venezuela, 2017), ISO/IEC 27037, NIST SP 800-101, COPP, Ley de Mensajes de Datos y Firmas Electrónicas.
+> Basado en: Manual Único de Cadena de Custodia (Venezuela, 2017), ISO/IEC 27037, NIST SP 800-101, COPP, Ley de Mensajes de Datos y Firmas Electrónicas, y normativas SUSCERTE.
 
 ---
 
@@ -11,25 +11,26 @@ Diseñado para que el **Compliance Officer** lleve el seguimiento comprobable de
 
 Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** que ayuda al perito auditor a:
 
-- **Crear y gestionar casos** con toda la metadata del dispositivo y las partes involucradas
-- **Controlar el cumplimiento normativo** paso a paso según 9 instrumentos legales precargados
-- **Imprimir planillas oficiales** en cada fase del proceso (Acta de Obtención, Acta de Entrevista, PRCC, Seguimiento Forense)
-- **Auditar cada acción** con trazabilidad inmutable mediante encadenamiento de hashes SHA-256
-- **Generar reportes de auditoría** con línea de tiempo imprimible para presentar en tribunales
+- **Crear y gestionar casos** con toda la metadata del dispositivo y las partes involucradas.
+- **Controlar el cumplimiento normativo** paso a paso según los instrumentos legales precargados.
+- **Imprimir planillas oficiales** en tamaño Carta con proporciones de papel sellado.
+- **Exportar en ZIP** formatos editables HTML y Microsoft Word (.doc) con estilos inlined.
+- **Auditar cada acción** con trazabilidad inmutable mediante encadenamiento de hashes SHA-256 (hash chain).
+- **Generar reportes de auditoría** con línea de tiempo imprimible para presentar en tribunales.
 
 ---
 
-## Stack Tecnológico
+## Stack Tecnológico y Diseño
 
-| Capa | Tecnología |
-|------|-----------|
-| **Frontend** | React 19 + TypeScript 6 |
-| **Bundler** | Vite 8 |
-| **Estilos** | TailwindCSS 3 (Dark Theme) |
-| **Estado** | Zustand 5 + IndexedDB |
-| **PWA** | Workbox (Service Worker) |
-| **Iconos** | Lucide React |
-| **Persistencia** | IndexedDB + Neon PostgreSQL |
+| Capa | Tecnología | Detalles |
+|------|-----------|----------|
+| **Frontend** | React 19 + TypeScript 6 | Arquitectura tipada modular. |
+| **Bundler** | Vite 8 | Carga eficiente en caliente y generación estática. |
+| **Estilos** | TailwindCSS 3 (Modo Oscuro Permanente) | Selector de modo claro removido para consistencia visual. |
+| **Tipografía** | Courier New System | Familia tipográfica monospace de estilo pericial/consola. |
+| **Iconografía** | Google Material Design Icons (Outlined) | Integrado a nivel de componentes atómicos. |
+| **Estado** | Zustand 5 + IndexedDB | Gestión reactiva de datos offline. |
+| **Persistencia** | IndexedDB + Neon PostgreSQL | Sincronización robusta en la nube. |
 
 ---
 
@@ -39,7 +40,7 @@ Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** q
 SHA256.US/
 ├── src/
 │   ├── components/       # Componentes React (Atomic Design)
-│   │   ├── atoms/        # Componentes base (Toast, ErrorBoundary)
+│   │   ├── atoms/        # Componentes base (Toast, ErrorBoundary, AppleIcon.tsx)
 │   │   ├── molecules/    # Componentes compuestos (KpiCard)
 │   │   ├── organisms/    # Bloques funcionales (Casos, Compliance, etc.)
 │   │   └── templates/    # Layouts estructurales (CMSLayout, Layout)
@@ -51,81 +52,28 @@ SHA256.US/
 │   │   ├── PersonalPage.tsx / TareasPage.tsx
 │   │   ├── CorreoForensePage.tsx
 │   │   ├── Forense/          # TutorialesForensesPage, ManualAvillaPage, ManualServerlessPage
-│   │   └── Planillas/    # ActaObtencionPage, ActaEntrevistaPage, PlanillaPRCCPage, SeguimientoPage
+│   │   └── Planillas/    # ActaObtencionPage, ActaEntrevistaPage, PlanillaPRCCPage, DictamenPage
 │   ├── store/            # Zustand stores
-│   │   ├── cmsStore.ts   # Estado principal del CMS
+│   │   ├── cmsStore.ts   # Estado principal del CMS (Semillas alineadas a normativas_rag)
 │   │   ├── auditStore.ts # Auditoría con hash chain
-│   │   ├── authStore.ts  # Autenticación
-│   │   └── forenseStore.ts
+│   │   └── authStore.ts  # Autenticación
 │   ├── data/             # Fuentes de datos compartidas
-│   │   ├── etapasForenses.ts       # 9 pasos del proceso forense
-│   │   └── normativasEtapas.ts     # Normativas con sus etapas
-│   ├── db/               # Capa de persistencia
-│   │   ├── indexedDB.ts  # Almacenamiento durable IndexedDB
-│   │   └── neonClient.ts # Cliente Neon PostgreSQL
-│   └── hooks/            # Custom hooks
-├── RAG/                  # Base documental (normativas, leyes, manuales)
+│   └── db/               # Capa de persistencia
+├── normativas_rag/       # Base documental de RAG (77 archivos de leyes, códigos y estándares)
+├── design_tokens.md      # Especificaciones del sistema de diseño (colores, fuentes y sombras)
 ├── dist/                 # Build de producción
 └── public/               # Assets estáticos
 ```
 
 ---
 
-## Módulos del CMS
+## Sistema de Diseño (Tokens y Jerarquías)
 
-| Ruta | Página | Función |
-|------|--------|---------|
-| `/` | **Dashboard** | KPIs: casos activos, cumplimiento, tareas pendientes |
-| `/casos` | **Gestión de Casos** | CRUD con filtros por estado y prioridad |
-| `/casos/:id` | **Detalle del Caso** | Evidencias, tareas, timeline, compliance |
-| `/control/seguimiento-compliance` | **Seguimiento & Compliance** | Checklist normativo paso a paso (imprimible) |
-| `/normativas` | **Marco Normativo** | 9 instrumentos legales con sus etapas |
-| `/auditoria` | **Auditoría** | Log inmutable con cadena de hashes |
-| `/tareas` | **Tareas & Fases** | Gestión de actividades por caso |
-| `/personal` | **Personal** | Registro de peritos y roles |
-| `/correo-forense` | **Correo Corporativo** | Proc. técnico-jurídico para correos electrónicos |
-| `/planillas/acta-obtencion` | **Acta de Obtención** | Planilla imprimible para consignación |
-| `/planillas/acta-entrevista` | **Acta de Entrevista** | Planilla de entrevista judicial / voluntaria |
-| `/planillas/prcc-derivacion` | **Planilla PRCC** | Cadena de custodia imprimible |
-| `/forense/manual-avilla` | **Manual Avilla** | Referencia operativa forense |
-| `/forense/manual-serverless` | **Manual Serverless** | Guía de configuración Neon y Vercel |
-
----
-
-## Flujo de Trabajo
-
-```
-1. CREAR CASO → 2. ASIGNAR NORMATIVAS → 3. SEGUIMIENTO PASO A PASO
-                                              ↓
-                                    ╔══════════════════╗
-                                    ║  IMPRIMIR ACTA   ║  ← Por cada fase
-                                    ║  IMPRIMIR PRCC   ║     completada
-                                    ║  IMPRIMIR INFORME ║
-                                    ╚══════════════════╝
-                                              ↓
-                                   4. AUDITORÍA INMUTABLE
-                                              ↓
-                                   5. REPORTE DE CIERRE
-```
-
-Las planillas se llenan a mano. La app genera el formato oficial exacto para cada etapa.  
-Cada acción queda registrada en el log de auditoría con hash encadenado (trazabilidad forense).
-
----
-
-## Normativas Precargadas
-
-| Código | Tipo | Nombre |
-|--------|------|--------|
-| ISO/IEC 27037:2012 | ISO | Identificación, recopilación, adquisición y preservación |
-| ISO/IEC 27042:2015 | ISO | Análisis e interpretación de evidencia digital |
-| NIST SP 800-101 r1 | NIST | Guidelines on Mobile Device Forensics |
-| MUCC-2017 | MANUAL | Manual Único de Cadena de Custodia |
-| ACPO-v5 | MANUAL | Good Practice Guide for Digital Evidence |
-| LEDI-2001 | LEY | Ley Especial de Delitos Informáticos |
-| LMDF-1999 | LEY | Ley sobre Mensajes de Datos y Firmas Electrónicas |
-| COPP | LEY | Código Orgánico Procesal Penal |
-| CENIF-2012 | REGLAMENTO | Centro Nacional de Informática Forense |
+Para optimizar la visualización del CMS de Compliance Officer en modo oscuro absoluto:
+* **h1:** `#00FF41` (Verde Matriz)
+* **h2:** `#FECF06` (Amarillo Oro)
+* **h3 / h4:** `#524000` (Dorado Oscuro) con fondo de contraste translúcido (`rgba(254, 207, 6, 0.18)`) y filete lateral izquierdo de 3px.
+* **h5 / h6:** `#FFFFFF` (Blanco)
 
 ---
 
@@ -142,21 +90,11 @@ Credenciales por defecto: `admin` / `admin`
 
 ---
 
-## PWA
-
-La app es completamente funcional como PWA:
-- Instalable en el dispositivo (standalone)
-- Cachea recursos para funcionar offline
-- La persistencia en IndexedDB mantiene los datos localmente
-- Los reportes se imprimen directamente desde el navegador
-
----
-
 ## Licencia
 
 MIT
 
 ---
 
-*Versión: 2.0.0 — CMS de Cumplimiento Forense*  
-*Última actualización: Mayo 2026*
+*Versión: 3.0.0 — CMS de Cumplimiento Forense*  
+*Última actualización: Julio 2026*

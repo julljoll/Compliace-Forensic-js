@@ -22,8 +22,6 @@ const PersonalPage = lazy(() => import('./pages/PersonalPage'));
 
 // ── Módulos Forenses ──
 const TutorialesForensesPage = lazy(() => import('./pages/Forense/TutorialesForensesPage'));
-const ManualServerlessPage = lazy(() => import('./pages/Forense/ManualServerlessPage'));
-const ManualAvillaPage = lazy(() => import('./pages/Forense/ManualAvillaPage'));
 
 // ── Planillas React ────────────────────────────────────────────────────────
 const ActaObtencionPage = lazy(() => import('./pages/Planillas/ActaObtencionPage'));
@@ -91,15 +89,15 @@ function App() {
 
           {/* ── Módulos Forenses ── */}
           <Route path="forense/tutoriales" element={<Suspense fallback={<PageLoader />}><TutorialesForensesPage /></Suspense>} />
-          <Route path="forense/manual-avilla" element={<Suspense fallback={<PageLoader />}><ManualAvillaPage /></Suspense>} />
-          <Route path="forense/manual-serverless" element={<Suspense fallback={<PageLoader />}><ManualServerlessPage /></Suspense>} />
+          <Route path="forense/manual-avilla" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="forense/manual-serverless" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="forense/adb-backup" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="forense/apk-downgrade" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="forense/whatsapp-parser" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="forense/integridad" element={<Navigate to="/forense/tutoriales" replace />} />
-          <Route path="manual-avilla" element={<Navigate to="/forense/manual-avilla" replace />} />
-          <Route path="sistemas/manual-avilla" element={<Navigate to="/forense/manual-avilla" replace />} />
-          <Route path="manual-serverless" element={<Navigate to="/forense/manual-serverless" replace />} />
+          <Route path="manual-avilla" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="sistemas/manual-avilla" element={<Navigate to="/forense/tutoriales" replace />} />
+          <Route path="manual-serverless" element={<Navigate to="/forense/tutoriales" replace />} />
           <Route path="planillas/acta-obtencion" element={<Suspense fallback={<PageLoader />}><ActaObtencionPage /></Suspense>} />
           <Route path="planillas/acta-entrevista" element={<Suspense fallback={<PageLoader />}><ActaEntrevistaPage /></Suspense>} />
           <Route path="planillas/prcc-derivacion" element={<Suspense fallback={<PageLoader />}><PlanillaPRCCPage /></Suspense>} />

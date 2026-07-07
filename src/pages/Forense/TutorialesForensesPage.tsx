@@ -3076,9 +3076,9 @@ export default function TutorialesForensesPage() {
       {/* ─── BANNER PRINCIPAL ──────────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#E5E5EA] dark:border-[#2C2C2E] pb-6 print:hidden">
         <div>
-          <h1 className="text-apple-title font-black text-[#1D1D1F] dark:text-white">Academia Forense Interactiva</h1>
+          <h1 className="text-apple-title font-black text-[#1D1D1F] dark:text-white">Tutoriales Forenses</h1>
           <p className="text-apple-body text-[#86868B] mt-1 max-w-2xl">
-            Plataforma educativa y de certificación técnica pericial. Estudia los manuales técnicos, simula las tareas en el laboratorio y certifícate bajo las normativas RAG, COPP y MUCC-2017.
+            Plataforma educativa y de certificación técnica pericial. Estudia los manuales técnicos, simula las tareas en el laboratorio y certifícate bajo las normativas normativas_rag, COPP y MUCC-2017.
           </p>
         </div>
         <div className="flex items-center gap-2">

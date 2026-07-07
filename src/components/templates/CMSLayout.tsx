@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
-  BookOpen, Users, Activity, ChevronRight, Smartphone, LogOut,
-  Database, Trash2, Menu, X, Search
+  BookOpen, Users, Activity, ChevronRight, LogOut,
+  Trash2, Menu, X, Search
 } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuthStore } from '../../store/authStore';
@@ -15,9 +15,7 @@ const menuItems = [
   { path: '/',                                   label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
   { path: '/casos',                              label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
   { path: '/control/seguimiento-compliance',     label: 'Etapas de Casos',          icon: ShieldCheck,     group: 'Control' },
-  { path: '/forense/tutoriales',                 label: 'Academia Forense',         icon: BookOpen,        group: 'Formación' },
-  { path: '/forense/manual-avilla',              label: 'Manual Avilla',            icon: Smartphone,      group: 'Formación' },
-  { path: '/forense/manual-serverless',          label: 'Manual Serverless',        icon: Database,        group: 'Formación' },
+  { path: '/forense/tutoriales',                 label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Formación' },
   { path: '/planillas/acta-obtencion',           label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/acta-entrevista',          label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/prcc-derivacion',          label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Planillas Oficiales' },
