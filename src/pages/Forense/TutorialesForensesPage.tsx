@@ -2423,6 +2423,14 @@ export default function TutorialesForensesPage() {
     xpGained: number;
   } | null>(null);
 
+  // Estados del Simulador de Interrogatorio LMS
+  const [quizMode, setQuizMode] = useState<Record<string, 'traditional' | 'lms'>>({});
+  const [lmsChatActive, setLmsChatActive] = useState<Record<string, boolean>>({});
+  const [lmsChatMessages, setLmsChatMessages] = useState<Record<string, Array<{sender: 'ai' | 'user', text: string}>>>({});
+  const [lmsChatQuestionIndex, setLmsChatQuestionIndex] = useState<Record<string, number>>({});
+  const [lmsChatAnswers, setLmsChatAnswers] = useState<Record<string, number[]>>({});
+  const [lmsChatResult, setLmsChatResult] = useState<Record<string, 'passed' | 'failed' | null>>({});
+
   // Lógica de puntuación y niveles
   const peritoLevel = useMemo(() => {
     const xp = academyProgress.xp;
@@ -2942,6 +2950,149 @@ export default function TutorialesForensesPage() {
   };
 
   // ─── LÓGICA DE EXAMEN / QUIZ ACADÉMICO ────────────────────────────────────
+  const handleStartLmsChat = (moduleId: string) => {
+    const firstQuestion = QUIZZES[moduleId][0];
+    const initialMessages = [
+      {
+        sender: 'ai' as const,
+        text: `INICIANDO INTERROGATORIO PERICIAL PARA EL MÓDULO: ${moduleId.toUpperCase()}.\n\nPara certificar la idoneidad técnica en este nivel y obtener tu insignia (+200 XP), debes responder correctamente el 100% de las preguntas formuladas por este evaluador.\n\nPregunta 1: ${firstQuestion.question}`
+      }
+    ];
+    setLmsChatActive(prev => ({ ...prev, [moduleId]: true }));
+    setLmsChatMessages(prev => ({ ...prev, [moduleId]: initialMessages }));
+    setLmsChatQuestionIndex(prev => ({ ...prev, [moduleId]: 0 }));
+    setLmsChatAnswers(prev => ({ ...prev, [moduleId]: [] }));
+    setLmsChatResult(prev => ({ ...prev, [moduleId]: null }));
+  };
+
+  const handleSelectLmsAnswer = (moduleId: string, optionIdx: number) => {
+    const questions = QUIZZES[moduleId];
+    const currentIdx = lmsChatQuestionIndex[moduleId] ?? 0;
+    const currentQuestion = questions[currentIdx];
+    const answers = lmsChatAnswers[moduleId] ?? [];
+    const messages = lmsChatMessages[moduleId] ?? [];
+
+    const isCorrect = optionIdx === currentQuestion.correctAnswer;
+    const nextAnswers = [...answers, optionIdx];
+    setLmsChatAnswers(prev => ({ ...prev, [moduleId]: nextAnswers }));
+
+    const userMsg = {
+      sender: 'user' as const,
+      text: `${String.fromCharCode(65 + optionIdx)}) ${currentQuestion.options[optionIdx]}`
+    };
+
+    let responseText = '';
+    if (isCorrect) {
+      responseText = `✓ RESPUESTA CORRECTA AUTORIZADA POR EVALUADOR.\n\nEvaluación técnica/legal: ${currentQuestion.explanation}`;
+    } else {
+      responseText = `✗ INCONSISTENCIA DETECTADA: RESPUESTA ERRÓNEA.\n\nEvaluación técnica/legal: ${currentQuestion.explanation}`;
+    }
+
+    const nextIdx = currentIdx + 1;
+
+    if (nextIdx < questions.length) {
+      const nextQuestion = questions[nextIdx];
+      const nextMessages = [
+        ...messages,
+        userMsg,
+        {
+          sender: 'ai' as const,
+          text: `${responseText}\n\nPregunta ${nextIdx + 1}: ${nextQuestion.question}`
+        }
+      ];
+      setLmsChatMessages(prev => ({ ...prev, [moduleId]: nextMessages }));
+      setLmsChatQuestionIndex(prev => ({ ...prev, [moduleId]: nextIdx }));
+    } else {
+      // Fin del interrogatorio. Calcular puntuación
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        if (i === currentIdx) {
+          if (isCorrect) score++;
+        } else {
+          if (answers[i] === questions[i].correctAnswer) score++;
+        }
+      }
+
+      const passed = score === questions.length;
+      
+      const resultText = passed
+        ? `🟢 EVALUACIÓN FINALIZADA Y APROBADA (Calificación: 100%)\n\nFelicidades. Has demostrado idoneidad técnico-científica y jurídica para este módulo.\n\nInsignia otorgada y registrada en la cadena de bloques del CMS.`
+        : `🔴 EVALUACIÓN FINALIZADA Y REPROBADA (Calificación: ${Math.round((score / questions.length) * 100)}%)\n\nSigue perfeccionándote en el marco legal y técnico antes de reintentar.\n\nLa cadena de custodia o el peritaje presentan inconsistencias que comprometen la validez probatoria (COPP Art. 181/187).`;
+
+      const finalMessages = [
+        ...messages,
+        userMsg,
+        {
+          sender: 'ai' as const,
+          text: `${responseText}\n\n${resultText}`
+        }
+      ];
+
+      setLmsChatMessages(prev => ({ ...prev, [moduleId]: finalMessages }));
+      setLmsChatResult(prev => ({ ...prev, [moduleId]: passed ? 'passed' : 'failed' }));
+
+      if (passed) {
+        // Examen Aprobado con 100% de aciertos!
+        const currentModuleBadge = tutorialList.find(t => t.id === moduleId)?.badge || 'Especialista';
+        const badgeId = `badge_${moduleId}`;
+        const isAlreadyCompleted = academyProgress.completedQuizzes[moduleId];
+
+        if (!isAlreadyCompleted) {
+          setAcademyProgress(prev => {
+            const newCompleted = { ...prev.completedQuizzes, [moduleId]: true };
+            const newBadges = prev.unlockedBadges.includes(badgeId) 
+              ? prev.unlockedBadges 
+              : [...prev.unlockedBadges, badgeId];
+            const newXp = prev.xp + 200;
+
+            return {
+              xp: newXp,
+              completedQuizzes: newCompleted,
+              unlockedBadges: newBadges
+            };
+          });
+
+          // Mostrar modal de felicitaciones e insignia desbloqueada
+          setUnlockedModal({
+            badgeTitle: currentModuleBadge,
+            badgeIcon: moduleId as any,
+            xpGained: 200
+          });
+
+          addAuditLog({
+            casoId: 'SYSTEM',
+            usuario: user?.nombre || 'Estudiante Forense',
+            accion: 'EXAMEN_APROBADO',
+            detalle: `Examen del módulo ${moduleId.toUpperCase()} aprobado con 100% en simulador LMS. Insignia '${currentModuleBadge}' desbloqueada (+200 XP).`,
+            nivel: 'success'
+          });
+
+          addEntry({
+            casoId: 'SYSTEM',
+            usuario: user?.nombre || 'Estudiante Forense',
+            accion: 'EXAMEN_APROBADO',
+            detalle: `Examen del módulo ${moduleId.toUpperCase()} aprobado en simulador LMS. Insignia '${currentModuleBadge}' desbloqueada (+200 XP).`,
+            nivel: 'success',
+            firmadoPor: 'Evaluador Automatizado',
+            firmadoTimestamp: new Date().toISOString()
+          });
+        }
+      } else {
+        addAuditLog({
+          casoId: 'SYSTEM',
+          usuario: user?.nombre || 'Estudiante Forense',
+          accion: 'EXAMEN_REPROBADO',
+          detalle: `Examen del módulo ${moduleId.toUpperCase()} reprobado en simulador LMS. Calificación: ${Math.round((score / questions.length) * 100)}%.`,
+          nivel: 'error'
+        });
+      }
+    }
+  };
+
+  const handleResetLmsChat = (moduleId: string) => {
+    handleStartLmsChat(moduleId);
+  };
+
   const handleSelectAnswer = (moduleId: string, questionIdx: number, optionIdx: number) => {
     const key = `${moduleId}_${questionIdx}`;
     setQuizAnswers(prev => ({ ...prev, [key]: optionIdx }));
@@ -4497,110 +4648,232 @@ export default function TutorialesForensesPage() {
                 {currentTab === 'quiz' && (
                   <div className="space-y-6 animate-fade-in">
                     <div className="apple-card p-5 space-y-4">
-                      <div className="flex items-center justify-between border-b border-black/[0.04] dark:border-white/[0.04] pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/[0.04] dark:border-white/[0.04] pb-3 gap-4">
                         <div>
                           <h3 className="text-sm font-bold text-[#1D1D1F] dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                             <Award size={16} className="text-[var(--apple-accent)]" /> Examen de Certificación: {mod.label}
                           </h3>
                           <p className="text-[10px] text-[#86868B] mt-0.5">
-                            Responde todas las preguntas de forma correcta para certificar este módulo forense y ganar +200 XP.
+                            Demuestra tu competencia pericial. La aprobación requiere el 100% de respuestas correctas.
                           </p>
                         </div>
                         {isCertified && (
-                          <span className="text-[10px] font-bold text-[#34C759] bg-[#34C759]/10 border border-[#34C759]/20 px-2.5 py-1 rounded-full uppercase">
+                          <span className="text-[10px] font-bold text-[#34C759] bg-[#34C759]/10 border border-[#34C759]/20 px-2.5 py-1 rounded-full uppercase self-start sm:self-center">
                             ✓ Certificado Obtenido
                           </span>
                         )}
                       </div>
 
-                      <div className="space-y-6 pt-2">
-                        {questions.map((q, qIdx) => {
-                          const key = `${mod.id}_${qIdx}`;
-                          const selectedOption = quizAnswers[key];
-                          const submitted = quizSubmitted[mod.id];
-
-                          return (
-                            <div key={qIdx} className="space-y-3 p-4 rounded-[12px] bg-[#F5F5F7]/60 dark:bg-[#2C2C2E]/30 border border-black/[0.03] dark:border-white/[0.03]">
-                              <p className="text-xs font-bold leading-snug">
-                                <span className="text-[var(--apple-accent)] font-mono mr-1">{qIdx + 1}.</span> {q.question}
-                              </p>
-                              
-                              <div className="grid grid-cols-1 gap-2">
-                                {q.options.map((opt, optIdx) => {
-                                  const isOptionSelected = selectedOption === optIdx;
-                                  let buttonStyle = 'bg-white dark:bg-[#1C1C1E] border-[#D2D2D7] dark:border-[#2C2C2E] hover:bg-[#F5F5F7] dark:hover:bg-[#2C2C2E]';
-                                  
-                                  if (isOptionSelected) {
-                                    buttonStyle = 'bg-[var(--apple-accent)]/10 border-[var(--apple-accent)] text-[var(--apple-accent)] font-bold';
-                                  }
-
-                                  if (submitted) {
-                                    if (optIdx === q.correctAnswer) {
-                                      buttonStyle = 'bg-green-100 dark:bg-green-950/20 border-green-500 text-green-700 dark:text-green-400 font-bold';
-                                    } else if (isOptionSelected) {
-                                      buttonStyle = 'bg-red-100 dark:bg-red-950/20 border-red-500 text-red-700 dark:text-red-400 font-bold';
-                                    }
-                                  }
-
-                                  return (
-                                    <button
-                                      key={optIdx}
-                                      disabled={submitted}
-                                      onClick={() => handleSelectAnswer(mod.id, qIdx, optIdx)}
-                                      className={`w-full p-3 text-left rounded-[10px] border text-xs transition-all flex items-center justify-between ${buttonStyle}`}
-                                    >
-                                      <span>{opt}</span>
-                                      {submitted && optIdx === q.correctAnswer && (
-                                        <CheckCircle2 size={14} className="text-green-500" />
-                                      )}
-                                      {submitted && isOptionSelected && optIdx !== q.correctAnswer && (
-                                        <AlertTriangle size={14} className="text-red-500" />
-                                      )}
-                                    </button>
-                                  );
-                                })}
-                              </div>
-
-                              {submitted && (
-                                <div className="mt-3 p-3 bg-white dark:bg-[#1C1C1E]/50 rounded-[8px] border border-black/[0.04] dark:border-white/[0.04] text-[10px] leading-relaxed text-[#86868B]">
-                                  <strong className="text-neutral-700 dark:text-neutral-300">Explicación:</strong> {q.explanation}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                      {/* Selector de Modo de Examen */}
+                      <div className="flex bg-[#F5F5F7] dark:bg-[#2C2C2E] p-0.5 rounded-[10px] max-w-xs border border-black/[0.04] dark:border-white/[0.04] print:hidden">
+                        <button
+                          onClick={() => setQuizMode(prev => ({ ...prev, [mod.id]: 'traditional' }))}
+                          className={`flex-1 py-1.5 px-3 rounded-[8px] text-[10px] font-bold transition-all uppercase ${
+                            (quizMode[mod.id] || 'traditional') === 'traditional'
+                              ? 'bg-white dark:bg-[#1C1C1E] text-black dark:text-white shadow-sm'
+                              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+                          }`}
+                        >
+                          Cuestionario
+                        </button>
+                        <button
+                          onClick={() => {
+                            setQuizMode(prev => ({ ...prev, [mod.id]: 'lms' }));
+                            if (!lmsChatActive[mod.id]) {
+                              handleStartLmsChat(mod.id);
+                            }
+                          }}
+                          className={`flex-1 py-1.5 px-3 rounded-[8px] text-[10px] font-bold transition-all uppercase flex items-center justify-center gap-1 ${
+                            (quizMode[mod.id] || 'traditional') === 'lms'
+                              ? 'bg-white dark:bg-[#1C1C1E] text-black dark:text-white shadow-sm'
+                              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+                          }`}
+                        >
+                          Simulador LMS
+                        </button>
                       </div>
 
-                      {/* Botón de Enviar o Reintentar */}
-                      <div className="flex gap-3.5 items-center pt-4 border-t border-black/[0.04] dark:border-white/[0.04]">
-                        {!quizSubmitted[mod.id] ? (
-                          <button
-                            onClick={() => handleSubmitQuiz(mod.id)}
-                            className="apple-btn apple-btn-primary text-xs py-2 px-5 text-white"
-                          >
-                            Enviar Respuestas
-                          </button>
-                        ) : (
-                          <div className="flex items-center gap-4 w-full justify-between flex-wrap">
-                            <div className="flex items-center gap-2 text-xs">
-                              <span className="font-bold">Calificación:</span>
-                              <span className={`font-black text-sm ${quizScore[mod.id] === questions.length ? 'text-green-500' : 'text-red-500'}`}>
-                                {quizScore[mod.id]} / {questions.length}
-                              </span>
-                              <span>({quizScore[mod.id] === questions.length ? 'Examen Aprobado' : 'No aprobado, requiere 100%'})</span>
-                            </div>
-                            
-                            {quizScore[mod.id] < questions.length && (
+                      {/* Modo A: Cuestionario Tradicional */}
+                      {(quizMode[mod.id] || 'traditional') === 'traditional' && (
+                        <div className="space-y-6 pt-2">
+                          <div className="space-y-6">
+                            {questions.map((q, qIdx) => {
+                              const key = `${mod.id}_${qIdx}`;
+                              const selectedOption = quizAnswers[key];
+                              const submitted = quizSubmitted[mod.id];
+
+                              return (
+                                <div key={qIdx} className="space-y-3 p-4 rounded-[12px] bg-[#F5F5F7]/60 dark:bg-[#2C2C2E]/30 border border-black/[0.03] dark:border-white/[0.03]">
+                                  <p className="text-xs font-bold leading-snug">
+                                    <span className="text-[var(--apple-accent)] font-mono mr-1">{qIdx + 1}.</span> {q.question}
+                                  </p>
+                                  
+                                  <div className="grid grid-cols-1 gap-2">
+                                    {q.options.map((opt, optIdx) => {
+                                      const isOptionSelected = selectedOption === optIdx;
+                                      let buttonStyle = 'bg-white dark:bg-[#1C1C1E] border-[#D2D2D7] dark:border-[#2C2C2E] hover:bg-[#F5F5F7] dark:hover:bg-[#2C2C2E]';
+                                      
+                                      if (isOptionSelected) {
+                                        buttonStyle = 'bg-[var(--apple-accent)]/10 border-[var(--apple-accent)] text-[var(--apple-accent)] font-bold';
+                                      }
+
+                                      if (submitted) {
+                                        if (optIdx === q.correctAnswer) {
+                                          buttonStyle = 'bg-green-100 dark:bg-green-950/20 border-green-500 text-green-700 dark:text-green-400 font-bold';
+                                        } else if (isOptionSelected) {
+                                          buttonStyle = 'bg-red-100 dark:bg-red-950/20 border-red-500 text-red-700 dark:text-red-400 font-bold';
+                                        }
+                                      }
+
+                                      return (
+                                        <button
+                                          key={optIdx}
+                                          disabled={submitted}
+                                          onClick={() => handleSelectAnswer(mod.id, qIdx, optIdx)}
+                                          className={`w-full p-3 text-left rounded-[10px] border text-xs transition-all flex items-center justify-between ${buttonStyle}`}
+                                        >
+                                          <span>{opt}</span>
+                                          {submitted && optIdx === q.correctAnswer && (
+                                            <CheckCircle2 size={14} className="text-green-500" />
+                                          )}
+                                          {submitted && isOptionSelected && optIdx !== q.correctAnswer && (
+                                            <AlertTriangle size={14} className="text-red-500" />
+                                          )}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+
+                                  {submitted && (
+                                    <div className="mt-3 p-3 bg-white dark:bg-[#1C1C1E]/50 rounded-[8px] border border-black/[0.04] dark:border-white/[0.04] text-[10px] leading-relaxed text-[#86868B]">
+                                      <strong className="text-neutral-700 dark:text-neutral-300">Explicación:</strong> {q.explanation}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {/* Botón de Enviar o Reintentar */}
+                          <div className="flex gap-3.5 items-center pt-4 border-t border-black/[0.04] dark:border-white/[0.04]">
+                            {!quizSubmitted[mod.id] ? (
                               <button
-                                onClick={() => handleResetQuiz(mod.id)}
-                                className="apple-btn apple-btn-secondary text-xs py-1.5 px-4 flex items-center gap-1"
+                                onClick={() => handleSubmitQuiz(mod.id)}
+                                className="apple-btn apple-btn-primary text-xs py-2 px-5 text-white"
                               >
-                                <RefreshCw size={12} /> Reintentar Examen
+                                Enviar Respuestas
                               </button>
+                            ) : (
+                              <div className="flex items-center gap-4 w-full justify-between flex-wrap">
+                                <div className="flex items-center gap-2 text-xs">
+                                  <span className="font-bold">Calificación:</span>
+                                  <span className={`font-black text-sm ${quizScore[mod.id] === questions.length ? 'text-green-500' : 'text-red-500'}`}>
+                                    {quizScore[mod.id]} / {questions.length}
+                                  </span>
+                                  <span>({quizScore[mod.id] === questions.length ? 'Examen Aprobado' : 'No aprobado, requiere 100%'})</span>
+                                </div>
+                                
+                                {quizScore[mod.id] < questions.length && (
+                                  <button
+                                    onClick={() => handleResetQuiz(mod.id)}
+                                    className="apple-btn apple-btn-secondary text-xs py-1.5 px-4 flex items-center gap-1"
+                                  >
+                                    <RefreshCw size={12} /> Reintentar Examen
+                                  </button>
+                                )}
+                              </div>
                             )}
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
+
+                      {/* Modo B: Simulador de Interrogatorio LMS */}
+                      {(quizMode[mod.id] || 'traditional') === 'lms' && (
+                        <div className="space-y-4 pt-2 print:hidden">
+                          {/* Consola de Chat estilo terminal */}
+                          <div 
+                            className={`rounded-xl border bg-black p-4 font-mono text-xs text-white min-h-[300px] max-h-[500px] overflow-y-auto flex flex-col space-y-4 relative ${
+                              lmsChatResult[mod.id] === 'passed' ? 'animate-glow-green-matrix border-green-500/50' : 
+                              lmsChatResult[mod.id] === 'failed' ? 'animate-shake-red-glow border-red-500/50' : 'border-neutral-800'
+                            }`}
+                          >
+                            {/* Cabecera de consola */}
+                            <div className="flex items-center justify-between border-b border-white/10 pb-2 text-[10px] text-neutral-500 select-none">
+                              <span className="flex items-center gap-2">
+                                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" />
+                                EVALUADOR FORENSE LMS v1.2_COMPLIANCE
+                              </span>
+                              <span>SESIÓN ENCRIPTADA CON HASH</span>
+                            </div>
+
+                            {/* Mensajes del chat */}
+                            <div className="flex-1 overflow-y-auto space-y-4 pr-1">
+                              {(lmsChatMessages[mod.id] || []).map((msg, index) => (
+                                <div key={index} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
+                                  <span className="text-[9px] text-neutral-500 uppercase tracking-widest mb-1 select-none font-bold">
+                                    {msg.sender === 'ai' ? '🤖 Evaluador Compliance' : '👤 Perito'}
+                                  </span>
+                                  <div 
+                                    className={`p-3 rounded-lg max-w-[85%] whitespace-pre-wrap leading-relaxed ${
+                                      msg.sender === 'user' 
+                                        ? 'bg-neutral-900 border border-white/10 text-white font-mono shadow-inner' 
+                                        : 'bg-white/5 border border-white/5 text-neutral-200'
+                                    }`}
+                                  >
+                                    {msg.sender === 'user' ? `> ${msg.text}` : msg.text}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Opciones de respuesta en curso */}
+                            {lmsChatActive[mod.id] && lmsChatResult[mod.id] === null && (
+                              <div className="border-t border-white/10 pt-4 space-y-2">
+                                <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider mb-2">Seleccione una alternativa técnica:</p>
+                                <div className="grid grid-cols-1 gap-2">
+                                  {questions[lmsChatQuestionIndex[mod.id] ?? 0]?.options.map((opt, optIdx) => (
+                                    <button
+                                      key={optIdx}
+                                      onClick={() => handleSelectLmsAnswer(mod.id, optIdx)}
+                                      className="p-3 text-left rounded-lg bg-neutral-900 border border-white/10 hover:bg-neutral-800 hover:border-white/20 text-[11px] text-neutral-200 transition-all font-mono flex items-start gap-2 group"
+                                    >
+                                      <span className="text-[var(--apple-accent)] font-bold shrink-0">{String.fromCharCode(65 + optIdx)})</span>
+                                      <span className="group-hover:text-white">{opt}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Pantalla final de resultados */}
+                            {lmsChatResult[mod.id] !== null && (
+                              <div className="border-t border-white/10 pt-4 flex flex-col items-center justify-center text-center space-y-3">
+                                {lmsChatResult[mod.id] === 'passed' ? (
+                                  <div className="p-4 rounded-xl border border-[#00FF41]/30 bg-[#00FF41]/5 text-[#00FF41] max-w-md space-y-2 animate-fade-in shadow-lg shadow-[#00FF41]/10">
+                                    <h4 className="font-bold text-sm uppercase tracking-wider text-[#00FF41]">✓ Certificación de Aptitud Aprobada</h4>
+                                    <p className="text-[10px] text-neutral-300 leading-normal">
+                                      Has aprobado el 100% del interrogatorio. Se ha emitido la insignia criptográfica oficial y se han sumado +200 XP a tu cuenta.
+                                    </p>
+                                  </div>
+                                ) : (
+                                  <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/5 text-red-400 max-w-md space-y-2 animate-fade-in shadow-lg shadow-red-500/10">
+                                    <h4 className="font-bold text-sm uppercase tracking-wider text-red-500">✗ Certificación Rechazada</h4>
+                                    <p className="text-[10px] text-neutral-300 leading-normal">
+                                      No has alcanzado la idoneidad exigida (100% de respuestas correctas). Sigue perfeccionándote en el marco legal y técnico antes de reintentar.
+                                    </p>
+                                    <button
+                                      onClick={() => handleResetLmsChat(mod.id)}
+                                      className="apple-btn border border-red-500/50 bg-red-500/10 hover:bg-red-500/20 text-[10px] py-1.5 px-4 font-bold text-red-400 uppercase tracking-wider mt-2 transition-all font-mono"
+                                    >
+                                      Reintentar Interrogatorio
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -4675,11 +4948,27 @@ export default function TutorialesForensesPage() {
           from { transform: scale(0.95); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
         }
+        @keyframes greenGlowMatrix {
+          0%, 100% { border-color: rgba(0, 255, 65, 0.3); box-shadow: 0 0 12px rgba(0, 255, 65, 0.1); }
+          50% { border-color: rgba(0, 255, 65, 0.9); box-shadow: 0 0 24px rgba(0, 255, 65, 0.5); }
+        }
+        @keyframes redGlowShake {
+          0%, 100% { transform: translateX(0); border-color: rgba(255, 59, 48, 0.3); box-shadow: 0 0 12px rgba(255, 59, 48, 0.1); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+          20%, 40%, 60%, 80% { transform: translateX(4px); }
+          50% { border-color: rgba(255, 59, 48, 0.9); box-shadow: 0 0 24px rgba(255, 59, 48, 0.5); }
+        }
         .animate-fade-in {
           animation: fadeIn 0.35s ease-out forwards;
         }
         .animate-scale-in {
           animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-glow-green-matrix {
+          animation: greenGlowMatrix 1.5s infinite ease-in-out;
+        }
+        .animate-shake-red-glow {
+          animation: redGlowShake 0.5s ease-in-out;
         }
       `}</style>
     </div>

@@ -60,11 +60,24 @@ Aplica a:
 |-----------|-------------|-------------------------------|
 | **ISO/IEC 27037:2012** | Directrices para identificación, recopilación, adquisición y preservación de evidencia digital | Pasos 1-4, 6, 8, 11 |
 | **ISO/IEC 27042:2015** | Directrices para el análisis e interpretación de evidencia digital | Pasos 7, 9 |
+| **RFC 3227 (BCP 55)** | Pautas para la recolección y archivo de evidencia (Orden de Volatilidad) | Pasos 1, 3, 7 |
 | **NIST SP 800-101 r1** | Guidelines on Mobile Device Forensics (aplicación extensiva a correo) | Pasos 5, 9 |
 | **MUCC-2017** | Manual Único de Cadena de Custodia de Evidencias (Venezuela) | Pasos 3, 6, 11 |
 | **COPP Arts. 187-188** | Cadena de Custodia de Evidencias Digitales | Pasos 2, 6, 10 |
 | **LMDF Art. 4-9** | Ley sobre Mensajes de Datos y Firmas Electrónicas — Eficacia probatoria | Pasos 4, 10 |
 | **LEDI-2001** | Ley Especial de Delitos Informáticos | Paso 8 |
+
+### 2.1 Orden de Volatilidad de Evidencias (RFC 3227)
+
+Al recolectar evidencia digital, el perito informático forense debe proceder **de la evidencia más volátil a la menos volátil** para evitar la pérdida irremediable de datos durante la manipulación:
+
+1. **Registros de CPU, caché y memoria virtual (RAM):** Datos en ejecución, variables del sistema, sesiones de red activas.
+2. **Estado de conexión de red y tablas de enrutamiento:** Conexiones SMTP activas, IPs origen en curso, tabla ARP.
+3. **Procesos activos del sistema:** Tareas en ejecución, servicios del servidor de correo.
+4. **Archivos temporales del sistema:** Cachés locales, archivos temporales del cliente de correo.
+5. **Medios de almacenamiento persistente:** Discos duros locales, bases de datos SQLite (`msgstore.db`), exportaciones `.eml/.msg`.
+6. **Bitácoras y registros remotos:** Servidores syslog remotos, logs del ISP.
+7. **Soportes físicos y copias de resguardo desconectadas:** Backups en cintas o discos duros externos almacenados en bóveda.
 
 ---
 
