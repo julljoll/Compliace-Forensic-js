@@ -3498,6 +3498,11 @@ export default function TutorialesForensesPage() {
                       }`}>
                         {tut.complexity}
                       </span>
+                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${
+                        isActive ? 'bg-white/20 text-zinc-50' : 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300'
+                      }`}>
+                        ⏱ 20 min
+                      </span>
                       {isRecommended && (
                         <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded-full ${
                           isActive ? 'bg-white/20 text-zinc-50' : 'bg-orange-100 text-orange-700 dark:bg-orange-950/20 dark:text-orange-400'
@@ -3540,8 +3545,11 @@ export default function TutorialesForensesPage() {
                       <strong>Base Legal:</strong> {manual.legalBase}
                     </p>
                   </div>
-                  <div className="shrink-0 flex gap-2">
+                  <div className="shrink-0 flex flex-wrap gap-2 md:flex-col md:items-end">
                     <span className="apple-badge-blue text-[10px]">Insignia: {mod.badge}</span>
+                    <span className="bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                      ⏱ 20 Minutos
+                    </span>
                   </div>
                 </div>
 
