@@ -1,0 +1,3 @@
+module.exports=[3363,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function(){return(0,b.jsx)("div",{className:"h-screen w-screen bg-[var(--apple-bg)] flex items-center justify-center font-sans",children:(0,b.jsxs)("div",{className:"text-center apple-fade-in",children:[(0,b.jsx)("h1",{className:"text-[#00FF41] text-6xl font-bold mb-4",children:"404"}),(0,b.jsx)("p",{className:"text-[var(--apple-text-muted)] text-lg mb-6",children:"Página no encontrada"}),(0,b.jsx)("a",{href:"/",className:"apple-btn apple-btn-primary",children:"Volver al Panel"})]})})}])},17537,a=>{a.n(a.i(3363))}];
+
+//# sourceMappingURL=src_app_not-found_tsx_1863-sq._.js.map

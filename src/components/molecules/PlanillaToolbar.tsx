@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Printer, Archive, ArrowLeft, AlertTriangle, CheckCircle2 } from '../atoms/AppleIcon';
 
 interface CampoRequerido {
@@ -21,7 +21,7 @@ export default function PlanillaToolbar({
   camposRequeridos = [],
   casoId,
 }: PlanillaToolbarProps) {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Filtrar campos faltantes
   const faltantes = camposRequeridos.filter(
@@ -30,9 +30,9 @@ export default function PlanillaToolbar({
 
   const handleBack = () => {
     if (casoId) {
-      navigate(`/casos?id=${casoId}`);
+      router.push(`/casos?id=${casoId}`);
     } else {
-      navigate(-1);
+      router.back();
     }
   };
 

@@ -334,7 +334,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       <div className="left-info">
         <div className="status-item">Página 1 de 1</div>
         <div className="status-item">|</div>
-        <div className="status-item">Courier New (11pt)</div>
+        <div className="status-item">Ubuntu (11pt)</div>
         <div className="status-item">|</div>
         <div className="status-item">Llenado Manual: [Activo]</div>
       </div>

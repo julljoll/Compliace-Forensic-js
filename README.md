@@ -24,13 +24,14 @@ Esta app **no realiza análisis forense**. Es un **gestor de contenido (CMS)** q
 
 | Capa | Tecnología | Detalles |
 |------|-----------|----------|
+| **Framework** | Next.js 16+ (App Router) | Server-side rendering, generación estática y routing por archivos en `src/app/`. |
 | **Frontend** | React 19 + TypeScript 6 | Arquitectura tipada modular. |
-| **Bundler** | Vite 8 | Carga eficiente en caliente y generación estática. |
 | **Estilos** | TailwindCSS 3 (Modo Oscuro Permanente) | Selector de modo claro removido para consistencia visual. |
-| **Tipografía** | Courier New System | Familia tipográfica monospace de estilo pericial/consola. |
-| **Iconografía** | Google Material Design Icons (Outlined) | Integrado a nivel de componentes atómicos. |
-| **Estado** | Zustand 5 + IndexedDB | Gestión reactiva de datos offline. |
-| **Persistencia** | IndexedDB + Neon PostgreSQL | Sincronización robusta en la nube. |
+| **Tipografía** | Ubuntu (Google Fonts) | Pesos 300, 400, 500, 700 — tipografía global del sistema. |
+| **Iconografía** | Google Material Design Icons (Outlined) | Integrado a nivel de componentes atómicos via `AppleIcon.tsx`. |
+| **Estado** | Zustand 5 + IndexedDB | Gestión reactiva de datos offline-first. |
+| **Persistencia** | IndexedDB + Neon PostgreSQL | Sincronización robusta en la nube con fallback local. |
+| **Deploy** | Vercel (standalone) | Despliegue perimetral global con output `standalone`. |
 
 ---
 
@@ -81,9 +82,10 @@ Para optimizar la visualización del CMS de Compliance Officer en modo oscuro ab
 
 ```bash
 npm install
-npm run dev      # Desarrollo en http://localhost:5173
-npm run build    # Build producción → dist/
-npm run preview  # Vista previa del build
+npm run dev      # Desarrollo en http://localhost:3000
+npm run build    # Build producción optimizada
+npm run start    # Servidor de producción
+npm run lint     # Linting con ESLint
 ```
 
 Credenciales por defecto: `admin` / `admin`

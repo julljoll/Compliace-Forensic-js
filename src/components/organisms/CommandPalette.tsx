@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Search, FolderOpen, BookOpen, Activity, ChevronRight } from '../atoms/AppleIcon';
 import { useCMSStore } from '../../store/cmsStore';
 
@@ -18,7 +18,7 @@ interface CommandItem {
 }
 
 export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
@@ -72,7 +72,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         subtitle: `Ir a ${nav.label}`,
         icon: nav.icon,
         action: () => {
-          navigate(nav.path);
+          router.push(nav.path);
           onClose();
         }
       });
@@ -87,7 +87,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         subtitle: `Caso #${caso.numeroCaso} | Expediente: ${caso.expediente || 'N/D'} | Perito: ${caso.peritoLider}`,
         icon: FolderOpen,
         action: () => {
-          navigate(`/casos/${caso.id}`);
+          router.push(`/casos/${caso.id}`);
           onClose();
         }
       });
@@ -102,14 +102,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         subtitle: norm.descripcion,
         icon: BookOpen,
         action: () => {
-          navigate('/normativas');
+          router.push('/normativas');
           onClose();
         }
       });
     });
 
     return list;
-  }, [casos, normativas, navigate, onClose]);
+  }, [casos, normativas, router, onClose]);
 
   // Filtered items based on query
   const filteredItems = useMemo(() => {

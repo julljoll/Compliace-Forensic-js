@@ -15,9 +15,32 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-08 13:03:30",
-      "last_commit": "0cf4628 - word (2026-07-08)",
-      "modified_files": []
+      "timestamp": "2026-07-08 15:06:57",
+      "last_commit": "34f3535 - df (2026-07-08)",
+      "modified_files": [
+        "D .agents/AGENTS.md",
+        "D .agents/design_tokens.md",
+        "D .agents/map_arquitectura.md",
+        "D .agents/skills/cadena-custodia-digital/SKILL.md",
+        "D .agents/skills/compliance-officer-digital/SKILL.md",
+        "D .agents/skills/derecho-venezolano-forense/SKILL.md",
+        "D .agents/skills/fullstack-forensic-developer/SKILL.md",
+        "D .agents/skills/lms-test-forense/SKILL.md",
+        "D .agents/skills/normativas-iso-forense/SKILL.md",
+        "D .agents/skills/perito-informatico-forense/SKILL.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-android-whatsapp.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-correos.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-disco-pc.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-redes-sociales.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/cadena-custodia-venezuela.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/correos-electronicos.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-cambridge-forense-digital.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-whatsapp-caine-linux.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-whatsapp-kali-linux.md",
+        "D .agents/skills/perito-informatico-forense/Tutoriales/discos-duros-iped.md"
+      ],
+      "source_files": 78,
+      "active_routes": 1
     }
   },
   "project": {
@@ -27,24 +50,24 @@
     "design_system": "Atomic Design (atoms, molecules, organisms, templates, pages) y Fluent Design (Microsoft design system) con enfoque estricto en Desktop-First.",
     "tech_stack": {
       "frontend": "React 19 + TypeScript",
-      "bundler": "Vite",
+      "framework": "Next.js 16+ (App Router, src/app/)",
       "styles": "TailwindCSS + Vanilla CSS (Mica, Glassmorphism, Bordes sutiles)",
-      "state_management": "Zustand (cmsStore.ts, forenseStore.ts, authStore.ts, auditStore.ts)",
+      "state_management": "Zustand (cmsStore.ts, authStore.ts, auditStore.ts)",
       "database": "Neon PostgreSQL (sincronización remota) + IndexedDB (almacenamiento local offline-first)",
-      "pwa": "Vite PWA Plugin (operabilidad completa sin conexión)",
-      "desktop_runtime": "Electron 28.0.0"
+      "pwa": "Next.js PWA (operabilidad completa sin conexión)",
+      "deploy": "Vercel (standalone output)"
     }
   },
   "guidelines": {
     "ux_ui": [
-      "Priorizar estética premium con wow-factor, tema oscuro estricto (fondo #181818, sidebar #141721).",
+      "Priorizar estética premium con wow-factor, tema oscuro estricto (fondo #000000, sidebar vibrancy rgba(28,28,30,0.82)).",
       "Aplicar efectos de Glassmorphism (fluent-mica, fluent-acrylic, fluent-card) con bordes suaves de 1px (white/5 o white/10) y gradients discretos.",
-      "Usar iconos consistentes importados de Lucide React.",
-      "Añadir transiciones suaves (fade-in, transformaciones hover rápidas de 100-150ms) usando curvas cúbicas: cubic-bezier(0.1, 0.9, 0.2, 1).",
-      "Mantener tipografía moderna con Segoe UI Variable o Inter.",
-      "Asegurar soporte de impresión ('@media print') limpio, convirtiendo colores a blanco y negro, ocultando elementos del menú (clase no-print) y ajustando layouts a tamaño Carta/Oficio.",
-      "Establecer la geometría de bordes redondeados: botones 4px, inputs 4px, cards 12px (0.75rem), scrollbars 9999px.",
-      "Utilizar una elevación consistente mediante sombras: default (0 4px 8px 0 rgba(0,0,0,0.2)), elevated (0 8px 16px 0 rgba(0,0,0,0.2)), button (0 1px 2px rgba(0,0,0,0.14))."
+      "Usar exclusivamente Google Material Design Icons (Outlined) — importados desde index.html. Nunca usar Lucide, Heroicons, FontAwesome ni SVGs inline.",
+      "Añadir transiciones suaves (fade-in, transformaciones hover rápidas de 100-150ms) usando curvas cúbicas: cubic-bezier(0.16, 1, 0.3, 1).",
+      "Mantener tipografía Ubuntu (cargada desde Google Fonts en index.html) con pesos 300, 400, 500, 700.",
+      "Asegurar soporte de impresión ('@media print') limpio, convirtiendo colores a blanco y negro, ocultando elementos del menú (clase print\\:hidden) y ajustando layouts a tamaño Carta/Oficio.",
+      "Establecer la geometría de bordes redondeados: botones 8px, inputs 8px, cards 16px (1rem), panels 20px, scrollbars 9999px.",
+      "Utilizar una elevación consistente mediante sombras: default (0 1px 3px rgba(0,0,0,0.12)), elevated (0 4px 16px rgba(0,0,0,0.18)), modal (0 20px 60px rgba(0,0,0,0.45))."
     ],
     "architecture": [
       "Adherirse estrictamente a la estructura de Atomic Design en src/components/ (atoms, molecules, organisms, templates).",
@@ -776,9 +799,9 @@
       ]
     },
     "build_process": [
-      "1. Compilar los archivos de TypeScript con 'tsc'.",
-      "2. Compilar los assets del frontend con 'vite build' para empaquetarlos en la carpeta /dist/.",
-      "3. Generar el instalador .deb usando 'electron-builder --linux deb' depositándolo en /dist-electron/."
+      "1. Ejecutar 'npm run lint' para validar código con ESLint.",
+      "2. Ejecutar 'npm run build' para compilar la aplicación Next.js con Turbopack.",
+      "3. Desplegar en Vercel con output standalone para producción."
     ]
   },
   "routing_rules": [

@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(dashboard)/layout,_N_T_/(dashboard)/planillas/layout,_N_T_/(dashboard)/planillas/acta-entrevista/layout,_N_T_/(dashboard)/planillas/acta-entrevista/page,_N_T_/planillas/acta-entrevista"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGRhc2hib2FyZCk/planillas/acta-entrevista/__PAGE__",
+    "/!KGRhc2hib2FyZCk/planillas/acta-entrevista",
+    "/!KGRhc2hib2FyZCk/planillas",
+    "/!KGRhc2hib2FyZCk",
+    "/_index",
+    "/_head"
+  ]
+}

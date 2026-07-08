@@ -1,0 +1,246 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    },
+    {
+      "source": "/compliance",
+      "destination": "/control/seguimiento-compliance",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/compliance(?:/)?$"
+    },
+    {
+      "source": "/forense/manual-avilla",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/manual-avilla(?:/)?$"
+    },
+    {
+      "source": "/forense/manual-serverless",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/manual-serverless(?:/)?$"
+    },
+    {
+      "source": "/forense/adb-backup",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/adb-backup(?:/)?$"
+    },
+    {
+      "source": "/forense/apk-downgrade",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/apk-downgrade(?:/)?$"
+    },
+    {
+      "source": "/forense/whatsapp-parser",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/whatsapp-parser(?:/)?$"
+    },
+    {
+      "source": "/forense/integridad",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/forense/integridad(?:/)?$"
+    },
+    {
+      "source": "/manual-avilla",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/manual-avilla(?:/)?$"
+    },
+    {
+      "source": "/sistemas/manual-avilla",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/sistemas/manual-avilla(?:/)?$"
+    },
+    {
+      "source": "/manual-serverless",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/manual-serverless(?:/)?$"
+    },
+    {
+      "source": "/planillas/seguimiento",
+      "destination": "/control/seguimiento-compliance",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/planillas/seguimiento(?:/)?$"
+    },
+    {
+      "source": "/correo-forense",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/correo-forense(?:/)?$"
+    },
+    {
+      "source": "/sistemas/correo-electronico",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/sistemas/correo-electronico(?:/)?$"
+    },
+    {
+      "source": "/sistemas/correo-corporativo",
+      "destination": "/forense/tutoriales",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/sistemas/correo-corporativo(?:/)?$"
+    },
+    {
+      "source": "/tareas",
+      "destination": "/",
+      "statusCode": 308,
+      "regex": "^(?!/_next)/tareas(?:/)?$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/casos/[id]",
+      "regex": "^/casos/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/casos/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/auditoria",
+      "regex": "^/auditoria(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auditoria(?:/)?$"
+    },
+    {
+      "page": "/casos",
+      "regex": "^/casos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/casos(?:/)?$"
+    },
+    {
+      "page": "/control/seguimiento-compliance",
+      "regex": "^/control/seguimiento\\-compliance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/control/seguimiento\\-compliance(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/forense/tutoriales",
+      "regex": "^/forense/tutoriales(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/forense/tutoriales(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/normativas",
+      "regex": "^/normativas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/normativas(?:/)?$"
+    },
+    {
+      "page": "/personal",
+      "regex": "^/personal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/personal(?:/)?$"
+    },
+    {
+      "page": "/planillas/acta-entrevista",
+      "regex": "^/planillas/acta\\-entrevista(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/acta\\-entrevista(?:/)?$"
+    },
+    {
+      "page": "/planillas/acta-obtencion",
+      "regex": "^/planillas/acta\\-obtencion(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/acta\\-obtencion(?:/)?$"
+    },
+    {
+      "page": "/planillas/dictamen",
+      "regex": "^/planillas/dictamen(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/dictamen(?:/)?$"
+    },
+    {
+      "page": "/planillas/entrega-resultados",
+      "regex": "^/planillas/entrega\\-resultados(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/entrega\\-resultados(?:/)?$"
+    },
+    {
+      "page": "/planillas/prcc",
+      "regex": "^/planillas/prcc(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/prcc(?:/)?$"
+    },
+    {
+      "page": "/planillas/timeline-compliance",
+      "regex": "^/planillas/timeline\\-compliance(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/timeline\\-compliance(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

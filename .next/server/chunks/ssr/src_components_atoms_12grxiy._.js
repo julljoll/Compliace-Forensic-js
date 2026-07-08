@@ -1,0 +1,8 @@
+module.exports=[16745,a=>{"use strict";var b=a.i(87924);a.s(["default",0,({children:a,hoverable:c=!0,className:d="",...e})=>(0,b.jsx)("div",{className:`
+        bg-[var(--co-surface-1)] border border-[var(--co-separator)] rounded-[16px] p-5
+        shadow-[var(--co-shadow-1)] transition-all duration-200
+        ${c?"hover:shadow-[var(--co-shadow-2)] hover:-translate-y-[1px]":""}
+        ${d}
+      `,...e,children:a})])},90832,a=>{"use strict";var b=a.i(87924);a.s(["default",0,({children:a,variant:c="secondary",size:d="md",className:e="",iconOnly:f=!1,...g})=>(0,b.jsx)("button",{className:`inline-flex items-center justify-center font-semibold transition-all duration-200 outline-none select-none active:scale-[0.97] cursor-pointer disabled:opacity-50 disabled:pointer-events-none gap-2 ${{primary:"bg-[var(--co-accent)] text-[var(--co-accent-fg)] border-none hover:brightness-[1.08] shadow-[0_1px_2px_rgba(0,0,0,0.1)]",secondary:"bg-[var(--co-surface-2)] text-[var(--apple-text)] border-none hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)]",destructive:"bg-[var(--co-red)] text-white border-none hover:brightness-[1.08]",ghost:"bg-transparent text-[var(--co-accent)] hover:bg-[rgba(0,113,227,0.1)] border-none"}[c]} ${{sm:"h-8 px-3.5 text-[13px] rounded-[8px]",md:"h-10 px-4.5 text-[15px] rounded-[10px]",lg:"h-12 px-5.5 text-[17px] rounded-[12px]"}[d]} ${f?"sm"===d?"w-8 p-0":"lg"===d?"w-12 p-0":"w-10 p-0":""} ${e}`,...g,children:a})])}];
+
+//# sourceMappingURL=src_components_atoms_12grxiy._.js.map

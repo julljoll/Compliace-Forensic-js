@@ -1,4 +1,42 @@
 
+declare global {
+  interface Window {
+    electronAPI?: {
+      platform?: string;
+      operationMode?: string;
+      dialog?: {
+        selectFile?: (filters?: any) => Promise<{ canceled: boolean; filePaths: string[] }>;
+      };
+      file?: {
+        writeJson?: (filePath: string, data: any) => Promise<void>;
+        readJson?: (filePath: string) => Promise<any>;
+      };
+      hash?: {
+        calculate?: (filePath: string, algorithm?: string) => Promise<{ success: boolean; hash: string; algorithm: string; verified: boolean; error?: string }>;
+      };
+      db?: {
+        getCasos?: (userId: number) => Promise<any[]>;
+        addCaso?: (caso: any) => Promise<any>;
+        updateCaso?: (id: string, data: any) => Promise<boolean>;
+        deleteCaso?: (id: string) => Promise<boolean>;
+        saveState?: (userId: number, state: any) => Promise<any>;
+        loadState?: (userId: number) => Promise<any>;
+        getUsers?: () => Promise<any[]>;
+        addUser?: (userIdMaker: number, user: any) => Promise<any>;
+        updateUser?: (userIdMaker: number, userId: number, data: any) => Promise<any>;
+        getAuditLogs?: () => Promise<any[]>;
+        addAuditLog?: (log: any) => Promise<boolean>;
+      };
+      auth?: {
+        login?: (credentials: any) => Promise<any>;
+        validate?: (token: string) => Promise<any>;
+        logout?: (token: string) => Promise<any>;
+        changePassword?: (userId: number, newPassword: string) => Promise<any>;
+      };
+    };
+  }
+}
+
 export interface UserDB {
   id: number;
   username: string;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { User, Calendar, ChevronRight, Trash2, Smartphone, Mail, HardDrive } from '../../atoms/AppleIcon';
 import { CasoCMS, EstadoCaso, NivelCumplimiento, TipoProyecto } from '../../../store/cmsStore';
 
@@ -90,7 +90,7 @@ export default function CasoCard({
       </div>
 
       <div className="hidden sm:flex items-center gap-1.5 shrink-0 ml-2">
-        <Link to={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-black/[0.04] text-[#86868B] hover:bg-[#0071E3] hover:text-white transition-all">
+        <Link href={`/casos/${caso.id}`} className="p-2 rounded-[4px] bg-black/[0.04] text-[#86868B] hover:bg-[#0071E3] hover:text-white transition-all">
           <ChevronRight size={16} strokeWidth={2.5} />
         </Link>
         <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-[4px] bg-black/[0.04] text-[#86868B] hover:bg-[#FF3B30] hover:text-white transition-all">
@@ -99,7 +99,7 @@ export default function CasoCard({
       </div>
 
       <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
-        <Link to={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-[#0071E3] text-white font-bold text-xs uppercase tracking-widest shadow-lg">
+        <Link href={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-[4px] bg-[#0071E3] text-white font-bold text-xs uppercase tracking-widest shadow-lg">
           Abrir Registro
           <ChevronRight size={14} className="ml-1" strokeWidth={3} />
         </Link>

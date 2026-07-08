@@ -1,0 +1,20 @@
+{
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(dashboard)/auditoria/page": "app/(dashboard)/auditoria/page.js",
+  "/(dashboard)/casos/[id]/page": "app/(dashboard)/casos/[id]/page.js",
+  "/(dashboard)/casos/page": "app/(dashboard)/casos/page.js",
+  "/(dashboard)/control/seguimiento-compliance/page": "app/(dashboard)/control/seguimiento-compliance/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/forense/tutoriales/page": "app/(dashboard)/forense/tutoriales/page.js",
+  "/(dashboard)/normativas/page": "app/(dashboard)/normativas/page.js",
+  "/(dashboard)/personal/page": "app/(dashboard)/personal/page.js",
+  "/(dashboard)/planillas/acta-entrevista/page": "app/(dashboard)/planillas/acta-entrevista/page.js",
+  "/(dashboard)/planillas/acta-obtencion/page": "app/(dashboard)/planillas/acta-obtencion/page.js",
+  "/(dashboard)/planillas/dictamen/page": "app/(dashboard)/planillas/dictamen/page.js",
+  "/(dashboard)/planillas/entrega-resultados/page": "app/(dashboard)/planillas/entrega-resultados/page.js",
+  "/(dashboard)/planillas/prcc/page": "app/(dashboard)/planillas/prcc/page.js",
+  "/(dashboard)/planillas/timeline-compliance/page": "app/(dashboard)/planillas/timeline-compliance/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js"
+}

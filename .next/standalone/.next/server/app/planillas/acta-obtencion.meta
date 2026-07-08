@@ -1,0 +1,17 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(dashboard)/layout,_N_T_/(dashboard)/planillas/layout,_N_T_/(dashboard)/planillas/acta-obtencion/layout,_N_T_/(dashboard)/planillas/acta-obtencion/page,_N_T_/planillas/acta-obtencion"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/!KGRhc2hib2FyZCk/planillas/acta-obtencion/__PAGE__",
+    "/!KGRhc2hib2FyZCk/planillas/acta-obtencion",
+    "/!KGRhc2hib2FyZCk/planillas",
+    "/!KGRhc2hib2FyZCk",
+    "/_index",
+    "/_head"
+  ]
+}

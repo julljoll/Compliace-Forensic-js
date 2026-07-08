@@ -80,7 +80,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['"Courier New"', 'Courier', 'monospace'],
+        sans: ['"Ubuntu"', 'sans-serif'],
       },
       fontSize: {
         'apple-title':   ['2rem',   { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.025em' }],

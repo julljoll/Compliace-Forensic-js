@@ -1193,7 +1193,7 @@ export const useCMSStore = create<CMSState>()(
         const persistAndLog = async () => {
           if (casoId) {
             const updatedCaso = get().casos.find(c => c.id === casoId);
-            if (updatedCaso?.compliance_checklist && window.electronAPI?.db) {
+            if (updatedCaso?.compliance_checklist && window.electronAPI?.db?.updateCaso) {
                await window.electronAPI.db.updateCaso(casoId, { compliance_checklist: updatedCaso.compliance_checklist });
             }
           }
