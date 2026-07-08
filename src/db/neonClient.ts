@@ -7,27 +7,26 @@ try {
   console.error('Error al configurar neonConfig:', e);
 }
 
-// URL de conexión desde variable de entorno
-// En producción, definir VITE_DATABASE_URL en .env
-const DATABASE_URL: string = import.meta.env.VITE_DATABASE_URL || '';
-export const isNeonConfigured: boolean = !!DATABASE_URL && (DATABASE_URL.startsWith('postgresql://') || DATABASE_URL.startsWith('postgres://') || DATABASE_URL.includes('neon.tech'));
+// Neon API Key desde variable de entorno
+const NEON_API_KEY: string = process.env.NEXT_PUBLIC_NEON_API_KEY || '';
+export const isNeonConfigured: boolean = !!NEON_API_KEY && NEON_API_KEY.startsWith('napi_');
 
-// Inicializar el cliente Neon si fetch está disponible (entorno navegador) y está configurado
+// Inicializar el cliente Neon con API Key (HTTP queries)
 let sqlClient: any = null;
 if (isNeonConfigured) {
   try {
     if (typeof fetch !== 'undefined') {
-      const rawClient = neon(DATABASE_URL);
+      const rawClient = neon(NEON_API_KEY);
       sqlClient = (query: string, params?: any[]) => {
         return rawClient.query(query, params);
       };
-      console.info('[NeonDB] Cliente inicializado correctamente.');
+      console.info('[NeonDB] Cliente inicializado con API Key.');
     }
   } catch (e) {
     console.error('[NeonDB] Error al inicializar cliente:', e);
   }
 } else {
-  console.warn('[NeonDB] VITE_DATABASE_URL no configurada — operando en modo local (localStorage/Zustand). Los datos no se sincronizan con la nube.');
+  console.warn('[NeonDB] NEXT_PUBLIC_NEON_API_KEY no configurada — operando en modo local (localStorage/Zustand).');
 }
 
 // Verificar conexión a la base de datos Neon
@@ -97,6 +96,27 @@ export async function initDatabase() {
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_marca VARCHAR(255)`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_modelo VARCHAR(255)`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS steps TEXT`);
+
+    // Tabla de usuarios autorizados (login por correo)
+    await sqlClient(`
+      CREATE TABLE IF NOT EXISTS authorized_users (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        nombre VARCHAR(255) DEFAULT '',
+        activo BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Insertar usuario autorizado por defecto si la tabla está vacía
+    const existingUsers = await sqlClient('SELECT COUNT(*) as count FROM authorized_users');
+    const count = Number(existingUsers[0]?.count ?? existingUsers[0]?.['count'] ?? 0);
+    if (count === 0) {
+      await sqlClient(
+        "INSERT INTO authorized_users (email, nombre) VALUES ('julljoll@gmail.com', 'Jull Joll') ON CONFLICT (email) DO NOTHING"
+      );
+      console.info('[NeonDB] Usuario autorizado por defecto insertado: julljoll@gmail.com');
+    }
 
     // Tabla de logs de auditoría
     await sqlClient(`
@@ -374,4 +394,43 @@ function saveLogLocal(log: any) {
   const logs = loadLogsLocal();
   logs.unshift(log);
   localStorage.setItem('sha256_pwa_audit_logs', JSON.stringify(logs));
+}
+
+// --- Auth: Validar usuario por correo ---
+
+export async function authUserByEmail(email: string): Promise<{ success: boolean; user?: any; error?: string }> {
+  if (!sqlClient) {
+    // Modo local: solo permitir julljoll@gmail.com
+    const LOCAL_AUTHORIZED = 'julljoll@gmail.com';
+    if (email.toLowerCase() === LOCAL_AUTHORIZED) {
+      return {
+        success: true,
+        user: { id: 1, email: LOCAL_AUTHORIZED, nombre: 'Jull Joll', rol: 'admin' }
+      };
+    }
+    return { success: false, error: 'Correo no autorizado' };
+  }
+
+  try {
+    const rows = await sqlClient(
+      "SELECT * FROM authorized_users WHERE LOWER(email) = LOWER($1) AND activo = true",
+      [email]
+    );
+    const row = rows[0] || rows.rows?.[0];
+    if (!row) {
+      return { success: false, error: 'Correo no autorizado' };
+    }
+    return {
+      success: true,
+      user: {
+        id: row.id,
+        email: row.email,
+        nombre: row.nombre || '',
+        rol: 'admin'
+      }
+    };
+  } catch (e: any) {
+    console.error('[NeonDB] Error validando usuario:', e);
+    return { success: false, error: 'Error de conexión con la base de datos' };
+  }
 }
