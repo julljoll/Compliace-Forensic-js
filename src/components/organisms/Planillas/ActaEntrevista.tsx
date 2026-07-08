@@ -314,7 +314,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       </div>
 
       <div className="footer">
-        Documento redactado y generado bajo las directrices del Manual Único de Cadena de Custodia de Evidencias Físicas (V. 2017) <br />
+        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
         SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
     </div>

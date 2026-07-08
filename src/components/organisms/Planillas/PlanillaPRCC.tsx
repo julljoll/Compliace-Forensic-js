@@ -58,9 +58,9 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
           <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
           <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
         </div>
-        <div className="form-header-info">
-          <h1 className="form-title-main">Planilla de Registro de Cadena de Custodia (PRCC)</h1>
-          <div className="form-nro">
+        <div className="acta-header">
+          <h1 className="acta-title">Planilla de Registro de Cadena de Custodia (PRCC)</h1>
+          <div className="acta-nro">
             N° PRCC: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}</span>
           </div>
         </div>
@@ -491,6 +491,11 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div className="footer">
+        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
+        SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
 
     </div>

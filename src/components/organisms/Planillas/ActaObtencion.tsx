@@ -247,7 +247,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         <div className="section-title">III. Autorización y Alcance de la Consignación</div>
         <div className="legal-text">
           Yo, el arriba identificado, en pleno uso de mis facultades, hago entrega material voluntaria del dispositivo descrito (Obtención por Consignación) según el <strong>Manual Único de Cadena de Custodia (2017)</strong>. 
-          <strong>AUTORIZO EXPRESA Y VOLUNTARIAMENTE</strong> al experto informático de SHA256 para que aplique herramientas forenses (Andriller, ALEAPP o similares) con el fin de realizar la extracción lógica/física de "Mensajes de Datos" (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), renunciando temporalmente a la privacidad de las comunicaciones (Art. 48 CRBV) bajo los límites de esta autorización:
+          <strong>AUTORIZO EXPRESA Y VOLUNTARIAMENTE</strong> al experto informático de SHA256 para que aplique herramientas forenses con el fin de realizar la extracción lógica/física de "Mensajes de Datos" (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), renunciando temporalmente a la privacidad de las comunicaciones (Art. 48 CRBV) bajo los límites de esta autorización:
         </div>
         <div className="form-group">
           <div className="label">Alcance de la Autorización (Marque uno)</div>
@@ -336,8 +336,8 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
       </div>
 
       <div className="footer">
-        Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) <br />
-        SHA256 Forensic Lab - Tecnología al servicio de la justicia.
+        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
+        SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
     </div>
   );

@@ -283,8 +283,8 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
       </div>
 
       <div className="footer">
-        Acta elaborada de conformidad con las fases del Manual Único de Cadena de Custodia de Evidencias Físicas <br />
-        SHA256 Forensic Lab - Informática Forense al servicio de la verdad y la justicia.
+        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
+        SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
     </div>
   );

@@ -278,8 +278,8 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
       </div>
 
       <div className="footer">
-        Dictamen emitido de conformidad con el Código Orgánico Procesal Penal y el Manual Único de Cadena de Custodia de Evidencias <br />
-        SHA256 Forensic Lab - Informática Forense al servicio de la justicia.
+        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
+        SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
     </div>
   );

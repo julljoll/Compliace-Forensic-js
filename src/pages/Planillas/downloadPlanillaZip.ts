@@ -76,13 +76,72 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
       line-height: 1.5;
     }
     ${planillasCssText}
-    /* Word specific resets */
+    /* Word specific resets & compatibility overrides (No Flexbox/Grid support in Word) */
     .page {
       width: 100% !important;
       border: none !important;
       box-shadow: none !important;
       padding: 0 !important;
       margin: 0 !important;
+    }
+    .grid-container, .signature-section, .signature-grid {
+      display: block !important;
+      width: 100% !important;
+      clear: both !important;
+    }
+    .form-group {
+      display: block !important;
+      float: left !important;
+      width: 48% !important;
+      margin-right: 1% !important;
+      margin-bottom: 8px !important;
+    }
+    .sig-detail-card, .sig-card {
+      display: block !important;
+      float: left !important;
+      width: 48% !important;
+      margin-right: 1% !important;
+    }
+    header {
+      display: block !important;
+      width: 100% !important;
+      clear: both !important;
+      border-bottom: 2px solid #000000 !important;
+      padding-bottom: 10px !important;
+      margin-bottom: 20px !important;
+    }
+    .logo-container {
+      display: block !important;
+      float: left !important;
+      width: 60% !important;
+    }
+    .acta-header, .form-header-info {
+      display: block !important;
+      float: right !important;
+      width: 38% !important;
+      text-align: right !important;
+    }
+    .fingerprint-row {
+      display: block !important;
+      width: 100% !important;
+      clear: both !important;
+      margin-top: 4px !important;
+    }
+    .thumb-wrapper {
+      display: block !important;
+      float: left !important;
+      width: 45% !important;
+      margin-right: 5% !important;
+      text-align: center !important;
+    }
+    .check-item {
+      display: inline-block !important;
+      margin-right: 15px !important;
+      margin-bottom: 5px !important;
+    }
+    .checkbox-group {
+      display: block !important;
+      width: 100% !important;
     }
   </style>
 </head>
