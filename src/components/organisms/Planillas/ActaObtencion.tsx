@@ -49,7 +49,17 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
   };
 
   return (
-    <div className="page" onClick={handleCheckboxClick}>
+    <>
+      {/* Regla de Word (Solo pantalla) */}
+      <div className="word-ruler no-print">
+        <div className="margin-left-shaded" title="Margen Izquierdo (38mm) — Área de Encuadernación" />
+        <div className="ruler-text-zone">
+          <div className="ruler-ticks" />
+        </div>
+        <div className="margin-right-shaded" title="Margen Derecho (15mm)" />
+      </div>
+
+      <div className="page" onClick={handleCheckboxClick}>
       <header>
         <div className="logo-container">
           <div className="logo-branding">
@@ -340,5 +350,20 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
       </div>
     </div>
+
+    {/* Barra de Estado de Word (Solo pantalla) */}
+    <div className="word-status-bar no-print">
+      <div className="left-info">
+        <div className="status-item">Página 1 de 1</div>
+        <div className="status-item">|</div>
+        <div className="status-item">Courier New (11pt)</div>
+        <div className="status-item">|</div>
+        <div className="status-item">Llenado Manual: [Activo]</div>
+      </div>
+      <div className="right-info">
+        <div className="status-item">Formato: Oficio Venezolano (216x330mm)</div>
+      </div>
+    </div>
+  </>
   );
 }

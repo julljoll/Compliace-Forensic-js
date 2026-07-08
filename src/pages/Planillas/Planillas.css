@@ -3,10 +3,14 @@
   font-family: 'Courier New', Courier, monospace !important;
   line-height: 1.5;
   color: #1d1d1f;
-  background: var(--co-bg, #f5f5f7);
+  background: #1e1e24 !important; /* Word Workspace dark gray background */
   margin: 0;
-  padding: 30px 10px;
+  padding: 40px 10px;
   font-size: 11pt;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .planilla-container * {
@@ -997,6 +1001,116 @@
 
   .planilla-container .dotted-line {
     border-bottom-color: #000000 !important;
+  }
+}
+
+/* ── Microsoft Word Workspace Preview Decorations (no-print) ── */
+.word-ruler {
+  width: 216mm;
+  height: 25px;
+  background: #f3f2f1;
+  border: 1px solid #d2d2d7;
+  border-bottom: none;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+  user-select: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.word-ruler .margin-left-shaded {
+  width: 38mm;
+  height: 100%;
+  background: #e1dfdd;
+  border-right: 1px solid #a19f9d;
+  flex-shrink: 0;
+}
+
+.word-ruler .ruler-text-zone {
+  flex-grow: 1;
+  height: 100%;
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.word-ruler .margin-right-shaded {
+  width: 15mm;
+  height: 100%;
+  background: #e1dfdd;
+  border-left: 1px solid #a19f9d;
+  flex-shrink: 0;
+}
+
+.word-ruler .ruler-ticks {
+  position: absolute;
+  left: 38mm;
+  right: 15mm;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, #a19f9d 1px, transparent 1px),
+    linear-gradient(to right, transparent 9px, #a19f9d 9px, #a19f9d 10px, transparent 10px);
+  background-size: 10px 100%, 10px 8px;
+  background-position: left center, left bottom;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+.word-status-bar {
+  width: 216mm;
+  background: #2b579a; /* Classic Word Blue status bar */
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 9pt !important;
+  padding: 6px 16px;
+  margin: 0 auto 24px !important; /* spacing below status bar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #1a3b6e;
+  border-top: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.word-status-bar * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+.word-status-bar .left-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.word-status-bar .right-info {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-weight: 500;
+}
+
+.word-status-bar .status-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.planilla-container .page {
+  margin: 0 auto !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+@media print {
+  .word-ruler,
+  .word-status-bar {
+    display: none !important;
   }
 }
 
