@@ -81,7 +81,6 @@ export const useAuthStore = create<AuthState>()(
           await initDatabase();
           const result = await authUserByEmail(trimmedEmail);
           if (result.success && result.user) {
-            // Neon no valida contraseña aún — se acepta cualquier password para usuarios autorizados
             set({
               user: result.user,
               isAuthenticated: true,
@@ -115,6 +114,21 @@ export const useAuthStore = create<AuthState>()(
         }
       },
     }),
-    { name: 'sha256-auth', version: 3 }
+    {
+      name: 'sha256-auth',
+      version: 3,
+      migrate: (persistedState: any, version: number) => {
+        // Si la versión guardada es menor a 3, resetear el estado de auth
+        if (version < 3) {
+          return {
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+          };
+        }
+        return persistedState;
+      },
+    }
   )
 );
