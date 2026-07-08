@@ -30,7 +30,7 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
       margin: 0;
       padding: 0;
       background: #ffffff;
-      font-family: 'Ubuntu', sans-serif;
+      font-family: 'Courier New', Courier, monospace;
     }
     .page {
       border: none !important;
@@ -67,12 +67,12 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   <![endif]-->
   <style>
     @page {
-      size: letter;
-      margin: 20mm 15mm 20mm 30mm;
+      size: legal; /* Legal maps to Oficio in Microsoft Word standard configurations */
+      margin: 20mm 15mm 20mm 38mm;
     }
     body {
-      font-family: 'Ubuntu', sans-serif;
-      font-size: 12pt;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11pt;
       line-height: 1.5;
     }
     ${planillasCssText}

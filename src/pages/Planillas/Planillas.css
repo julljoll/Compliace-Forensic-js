@@ -1,24 +1,25 @@
-/* ── Planilla & Report Container (Microsoft Word Legal Style - Letter Size) ── */
+/* ── Planilla & Report Container (Microsoft Word Legal Style - Oficio/Legal Size) ── */
 .planilla-container {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Courier New', Courier, monospace !important;
   line-height: 1.5;
   color: #1d1d1f;
   background: var(--co-bg, #f5f5f7);
   margin: 0;
   padding: 30px 10px;
-  font-size: 12px;
+  font-size: 11pt;
 }
 
 .planilla-container * {
   box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace !important;
 }
 
-/* Page Card representation on screen (Letter Size: 216mm x 279mm) */
+/* Page Card representation on screen (Oficio Size: 216mm x 330mm) */
 .planilla-container .page {
   width: 216mm;
-  min-height: 279mm;
-  /* Margins mimicking papel sellado: Left: 30mm, Right: 15mm, Top: 20mm, Bottom: 20mm */
-  padding: 20mm 15mm 20mm 30mm;
+  min-height: 330mm;
+  /* Margins mimicking papel sellado: Left: 38mm (for binding), Right: 15mm, Top: 20mm, Bottom: 20mm */
+  padding: 20mm 15mm 20mm 38mm;
   margin: 0 auto 24px;
   background: #ffffff;
   color: #1d1d1f;
@@ -55,7 +56,7 @@
 }
 
 .planilla-container .logo-text {
-  font-size: 18px;
+  font-size: 16pt;
   font-weight: 700;
   color: #1d1d1f;
   text-transform: uppercase;
@@ -64,7 +65,7 @@
 }
 
 .planilla-container .logo-subtext {
-  font-size: 9.5px;
+  font-size: 8.5pt;
   font-weight: 700;
   color: #515154;
   text-transform: uppercase;
@@ -72,7 +73,7 @@
 }
 
 .planilla-container .address-text {
-  font-size: 8.5px;
+  font-size: 7.5pt;
   color: #515154;
   max-width: 350px;
   line-height: 1.4;
@@ -85,7 +86,7 @@
 
 .planilla-container .acta-title,
 .planilla-container .form-title-main {
-  font-size: 14px;
+  font-size: 13.5pt;
   font-weight: 700;
   margin: 0;
   text-transform: uppercase;
@@ -95,8 +96,8 @@
 
 .planilla-container .acta-nro,
 .planilla-container .form-nro {
-  font-family: 'Ubuntu', sans-serif;
-  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 11pt;
   margin-top: 6px;
   display: flex;
   align-items: center;
@@ -122,7 +123,7 @@
   border-bottom: 1.5px solid #1d1d1f;
   color: #1d1d1f;
   padding: 4px 0;
-  font-size: 12px;
+  font-size: 11.5pt;
   font-weight: 700;
   text-transform: uppercase;
   margin-top: 16px;
@@ -147,7 +148,7 @@
 
 .planilla-container .label {
   color: #515154;
-  font-size: 9.5px;
+  font-size: 8.5pt;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 4px;
@@ -155,7 +156,7 @@
 
 .planilla-container .value {
   color: #1d1d1f;
-  font-size: 12px;
+  font-size: 11pt;
   font-weight: 400;
   min-height: 20px;
   line-height: 1.5;
@@ -184,14 +185,14 @@
   border: 1px solid #1d1d1f;
   color: #1d1d1f;
   padding: 8px 12px;
-  font-size: 11.5px;
+  font-size: 11pt;
   line-height: 1.5;
 }
 
 .planilla-container .evidence-table td:first-child {
   width: 30%;
   font-weight: 700;
-  font-size: 10px;
+  font-size: 9.5pt;
   text-transform: uppercase;
   background-color: #f2f2f7;
   color: #1d1d1f;
@@ -203,7 +204,7 @@
 
 .planilla-container .transfer-header {
   font-weight: 700;
-  font-size: 10px;
+  font-size: 9.5pt;
   text-transform: uppercase;
   background-color: #f2f2f7;
   color: #1d1d1f;
@@ -220,7 +221,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 10.5pt;
   color: #1d1d1f;
 }
 
@@ -232,13 +233,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 8.5pt;
   line-height: 1;
   background-color: #ffffff;
 }
 
 .planilla-container .legal-text {
-  font-size: 11px;
+  font-size: 10.5pt;
   text-align: justify;
   padding: 10px 14px;
   border: 1px solid #1d1d1f;
@@ -472,7 +473,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   PRINT MEDIA STYLES (Microsoft Word Style - Letter Size & Legal Margins)
+   PRINT MEDIA STYLES (Microsoft Word Style - Oficio/Legal Size & Margins)
    ══════════════════════════════════════════════════════════════════════════ */
 @media print {
   * {
@@ -484,7 +485,7 @@
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
-    font-family: 'Ubuntu', sans-serif !important;
+    font-family: 'Courier New', Courier, monospace !important;
   }
   
   .no-print, nav, aside, .sidebar, header button, .print-button {
@@ -492,17 +493,17 @@
   }
 
   @page {
-    size: letter;
-    /* Margins mimicking papel sellado: Top: 20mm, Right: 15mm, Bottom: 20mm, Left: 30mm */
-    margin: 20mm 15mm 20mm 30mm;
+    size: 216mm 330mm; /* Oficio Venezolano */
+    /* Margins mimicking papel sellado: Top: 20mm, Right: 15mm, Bottom: 20mm, Left: 38mm (for binding) */
+    margin: 20mm 15mm 20mm 38mm;
   }
 
   .planilla-container {
     background: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;
-    font-family: 'Ubuntu', sans-serif !important;
-    font-size: 12px !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 11pt !important;
     line-height: 1.5 !important;
   }
 
@@ -531,6 +532,7 @@
   .planilla-container .anexo-header,
   .planilla-container .section-title {
     color: #000000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
   }
 
   .planilla-container .logo-subtext,
@@ -542,13 +544,14 @@
   .planilla-container .thumb-label,
   .planilla-container .sig-line-label {
     color: #000000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
   }
 
   .planilla-container .section-title {
     border-left: none !important;
     border-bottom: 1.5px solid #000000 !important;
     padding: 3px 0 !important;
-    font-size: 12px !important;
+    font-size: 11.5pt !important;
     margin-bottom: 8px !important;
     font-weight: 700 !important;
   }
@@ -562,12 +565,12 @@
   }
 
   .planilla-container .label {
-    font-size: 9.5px !important;
+    font-size: 9pt !important;
     margin-bottom: 3px !important;
   }
 
   .planilla-container .check-item {
-    font-size: 11px !important;
+    font-size: 10.5pt !important;
     gap: 6px !important;
   }
 
@@ -589,29 +592,29 @@
   }
 
   .planilla-container .sig-label {
-    font-size: 10.5px !important;
+    font-size: 10.5pt !important;
   }
 
   .planilla-container .logo-text {
-    font-size: 18px !important;
+    font-size: 16pt !important;
   }
 
   .planilla-container .logo-subtext {
-    font-size: 9.5px !important;
+    font-size: 8.5pt !important;
   }
 
   .planilla-container .address-text {
-    font-size: 8.5px !important;
+    font-size: 7.5pt !important;
   }
 
   .planilla-container .acta-title,
   .planilla-container .form-title-main {
-    font-size: 14px !important;
+    font-size: 13.5pt !important;
   }
 
   .planilla-container .acta-nro,
   .planilla-container .form-nro {
-    font-size: 11px !important;
+    font-size: 11pt !important;
     margin-top: 4px !important;
   }
 
@@ -624,7 +627,7 @@
     margin-top: 24px !important;
     padding-top: 8px !important;
     border-top: 1px solid #000000 !important;
-    font-size: 9px !important;
+    font-size: 8.5pt !important;
     text-align: center !important;
     color: #000000 !important;
     clear: both !important;
@@ -641,11 +644,11 @@
     border: 1px solid #000000 !important;
     color: #000000 !important;
     padding: 6px 10px !important;
-    font-size: 11.5px !important;
+    font-size: 11pt !important;
   }
 
   .planilla-container .evidence-table td:first-child {
-    font-size: 10px !important;
+    font-size: 9.5pt !important;
     background-color: #f2f2f7 !important;
   }
 
@@ -656,7 +659,7 @@
   }
 
   .planilla-container .value {
-    font-size: 12px !important;
+    font-size: 11pt !important;
     min-height: 18px !important;
   }
 
@@ -664,7 +667,7 @@
     border: 1px solid #000000 !important;
     background-color: #ffffff !important;
     padding: 8px 12px !important;
-    font-size: 11px !important;
+    font-size: 10.5pt !important;
     margin: 8px 0 !important;
     line-height: 1.5 !important;
   }
@@ -694,7 +697,7 @@
 
   .planilla-container .thumb-label {
     color: #000000 !important;
-    font-size: 8.5px !important;
+    font-size: 8.5pt !important;
   }
 
   .planilla-container .sig-detail-card {
@@ -706,7 +709,7 @@
   .planilla-container .sig-detail-card .sig-detail-label {
     color: #000000 !important;
     border-bottom-color: #000000 !important;
-    font-size: 11px !important;
+    font-size: 11pt !important;
     padding-bottom: 4px !important;
   }
 
@@ -717,19 +720,19 @@
 
   .planilla-container .sig-detail-card .sig-line-label {
     color: #000000 !important;
-    font-size: 8px !important;
+    font-size: 8pt !important;
   }
 
   .planilla-container .sig-detail-card .sig-field {
     color: #000000 !important;
-    font-size: 10px !important;
+    font-size: 10pt !important;
   }
 
   .planilla-container .sig-detail-card .sig-field .sig-underline {
     border-bottom: 1px dashed #8e8e93 !important;
     color: #000000 !important;
     min-height: 18px !important;
-    font-size: 11px !important;
+    font-size: 11pt !important;
   }
 
   .planilla-container .sig-detail-card .fingerprint-row {
@@ -757,8 +760,9 @@
     page-break-inside: avoid;
   }
 
-  .planilla-container .timeline-print-layout {
+  .planilla-container .timeline-print-layout { 
     display: block !important;
+    border: 1px solid #000000 !important;
     width: 100%;
     margin-top: 15px;
   }
