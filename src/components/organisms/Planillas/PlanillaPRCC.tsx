@@ -199,7 +199,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
         <div className="section-title">IV. Descripción de la Evidencia Digital Consignada ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Tipo de Dispositivo</td>
@@ -290,7 +290,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
             </tbody>
           </table>
         ) : (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Tipo de Dispositivo</td>
@@ -386,7 +386,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
       {/*  SECCIÓN V  */}
       <div className="section">
         <div className="section-title">V. Recepción de la Evidencia — Consignación Voluntaria (MUCC-2017 Obtención por Consignación)</div>
-        <table className="transfer-table">
+        <table border={1} cellSpacing={0} cellPadding={6} className="transfer-table">
           <tbody>
             <tr>
               <td style={{ width: '30%', verticalAlign: 'top' }}>
@@ -464,7 +464,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
       {/* TABLA DE CONTINUIDAD DE LA CADENA DE CUSTODIA (MUCC-2017) */}
       <div className="section">
         <div className="section-title">VI. Continuidad de la Cadena de Custodia (Trazabilidad de Custodios)</div>
-        <table className="transfer-table" style={{ marginTop: '5px' }}>
+        <table border={1} cellSpacing={0} cellPadding={6} className="transfer-table" style={{ marginTop: '5px' }}>
           <thead>
             <tr className="transfer-header">
               <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '8pt', width: '12%', textAlign: 'left' }}>Fecha / Hora</th>

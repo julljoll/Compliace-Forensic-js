@@ -149,7 +149,7 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
         <div className="section-title">III. Descripción del Dispositivo Devuelto ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Equipo / Dispositivo</td>
@@ -184,7 +184,7 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
             </tbody>
           </table>
         ) : (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Computador Devuelto</td>

@@ -115,7 +115,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
         <div className="section-title">II. Identificación de la Evidencia Técnica Examinada</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Evidencia Digital</td>
@@ -138,7 +138,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
             </tbody>
           </table>
         ) : (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Computador Examinado</td>
@@ -169,7 +169,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
       {/*  III. METODOLOGÍA Y HERRAMIENTAS APLICADAS  */}
       <div className="section">
         <div className="section-title">III. Metodología Científica y Herramientas Forenses</div>
-        <table className="evidence-table">
+        <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
           <tbody>
             <tr>
               <td>Estándares Técnicos</td>
@@ -198,7 +198,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
       {/*  IV. INTEGRIDAD CRYPTOGRÁFICA  */}
       <div className="section">
         <div className="section-title">IV. Tabla de Integridad Forense (Firmas Hash)</div>
-        <table className="evidence-table">
+        <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
           <tbody>
             <tr className="transfer-header">
               <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '35%', textAlign: 'left' }}>Medio / Imagen Obtenida</th>

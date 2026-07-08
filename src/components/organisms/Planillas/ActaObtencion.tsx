@@ -141,7 +141,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         <div className="section-title">II. Descripción Técnica de la Evidencia ({tipoEvidencia === 'movil' ? 'Dispositivo Móvil' : 'Computador / Almacenamiento'})</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Marca / Modelo</td>
@@ -188,7 +188,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
             </tbody>
           </table>
         ) : (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Marca / Modelo del Computador</td>

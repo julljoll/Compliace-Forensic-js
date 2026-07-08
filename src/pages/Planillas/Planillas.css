@@ -176,13 +176,13 @@
 .planilla-container .transfer-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #1d1d1f;
+  border: 0.75pt solid #1d1d1f !important;
   margin-top: 6px;
 }
 
 .planilla-container .evidence-table td,
 .planilla-container .transfer-table td {
-  border: 1px solid #1d1d1f;
+  border: 0.75pt solid #1d1d1f !important;
   color: #1d1d1f;
   padding: 8px 12px;
   font-size: 11pt;
@@ -636,12 +636,12 @@
 
   .planilla-container .evidence-table,
   .planilla-container .transfer-table {
-    border: 1px solid #000000 !important;
+    border: 0.75pt solid #000000 !important;
   }
 
   .planilla-container .evidence-table td,
   .planilla-container .transfer-table td {
-    border: 1px solid #000000 !important;
+    border: 0.75pt solid #000000 !important;
     color: #000000 !important;
     padding: 6px 10px !important;
     font-size: 11pt !important;

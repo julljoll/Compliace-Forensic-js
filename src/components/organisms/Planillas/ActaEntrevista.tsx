@@ -167,7 +167,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
         <div className="section-title">II. Relación del Dispositivo y Cuentas de Interés Forense</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Dispositivo Móvil / Almacenamiento</td>
@@ -199,7 +199,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
             </tbody>
           </table>
         ) : (
-          <table className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
                 <td>Computador / Almacenamiento</td>
