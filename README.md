@@ -81,7 +81,10 @@ NEON_DATABASE_URL=postgresql://usuario:password@ep-xxx.us-east-2.aws.neon.tech/d
 
 ### Autenticación
 
-El sistema utiliza autenticación por correo electrónico. Los usuarios autorizados se almacenan en la tabla `authorized_users` de Neon PostgreSQL. Credenciales por defecto: `admin` / `admin`.
+El sistema utiliza autenticación por correo electrónico. Los usuarios autorizados se almacenan en la tabla `authorized_users` de Neon PostgreSQL.
+
+- **Correo por defecto:** `julljoll@gmail.com`
+- **Contraseña por defecto:** `admin`
 
 ---
 
