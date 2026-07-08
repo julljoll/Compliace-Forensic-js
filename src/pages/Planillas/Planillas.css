@@ -932,6 +932,44 @@
   transition: transform 0.3s ease;
 }
 
+/* Estilos para áreas narrativas y líneas punteadas periciales */
+.planilla-container .narrativa-box {
+  border: 1px solid #1d1d1f;
+  background-color: #ffffff;
+  padding: 12px 14px;
+  min-height: 160px;
+  color: #1d1d1f;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.planilla-container .dotted-line {
+  border-bottom: 1px dotted #8e8e93;
+  margin-top: 22px;
+  height: 1px;
+}
+
+/* Alturas mínimas para celdas extensas de peritaje */
+.planilla-container .examenes-value {
+  min-height: 150px;
+  line-height: 1.6;
+}
+
+.planilla-container .hallazgos-value {
+  min-height: 180px;
+  line-height: 1.6;
+}
+
+.planilla-container .conclusiones-value {
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.planilla-container .dev-observaciones-value {
+  min-height: 100px;
+  line-height: 1.6;
+}
+
 /* Ocultar decoraciones de edición al imprimir */
 @media print {
   .planilla-container .page {
@@ -944,4 +982,17 @@
     border-bottom: none !important;
     background-color: transparent !important;
   }
+
+  .planilla-container .narrativa-box,
+  .planilla-container .examenes-value,
+  .planilla-container .hallazgos-value,
+  .planilla-container .conclusiones-value,
+  .planilla-container .dev-observaciones-value {
+    border-color: #000000 !important;
+  }
+
+  .planilla-container .dotted-line {
+    border-bottom-color: #000000 !important;
+  }
 }
+
