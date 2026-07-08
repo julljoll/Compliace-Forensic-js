@@ -16,16 +16,23 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
 
-  login: (email: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   clearError: () => void;
   changePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
   updateProfileImage: (imgBase64: string) => void;
 }
 
+/** Credenciales provisionales por defecto (mientras se configura Neon) */
+const DEFAULT_CREDENTIALS = {
+  email: 'julljoll@gmail.com',
+  password: 'admin',
+};
+
 /**
- * Auth store — login por correo electrónico contra Neon PostgreSQL.
- * Solo usuarios autorizados en la tabla `authorized_users` pueden acceder.
+ * Auth store — login por correo electrónico + contraseña.
+ * Provisionalmente valida credenciales hardcodeadas.
+ * Cuando Neon esté configurado, se validará contra authorized_users.
  */
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -35,21 +42,46 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
       error: null,
 
-      login: async (email: string) => {
+      login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
 
-        const trimmed = email.trim().toLowerCase();
-        if (!trimmed || !trimmed.includes('@')) {
+        const trimmedEmail = email.trim().toLowerCase();
+        const trimmedPassword = password.trim();
+
+        if (!trimmedEmail || !trimmedEmail.includes('@')) {
           set({ error: 'Ingrese un correo electrónico válido', isLoading: false });
           return false;
         }
 
-        try {
-          // Asegurar que las tablas existan
-          await initDatabase();
+        if (!trimmedPassword) {
+          set({ error: 'Ingrese la contraseña', isLoading: false });
+          return false;
+        }
 
-          const result = await authUserByEmail(trimmed);
+        // 1. Validar credenciales provisionales por defecto
+        if (
+          trimmedEmail === DEFAULT_CREDENTIALS.email &&
+          trimmedPassword === DEFAULT_CREDENTIALS.password
+        ) {
+          set({
+            user: {
+              id: 1,
+              email: DEFAULT_CREDENTIALS.email,
+              nombre: 'Jull Joll',
+              rol: 'admin',
+            },
+            isAuthenticated: true,
+            isLoading: false,
+          });
+          return true;
+        }
+
+        // 2. Intentar validación contra Neon PostgreSQL
+        try {
+          await initDatabase();
+          const result = await authUserByEmail(trimmedEmail);
           if (result.success && result.user) {
+            // Neon no valida contraseña aún — se acepta cualquier password para usuarios autorizados
             set({
               user: result.user,
               isAuthenticated: true,
@@ -58,10 +90,10 @@ export const useAuthStore = create<AuthState>()(
             return true;
           }
 
-          set({ error: result.error || 'Correo no autorizado', isLoading: false });
+          set({ error: result.error || 'Credenciales no válidas', isLoading: false });
           return false;
-        } catch (error) {
-          set({ error: 'Error de conexión con el sistema de autenticación', isLoading: false });
+        } catch {
+          set({ error: 'Credenciales no válidas', isLoading: false });
           return false;
         }
       },
@@ -73,7 +105,6 @@ export const useAuthStore = create<AuthState>()(
       clearError: () => set({ error: null }),
 
       changePassword: async () => {
-        // Login por correo — no hay cambio de contraseña
         return { success: true };
       },
 
@@ -84,6 +115,6 @@ export const useAuthStore = create<AuthState>()(
         }
       },
     }),
-    { name: 'sha256-auth', version: 2 }
+    { name: 'sha256-auth', version: 3 }
   )
 );
