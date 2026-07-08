@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CasoCMS } from '../../../store/cmsStore';
 
 interface ActaDictamenProps {
@@ -7,16 +8,23 @@ interface ActaDictamenProps {
 export default function ActaDictamen({ caso }: ActaDictamenProps) {
   const fallbackCaso = {
     numeroCaso: '',
-    solicitante_nombre: '',
-    solicitante_cedula: '',
     dispositivo_marca: '',
     dispositivo_modelo: '',
     dispositivo_imei: '',
+    dispositivo_numero_tel: '',
+    dispositivo_sim_card: '',
     peritoLider: 'Carlos Mendoza',
     tipoProyecto: '',
+    discoduro_serial: '',
+    discoduro_capacidad: '',
+    discoduro_marca: '',
+    discoduro_modelo: '',
   };
 
   const c = caso || fallbackCaso;
+  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+    c.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
+  );
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -47,196 +55,214 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
         <div className="acta-header">
           <h1 className="acta-title">Dictamen Pericial Informático</h1>
           <div className="acta-nro">
-            N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
+            N° CAUSA / EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
           </div>
         </div>
       </header>
 
-      {/*  I. DATOS DEL CASO  */}
+      {/*  I. IDENTIFICACIÓN DEL EXPERTO  */}
       <div className="section">
-        <div className="section-title">I. Datos del Consignante y del Caso</div>
+        <div className="section-title">I. Identificación del Perito Forense Actuante</div>
         <div className="grid-container">
           <div className="form-group">
-            <div className="label">Apellidos y Nombres del Consignante</div>
+            <div className="label">Nombres y Apellidos</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Consignante]</span>}
+              {c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}
             </div>
           </div>
           <div className="form-group">
             <div className="label">Cédula de Identidad</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
+              <span className="placeholder-field">[C.I. del Perito]</span>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">N° de Expediente / Caso</div>
+            <div className="label">Título / Acreditación Académica</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              {c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}
+              <span className="placeholder-field">[ej: Ingeniero de Computación / Lic. en Informática]</span>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Fecha del Dictamen</div>
+            <div className="label">Acreditación Forense / N° Perito</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Fecha del Dictamen]</span>
+              <span className="placeholder-field">[ej: Perito Judicial Acreditado N° 5192-TSJ]</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/*  II. DISPOSITIVO EXAMINADO  */}
+      {/* Conmutador interactivo (Solo en pantalla) */}
+      <div className="no-print flex gap-2.5 my-4 p-2.5 rounded-lg bg-white/5 border border-white/10">
+        <span className="text-[11px] font-bold text-gray-400 self-center uppercase tracking-wider">Tipo de Evidencia:</span>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('movil')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'movil' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          📱 Dispositivo Móvil
+        </button>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('computadora')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'computadora' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          💻 Computador / Almacenamiento
+        </button>
+      </div>
+
+      {/*  II. IDENTIFICACIÓN DE LA EVIDENCIA  */}
       <div className="section">
-        <div className="section-title">II. Dispositivo Examinado</div>
+        <div className="section-title">II. Identificación de la Evidencia Técnica Examinada</div>
+        
+        {tipoEvidencia === 'movil' ? (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Evidencia Digital</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Teléfono Móvil: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Serial / IMEI 1</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[IMEI / S/N]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Línea / SIM Card</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_numero_tel ? `${c.dispositivo_numero_tel} (SIM: ${c.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. Telefónico / SIM]</span>}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Computador Examinado</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Equipo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[HP, Dell Laptop]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Serial: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial Placa/Equipo]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Unidad de Disco Duro</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Marca/Modelo: <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[Marca y Modelo]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Capacidad: <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[ej: 500 GB]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; S/N: <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[Serial Disco]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Memorias Externas / USB</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <span className="placeholder-field">[Memorias USB / SD peritadas (Marca, Capacidad, Serial)]</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/*  III. METODOLOGÍA Y HERRAMIENTAS APLICADAS  */}
+      <div className="section">
+        <div className="section-title">III. Metodología Científica y Herramientas Forenses</div>
         <table className="evidence-table">
           <tbody>
             <tr>
-              <td>Tipo de Dispositivo</td>
-              <td contentEditable suppressContentEditableWarning>{c.tipoProyecto === 'forense_discoduro' ? 'Disco Duro' : 'Móvil / Android'}</td>
-            </tr>
-            <tr>
-              <td>Marca / Modelo</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}
+              <td>Estándares Técnicos</td>
+              <td>
+                <div className="checkbox-group" style={{ flexDirection: 'column', gap: '4px' }}>
+                  <div className="check-item"><span className="box"></span> <strong>ISO/IEC 27037:2012:</strong> Directrices para identificación, colección y adquisición forense.</div>
+                  <div className="check-item"><span className="box"></span> <strong>ISO/IEC 27042:2015:</strong> Directrices para análisis e interpretación de evidencia digital.</div>
+                  <div className="check-item"><span className="box"></span> <strong>NIST SP 800-101:</strong> Guidelines on Mobile Device Forensics.</div>
+                </div>
               </td>
             </tr>
             <tr>
-              <td>IMEI / Serial</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI del Dispositivo]</span>}
+              <td>Software Utilizado</td>
+              <td>
+                <div className="checkbox-group" style={{ flexDirection: 'column', gap: '4px' }}>
+                  <div className="check-item"><span className="box"></span> Andriller / Autopsy (Adquisición y Análisis Lógico)</div>
+                  <div className="check-item"><span className="box"></span> FTK Imager (Verificación de Integridad y Clonado Bit a Bit)</div>
+                  <div className="check-item"><span className="box"></span> Cellebrite UFED / Avilla Forensics (Extracción Física)</div>
+                </div>
               </td>
-            </tr>
-            <tr>
-              <td>N° PRCC Asociado</td>
-              <td contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° PRCC Asociado]</span></td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      {/*  III. METODOLOGÍA  */}
+      {/*  IV. INTEGRIDAD CRYPTOGRÁFICA  */}
       <div className="section">
-        <div className="section-title">III. Metodología Aplicada</div>
+        <div className="section-title">IV. Tabla de Integridad Forense (Firmas Hash)</div>
+        <table className="evidence-table">
+          <tbody>
+            <tr className="transfer-header">
+              <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '35%', textAlign: 'left' }}>Medio / Imagen Obtenida</th>
+              <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '45%', textAlign: 'left' }}>Valor Hash SHA-256 (Inalterable)</th>
+              <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '20%', textAlign: 'left' }}>Algoritmo MD5</th>
+            </tr>
+            <tr>
+              <td>Adquisición Bit a Bit (Original)</td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash SHA-256 Original (64 hex)]</span></td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash MD5]</span></td>
+            </tr>
+            <tr>
+              <td>Copia de Trabajo (Análisis)</td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash SHA-256 Copia (debe coincidir con original)]</span></td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash MD5]</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/*  V. EXÁMENES Y NARRATIVA TÉCNICA  */}
+      <div className="section">
+        <div className="section-title">V. Exámenes Practicados y Hallazgos Forenses</div>
+        <div className="form-group examenes-value" contentEditable suppressContentEditableWarning style={{ minHeight: '60px' }}>
+          <span className="placeholder-field">[Detalle aquí las operaciones técnicas de análisis de archivos, recuperación de borrados, logs de chat y extracción practicada]</span>
+        </div>
+      </div>
+
+      {/*  VI. CONCLUSIONES  */}
+      <div className="section">
+        <div className="section-title">VI. Conclusiones y Fundamentación Jurídica</div>
         <div className="legal-text">
-          <p>La presente peritación se realizó siguiendo los lineamientos del <strong>Manual Único de Cadena de Custodia de Evidencias Digitales (2017)</strong>, 
-          la norma <strong>ISO/IEC 27037:2012</strong> para identificación, recopilación, adquisición y preservación de evidencia digital, 
-          y la guía <strong>NIST SP 800-101 r1</strong> para forensia en dispositivos móviles.</p>
+          Las operaciones técnicas sobre el dispositivo examinado se realizaron en estricto apego al <strong>Artículo 187 del COPP (Cadena de Custodia)</strong>, 
+          resguardando la integridad del medio digital. La correspondencia exacta de los valores hash SHA-256 garantiza científicamente la no alteración de la prueba. 
+          Los elementos probatorios extraídos son conformes al <strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong> (Eficacia Probatoria) 
+          y los tipos penales de la <strong>Ley Especial contra los Delitos Informáticos (2001)</strong>.
         </div>
-        <div className="form-group" style={{ marginTop: '10px' }}>
-          <div className="label">Herramientas Forenses Utilizadas</div>
-          <div className="value" contentEditable suppressContentEditableWarning style={{ minWidth: '40px', padding: '5px', fontSize: '11px', fontWeight: 'bold' }}>
-            <span className="placeholder-field">[Herramientas forenses aplicadas: Andriller, FTK Imager, Autopsy, etc.]</span>
-          </div>
+        <div className="form-group conclusiones-value" contentEditable suppressContentEditableWarning style={{ minHeight: '60px', marginTop: '6px' }}>
+          <strong className="placeholder-field">CONCLUSIONES DEFINITIVAS: [Indique de manera taxativa las conclusiones forenses del peritaje informático]</strong>
         </div>
       </div>
 
-      {/*  IV. EXÁMENES PRACTICADOS  */}
+      {/*  VII. DECLARACIÓN JURADA Y CIERRE FORMAL  */}
       <div className="section">
-        <div className="section-title">IV. Exámenes Practicados</div>
-        <div className="form-group">
-          <div className="value examenes-value" contentEditable suppressContentEditableWarning>
-            <span className="placeholder-field">
-              [Describa cronológica y técnicamente los exámenes forenses y las operaciones aplicadas sobre el dispositivo para la adquisición y análisis]
-            </span>
-          </div>
-        </div>
-        <div className="legal-text" style={{ marginTop: '8px' }}>
-          <strong>Resguardo de Integridad:</strong> Se generaron los siguientes valores hash para garantizar la inalterabilidad de la evidencia:
-          <div style={{ fontFamily: 'monospace', marginTop: '4px', fontSize: '9px', fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>
-            SHA-256 Original: <span className="placeholder-field">[Ingrese el hash SHA-256 original de la evidencia]</span><br />
-            SHA-256 Copia: <span className="placeholder-field">[Ingrese el hash SHA-256 copia de respaldo]</span><br />
-            MD5: <span className="placeholder-field">[MD5 (Opcional)]</span>
-          </div>
-        </div>
-      </div>
-
-      {/*  V. RESULTADOS Y HALLAZGOS  */}
-      <div className="section">
-        <div className="section-title">V. Resultados y Hallazgos</div>
-        <div className="form-group">
-          <div className="value hallazgos-value" contentEditable suppressContentEditableWarning>
-            El análisis forense digital realizado al dispositivo y/o almacenamiento ha arrojado los siguientes hallazgos de interés criminalístico:
-            <br /><br />
-            <strong>Detalle técnico:</strong> <span className="placeholder-field">[Describa los resultados, hallazgos, chats y registros forenses de interés criminalístico]</span>
-            <br /><br />
-            Se han verificado y extraído los registros de comunicaciones correspondientes en orden cronológico, confirmando la existencia de las evidencias digitales asociadas al caso investigado, resguardando la cadena de custodia inalterable.
-          </div>
-        </div>
-      </div>
-
-      {/*  VI. CONCLUSIONES TÉCNICAS  */}
-      <div className="section">
-        <div className="section-title">VI. Conclusiones Técnicas</div>
+        <div className="section-title">VII. Declaración Jurada y Cierre Formal del Perito</div>
         <div className="legal-text">
-          En virtud de los exámenes practicados y los resultados obtenidos, se concluye:
+          Declaro bajo juramento de ley, con plena conciencia y responsabilidad científica, que he procedido con absoluta imparcialidad, objetividad y apego a las técnicas criminalísticas de la informática forense. Que los hechos y resultados reportados corresponden fielmente a los hallazgos extraídos del dispositivo/computador examinado.
         </div>
-        <div className="form-group" style={{ marginTop: '8px' }}>
-          <div className="value conclusiones-value" contentEditable suppressContentEditableWarning>
-            <span className="placeholder-field">
-              [Describa las conclusiones técnicas de la investigación forense digital]
-            </span>
-          </div>
+        <div style={{ marginTop: '10px', fontSize: '11pt' }} contentEditable suppressContentEditableWarning>
+          Se expide y firma el presente dictamen pericial en la ciudad de Quíbor, Estado Lara, a los <span className="placeholder-field">[Día]</span> días del mes de <span className="placeholder-field">[Mes]</span> del año <span className="placeholder-field">[Año]</span>.
         </div>
       </div>
 
-      {/*  VII. FUNDAMENTACIÓN LEGAL  */}
-      <div className="section">
-        <div className="section-title">VII. Fundamentación Legal</div>
-        <div className="legal-text" style={{ fontSize: '8px' }}>
-          <p>El presente dictamen se emite con fundamento en:</p>
-          <ul style={{ margin: '4px 0', paddingLeft: '20px', lineHeight: '1.6' }}>
-            <li><strong>Artículo 187 del Código Orgánico Procesal Penal (COPP)</strong> — Cadena de Custodia de Evidencias Digitales.</li>
-            <li><strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong> — Eficacia probatoria de los mensajes de datos.</li>
-            <li><strong>Ley Especial de Delitos Informáticos (LEDI-2001)</strong> — Tipificación de delitos informáticos.</li>
-            <li><strong>Manual Único de Cadena de Custodia de Evidencias Digitales (MUCC-2017)</strong> — Procedimientos de obtención, resguardo y peritaje.</li>
-            <li><strong>ISO/IEC 27037:2012</strong> — Directrices para identificación, recopilación, adquisición y preservación de evidencia digital.</li>
-            <li><strong>ISO/IEC 27042:2015</strong> — Directrices para el análisis e interpretación de evidencia digital.</li>
-            <li><strong>NIST SP 800-101 r1</strong> — Guidelines on Mobile Device Forensics.</li>
-          </ul>
-        </div>
-      </div>
-
-      {/*  VIII. DECLARACIÓN DEL PERITO  */}
-      <div className="section">
-        <div className="section-title">VIII. Declaración del Perito</div>
-        <div className="legal-text" style={{ fontSize: '8px' }}>
-          El perito actuante declara que los exámenes fueron realizados conforme a los principios científicos y técnicos 
-          de la informática forense, utilizando metodologías validadas y herramientas forenses reconocidas. 
-          La evidencia digital fue manejada bajo estrictas normas de cadena de custodia, garantizando su integridad e inalterabilidad. 
-          El presente dictamen se emite de buena fe, con objetividad e imparcialidad técnica.
-        </div>
-      </div>
-
-      {/*  IX. FIRMAS  */}
-      <div className="signature-section" style={{ gap: '14mm' }}>
-        <div className="sig-detail-card">
-          <div className="sig-detail-label">PERITO FORENSE</div>
+      {/*  FIRMAS  */}
+      <div className="signature-section" style={{ gap: '14mm', marginTop: '8mm' }}>
+        <div className="sig-detail-card" style={{ gridColumn: 'span 2', maxWidth: '350px', margin: '0 auto' }}>
+          <div className="sig-detail-label">PERITO FORENSE ACTUANTE</div>
           <div className="sig-line" />
-          <div className="sig-line-label">Firma</div>
+          <div className="sig-line-label">Firma del Experto Forense</div>
           <div className="sig-field">
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
           </div>
           <div className="sig-field">
-            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
-          </div>
-          <div className="fingerprint-row">
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
-          </div>
-        </div>
-        <div className="sig-detail-card">
-          <div className="sig-detail-label">EL CONSIGNANTE</div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma</div>
-          <div className="sig-field">
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Consignante]</span>}</span>
-          </div>
-          <div className="sig-field">
-            C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[C.I.]</span>}</span>
+            C.I. / Credencial: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. del Perito]</span></span>
           </div>
           <div className="fingerprint-row">
             <div className="thumb-wrapper">
@@ -252,8 +278,8 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
       </div>
 
       <div className="footer">
-        Documento generado bajo los estándares del Manual Único de Cadena de Custodia de Evidencias (V. 2017) | SHA256 Forensic Lab<br />
-        Tecnología al servicio de la justicia.
+        Dictamen emitido de conformidad con el Código Orgánico Procesal Penal y el Manual Único de Cadena de Custodia de Evidencias <br />
+        SHA256 Forensic Lab - Informática Forense al servicio de la justicia.
       </div>
     </div>
   );

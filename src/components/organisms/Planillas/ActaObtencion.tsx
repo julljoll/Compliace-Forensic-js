@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CasoCMS } from '../../../store/cmsStore';
 
 interface ActaObtencionProps {
@@ -27,7 +28,9 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
   };
 
   const c = caso || fallbackCaso;
-  const isDiscoDuro = c.tipoProyecto === 'forense_discoduro';
+  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+    c.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
+  );
 
   // Manejador interactivo para marcar casillas con una "X" al hacer clic
   const handleCheckboxClick = (e: React.MouseEvent) => {
@@ -64,6 +67,25 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         </div>
       </header>
 
+      {/* DATOS DE LA ACTUACIÓN */}
+      <div className="section">
+        <div className="section-title">Datos de la Actuación Forense</div>
+        <div className="grid-container">
+          <div className="form-group">
+            <div className="label">Lugar de Actuación / Sede</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Lara, Venezuela — Laboratorio Forense SHA256.US]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">Fecha y Hora de la Consignación</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Fecha y Hora (ej: DD/MM/AAAA - HH:MM)]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/*  I. DATOS DEL CONSIGNANTE  */}
       <div className="section">
         <div className="section-title">I. Datos del Consignante (Propietario/Poseedor)</div>
@@ -95,55 +117,129 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         </div>
       </div>
 
+      {/* Conmutador interactivo (Solo en pantalla) */}
+      <div className="no-print flex gap-2.5 my-4 p-2.5 rounded-lg bg-white/5 border border-white/10">
+        <span className="text-[11px] font-bold text-gray-400 self-center uppercase tracking-wider">Tipo de Evidencia:</span>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('movil')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'movil' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          📱 Dispositivo Móvil
+        </button>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('computadora')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'computadora' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          💻 Computador / Almacenamiento
+        </button>
+      </div>
+
       {/*  II. DESCRIPCIÓN DEL DISPOSITIVO  */}
       <div className="section">
-        <div className="section-title">II. Descripción Técnica del Dispositivo ({isDiscoDuro ? 'Disco Duro' : 'Android'})</div>
-        <table className="evidence-table">
-          <tbody>
-            <tr>
-              <td>Marca / Modelo</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}
-              </td>
-            </tr>
-            <tr>
-              <td>IMEI 1 / Serial</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI del Dispositivo]</span>}
-              </td>
-            </tr>
-            <tr>
-              <td>IMEI 2</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_imei2 ? c.dispositivo_imei2 : <span className="placeholder-field">[Segundo IMEI (Si aplica)]</span>}
-              </td>
-            </tr>
-            <tr>
-              <td>Nro. de Línea / Operadora</td>
-              <td contentEditable suppressContentEditableWarning>
-                {c.dispositivo_numero_tel || c.dispositivo_sim_card ? `${c.dispositivo_numero_tel || ''} (SIM: ${c.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. de Línea / Operadora / SIM]</span>}
-              </td>
-            </tr>
-            <tr>
-              <td>Estado Físico</td>
-              <td>
-                <div className="checkbox-group">
-                  <div className="check-item"><span className="box"></span> Operativo</div>
-                  <div className="check-item"><span className="box"></span> Daños Pantalla</div>
-                  <div className="check-item"><span className="box"></span> Sin Batería</div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Nivel Batería (%)</td>
-              <td>
-                <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '40px', textAlign: 'center' }}>
-                  <span className="placeholder-field">{c.dispositivo_bateria_estado ? c.dispositivo_bateria_estado : '___'}</span>
-                </span> %
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="section-title">II. Descripción Técnica de la Evidencia ({tipoEvidencia === 'movil' ? 'Dispositivo Móvil' : 'Computador / Almacenamiento'})</div>
+        
+        {tipoEvidencia === 'movil' ? (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Marca / Modelo</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Dispositivo]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>IMEI 1 / Serial</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial / IMEI del Dispositivo]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>IMEI 2</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei2 ? c.dispositivo_imei2 : <span className="placeholder-field">[Segundo IMEI (Si aplica)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Nro. de Línea / Operadora</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_numero_tel || c.dispositivo_sim_card ? `${c.dispositivo_numero_tel || ''} (SIM: ${c.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. de Línea / Operadora / SIM]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Estado Físico</td>
+                <td>
+                  <div className="checkbox-group">
+                    <div className="check-item"><span className="box"></span> Operativo</div>
+                    <div className="check-item"><span className="box"></span> Daños Pantalla</div>
+                    <div className="check-item"><span className="box"></span> Sin Batería</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Nivel Batería (%)</td>
+                <td>
+                  <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '40px', textAlign: 'center' }}>
+                    <span className="placeholder-field">{c.dispositivo_bateria_estado ? c.dispositivo_bateria_estado : '___'}</span>
+                  </span> %
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Marca / Modelo del Computador</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Computador (ej. HP ProBook 450 G8)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Número de Serie del Computador</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[Serial del Equipo / Placa (ej. S/N: 5CD1234567)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Unidad de Disco Duro (Marca / Modelo)</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : <span className="placeholder-field">[Marca / Modelo del Disco (ej. Kingston A400 SSD)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Capacidad del Disco Duro</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.discoduro_capacidad ? c.discoduro_capacidad : <span className="placeholder-field">[Capacidad (ej. 480 GB SSD / 1 TB HDD)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Número de Serie del Disco Duro</td>
+                <td contentEditable suppressContentEditableWarning>
+                  {c.discoduro_serial ? c.discoduro_serial : <span className="placeholder-field">[Serial del Disco Duro (S/N)]</span>}
+                </td>
+              </tr>
+              <tr>
+                <td>Unidad USB / Tarjetas Externas</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <span className="placeholder-field">[Memorias USB / Tarjetas SD consignadas (Marca, Capacidad, Serial)]</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Estado Físico del Equipo</td>
+                <td>
+                  <div className="checkbox-group">
+                    <div className="check-item"><span className="box"></span> Operativo</div>
+                    <div className="check-item"><span className="box"></span> Daños Pantalla</div>
+                    <div className="check-item"><span className="box"></span> Faltan Componentes</div>
+                    <div className="check-item"><span className="box"></span> Carcasa Quebrada</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/*  III. AUTORIZACIÓN Y ALCANCE  */}
@@ -156,10 +252,10 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         <div className="form-group">
           <div className="label">Alcance de la Autorización (Marque uno)</div>
           <div className="checkbox-group" style={{ margin: '5px 0' }}>
-            <div className="check-item"><span className="box"></span> <strong>ANÁLISIS TÉCNICO COMPLETO</strong> (Todo el contenido del dispositivo)</div>
+            <div className="check-item"><span className="box"></span> <strong>ANÁLISIS TÉCNICO COMPLETO</strong> (Todo el contenido del dispositivo/computador)</div>
           </div>
           <div className="checkbox-group" style={{ margin: '5px 0' }}>
-            <div className="check-item"><span className="box"></span> <strong>ANÁLISIS DELIMITADO</strong> (Únicamente chats de <strong>WHATSAPP</strong>)</div>
+            <div className="check-item"><span className="box"></span> <strong>ANÁLISIS DELIMITADO</strong> (Únicamente chats de <strong>WHATSAPP</strong> / Archivos específicos)</div>
           </div>
         </div>
       </div>
@@ -169,17 +265,17 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         <div className="section-title">IV. Requerimientos de Acceso y Preservación</div>
         <div className="grid-container">
           <div className="form-group">
-            <div className="label">Bloqueo de Pantalla</div>
+            <div className="label">Claves de Acceso / Bloqueo</div>
             <div className="checkbox-group">
-              <div className="check-item"><span className="box"></span> PIN / Patrón: <span contentEditable suppressContentEditableWarning style={{ borderBottom: '1px dashed #515154', minWidth: '60px', display: 'inline-block' }}></span></div>
+              <div className="check-item"><span className="box"></span> Contraseña / PIN: <span contentEditable suppressContentEditableWarning style={{ borderBottom: '1px dashed #515154', minWidth: '80px', display: 'inline-block' }}></span></div>
               <div className="check-item"><span className="box"></span> Sin Bloqueo</div>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Estado de Conexión</div>
+            <div className="label">Estado de Aislamiento / Conexión</div>
             <div className="checkbox-group">
-              <div className="check-item"><span className="box"></span> Modo Avión Activado</div>
-              <div className="check-item"><span className="box"></span> WiFi/Datos Desactivados</div>
+              <div className="check-item"><span className="box"></span> Modo Avión Activado / WiFi Apagado</div>
+              <div className="check-item"><span className="box"></span> Unidad Desconectada de Red</div>
             </div>
           </div>
         </div>

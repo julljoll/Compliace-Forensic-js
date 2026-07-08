@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CasoCMS } from '../../../store/cmsStore';
 
 interface ActaEntrevistaProps {
@@ -15,9 +16,17 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
     dispositivo_numero_tel: '',
     correo_investigar: '',
     peritoLider: 'Carlos Mendoza',
+    tipoProyecto: '',
+    discoduro_serial: '',
+    discoduro_capacidad: '',
+    discoduro_marca: '',
+    discoduro_modelo: '',
   };
 
   const c = caso || fallbackCaso;
+  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+    c.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
+  );
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -54,6 +63,37 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
           </div>
         </div>
       </header>
+
+      {/* DATOS DE LA ENTREVISTA */}
+      <div className="section">
+        <div className="section-title">Datos del Procedimiento (Entrevista)</div>
+        <div className="grid-container">
+          <div className="form-group">
+            <div className="label">Lugar de la Entrevista</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Quíbor, Estado Lara — Laboratorio Forense SHA256.US]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">Fecha de la Entrevista</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Fecha (ej: DD/MM/AAAA)]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">Hora de Inicio</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Hora Inicio (ej: HH:MM)]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">Hora de Término</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[Hora Cierre (ej: HH:MM)]</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* I. IDENTIFICACIÓN DEL ENTREVISTADO */}
       <div className="section">
@@ -103,40 +143,95 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
         </div>
       </div>
 
+      {/* Conmutador interactivo (Solo en pantalla) */}
+      <div className="no-print flex gap-2.5 my-4 p-2.5 rounded-lg bg-white/5 border border-white/10">
+        <span className="text-[11px] font-bold text-gray-400 self-center uppercase tracking-wider">Tipo de Evidencia:</span>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('movil')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'movil' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          📱 Dispositivo Móvil
+        </button>
+        <button 
+          type="button"
+          onClick={() => setTipoEvidencia('computadora')} 
+          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'computadora' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+        >
+          💻 Computador / Almacenamiento
+        </button>
+      </div>
+
       {/* II. RELACIÓN DEL DISPOSITIVO Y CUENTAS ASOCIADAS */}
       <div className="section">
         <div className="section-title">II. Relación del Dispositivo y Cuentas de Interés Forense</div>
-        <table className="evidence-table">
-          <tbody>
-            <tr>
-              <td>Dispositivo Móvil / Almacenamiento</td>
-              <td contentEditable suppressContentEditableWarning>
-                Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
-                &nbsp;&nbsp;&nbsp;&nbsp; Serial / IMEI: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial / IMEI]'}</strong>
-              </td>
-            </tr>
-            <tr>
-              <td>Línea Activa</td>
-              <td contentEditable suppressContentEditableWarning>
-                Nro. Telefónico: <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico]'}</strong>
-                &nbsp;&nbsp;&nbsp;&nbsp; Operadora: <strong className="placeholder-field">[Operadora]</strong>
-              </td>
-            </tr>
-            <tr>
-              <td>Cuenta / Aplicación</td>
-              <td>
-                <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
-                  <div className="check-item"><span className="box"></span> WhatsApp</div>
-                  <div className="check-item"><span className="box"></span> Telegram</div>
-                  <div className="check-item"><span className="box"></span> Correo Electrónico</div>
-                  <div className="check-item">
-                    <span className="box"></span> Cuenta ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Cuenta / ID de la Aplicación]</span>
+        
+        {tipoEvidencia === 'movil' ? (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Dispositivo Móvil / Almacenamiento</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Serial / IMEI: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial / IMEI]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Línea Activa</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Nro. Telefónico: <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Operadora: <strong className="placeholder-field">[Operadora]</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Cuenta / Aplicación de Interés</td>
+                <td>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
+                    <div className="check-item"><span className="box"></span> WhatsApp</div>
+                    <div className="check-item"><span className="box"></span> Telegram</div>
+                    <div className="check-item"><span className="box"></span> Correo Electrónico</div>
+                    <div className="check-item">
+                      <span className="box"></span> Cuenta ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Cuenta / ID de la Aplicación]</span>
+                    </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <table className="evidence-table">
+            <tbody>
+              <tr>
+                <td>Computador / Almacenamiento</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[HP, Dell, etc.]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Serial del Equipo: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial del Computador]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Unidad de Disco Duro / USB</td>
+                <td contentEditable suppressContentEditableWarning>
+                  Unidad: <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[SSD/HDD/USB]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Capacidad: <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[Capacidad (ej: 480 GB)]'}</strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Serial Unidad: <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[Serial S/N]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Servicios / Cuentas de Interés</td>
+                <td>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
+                    <div className="check-item"><span className="box"></span> Correo Corporativo</div>
+                    <div className="check-item"><span className="box"></span> Historial de Navegación</div>
+                    <div className="check-item"><span className="box"></span> Archivos del Sistema</div>
+                    <div className="check-item">
+                      <span className="box"></span> Ruta/ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Carpeta / ID / Correo]</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* III. FUNDAMENTACIÓN LEGAL Y CONSENTIMIENTO INFORMADO */}
