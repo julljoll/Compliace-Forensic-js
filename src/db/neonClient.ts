@@ -4,29 +4,29 @@ import { neon, neonConfig } from '@neondatabase/serverless';
 try {
   neonConfig.fetchConnectionCache = true;
 } catch (e) {
-  console.error('Error al configurar neonConfig:', e);
+  // silent
 }
 
-// Neon API Key desde variable de entorno
-const NEON_API_KEY: string = process.env.NEXT_PUBLIC_NEON_API_KEY || '';
-export const isNeonConfigured: boolean = !!NEON_API_KEY && NEON_API_KEY.startsWith('napi_');
+// Neon connection string desde variable de entorno
+const NEON_DATABASE_URL: string = process.env.NEXT_PUBLIC_DATABASE_URL || '';
+export const isNeonConfigured: boolean = !!NEON_DATABASE_URL && NEON_DATABASE_URL.startsWith('postgresql://');
 
-// Inicializar el cliente Neon con API Key (HTTP queries)
+// Inicializar el cliente Neon con connection string (HTTP queries)
 let sqlClient: any = null;
 if (isNeonConfigured) {
   try {
     if (typeof fetch !== 'undefined') {
-      const rawClient = neon(NEON_API_KEY);
+      const rawClient = neon(NEON_DATABASE_URL);
       sqlClient = (query: string, params?: any[]) => {
         return rawClient.query(query, params);
       };
-      console.info('[NeonDB] Cliente inicializado con API Key.');
+      console.info('[NeonDB] Cliente inicializado con connection string.');
     }
   } catch (e) {
     console.error('[NeonDB] Error al inicializar cliente:', e);
   }
 } else {
-  console.warn('[NeonDB] NEXT_PUBLIC_NEON_API_KEY no configurada — operando en modo local (localStorage/Zustand).');
+  console.warn('[NeonDB] NEXT_PUBLIC_DATABASE_URL no configurada — operando en modo local (localStorage/Zustand).');
 }
 
 // Verificar conexión a la base de datos Neon

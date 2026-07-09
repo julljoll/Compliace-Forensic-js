@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/authStore';
 import { ShieldCheck, AlertCircle, Mail, Lock } from '../components/atoms/AppleIcon';
 import Button from '../components/atoms/Button';
 
 export default function LoginPage() {
   const { login, isLoading, error, clearError } = useAuthStore();
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +15,10 @@ export default function LoginPage() {
     e.preventDefault();
     clearError();
     if (!email.trim() || !password.trim()) return;
-    await login(email.trim(), password.trim());
+    const success = await login(email.trim(), password.trim());
+    if (success) {
+      router.replace('/dashboard');
+    }
   };
 
   return (
