@@ -121,4 +121,63 @@ export const NORMATIVAS_ETAPAS: NormativaConEtapas[] = [
       { id: 'n9__competencia', nombre: 'Ámbito de Competencia', descripcion: 'Jurisdicción nacional sobre delitos informáticos y evidencia digital.' },
     ],
   },
+  {
+    normativaId: 'n10', codigo: 'ISO/IEC 27002:2022',
+    etapas: [
+      { id: 'n10__organizacionales', nombre: 'Controles Organizacionales', descripcion: 'Políticas, gobernanza y gestión de activos de información.' },
+      { id: 'n10__personas', nombre: 'Controles de Personas', descripcion: 'Seguridad en recursos humanos y acuerdos de confidencialidad.' },
+      { id: 'n10__fisicos', nombre: 'Controles Físicos', descripcion: 'Seguridad física perimetral y resguardo de la evidencia.' },
+      { id: 'n10__tecnologicos', nombre: 'Controles Tecnológicos', descripcion: 'Criptografía, endpoints, monitoreo y borrado seguro de datos.' },
+    ],
+  },
+  {
+    normativaId: 'n11', codigo: 'ISO/IEC 27001:2022',
+    etapas: [
+      { id: 'n11__contexto', nombre: '1. Contexto y Liderazgo', descripcion: 'Definición del alcance del SGSI y compromiso de la alta dirección.' },
+      { id: 'n11__planificacion', nombre: '2. Planificación y Soporte', descripcion: 'Evaluación de riesgos y asignación de recursos.' },
+      { id: 'n11__operacion', nombre: '3. Operación', descripcion: 'Implementación de planes de tratamiento de riesgos de seguridad.' },
+      { id: 'n11__evaluacion', nombre: '4. Evaluación y Mejora', descripcion: 'Auditoría interna, revisión por dirección y mejora continua.' },
+    ],
+  },
+  {
+    normativaId: 'n12', codigo: 'Ley de Infogobierno',
+    etapas: [
+      { id: 'n12__principios', nombre: '1. Principios de Infogobierno', descripcion: 'Uso de estándares abiertos y software libre en entes públicos.' },
+      { id: 'n12__seguridad', nombre: '2. Seguridad de la Información', descripcion: 'Garantizar la confidencialidad, integridad y disponibilidad estatal.' },
+      { id: 'n12__transparencia', nombre: '3. Transparencia y Acceso', descripcion: 'Facilitar el acceso ciudadano a la información pública.' },
+    ],
+  },
+  {
+    normativaId: 'n13', codigo: 'NIST SP 800-86',
+    etapas: [
+      { id: 'n13__recoleccion', nombre: '1. Recolección de Datos', descripcion: 'Identificación, etiquetado y preservación de fuentes de datos.' },
+      { id: 'n13__examen', nombre: '2. Examen', descripcion: 'Procesar grandes volúmenes de datos usando herramientas validadas.' },
+      { id: 'n13__analisis', nombre: '3. Análisis', descripcion: 'Derivar conclusiones a partir de los datos analizados.' },
+      { id: 'n13__reporte', nombre: '4. Reporte', descripcion: 'Documentar hallazgos y lecciones aprendidas.' },
+    ],
+  },
+  {
+    normativaId: 'n14', codigo: 'SUSCERTE-FD',
+    etapas: [
+      { id: 'n14__firma', nombre: '1. Firma Electrónica', descripcion: 'Verificación de autenticidad e integridad de firmas digitales.' },
+      { id: 'n14__custodia', nombre: '2. Cadena de Custodia SUSCERTE', descripcion: 'Normas de embalaje y etiquetado para evidencias digitales.' },
+      { id: 'n14__peritos', nombre: '3. Acreditación de Peritos', descripcion: 'Requisitos y registro de peritos informáticos habilitados.' },
+    ],
+  },
+  {
+    normativaId: 'n15', codigo: 'LOMP',
+    etapas: [
+      { id: 'n15__competencia', nombre: '1. Ejercicio de la Acción Penal', descripcion: 'Dirección e inicio de la investigación penal de oficio o denuncia.' },
+      { id: 'n15__auxiliares', nombre: '2. Control de Órganos Auxiliares', descripcion: 'Instrucciones técnicas a cuerpos de policía e informáticos.' },
+      { id: 'n15__custodia', nombre: '3. Control de Cadena de Custodia', descripcion: 'Vigilancia del cumplimiento del resguardo e integridad de evidencias.' },
+    ],
+  },
+  {
+    normativaId: 'n16', codigo: 'Código Civil',
+    etapas: [
+      { id: 'n16__prueba', nombre: '1. Medios de Prueba', descripcion: 'Documentos públicos, privados y experticias.' },
+      { id: 'n16__expertos', nombre: '2. Experticia y Peritos', descripcion: 'Designación, recusación y fuerza probatoria del informe.' },
+      { id: 'n16__obligaciones', nombre: '3. Responsabilidad Civil', descripcion: 'Reparación del daño y responsabilidad de profesionales.' },
+    ],
+  }
 ];

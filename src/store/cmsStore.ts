@@ -372,6 +372,62 @@ const NORMATIVAS_INICIALES: Normativa[] = [
     version: '2012', fechaVigencia: '2012-01-20', activa: true,
     urlReferencia: 'normativas_rag/Creación del CENIF (2012). Centro Nacional de Informática Forense. Publicado en Gaceta Oficial N° 39.847 de fecha 20 de enero..md',
   },
+  {
+    id: 'n10', codigo: 'ISO/IEC 27002:2022', tipo: 'ISO',
+    nombre: 'Seguridad de la información, ciberseguridad y protección de la privacidad — Controles de seguridad',
+    descripcion: 'Estándar internacional que detalla un conjunto de 93 controles de seguridad de la información organizados en 4 categorías: Organizacionales (37 controles), Personas (8 controles), Físicos (14 controles) y Tecnológicos (34 controles). Es de aplicación crítica en el peritaje forense para validar que los sistemas bajo análisis e infraestructuras del laboratorio cuenten con controles de acceso, cifrado, borrado seguro y bitácoras de auditoría.',
+    version: '2022', fechaVigencia: '2022-02-15', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/ISO 27002_2022 ES.md',
+    articulos: ['Controles Organizacionales', 'Controles de Personas', 'Controles Físicos', 'Controles Tecnológicos']
+  },
+  {
+    id: 'n11', codigo: 'ISO/IEC 27001:2022', tipo: 'ISO',
+    nombre: 'Requisitos para Sistemas de Gestión de la Seguridad de la Información (SGSI)',
+    descripcion: 'Norma internacional auditable que define los requisitos para establecer, implementar, mantener y mejorar continuamente un Sistema de Gestión de la Seguridad de la Información (SGSI). En el contexto forense digital, certifica que el laboratorio de informática forense opera bajo procesos estructurados de control de riesgos y confidencialidad.',
+    version: '2022', fechaVigencia: '2022-10-25', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/ISO-27001_2022_NOEDER.md',
+    articulos: ['Contexto y Liderazgo', 'Planificación y Soporte', 'Operación del SGSI', 'Evaluación y Mejora']
+  },
+  {
+    id: 'n12', codigo: 'Ley de Infogobierno', tipo: 'LEY',
+    nombre: 'Ley de Infogobierno de la República Bolivariana de Venezuela',
+    descripcion: 'Ley venezolana que establece las bases y lineamientos para el uso de tecnologías de información libres en el Poder Público. Tiene especial relevancia en el resguardo y almacenamiento de evidencias del proceso forense, exigiendo el uso de software libre y estándares abiertos para garantizar la soberanía, auditabilidad y transparencia.',
+    version: '2013', fechaVigencia: '2013-10-17', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/Ley-de-infogobierno.md',
+    articulos: ['Software Libre', 'Estándares Abiertos', 'Seguridad de Información', 'Sanciones']
+  },
+  {
+    id: 'n13', codigo: 'NIST SP 800-86', tipo: 'NIST',
+    nombre: 'Guide to Integrating Forensic Techniques into Incident Response',
+    descripcion: 'Guía técnica del NIST para la integración de metodologías forenses digitales en el proceso de respuesta a incidentes de seguridad. Estructura el ciclo forense en cuatro fases fundamentales (Recolección, Examen, Análisis y Reporte), sirviendo como marco técnico estándar para peritajes informáticos de incidentes de seguridad y redes.',
+    version: '2006', fechaVigencia: '2006-08-01', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/NIST SP 800-86_ingles.md',
+    articulos: ['Recolección de Datos', 'Examen Forense', 'Análisis de Incidentes', 'Documentación']
+  },
+  {
+    id: 'n14', codigo: 'SUSCERTE-FD', tipo: 'REGLAMENTO',
+    nombre: 'Normas Técnicas de SUSCERTE sobre Forense Digital e Infraestructura PKI',
+    descripcion: 'Regulaciones emitidas por la Superintendencia de Servicios de Certificación Electrónica (SUSCERTE) de Venezuela. Establece el protocolo técnico para peritajes forenses digitales oficiales, peritaje de firmas electrónicas, criptografía nacional y la acreditación de peritos informáticos habilitados ante el sistema de justicia.',
+    version: '2024', fechaVigencia: '2024-05-15', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/Normativas SUSCERTE Forense Digital y Firma Electronica.md',
+    articulos: ['Criptografía y PKI', 'Firma Electrónica', 'Acreditación de Peritos', 'Informes Periciales']
+  },
+  {
+    id: 'n15', codigo: 'LOMP', tipo: 'LEY',
+    nombre: 'Ley Orgánica del Ministerio Público (Investigación Penal)',
+    descripcion: 'Regula las atribuciones del Ministerio Público de la República Bolivariana de Venezuela, designándolo como director constitucional de la investigación penal. Es de obligatoria observancia para el perito ya que los fiscales del MP coordinan el aseguramiento de la evidencia y solicitan la práctica de experticias informáticas forenses.',
+    version: '2007', fechaVigencia: '2007-03-19', activa: true,
+    urlReferencia: 'normativas_rag/Penal/ley-organica-del-ministerio-publico.md',
+    articulos: ['Acción Penal', 'Dirección de la Investigación', 'Experticias Periciales', 'Garantía de Legalidad']
+  },
+  {
+    id: 'n16', codigo: 'Código Civil', tipo: 'LEY',
+    nombre: 'Código Civil de la República Bolivariana de Venezuela (Valor Probatorio)',
+    descripcion: 'Establece los principios de las obligaciones, propiedad y contratos en Venezuela. Contiene artículos de aplicación supletoria clave para el derecho probatorio digital, regulando el valor de la prueba por escrito, los documentos públicos/privados y el régimen general de experticias técnicas.',
+    version: '1982', fechaVigencia: '1982-07-26', activa: true,
+    urlReferencia: 'normativas_rag/Civil/codigo-civil.md',
+    articulos: ['Fuerza Probatoria', 'Experticias Civiles', 'Nulidad de Pruebas', 'Obligaciones']
+  }
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -415,6 +471,21 @@ export const useCMSStore = create<CMSState>()(
       // ── Casos ──
       fetchCasos: async () => {
         try {
+            // Asegurar que las normativas del store estén sincronizadas con NORMATIVAS_INICIALES
+            const currentNormativas = get().normativas || [];
+            const mergedNormativas = [...NORMATIVAS_INICIALES];
+            currentNormativas.forEach(cn => {
+              if (!mergedNormativas.some(inNorm => inNorm.id === cn.id)) {
+                mergedNormativas.push(cn);
+              }
+            });
+            // Asegurar que se actualicen las descripciones, nombres y códigos de las existentes
+            const finalNormativas = mergedNormativas.map(n => {
+              const defaultNorm = NORMATIVAS_INICIALES.find(inNorm => inNorm.id === n.id);
+              return defaultNorm ? { ...n, ...defaultNorm } : n;
+            });
+            set({ normativas: finalNormativas });
+
             const casosDB = platformAPI.db ? await platformAPI.db.getCasos(1) : null;
             if (casosDB && casosDB.length > 0) {
                 const mapeados: CasoCMS[] = casosDB.map((c: any) => {
