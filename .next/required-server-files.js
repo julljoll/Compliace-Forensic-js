@@ -105,7 +105,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\VS CODE\\SHA256",
+    "outputFileTracingRoot": "C:\\VS CODE\\CODIGO\\Compliace-Forensic-js",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -305,7 +305,7 @@ self.__SERVER_FILES_MANIFEST={
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "C:\\VS CODE\\SHA256"
+      "root": "C:\\VS CODE\\CODIGO\\Compliace-Forensic-js"
     },
     "distDirRoot": ".next",
     "_originalRedirects": [
@@ -386,7 +386,7 @@ self.__SERVER_FILES_MANIFEST={
       }
     ]
   },
-  "appDir": "C:\\VS CODE\\SHA256",
+  "appDir": "C:\\VS CODE\\CODIGO\\Compliace-Forensic-js",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",

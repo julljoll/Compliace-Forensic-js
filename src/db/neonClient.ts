@@ -1,39 +1,61 @@
 import { neon, neonConfig } from '@neondatabase/serverless';
+import { discoverConnectionString } from './neonRestClient';
 
 // Configuración necesaria para browser
 try {
   neonConfig.fetchConnectionCache = true;
 } catch (e) {
-  // silent
+  console.error('Error al configurar neonConfig:', e);
 }
 
-// Neon connection string desde variable de entorno
-const NEON_DATABASE_URL: string = process.env.NEXT_PUBLIC_DATABASE_URL || '';
-export const isNeonConfigured: boolean = !!NEON_DATABASE_URL && NEON_DATABASE_URL.startsWith('postgresql://');
+// Neon API Key desde variable de entorno
+const NEON_API_KEY: string = process.env.NEXT_PUBLIC_NEON_API_KEY || '';
+const DATABASE_URL: string = process.env.NEXT_PUBLIC_DATABASE_URL || '';
+export const isNeonConfigured: boolean = (!!NEON_API_KEY && NEON_API_KEY.startsWith('napi_')) || !!DATABASE_URL;
 
-// Inicializar el cliente Neon con connection string (HTTP queries)
+// Inicializar el cliente Neon de forma diferida (lazy)
 let sqlClient: any = null;
-if (isNeonConfigured) {
-  try {
-    if (typeof fetch !== 'undefined') {
-      const rawClient = neon(NEON_DATABASE_URL);
-      sqlClient = (query: string, params?: any[]) => {
-        return rawClient.query(query, params);
-      };
-      console.info('[NeonDB] Cliente inicializado con connection string.');
+let initializingPromise: Promise<any> | null = null;
+
+async function getSqlClient(): Promise<any> {
+  if (sqlClient) return sqlClient;
+  if (initializingPromise) return initializingPromise;
+
+  initializingPromise = (async () => {
+    let connStr = DATABASE_URL || null;
+
+    if (!connStr && isNeonConfigured && NEON_API_KEY) {
+      try {
+        connStr = await discoverConnectionString();
+      } catch (e: any) {
+        console.error('[NeonDB] Error descubriendo connection string:', e.message);
+      }
     }
-  } catch (e) {
-    console.error('[NeonDB] Error al inicializar cliente:', e);
-  }
-} else {
-  console.warn('[NeonDB] NEXT_PUBLIC_DATABASE_URL no configurada — operando en modo local (localStorage/Zustand).');
+
+    if (connStr) {
+      try {
+        const rawClient = neon(connStr);
+        sqlClient = (query: string, params?: any[]) => {
+          return rawClient.query(query, params);
+        };
+        console.info('[NeonDB] Cliente inicializado correctamente.');
+        return sqlClient;
+      } catch (e) {
+        console.error('[NeonDB] Error al inicializar cliente con connection string:', e);
+      }
+    }
+    return null;
+  })();
+
+  return initializingPromise;
 }
 
 // Verificar conexión a la base de datos Neon
 export async function checkConnection(): Promise<boolean> {
-  if (!sqlClient) return false;
   try {
-    await sqlClient('SELECT 1');
+    const client = await getSqlClient();
+    if (!client) return false;
+    await client('SELECT 1');
     return true;
   } catch (e) {
     console.error('Error de conexión a Neon:', e);
@@ -43,6 +65,7 @@ export async function checkConnection(): Promise<boolean> {
 
 // Inicializar tablas en la base de datos
 export async function initDatabase() {
+  await getSqlClient();
   if (!sqlClient) return false;
   try {
     // Tabla de casos / proyectos
@@ -143,6 +166,7 @@ export async function initDatabase() {
 // --- Casos (Proyectos) ---
 
 export async function getCasosDB(userId: number = 1): Promise<any[]> {
+  await getSqlClient();
   if (!sqlClient) {
     return loadCasosLocal();
   }
@@ -159,6 +183,7 @@ export async function getCasosDB(userId: number = 1): Promise<any[]> {
 
 export async function addCasoDB(caso: any): Promise<{ success: boolean; id: string; error?: string }> {
   const newId = caso.id || `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  await getSqlClient();
   if (!sqlClient) {
     saveCasoLocal({ ...caso, id: newId });
     return { success: true, id: newId };
@@ -219,6 +244,7 @@ export async function addCasoDB(caso: any): Promise<{ success: boolean; id: stri
 }
 
 export async function updateCasoDB(id: string, data: any): Promise<boolean> {
+  await getSqlClient();
   if (!sqlClient) {
     updateCasoLocal(id, data);
     return true;
@@ -298,6 +324,7 @@ export async function updateCasoDB(id: string, data: any): Promise<boolean> {
 }
 
 export async function deleteCasoDB(id: string): Promise<boolean> {
+  await getSqlClient();
   if (!sqlClient) {
     deleteCasoLocal(id);
     return true;
@@ -316,6 +343,7 @@ export async function deleteCasoDB(id: string): Promise<boolean> {
 // --- Logs de Auditoría ---
 
 export async function getAuditLogsDB(): Promise<any[]> {
+  await getSqlClient();
   if (!sqlClient) {
     return loadLogsLocal();
   }
@@ -331,6 +359,7 @@ export async function getAuditLogsDB(): Promise<any[]> {
 
 export async function addAuditLogDB(log: any): Promise<boolean> {
   const newId = log.id || `${Date.now()}`;
+  await getSqlClient();
   if (!sqlClient) {
     saveLogLocal({ ...log, id: newId });
     return true;
@@ -399,6 +428,7 @@ function saveLogLocal(log: any) {
 // --- Auth: Validar usuario por correo ---
 
 export async function authUserByEmail(email: string): Promise<{ success: boolean; user?: any; error?: string }> {
+  await getSqlClient();
   if (!sqlClient) {
     // Modo local: solo permitir julljoll@gmail.com
     const LOCAL_AUTHORIZED = 'julljoll@gmail.com';

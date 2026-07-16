@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../store/authStore';
 import { ShieldCheck, AlertCircle, Mail, Lock } from '../components/atoms/AppleIcon';
 import Button from '../components/atoms/Button';
 
 export default function LoginPage() {
-  const { login, isLoading, error, clearError } = useAuthStore();
   const router = useRouter();
+  const { login, isAuthenticated, isLoading, error, clearError } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,6 +127,13 @@ export default function LoginPage() {
                 </>
               )}
             </Button>
+            
+            <div className="mt-4 p-2.5 rounded-[10px] bg-white/30 dark:bg-white/5 border border-black/[0.05] dark:border-white/5 text-center">
+              <p className="text-[11px] text-[var(--co-gray-1)] font-medium">
+                Acceso Administrador por Defecto:<br />
+                <span className="text-[var(--apple-text)] select-all font-mono font-bold">julljoll@gmail.com</span> | <span className="text-[var(--apple-text)] select-all font-mono font-bold">admin</span>
+              </p>
+            </div>
           </form>
         </div>
 
