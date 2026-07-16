@@ -235,7 +235,7 @@ export default function AuditoriaPage() {
           </Button>
           {vista === 'logs' && casoId && (
             <Button
-              onClick={() => router.push(`/planillas/timeline-compliance?casoId=${casoId}`)}
+              onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)}
               variant="secondary"
               size="sm"
               className="gap-1.5 font-semibold"
@@ -431,7 +431,7 @@ export default function AuditoriaPage() {
               </div>
             </div>
             <Button
-              onClick={() => router.push(`/planillas/timeline-compliance?casoId=${casoId}`)}
+              onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)}
               variant="primary"
               size="sm"
               className="gap-1.5 shrink-0 whitespace-nowrap"

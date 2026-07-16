@@ -90,6 +90,24 @@
     ]
   },
   {
+    "route": "/planillas/acta-auditoria-timeline",
+    "firstLoadUncompressedJsBytes": 983686,
+    "firstLoadChunkPaths": [
+      ".next\\static\\chunks\\05-c3ty_6dwfk.js",
+      ".next\\static\\chunks\\14mrh2-p_w84d.js",
+      ".next\\static\\chunks\\0ago-fygfjkun.js",
+      ".next\\static\\chunks\\15jk5ml3g6fzq.js",
+      ".next\\static\\chunks\\355s2e7ka5iun.js",
+      ".next\\static\\chunks\\004h-tj_1e3ad.js",
+      ".next\\static\\chunks\\40nyi1fozsbcj.js",
+      ".next\\static\\chunks\\1gdoryk6w2r8v.js",
+      ".next\\static\\chunks\\27jktro2p5rq9.js",
+      ".next\\static\\chunks\\2xqq8sc29_485.js",
+      ".next\\static\\chunks\\06zpi4mff4w_e.js",
+      ".next\\static\\chunks\\turbopack-0q9s3igz2u6_o.js"
+    ]
+  },
+  {
     "route": "/planillas/timeline-compliance",
     "firstLoadUncompressedJsBytes": 981996,
     "firstLoadChunkPaths": [
@@ -194,14 +212,14 @@
   },
   {
     "route": "/auditoria",
-    "firstLoadUncompressedJsBytes": 790879,
+    "firstLoadUncompressedJsBytes": 790887,
     "firstLoadChunkPaths": [
       ".next\\static\\chunks\\05-c3ty_6dwfk.js",
       ".next\\static\\chunks\\14mrh2-p_w84d.js",
       ".next\\static\\chunks\\0ago-fygfjkun.js",
       ".next\\static\\chunks\\15jk5ml3g6fzq.js",
       ".next\\static\\chunks\\355s2e7ka5iun.js",
-      ".next\\static\\chunks\\2q_c8m4va--wq.js",
+      ".next\\static\\chunks\\3rx4m5mvwd_xp.js",
       ".next\\static\\chunks\\1gdoryk6w2r8v.js",
       ".next\\static\\chunks\\27jktro2p5rq9.js",
       ".next\\static\\chunks\\2xqq8sc29_485.js",

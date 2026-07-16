@@ -117,6 +117,15 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../src/app/(dashboard)/planillas/acta-auditoria-timeline/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/planillas/acta-auditoria-timeline">> = Specific
+  const handler = {} as typeof import("../../src/app/(dashboard)/planillas/acta-auditoria-timeline/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/(dashboard)/planillas/acta-entrevista/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/planillas/acta-entrevista">> = Specific

@@ -266,6 +266,30 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/planillas/acta-auditoria-timeline": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/planillas/acta-auditoria-timeline",
+      "dataRoute": "/planillas/acta-auditoria-timeline.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/planillas/acta-entrevista": {
       "experimentalBypassFor": [
         {

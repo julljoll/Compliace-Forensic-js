@@ -8,6 +8,7 @@
   "/(dashboard)/forense/tutoriales/page": "app/(dashboard)/forense/tutoriales/page.js",
   "/(dashboard)/normativas/page": "app/(dashboard)/normativas/page.js",
   "/(dashboard)/personal/page": "app/(dashboard)/personal/page.js",
+  "/(dashboard)/planillas/acta-auditoria-timeline/page": "app/(dashboard)/planillas/acta-auditoria-timeline/page.js",
   "/(dashboard)/planillas/acta-entrevista/page": "app/(dashboard)/planillas/acta-entrevista/page.js",
   "/(dashboard)/planillas/acta-obtencion/page": "app/(dashboard)/planillas/acta-obtencion/page.js",
   "/(dashboard)/planillas/dictamen/page": "app/(dashboard)/planillas/dictamen/page.js",

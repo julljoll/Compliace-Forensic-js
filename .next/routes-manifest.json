@@ -189,6 +189,12 @@
       "namedRegex": "^/personal(?:/)?$"
     },
     {
+      "page": "/planillas/acta-auditoria-timeline",
+      "regex": "^/planillas/acta\\-auditoria\\-timeline(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/planillas/acta\\-auditoria\\-timeline(?:/)?$"
+    },
+    {
       "page": "/planillas/acta-entrevista",
       "regex": "^/planillas/acta\\-entrevista(?:/)?$",
       "routeKeys": {},
