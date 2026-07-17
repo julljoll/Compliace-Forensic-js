@@ -39,6 +39,11 @@ const PlanillaPRCCPage = () => {
 
   return (
     <div className="planilla-container">
+      <div className="no-print planilla-pdf-topbar">
+        <span className="material-icons-outlined topbar-icon">picture_as_pdf</span>
+        <span className="topbar-title">Planilla de Registro de Cadena de Custodia (PRCC)</span>
+        <span className="topbar-meta">Formato Oficio · SHA256.US · MUCC-2017</span>
+      </div>
       <PlanillaPRCC caso={caso} />
 
       <PlanillaToolbar

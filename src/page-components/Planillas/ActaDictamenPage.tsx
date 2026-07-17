@@ -38,6 +38,11 @@ const ActaDictamenPage = () => {
 
   return (
     <div className="planilla-container">
+      <div className="no-print planilla-pdf-topbar">
+        <span className="material-icons-outlined topbar-icon">picture_as_pdf</span>
+        <span className="topbar-title">Dictamen Pericial Informático</span>
+        <span className="topbar-meta">Formato Oficio · SHA256.US · ISO 27042</span>
+      </div>
       <ActaDictamen caso={caso} />
 
       <PlanillaToolbar

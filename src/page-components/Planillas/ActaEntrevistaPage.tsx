@@ -38,6 +38,11 @@ const ActaEntrevistaPage = () => {
 
   return (
     <div className="planilla-container">
+      <div className="no-print planilla-pdf-topbar">
+        <span className="material-icons-outlined topbar-icon">picture_as_pdf</span>
+        <span className="topbar-title">Acta de Entrevista de Testigo / Víctima</span>
+        <span className="topbar-meta">Formato Oficio · SHA256.US · ISO 27037</span>
+      </div>
       <ActaEntrevista caso={caso} />
 
       <PlanillaToolbar

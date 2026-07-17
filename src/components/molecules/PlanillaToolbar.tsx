@@ -23,7 +23,6 @@ export default function PlanillaToolbar({
 }: PlanillaToolbarProps) {
   const router = useRouter();
 
-  // Filtrar campos faltantes
   const faltantes = camposRequeridos.filter(
     (f) => !f.valor || f.valor === 'N/A' || !f.valor.trim()
   );
@@ -37,68 +36,72 @@ export default function PlanillaToolbar({
   };
 
   return (
-    <div className="no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-        {/* Info & Back Section */}
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <button
-            onClick={handleBack}
-            className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors border border-zinc-700 flex items-center justify-center cursor-pointer"
-            title="Volver al Expediente"
-          >
-            <ArrowLeft size={18} />
-          </button>
-          <div className="min-w-0">
-            <h4 className="text-[12px] font-bold text-white truncate leading-snug">
-              {tituloDocumento}
-            </h4>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-[#00FF41] animate-pulse" />
-              <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
-                📝 Previsualización Interactiva (Editable)
-              </p>
-            </div>
-          </div>
+    <div className="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[95vw]">
+      <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-2xl shadow-2xl px-3 py-2.5">
+
+        {/* Botón Volver */}
+        <button
+          onClick={handleBack}
+          title="Volver al Expediente"
+          className="p-2 rounded-xl hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors cursor-pointer flex-shrink-0"
+        >
+          <ArrowLeft size={18} />
+        </button>
+
+        {/* Separador */}
+        <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
+
+        {/* Título */}
+        <div className="min-w-0 px-1">
+          <p className="text-[13px] font-semibold text-gray-800 truncate leading-tight">{tituloDocumento}</p>
+          <p className="text-[10px] text-gray-400 font-medium leading-tight mt-0.5">Vista previa · Editable</p>
         </div>
 
-        {/* Validation Check */}
+        {/* Badge de validación */}
         {camposRequeridos.length > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 w-full sm:w-auto justify-center sm:justify-start">
-            {faltantes.length > 0 ? (
-              <>
-                <AlertTriangle size={14} className="text-amber-500" />
-                <span className="text-[11px] text-amber-500 font-semibold">
-                  {faltantes.length} campos faltantes (puedes completarlos haciendo clic)
-                </span>
-              </>
-            ) : (
-              <>
-                <CheckCircle2 size={14} className="text-emerald-500" />
-                <span className="text-[11px] text-emerald-500 font-semibold">
-                  Campos obligatorios completos
-                </span>
-              </>
-            )}
-          </div>
+          <>
+            <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold flex-shrink-0 ${
+              faltantes.length > 0
+                ? 'bg-amber-50 border border-amber-200 text-amber-700'
+                : 'bg-emerald-50 border border-emerald-200 text-emerald-700'
+            }`}>
+              {faltantes.length > 0 ? (
+                <>
+                  <AlertTriangle size={12} />
+                  <span>{faltantes.length} campos</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={12} />
+                  <span>Completo</span>
+                </>
+              )}
+            </div>
+          </>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-          <button
-            onClick={onPrint}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold text-[12px] transition-all border border-emerald-500 shadow-md cursor-pointer"
-          >
-            <Printer size={16} />
-            <span>Imprimir PDF</span>
-          </button>
-          <button
-            onClick={onDownloadZip}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold text-[12px] transition-all border border-blue-500 shadow-md cursor-pointer"
-          >
-            <Archive size={16} />
-            <span>Descargar ZIP</span>
-          </button>
-        </div>
+        {/* Separador */}
+        <div className="w-px h-6 bg-gray-200 flex-shrink-0" />
+
+        {/* Botón Imprimir PDF */}
+        <button
+          onClick={onPrint}
+          className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white rounded-xl text-[12px] font-semibold transition-all cursor-pointer flex-shrink-0 shadow-sm"
+        >
+          <Printer size={14} />
+          <span>Imprimir</span>
+        </button>
+
+        {/* Botón Descargar ZIP */}
+        <button
+          onClick={onDownloadZip}
+          className="flex items-center gap-1.5 px-3 py-2 border border-gray-300 hover:bg-gray-50 active:scale-95 text-gray-700 rounded-xl text-[12px] font-medium transition-all cursor-pointer flex-shrink-0"
+        >
+          <Archive size={14} />
+          <span>Word/ZIP</span>
+        </button>
+
       </div>
     </div>
   );

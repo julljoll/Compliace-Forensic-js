@@ -38,8 +38,13 @@ const ActaObtencionPage = () => {
 
   return (
     <div className="planilla-container">
+      <div className="no-print planilla-pdf-topbar">
+        <span className="material-icons-outlined topbar-icon">picture_as_pdf</span>
+        <span className="topbar-title">Acta de Obtención por Consignación</span>
+        <span className="topbar-meta">Formato Oficio · SHA256.US · MUCC-2017</span>
+      </div>
       <ActaObtencion caso={caso} />
-      
+
       <PlanillaToolbar
         onPrint={handlePrint}
         onDownloadZip={() => downloadPlanillaZip(`ActaObtencion_${casoNum}`, 'Acta de Obtención por Consignación')}
