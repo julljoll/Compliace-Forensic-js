@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/VS%20CODE/SHA256/src/app/loading.tsx"],"sourcesContent":["export default function Loading() {\n  return (\n    <div className=\"h-screen w-screen bg-[var(--apple-bg)] flex items-center justify-center\">\n      <div className=\"w-8 h-8 border-4 border-cms-accent/30 border-t-cms-accent rounded-full animate-spin\" />\n    </div>\n  )\n}\n"],"names":["Loading","className"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAIC,WAAU;kBACb,cAAA,8OAAC;YAAIA,WAAU;;;;;;;;;;;AAGrB"}}]
-}

@@ -123,6 +123,12 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
             </div>
           </div>
           <div className="form-group">
+            <div className="label">Coordenadas GPS (Latitud / Longitud)</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[ej. 9.9324° N, 69.6083° W]</span>
+            </div>
+          </div>
+          <div className="form-group">
             <div className="label">Fecha de Recepción</div>
             <div className="value" contentEditable suppressContentEditableWarning>
               <span className="placeholder-field">[Fecha]</span>
@@ -167,6 +173,11 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                 <span className="thumb-label">PULGAR DER.</span>
               </div>
             </div>
+            <div className="checkbox-group" style={{ marginTop: '6px', gap: '8px', fontSize: '8px' }}>
+              <span style={{ fontWeight: 'bold' }}>Rol:</span>
+              <div className="check-item"><span className="box"></span> DEFR (1er Respondedor)</div>
+              <div className="check-item"><span className="box"></span> DES (Especialista)</div>
+            </div>
           </div>
           <div className="sig-card">
             <div className="label">B. Colección (Nombre y Credencial)</div>
@@ -180,6 +191,11 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                 <div className="thumb-box" />
                 <span className="thumb-label">PULGAR DER.</span>
               </div>
+            </div>
+            <div className="checkbox-group" style={{ marginTop: '6px', gap: '8px', fontSize: '8px' }}>
+              <span style={{ fontWeight: 'bold' }}>Rol:</span>
+              <div className="check-item"><span className="box"></span> DEFR (1er Respondedor)</div>
+              <div className="check-item"><span className="box"></span> DES (Especialista)</div>
             </div>
           </div>
         </div>
@@ -280,8 +296,26 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                 </td>
               </tr>
               <tr>
+                <td>Estado de Volatilidad</td>
+                <td>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
+                    <div className="check-item"><span className="box"></span> Encendido</div>
+                    <div className="check-item"><span className="box"></span> Apagado</div>
+                    <div className="check-item"><span className="box"></span> Suspensión / Bloqueado</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td>N° Precinto / Sello de Seguridad</td>
-                <td contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Precinto]</span></td>
+                <td>
+                  <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '100px', display: 'inline-block' }}>[N° Precinto]</span>
+                  <div className="checkbox-group" style={{ display: 'inline-flex', marginLeft: '12px', gap: '8px', fontSize: '8.5px' }}>
+                    <span>Estado:</span>
+                    <div className="check-item"><span className="box"></span> Intacto</div>
+                    <div className="check-item"><span className="box"></span> Alterado</div>
+                    <div className="check-item"><span className="box"></span> N/A</div>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Tipo de Embalaje</td>
@@ -369,8 +403,26 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                 </td>
               </tr>
               <tr>
+                <td>Estado de Volatilidad</td>
+                <td>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
+                    <div className="check-item"><span className="box"></span> Encendido</div>
+                    <div className="check-item"><span className="box"></span> Apagado</div>
+                    <div className="check-item"><span className="box"></span> Suspensión / Hibernación</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td>N° Precinto de Seguridad</td>
-                <td contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Precinto]</span></td>
+                <td>
+                  <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '100px', display: 'inline-block' }}>[N° Precinto]</span>
+                  <div className="checkbox-group" style={{ display: 'inline-flex', marginLeft: '12px', gap: '8px', fontSize: '8.5px' }}>
+                    <span>Estado:</span>
+                    <div className="check-item"><span className="box"></span> Intacto</div>
+                    <div className="check-item"><span className="box"></span> Alterado</div>
+                    <div className="check-item"><span className="box"></span> N/A</div>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>Tipo de Embalaje</td>
@@ -404,6 +456,12 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                 <div className="checkbox-group" style={{ flexDirection: 'column', gap: '4px', fontSize: '8px' }}>
                   <div className="check-item"><span className="box"></span> PERITAJE — Análisis Forense</div>
                   <div className="check-item"><span className="box"></span> RESGUARDO</div>
+                </div>
+                <div className="label" style={{ marginTop: '8px' }}>Condiciones de Resguardo</div>
+                <div className="checkbox-group" style={{ flexDirection: 'column', gap: '4px', fontSize: '7.5px' }}>
+                  <div className="check-item"><span className="box"></span> Temp. Controlada</div>
+                  <div className="check-item"><span className="box"></span> Humedad Controlada</div>
+                  <div className="check-item"><span className="box"></span> Libre de Magnetismo</div>
                 </div>
               </td>
               <td style={{ width: '35%', verticalAlign: 'top' }}>

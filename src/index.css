@@ -9,79 +9,85 @@
     text-rendering: optimizeLegibility;
   }
 
-  h1 { color: #00FF41 !important; }
-  h2 { color: #FECF06 !important; }
-  h3, h4 {
-    color: #524000 !important;
-    background-color: rgba(254, 207, 6, 0.18) !important;
-    padding: 2px 8px !important;
-    border-radius: 4px !important;
-    border-left: 3px solid #FECF06 !important;
-    display: inline-block !important;
+  h1 {
+    color: #1a73e8 !important;
+    font-weight: 700;
   }
-  h5, h6 { color: #ffffff !important; }
+  h2 {
+    color: #1d1d1f !important;
+    font-weight: 700;
+  }
+  h3, h4 {
+    color: #1d1d1f !important;
+    background-color: rgba(26, 115, 232, 0.08) !important;
+    padding: 3px 10px !important;
+    border-radius: 6px !important;
+    border-left: 3px solid #1a73e8 !important;
+    display: inline-block !important;
+    font-weight: 600;
+  }
+  h5, h6 {
+    color: #3c3c43 !important;
+    font-weight: 600;
+  }
 
   :root {
-    /* Compliance Officer (CO) Design Tokens - Dark Theme (Default) */
-    --co-bg: #000000;
-    --login-bg: radial-gradient(circle at center, #1C1C2E 0%, #0A0A0F 100%);
-    --co-surface-1: #1C1C1E;
-    --co-surface-2: #2C2C2E;
-    --co-surface-3: #3A3A3C;
-    --co-accent: #0A84FF;
+    /* Compliance Officer (CO) Design Tokens - Light Theme (Professional) */
+    --co-bg: #F5F5F7;
+    --login-bg: linear-gradient(135deg, #F5F7FA 0%, #C3CFD9 100%);
+    --co-surface-1: #FFFFFF;
+    --co-surface-2: #E5E5EA;
+    --co-surface-3: #D1D1D6;
+    --co-accent: #007AFF;
     --co-accent-fg: #FFFFFF;
-    --co-red: #FF453A;
-    --co-orange: #FF9F0A;
-    --co-yellow: #FFD60A;
-    --co-green: #30D158;
-    --co-blue: #0A84FF;
-    --co-purple: #BF5AF2;
-    --co-indigo: #5E5CE6;
+    --co-red: #FF3B30;
+    --co-orange: #FF9500;
+    --co-yellow: #FFCC00;
+    --co-green: #34C759;
+    --co-blue: #007AFF;
+    --co-purple: #AF52DE;
+    --co-indigo: #5856D6;
     --co-gray-1: #8E8E93;
-    --co-gray-2: #AEAEB2;
-    --co-gray-3: #3A3A3C;
-    --co-gray-4: rgba(255, 255, 255, 0.15);
-    --co-gray-5: #2C2C2E;
-    --co-gray-6: #1C1C1E;
-    --co-separator: rgba(255, 255, 255, 0.1);
-    --co-vibrancy: rgba(28, 28, 30, 0.82);
+    --co-gray-2: #48484A;
+    --co-gray-3: #C7C7CC;
+    --co-gray-4: rgba(0, 0, 0, 0.06);
+    --co-gray-5: #E5E5EA;
+    --co-gray-6: #F2F2F7;
+    --co-separator: rgba(0, 0, 0, 0.08);
+    --co-vibrancy: rgba(255, 255, 255, 0.9);
 
-    /* Sonoma shadows - Dark Mode */
+    /* Sonoma shadows - Light Mode */
     --co-shadow-0: none;
-    --co-shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.18);
-    --co-shadow-2: 0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.12);
-    --co-shadow-3: 0 8px 32px rgba(0,0,0,0.24), 0 2px 8px rgba(0,0,0,0.12);
-    --co-shadow-modal: 0 20px 60px rgba(0,0,0,0.45), 0 4px 16px rgba(0,0,0,0.24);
+    --co-shadow-1: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.08);
+    --co-shadow-2: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
+    --co-shadow-3: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+    --co-shadow-modal: 0 20px 50px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
 
-    /* Sync legacy variables for dark mode */
+    /* Sync legacy variables for light mode */
     --apple-bg: var(--co-bg);
     --apple-bg-secondary: var(--co-surface-1);
     --apple-surface: var(--co-surface-1);
-    --apple-surface-hover: rgba(255, 255, 255, 0.06);
-    --apple-surface-active: rgba(255, 255, 255, 0.12);
+    --apple-surface-hover: rgba(0, 0, 0, 0.04);
+    --apple-surface-active: rgba(0, 0, 0, 0.08);
     --apple-border: var(--co-separator);
-    --apple-border-strong: rgba(255, 255, 255, 0.16);
+    --apple-border-strong: rgba(0, 0, 0, 0.12);
     --apple-accent: var(--co-accent);
-    --apple-accent-light: #30D158;
-    --apple-text: #FFFFFF;
+    --apple-accent-light: #34C759;
+    --apple-text: #1D1D1F;
     --apple-text-muted: var(--co-gray-1);
     --apple-text-secondary: var(--co-gray-2);
     --apple-separator: var(--co-separator);
     --apple-sidebar-bg: var(--co-vibrancy);
-    --apple-btn-sec-bg: rgba(255, 255, 255, 0.08);
+    --apple-btn-sec-bg: rgba(0, 0, 0, 0.04);
     --apple-shadow: var(--co-shadow-1);
     --apple-shadow-hover: var(--co-shadow-2);
 
     font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
     font-weight: 400;
-    color-scheme: dark;
+    color-scheme: light;
     color: var(--apple-text);
     background-color: var(--apple-bg);
-  }
-
-  html.dark {
-    color-scheme: dark;
   }
 
   body {
@@ -450,159 +456,7 @@ html.dark ::-webkit-scrollbar-thumb {
     line-height: 1.4;
   }
 
-  /* ── Planilla & Timeline ── */
-  .planilla-container {
-    --primary: #0071E3;
-    --text: #1D1D1F;
-    --text-dim: #86868B;
-    --text-muted: #86868B;
-    --border: rgba(0, 0, 0, 0.08);
-    --border-color: rgba(0, 0, 0, 0.08);
-    --gray: rgba(0, 0, 0, 0.025);
-    --gray-light: rgba(0, 0, 0, 0.025);
 
-    .section-title {
-      background-color: var(--gray);
-      border-left: 4px solid var(--primary);
-      color: var(--text);
-      @apply py-1.5 px-2.5 text-[11px] font-bold uppercase mb-2.5;
-    }
-    .form-group {
-      border: 1px solid var(--border);
-      background-color: var(--gray);
-      @apply p-2 rounded mb-1;
-    }
-    .label {
-      color: var(--text-muted);
-      @apply text-[8px] font-bold uppercase mb-[5px];
-    }
-    .value {
-      color: var(--text-color);
-      border-bottom: 1px dotted var(--border-color);
-      @apply text-sm min-h-[25px];
-    }
-    .evidence-table {
-      @apply w-full border-collapse;
-      td {
-        border: 1px solid var(--border-color);
-        color: var(--text-color);
-        @apply py-2 px-3 text-[11px] h-[35px];
-        &:first-child {
-          background-color: var(--gray-light);
-          color: var(--primary-color);
-          @apply w-[30%] font-semibold uppercase text-[9px];
-        }
-      }
-    }
-    .transfer-table {
-      @apply w-full border-collapse mt-[5px];
-      td {
-        border: 1px solid var(--border-color);
-        color: var(--text-color);
-        @apply p-1.5 text-xs align-top;
-      }
-    }
-    .transfer-header {
-      background-color: var(--gray-light);
-      color: var(--primary-color);
-      @apply font-bold text-[8px] uppercase;
-    }
-    .sig-box {
-      border-top: 1px solid var(--border-color);
-      color: var(--text-color);
-      @apply text-center pt-[5px];
-    }
-    .sig-label {
-      color: var(--primary-color);
-      @apply font-bold text-[10px];
-    }
-    .sig-sub {
-      color: var(--text-muted);
-      @apply text-[9px] mt-0.5;
-    }
-
-    /* ── Semantic box classes for compact planilla sections ── */
-    .motive-box {
-      height: 55px;
-      padding: 5px;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    .narrativa-box {
-      border: 1px solid var(--border-color);
-      padding: 10px;
-      min-height: 180px;
-      font-size: 11px;
-      line-height: 1.5;
-    }
-    .dev-observaciones-value {
-      min-height: 36px;
-      padding: 5px;
-      font-size: 11px;
-    }
-    .examenes-value {
-      min-height: 64px;
-      padding: 5px;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    .hallazgos-value {
-      min-height: 80px;
-      padding: 5px;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    .conclusiones-value {
-      min-height: 60px;
-      padding: 5px;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    .dotted-line {
-      margin-top: 14px;
-      border-bottom: 1px dotted var(--border-color);
-      height: 1px;
-    }
-  }
-
-  /* ── Print compact planilla classes ── */
-  @media print {
-    .planilla-container .motive-box {
-      height: 28px !important;
-      padding: 2px 4px !important;
-      font-size: 9px !important;
-    }
-    .planilla-container .narrativa-box {
-      min-height: 90px !important;
-      padding: 6px !important;
-      font-size: 9px !important;
-      border: 0.5px solid #C7C7CC !important;
-    }
-    .planilla-container .narrativa-box .dotted-line {
-      margin-top: 10px !important;
-      border-bottom: 0.5px dotted #C7C7CC !important;
-    }
-    .planilla-container .dev-observaciones-value {
-      min-height: 24px !important;
-      padding: 2px 4px !important;
-      font-size: 9px !important;
-    }
-    .planilla-container .examenes-value {
-      min-height: 36px !important;
-      padding: 2px 4px !important;
-      font-size: 9px !important;
-    }
-    .planilla-container .hallazgos-value {
-      min-height: 50px !important;
-      padding: 2px 4px !important;
-      font-size: 9px !important;
-    }
-    .planilla-container .conclusiones-value {
-      min-height: 36px !important;
-      padding: 2px 4px !important;
-      font-size: 9px !important;
-    }
-  }
 }
 
 
@@ -762,207 +616,5 @@ body.drawer-open {
 /* Padding inferior para safe area (iOS home indicator) */
 .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .pt-safe { padding-top:    env(safe-area-inset-top,    0px); }
-
-/* ── Global Dark Mode Utilities Optimization ── */
-html.dark {
-  /* Override backgrounds */
-  .bg-white,
-  .bg-white\/60,
-  .bg-white\/70,
-  .bg-white\/80 {
-    background-color: var(--apple-bg-secondary) !important;
-  }
-  
-  .bg-white\/40 {
-    background-color: rgba(255, 255, 255, 0.04) !important;
-  }
-  
-  .bg-\[\#F5F5F7\] {
-    background-color: var(--apple-bg) !important;
-  }
-  
-  .bg-\[\#F5F5F7\]\/60 {
-    background-color: rgba(255, 255, 255, 0.03) !important;
-  }
-
-  .bg-\[\#F5F5F7\]\/30 {
-    background-color: rgba(255, 255, 255, 0.02) !important;
-  }
-
-  .bg-neutral-50,
-  .bg-neutral-100 {
-    background-color: var(--apple-bg) !important;
-  }
-
-  .bg-\[\#E5E5EA\] {
-    background-color: var(--apple-separator) !important;
-  }
-
-  .bg-\[rgba\(0\,0\,0\,0\.04\)\] { background-color: rgba(255, 255, 255, 0.04) !important; }
-  .bg-\[rgba\(0\,0\,0\,0\.08\)\] { background-color: rgba(255, 255, 255, 0.08) !important; }
-  .bg-\[rgba\(0\,0\,0\,0\.12\)\] { background-color: rgba(255, 255, 255, 0.12) !important; }
-  .bg-\[rgba\(0\,0\,0\,0\.06\)\] { background-color: rgba(255, 255, 255, 0.06) !important; }
-
-  /* SVG fills for dark mode */
-  svg[fill="#000000"] {
-    fill: var(--apple-text) !important;
-  }
-  svg[fill="black"] {
-    fill: var(--apple-text) !important;
-  }
-
-  /* Global Hover Backgrounds Overrides (Apple HIG Style) */
-  .hover\:bg-neutral-50:hover,
-  .hover\:bg-neutral-100:hover,
-  .hover\:bg-neutral-200:hover,
-  .hover\:bg-gray-50:hover,
-  .hover\:bg-gray-100:hover,
-  .hover\:bg-gray-200:hover,
-  .hover\:bg-white:hover,
-  .hover\:bg-white\/40:hover,
-  .hover\:bg-white\/60:hover,
-  .hover\:bg-white\/10:hover,
-  .hover\:bg-white\/20:hover,
-  .hover\:bg-\[\#F5F5F7\]:hover,
-  .hover\:bg-\[\#E5E5EA\]:hover,
-  .hover\:bg-\[\#D2D2D7\]:hover,
-  .hover\:bg-black\/\[0\.01\]:hover,
-  .hover\:bg-black\/\[0\.02\]:hover,
-  .hover\:bg-black\/\[0\.03\]:hover,
-  .hover\:bg-black\/\[0\.04\]:hover,
-  .hover\:bg-black\/\[0\.05\]:hover,
-  .hover\:bg-black\/\[0\.06\]:hover,
-  .hover\:bg-black\/\[0\.07\]:hover,
-  .hover\:bg-black\/\[0\.08\]:hover,
-  .hover\:bg-black\/5:hover,
-  .hover\:bg-black\/10:hover,
-  .hover\:bg-black\/\[0\.1\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.01\)\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.015\)\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.05\)\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.08\)\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.04\)\]:hover,
-  .hover\:bg-\[rgba\(0\,0\,0\,0\.06\)\]:hover,
-  .group:hover .group-hover\:bg-white\/40,
-  .group:hover .group-hover\:bg-black\/\[0\.03\],
-  .group:hover .group-hover\:bg-black\/\[0\.04\],
-  .group:hover .group-hover\:bg-black\/\[0\.06\],
-  .group:hover .group-hover\:bg-black\/\[0\.08\],
-  .group:hover .group-hover\:bg-black\/10 {
-    background-color: var(--apple-surface-hover) !important;
-  }
-
-  /* Translate transparent black tints to white tints for contrast */
-  .bg-black\/\[0\.02\] { background-color: rgba(255, 255, 255, 0.02) !important; }
-  .bg-black\/\[0\.03\] { background-color: rgba(255, 255, 255, 0.03) !important; }
-  .bg-black\/\[0\.04\] { background-color: rgba(255, 255, 255, 0.04) !important; }
-  .bg-black\/\[0\.05\] { background-color: rgba(255, 255, 255, 0.05) !important; }
-  .bg-black\/\[0\.06\] { background-color: rgba(255, 255, 255, 0.06) !important; }
-  .bg-black\/\[0\.07\] { background-color: rgba(255, 255, 255, 0.07) !important; }
-  .bg-black\/\[0\.08\] { background-color: rgba(255, 255, 255, 0.08) !important; }
-  .bg-black\/10,
-  .bg-black\/\[0\.1\] { background-color: rgba(255, 255, 255, 0.1) !important; }
-  .bg-black\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
-  .bg-black\/40 { background-color: rgba(0, 0, 0, 0.6) !important; } /* KEEP modal backdrop dark! */
-
-  /* Override text colors */
-  .text-\[\#1D1D1F\],
-  .text-neutral-800,
-  .text-neutral-900,
-  .text-gray-900,
-  .text-black {
-    color: var(--apple-text) !important;
-  }
-
-  .text-\[\#1D1D1F\]\/60 { color: rgba(255, 255, 255, 0.6) !important; }
-  .text-\[\#1D1D1F\]\/70 { color: rgba(255, 255, 255, 0.7) !important; }
-  .text-\[\#1D1D1F\]\/80 { color: rgba(255, 255, 255, 0.8) !important; }
-  .text-\[\#1D1D1F\]\/90 { color: rgba(255, 255, 255, 0.9) !important; }
-
-  .text-neutral-700,
-  .text-gray-700 {
-    color: var(--apple-text-secondary) !important;
-  }
-
-  .text-neutral-600,
-  .text-gray-600,
-  .text-\[\#6E6E73\] {
-    color: var(--apple-text-secondary) !important;
-  }
-
-  .text-neutral-500,
-  .text-gray-500,
-  .text-\[\#86868B\] {
-    color: var(--apple-text-muted) !important;
-  }
-
-  .text-neutral-400,
-  .text-gray-400 {
-    color: var(--apple-text-muted) !important;
-  }
-
-  /* Hover text overrides to guarantee readability */
-  .hover\:text-\[\#1D1D1F\]:hover,
-  .hover\:text-black:hover,
-  .hover\:text-neutral-900:hover,
-  .hover\:text-gray-900:hover,
-  .group:hover .group-hover\:text-\[\#1D1D1F\],
-  .group:hover .group-hover\:text-black,
-  .group:hover .group-hover\:text-neutral-900 {
-    color: var(--apple-text) !important;
-  }
-
-  /* Override border colors */
-  .border-\[\#E5E5EA\],
-  .border-\[\#D2D2D7\],
-  .border-neutral-200,
-  .border-neutral-300,
-  .border-gray-200,
-  .border-gray-300,
-  .border-\[rgba\(0\,0\,0\,0\.12\)\],
-  .border-\[rgba\(0\,0\,0\,0\.06\)\],
-  .border-\[rgba\(0\,0\,0\,0\.08\)\] {
-    border-color: var(--apple-border) !important;
-  }
-
-  .border-black\/10,
-  .border-black\/\[0\.06\],
-  .border-black\/\[0\.07\],
-  .border-black\/\[0\.08\] {
-    border-color: var(--apple-border) !important;
-  }
-
-  .border-black\/20 {
-    border-color: var(--apple-border-strong) !important;
-  }
-
-  /* Badge dark mode system color overrides (Apple HIG Vibrant style) */
-  .apple-badge-blue {
-    background-color: rgba(10, 132, 255, 0.15) !important;
-    color: #0A84FF !important;
-  }
-
-  .apple-badge-green {
-    background-color: rgba(48, 209, 88, 0.15) !important;
-    color: #30D158 !important;
-  }
-
-  .apple-badge-red {
-    background-color: rgba(255, 69, 58, 0.15) !important;
-    color: #FF453A !important;
-  }
-
-  .apple-badge-orange {
-    background-color: rgba(255, 159, 10, 0.15) !important;
-    color: #FF9F0A !important;
-  }
-
-  /* Custom input tweaks */
-  input, select, textarea {
-    background-color: var(--apple-bg-secondary) !important;
-    border-color: var(--apple-border) !important;
-    color: var(--apple-text) !important;
-  }
-}
 
 

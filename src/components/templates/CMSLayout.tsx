@@ -18,7 +18,6 @@ const menuItems = [
   { path: '/dashboard',                            label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
   { path: '/casos',                                label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
   { path: '/control/seguimiento-compliance',       label: 'Etapas de Casos',          icon: ShieldCheck,     group: 'Control' },
-  { path: '/forense/tutoriales',                   label: 'Tutoriales Forenses',      icon: BookOpen,        group: 'Formación' },
   { path: '/planillas/acta-obtencion',             label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/acta-entrevista',            label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/prcc',                       label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Planillas Oficiales' },
@@ -29,11 +28,10 @@ const menuItems = [
   { path: '/personal',                             label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ]
 
-const groups = ['Control', 'Formación', 'Planillas Oficiales', 'Sistema']
+const groups = ['Control', 'Planillas Oficiales', 'Sistema']
 
 const groupMeta: Record<string, { emoji: string }> = {
   'Control':              { emoji: '📊' },
-  'Formación':           { emoji: '🎓' },
   'Planillas Oficiales':  { emoji: '📄' },
   'Sistema':              { emoji: '⚙️' },
 }
@@ -88,9 +86,9 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const metaTheme = document.querySelector('meta[name="theme-color"]')
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-    if (metaTheme) metaTheme.setAttribute('content', '#1C1C1E')
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+    if (metaTheme) metaTheme.setAttribute('content', '#FAFAFA')
   }, [])
 
   const [mobileOpen, setMobileOpen] = useState(false)

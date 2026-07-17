@@ -188,11 +188,25 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
                 </td>
               </tr>
               <tr>
-                <td>Nivel Batería (%)</td>
+                <td>Estado de Volatilidad</td>
                 <td>
-                  <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '40px', textAlign: 'center' }}>
-                    <span className="placeholder-field">{c.dispositivo_bateria_estado ? c.dispositivo_bateria_estado : '___'}</span>
-                  </span> %
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
+                    <div className="check-item"><span className="box"></span> Encendido</div>
+                    <div className="check-item"><span className="box"></span> Apagado</div>
+                    <div className="check-item"><span className="box"></span> Suspensión / Bloqueado</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Precinto de Seguridad</td>
+                <td>
+                  N°: <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '80px', display: 'inline-block' }}>[Precinto]</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Estado:
+                  <div className="checkbox-group" style={{ display: 'inline-flex', marginLeft: '8px', gap: '8px', fontSize: '8.5px' }}>
+                    <div className="check-item"><span className="box"></span> Intacto</div>
+                    <div className="check-item"><span className="box"></span> Alterado</div>
+                    <div className="check-item"><span className="box"></span> N/A</div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -237,13 +251,24 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
                 </td>
               </tr>
               <tr>
-                <td>Estado Físico del Equipo</td>
+                <td>Estado de Volatilidad</td>
                 <td>
-                  <div className="checkbox-group">
-                    <div className="check-item"><span className="box"></span> Operativo</div>
-                    <div className="check-item"><span className="box"></span> Daños Pantalla</div>
-                    <div className="check-item"><span className="box"></span> Faltan Componentes</div>
-                    <div className="check-item"><span className="box"></span> Carcasa Quebrada</div>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px', fontSize: '9px' }}>
+                    <div className="check-item"><span className="box"></span> Encendido</div>
+                    <div className="check-item"><span className="box"></span> Apagado</div>
+                    <div className="check-item"><span className="box"></span> Suspensión / Hibernación</div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Precinto de Seguridad</td>
+                <td>
+                  N°: <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '80px', display: 'inline-block' }}>[Precinto]</span>
+                  &nbsp;&nbsp;&nbsp;&nbsp; Estado:
+                  <div className="checkbox-group" style={{ display: 'inline-flex', marginLeft: '8px', gap: '8px', fontSize: '8.5px' }}>
+                    <div className="check-item"><span className="box"></span> Intacto</div>
+                    <div className="check-item"><span className="box"></span> Alterado</div>
+                    <div className="check-item"><span className="box"></span> N/A</div>
                   </div>
                 </td>
               </tr>
@@ -331,6 +356,11 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
+          </div>
+          <div className="checkbox-group" style={{ gap: '8px', fontSize: '8px', justifyContent: 'center', marginTop: '4px' }}>
+            <span style={{ fontWeight: 'bold' }}>Rol ISO 27037:</span>
+            <div className="check-item"><span className="box"></span> DEFR</div>
+            <div className="check-item"><span className="box"></span> DES</div>
           </div>
           <div className="fingerprint-row">
             <div className="thumb-wrapper">

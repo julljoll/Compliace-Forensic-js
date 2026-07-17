@@ -213,7 +213,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
             <tr className="transfer-header">
               <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '35%', textAlign: 'left' }}>Medio / Imagen Obtenida</th>
               <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '45%', textAlign: 'left' }}>Valor Hash SHA-256 (Inalterable)</th>
-              <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '20%', textAlign: 'left' }}>Algoritmo MD5</th>
+              <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '20%', textAlign: 'left' }}>Algoritmo Auxiliar (MD5)</th>
             </tr>
             <tr>
               <td>Adquisición Bit a Bit (Original)</td>

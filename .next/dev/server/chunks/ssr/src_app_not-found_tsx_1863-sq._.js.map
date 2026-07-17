@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/VS%20CODE/SHA256/src/app/not-found.tsx"],"sourcesContent":["export default function NotFound() {\n  return (\n    <div className=\"h-screen w-screen bg-[var(--apple-bg)] flex items-center justify-center font-sans\">\n      <div className=\"text-center apple-fade-in\">\n        <h1 className=\"text-[#00FF41] text-6xl font-bold mb-4\">404</h1>\n        <p className=\"text-[var(--apple-text-muted)] text-lg mb-6\">Página no encontrada</p>\n        <a href=\"/\" className=\"apple-btn apple-btn-primary\">\n          Volver al Panel\n        </a>\n      </div>\n    </div>\n  )\n}\n"],"names":["NotFound","className","href"],"mappings":";;;;;;AAAe,SAASA;IACtB,qBACE,8OAAC;QAAIC,WAAU;kBACb,cAAA,8OAAC;YAAIA,WAAU;;8BACb,8OAAC;oBAAGA,WAAU;8BAAyC;;;;;;8BACvD,8OAAC;oBAAEA,WAAU;8BAA8C;;;;;;8BAC3D,8OAAC;oBAAEC,MAAK;oBAAID,WAAU;8BAA8B;;;;;;;;;;;;;;;;;AAM5D"}}]
-}

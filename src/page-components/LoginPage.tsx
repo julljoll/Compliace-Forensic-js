@@ -35,16 +35,16 @@ export default function LoginPage() {
       />
 
       <div className="relative w-full max-w-[380px] flex flex-col items-center apple-fade-in z-10">
-        <div className="w-20 h-20 rounded-full bg-white/70 dark:bg-white/5 border border-black/10 dark:border-white/10 flex items-center justify-center mb-6 shadow-[var(--co-shadow-2)] backdrop-blur-[10px] transition-all duration-300">
+        <div className="w-20 h-20 rounded-full bg-white border border-gray-200 flex items-center justify-center mb-6 shadow-md transition-all duration-300">
           <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US" className="w-11 h-11" />
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-[28px] font-bold text-[var(--apple-text)] tracking-[-0.03em] mb-0.5">SHA256.US</h1>
-          <p className="text-[13px] text-[var(--co-gray-1)] font-medium tracking-[-0.01em]">Sistema de Peritaje Forense Digital</p>
+          <h1 className="text-[28px] font-bold text-gray-900 tracking-[-0.03em] mb-0.5">SHA256.US</h1>
+          <p className="text-[13px] text-gray-500 font-medium tracking-[-0.01em]">Sistema de Peritaje Forense Digital</p>
         </div>
 
-        <div className="w-full bg-white/70 dark:bg-white/5 rounded-[20px] border border-[var(--co-separator)] dark:border-white/10 p-7 shadow-[var(--co-shadow-modal)] backdrop-blur-[30px] transition-all duration-300">
+        <div className="w-full bg-white rounded-[20px] border border-gray-200 p-7 shadow-lg transition-all duration-300">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="flex items-center gap-2.5 p-3 rounded-[10px] bg-[#FF453A]/[0.08] border border-[#FF453A]/15 animate-apple-fadeIn">
@@ -67,7 +67,7 @@ export default function LoginPage() {
                   placeholder="correo@ejemplo.com"
                   autoComplete="email"
                   autoFocus
-                  className="w-full text-[15px] bg-white/60 dark:bg-white/5 border border-[var(--co-separator)] dark:border-white/10 rounded-[10px] pl-10 pr-3.5 py-2.5 outline-none transition-all duration-200 placeholder-[var(--co-gray-2)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] focus:border-[var(--co-accent)] focus:ring-[3px] focus:ring-[var(--co-accent)]/20 text-[var(--apple-text)]"
+                  className="w-full text-[15px] bg-gray-50 border border-gray-300 rounded-[10px] pl-10 pr-3.5 py-2.5 outline-none transition-all duration-200 placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 text-gray-900"
                 />
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  className="w-full text-[15px] bg-white/60 dark:bg-white/5 border border-[var(--co-separator)] dark:border-white/10 rounded-[10px] pl-10 pr-10 py-2.5 outline-none transition-all duration-200 placeholder-[var(--co-gray-2)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] focus:border-[var(--co-accent)] focus:ring-[3px] focus:ring-[var(--co-accent)]/20 text-[var(--apple-text)]"
+                  className="w-full text-[15px] bg-gray-50 border border-gray-300 rounded-[10px] pl-10 pr-10 py-2.5 outline-none transition-all duration-200 placeholder-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 text-gray-900"
                 />
                 <button
                   type="button"
@@ -128,10 +128,10 @@ export default function LoginPage() {
               )}
             </Button>
             
-            <div className="mt-4 p-2.5 rounded-[10px] bg-white/30 dark:bg-white/5 border border-black/[0.05] dark:border-white/5 text-center">
-              <p className="text-[11px] text-[var(--co-gray-1)] font-medium">
+            <div className="mt-4 p-2.5 rounded-[10px] bg-gray-50 border border-gray-200 text-center">
+              <p className="text-[11px] text-gray-500 font-medium">
                 Acceso Administrador por Defecto:<br />
-                <span className="text-[var(--apple-text)] select-all font-mono font-bold">julljoll@gmail.com</span> | <span className="text-[var(--apple-text)] select-all font-mono font-bold">admin</span>
+                <span className="text-gray-900 select-all font-mono font-bold">julljoll@gmail.com</span> | <span className="text-gray-900 select-all font-mono font-bold">admin</span>
               </p>
             </div>
           </form>

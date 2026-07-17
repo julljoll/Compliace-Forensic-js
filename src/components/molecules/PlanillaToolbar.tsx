@@ -38,12 +38,12 @@ export default function PlanillaToolbar({
 
   return (
     <div className="no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-black/75 backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         {/* Info & Back Section */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={handleBack}
-            className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-[#86868B] hover:text-white transition-colors border border-white/5 flex items-center justify-center"
+            className="p-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors border border-zinc-700 flex items-center justify-center cursor-pointer"
             title="Volver al Expediente"
           >
             <ArrowLeft size={18} />
@@ -54,7 +54,7 @@ export default function PlanillaToolbar({
             </h4>
             <div className="flex items-center gap-1.5 mt-0.5">
               <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-[#00FF41] animate-pulse" />
-              <p className="text-[10px] text-[#86868B] font-medium uppercase tracking-wider">
+              <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
                 📝 Previsualización Interactiva (Editable)
               </p>
             </div>
@@ -63,18 +63,18 @@ export default function PlanillaToolbar({
 
         {/* Validation Check */}
         {camposRequeridos.length > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 w-full sm:w-auto justify-center sm:justify-start">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 w-full sm:w-auto justify-center sm:justify-start">
             {faltantes.length > 0 ? (
               <>
-                <AlertTriangle size={14} className="text-[#FF9F0A]" />
-                <span className="text-[11px] text-[#FF9F0A] font-semibold">
+                <AlertTriangle size={14} className="text-amber-500" />
+                <span className="text-[11px] text-amber-500 font-semibold">
                   {faltantes.length} campos faltantes (puedes completarlos haciendo clic)
                 </span>
               </>
             ) : (
               <>
-                <CheckCircle2 size={14} className="text-[#30D158]" />
-                <span className="text-[11px] text-[#30D158] font-semibold">
+                <CheckCircle2 size={14} className="text-emerald-500" />
+                <span className="text-[11px] text-emerald-500 font-semibold">
                   Campos obligatorios completos
                 </span>
               </>
@@ -86,14 +86,14 @@ export default function PlanillaToolbar({
         <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
           <button
             onClick={onPrint}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-[12px] transition-all border border-white/10"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold text-[12px] transition-all border border-emerald-500 shadow-md cursor-pointer"
           >
             <Printer size={16} />
             <span>Imprimir PDF</span>
           </button>
           <button
             onClick={onDownloadZip}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0A84FF] hover:bg-[#0071E3] text-white font-bold text-[12px] transition-all border border-[#0A84FF] shadow-lg shadow-[#0A84FF]/20"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold text-[12px] transition-all border border-blue-500 shadow-md cursor-pointer"
           >
             <Archive size={16} />
             <span>Descargar ZIP</span>
