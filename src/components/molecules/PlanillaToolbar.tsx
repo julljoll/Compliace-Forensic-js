@@ -147,15 +147,6 @@ export default function PlanillaToolbar({
           <span>Imprimir</span>
         </button>
 
-        {/* Botón Descargar ZIP */}
-        <button
-          onClick={onDownloadZip}
-          className="flex items-center gap-1.5 px-3 py-2 border border-zinc-700 hover:bg-zinc-800 active:scale-95 text-zinc-300 hover:text-white rounded-xl text-[11px] font-medium transition-all cursor-pointer flex-shrink-0"
-        >
-          <Archive size={13} />
-          <span>Word/ZIP</span>
-        </button>
-
       </div>
     </div>,
     document.body
