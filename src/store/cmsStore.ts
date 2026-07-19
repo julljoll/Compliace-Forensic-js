@@ -427,6 +427,62 @@ const NORMATIVAS_INICIALES: Normativa[] = [
     version: '1982', fechaVigencia: '1982-07-26', activa: true,
     urlReferencia: 'normativas_rag/Civil/codigo-civil.md',
     articulos: ['Fuerza Probatoria', 'Experticias Civiles', 'Nulidad de Pruebas', 'Obligaciones']
+  },
+  {
+    id: 'n17', codigo: 'CRBV', tipo: 'LEY',
+    nombre: 'Constitución de la República Bolivariana de Venezuela',
+    descripcion: 'Norma suprema y fundamento del ordenamiento jurídico venezolano. En el ámbito forense digital, establece las garantías constitucionales del debido proceso (Art. 49), el derecho a la defensa y la inviolabilidad de las comunicaciones privadas (Art. 48), siendo el marco jerárquico supremo de admisibilidad de evidencias.',
+    version: '1999', fechaVigencia: '1999-12-30', activa: true,
+    urlReferencia: 'normativas_rag/Constitucion/constitucion-nacional-20191205135853.md',
+    articulos: ['Art. 48 (Inviolabilidad de Comunicaciones)', 'Art. 49 (Debido Proceso)', 'Garantías Constitucionales']
+  },
+  {
+    id: 'n18', codigo: 'Código Penal', tipo: 'LEY',
+    nombre: 'Código Penal de la República Bolivariana de Venezuela',
+    descripcion: 'Establece la clasificación de los hechos punibles y determina las penas aplicables. Regula los delitos tradicionales que pueden cometerse mediante sistemas de información (como la estafa, revelación de secretos y daño a la propiedad), complementando la Ley Especial contra Delitos Informáticos.',
+    version: '2005', fechaVigencia: '2005-04-13', activa: true,
+    urlReferencia: 'normativas_rag/Penal/codigo penal.md',
+    articulos: ['Delitos contra la Propiedad', 'Revelación de Secretos', 'Daño a la Propiedad']
+  },
+  {
+    id: 'n19', codigo: 'CPC', tipo: 'LEY',
+    nombre: 'Código de Procedimiento Civil de Venezuela',
+    descripcion: 'Regula el procedimiento formal para las actuaciones judiciales civiles. De aplicación supletoria al proceso pericial y penal en materia de experticias, valoración de instrumentos técnicos, inspecciones judiciales y régimen de tacha de peritos.',
+    version: '1990', fechaVigencia: '1990-03-16', activa: true,
+    urlReferencia: 'normativas_rag/Civil/codigo-de-procedimiento-civil.md',
+    articulos: ['Prueba Pericial', 'Inspección Judicial', 'Valoración de Pruebas']
+  },
+  {
+    id: 'n20', codigo: 'RFC 3227', tipo: 'MANUAL',
+    nombre: 'Guidelines for Evidence Collection and Archiving',
+    descripcion: 'Estándar de Internet emitido por el IETF que define las directrices técnicas para la recolección y archivo de evidencia digital tras un incidente de seguridad. Introduce el principio del orden de volatilidad de los datos (memoria RAM, cachés, registros, discos) para priorizar el orden técnico de extracción y preservación.',
+    version: '2002', fechaVigencia: '2002-02-01', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/RFC 3227 (2002).md',
+    articulos: ['Orden de Volatilidad', 'Recolección del Sistema', 'Preservación del Estado']
+  },
+  {
+    id: 'n21', codigo: 'LOADGC', tipo: 'LEY',
+    nombre: 'Ley Orgánica de Amparo sobre Derechos y Garantías Constitucionales',
+    descripcion: 'Regula la acción de amparo destinada a restablecer la situación jurídica infringida de un derecho constitucional. Es crítica en forensía informática cuando se alega la vulneración al derecho a la privacidad informática, el habeas data o la interceptación ilegal de datos.',
+    version: '1988', fechaVigencia: '1988-01-22', activa: true,
+    urlReferencia: 'normativas_rag/Constitucion/ley-organica-de-amparo-sobre-derechos-y-garantias-constitucionales.md',
+    articulos: ['Derechos Constitucionales', 'Medidas Preventivas', 'Habeas Data']
+  },
+  {
+    id: 'n22', codigo: 'LOPJ', tipo: 'LEY',
+    nombre: 'Ley Orgánica del Poder Judicial de Venezuela',
+    descripcion: 'Establece la organización, atribuciones y funcionamiento del Poder Judicial. Regula la habilitación legal de los tribunales de la República, el nombramiento formal de peritos y auxiliares de justicia, y el cumplimiento obligatorio de los dictámenes periciales ante los jueces.',
+    version: '1998', fechaVigencia: '1998-09-11', activa: true,
+    urlReferencia: 'normativas_rag/Penal/ley-organica-del-poder-judicial.md',
+    articulos: ['Auxiliares de Justicia', 'Peritos Habilitados', 'Tribunales']
+  },
+  {
+    id: 'n23', codigo: 'AVILLA-FORENSICS', tipo: 'MANUAL',
+    nombre: 'Guía Técnica de Análisis Forense en Android con Avilla Forensics',
+    descripcion: 'Manual y guía práctica para el análisis y extracción técnica forense en dispositivos Android utilizando la herramienta Avilla Forensics. Detalla los procesos de depuración USB, root, extracción de particiones de datos, bypass de pantallas de bloqueo y análisis de bases de datos de mensajería.',
+    version: '2024', fechaVigencia: '2024-01-10', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/analisis forense en android con avilla forensics.md',
+    articulos: ['Depuración USB', 'Extracción Físca', 'Análisis de Bases de Datos']
   }
 ];
 
@@ -436,6 +492,123 @@ const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 const now = () => new Date().toISOString();
 
 let migrationRunning = false;
+
+const MOCK_CASOS: CasoCMS[] = [
+  {
+    id: 'caso-mock-1',
+    tipoProyecto: 'forense_whatsapp',
+    numeroCaso: 'MP-01-2026-WA',
+    expediente: 'EXP-45920-2026',
+    titulo: 'Extracción Forense - Caso Extorsión Telefónica',
+    descripcion: 'Investigación pericial de mensajería instantánea en dispositivo móvil Android incautado. Adquisición ejecutada mediante AVILLA Forensics y Kali Linux + Andriller (ADB). Parseo y triaje de base de datos msgstore.db con ALEAPP, y posterior análisis profundo, indexación y extracción de audios .opus adjuntos mediante IPED Forensics.',
+    estado: 'analisis',
+    prioridad: 'alta',
+    fechaCreacion: '2026-07-19T08:00:00.000Z',
+    fechaUltimaActualizacion: '2026-07-19T09:30:00.000Z',
+    peritoLider: 'Carlos Mendoza',
+    fiscal: 'Dr. Alberto Silva (Fiscalía 12º del M.P. Estado Lara)',
+    compliance: 'Conforme',
+    despachoFiscal: 'Fiscalía 12º del Ministerio Público',
+    organismoOrdenante: 'CICPC Delegación Quíbor',
+    normativasAplicadas: ['n1', 'n4', 'n8', 'n7'],
+    fasesCompletadas: 4,
+    totalFases: 9,
+    porcentajeCompletado: 44,
+    totalEvidencias: 1,
+    nivelCumplimientoGeneral: 'conforme',
+    etiquetas: ['Android', 'WhatsApp', 'Extorsión'],
+    notas: 'El dispositivo fue embalado bajo cadena de custodia respetando el protocolo MUCCEF 2017.',
+    dispositivo_marca: 'Samsung',
+    dispositivo_modelo: 'Galaxy A54',
+    dispositivo_imei: '354928110948271',
+    dispositivo_imei2: '354928110948272',
+    dispositivo_sim_card: 'Movistar 4G',
+    dispositivo_numero_tel: '+58 412-5551234',
+    dispositivo_estado_fisico: 'Excelente estado, enciende correctamente.',
+    dispositivo_modo_aislamiento: 'Modo Avión y bolsa Faraday',
+    dispositivo_danos_visibles: 'Ninguno',
+    dispositivo_bateria_estado: '85%',
+    dispositivo_pantalla_estado: 'Operativa',
+    solicitante_nombre: 'Insp. Jefe Luis Ortega',
+    solicitante_cedula: 'V-12.345.678',
+    steps: {
+      wp_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:05:00.000Z', fechaCompletado: '2026-07-19T08:15:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Se recibió y se levantaron actas preliminares.' },
+      wp_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:20:00.000Z', fechaCompletado: '2026-07-19T08:30:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Planilla PRCC completada y firmada.' },
+      wp_step3: { estado: 'completado', fechaInicio: '2026-07-19T08:35:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Adquisición forense con AVILLA Forensics y cálculo de hash SHA-256.' },
+      wp_step4: { estado: 'completado', fechaInicio: '2026-07-19T09:05:00.000Z', fechaCompletado: '2026-07-19T09:15:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Dispositivo sellado en bolsa Faraday y guardado en bóveda.' },
+      wp_step5: { estado: 'disponible' }
+    }
+  },
+  {
+    id: 'caso-mock-2',
+    tipoProyecto: 'forense_email',
+    numeroCaso: 'MP-02-2026-EM',
+    expediente: 'EXP-45921-2026',
+    titulo: 'Análisis Forense de Correo - Fuga de Información',
+    descripcion: 'Peritaje informático de buzón de correo corporativo Outlook (archivo PST) sospechoso de fuga de secretos industriales. Extracción y análisis de cabeceras de red, metadatos y archivos adjuntos mediante mxToolbox, emlparser y libpff.',
+    estado: 'en_proceso',
+    prioridad: 'media',
+    fechaCreacion: '2026-07-19T08:10:00.000Z',
+    fechaUltimaActualizacion: '2026-07-19T09:20:00.000Z',
+    peritoLider: 'Carlos Mendoza',
+    fiscal: 'Dra. Elena Ramos (Fiscalía 5º del M.P. Estado Lara)',
+    compliance: 'Parcial',
+    despachoFiscal: 'Fiscalía 5º del Ministerio Público',
+    organismoOrdenante: 'DGCIM Barquisimeto',
+    normativasAplicadas: ['n1', 'n7', 'n8', 'n6'],
+    fasesCompletadas: 2,
+    totalFases: 7,
+    porcentajeCompletado: 28,
+    totalEvidencias: 1,
+    nivelCumplimientoGeneral: 'parcial',
+    etiquetas: ['Email', 'Outlook', 'Corporativo'],
+    notas: 'Se extrajo el buzón PST cumpliendo el orden de volatilidad.',
+    correo_investigar: 'empleado@empresa-victima.com',
+    correo_proveedor: 'Exchange Corporativo (IMAP)',
+    solicitante_nombre: 'Tte. Coronel José Gómez',
+    solicitante_cedula: 'V-10.123.456',
+    steps: {
+      em_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:15:00.000Z', fechaCompletado: '2026-07-19T08:25:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Se identificaron las fuentes y orden judicial de interceptación.' },
+      em_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Obtención y preservación forense de buzón PST con hash verificado.' },
+      em_step3: { estado: 'disponible' }
+    }
+  },
+  {
+    id: 'caso-mock-3',
+    tipoProyecto: 'forense_discoduro',
+    numeroCaso: 'MP-03-2026-DD',
+    expediente: 'EXP-45922-2026',
+    titulo: 'Preservación e Investigación - Sabotaje de Servidor',
+    descripcion: 'Adquisición forense de unidad de estado sólido (SSD) correspondiente al servidor de base de datos saboteado. Preservación en sitio mediante bloqueador de escritura físico Tableau y software de respuesta a incidentes Samurai Linux / PALADIN. Análisis de imagen forense E01 mediante IPED Forensics para file carving de logs del sistema.',
+    estado: 'iniciado',
+    prioridad: 'critica',
+    fechaCreacion: '2026-07-19T08:20:00.000Z',
+    fechaUltimaActualizacion: '2026-07-19T09:10:00.000Z',
+    peritoLider: 'Carlos Mendoza',
+    fiscal: 'Dr. Alberto Silva (Fiscalía 12º del M.P. Estado Lara)',
+    compliance: 'Pendiente',
+    despachoFiscal: 'Fiscalía 12º del Ministerio Público',
+    organismoOrdenante: 'CICPC Delegación Quíbor',
+    normativasAplicadas: ['n1', 'n3', 'n4', 'n8'],
+    fasesCompletadas: 1,
+    totalFases: 8,
+    porcentajeCompletado: 12,
+    totalEvidencias: 1,
+    nivelCumplimientoGeneral: 'no_aplica',
+    etiquetas: ['Servidor', 'Disco Duro', 'Incidente'],
+    notas: 'Adquisición en caliente de la memoria RAM antes del apagado seguro.',
+    discoduro_serial: 'S6B1NX0N123456Y',
+    discoduro_capacidad: '512 GB',
+    discoduro_marca: 'Samsung EVO 970',
+    discoduro_modelo: 'NVMe M.2',
+    solicitante_nombre: 'Insp. Jefe Luis Ortega',
+    solicitante_cedula: 'V-12.345.678',
+    steps: {
+      dd_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Preservación inicial en sitio con PALADIN y hash generado.' },
+      dd_step2: { estado: 'disponible' }
+    }
+  }
+];
 
 const neonStorage = {
   getItem: async (name: string): Promise<string | null> => {
@@ -454,7 +627,7 @@ const neonStorage = {
 export const useCMSStore = create<CMSState>()(
   persist(
     (set, get) => ({
-      casos: [],
+      casos: MOCK_CASOS,
       evidencias: [],
       tareas: [],
       fases: [],
@@ -586,6 +759,9 @@ export const useCMSStore = create<CMSState>()(
             } else {
                 // BUG-003: Si la base de datos no está disponible u offline, mantener los casos locales de Zustand persistidos.
                 console.info('[CMS] Sin conexión DB o vacía — usando datos persistidos localmente.');
+                if (get().casos.length === 0) {
+                  set({ casos: MOCK_CASOS });
+                }
             }
         } catch (err) {
             console.error('Error fetching casos', err);

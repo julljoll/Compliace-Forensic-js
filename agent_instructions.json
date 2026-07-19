@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-07-08",
+    "updated": "2026-07-19",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,31 +15,31 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-08 15:06:57",
-      "last_commit": "34f3535 - df (2026-07-08)",
+      "timestamp": "2026-07-19 09:44:00",
+      "last_commit": "80e01ad - js (2026-07-19)",
       "modified_files": [
-        "D .agents/AGENTS.md",
-        "D .agents/design_tokens.md",
-        "D .agents/map_arquitectura.md",
-        "D .agents/skills/cadena-custodia-digital/SKILL.md",
-        "D .agents/skills/compliance-officer-digital/SKILL.md",
-        "D .agents/skills/derecho-venezolano-forense/SKILL.md",
-        "D .agents/skills/fullstack-forensic-developer/SKILL.md",
-        "D .agents/skills/lms-test-forense/SKILL.md",
-        "D .agents/skills/normativas-iso-forense/SKILL.md",
-        "D .agents/skills/perito-informatico-forense/SKILL.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-android-whatsapp.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-correos.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-disco-pc.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/analisis-redes-sociales.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/cadena-custodia-venezuela.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/correos-electronicos.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-cambridge-forense-digital.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-whatsapp-caine-linux.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/curso-whatsapp-kali-linux.md",
-        "D .agents/skills/perito-informatico-forense/Tutoriales/discos-duros-iped.md"
+        "M .opencode/agents/compliance-officer.md",
+        "M .opencode/agents/legal-analyst.md",
+        "M .opencode/agents/perito-forense.md",
+        "D .opencode/skills/ux-ui-compliance-cms/SKILL.md",
+        "M next-env.d.ts",
+        "M src/components/atoms/Badge.tsx",
+        "M src/components/atoms/Button.tsx",
+        "M src/components/atoms/HashDisplay.tsx",
+        "M src/components/atoms/Modal.tsx",
+        "M src/components/atoms/Skeleton.tsx",
+        "M src/components/atoms/Toast.tsx",
+        "M src/components/organisms/Casos/CasosFilters.tsx",
+        "M src/components/organisms/CommandPalette.tsx",
+        "M src/components/organisms/Planillas/ActaDictamen.tsx",
+        "M src/components/templates/CMSLayout.tsx",
+        "M src/data/normativasEtapas.ts",
+        "M src/data/tiposProyecto.ts",
+        "M src/index.css",
+        "M src/page-components/CasoDetailPage.tsx",
+        "M src/page-components/CasosPage.tsx"
       ],
-      "source_files": 78,
+      "source_files": 76,
       "active_routes": 1
     }
   },

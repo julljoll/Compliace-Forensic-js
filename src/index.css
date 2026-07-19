@@ -10,25 +10,31 @@
   }
 
   h1 {
-    color: #1a73e8 !important;
+    color: #1D1D1F !important;
     font-weight: 700;
+    letter-spacing: -0.025em;
+    font-size: clamp(22px, 4.5vw, 32px) !important;
+    line-height: 1.25;
   }
   h2 {
-    color: #1d1d1f !important;
-    font-weight: 700;
+    color: #1D1D1F !important;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-size: clamp(18px, 3.5vw, 26px) !important;
+    line-height: 1.3;
   }
   h3, h4 {
-    color: #1d1d1f !important;
-    background-color: rgba(26, 115, 232, 0.08) !important;
-    padding: 3px 10px !important;
-    border-radius: 6px !important;
-    border-left: 3px solid #1a73e8 !important;
-    display: inline-block !important;
+    color: #1D1D1F !important;
     font-weight: 600;
+    letter-spacing: -0.01em;
+    font-size: clamp(15px, 2.5vw, 20px) !important;
+    line-height: 1.4;
   }
   h5, h6 {
-    color: #3c3c43 !important;
-    font-weight: 600;
+    color: #6E6E73 !important;
+    font-weight: 500;
+    font-size: clamp(13px, 2vw, 16px) !important;
+    line-height: 1.45;
   }
 
   :root {
@@ -89,6 +95,7 @@
     color: var(--apple-text);
     background-color: var(--apple-bg);
   }
+
 
   body {
     margin: 0;
@@ -389,67 +396,67 @@ html.dark ::-webkit-scrollbar-thumb {
 
   /* ── Apple HIG Typography Scale (claude_fix_style.json v3.0.0) ── */
   .text-apple-large-title {
-    font-size: 34px;
+    font-size: clamp(24px, 5vw, 34px);
     font-weight: 700;
     letter-spacing: -0.5px;
     line-height: 1.2;
   }
   .text-apple-title-1 {
-    font-size: 28px;
+    font-size: clamp(20px, 4vw, 28px);
     font-weight: 700;
     letter-spacing: -0.3px;
     line-height: 1.25;
   }
   .text-apple-title-2 {
-    font-size: 22px;
+    font-size: clamp(18px, 3vw, 22px);
     font-weight: 700;
     letter-spacing: -0.2px;
     line-height: 1.3;
   }
   .text-apple-title-3 {
-    font-size: 20px;
+    font-size: clamp(16px, 2.5vw, 20px);
     font-weight: 600;
     letter-spacing: -0.1px;
     line-height: 1.35;
   }
   .text-apple-headline {
-    font-size: 17px;
+    font-size: clamp(14px, 2vw, 17px);
     font-weight: 600;
     letter-spacing: 0;
     line-height: 1.47;
   }
   .text-apple-body {
-    font-size: 17px;
+    font-size: clamp(14px, 2vw, 17px);
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.47;
   }
   .text-apple-callout {
-    font-size: 16px;
+    font-size: clamp(13px, 1.8vw, 16px);
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.5;
   }
   .text-apple-subheadline {
-    font-size: 15px;
+    font-size: clamp(12px, 1.6vw, 15px);
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.5;
   }
   .text-apple-footnote {
-    font-size: 13px;
+    font-size: clamp(11px, 1.4vw, 13px);
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.5;
   }
   .text-apple-caption-1 {
-    font-size: 12px;
+    font-size: clamp(10px, 1.2vw, 12px);
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.5;
   }
   .text-apple-caption-2 {
-    font-size: 11px;
+    font-size: clamp(9px, 1.1vw, 11px);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;

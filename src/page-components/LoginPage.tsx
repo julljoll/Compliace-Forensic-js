@@ -149,13 +149,13 @@ export default function LoginPage() {
 
           <div className="pt-2 flex flex-col items-center space-y-2">
             <div className="flex items-center justify-center gap-1.5">
-              <div className="w-1 h-1 rounded-full bg-black/20 dark:bg-white/20" />
+              <div className="w-1 h-1 rounded-full bg-black/20" />
               <div className="w-1.5 h-1.5 rounded-full bg-[var(--co-accent)]" />
-              <div className="w-1 h-1 rounded-full bg-black/20 dark:bg-white/20" />
+              <div className="w-1 h-1 rounded-full bg-black/20" />
             </div>
 
-            <p className="text-[11px] font-semibold text-[var(--apple-text)]/90 dark:text-white/90 tracking-tight">
-              SHA256.US v2.0 <span className="text-[var(--apple-text)]/45 dark:text-white/45 font-light">·</span> Laboratorio de Informática Forense
+            <p className="text-[11px] font-semibold text-[var(--apple-text)]/90 tracking-tight">
+              SHA256.US v2.0 <span className="text-[var(--apple-text)]/45 font-light">·</span> Laboratorio de Informática Forense
             </p>
 
             <p className="text-[9.5px] text-[var(--co-gray-1)] leading-relaxed max-w-[290px] font-medium opacity-80">
@@ -163,8 +163,8 @@ export default function LoginPage() {
               Quíbor, Municipio Jiménez, Estado Lara.
             </p>
 
-            <p className="text-[8.5px] text-[var(--apple-text)]/30 dark:text-white/30 font-semibold uppercase tracking-[0.15em] pt-1">
-              powered by <span className="text-[var(--apple-text)] dark:text-white font-bold">jull</span>
+            <p className="text-[8.5px] text-[var(--apple-text)]/30 font-semibold uppercase tracking-[0.15em] pt-1">
+              powered by <span className="text-[var(--apple-text)] font-bold">jull</span>
             </p>
           </div>
         </div>

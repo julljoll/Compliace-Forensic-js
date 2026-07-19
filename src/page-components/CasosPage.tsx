@@ -24,11 +24,12 @@ export const DISPOSITIVOS = [
     icon: Smartphone,
     descripcion: 'Adquisición, extracción y análisis forense de datos en teléfonos móviles Android. Flujo completo bajo RAG para extracción y análisis de mensajería (WhatsApp/Telegram).',
     alcance: [
-      'Extracción lógica y física (Bypass) mediante Avilla Forensics y Andriller',
+      'Adquisición lógica y física (Bypass) mediante AVILLA Forensics y Kali Linux + Andriller (vía ADB)',
       'Preservación inicial mediante hash criptográfico SHA-256',
-      'Parseo avanzado de bases de datos (msgstore.db) con IPED (Digital Forensic Tool)',
-      'Análisis de artefactos del sistema operativo Android y registros con ALEAPP',
+      'Análisis formal completo e indexación profunda de bases de datos (msgstore.db) con IPED Forensics',
+      'Parseo rápido y triaje de artefactos del sistema operativo Android y registros con ALEAPP',
       'Extracción combinada de evidencias multimedia y transcripción de audios .opus',
+      'Respuesta a incidentes y triaje en sitio con distribuciones live (Samurai Linux / PALADIN)',
       'Reconstrucción cronológica de línea de tiempo de comunicaciones'
     ],
     marcoLegal: [
@@ -39,7 +40,7 @@ export const DISPOSITIVOS = [
       { codigo: 'NIST SP 800-101 r1', descripcion: 'Guía de forensia de dispositivos móviles' },
       { codigo: 'MUCCEF 2017', descripcion: 'Manual Único de Cadena de Custodia de Evidencias' },
     ],
-    enfoque: 'La extracción lógica se ejecuta mediante Avilla Forensics y Andriller. El análisis subsiguiente se realiza cargando el contenedor en ALEAPP e IPED de manera combinada para indexación profunda y búsquedas de interés forense.',
+    enfoque: 'La adquisición se ejecuta mediante AVILLA Forensics o Kali Linux + Andriller. El parseo preliminar para triaje se realiza con ALEAPP, mientras que el análisis pericial completo y formal se ejecuta indexando los datos extraídos en IPED Forensics para asegurar un reporte defendible.',
   },
   {
     id: 'forense_discoduro' as TipoProyecto,
@@ -954,7 +955,7 @@ export default function CasosPage() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-16 h-1.5 bg-black/[0.08] dark:bg-white/[0.08] rounded-full overflow-hidden">
+                          <div className="w-16 h-1.5 bg-black/[0.08] rounded-full overflow-hidden">
                             <div className="h-full bg-[var(--co-green)] rounded-full" style={{ width: `${caso.porcentajeCompletado}%` }} />
                           </div>
                           <span className="text-[11px] font-mono text-[var(--co-gray-1)]">{caso.porcentajeCompletado}%</span>
@@ -1019,7 +1020,7 @@ export default function CasosPage() {
                       <span>Cumplimiento</span>
                       <span>{caso.porcentajeCompletado}%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-black/[0.08] dark:bg-white/[0.08] rounded-full overflow-hidden mb-4">
+                    <div className="w-full h-1.5 bg-black/[0.08] rounded-full overflow-hidden mb-4">
                       <div className="h-full bg-[var(--co-green)] rounded-full transition-all duration-500" style={{ width: `${caso.porcentajeCompletado}%` }} />
                     </div>
                     <div className="flex gap-2">
@@ -1040,7 +1041,7 @@ export default function CasosPage() {
 
       {/* ── Bulk Actions Floating Toolbar ── */}
       {selectedIds.length > 0 && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/95 dark:bg-black/95 backdrop-blur-md border border-[var(--co-separator)] rounded-full px-6 py-3.5 shadow-2xl flex items-center gap-6 z-50 animate-apple-fadeIn animate-duration-300">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md border border-[var(--co-separator)] rounded-full px-6 py-3.5 shadow-2xl flex items-center gap-6 z-50 animate-apple-fadeIn animate-duration-300">
           <span className="text-[13px] font-semibold text-[var(--apple-text)]">
             {selectedIds.length} {selectedIds.length === 1 ? 'caso seleccionado' : 'casos seleccionados'}
           </span>

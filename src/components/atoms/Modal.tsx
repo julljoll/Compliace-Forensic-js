@@ -90,7 +90,7 @@ export const Modal: React.FC<ModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)] text-[var(--co-gray-1)] hover:text-[var(--apple-text)] transition-colors active:scale-95 shrink-0"
+            className="p-1.5 rounded-full hover:bg-[var(--apple-surface-hover)] text-[var(--co-gray-1)] hover:text-[var(--apple-text)] transition-colors active:scale-95 shrink-0"
             aria-label="Cerrar modal"
           >
             <X size={16} />

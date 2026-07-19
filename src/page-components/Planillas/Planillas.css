@@ -1,9 +1,51 @@
-/* ── PLANILLAS & ACTAS ESTILOS UNIFICADOS (Formato Oficio/Legal: 216mm x 330mm) ── */
 .planilla-container {
+  /* Redefine light mode variables to isolate from global dark mode */
+  --co-bg: #F5F5F7;
+  --co-surface-1: #FFFFFF;
+  --co-surface-2: #E5E5EA;
+  --co-surface-3: #D1D1D6;
+  --co-accent: #007AFF;
+  --co-accent-fg: #FFFFFF;
+  --co-red: #FF3B30;
+  --co-orange: #FF9500;
+  --co-yellow: #FFCC00;
+  --co-green: #34C759;
+  --co-blue: #007AFF;
+  --co-purple: #AF52DE;
+  --co-indigo: #5856D6;
+  --co-gray-1: #8E8E93;
+  --co-gray-2: #48484A;
+  --co-gray-3: #C7C7CC;
+  --co-gray-4: rgba(0, 0, 0, 0.06);
+  --co-gray-5: #E5E5EA;
+  --co-gray-6: #F2F2F7;
+  --co-separator: rgba(0, 0, 0, 0.08);
+  --co-vibrancy: rgba(255, 255, 255, 0.9);
+
+  --apple-bg: var(--co-bg);
+  --apple-bg-secondary: var(--co-surface-1);
+  --apple-surface: var(--co-surface-1);
+  --apple-surface-hover: rgba(0, 0, 0, 0.04);
+  --apple-surface-active: rgba(0, 0, 0, 0.08);
+  --apple-border: var(--co-separator);
+  --apple-border-strong: rgba(0, 0, 0, 0.12);
+  --apple-accent: var(--co-accent);
+  --apple-accent-light: #34C759;
+  --apple-text: #1D1D1F;
+  --apple-text-muted: var(--co-gray-1);
+  --apple-text-secondary: var(--co-gray-2);
+  --apple-separator: var(--co-separator);
+  --apple-sidebar-bg: var(--co-vibrancy);
+  --apple-btn-sec-bg: rgba(0, 0, 0, 0.04);
+  --apple-shadow: var(--co-shadow-1);
+  --apple-shadow-hover: var(--co-shadow-2);
+
+  color-scheme: light !important;
+  color: var(--apple-text) !important;
+  background: #E8E8E8 !important;
+
   font-family: 'Ubuntu', sans-serif !important;
   line-height: 1.5;
-  color: #1d1d1f;
-  background: #E8E8E8; /* PDF viewer gray — Chrome/Adobe style */
   margin: 0;
   padding: 40px 10px;
   font-size: 11pt;
@@ -60,8 +102,8 @@
   min-height: 330mm;
   padding: 20mm 15mm 20mm 38mm; /* Left: 38mm (binding), Right: 15mm, Top/Bottom: 20mm */
   margin: 0 auto;
-  background: #ffffff;
-  color: #1d1d1f;
+  background: #ffffff !important;
+  color: #1d1d1f !important;
   position: relative;
   border: 1px solid #D0D0D0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.08);
@@ -161,7 +203,7 @@
 
 .planilla-container .form-group {
   border: 1px solid #8e8e93;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   padding: 5px 10px;
 }
 
@@ -212,14 +254,14 @@
   font-weight: 700;
   font-size: 9.5pt;
   text-transform: uppercase;
-  background-color: #f2f2f7;
+  background-color: #f2f2f7 !important;
 }
 
 .planilla-container .transfer-header {
   font-weight: 700;
   font-size: 9.5pt;
   text-transform: uppercase;
-  background-color: #f2f2f7;
+  background-color: #f2f2f7 !important;
 }
 
 /* Checkboxes */

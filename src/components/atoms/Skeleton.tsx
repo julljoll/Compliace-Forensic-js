@@ -26,10 +26,10 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   return (
     <div
       className={`
-        bg-[var(--co-surface-3)] dark:bg-[var(--co-surface-2)]
+        bg-[var(--co-surface-3)]
         relative overflow-hidden animate-pulse
         before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite]
-        before:bg-gradient-to-r before:from-transparent before:via-[rgba(255,255,255,0.06)] dark:before:via-[rgba(255,255,255,0.03)] before:to-transparent
+        before:bg-gradient-to-r before:from-transparent before:via-[rgba(255,255,255,0.06)] before:to-transparent
         ${shapeClass[variant]}
         ${className}
       `}

@@ -179,5 +179,54 @@ export const NORMATIVAS_ETAPAS: NormativaConEtapas[] = [
       { id: 'n16__expertos', nombre: '2. Experticia y Peritos', descripcion: 'Designación, recusación y fuerza probatoria del informe.' },
       { id: 'n16__obligaciones', nombre: '3. Responsabilidad Civil', descripcion: 'Reparación del daño y responsabilidad de profesionales.' },
     ],
+  },
+  {
+    normativaId: 'n17', codigo: 'CRBV',
+    etapas: [
+      { id: 'n17__comunicaciones', nombre: 'Art. 48 – Inviolabilidad de Comunicaciones', descripcion: 'Garantía constitucional del secreto e inviolabilidad de las comunicaciones privadas.' },
+      { id: 'n17__debido_proceso', nombre: 'Art. 49 – Debido Proceso', descripcion: 'Garantías legales en actuaciones y licitud de obtención de la prueba digital.' },
+    ],
+  },
+  {
+    normativaId: 'n18', codigo: 'Código Penal',
+    etapas: [
+      { id: 'n18__propiedad', nombre: 'Delitos contra la Propiedad', descripcion: 'Sanciones para fraude, estafa y daños materiales a bienes y sistemas.' },
+      { id: 'n18__secretos', nombre: 'Revelación de Secretos', descripcion: 'Sanción penal por divulgación o acceso indebido a datos privados.' },
+    ],
+  },
+  {
+    normativaId: 'n19', codigo: 'CPC',
+    etapas: [
+      { id: 'n19__experticia', nombre: 'Del Dictamen de Expertos', descripcion: 'Reglas procesales para la designación, recusación y ejecución del dictamen forense.' },
+      { id: 'n19__inspeccion', nombre: 'De la Inspección Judicial', descripcion: 'Fijación formal y reconocimiento del estado de cosas o evidencias por el tribunal.' },
+    ],
+  },
+  {
+    normativaId: 'n20', codigo: 'RFC 3227',
+    etapas: [
+      { id: 'n20__volatilidad', nombre: 'Orden de Volatilidad', descripcion: 'Captura técnica secuencial priorizando datos volátiles frente a persistentes.' },
+      { id: 'n20__adquisicion', nombre: 'Recolección y Registro', descripcion: 'Directrices para la obtención forense sin alterar el estado y registro de cambios.' },
+    ],
+  },
+  {
+    normativaId: 'n21', codigo: 'LOADGC',
+    etapas: [
+      { id: 'n21__amparo', nombre: 'Acción de Amparo', descripcion: 'Garantía del restablecimiento de derechos constitucionales infringidos.' },
+      { id: 'n21__habeas_data', nombre: 'Habeas Data', descripcion: 'Derecho a conocer, actualizar y rectificar información en bases de datos.' },
+    ],
+  },
+  {
+    normativaId: 'n22', codigo: 'LOPJ',
+    etapas: [
+      { id: 'n22__habilitacion', nombre: 'Habilitación de Peritos', descripcion: 'Normas de designación legal y acreditación de peritos oficiales y auxiliares.' },
+      { id: 'n22__tribunales', nombre: 'Actuación en Tribunales', descripcion: 'Obligaciones y responsabilidades formales en el auxilio técnico a la justicia.' },
+    ],
+  },
+  {
+    normativaId: 'n23', codigo: 'AVILLA-FORENSICS',
+    etapas: [
+      { id: 'n23__extraccion', nombre: 'Extracción en Android', descripcion: 'Depuración USB, root, bypass de bloqueo y dump de particiones.' },
+      { id: 'n23__analisis', nombre: 'Análisis de Artefactos', descripcion: 'Análisis forense de bases de datos SQLite y recuperación de mensajería.' },
+    ],
   }
 ];

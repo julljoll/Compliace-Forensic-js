@@ -509,7 +509,7 @@ export default function CasoDetailPage() {
                   <span>Requisitos Completados</span>
                   <span>{caso.porcentajeCompletado}%</span>
                 </div>
-                <div className="w-full h-1.5 bg-black/[0.08] dark:bg-white/[0.08] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-black/[0.08] rounded-full overflow-hidden">
                   <div className="h-full bg-[var(--co-green)] rounded-full transition-all duration-500" style={{ width: `${caso.porcentajeCompletado}%` }} />
                 </div>
               </Card>

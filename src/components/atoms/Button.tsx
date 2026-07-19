@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   
   const variants = {
     primary: "bg-[var(--co-accent)] text-[var(--co-accent-fg)] border-none hover:brightness-[1.08] shadow-[0_1px_2px_rgba(0,0,0,0.1)]",
-    secondary: "bg-[var(--co-surface-2)] text-[var(--apple-text)] border-none hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)]",
+    secondary: "bg-[var(--co-surface-2)] text-[var(--apple-text)] border-none hover:bg-[var(--apple-surface-hover)]",
     destructive: "bg-[var(--co-red)] text-white border-none hover:brightness-[1.08]",
     ghost: "bg-transparent text-[var(--co-accent)] hover:bg-[rgba(0,113,227,0.1)] border-none"
   };

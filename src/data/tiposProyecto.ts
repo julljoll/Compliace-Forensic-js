@@ -50,11 +50,12 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     normativasPorDefecto: ['n1', 'n4', 'n8', 'n7'],
     requerimientosTecnicos: [
       'Cable USB propio del perito',
-      'Avilla Forensics / Andriller instalado',
-      'ALEAPP e IPED Digital Forensic Tool para análisis de artefactos Android y bases de datos',
-      'Parser de WhatsApp (Avilla WhatsApp Parser)',
+      'AVILLA Forensics o Kali Linux + Andriller (ADB) para adquisición',
+      'ALEAPP para parseo y triaje de artefactos Android',
+      'IPED Forensics para análisis formal completo',
+      'Distribución Samurai Linux / PALADIN para respuesta a incidentes en campo',
       'Herramienta de transcripción de audios .opus',
-      'Bolsa antiestática y precintos de seguridad'
+      'Bolsa antiestática Faraday y precintos de seguridad'
     ],
     requerimientosLegales: [
       'Orden judicial o autorización del fiscal',
@@ -115,7 +116,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
       },
       {
         id: 'wp_step3', num: 3, fase: 'Fase 1: Obtención',
-        titulo: 'Extracción Forense con Avilla / Andriller',
+        titulo: 'Extracción Forense con AVILLA / Andriller',
         action: 'Realizar extracción lógica con herramientas forenses.',
         docs: ['Log de extracción', 'Reporte de hash', 'Fotografías'],
         guide: 'Usar cable del perito. Activar modo avión antes de cualquier conexión. Documentar cada comando.',
@@ -123,7 +124,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
           'Aislar el dispositivo móvil en Modo Avión o dentro de bolsa Faraday',
           'Conectar el equipo a la estación forense usando cable propio certificado',
           'Configurar depuración USB y depurar permisos necesarios en modo solo lectura',
-          'Ejecutar extracción lógica o física con Avilla Forensics o Andriller',
+          'Ejecutar extracción lógica o física con AVILLA Forensics o Andriller (vía ADB)',
           'Calcular hash SHA-256 del contenedor de la extracción forense generada',
           'Guardar log detallado de la extracción y el reporte de hash pre-imagen'
         ],
@@ -157,17 +158,17 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
       },
       {
         id: 'wp_step5', num: 5, fase: 'Fase 2: Laboratorio',
-        titulo: 'Procesamiento con ALEAPP e IPED Digital Forensic Tool',
+        titulo: 'Procesamiento con ALEAPP e IPED Forensics',
         action: 'Analizar la extracción con herramientas de laboratorio.',
         docs: ['Reporte ALEAPP', 'Reporte IPED', 'Reporte de análisis'],
-        guide: 'Cargar extracción en ALEAPP para parseo de artefactos Android y utilizar IPED Digital Forensic Tool para análisis avanzado de bases de datos.',
+        guide: 'Cargar la extracción en ALEAPP para parseo preliminar de artefactos Android y utilizar IPED Forensics para análisis indexado avanzado y búsquedas complejas.',
         tareas: [
           'Verificar la integridad del embalaje y correspondencia de precintos al recibir',
           'Recalcular y validar hash SHA-256 de la extracción antes de iniciar análisis',
-          'Cargar el archivo de extracción lógica en la herramienta ALEAPP',
-          'Procesar extracción en IPED Digital Forensic Tool para indexación de base de datos',
+          'Cargar el archivo de extracción lógica en la herramienta ALEAPP para triaje rápido',
+          'Procesar la extracción en IPED Forensics para indexación profunda y búsquedas cruzadas',
           'Ejecutar búsquedas cruzadas y clasificar los registros de interés forense',
-          'Documentar versiones exactas de ALEAPP e IPED en la bitácora del perito'
+          'Documentar versiones exactas de ALEAPP e IPED Forensics en la bitácora del perito'
         ],
         iconoName: 'Database',
         normativas: [

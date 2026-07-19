@@ -195,9 +195,10 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
               <td>Software Utilizado</td>
               <td>
                 <div className="checkbox-group" style={{ flexDirection: 'column', gap: '4px' }}>
-                  <div className="check-item"><span className="box"></span> Andriller / Autopsy (Adquisición y Análisis Lógico)</div>
+                  <div className="check-item"><span className="box"></span> Andriller / ALEAPP / IPED Forensics (Adquisición, Triaje y Análisis Completo)</div>
                   <div className="check-item"><span className="box"></span> FTK Imager (Verificación de Integridad y Clonado Bit a Bit)</div>
-                  <div className="check-item"><span className="box"></span> Cellebrite UFED / Avilla Forensics (Extracción Física)</div>
+                  <div className="check-item"><span className="box"></span> AVILLA Forensics (Adquisición/Extracción Forense Móvil)</div>
+                  <div className="check-item"><span className="box"></span> Samurai Linux / PALADIN (Respuesta a Incidentes y Adquisición en Campo)</div>
                 </div>
               </td>
             </tr>

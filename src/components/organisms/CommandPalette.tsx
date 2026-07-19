@@ -230,7 +230,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
                           w-full flex items-center justify-between px-3 py-2 rounded-[10px] text-left select-none transition-colors outline-none
                           ${isActive 
                             ? 'bg-[var(--co-accent)] text-white' 
-                            : 'hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.06)]'
+                            : 'hover:bg-[var(--apple-surface-hover)]'
                           }
                         `}
                       >
@@ -268,15 +268,15 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         {/* Footer help */}
         <div className="px-4 py-2 bg-[var(--co-surface-2)] border-t border-[var(--co-separator)] flex items-center gap-4 text-[10px] text-[var(--co-gray-1)] select-none">
           <div className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] dark:bg-[var(--co-surface-1)] border border-[var(--co-separator)] rounded font-semibold">↑↓</span>
+            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] border border-[var(--co-separator)] rounded font-semibold">↑↓</span>
             <span>Navegar</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] dark:bg-[var(--co-surface-1)] border border-[var(--co-separator)] rounded font-semibold">↵ Enter</span>
+            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] border border-[var(--co-separator)] rounded font-semibold">↵ Enter</span>
             <span>Seleccionar</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] dark:bg-[var(--co-surface-1)] border border-[var(--co-separator)] rounded font-semibold">Esc</span>
+            <span className="px-1.5 py-0.5 bg-[var(--co-surface-3)] border border-[var(--co-separator)] rounded font-semibold">Esc</span>
             <span>Cerrar</span>
           </div>
         </div>

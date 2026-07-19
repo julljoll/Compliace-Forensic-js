@@ -34,7 +34,7 @@ export const HashDisplay: React.FC<HashDisplayProps> = ({ hash, className = '' }
       <span className="font-mono text-[12px] tracking-tight select-all break-all">{truncated}</span>
       <button
         onClick={handleCopy}
-        className="p-0.5 rounded hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)] text-[var(--co-gray-2)] hover:text-[var(--apple-text)] transition-colors active:scale-90"
+        className="p-0.5 rounded hover:bg-[var(--apple-surface-hover)] text-[var(--co-gray-2)] hover:text-[var(--apple-text)] transition-colors active:scale-90"
         title={copied ? "¡Copiado!" : "Copiar hash completo"}
         aria-label="Copiar hash completo"
       >
@@ -47,7 +47,7 @@ export const HashDisplay: React.FC<HashDisplayProps> = ({ hash, className = '' }
 
       {/* Premium Hover Tooltip for Full Hash */}
       {showTooltip && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-[999] px-3 py-1.5 rounded-[8px] bg-[#1C1C1E] dark:bg-[#2C2C2E] text-[var(--apple-text)] border border-[var(--co-separator)] text-[11px] font-mono shadow-[var(--co-shadow-3)] pointer-events-none select-all break-all w-[320px] max-w-[90vw] text-center">
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-[999] px-3 py-1.5 rounded-[8px] bg-white text-[var(--apple-text)] border border-[var(--co-separator)] text-[11px] font-mono shadow-[var(--co-shadow-3)] pointer-events-none select-all break-all w-[320px] max-w-[90vw] text-center">
           <p className="font-semibold text-[var(--co-gray-1)] text-[9px] uppercase tracking-wider mb-0.5 select-none">SHA-256 Completo</p>
           {hash}
         </div>

@@ -64,7 +64,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
       </div>
       <button 
         onClick={onClose} 
-        className="shrink-0 p-1 rounded-[6px] hover:bg-[var(--apple-surface-hover)] dark:hover:bg-[rgba(255,255,255,0.08)] transition-colors text-[var(--co-gray-1)] hover:text-[var(--apple-text)] active:scale-95"
+        className="shrink-0 p-1 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-colors text-[var(--co-gray-1)] hover:text-[var(--apple-text)] active:scale-95"
       >
         <X size={12} />
       </button>

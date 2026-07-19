@@ -177,17 +177,17 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
       <div className="px-4 py-3 border-t border-[var(--apple-separator)] space-y-3 shrink-0">
         <div className="grid grid-cols-2 gap-2">
-          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)] dark:bg-[rgba(255,255,255,0.04)]">
+          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
             <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
             <p className="text-[17px] font-bold text-[var(--apple-accent)] tracking-[-0.02em]">{stats.casosActivos}</p>
           </div>
-          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)] dark:bg-[rgba(255,255,255,0.04)]">
+          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
             <p className="text-[10px] font-semibold text-[#86868B]">Cumpl.</p>
             <p className="text-[17px] font-bold text-[#248A3D] tracking-[-0.02em]">{stats.cumplimientoGeneral}%</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] dark:hover:bg-[rgba(255,255,255,0.05)] transition-colors group cursor-default">
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] transition-colors group cursor-default">
           <img
             src={user?.profileImage || 'https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png'}
             alt=""
@@ -252,7 +252,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
       >
         <button
           onClick={() => setMobileOpen(false)}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[rgba(0,0,0,0.06)] dark:bg-[rgba(255,255,255,0.08)] text-[#86868B] hover:text-[var(--apple-text)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[rgba(0,0,0,0.06)] text-[#86868B] hover:text-[var(--apple-text)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
           aria-label="Cerrar menú"
         >
           <X size={16} />
@@ -261,7 +261,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--apple-bg)] print:bg-white print:overflow-visible">
-        <header className="print:hidden shrink-0 border-b border-[var(--apple-border)] bg-[rgba(245,245,247,0.75)] dark:bg-[rgba(28,28,30,0.75)] backdrop-blur-[30px] z-10">
+        <header className="print:hidden shrink-0 border-b border-[var(--apple-border)] bg-[rgba(245,245,247,0.75)] backdrop-blur-[30px] z-10">
           <div className="flex items-center justify-between px-4 sm:px-6 h-[54px]">
             <div className="flex items-center gap-2 min-w-0">
               <button
