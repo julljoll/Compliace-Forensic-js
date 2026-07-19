@@ -131,6 +131,10 @@ export default function CasoDetailPage() {
     }
   }, [id, casos, router, seleccionarCaso]);
 
+  const stagesList = useMemo(() => {
+    return caso?.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto) : [];
+  }, [caso?.tipoProyecto]);
+
   if (!caso) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -141,9 +145,6 @@ export default function CasoDetailPage() {
 
   const evidenciasCaso = evidencias.filter(e => e.casoId === caso.id);
   const tareasCaso = tareas.filter(t => t.casoId === caso.id);
-  const stagesList = useMemo(() => {
-    return caso.tipoProyecto ? getPasosPorTipo(caso.tipoProyecto) : [];
-  }, [caso.tipoProyecto]);
   const logsCaso = auditLogs.filter(l => l.casoId === caso.id);
 
   const handleEstadoChange = (nuevoEstado: EstadoCaso) => {
