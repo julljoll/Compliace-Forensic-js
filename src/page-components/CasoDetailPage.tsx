@@ -31,8 +31,8 @@ const ESTADO_OPCIONES: { value: EstadoCaso; label: string; color: string }[] = [
   { value: 'iniciado',    label: 'Iniciado',    color: 'bg-[var(--co-blue)]/10 text-[var(--co-blue)] border-[var(--co-blue)]/20' },
   { value: 'en_proceso',  label: 'En Proceso',  color: 'bg-yellow-500/10 text-[#FF9500] border-yellow-500/20' },
   { value: 'analisis',    label: 'Análisis',    color: 'bg-purple-500/10 text-[#AF52DE] border-purple-500/20' },
-  { value: 'informe',     label: 'Informe',     color: 'bg-indigo-500/10 text-[#5856D6] border-indigo-500/20' },
-  { value: 'cerrado',     label: 'Cerrado',     color: 'bg-green-500/10 text-[#34C759] border-green-500/20' },
+  { value: 'informe',     label: 'Informe',     color: 'bg-[#9DFF00]/10 text-[#9DFF00] border-[#9DFF00]/20' },
+  { value: 'cerrado',     label: 'Cerrado',     color: 'bg-green-500/10 text-[#00FF41] border-green-500/20' },
   { value: 'archivado',   label: 'Archivado',   color: 'bg-gray-500/10 text-[#86868B] border-gray-500/20' },
 ];
 
@@ -40,7 +40,7 @@ const PRIORIDAD_OPCIONES: { value: PrioridadCaso; label: string; color: string }
   { value: 'critica', label: 'Crítica', color: 'bg-red-500/10 text-[#FF3B30] border-red-500/20' },
   { value: 'alta',    label: 'Alta',    color: 'bg-orange-500/10 text-[#FF9500] border-orange-500/20' },
   { value: 'media',   label: 'Media',   color: 'bg-yellow-500/10 text-[#FF9500] border-yellow-500/20' },
-  { value: 'baja',    label: 'Baja',    color: 'bg-green-500/10 text-[#34C759] border-green-500/20' },
+  { value: 'baja',    label: 'Baja',    color: 'bg-green-500/10 text-[#00FF41] border-green-500/20' },
 ];
 
 

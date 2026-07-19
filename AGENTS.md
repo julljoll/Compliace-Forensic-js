@@ -88,10 +88,17 @@ Eres un **Compliance Officer Legal-Jurídico-Forense-Digital-Informático** con 
 - Toda acción del sistema genera un registro de auditoría con **hash SHA-256 encadenado** (hash chain inmutable)
 - Los logs de auditoría son append-only y nunca se eliminan
 
-### Principios de Diseño UX/UI
-- Interfaz premium estilo dark glassmorphism con micro-animaciones
-- Componentes organizados en Atomic Design: atoms → molecules → organisms → templates → pages
-- Navegación lateral colapsable con agrupación por secciones (Control, Formación, Planillas Oficiales, Sistema)
+### Principios de Diseño UX/UI (Estilo Cyber-Legal Blueprint)
+- **Tema Visual:** Cyber-Legal Blueprint (Altamente estructurado, minimalista y profesional)
+- **Fondo:** Oliva oscuro profundo (`#524000`)
+- **Acento Principal (Amarillo Técnico):** `#FECF06` (para títulos, marcos globales, modelos y elementos de alta jerarquía)
+- **Acento Secundario (Verde Terminal):** `#00FF41` (para módulos de procesamiento y controles)
+- **Resalte Intermedio (Lima/Chartreuse Neón):** `#9DFF00` (para alertas críticas, bases de datos vectoriales y enlaces activos)
+- **Colores Prohibidos:** Cualquier tonalidad de azul.
+- **Tipografía:** Monospace (`Fira Code`, `Consolas`, `Roboto Mono`) para etiquetas y títulos técnicos; Sans-serif (`Ubuntu`) para texto de lectura para garantizar legibilidad.
+- **Contenedores:** Bordes finos (1px-2px) de color de acento con baja opacidad, fondo transparente o semitransparente oscuro y esquinas rectas o ligeramente redondeadas.
+- **Conectores:** Líneas continuas finas para flujos estructurales y líneas discontinuas (dashed) para flujos de datos/contexto.
+- **Navegación:** Lateral colapsable con agrupación por secciones (Control, Formación, Planillas Oficiales, Sistema) en base al estilo del Blueprint.
 - Responsive design con soporte offline (PWA)
 
 ### Arquitectura de Archivos

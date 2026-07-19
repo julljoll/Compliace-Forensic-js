@@ -86,9 +86,9 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const metaTheme = document.querySelector('meta[name="theme-color"]')
-    document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
-    if (metaTheme) metaTheme.setAttribute('content', '#FAFAFA')
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+    if (metaTheme) metaTheme.setAttribute('content', '#524000')
   }, [])
 
   const [mobileOpen, setMobileOpen] = useState(false)

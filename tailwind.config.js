@@ -43,12 +43,12 @@ module.exports = {
           orange: '#FF9500',
           yellow: '#FFCC00',
           green:  '#34C759',
-          mint:   '#00C7BE',
-          teal:   '#30B0C7',
-          cyan:   '#32ADE6',
-          blue:   '#007AFF',
-          indigo: '#5856D6',
-          purple: '#AF52DE',
+          mint:   '#00FF41',
+          teal:   '#00FF41',
+          cyan:   '#9DFF00',
+          blue:   'var(--apple-accent)',
+          indigo: '#FECF06',
+          purple: '#9DFF00',
           pink:   '#FF2D55',
           brown:  '#A2845E',
           gray:   '#8E8E93',
@@ -78,9 +78,23 @@ module.exports = {
           surface: 'var(--apple-bg)',
           textMuted: 'var(--apple-text-muted)',
         },
+        // ── Blue Override to prevent blue tones ──
+        blue: {
+          50: '#524000',
+          100: '#8C7000',
+          200: '#B29000',
+          300: '#D6AF00',
+          400: '#9DFF00', // lime
+          500: '#FECF06', // Gold/Yellow (primary accent)
+          600: '#00FF41', // Terminal green (secondary accent)
+          700: '#FECF06',
+          800: '#524000',
+          900: '#292000',
+        },
       },
       fontFamily: {
         sans: ['"Ubuntu"', 'sans-serif'],
+        mono: ['"Fira Code"', 'Consolas', '"Roboto Mono"', 'monospace'],
       },
       fontSize: {
         'apple-title':   ['2rem',   { lineHeight: '1.2', fontWeight: '700', letterSpacing: '-0.025em' }],
@@ -94,9 +108,9 @@ module.exports = {
         'apple-caption2':['0.5625rem',{lineHeight: '1.2', fontWeight: '600', letterSpacing: '0.04em' }],
       },
       borderRadius: {
-        'apple-btn': '8px',
-        'apple-card': '16px',
-        'apple-panel': '20px',
+        'apple-btn': '4px',
+        'apple-card': '6px',
+        'apple-panel': '8px',
       },
       backdropBlur: {
         apple: '30px',

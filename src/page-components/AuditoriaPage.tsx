@@ -34,7 +34,7 @@ function getRelativeTime(dateString: string) {
 const ACTION_META: Record<string, { label: string; color: string; bg: string; border: string }> = {
   crear:     { label: 'CREAR',     color: 'var(--co-green)',  bg: 'rgba(52,199,89,0.08)',  border: 'rgba(52,199,89,0.25)'  },
   eliminar:  { label: 'ELIMINAR',  color: 'var(--co-red)',    bg: 'rgba(255,59,48,0.08)',  border: 'rgba(255,59,48,0.25)'  },
-  modificar: { label: 'MODIFICAR', color: 'var(--co-blue)',   bg: 'rgba(0,122,255,0.08)',  border: 'rgba(0,122,255,0.25)'  },
+  modificar: { label: 'MODIFICAR', color: 'var(--co-blue)',   bg: 'rgba(254,207,6,0.08)', border: 'rgba(254,207,6,0.25)' },
   verificar: { label: 'VERIFICAR', color: 'var(--co-purple)', bg: 'rgba(175,82,222,0.08)', border: 'rgba(175,82,222,0.25)' },
   imprimir:  { label: 'IMPRIMIR',  color: 'var(--co-indigo)', bg: 'rgba(88,86,214,0.08)',  border: 'rgba(88,86,214,0.25)'  },
   default:   { label: 'SISTEMA',   color: 'var(--co-gray-1)', bg: 'var(--co-surface-3)',   border: 'var(--co-gray-4)'      },
@@ -51,7 +51,7 @@ function getActionMeta(accion: string) {
 }
 
 const ESTADO_META: Record<string, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  iniciado:   { label: 'Iniciado',   color: 'var(--co-blue)',   bg: 'rgba(0,122,255,0.08)',   border: 'rgba(0,122,255,0.2)',   dot: 'var(--co-blue)'   },
+  iniciado:   { label: 'Iniciado',   color: 'var(--co-blue)',   bg: 'rgba(254,207,6,0.08)',   border: 'rgba(254,207,6,0.2)',   dot: 'var(--co-blue)'   },
   en_proceso: { label: 'En Proceso', color: 'var(--co-orange)', bg: 'rgba(255,149,0,0.08)',   border: 'rgba(255,149,0,0.2)',   dot: 'var(--co-orange)' },
   analisis:   { label: 'Análisis',   color: 'var(--co-purple)', bg: 'rgba(175,82,222,0.08)',  border: 'rgba(175,82,222,0.2)',  dot: 'var(--co-purple)' },
   informe:    { label: 'Informe',    color: 'var(--co-indigo)', bg: 'rgba(88,86,214,0.08)',   border: 'rgba(88,86,214,0.2)',   dot: 'var(--co-indigo)' },

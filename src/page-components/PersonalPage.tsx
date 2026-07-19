@@ -199,15 +199,15 @@ export default function PersonalPage() {
         </div>
         <div className="flex bg-[rgba(0,0,0,0.04)] p-1 rounded-lg border border-[rgba(0,0,0,0.08)]">
           <button onClick={() => setActiveTab('profile')}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'profile' ? 'bg-[#0071E3] text-white shadow-md' : 'text-[#86868B] hover:text-[#1D1D1F]'}`}>
+            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'profile' ? 'bg-[#FECF06] text-white shadow-md' : 'text-[#86868B] hover:text-white'}`}>
             <User size={14} /> Mi Perfil (Admin)
           </button>
           <button onClick={() => setActiveTab('collaborators')}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'collaborators' ? 'bg-[#0071E3] text-white shadow-md' : 'text-[#86868B] hover:text-[#1D1D1F]'}`}>
+            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'collaborators' ? 'bg-[#FECF06] text-white shadow-md' : 'text-[#86868B] hover:text-white'}`}>
             <UserPlus size={14} /> Colaboradores ({personal.length})
           </button>
           <button onClick={() => setActiveTab('projects')}
-            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'projects' ? 'bg-[#0071E3] text-white shadow-md' : 'text-[#86868B] hover:text-[#1D1D1F]'}`}>
+            className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-2 ${activeTab === 'projects' ? 'bg-[#FECF06] text-white shadow-md' : 'text-[#86868B] hover:text-white'}`}>
             <FolderOpen size={14} /> Mis Proyectos ({casos.length})
           </button>
         </div>
@@ -216,7 +216,7 @@ export default function PersonalPage() {
       {activeTab === 'profile' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="apple-card p-6 lg:col-span-1 flex flex-col items-center text-center justify-center relative">
-            <div className="absolute top-4 right-4 bg-[rgba(0,113,227,0.1)] border border-[rgba(0,113,227,0.2)] text-[#0071E3] px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
+            <div className="absolute top-4 right-4 bg-[rgba(254,207,6,0.1)] border border-[rgba(254,207,6,0.2)] text-[#FECF06] px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">
               {user?.rol || 'Usuario'}
             </div>
             <div className="relative group w-32 h-32 mb-6">
@@ -228,12 +228,12 @@ export default function PersonalPage() {
               </button>
               <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
             </div>
-            <h2 className="text-xl font-bold text-[#1D1D1F]">{user?.nombre || 'Usuario'}</h2>
+            <h2 className="text-xl font-bold text-white">{user?.nombre || 'Usuario'}</h2>
             <p className="text-xs text-[#86868B] font-mono mt-1">{user?.email || 'admin@sha256.us'}</p>
             <div className="w-full border-t border-[rgba(0,0,0,0.08)] mt-6 pt-4 text-left space-y-3">
               <div className="flex items-center gap-2.5 text-xs">
-                <Shield size={14} className="text-[#0071E3]" />
-                <span className="font-semibold text-[#1D1D1F]">Rol del Sistema:</span>
+                <Shield size={14} className="text-[#FECF06]" />
+                <span className="font-semibold text-white">Rol del Sistema:</span>
                 <span className="text-[#86868B] font-mono">{ROLES.find(r => r.value === user?.rol)?.label || user?.rol || 'Administrador'}</span>
               </div>
             </div>
@@ -241,11 +241,11 @@ export default function PersonalPage() {
 
           <div className="apple-card p-6 lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3 border-b border-[rgba(0,0,0,0.08)] pb-4">
-              <div className="w-8 h-8 rounded-lg bg-[rgba(0,113,227,0.1)] border border-[rgba(0,113,227,0.2)] flex items-center justify-center text-[#0071E3]">
+              <div className="w-8 h-8 rounded-lg bg-[rgba(254,207,6,0.1)] border border-[rgba(254,207,6,0.2)] flex items-center justify-center text-[#FECF06]">
                 <Key size={16} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-[#1D1D1F]">Cambiar Clave de Acceso</h3>
+                <h3 className="text-lg font-bold text-white">Cambiar Clave de Acceso</h3>
                 <p className="text-xs text-[#86868B] font-medium">Actualiza tu contraseña para asegurar tu cuenta de peritaje.</p>
               </div>
             </div>
@@ -267,18 +267,18 @@ export default function PersonalPage() {
                   <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Nueva Contraseña</label>
                   <input type="password" placeholder="Mínimo 6 caracteres" value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] focus:ring-1 focus:ring-[#0071E3] outline-none transition-all placeholder:text-[#86868B]/50" />
+                    className="w-full px-3 py-2 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] focus:ring-1 focus:ring-[#FECF06] outline-none transition-all placeholder:text-[#86868B]/50" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Confirmar Nueva Contraseña</label>
                   <input type="password" placeholder="Repite la contraseña" value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] focus:ring-1 focus:ring-[#0071E3] outline-none transition-all placeholder:text-[#86868B]/50" />
+                    className="w-full px-3 py-2 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] focus:ring-1 focus:ring-[#FECF06] outline-none transition-all placeholder:text-[#86868B]/50" />
                 </div>
               </div>
               <div className="flex justify-end pt-2">
                 <button type="submit" disabled={changingPass}
-                  className="px-6 py-2 bg-[#0071E3] text-white text-xs font-bold rounded-lg hover:bg-[#0077ED] transition-colors">
+                  className="px-6 py-2 bg-[#FECF06] text-white text-xs font-bold rounded-lg hover:bg-[#E6BA05] transition-colors">
                   {changingPass ? 'Actualizando...' : 'Guardar Cambios'}
                 </button>
               </div>
@@ -291,30 +291,30 @@ export default function PersonalPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="space-y-6 lg:col-span-1">
             {topCollaborator ? (
-              <div className="apple-card p-6 border border-[rgba(0,113,227,0.3)] relative overflow-hidden bg-gradient-to-br from-white to-[rgba(0,113,227,0.04)]">
-                <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-[rgba(0,113,227,0.05)] rounded-full blur-xl"></div>
-                <div className="absolute top-4 right-4 text-[#0071E3]">
+              <div className="apple-card p-6 border border-[rgba(254,207,6,0.3)] relative overflow-hidden bg-gradient-to-br from-white to-[rgba(254,207,6,0.04)]">
+                <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-[rgba(254,207,6,0.05)] rounded-full blur-xl"></div>
+                <div className="absolute top-4 right-4 text-[#FECF06]">
                   <Trophy size={20} strokeWidth={2.5} className="drop-shadow-[0_2px_4px_rgba(254,207,6,0.3)] animate-pulse" />
                 </div>
-                <h4 className="text-xs font-black uppercase text-[#0071E3] tracking-wider mb-4 flex items-center gap-1.5">
+                <h4 className="text-xs font-black uppercase text-[#FECF06] tracking-wider mb-4 flex items-center gap-1.5">
                   Colaborador Destacado
                 </h4>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 rounded-full bg-[rgba(0,0,0,0.03)] border-2 border-[#0071E3] flex items-center justify-center font-bold text-[#0071E3] text-lg">
+                  <div className="w-14 h-14 rounded-full bg-[rgba(0,0,0,0.03)] border-2 border-[#FECF06] flex items-center justify-center font-bold text-[#FECF06] text-lg">
                     {topCollaborator.nombre?.charAt(0)}{topCollaborator.apellido?.charAt(0)}
                   </div>
                   <div>
-                    <h5 className="font-bold text-[#1D1D1F] text-base leading-tight">
+                    <h5 className="font-bold text-white text-base leading-tight">
                       {topCollaborator.nombre} {topCollaborator.apellido}
                     </h5>
                     <p className="text-xs text-[#86868B] mt-0.5">{topCollaborator.cargo}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-[#0071E3] mb-4">
+                <div className="flex items-center gap-1 text-[#FECF06] mb-4">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={16} fill={i < (topCollaborator.ranking || 0) ? "currentColor" : "none"} />
                   ))}
-                  <span className="text-xs font-bold text-[#1D1D1F] ml-1.5">({topCollaborator.ranking || 0}/5 Estrellas)</span>
+                  <span className="text-xs font-bold text-white ml-1.5">({topCollaborator.ranking || 0}/5 Estrellas)</span>
                 </div>
                 <p className="text-xs text-[#86868B] leading-relaxed italic">
                   Actualmente liderando la tabla de valoración de peritos en procesos activos de preservación forense SHA256.US.
@@ -329,76 +329,76 @@ export default function PersonalPage() {
 
             {!showAddForm ? (
               <button onClick={() => setShowAddForm(true)}
-                className="w-full py-3 bg-[#0071E3] text-white text-xs font-bold rounded-lg hover:bg-[#0077ED] transition-all flex items-center justify-center gap-2.5">
+                className="w-full py-3 bg-[#FECF06] text-white text-xs font-bold rounded-lg hover:bg-[#E6BA05] transition-all flex items-center justify-center gap-2.5">
                 <UserPlus size={16} /> Crear Colaborador
               </button>
             ) : (
               <div className="apple-card p-5 space-y-4">
                 <div className="flex justify-between items-center border-b border-[rgba(0,0,0,0.08)] pb-3">
-                  <h4 className="font-bold text-sm text-[#1D1D1F]">{isEditing ? 'Editar Colaborador' : 'Nuevo Colaborador'}</h4>
-                  <button onClick={resetForm} className="text-xs text-[#86868B] hover:text-[#1D1D1F]">Cancelar</button>
+                  <h4 className="font-bold text-sm text-white">{isEditing ? 'Editar Colaborador' : 'Nuevo Colaborador'}</h4>
+                  <button onClick={resetForm} className="text-xs text-[#86868B] hover:text-white">Cancelar</button>
                 </div>
                 <form onSubmit={handleAddCollaborator} className="space-y-3.5">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Nombre *</label>
                       <input type="text" required value={nombre} onChange={(e) => setNombre(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Apellido *</label>
                       <input type="text" required value={apellido} onChange={(e) => setApellido(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Cédula *</label>
                       <input type="text" required value={ci} onChange={(e) => setCi(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Cargo *</label>
                       <input type="text" required placeholder="Ej. Perito Forense" value={cargo} onChange={(e) => setCargo(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Usuario *</label>
                     <input type="text" required placeholder="Nombre de usuario" value={username} onChange={(e) => setUsername(e.target.value)} disabled={isEditing !== null}
-                      className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all disabled:opacity-50" />
+                      className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all disabled:opacity-50" />
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">{isEditing ? 'Contraseña (dejar en blanco para no cambiar)' : 'Contraseña *'}</label>
                     <input type="password" required={!isEditing} placeholder="Clave de acceso" value={passwordColab} onChange={(e) => setPasswordColab(e.target.value)}
-                      className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                      className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Rol del Sistema</label>
                     <select value={rol} onChange={(e) => setRol(e.target.value)}
-                      className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all">
+                      className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all">
                       {ROLES.map(r => (<option key={r.value} value={r.value}>{r.label}</option>))}
                     </select>
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Email *</label>
                     <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                      className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Teléfono</label>
                       <input type="text" value={telefono} onChange={(e) => setTelefono(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wider">Despacho</label>
                       <input type="text" placeholder="Ej. Laboratorio 3" value={despacho} onChange={(e) => setDespacho(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm text-[#1D1D1F] bg-white border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#0071E3] outline-none transition-all" />
+                        className="w-full px-3 py-1.5 text-sm text-white bg-[var(--apple-bg-secondary)] border border-[rgba(0,0,0,0.12)] rounded-lg focus:border-[#FECF06] outline-none transition-all" />
                     </div>
                   </div>
                   <button type="submit"
-                    className="w-full py-2.5 bg-[#0071E3] text-white text-xs font-bold rounded-lg hover:bg-[#0077ED] transition-colors mt-2">
+                    className="w-full py-2.5 bg-[#FECF06] text-white text-xs font-bold rounded-lg hover:bg-[#E6BA05] transition-colors mt-2">
                     {isEditing ? 'Actualizar Colaborador' : 'Guardar Colaborador'}
                   </button>
                 </form>
@@ -408,7 +408,7 @@ export default function PersonalPage() {
 
           <div className="lg:col-span-2 space-y-4">
             <div className="apple-card p-6">
-              <h3 className="text-lg font-bold text-[#1D1D1F] mb-4">Directorio de Colaboradores (Base de Datos)</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Directorio de Colaboradores (Base de Datos)</h3>
               {loading ? (
                 <div className="text-center py-10 text-[#86868B]">Cargando...</div>
               ) : personal.length === 0 ? (
@@ -422,10 +422,10 @@ export default function PersonalPage() {
                     const isColabActive = p.activo === 1 || p.activo === true || p.activo === '1';
                     return (
                       <div key={p.id}
-                        className={`apple-card p-5 border border-black/[0.06] rounded-2xl bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300 ${!isColabActive ? 'opacity-60' : ''}`}>
+                        className={`apple-card p-5 border border-black/[0.06] rounded-2xl bg-[var(--apple-bg-secondary)] shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-300 ${!isColabActive ? 'opacity-60' : ''}`}>
                         <div className="space-y-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full bg-black/[0.03] border border-black/[0.08] flex items-center justify-center font-bold text-[#0071E3] text-sm overflow-hidden shrink-0">
+                            <div className="w-12 h-12 rounded-full bg-black/[0.03] border border-[var(--co-separator)] flex items-center justify-center font-bold text-[#FECF06] text-sm overflow-hidden shrink-0">
                               {p.profile_image ? (
                                 <img src={p.profile_image} alt={p.nombre} className="w-full h-full object-cover" />
                               ) : (
@@ -433,7 +433,7 @@ export default function PersonalPage() {
                               )}
                             </div>
                             <div className="min-w-0">
-                              <h4 className="font-bold text-[#1D1D1F] text-[14px] truncate">
+                              <h4 className="font-bold text-white text-[14px] truncate">
                                 {p.nombre} {p.apellido}
                               </h4>
                               <p className="text-[11px] text-[#86868B] font-medium truncate">@{p.username}</p>
@@ -467,7 +467,7 @@ export default function PersonalPage() {
                         </div>
 
                         <div className="flex items-center justify-between border-t border-black/[0.05] mt-4 pt-3">
-                          <div className="flex items-center gap-0.5 text-[#0071E3]">
+                          <div className="flex items-center gap-0.5 text-[#FECF06]">
                             {Array.from({ length: 5 }).map((_, i) => (
                               <button key={i} type="button" onClick={() => handleSetRanking(p.id, i + 1)} className="hover:scale-115 transition-transform">
                                 <Star size={13} fill={i < (p.ranking || 0) ? "currentColor" : "none"} className="cursor-pointer" />
@@ -476,7 +476,7 @@ export default function PersonalPage() {
                           </div>
 
                           <div className="flex items-center gap-1">
-                            <button onClick={() => handleEditClick(p)} className="p-1.5 rounded-lg text-[#86868B] hover:text-[#0071E3] hover:bg-black/[0.04] transition-colors" title="Editar">
+                            <button onClick={() => handleEditClick(p)} className="p-1.5 rounded-lg text-[#86868B] hover:text-[#FECF06] hover:bg-black/[0.04] transition-colors" title="Editar">
                               <Edit size={14} />
                             </button>
                             <button onClick={() => handleToggleActive(p.id, p.activo)} className="p-1.5 rounded-lg text-[#86868B] hover:text-[#FF3B30] hover:bg-black/[0.04] transition-colors" title={isColabActive ? 'Desactivar' : 'Activar'}>
@@ -498,10 +498,10 @@ export default function PersonalPage() {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-bold text-[#1D1D1F]">Mis Proyectos Forenses</h3>
+              <h3 className="text-lg font-bold text-white">Mis Proyectos Forenses</h3>
               <p className="text-xs text-[#86868B] mt-0.5">Control de procesos activos e inalterabilidad de la evidencia digital.</p>
             </div>
-            <span className="text-[10px] font-black font-mono text-[#0071E3] bg-[rgba(0,113,227,0.08)] px-2.5 py-1 rounded border border-[rgba(0,113,227,0.15)] uppercase tracking-widest">
+            <span className="text-[10px] font-black font-mono text-[#FECF06] bg-[rgba(254,207,6,0.08)] px-2.5 py-1 rounded border border-[rgba(254,207,6,0.15)] uppercase tracking-widest">
               Total: {casos.length} Proyectos
             </span>
           </div>
@@ -524,31 +524,31 @@ export default function PersonalPage() {
                 const compliancePct = Math.min(100, Math.round((checkedCount / 25) * 100));
 
                 return (
-                  <div key={caso.id} className="apple-card p-5 hover:border-[rgba(0,113,227,0.3)] transition-all flex flex-col justify-between h-[255px] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-[rgba(0,113,227,0.04)] rounded-full blur-xl group-hover:bg-[rgba(0,113,227,0.08)] transition-colors"></div>
+                  <div key={caso.id} className="apple-card p-5 hover:border-[rgba(254,207,6,0.3)] transition-all flex flex-col justify-between h-[255px] relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-[rgba(254,207,6,0.04)] rounded-full blur-xl group-hover:bg-[rgba(254,207,6,0.08)] transition-colors"></div>
                     <div>
                       <div className="flex justify-between items-start mb-3">
                         <div className="min-w-0">
-                          <span className="font-mono text-[9px] font-black text-[#0071E3] uppercase tracking-wider block">{caso.numeroCaso}</span>
-                          <h4 className="font-bold text-[#1D1D1F] text-sm line-clamp-1 group-hover:text-[#0071E3] transition-all">{caso.titulo}</h4>
+                          <span className="font-mono text-[9px] font-black text-[#FECF06] uppercase tracking-wider block">{caso.numeroCaso}</span>
+                          <h4 className="font-bold text-white text-sm line-clamp-1 group-hover:text-[#FECF06] transition-all">{caso.titulo}</h4>
                         </div>
                         <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded border shrink-0 ${caso.estado === 'cerrado' || caso.estado === 'archivado' ? 'bg-[rgba(0,0,0,0.04)] border-[rgba(0,0,0,0.08)] text-[#86868B]' : 'bg-[rgba(52,199,89,0.08)] border-[rgba(52,199,89,0.2)] text-[#34C759]'}`}>
                           {caso.estado}
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2 mb-4 text-[10px] text-[#86868B]">
-                        <div><span className="text-[8px] uppercase tracking-wider block opacity-50">Perito Líder</span><span className="font-bold text-[#1D1D1F]">{caso.peritoLider || 'Sin asignar'}</span></div>
-                        <div><span className="text-[8px] uppercase tracking-wider block opacity-50">Fiscalía</span><span className="font-bold text-[#1D1D1F] truncate block">{caso.fiscal || 'Sin asignar'}</span></div>
+                        <div><span className="text-[8px] uppercase tracking-wider block opacity-50">Perito Líder</span><span className="font-bold text-white">{caso.peritoLider || 'Sin asignar'}</span></div>
+                        <div><span className="text-[8px] uppercase tracking-wider block opacity-50">Fiscalía</span><span className="font-bold text-white truncate block">{caso.fiscal || 'Sin asignar'}</span></div>
                       </div>
                     </div>
                     <div className="space-y-3">
                       <div className="space-y-1">
                         <div className="flex justify-between text-[9px] font-bold">
-                          <span className="text-[#6E6E73] flex items-center gap-1"><Database size={10} className="text-[#0071E3]" /> Pasos Forenses</span>
-                          <span className="text-[#0071E3] font-mono">{stepCount}/{totalStepCount} ({stepPct}%)</span>
+                          <span className="text-[#6E6E73] flex items-center gap-1"><Database size={10} className="text-[#FECF06]" /> Pasos Forenses</span>
+                          <span className="text-[#FECF06] font-mono">{stepCount}/{totalStepCount} ({stepPct}%)</span>
                         </div>
                         <div className="w-full h-1 bg-[rgba(0,0,0,0.06)] rounded-full overflow-hidden">
-                          <div className="h-full bg-[#0071E3] rounded-full" style={{ width: `${stepPct}%` }} />
+                          <div className="h-full bg-[#FECF06] rounded-full" style={{ width: `${stepPct}%` }} />
                         </div>
                       </div>
                       <div className="space-y-1">

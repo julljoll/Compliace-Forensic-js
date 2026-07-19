@@ -16,10 +16,10 @@ import Badge from '../components/atoms/Badge';
 import StatusDot from '../components/atoms/StatusDot';
 
 const ESTADO_LABEL: Record<EstadoCaso, { label: string; color: string }> = {
-  iniciado:    { label: 'Iniciado',    color: 'bg-blue-500/15 text-blue-600 border-blue-500/25' },
-  en_proceso:  { label: 'En Proceso',  color: 'bg-yellow-500/15 text-yellow-600 border-yellow-500/25' },
+  iniciado:    { label: 'Iniciado',    color: 'bg-yellow-500/15 text-[#FECF06] border-yellow-500/25' },
+  en_proceso:  { label: 'En Proceso',  color: 'bg-yellow-500/15 text-[#FECF06] border-yellow-500/25' },
   analisis:    { label: 'Análisis',    color: 'bg-purple-500/15 text-purple-600 border-purple-500/25' },
-  informe:     { label: 'Informe',     color: 'bg-indigo-500/15 text-indigo-600 border-indigo-500/25' },
+  informe:     { label: 'Informe',     color: 'bg-[#9DFF00]/10 text-[#9DFF00] border-[#9DFF00]/20' },
   cerrado:     { label: 'Cerrado',     color: 'bg-green-500/15 text-green-600 border-green-500/25' },
   archivado:   { label: 'Archivado',   color: 'bg-gray-500/15 text-gray-500 border-gray-500/25' },
 };

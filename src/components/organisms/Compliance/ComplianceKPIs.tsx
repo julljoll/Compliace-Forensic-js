@@ -14,13 +14,13 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
     { 
       label: 'Global Progress', 
       value: `${stats.pct}%`, 
-      color: stats.pct >= 80 ? 'text-[#248A3D]' : stats.pct >= 50 ? 'text-[#0071E3]' : 'text-[#BF2D24]', 
+      color: stats.pct >= 80 ? 'text-[#00FF41]' : stats.pct >= 50 ? 'text-[var(--apple-accent)]' : 'text-[#FF3B30]', 
       icon: ShieldCheck 
     },
     { 
       label: 'Verified Stages', 
       value: stats.checkedStages, 
-      color: 'text-[#248A3D]', 
+      color: 'text-[#00FF41]', 
       icon: CheckCircle2 
     },
     { 
@@ -32,7 +32,7 @@ export default function ComplianceKPIs({ stats, totalNormativas }: ComplianceKPI
     { 
       label: 'Active Frameworks', 
       value: totalNormativas, 
-      color: 'text-[#0071E3]', 
+      color: 'text-[var(--apple-accent)]', 
       icon: ListChecks 
     },
   ];

@@ -10,92 +10,97 @@
   }
 
   h1 {
-    color: #1D1D1F !important;
+    color: #00FF41 !important; /* Verde Matriz */
+    font-family: 'Ubuntu', monospace !important;
     font-weight: 700;
     letter-spacing: -0.025em;
     font-size: clamp(22px, 4.5vw, 32px) !important;
     line-height: 1.25;
   }
   h2 {
-    color: #1D1D1F !important;
+    color: #FECF06 !important; /* Amarillo Oro */
+    font-family: 'Ubuntu', monospace !important;
     font-weight: 600;
     letter-spacing: -0.02em;
     font-size: clamp(18px, 3.5vw, 26px) !important;
     line-height: 1.3;
   }
   h3, h4 {
-    color: #1D1D1F !important;
+    color: #FECF06 !important; /* Amarillo Oro */
+    font-family: 'Ubuntu', monospace !important;
     font-weight: 600;
     letter-spacing: -0.01em;
     font-size: clamp(15px, 2.5vw, 20px) !important;
     line-height: 1.4;
+    background-color: rgba(254, 207, 6, 0.18) !important;
+    border-left: 3px solid #FECF06 !important;
+    padding-left: 8px !important;
   }
   h5, h6 {
-    color: #6E6E73 !important;
+    color: #FFFFFF !important; /* Blanco */
     font-weight: 500;
     font-size: clamp(13px, 2vw, 16px) !important;
     line-height: 1.45;
   }
 
   :root {
-    /* Compliance Officer (CO) Design Tokens - Light Theme (Professional) */
-    --co-bg: #F5F5F7;
-    --login-bg: linear-gradient(135deg, #F5F7FA 0%, #C3CFD9 100%);
-    --co-surface-1: #FFFFFF;
-    --co-surface-2: #E5E5EA;
-    --co-surface-3: #D1D1D6;
-    --co-accent: #007AFF;
-    --co-accent-fg: #FFFFFF;
+    /* Compliance Officer (CO) Design Tokens - Cyber-Legal Blueprint Dark Theme */
+    --co-bg: #524000; /* deep dark tone */
+    --login-bg: linear-gradient(135deg, #524000 0%, #211a00 100%);
+    --co-surface-1: rgba(0, 0, 0, 0.35); /* semi-transparent technical environment */
+    --co-surface-2: rgba(254, 207, 6, 0.05);
+    --co-surface-3: rgba(254, 207, 6, 0.1);
+    --co-accent: #FECF06; /* Technical yellow */
+    --co-accent-fg: #000000;
     --co-red: #FF3B30;
     --co-orange: #FF9500;
-    --co-yellow: #FFCC00;
-    --co-green: #34C759;
-    --co-blue: #007AFF;
-    --co-purple: #AF52DE;
-    --co-indigo: #5856D6;
-    --co-gray-1: #8E8E93;
-    --co-gray-2: #48484A;
-    --co-gray-3: #C7C7CC;
-    --co-gray-4: rgba(0, 0, 0, 0.06);
-    --co-gray-5: #E5E5EA;
-    --co-gray-6: #F2F2F7;
-    --co-separator: rgba(0, 0, 0, 0.08);
-    --co-vibrancy: rgba(255, 255, 255, 0.9);
+    --co-yellow: #FECF06;
+    --co-green: #00FF41; /* Terminal green */
+    --co-blue: #FECF06; /* Avoid blue, map to yellow */
+    --co-purple: #9DFF00; /* Lime */
+    --co-indigo: #00FF41;
+    --co-gray-1: #AEAEB2;
+    --co-gray-2: #E5E5EA;
+    --co-gray-3: #48484A;
+    --co-gray-4: rgba(255, 255, 255, 0.06);
+    --co-gray-5: #3a3a3c;
+    --co-gray-6: #1c1c1e;
+    --co-separator: rgba(254, 207, 6, 0.2); /* technical Yellow thin border */
+    --co-vibrancy: rgba(82, 64, 0, 0.85);
 
-    /* Sonoma shadows - Light Mode */
+    /* Sonoma shadows - Dark Theme style */
     --co-shadow-0: none;
-    --co-shadow-1: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.08);
-    --co-shadow-2: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06);
-    --co-shadow-3: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
-    --co-shadow-modal: 0 20px 50px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
+    --co-shadow-1: 0 1px 3px rgba(0,0,0,0.3);
+    --co-shadow-2: 0 4px 12px rgba(0,0,0,0.5);
+    --co-shadow-3: 0 8px 24px rgba(0,0,0,0.7);
+    --co-shadow-modal: 0 20px 50px rgba(0,0,0,0.9);
 
-    /* Sync legacy variables for light mode */
+    /* Sync legacy variables for dark mode */
     --apple-bg: var(--co-bg);
     --apple-bg-secondary: var(--co-surface-1);
     --apple-surface: var(--co-surface-1);
-    --apple-surface-hover: rgba(0, 0, 0, 0.04);
-    --apple-surface-active: rgba(0, 0, 0, 0.08);
+    --apple-surface-hover: rgba(254, 207, 6, 0.08);
+    --apple-surface-active: rgba(254, 207, 6, 0.15);
     --apple-border: var(--co-separator);
-    --apple-border-strong: rgba(0, 0, 0, 0.12);
+    --apple-border-strong: rgba(254, 207, 6, 0.4);
     --apple-accent: var(--co-accent);
-    --apple-accent-light: #34C759;
-    --apple-text: #1D1D1F;
+    --apple-accent-light: #00FF41;
+    --apple-text: #FFFFFF;
     --apple-text-muted: var(--co-gray-1);
     --apple-text-secondary: var(--co-gray-2);
     --apple-separator: var(--co-separator);
     --apple-sidebar-bg: var(--co-vibrancy);
-    --apple-btn-sec-bg: rgba(0, 0, 0, 0.04);
+    --apple-btn-sec-bg: rgba(254, 207, 6, 0.1);
     --apple-shadow: var(--co-shadow-1);
     --apple-shadow-hover: var(--co-shadow-2);
 
     font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
     font-weight: 400;
-    color-scheme: light;
+    color-scheme: dark;
     color: var(--apple-text);
     background-color: var(--apple-bg);
   }
-
 
   body {
     margin: 0;
@@ -113,8 +118,8 @@
   * { box-sizing: border-box; }
 
   ::selection {
-    background-color: rgba(0, 113, 227, 0.25);
-    color: var(--apple-text);
+    background-color: rgba(254, 207, 6, 0.3);
+    color: #FFFFFF;
   }
 }
 
@@ -152,7 +157,7 @@ html.dark ::-webkit-scrollbar-thumb {
   .apple-card {
     background-color: var(--apple-bg-secondary) !important;
     border: 1px solid var(--apple-border) !important;
-    border-radius: 16px !important;
+    border-radius: 6px !important;
     box-shadow: var(--apple-shadow) !important;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }

@@ -14,14 +14,14 @@ const TIPO_ICONS: Record<string, typeof BookOpen> = {
 
 const TIPO_STYLES: Record<string, { badge: string; iconBg: string; iconColor: string }> = {
   ISO: {
-    badge: 'bg-[rgba(0,122,255,0.08)] text-[#007AFF] border-[rgba(0,122,255,0.2)]',
-    iconBg: 'bg-[rgba(0,122,255,0.1)]',
-    iconColor: 'text-[#007AFF]',
+    badge: 'bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/20',
+    iconBg: 'bg-[#00FF41]/10',
+    iconColor: 'text-[#00FF41]',
   },
   NIST: {
-    badge: 'bg-[rgba(88,86,214,0.08)] text-[#5856D6] border-[rgba(88,86,214,0.2)]',
-    iconBg: 'bg-[rgba(88,86,214,0.1)]',
-    iconColor: 'text-[#5856D6]',
+    badge: 'bg-[#9DFF00]/10 text-[#9DFF00] border-[#9DFF00]/20',
+    iconBg: 'bg-[#9DFF00]/10',
+    iconColor: 'text-[#9DFF00]',
   },
   LEY: {
     badge: 'bg-[rgba(255,59,48,0.08)] text-[#FF3B30] border-[rgba(255,59,48,0.2)]',
@@ -68,14 +68,14 @@ export default function NormativasPage() {
   return (
     <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row gap-6 apple-fade-in overflow-hidden">
       {/* Sidebar - Master List */}
-      <div className="w-full md:w-80 flex flex-col bg-white border border-black/[0.06] rounded-2xl overflow-hidden shrink-0">
-        <div className="p-4 border-b border-black/[0.06] space-y-3">
+      <div className="w-full md:w-80 flex flex-col bg-black/30 border border-[var(--co-separator)] rounded-md overflow-hidden shrink-0">
+        <div className="p-4 border-b border-[var(--co-separator)] space-y-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-lg bg-[#0071E3]/10 text-[#0071E3]">
+            <div className="p-1.5 rounded-md bg-[var(--apple-accent)]/10 text-[var(--apple-accent)]">
               <BookOpen size={16} />
             </div>
             <div>
-              <h2 className="font-bold text-[#1D1D1F] text-[15px] tracking-tight">Normativas</h2>
+              <h2 className="font-bold text-white text-[15px] tracking-tight">Normativas</h2>
               <p className="text-[10px] text-[#86868B] font-semibold uppercase tracking-wider">{normativas.length} Referencias normativas_rag</p>
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function NormativasPage() {
               placeholder="Buscar normativa..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs bg-black/[0.03] border border-transparent rounded-lg focus:border-[#0071E3] focus:bg-white outline-none transition-all"
+              className="w-full pl-9 pr-4 py-2 text-xs bg-black/20 border border-[var(--co-separator)] rounded-md focus:border-[var(--apple-accent)] focus:bg-black/30 text-white outline-none transition-all"
             />
           </div>
         </div>
@@ -107,10 +107,10 @@ export default function NormativasPage() {
                 <button
                   key={norm.id}
                   onClick={() => setSelectedNormativaId(norm.id)}
-                  className={`w-full text-left p-3 rounded-xl flex gap-3 transition-all cursor-pointer ${
+                  className={`w-full text-left p-3 rounded-md flex gap-3 transition-all cursor-pointer ${
                     isSelected 
-                      ? 'bg-[#0071E3] text-white' 
-                      : 'hover:bg-black/[0.04] text-[#1D1D1F]'
+                      ? 'bg-[var(--apple-accent)] text-black' 
+                      : 'hover:bg-white/5 text-white'
                   }`}
                 >
                   <div className={`p-2 rounded-lg shrink-0 flex items-center justify-center ${
@@ -120,7 +120,7 @@ export default function NormativasPage() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center justify-between mb-0.5 gap-2">
-                      <span className={`font-mono text-[10px] font-bold truncate ${isSelected ? 'text-white' : 'text-[#0071E3]'}`}>
+                      <span className={`font-mono text-[10px] font-bold truncate ${isSelected ? 'text-black font-extrabold' : 'text-[var(--apple-accent)]'}`}>
                         {norm.codigo}
                       </span>
                       <span className={`text-[8px] font-bold px-1 py-0.2 rounded border ${
@@ -131,7 +131,7 @@ export default function NormativasPage() {
                         {norm.tipo}
                       </span>
                     </div>
-                    <p className={`text-xs font-semibold truncate ${isSelected ? 'text-white' : 'text-[#1D1D1F]'}`}>
+                    <p className={`text-xs font-semibold truncate ${isSelected ? 'text-black' : 'text-white'}`}>
                       {norm.nombre}
                     </p>
                   </div>
@@ -143,26 +143,26 @@ export default function NormativasPage() {
       </div>
 
       {/* Detail View */}
-      <div className="flex-1 bg-white border border-black/[0.06] rounded-2xl overflow-y-auto p-6 md:p-8 flex flex-col justify-between">
+      <div className="flex-1 bg-black/30 border border-[var(--co-separator)] rounded-md overflow-y-auto p-6 md:p-8 flex flex-col justify-between">
         {selectedNormativa ? (
           <div className="space-y-6">
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-black/[0.06] pb-5 flex-wrap gap-4">
+            <div className="flex items-start justify-between border-b border-[var(--co-separator)] pb-5 flex-wrap gap-4">
               <div className="flex items-center gap-4">
-                <div className={`p-3.5 rounded-2xl shrink-0 ${TIPO_STYLES[selectedNormativa.tipo]?.iconBg || 'bg-black/[0.04]'}`}>
+                <div className={`p-3.5 rounded-md shrink-0 ${TIPO_STYLES[selectedNormativa.tipo]?.iconBg || 'bg-black/20'}`}>
                   {(() => {
                     const Icon = TIPO_ICONS[selectedNormativa.tipo] || BookOpen;
-                    return <Icon size={28} className={TIPO_STYLES[selectedNormativa.tipo]?.iconColor || 'text-[#1D1D1F]'} />;
+                    return <Icon size={28} className={TIPO_STYLES[selectedNormativa.tipo]?.iconColor || 'text-white'} />;
                   })()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="font-mono text-xs font-black text-[#0071E3] tracking-tight">{selectedNormativa.codigo}</span>
+                    <span className="font-mono text-xs font-black text-[var(--apple-accent)] tracking-tight">{selectedNormativa.codigo}</span>
                     <Badge variant={selectedNormativa.activa ? 'conforme' : 'neutro'}>
                       {selectedNormativa.activa ? 'VIGENTE' : 'INACTIVA'}
                     </Badge>
                   </div>
-                  <h1 className="text-xl font-bold text-[#1D1D1F] mt-1 tracking-tight">{selectedNormativa.nombre}</h1>
+                  <h1 className="text-xl font-bold text-white mt-1 tracking-tight">{selectedNormativa.nombre}</h1>
                 </div>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function NormativasPage() {
               <div className="lg:col-span-2 space-y-6">
                 <div>
                   <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-2">Descripción General</h3>
-                  <p className="text-sm text-[#1D1D1F] leading-relaxed bg-black/[0.01] border border-black/[0.04] p-4 rounded-xl">
+                  <p className="text-sm text-white/95 leading-relaxed bg-black/20 border border-[var(--co-separator)] p-4 rounded-md">
                     {selectedNormativa.descripcion}
                   </p>
                 </div>
@@ -182,7 +182,7 @@ export default function NormativasPage() {
                     <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-2">Artículos Relacionados</h3>
                     <div className="flex flex-wrap gap-1.5">
                       {selectedNormativa.articulos.map(art => (
-                        <span key={art} className="text-xs px-3.5 py-1.5 rounded-full bg-black/[0.04] text-[#6E6E73] font-medium border border-black/[0.06]">
+                        <span key={art} className="text-xs px-3.5 py-1.5 rounded-md bg-black/20 text-[#86868B] font-medium border border-[var(--co-separator)]">
                           {art}
                         </span>
                       ))}
@@ -193,9 +193,9 @@ export default function NormativasPage() {
 
               {/* Sidebar Metadata */}
               <div className="space-y-4">
-                <Card className="p-4 border border-black/[0.04] bg-black/[0.01]" hoverable={false}>
+                <Card className="p-4 border border-[var(--co-separator)] bg-black/20" hoverable={false}>
                   <h4 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-3">Detalles de Versión</h4>
-                  <div className="space-y-2.5 text-xs text-[#1D1D1F]">
+                  <div className="space-y-2.5 text-xs text-white">
                     <div className="flex justify-between">
                       <span className="text-[#86868B]">Versión actual:</span>
                       <span className="font-bold">{selectedNormativa.version}</span>
@@ -215,7 +215,7 @@ export default function NormativasPage() {
                 </Card>
 
                 {/* Casos utilizando */}
-                <Card className="p-4 border border-black/[0.04]" hoverable={false}>
+                <Card className="p-4 border border-[var(--co-separator)] bg-black/20" hoverable={false}>
                   <h4 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-3 flex items-center justify-between">
                     <span>Casos Vinculados</span>
                     <Badge variant="neutro">{casosUsandoSelected.length}</Badge>
@@ -228,9 +228,9 @@ export default function NormativasPage() {
                         <Link
                           key={c.id}
                           href={`/casos/${c.id}`}
-                          className="flex items-center gap-2 p-2 rounded-lg hover:bg-black/[0.04] text-xs text-[#1D1D1F] transition-all"
+                          className="flex items-center gap-2 p-2 rounded-md hover:bg-white/5 text-xs text-white transition-all"
                         >
-                          <FolderOpen size={12} className="text-[#0071E3]" />
+                          <FolderOpen size={12} className="text-[var(--apple-accent)]" />
                           <div className="min-w-0 flex-1">
                             <p className="font-bold truncate">{c.numeroCaso}</p>
                             <p className="text-[10px] text-[#86868B] truncate">{c.titulo}</p>
@@ -251,10 +251,10 @@ export default function NormativasPage() {
         )}
 
         {/* Footer info banner */}
-        <div className="mt-8 pt-5 border-t border-black/[0.06] flex gap-3 text-xs text-[#86868B] leading-relaxed">
-          <Info size={16} className="text-[#0071E3] shrink-0 mt-0.5" />
+        <div className="mt-8 pt-5 border-t border-[var(--apple-separator)] flex gap-3 text-xs text-[#86868B] leading-relaxed">
+          <Info size={16} className="text-[var(--apple-accent)] shrink-0 mt-0.5" />
           <p>
-            Los documentos normativos originales se encuentran intactos en el repositorio <code className="font-mono text-[#0071E3] bg-[#0071E3]/10 px-1.5 py-0.5 rounded-md">normativas_rag/</code>.
+            Los documentos normativos originales se encuentran intactos en el repositorio <code className="font-mono text-[var(--apple-accent)] bg-[var(--apple-accent)]/10 px-1.5 py-0.5 rounded-md">normativas_rag/</code>.
             Este panel los referencia para mantener la inalterabilidad y validar el compliance de auditoría en los flujos forenses.
           </p>
         </div>

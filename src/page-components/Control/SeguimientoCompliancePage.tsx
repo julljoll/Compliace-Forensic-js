@@ -60,7 +60,7 @@ const PLANILLA_DOCS: Record<string, { path: string; label: string }[]> = {
 // Helper types & configs for task list
 const ESTADO_TAREA: Record<EstadoTarea, { label: string; color: string; icon: any }> = {
   pendiente:   { label: 'Pendiente',    color: 'bg-[#FF9500]/10 text-[#FF9500] border-[#FF9500]/20', icon: Clock },
-  en_progreso: { label: 'En Progreso',  color: 'bg-[#007AFF]/10 text-[#007AFF] border-[#007AFF]/20',   icon: TrendingUp },
+  en_progreso: { label: 'En Progreso',  color: 'bg-[#FECF06]/10 text-[#FECF06] border-[#FECF06]/20',   icon: TrendingUp },
   completada:  { label: 'Completada',   color: 'bg-[#34C759]/10 text-[#34C759] border-[#34C759]/20',  icon: CheckCircle2 },
   bloqueada:   { label: 'Bloqueada',    color: 'bg-[#FF3B30]/10 text-[#FF3B30] border-[#FF3B30]/20',  icon: Pause },
 };
@@ -78,7 +78,7 @@ interface Advertencia { titulo: string; cuerpo: string; nivel: string; }
 
 function BadgeNormativa({ tag }: { tag: NormativaTag }) {
   const colors: Record<string, string> = {
-    cyan:   'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]',
+    cyan:   'bg-[#FECF06]/10 border-[#FECF06]/25 text-[#FECF06]',
     green:  'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]',
     yellow: 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]',
     red:    'bg-[#FF3B30]/10 border-[#FF3B30]/25 text-[#FF3B30]',
@@ -97,21 +97,21 @@ function AlertaForense({ adv }: { adv: Advertencia }) {
       wrapper: 'bg-[#FF3B30]/[0.06] border-[#FF3B30]/25',
       icon:    'text-[#FF3B30]',
       titulo:  'text-[#FF3B30]',
-      cuerpo:  'text-[#1D1D1F]',
+      cuerpo:  'text-white',
       Icon:    AlertTriangle,
     },
     warning: {
       wrapper: 'bg-[#FF9500]/[0.06] border-[#FF9500]/25',
       icon:    'text-[#FF9500]',
       titulo:  'text-[#FF9500]',
-      cuerpo:  'text-[#1D1D1F]',
+      cuerpo:  'text-white',
       Icon:    AlertTriangle,
     },
     info: {
-      wrapper: 'bg-[#007AFF]/[0.06] border-[#007AFF]/25',
-      icon:    'text-[#007AFF]',
-      titulo:  'text-[#007AFF]',
-      cuerpo:  'text-[#1D1D1F]',
+      wrapper: 'bg-[#FECF06]/[0.06] border-[#FECF06]/25',
+      icon:    'text-[#FECF06]',
+      titulo:  'text-[#FECF06]',
+      cuerpo:  'text-white',
       Icon:    Info,
     },
   };
@@ -142,9 +142,9 @@ function BloqueCode({ lang, contenido }: { lang: string; contenido: string }) {
 
   const LANG_COLOR: Record<string, string> = {
     bash:       'text-[#34C759]',
-    powershell: 'text-[#007AFF]',
+    powershell: 'text-[#FECF06]',
     sql:        'text-[#FF9500]',
-    python:     'text-[#007AFF]',
+    python:     'text-[#FECF06]',
   };
 
   return (
@@ -158,7 +158,7 @@ function BloqueCode({ lang, contenido }: { lang: string; contenido: string }) {
         </div>
         <button
           onClick={copiar}
-          className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded bg-white/[0.08] border border-white/[0.1] text-white/40 hover:text-[#007AFF] hover:border-[#007AFF]/30 transition-all"
+          className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-wider px-2 py-1 rounded bg-[var(--apple-bg-secondary)]/[0.08] border border-white/[0.1] text-white/40 hover:text-[#FECF06] hover:border-[#FECF06]/30 transition-all"
         >
           {copiado
             ? <><CheckCheck size={10} className="text-[#34C759]" /> Copiado</>
@@ -443,7 +443,7 @@ export default function SeguimientoCompliancePage() {
         <div className="p-4 rounded-full bg-apple-accent/10 border border-apple-accent/20 text-apple-accent mb-6 animate-pulse">
           <Briefcase size={48} strokeWidth={1.5} />
         </div>
-        <h2 className="text-2xl font-bold text-[#1D1D1F] mb-2">No se detectaron casos creados</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">No se detectaron casos creados</h2>
         <p className="text-[#86868B] text-sm max-w-md mb-6 leading-relaxed">
           Para realizar el seguimiento forense y compliance, es necesario inicializar al menos un proyecto/caso en la sección de control de casos.
         </p>
@@ -468,9 +468,9 @@ export default function SeguimientoCompliancePage() {
       {/* Header and selector */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#1D1D1F] tracking-tight flex items-center gap-3">
-            <div className="p-2 rounded-[4px] bg-[#0071E3]/10 border border-[#0071E3]/20">
-              <ShieldCheck className="text-[#0071E3]" size={26} strokeWidth={2.5} />
+          <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight flex items-center gap-3">
+            <div className="p-2 rounded-[4px] bg-[#FECF06]/10 border border-[#FECF06]/20">
+              <ShieldCheck className="text-[#FECF06]" size={26} strokeWidth={2.5} />
             </div>
             Etapas de los casos
           </h1>
@@ -506,19 +506,19 @@ export default function SeguimientoCompliancePage() {
           <div className="apple-card grid grid-cols-2 md:grid-cols-4 gap-4 p-5">
             <div className="space-y-0.5">
               <span className="text-[9px] font-semibold uppercase text-[#86868B] tracking-wider block">Dispositivo</span>
-              <p className="text-xs font-bold text-[#1D1D1F] truncate">{activeCaso.dispositivo_marca || 'N/D'} {activeCaso.dispositivo_modelo || ''}</p>
+              <p className="text-xs font-bold text-white truncate">{activeCaso.dispositivo_marca || 'N/D'} {activeCaso.dispositivo_modelo || ''}</p>
             </div>
             <div className="space-y-0.5">
               <span className="text-[9px] font-semibold uppercase text-[#86868B] tracking-wider block">IMEI</span>
-              <p className="text-xs font-mono text-[#0071E3] font-semibold truncate">{activeCaso.dispositivo_imei || 'N/D'}</p>
+              <p className="text-xs font-mono text-[#FECF06] font-semibold truncate">{activeCaso.dispositivo_imei || 'N/D'}</p>
             </div>
             <div className="space-y-0.5">
               <span className="text-[9px] font-semibold uppercase text-[#86868B] tracking-wider block">Fiscalía</span>
-              <p className="text-xs font-bold text-[#1D1D1F] truncate">{activeCaso.fiscal || 'Sin designar'}</p>
+              <p className="text-xs font-bold text-white truncate">{activeCaso.fiscal || 'Sin designar'}</p>
             </div>
             <div className="space-y-0.5">
               <span className="text-[9px] font-semibold uppercase text-[#86868B] tracking-wider block">Perito Asignado</span>
-              <p className="text-xs font-bold text-[#1D1D1F] truncate">{activeCaso.peritoLider || 'Sin designar'}</p>
+              <p className="text-xs font-bold text-white truncate">{activeCaso.peritoLider || 'Sin designar'}</p>
             </div>
           </div>
 
@@ -528,11 +528,11 @@ export default function SeguimientoCompliancePage() {
             <div className="apple-card p-5 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-bold text-[#1D1D1F] text-xs tracking-tight flex items-center gap-1.5">
-                  <Database size={14} className="text-[#007AFF]" />
+                <h3 className="font-bold text-white text-xs tracking-tight flex items-center gap-1.5">
+                  <Database size={14} className="text-[#FECF06]" />
                   Progreso de Pasos Forenses
                 </h3>
-                <span className="text-[9px] font-semibold font-mono text-[#007AFF] bg-[#007AFF]/10 px-2 py-0.5 rounded border border-[#007AFF]/20 uppercase tracking-widest">
+                <span className="text-[9px] font-semibold font-mono text-[#FECF06] bg-[#FECF06]/10 px-2 py-0.5 rounded border border-[#FECF06]/20 uppercase tracking-widest">
                   {metrics.completedStepsCount} / {metrics.totalSteps} Pasos
                 </span>
               </div>
@@ -541,13 +541,13 @@ export default function SeguimientoCompliancePage() {
                   className="h-full rounded-full transition-all duration-1000"
                   style={{
                     width: `${metrics.stepPct}%`,
-                    background: 'linear-gradient(90deg, #007AFF, #5856D6)'
+                    background: 'linear-gradient(90deg, #FECF06, #5856D6)'
                   }}
                 />
               </div>
               <div className="mt-2 flex justify-between text-[9px] font-medium text-[#86868B] uppercase tracking-widest">
                 <span>Fases de Metodología</span>
-                <span className="text-[#007AFF]">{metrics.stepPct}% Completado</span>
+                <span className="text-[#FECF06]">{metrics.stepPct}% Completado</span>
               </div>
             </div>
 
@@ -555,7 +555,7 @@ export default function SeguimientoCompliancePage() {
             <div className="apple-card p-5 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-green-500/40 to-transparent" />
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-bold text-[#1D1D1F] text-xs tracking-tight flex items-center gap-1.5">
+                <h3 className="font-bold text-white text-xs tracking-tight flex items-center gap-1.5">
                   <Shield size={14} className="text-[#34C759]" />
                   Garantía de Compliance
                 </h3>
@@ -582,11 +582,11 @@ export default function SeguimientoCompliancePage() {
             <div className="apple-card p-5 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#FF9500]/40 to-transparent" />
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-bold text-[#1D1D1F] text-xs tracking-tight flex items-center gap-1.5">
-                  <ClipboardList size={14} className="text-[#0071E3]" />
+                <h3 className="font-bold text-white text-xs tracking-tight flex items-center gap-1.5">
+                  <ClipboardList size={14} className="text-[#FECF06]" />
                   Resolución de Tareas
                 </h3>
-                <span className="text-[9px] font-semibold font-mono text-[#0071E3] bg-[#0071E3]/10 px-2 py-0.5 rounded border border-[#0071E3]/20 uppercase tracking-widest">
+                <span className="text-[9px] font-semibold font-mono text-[#FECF06] bg-[#FECF06]/10 px-2 py-0.5 rounded border border-[#FECF06]/20 uppercase tracking-widest">
                   {metrics.completedTasks} / {metrics.totalTasks} Tareas
                 </span>
               </div>
@@ -595,25 +595,25 @@ export default function SeguimientoCompliancePage() {
                   className="h-full rounded-full transition-all duration-1000"
                   style={{
                     width: `${metrics.tasksPct}%`,
-                    background: 'linear-gradient(90deg, #FFCC00, #0071E3)'
+                    background: 'linear-gradient(90deg, #FFCC00, #FECF06)'
                   }}
                 />
               </div>
               <div className="mt-2 flex justify-between text-[9px] font-medium text-[#86868B] uppercase tracking-widest">
                 <span>Tareas Técnicas</span>
-                <span className="text-[#0071E3]">{metrics.tasksPct}% Completadas</span>
+                <span className="text-[#FECF06]">{metrics.tasksPct}% Completadas</span>
               </div>
             </div>
           </div>
 
           {/* Upper Tab Navigation */}
-          <div className="flex items-center gap-2 border-b border-black/[0.06] pb-4 mb-6">
+          <div className="flex items-center gap-2 border-b border-[var(--co-separator)] pb-4 mb-6">
             <button
               onClick={() => setTab('trazabilidad')}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-wider rounded-lg border transition-all ${
                 currentTab !== 'tareas'
-                  ? 'bg-[#0071E3]/10 border-[#0071E3]/30 text-[#0071E3]'
-                  : 'border-transparent text-[#86868B] hover:text-[#1D1D1F] hover:bg-black/[0.03]'
+                  ? 'bg-[#FECF06]/10 border-[#FECF06]/30 text-[#FECF06]'
+                  : 'border-transparent text-[#86868B] hover:text-white hover:bg-black/[0.03]'
               }`}
             >
               <ShieldCheck size={14} />
@@ -623,8 +623,8 @@ export default function SeguimientoCompliancePage() {
               onClick={() => setTab('tareas')}
               className={`flex items-center gap-2 px-5 py-3 text-xs font-semibold uppercase tracking-wider rounded-lg border transition-all ${
                 currentTab === 'tareas'
-                  ? 'bg-[#0071E3]/10 border-[#0071E3]/30 text-[#0071E3]'
-                  : 'border-transparent text-[#86868B] hover:text-[#1D1D1F] hover:bg-black/[0.03]'
+                  ? 'bg-[#FECF06]/10 border-[#FECF06]/30 text-[#FECF06]'
+                  : 'border-transparent text-[#86868B] hover:text-white hover:bg-black/[0.03]'
               }`}
             >
               <ClipboardList size={14} />
@@ -652,13 +652,13 @@ export default function SeguimientoCompliancePage() {
                         <h4 className="text-[9px] font-semibold uppercase text-[#86868B] tracking-wider">
                           {phaseName}
                         </h4>
-                        <span className="text-[9px] font-semibold font-mono text-[#0071E3]">
+                        <span className="text-[9px] font-semibold font-mono text-[#FECF06]">
                           {completedCount}/{totalCount}
                         </span>
                       </div>
                       <div className="w-full h-1 bg-black/[0.05] rounded-full overflow-hidden mb-3">
                         <div 
-                          className="h-full bg-[#0071E3] rounded-full transition-all duration-500" 
+                          className="h-full bg-[#FECF06] rounded-full transition-all duration-500" 
                           style={{ width: `${phasePct}%` }}
                         />
                       </div>
@@ -679,17 +679,17 @@ export default function SeguimientoCompliancePage() {
                                 isLocked
                                   ? 'opacity-40 bg-black/[0.02] border-black/[0.04] cursor-not-allowed'
                                   : isSelected
-                                  ? 'bg-[#0071E3]/10 border-[#0071E3]/40 shadow-sm'
+                                  ? 'bg-[#FECF06]/10 border-[#FECF06]/40 shadow-sm'
                                   : completado
                                   ? 'bg-[#34C759]/[0.04] border-[#34C759]/20 hover:border-[#34C759]/40'
                                   : estado === 'en_progreso'
-                                  ? 'bg-[#007AFF]/[0.04] border-[#007AFF]/25 hover:border-[#007AFF]/40'
-                                  : 'bg-black/[0.02] border-black/[0.06] hover:border-black/[0.12]'
+                                  ? 'bg-[#FECF06]/[0.04] border-[#FECF06]/25 hover:border-[#FECF06]/40'
+                                  : 'bg-black/[0.02] border-[var(--co-separator)] hover:border-black/[0.12]'
                               }`}
                             >
                               <div className={`p-1.5 rounded shrink-0 ${
                                 completado ? 'bg-[#34C759]/10 text-[#34C759]'
-                                  : estado === 'en_progreso' ? 'bg-[#007AFF]/10 text-[#007AFF]'
+                                  : estado === 'en_progreso' ? 'bg-[#FECF06]/10 text-[#FECF06]'
                                   : 'bg-black/[0.04]'
                               }`}>
                                 {isLocked ? (
@@ -699,7 +699,7 @@ export default function SeguimientoCompliancePage() {
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <span className="text-[11px] font-semibold text-[#1D1D1F] block truncate">
+                                <span className="text-[11px] font-semibold text-white block truncate">
                                   {step.num}. {step.titulo}
                                 </span>
                               </div>
@@ -707,7 +707,7 @@ export default function SeguimientoCompliancePage() {
                                 <CheckCheck size={12} className="text-[#34C759] shrink-0" />
                               )}
                               {estado === 'en_progreso' && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#007AFF] animate-pulse shrink-0" />
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#FECF06] animate-pulse shrink-0" />
                               )}
                             </button>
                           );
@@ -740,11 +740,11 @@ export default function SeguimientoCompliancePage() {
                     <div className="apple-card p-6 relative overflow-hidden space-y-6">
                       
                       {/* Step Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/[0.06]">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--co-separator)]">
                         <div className="flex items-center gap-3">
                           <div className={`p-2.5 rounded-lg shrink-0 ${
                             completado ? 'bg-[#34C759]/15 text-[#34C759]' 
-                              : isEnProgreso ? 'bg-[#007AFF]/15 text-[#007AFF]'
+                              : isEnProgreso ? 'bg-[#FECF06]/15 text-[#FECF06]'
                               : 'bg-black/[0.04]'
                           }`}>
                             <Icon size={18} />
@@ -758,7 +758,7 @@ export default function SeguimientoCompliancePage() {
                                 <BadgeNormativa key={n.label} tag={n} />
                               ))}
                             </div>
-                            <h2 className="text-lg font-bold text-[#1D1D1F] mt-1">
+                            <h2 className="text-lg font-bold text-white mt-1">
                               {selectedStep.titulo}
                             </h2>
                           </div>
@@ -782,7 +782,7 @@ export default function SeguimientoCompliancePage() {
                                 <span className={`text-[9px] font-semibold px-2 py-0.5 rounded border uppercase tracking-wider ${
                                   complianceCompletados === totalCompliancePaso
                                     ? 'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]'
-                                    : 'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]'
+                                    : 'bg-[#FECF06]/10 border-[#FECF06]/25 text-[#FECF06]'
                                 }`}>
                                   □ {complianceCompletados}/{totalCompliancePaso} Compliance
                                 </span>
@@ -793,10 +793,10 @@ export default function SeguimientoCompliancePage() {
                             completado
                               ? 'bg-[#34C759]/10 border-[#34C759]/25 text-[#34C759]'
                               : isEnProgreso
-                              ? 'bg-[#007AFF]/10 border-[#007AFF]/25 text-[#007AFF]'
+                              ? 'bg-[#FECF06]/10 border-[#FECF06]/25 text-[#FECF06]'
                               : isDisponible
                               ? 'bg-[#FF9500]/10 border-[#FF9500]/25 text-[#FF9500]'
-                              : 'bg-black/[0.03] border-black/[0.08] text-[#86868B]'
+                              : 'bg-black/[0.03] border-[var(--co-separator)] text-[#86868B]'
                           }`}>
                             {completado ? 'Completado' 
                               : isEnProgreso ? 'En Progreso'
@@ -839,12 +839,12 @@ export default function SeguimientoCompliancePage() {
                                       toggleComplianceCheck(item.id, item.subId || '');
                                     }
                                   }}
-                                  className="w-full flex items-center gap-2.5 p-2 rounded border border-black/[0.04] bg-white/40 hover:bg-white hover:border-[#FF9500]/30 hover:shadow-sm text-left transition-all group"
+                                  className="w-full flex items-center gap-2.5 p-2 rounded border border-black/[0.04] bg-[var(--apple-bg-secondary)]/40 hover:bg-[var(--apple-bg-secondary)] hover:border-[#FF9500]/30 hover:shadow-sm text-left transition-all group"
                                 >
-                                  <div className="w-[14px] h-[14px] rounded border border-black/25 flex items-center justify-center bg-white group-hover:border-[#FF9500] group-hover:text-[#FF9500] shrink-0 transition-all">
+                                  <div className="w-[14px] h-[14px] rounded border border-black/25 flex items-center justify-center bg-[var(--apple-bg-secondary)] group-hover:border-[#FF9500] group-hover:text-[#FF9500] shrink-0 transition-all">
                                     <span className="w-1.5 h-1.5 rounded-full bg-transparent group-hover:bg-[#FF9500]/40 transition-all" />
                                   </div>
-                                  <span className="text-[10px] text-[#1D1D1F] font-medium leading-tight">
+                                  <span className="text-[10px] text-white font-medium leading-tight">
                                     {item.text}
                                   </span>
                                 </button>
@@ -853,7 +853,7 @@ export default function SeguimientoCompliancePage() {
                           ) : (
                             <ul className="list-disc pl-4 space-y-1">
                               {stepValidation.missing.map((item, idx) => (
-                                <li key={idx} className="text-[10px] text-[#1D1D1F] font-medium">
+                                <li key={idx} className="text-[10px] text-white font-medium">
                                   {item}
                                 </li>
                               ))}
@@ -870,13 +870,13 @@ export default function SeguimientoCompliancePage() {
                           
                           {/* Guide description */}
                           <div className="space-y-4">
-                            <h4 className="text-[10px] font-semibold text-[#007AFF] uppercase tracking-widest pb-1 border-b border-black/[0.06]">
+                            <h4 className="text-[10px] font-semibold text-[#FECF06] uppercase tracking-widest pb-1 border-b border-[var(--co-separator)]">
                               Ejecución Técnica e Instrucciones
                             </h4>
                             
-                            <div className="border-l-2 border-[#0071E3]/30 pl-4 space-y-1">
-                              <span className="text-[9px] text-[#0071E3] font-semibold uppercase tracking-wider block">Acción Operativa</span>
-                              <p className="text-xs text-[#1D1D1F] font-medium">{selectedStep.action}</p>
+                            <div className="border-l-2 border-[#FECF06]/30 pl-4 space-y-1">
+                              <span className="text-[9px] text-[#FECF06] font-semibold uppercase tracking-wider block">Acción Operativa</span>
+                              <p className="text-xs text-white font-medium">{selectedStep.action}</p>
                             </div>
 
                             {selectedStep.docs && selectedStep.docs.length > 0 && (
@@ -884,7 +884,7 @@ export default function SeguimientoCompliancePage() {
                                 <span className="text-[9px] font-semibold text-[#86868B] uppercase tracking-widest block mb-1.5">Documentación Emitida</span>
                                 <div className="flex flex-wrap gap-2">
                                   {selectedStep.docs.map((doc: string, idx: number) => (
-                                    <span key={idx} className="bg-black/[0.04] border border-black/[0.08] rounded-full px-2.5 py-0.5 text-[9px] text-[#86868B] uppercase tracking-wider font-medium">
+                                    <span key={idx} className="bg-black/[0.04] border border-[var(--co-separator)] rounded-full px-2.5 py-0.5 text-[9px] text-[#86868B] uppercase tracking-wider font-medium">
                                       {doc}
                                     </span>
                                   ))}
@@ -892,16 +892,16 @@ export default function SeguimientoCompliancePage() {
                               </div>
                             )}
 
-                            <div className="apple-card !p-4 !border !border-black/[0.06] !rounded-lg">
-                              <h5 className="text-[9px] font-bold text-[#0071E3] uppercase tracking-wider mb-1">Fundamento Metodológico</h5>
+                            <div className="apple-card !p-4 !border !border-[var(--co-separator)] !rounded-lg">
+                              <h5 className="text-[9px] font-bold text-[#FECF06] uppercase tracking-wider mb-1">Fundamento Metodológico</h5>
                               <p className="text-xs text-[#86868B] leading-relaxed">{selectedStep.guide}</p>
                             </div>
                           </div>
 
                           {/* Dynamic Task List for the step */}
                           <div className="apple-card p-4 space-y-4">
-                            <div className="flex justify-between items-center pb-2 border-b border-black/[0.06]">
-                              <h5 className="text-[11px] font-semibold uppercase text-[#0071E3] tracking-widest flex items-center gap-1.5">
+                            <div className="flex justify-between items-center pb-2 border-b border-[var(--co-separator)]">
+                              <h5 className="text-[11px] font-semibold uppercase text-[#FECF06] tracking-widest flex items-center gap-1.5">
                                 <ClipboardList size={13} />
                                 Checklist de Tareas del Paso
                               </h5>
@@ -938,9 +938,9 @@ export default function SeguimientoCompliancePage() {
                                           }}
                                           className={`w-[16px] h-[16px] rounded border flex items-center justify-center shrink-0 transition-all ${
                                             isCompleted
-                                              ? 'bg-[#0071E3] border-[#0071E3] text-white'
+                                              ? 'bg-[#FECF06] border-[#FECF06] text-white'
                                               : !isLocked
-                                                ? 'border-black/20 hover:border-[#0071E3]/50'
+                                                ? 'border-black/20 hover:border-[#FECF06]/50'
                                                 : 'border-black/10 opacity-40 cursor-not-allowed'
                                           }`}
                                         >
@@ -948,7 +948,7 @@ export default function SeguimientoCompliancePage() {
                                         </button>
                                         <div className="min-w-0">
                                           <span 
-                                            className={`text-xs block select-none ${isCompleted ? 'text-[#34C759]/60 line-through' : 'text-[#1D1D1F]'}`}
+                                            className={`text-xs block select-none ${isCompleted ? 'text-[#34C759]/60 line-through' : 'text-white'}`}
                                           >
                                             {task.titulo}
                                           </span>
@@ -1001,7 +1001,7 @@ export default function SeguimientoCompliancePage() {
 
                         {/* Col 2: Compliance */}
                         <div className="space-y-4">
-                          <h4 className="text-[10px] font-semibold text-[#34C759] uppercase tracking-widest pb-1 border-b border-black/[0.06]">
+                          <h4 className="text-[10px] font-semibold text-[#34C759] uppercase tracking-widest pb-1 border-b border-[var(--co-separator)]">
                             Requisitos de Compliance Normativo
                           </h4>
 
@@ -1034,7 +1034,7 @@ export default function SeguimientoCompliancePage() {
 
                                     <div className="flex-1 min-w-0">
                                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                        <span className="font-mono text-[9px] font-semibold text-[#0071E3] uppercase tracking-wider">
+                                        <span className="font-mono text-[9px] font-semibold text-[#FECF06] uppercase tracking-wider">
                                           {req.codigo}
                                         </span>
                                         {checked && checkDate && (
@@ -1043,7 +1043,7 @@ export default function SeguimientoCompliancePage() {
                                           </span>
                                         )}
                                       </div>
-                                      <p className={`text-xs font-semibold ${checked ? 'text-[#34C759]/60 line-through opacity-60' : 'text-[#1D1D1F]'}`}>
+                                      <p className={`text-xs font-semibold ${checked ? 'text-[#34C759]/60 line-through opacity-60' : 'text-white'}`}>
                                         {req.nombre}
                                       </p>
                                       <p className="text-[11px] text-[#86868B] mt-1 leading-relaxed">
@@ -1075,7 +1075,7 @@ export default function SeguimientoCompliancePage() {
                         <div className="apple-card !mt-6 !p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <label className="apple-label flex items-center gap-1.5">
-                              <Calendar size={11} className="text-[#0071E3]" />
+                              <Calendar size={11} className="text-[#FECF06]" />
                               <span>Fecha y Hora de Firma</span>
                             </label>
                             <input 
@@ -1088,7 +1088,7 @@ export default function SeguimientoCompliancePage() {
 
                           <div className="space-y-1">
                             <label className="apple-label flex items-center gap-1.5">
-                              <User size={11} className="text-[#0071E3]" />
+                              <User size={11} className="text-[#FECF06]" />
                               <span>Responsable / Perito Firmante</span>
                             </label>
                             <input 
@@ -1117,7 +1117,7 @@ export default function SeguimientoCompliancePage() {
 
                       {/* Official templates printable link */}
                       {PLANILLA_DOCS[selectedStep.id] && PLANILLA_DOCS[selectedStep.id].length > 0 && (
-                        <div className="pt-4 border-t border-black/[0.06] flex flex-col gap-2">
+                        <div className="pt-4 border-t border-[var(--co-separator)] flex flex-col gap-2">
                           <span className="text-[10px] text-[#86868B] italic">
                             Planillas oficiales correspondientes a esta etapa:
                           </span>
@@ -1128,7 +1128,7 @@ export default function SeguimientoCompliancePage() {
                                 href={casoSeleccionado ? `${doc.path}?casoId=${casoSeleccionado}` : doc.path}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#0071E3]/10 border border-[#0071E3]/25 text-[#0071E3] hover:bg-[#0071E3]/20"
+                                className="apple-btn text-[9px] font-semibold uppercase tracking-wider bg-[#FECF06]/10 border border-[#FECF06]/25 text-[#FECF06] hover:bg-[#FECF06]/20"
                               >
                                 <Printer size={12} />
                                 <span>{doc.label}</span>
@@ -1139,7 +1139,7 @@ export default function SeguimientoCompliancePage() {
                       )}
 
                       {/* Execution Control Actions */}
-                      <div className="pt-4 border-t border-black/[0.06] flex items-center justify-between">
+                      <div className="pt-4 border-t border-[var(--co-separator)] flex items-center justify-between">
                         <span className="text-[10px] text-[#86868B] italic max-w-[50%]">
                           {completado && '✓ Hito cerrado y auditado'}
                           {!completado && !stepValidation.canComplete && 'Complete todas las tareas y requisitos normativos para habilitar el paso siguiente'}
@@ -1171,7 +1171,7 @@ export default function SeguimientoCompliancePage() {
                                }}
                                className={`apple-btn text-[9px] font-semibold uppercase tracking-wider transition-all ${
                                  stepValidation.canComplete
-                                   ? 'bg-[#007AFF]/15 border border-[#007AFF]/25 text-[#007AFF] hover:bg-[#007AFF]/25 cursor-pointer shadow-sm'
+                                   ? 'bg-[#FECF06]/15 border border-[#FECF06]/25 text-[#FECF06] hover:bg-[#FECF06]/25 cursor-pointer shadow-sm'
                                    : 'bg-[#FF9500]/15 border border-[#FF9500]/25 text-[#FF9500] hover:bg-[#FF9500]/25 cursor-pointer shadow-sm'
                                }`}
                              >
@@ -1266,7 +1266,7 @@ export default function SeguimientoCompliancePage() {
                 {generalFilteredTasks.length === 0 ? (
                   <div className="apple-card p-16 text-center">
                     <ClipboardList size={36} className="text-[#86868B] opacity-25 mx-auto mb-4" />
-                    <h3 className="text-sm font-bold text-[#1D1D1F] mb-1">Sin Tareas Coincidentes</h3>
+                    <h3 className="text-sm font-bold text-white mb-1">Sin Tareas Coincidentes</h3>
                     <p className="text-xs text-[#86868B] max-w-sm mx-auto">
                       No hay tareas registradas para esta investigación con los filtros actuales.
                     </p>
@@ -1287,7 +1287,7 @@ export default function SeguimientoCompliancePage() {
                                   <EstadoIcon size={14} className={estado.color.split(' ')[1]} />
                                 </div>
                                 <div className="min-w-0">
-                                  <h3 className="text-sm font-semibold text-[#1D1D1F] truncate">{tarea.titulo}</h3>
+                                  <h3 className="text-sm font-semibold text-white truncate">{tarea.titulo}</h3>
                                   <p className="text-[10px] text-[#86868B] font-mono uppercase tracking-tight">
                                     Caso: {activeCaso.numeroCaso} — {activeCaso.titulo}
                                   </p>
@@ -1315,7 +1315,7 @@ export default function SeguimientoCompliancePage() {
                                 </span>
                               )}
                               {tarea.pasoId && (
-                                <span className="flex items-center gap-1.5 text-[#0071E3]">
+                                <span className="flex items-center gap-1.5 text-[#FECF06]">
                                   <span className="text-[8px] font-semibold uppercase tracking-wider">Vinculada a Paso:</span>
                                   {tarea.pasoId}
                                 </span>
@@ -1328,13 +1328,13 @@ export default function SeguimientoCompliancePage() {
                             {/* Progress bar */}
                             <div className="mt-3 w-full bg-black/[0.05] rounded-full h-1 overflow-hidden">
                               <div
-                                className="h-full bg-[#0071E3] rounded-full transition-all duration-500"
+                                className="h-full bg-[#FECF06] rounded-full transition-all duration-500"
                                 style={{ width: `${tarea.porcentaje}%` }}
                               />
                             </div>
                           </div>
 
-                          <div className="flex flex-col gap-1 p-3 border-l border-black/[0.06] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                          <div className="flex flex-col gap-1 p-3 border-l border-[var(--co-separator)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                             <select
                               value={tarea.estado}
                               onChange={e => handleStatusChange(tarea, e.target.value as EstadoTarea)}
@@ -1458,17 +1458,17 @@ function NuevaTareaModal({
         className="apple-card w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-xl apple-fade-in p-0"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between p-5 border-b border-black/[0.06]">
+        <div className="flex items-center justify-between p-5 border-b border-[var(--co-separator)]">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-[#0071E3]/10">
-              <ClipboardList size={18} className="text-[#0071E3]" />
+            <div className="p-2 rounded-md bg-[#FECF06]/10">
+              <ClipboardList size={18} className="text-[#FECF06]" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#1D1D1F]">Nueva Tarea Forense</h2>
+              <h2 className="text-base font-bold text-white">Nueva Tarea Forense</h2>
               <p className="text-[10px] text-[#86868B] font-medium">Registro de Actividad Técnica</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/[0.04] text-[#86868B] hover:text-[#1D1D1F] transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-black/[0.04] text-[#86868B] hover:text-white transition-colors">
             <X size={16} />
           </button>
         </div>
@@ -1568,8 +1568,8 @@ function NuevaTareaModal({
                   key={n.id}
                   className={`flex items-center gap-2 text-[10px] font-semibold p-2 rounded-md border cursor-pointer transition-all ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-[#0071E3]/10 border-[#0071E3]/30 text-[#0071E3]'
-                      : 'bg-black/[0.02] border-black/[0.08] text-[#86868B] hover:bg-black/[0.04]'
+                      ? 'bg-[#FECF06]/10 border-[#FECF06]/30 text-[#FECF06]'
+                      : 'bg-black/[0.02] border-[var(--co-separator)] text-[#86868B] hover:bg-black/[0.04]'
                   }`}
                 >
                   <input
@@ -1580,7 +1580,7 @@ function NuevaTareaModal({
                   />
                   <div className={`w-3 h-3 rounded-sm border flex items-center justify-center shrink-0 ${
                     form.normativasRelacionadas.includes(n.id)
-                      ? 'bg-[#0071E3] border-[#0071E3]'
+                      ? 'bg-[#FECF06] border-[#FECF06]'
                       : 'border-black/20'
                   }`}>
                     {form.normativasRelacionadas.includes(n.id) && (
@@ -1603,7 +1603,7 @@ function NuevaTareaModal({
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-black/[0.06]">
+          <div className="flex justify-end gap-3 pt-4 border-t border-[var(--co-separator)]">
             <button type="button" onClick={onClose} className="apple-btn apple-btn-secondary text-sm">
               Cancelar
             </button>
