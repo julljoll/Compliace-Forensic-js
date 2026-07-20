@@ -180,30 +180,50 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-                <td>Dispositivo Móvil / Almacenamiento</td>
+                <td>Marca del Dispositivo Móvil</td>
                 <td contentEditable suppressContentEditableWarning>
-                  Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial / IMEI: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial / IMEI]'}</strong>
+                  <strong className="placeholder-field">{c.dispositivo_marca ? c.dispositivo_marca : '[Marca (ej: Samsung, Xiaomi, Apple)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Línea Activa</td>
+                <td>Modelo del Dispositivo Móvil</td>
                 <td contentEditable suppressContentEditableWarning>
-                  Nro. Telefónico: <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Operadora: <strong className="placeholder-field">[Operadora]</strong>
+                  <strong className="placeholder-field">{c.dispositivo_modelo ? c.dispositivo_modelo : '[Modelo (ej: Galaxy A54, iPhone 13)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Cuenta / Aplicación de Interés</td>
+                <td>Serial / IMEI (IMEI 1 / IMEI 2)</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Número IMEI / Serial]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Número Telefónico de la Línea</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico (+58...)]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Operadora de Servicio de Telecomunicaciones</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">[Operadora (ej: Movistar, Digitel, Movilnet)]</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Cuentas / Aplicaciones de Interés Forense</td>
                 <td>
                   <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
                     <div className="check-item"><span className="box"></span> WhatsApp</div>
                     <div className="check-item"><span className="box"></span> Telegram</div>
                     <div className="check-item"><span className="box"></span> Correo Electrónico</div>
-                    <div className="check-item">
-                      <span className="box"></span> Cuenta ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Cuenta / ID de la Aplicación]</span>
-                    </div>
+                    <div className="check-item"><span className="box"></span> Redes Sociales</div>
                   </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Cuenta / ID de la Aplicación Específica</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">[Indique la Cuenta, Nombre de Usuario o ID de la Aplicación a investigar]</strong>
                 </td>
               </tr>
             </tbody>
@@ -212,31 +232,56 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-                <td>Computador / Almacenamiento</td>
+                <td>Marca del Computador / Equipo</td>
                 <td contentEditable suppressContentEditableWarning>
-                  Marca/Modelo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[HP, Dell, etc.]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial del Equipo: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial del Computador]'}</strong>
+                  <strong className="placeholder-field">{c.dispositivo_marca ? c.dispositivo_marca : '[Marca del Computador (ej: HP, Dell, Lenovo)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Unidad de Disco Duro / USB</td>
+                <td>Modelo del Computador / Equipo</td>
                 <td contentEditable suppressContentEditableWarning>
-                  Unidad: <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[SSD/HDD/USB]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Capacidad: <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[Capacidad (ej: 480 GB)]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial Unidad: <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[Serial S/N]'}</strong>
+                  <strong className="placeholder-field">{c.dispositivo_modelo ? c.dispositivo_modelo : '[Modelo del Equipo]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Servicios / Cuentas de Interés</td>
+                <td>Serial del Equipo / PC</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial del Computador / Chasis]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Tipo de Unidad de Almacenamiento</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[Tipo de Disco (ej: SSD NVMe, HDD SATA, USB)]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Capacidad de la Unidad de Almacenamiento</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[Capacidad de Almacenamiento (ej: 512 GB / 1 TB)]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Serial de la Unidad de Disco Duro / USB</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[Serial S/N del Disco o Memoria]'}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Servicios / Cuentas de Interés Forense</td>
                 <td>
                   <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
                     <div className="check-item"><span className="box"></span> Correo Corporativo</div>
                     <div className="check-item"><span className="box"></span> Historial de Navegación</div>
                     <div className="check-item"><span className="box"></span> Archivos del Sistema</div>
-                    <div className="check-item">
-                      <span className="box"></span> Ruta/ID: <span contentEditable suppressContentEditableWarning style={{ textDecoration: 'underline' }} className="placeholder-field">[Carpeta / ID / Correo]</span>
-                    </div>
+                    <div className="check-item"><span className="box"></span> Registros de Eventos (Logs)</div>
                   </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Ruta / Carpeta / ID de Cuenta Específica</td>
+                <td contentEditable suppressContentEditableWarning>
+                  <strong className="placeholder-field">[Indique la Ruta de Directorio, Correo o ID de Usuario Específico a examinar]</strong>
                 </td>
               </tr>
             </tbody>
