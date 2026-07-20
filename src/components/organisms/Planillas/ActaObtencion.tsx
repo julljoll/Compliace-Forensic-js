@@ -410,6 +410,15 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Receptor]</span>}</span>
           </div>
           <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito]</span></span>
+          </div>
+          <div className="sig-field">
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV (Colegio de Ingenieros)]</span></span>
+          </div>
+          <div className="sig-field">
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Inpreabogado]</span></span>
+          </div>
+          <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
           </div>
           <div className="checkbox-group" style={{ gap: '8px', fontSize: '8px', justifyContent: 'center', marginTop: '4px' }}>

@@ -497,7 +497,13 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                   <div className="sig-line" style={{ height: '24px' }} />
                   <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma</div>
                   <div className="sig-field" style={{ fontSize: '8px' }}>
-                    C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cédula]</span></span>
+                    C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cédula]</span></span>
+                  </div>
+                  <div className="sig-field" style={{ fontSize: '8px' }}>
+                    CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[N° CIV]</span></span>
+                  </div>
+                  <div className="sig-field" style={{ fontSize: '8px' }}>
+                    INPREABOGADO: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Inpreabogado]</span></span>
                   </div>
                   <div className="sig-field" style={{ fontSize: '8px' }}>
                     Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cargo]</span></span>

@@ -75,7 +75,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
         <div className="section-title">I. Identificación del Perito Forense Actuante</div>
         <div className="grid-container">
           <div className="form-group">
-            <div className="label">Nombres y Apellidos</div>
+            <div className="label">Nombres y Apellidos del Perito</div>
             <div className="value" contentEditable suppressContentEditableWarning>
               {c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}
             </div>
@@ -84,6 +84,18 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
             <div className="label">Cédula de Identidad</div>
             <div className="value" contentEditable suppressContentEditableWarning>
               <span className="placeholder-field">[C.I. del Perito]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">N° CIV (Colegio de Ingenieros)</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[N° CIV]</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="label">N° INPREABOGADO (Si aplica)</div>
+            <div className="value" contentEditable suppressContentEditableWarning>
+              <span className="placeholder-field">[N° Inpreabogado]</span>
             </div>
           </div>
           <div className="form-group">
@@ -281,7 +293,13 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
           </div>
           <div className="sig-field">
-            C.I. / Credencial: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. del Perito]</span></span>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. del Perito]</span></span>
+          </div>
+          <div className="sig-field">
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV (Colegio de Ingenieros)]</span></span>
+          </div>
+          <div className="sig-field">
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Inpreabogado]</span></span>
           </div>
           <div className="fingerprint-row">
             <div className="thumb-wrapper">

@@ -277,7 +277,16 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
           </div>
           <div className="sig-field">
-            C.I. / Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. - Experto Forense]</span></span>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. del Perito]</span></span>
+          </div>
+          <div className="sig-field">
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV (Colegio de Ingenieros)]</span></span>
+          </div>
+          <div className="sig-field">
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Inpreabogado]</span></span>
+          </div>
+          <div className="sig-field">
+            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Forense]</span></span>
           </div>
           <div className="fingerprint-row">
             <div className="thumb-wrapper">
