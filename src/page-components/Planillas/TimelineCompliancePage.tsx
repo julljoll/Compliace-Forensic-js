@@ -71,7 +71,7 @@ export default function TimelineCompliancePage() {
 
   if (!caso) {
     return (
-      <div style={{ padding: '40px', textAlign: 'center', fontFamily: "'Ubuntu', sans-serif" }}>
+      <div style={{ padding: '40px', textAlign: 'center', fontFamily: "'Times New Roman', Times, serif" }}>
         <p style={{ fontSize: '18px', fontWeight: 700 }}>Expediente no encontrado</p>
         <p style={{ color: '#888', marginTop: '8px' }}>
           Use el módulo de Auditoría para seleccionar un caso e imprimir su línea de tiempo.

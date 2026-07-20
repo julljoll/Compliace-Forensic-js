@@ -44,7 +44,7 @@
   color: var(--apple-text) !important;
   background: #524000 !important;
 
-  font-family: 'Ubuntu', sans-serif !important;
+  font-family: 'Times New Roman', Times, serif !important;
   line-height: 1.5;
   margin: 0;
   padding: 40px 10px;
@@ -57,7 +57,7 @@
 
 .planilla-container * {
   box-sizing: border-box;
-  font-family: 'Ubuntu', sans-serif !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 /* PDF Viewer Top Bar (not printed) */
@@ -71,7 +71,7 @@
   padding: 7px 14px;
   font-size: 10.5pt;
   color: #FFFFFF;
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -591,7 +591,7 @@
   width: 216mm;
   background: #2e2600; /* Dark olive background instead of classic word blue */
   color: #FECF06; /* Technical yellow text */
-  font-family: 'Ubuntu', sans-serif !important;
+  font-family: 'Times New Roman', Times, serif !important;
   font-size: 9pt !important;
   padding: 6px 16px;
   margin: 0 auto 24px !important;
@@ -607,7 +607,7 @@
 }
 
 .word-status-bar * {
-  font-family: 'Ubuntu', sans-serif !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 .word-status-bar .left-info,
@@ -692,6 +692,7 @@
     background: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;
+    font-family: 'Times New Roman', Times, serif !important;
     font-size: 11pt !important;
     line-height: 1.5 !important;
   }
