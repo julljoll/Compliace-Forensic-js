@@ -68,21 +68,21 @@
     --co-separator: rgba(254, 207, 6, 0.2); /* technical Yellow thin border */
     --co-vibrancy: rgba(82, 64, 0, 0.85);
 
-    /* Sonoma shadows - Dark Theme style */
+    /* Shadows - Minimalist technical elevation */
     --co-shadow-0: none;
-    --co-shadow-1: 0 1px 3px rgba(0,0,0,0.3);
-    --co-shadow-2: 0 4px 12px rgba(0,0,0,0.5);
-    --co-shadow-3: 0 8px 24px rgba(0,0,0,0.7);
-    --co-shadow-modal: 0 20px 50px rgba(0,0,0,0.9);
+    --co-shadow-1: 0 1px 2px rgba(0,0,0,0.2);
+    --co-shadow-2: 0 2px 6px rgba(0,0,0,0.3);
+    --co-shadow-3: 0 4px 12px rgba(0,0,0,0.4);
+    --co-shadow-modal: 0 12px 32px rgba(0,0,0,0.8);
 
     /* Sync legacy variables for dark mode */
     --apple-bg: var(--co-bg);
     --apple-bg-secondary: var(--co-surface-1);
     --apple-surface: var(--co-surface-1);
-    --apple-surface-hover: rgba(254, 207, 6, 0.08);
-    --apple-surface-active: rgba(254, 207, 6, 0.15);
+    --apple-surface-hover: rgba(254, 207, 6, 0.06);
+    --apple-surface-active: rgba(254, 207, 6, 0.12);
     --apple-border: var(--co-separator);
-    --apple-border-strong: rgba(254, 207, 6, 0.4);
+    --apple-border-strong: rgba(254, 207, 6, 0.35);
     --apple-accent: var(--co-accent);
     --apple-accent-light: #00FF41;
     --apple-text: #FFFFFF;
@@ -90,12 +90,12 @@
     --apple-text-secondary: var(--co-gray-2);
     --apple-separator: var(--co-separator);
     --apple-sidebar-bg: var(--co-vibrancy);
-    --apple-btn-sec-bg: rgba(254, 207, 6, 0.1);
+    --apple-btn-sec-bg: rgba(254, 207, 6, 0.08);
     --apple-shadow: var(--co-shadow-1);
     --apple-shadow-hover: var(--co-shadow-2);
 
     font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.5;
     font-weight: 400;
     color-scheme: dark;
     color: var(--apple-text);
@@ -124,47 +124,34 @@
 }
 
 /* ── macOS Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(120, 120, 120, 0.2);
-  border-radius: 9999px;
-  border: 1px solid transparent;
-  background-clip: content-box;
+  background-color: rgba(254, 207, 6, 0.2);
+  border-radius: 4px;
 }
-html.dark ::-webkit-scrollbar-thumb {
-  background-color: rgba(200, 200, 200, 0.25);
-}
-::-webkit-scrollbar-thumb:hover { background-color: rgba(120, 120, 120, 0.4); }
+::-webkit-scrollbar-thumb:hover { background-color: rgba(254, 207, 6, 0.4); }
 
 @layer components {
-  /* ── macOS Sidebar (Vibrancy effect) ── */
+  /* ── Cyber-Legal Sidebar ── */
   .apple-sidebar {
-    background-color: var(--apple-sidebar-bg) !important;
-    backdrop-filter: blur(40px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
-    border-right: 1px solid var(--apple-border) !important;
+    background-color: #121412 !important;
+    border-right: 1px solid rgba(254, 207, 6, 0.2) !important;
   }
 
   .apple-acrylic {
-    background-color: var(--apple-sidebar-bg) !important;
-    backdrop-filter: blur(40px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
-    border: 1px solid var(--apple-border) !important;
-    box-shadow: 0 0 1px rgba(0,0,0,0.04) !important;
+    background-color: #121412 !important;
+    border: 1px solid rgba(254, 207, 6, 0.2) !important;
   }
 
   .apple-card {
-    background-color: var(--apple-bg-secondary) !important;
-    border: 1px solid var(--apple-border) !important;
-    border-radius: 6px !important;
-    box-shadow: var(--apple-shadow) !important;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    background-color: #121412 !important;
+    border: 1px solid rgba(254, 207, 6, 0.2) !important;
+    border-radius: 8px !important;
+    transition: border-color 0.2s ease, background-color 0.2s ease !important;
   }
   .apple-card:hover {
-    border-color: var(--apple-border-strong) !important;
-    box-shadow: var(--apple-shadow-hover) !important;
-    transform: translateY(-1px);
+    border-color: rgba(254, 207, 6, 0.45) !important;
   }
 
   .check-item-conforme {

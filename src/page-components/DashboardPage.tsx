@@ -250,10 +250,10 @@ export default function DashboardPage() {
           {/* Tarjetas de Métricas Forenses (Estilo Cyber-Legal Blueprint) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
-            <div className="bg-[#121412] p-4 rounded-xl border border-[#524000] border-l-4 border-l-[#00FF41] shadow-lg">
+            <div className="bg-[#121412] p-4 rounded-lg border border-[#524000] border-l-2 border-l-[#00FF41]">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">Casos en Custodia</span>
-                <FolderOpen size={20} className="text-[#00FF41]" />
+                <FolderOpen size={18} className="text-[#00FF41]" />
               </div>
               <p className="text-3xl font-black text-white font-mono mt-2">{stats.casosActivos}</p>
               <div className="flex items-center gap-1.5 mt-2 text-[10px] text-[#00FF41] font-mono font-bold">
@@ -262,21 +262,21 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="bg-[#121412] p-4 rounded-xl border border-[#524000] border-l-4 border-l-[#FECF06] shadow-lg">
+            <div className="bg-[#121412] p-4 rounded-lg border border-[#524000] border-l-2 border-l-[#FECF06]">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">Índice Compliance %</span>
-                <ShieldCheck size={20} className="text-[#FECF06]" />
+                <ShieldCheck size={18} className="text-[#FECF06]" />
               </div>
               <p className="text-3xl font-black text-white font-mono mt-2">{stats.cumplimientoGeneral}%</p>
-              <div className="w-full h-1.5 bg-black/40 rounded-full mt-2 overflow-hidden">
+              <div className="w-full h-1 bg-black/50 rounded-full mt-3 overflow-hidden">
                 <div className="h-full bg-[#FECF06] rounded-full" style={{ width: `${stats.cumplimientoGeneral}%` }} />
               </div>
             </div>
 
-            <div className="bg-[#121412] p-4 rounded-xl border border-[#524000] border-l-4 border-l-[#9DFF00] shadow-lg">
+            <div className="bg-[#121412] p-4 rounded-lg border border-[#524000] border-l-2 border-l-[#9DFF00]">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">Alertas de Trazabilidad</span>
-                <AlertTriangle size={20} className="text-[#9DFF00]" />
+                <AlertTriangle size={18} className="text-[#9DFF00]" />
               </div>
               <p className="text-3xl font-black text-white font-mono mt-2">{stats.tareasPendientes}</p>
               <span className="text-[10px] text-[#9DFF00] font-mono font-semibold block mt-2">
@@ -284,14 +284,12 @@ export default function DashboardPage() {
               </span>
             </div>
 
-            <div className="bg-[#121412] p-4 rounded-xl border border-[#524000] border-l-4 border-l-white shadow-lg">
+            <div className="bg-[#121412] p-4 rounded-lg border border-[#524000] border-l-2 border-l-white">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-mono font-bold text-gray-400 uppercase tracking-wider">Dictámenes Periciales</span>
-                <ClipboardList size={20} className="text-white" />
+                <ClipboardList size={18} className="text-white" />
               </div>
-              <p className="text-3xl font-black text-white font-mono mt-2">
-                {casos.filter(c => c.estado === 'informe' || c.estado === 'cerrado').length}
-              </p>
+              <p className="text-3xl font-black text-white font-mono mt-2">{stats.casosCerrados}</p>
               <span className="text-[10px] text-gray-400 font-mono block mt-2">
                 Listos para Impresión / PDF
               </span>
@@ -315,7 +313,7 @@ export default function DashboardPage() {
                   <Smartphone size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#00FF41] transition-colors">📱 Forense WhatsApp</h4>
+                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#00FF41] transition-colors">Forense WhatsApp</h4>
                   <p className="text-[10px] text-gray-400">9 Pasos MUCC-2017 / Extracción Móvil</p>
                 </div>
               </button>
@@ -328,7 +326,7 @@ export default function DashboardPage() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#FECF06] transition-colors">✉️ Forense Email</h4>
+                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#FECF06] transition-colors">Forense Email</h4>
                   <p className="text-[10px] text-gray-400">7 Pasos ISO 27037 / Cabeceras SMTP</p>
                 </div>
               </button>
@@ -341,7 +339,7 @@ export default function DashboardPage() {
                   <HardDrive size={20} />
                 </div>
                 <div>
-                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#9DFF00] transition-colors">💾 Forense Disco Duro</h4>
+                  <h4 className="text-xs font-extrabold text-white font-mono group-hover:text-[#9DFF00] transition-colors">Forense Disco Duro</h4>
                   <p className="text-[10px] text-gray-400">8 Pasos NIST SP 800-86 / Clonado Bit</p>
                 </div>
               </button>
@@ -718,27 +716,27 @@ export default function DashboardPage() {
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               <Link href="/planillas/acta-obtencion" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Acta de Obtención</span>
+                <span>Acta de Obtención</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
               <Link href="/planillas/acta-entrevista" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Acta de Entrevista</span>
+                <span>Acta de Entrevista</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
               <Link href="/planillas/prcc" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Planilla PRCC</span>
+                <span>Planilla PRCC</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
               <Link href="/planillas/dictamen" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Dictamen Pericial</span>
+                <span>Dictamen Pericial</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
               <Link href="/planillas/entrega-resultados" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Entrega Resultados</span>
+                <span>Entrega Resultados</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
               <Link href="/planillas/acta-auditoria-timeline" className="p-3 bg-[#0a0c0a] hover:bg-[#1a1e1a] border border-[#524000] hover:border-[#FECF06] rounded-lg text-xs font-mono font-bold text-white flex items-center justify-between transition-colors">
-                <span>📄 Timeline Auditoría</span>
+                <span>Timeline Auditoría</span>
                 <Printer size={14} className="text-[#FECF06]" />
               </Link>
             </div>

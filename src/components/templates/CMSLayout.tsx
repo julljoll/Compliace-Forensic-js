@@ -263,35 +263,35 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--apple-bg)] print:bg-white print:overflow-visible">
-        <header className="print:hidden shrink-0 border-b border-[var(--apple-border)] bg-[var(--co-surface-1)] backdrop-blur-[30px] z-10">
-          <div className="flex items-center justify-between px-4 sm:px-6 h-[54px]">
+        <header className="print:hidden shrink-0 border-b border-[#524000]/40 bg-[#121412]/90 backdrop-blur-md z-10">
+          <div className="flex items-center justify-between px-4 sm:px-6 h-[48px]">
             <div className="flex items-center gap-2 min-w-0">
               <button
                 id="hamburger-btn"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Abrir menú de navegación"
                 aria-expanded={mobileOpen}
-                className="sm:hidden flex items-center justify-center w-10 h-10 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
+                className="sm:hidden flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-white/5 hover:text-[#FECF06] transition-all"
               >
-                <Menu size={22} strokeWidth={2} />
+                <Menu size={20} strokeWidth={2} />
               </button>
-              <nav className="flex items-center gap-1.5 text-[13px] font-medium min-w-0" aria-label="Ubicación actual">
-                <Link href="/dashboard" className="apple-breadcrumb hidden xs:block shrink-0">SHA256.US</Link>
+              <nav className="flex items-center gap-1.5 text-xs font-mono font-medium min-w-0" aria-label="Ubicación actual">
+                <Link href="/dashboard" className="text-[#00FF41] font-extrabold hidden xs:block shrink-0 hover:underline">SHA256.US</Link>
                 {pathname !== '/dashboard' && (
                   <>
-                    <ChevronRight size={11} className="text-[#86868B] opacity-50 shrink-0 hidden xs:block" />
-                    <span className="apple-breadcrumb-active truncate text-[13px]">{getBreadcrumb()}</span>
+                    <ChevronRight size={11} className="text-gray-500 shrink-0 hidden xs:block" />
+                    <span className="text-white truncate font-sans font-bold">{getBreadcrumb()}</span>
                   </>
                 )}
-                <span className="apple-breadcrumb-active truncate text-[13px] xs:hidden">{getBreadcrumb()}</span>
+                <span className="text-white truncate font-sans font-bold xs:hidden">{getBreadcrumb()}</span>
               </nav>
             </div>
 
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
               <button
                 onClick={() => setCommandPaletteOpen(true)}
                 title="Buscador Spotlight (⌘K)"
-                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-[var(--apple-surface-hover)] hover:text-[var(--apple-accent)] transition-all active:scale-95"
+                className="flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-white/5 hover:text-[#FECF06] transition-all"
               >
                 <Search size={15} />
               </button>
@@ -299,31 +299,26 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
               <button
                 onClick={verificarSQLite}
                 title={sqliteOnline ? 'Conectado a SQLite Local (sha256_forense.sqlite)' : 'No conectado a SQLite Local'}
-                className="flex items-center gap-1.5 text-[12px] font-medium px-2.5 py-1.5 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-all cursor-pointer"
+                className="flex items-center gap-1.5 text-[11px] font-mono font-bold px-2 py-1 rounded bg-[#0a0c0a] border border-[#524000] hover:border-[#FECF06]/50 transition-all cursor-pointer"
               >
-                <div className={`w-2 h-2 rounded-full shrink-0 ${sqliteOnline === null ? 'bg-[#86868B]' : sqliteOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30] animate-pulse'}`} />
-                <span className={`hidden md:inline ${sqliteOnline === null ? 'text-[#86868B]' : sqliteOnline ? 'text-[#34C759]' : 'text-[#FF3B30] font-bold'}`}>
-                  {sqliteOnline === null ? 'Verificando SQLite...' : sqliteOnline ? 'SQLite Local (Conectado)' : 'No Conectado'}
+                <div className={`w-2 h-2 rounded-full shrink-0 ${sqliteOnline === null ? 'bg-gray-400' : sqliteOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30] animate-pulse'}`} />
+                <span className={`hidden md:inline ${sqliteOnline === null ? 'text-gray-400' : sqliteOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
+                  {sqliteOnline === null ? 'SQLite...' : sqliteOnline ? 'SQLite Local' : 'No Conectado'}
                 </span>
               </button>
-
-              <div className="apple-badge-green hidden sm:inline-flex">
-                <Activity size={11} />
-                <span>LOCAL</span>
-              </div>
 
               <button
                 onClick={limpiarDatos}
                 title="Limpiar datos temporales"
-                className="flex items-center justify-center w-9 h-9 rounded-[8px] text-[var(--apple-text-muted)] hover:bg-red-500/10 hover:text-[#FF3B30] transition-all active:scale-95"
+                className="flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-red-500/10 hover:text-[#FF3B30] transition-all"
               >
-                <Trash2 size={15} />
+                <Trash2 size={14} />
               </button>
 
               <div className="hidden sm:flex items-center gap-1.5 ml-2 select-none">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#FFCC00] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Minimizar (Amarillo)" />
-                <span className="w-3.5 h-3.5 rounded-full bg-[#007AFF] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Ampliar (Azul)" />
-                <span className="w-3.5 h-3.5 rounded-full bg-[#FF3B30] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Cerrar (Rojo)" />
+                <span className="w-3 h-3 rounded-full bg-[#FFCC00] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Minimizar (Amarillo)" />
+                <span className="w-3 h-3 rounded-full bg-[#007AFF] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Ampliar (Azul)" />
+                <span className="w-3 h-3 rounded-full bg-[#FF3B30] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Cerrar (Rojo)" />
               </div>
             </div>
           </div>
