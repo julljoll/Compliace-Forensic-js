@@ -7,8 +7,6 @@ import { useCMSStore } from '../../store/cmsStore';
 import { getTipoProyectoConfig } from '../../data/tiposProyecto';
 import type { CasoCMS, StepState } from '../../store/cmsStore';
 import './Planillas.css';
-import { downloadPlanillaZip } from './downloadPlanillaZip';
-import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -94,12 +92,6 @@ export default function TimelineCompliancePage() {
   const totalPasos       = config.pasos.length;
   const totalCompletados = config.pasos.filter(p => steps[p.id]?.estado === 'completado').length;
   const pct              = totalPasos > 0 ? Math.round((totalCompletados / totalPasos) * 100) : 0;
-
-  const camposRequeridos = [
-    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-    { valor: caso?.titulo, nombre: 'Título del Caso' },
-    { valor: caso?.peritoLider, nombre: 'Perito Forense Líder' },
-  ];
 
   const handlePrint = () => {
     const container = document.querySelector('.planilla-container');
@@ -359,14 +351,6 @@ export default function TimelineCompliancePage() {
           IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
         </Button>
       </Box>
-
-      <PlanillaToolbar
-        onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`TimelineCompliance_${caso.numeroCaso || 'caso'}`, 'Línea de Tiempo Forense Compliance')}
-        tituloDocumento="Línea de Tiempo Forense Compliance"
-        camposRequeridos={camposRequeridos}
-        casoId={caso.id}
-      />
     </div>
   );
 }

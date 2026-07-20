@@ -717,26 +717,53 @@
     color-scheme: light !important;
   }
   
-  body, html {
+  html, body, #__next, root, main, [class*="MuiBox"], [class*="CMSLayout"], .cms-layout {
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 
-  .no-print, .no-print *, nav, aside, .sidebar, button, .word-ruler, .word-status-bar {
+  .no-print,
+  .no-print *,
+  .planilla-pdf-topbar,
+  .word-ruler,
+  .word-status-bar,
+  nav,
+  aside,
+  .sidebar,
+  button,
+  header.no-print,
+  [class*="MuiDrawer"],
+  [class*="MuiAppBar"] {
     display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
   }
 
   @page {
     size: 216mm 330mm; /* Oficio Venezolano */
-    margin: 20mm 15mm 20mm 38mm; /* Left binding margin */
+    margin: 15mm 15mm 15mm 25mm; /* Clean document margins */
   }
 
   .planilla-container {
     background: #ffffff !important;
+    background-color: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    display: block !important;
     font-family: 'Times New Roman', Times, serif !important;
     font-size: 11pt !important;
     line-height: 1.4 !important;

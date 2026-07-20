@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 import PrintIcon from '@mui/icons-material/Print';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
-import { downloadPlanillaZip } from './downloadPlanillaZip';
-import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 import ActaEntregaResultados from '../../components/organisms/Planillas/ActaEntregaResultados';
 
 const ActaEntregaResultadosPage = () => {
@@ -41,8 +39,6 @@ const ActaEntregaResultadosPage = () => {
     window.print();
   };
 
-  const casoNum = caso?.numeroCaso || 'caso';
-
   return (
     <div className="planilla-container">
       <div className="no-print planilla-pdf-topbar">
@@ -76,14 +72,6 @@ const ActaEntregaResultadosPage = () => {
           IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
         </Button>
       </Box>
-
-      <PlanillaToolbar
-        onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`ActaEntrega_${casoNum}`, 'Acta de Entrega de Resultados')}
-        tituloDocumento="Acta de Entrega de Resultados"
-        camposRequeridos={camposRequeridos}
-        casoId={casoId}
-      />
     </div>
   );
 };

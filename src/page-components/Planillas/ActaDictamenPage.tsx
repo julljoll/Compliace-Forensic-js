@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 import PrintIcon from '@mui/icons-material/Print';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
-import { downloadPlanillaZip } from './downloadPlanillaZip';
-import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 import ActaDictamen from '../../components/organisms/Planillas/ActaDictamen';
 
 const ActaDictamenPage = () => {
@@ -41,8 +39,6 @@ const ActaDictamenPage = () => {
     window.print();
   };
 
-  const casoNum = caso?.numeroCaso || 'caso';
-
   return (
     <div className="planilla-container">
       <div className="no-print planilla-pdf-topbar">
@@ -76,14 +72,6 @@ const ActaDictamenPage = () => {
           IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
         </Button>
       </Box>
-
-      <PlanillaToolbar
-        onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`DictamenPericial_${casoNum}`, 'Dictamen Pericial Informático')}
-        tituloDocumento="Dictamen Pericial Informático"
-        camposRequeridos={camposRequeridos}
-        casoId={casoId}
-      />
     </div>
   );
 };

@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 import PrintIcon from '@mui/icons-material/Print';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
-import { downloadPlanillaZip } from './downloadPlanillaZip';
-import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 import PlanillaPRCC from '../../components/organisms/Planillas/PlanillaPRCC';
 
 const PlanillaPRCCPage = () => {
@@ -42,8 +40,6 @@ const PlanillaPRCCPage = () => {
     window.print();
   };
 
-  const casoNum = caso?.numeroCaso || 'caso';
-
   return (
     <div className="planilla-container">
       <div className="no-print planilla-pdf-topbar">
@@ -77,14 +73,6 @@ const PlanillaPRCCPage = () => {
           IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
         </Button>
       </Box>
-
-      <PlanillaToolbar
-        onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`PRCC_${casoNum}`, 'Planilla de Registro de Cadena de Custodia')}
-        tituloDocumento="Planilla de Registro de Cadena de Custodia (PRCC)"
-        camposRequeridos={camposRequeridos}
-        casoId={casoId}
-      />
     </div>
   );
 };

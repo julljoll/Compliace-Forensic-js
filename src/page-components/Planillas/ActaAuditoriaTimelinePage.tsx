@@ -6,8 +6,6 @@ import PrintIcon from '@mui/icons-material/Print';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
-import { downloadPlanillaZip } from './downloadPlanillaZip';
-import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 
 const ActaAuditoriaTimelinePage = () => {
   const router = useRouter();
@@ -337,14 +335,6 @@ const ActaAuditoriaTimelinePage = () => {
           IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
         </Button>
       </Box>
-
-      <PlanillaToolbar
-        onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`ActaAuditoria_${c.numeroCaso || 'global'}`, 'Acta de Auditoría y Trazabilidad SHA-256')}
-        tituloDocumento="Acta de Auditoría y Trazabilidad SHA-256"
-        camposRequeridos={camposRequeridos}
-        casoId={casoId}
-      />
     </div>
   );
 };
