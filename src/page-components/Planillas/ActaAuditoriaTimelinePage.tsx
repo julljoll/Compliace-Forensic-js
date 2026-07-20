@@ -1,5 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
@@ -107,53 +114,47 @@ const ActaAuditoriaTimelinePage = () => {
 
   return (
     <div className="planilla-container">
-      {/* ─── SELECTOR DE CASO (NO PRINT) ─── */}
-      <div className="no-print" style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '16px',
-        padding: '16px 24px',
-        background: 'var(--co-surface-1)',
-        borderBottom: '1px solid var(--apple-border)',
-        width: '100%',
-        maxWidth: '215mm',
-        margin: '0 auto 20px auto',
-        borderRadius: '12px',
-        boxShadow: 'var(--apple-shadow)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <label htmlFor="caso-selector" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--apple-text)' }}>
-            Seleccionar Expediente:
-          </label>
-          <select
-            id="caso-selector"
+      {/* MUI Topbar Selector */}
+      <Box
+        className="no-print"
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          mb: 3,
+          backgroundColor: '#121412',
+          border: '1px solid rgba(254, 207, 6, 0.3)',
+          borderRadius: '8px',
+        }}
+      >
+        <Box>
+          <Typography component="h1" sx={{ fontSize: '16px', fontWeight: 700, color: '#00FF41', fontFamily: 'monospace' }}>
+            ACTA DE AUDITORÍA & TRAZABILIDAD HASH SHA-256
+          </Typography>
+          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>
+            Historial Inmutable de Transacciones Criptográficas Certificadas
+          </Typography>
+        </Box>
+
+        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+          <TextField
+            select
+            size="small"
             value={casoId}
-            onChange={handleCaseChange}
-            style={{
-              padding: '6px 10px',
-              borderRadius: '6px',
-              border: '1px solid var(--apple-border)',
-              backgroundColor: 'var(--co-surface-2)',
-              color: 'var(--apple-text)',
-              fontSize: '13px',
-              outline: 'none',
-              minWidth: '220px',
-              cursor: 'pointer'
-            }}
+            onChange={(e) => router.push(e.target.value ? `/planillas/acta-auditoria-timeline?casoId=${e.target.value}` : '/planillas/acta-auditoria-timeline')}
+            sx={{ minWidth: 240, '& .MuiInputBase-input': { color: 'white' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.2)' } }}
           >
-            <option value="">-- Seleccione un caso/expediente --</option>
-            {casos.map(el => (
-              <option key={el.id} value={el.id}>
-                {el.numeroCaso || 'Sin Nro'} - {el.titulo}
-              </option>
+            <MenuItem value="">Todos los Registros Auditados</MenuItem>
+            {casos.map((cs) => (
+              <MenuItem key={cs.id} value={cs.id}>
+                {cs.numeroCaso} — {cs.titulo}
+              </MenuItem>
             ))}
-          </select>
-        </div>
-        <button onClick={handlePrint} className="print-button" style={{ margin: 0, padding: '6px 16px', fontSize: '12px', borderRadius: '8px' }}>
-          🖨️ Imprimir Timeline
-        </button>
-      </div>
+          </TextField>
+          <Chip label="SHA256 INMUTABLE" size="small" sx={{ backgroundColor: 'rgba(0, 255, 65, 0.15)', color: '#00FF41', fontWeight: 700 }} />
+        </Stack>
+      </Box>
 
       <div className="page">
         {/* ─── ENCABEZADO ─── */}

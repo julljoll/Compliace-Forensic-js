@@ -1,12 +1,19 @@
-import { useEffect } from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
 import PlanillaToolbar from '../../components/molecules/PlanillaToolbar';
 import PlanillaPRCC from '../../components/organisms/Planillas/PlanillaPRCC';
 
-const PlanillaPRCCPage = () => {
+export default function PlanillaPRCCPage() {
   const searchParams = useSearchParams();
   const casoId = searchParams.get('casoId') || '';
   const { casos } = useCMSStore();
@@ -39,11 +46,33 @@ const PlanillaPRCCPage = () => {
 
   return (
     <div className="planilla-container">
-      <div className="no-print planilla-pdf-topbar">
-        <span className="material-icons-outlined topbar-icon">picture_as_pdf</span>
-        <span className="topbar-title">Planilla de Registro de Cadena de Custodia (PRCC)</span>
-        <span className="topbar-meta">Formato Oficio · SHA256.US · MUCC-2017</span>
-      </div>
+      <Box
+        className="no-print"
+        sx={{
+          display: 'flex',
+          justify: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          mb: 3,
+          backgroundColor: '#121412',
+          border: '1px solid rgba(254, 207, 6, 0.3)',
+          borderRadius: '8px',
+        }}
+      >
+        <Box>
+          <Typography component="h1" sx={{ fontSize: '16px', fontWeight: 700, color: '#00FF41', fontFamily: 'monospace' }}>
+            PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)
+          </Typography>
+          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>
+            Trazabilidad Inmutable de Evidencias Digitales · MUCC-2017
+          </Typography>
+        </Box>
+        <Stack direction="row" spacing={1}>
+          <Chip label="PRCC OFICIAL" size="small" sx={{ backgroundColor: 'rgba(254, 207, 6, 0.15)', color: '#FECF06', fontWeight: 700 }} />
+          <Chip label="SHA256.US" size="small" sx={{ backgroundColor: 'rgba(0, 255, 65, 0.15)', color: '#00FF41', fontWeight: 700 }} />
+        </Stack>
+      </Box>
+
       <PlanillaPRCC caso={caso} />
 
       <PlanillaToolbar
@@ -55,6 +84,4 @@ const PlanillaPRCCPage = () => {
       />
     </div>
   );
-};
-
-export default PlanillaPRCCPage;
+}

@@ -1,5 +1,10 @@
-import { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+
 import { useCMSStore } from '../../store/cmsStore';
 import { getTipoProyectoConfig } from '../../data/tiposProyecto';
 import type { CasoCMS, StepState } from '../../store/cmsStore';
@@ -71,11 +76,11 @@ export default function TimelineCompliancePage() {
 
   if (!caso) {
     return (
-      <div style={{ padding: '40px', textAlign: 'center', fontFamily: "'Times New Roman', Times, serif" }}>
-        <p style={{ fontSize: '18px', fontWeight: 700 }}>Expediente no encontrado</p>
-        <p style={{ color: '#888', marginTop: '8px' }}>
-          Use el módulo de Auditoría para seleccionar un caso e imprimir su línea de tiempo.
-        </p>
+      <div className="planilla-container">
+        <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
+          <h2>Expediente No Encontrado</h2>
+          <p>Seleccione un caso válido para generar la línea de tiempo de compliance.</p>
+        </div>
       </div>
     );
   }
@@ -109,6 +114,32 @@ export default function TimelineCompliancePage() {
 
   return (
     <div className="planilla-container">
+      <Box
+        className="no-print"
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          p: 2,
+          mb: 3,
+          backgroundColor: '#121412',
+          border: '1px solid rgba(254, 207, 6, 0.3)',
+          borderRadius: '8px',
+        }}
+      >
+        <Box>
+          <Typography component="h1" sx={{ fontSize: '16px', fontWeight: 700, color: '#00FF41', fontFamily: 'monospace' }}>
+            LÍNEA DE TIEMPO DEL PROCESO FORENSE & COMPLIANCE
+          </Typography>
+          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>
+            Auditoría de Hitos Secuenciales · Trazabilidad Hash Chain SHA-256
+          </Typography>
+        </Box>
+        <Stack direction="row" spacing={1}>
+          <Chip label="TIMELINE" size="small" sx={{ backgroundColor: 'rgba(254, 207, 6, 0.15)', color: '#FECF06', fontWeight: 700 }} />
+          <Chip label="SHA256.US" size="small" sx={{ backgroundColor: 'rgba(0, 255, 65, 0.15)', color: '#00FF41', fontWeight: 700 }} />
+        </Stack>
+      </Box>
       <div className="page">
         {/* Encabezado institucional — membrete igual a las demás planillas */}
         <header>
