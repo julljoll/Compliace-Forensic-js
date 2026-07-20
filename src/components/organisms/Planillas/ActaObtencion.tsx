@@ -367,8 +367,15 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
       {/*  VI. MOTIVO  */}
       <div className="section">
         <div className="section-title">VI. Motivo de la Consignación</div>
-        <div className="form-group motive-box" contentEditable suppressContentEditableWarning>
-          <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
+        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '130px', padding: '10px', lineHeight: '22px' }}>
+          <p style={{ margin: 0 }}>
+            <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
+          </p>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
         </div>
       </div>
 
