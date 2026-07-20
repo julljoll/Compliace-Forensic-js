@@ -45,6 +45,29 @@ const ActaObtencionPage = () => {
       </div>
       <ActaObtencion caso={caso} />
 
+      <div className="no-print" style={{ display: 'flex', justifyContent: 'center', marginTop: '24px', marginBottom: '24px' }}>
+        <button
+          type="button"
+          onClick={handlePrint}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 24px',
+            backgroundColor: '#FECF06',
+            color: '#000000',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '13px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          🖨️ Imprimir Planilla
+        </button>
+      </div>
+
       <PlanillaToolbar
         onPrint={handlePrint}
         onDownloadZip={() => downloadPlanillaZip(`ActaObtencion_${casoNum}`, 'Acta de Obtención por Consignación')}

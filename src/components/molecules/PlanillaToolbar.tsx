@@ -61,6 +61,15 @@ export default function PlanillaToolbar({
     }
   };
 
+  const handlePrint = () => {
+    const container = document.querySelector('.planilla-container');
+    if (container) {
+      container.classList.add('modo-vista-previa');
+      setIsPreview(true);
+    }
+    onPrint();
+  };
+
   if (!mounted) return null;
 
   return createPortal(
@@ -140,7 +149,7 @@ export default function PlanillaToolbar({
 
         {/* Botón Imprimir PDF */}
         <button
-          onClick={onPrint}
+          onClick={handlePrint}
           className="flex items-center gap-1.5 px-3 py-2 bg-[var(--apple-accent)] hover:bg-[var(--apple-accent)]/85 active:scale-95 text-black rounded-md text-[11px] font-bold transition-all cursor-pointer flex-shrink-0 shadow-lg shadow-[var(--apple-accent)]/20"
         >
           <Printer size={13} />

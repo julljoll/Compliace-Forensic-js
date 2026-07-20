@@ -543,6 +543,20 @@
   border-bottom: 1px dashed #aeaeb2;
 }
 
+/* Modo Vista Previa (Screen Preview) */
+.planilla-container.modo-vista-previa [contenteditable="true"] {
+  outline: none !important;
+  border-bottom: none !important;
+  background: transparent !important;
+  cursor: default !important;
+}
+
+.planilla-container.modo-vista-previa .placeholder-field {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
 /* Reset typography rules inside Planilla container to isolate from app header styles */
 .planilla-container h1, .planilla-container h1 *,
 .planilla-container h2, .planilla-container h2 *,
@@ -814,14 +828,16 @@
     letter-spacing: 0.025em !important;
   }
 
-  /* Editable and placeholder fields on print */
+  /* Editable and placeholder fields on print (Vista Previa Limpia) */
   .planilla-container [contenteditable="true"] {
     outline: none !important;
+    border-bottom: none !important;
     background: transparent !important;
   }
 
-  /* Los placeholders referenciales NO se imprimen; las planillas quedan totalmente limpias para llenar a lápiz/bolígrafo */
+  /* Los placeholders referenciales NO se imprimen; la vista previa se imprime totalmente limpia sin corchetes */
   .planilla-container .placeholder-field {
+    display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     color: transparent !important;
