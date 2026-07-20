@@ -2,16 +2,16 @@
 name: ux-ui-compliance-cms
 description: >
   Diseñador UX/UI Senior especializado en interfaces de CMS para Compliance Office forense digital,
-  con la estética técnica Cyber-Legal Blueprint en modo oscuro permanente.
+  con la estética técnica Cyber-Legal Blueprint en modo oscuro permanente basada en MUI v6 & MUI X (Material-UI X).
   Experto en diseño de dashboards de cumplimiento normativo, flujos de trabajo de cadena de custodia,
-  interfaces de auditoría inmutable, y planillas legales con formato de impresión pericial.
+  interfaces de auditoría inmutable con MUI X DataGrid, y planillas legales con formato de impresión pericial.
   Usar siempre que se mencione CMS de compliance, dashboards periciales/forenses, planillas oficiales,
   auditoría o cadena de custodia. Dominio de tema oscuro técnico, contenedores transparentes de bordes finos,
   tipografía monospace para etiquetas y sans-serif para lectura, sin usar tonos de azul y manteniendo
   la consistencia con los colores de acento amarillo técnico, verde terminal y lima neón.
 ---
 
-# UX/UI Senior — CMS Compliance Office (Cyber-Legal Blueprint)
+# UX/UI Senior — CMS Compliance Office (Cyber-Legal Blueprint con MUI v6 & MUI X)
 
 ## Filosofía de Diseño
 
@@ -38,27 +38,28 @@ description: >
 - **Acento Secundario**: `#00FF41` (Verde Terminal). Para módulos de procesamiento, componentes validados y estado Conforme.
 - **Resalte Intermedio**: `#9DFF00` (Lima/Chartreuse Neón). Para alertas críticas, bases de datos vectoriales (RAGFlow) y enlaces activos.
 - **Colores Prohibidos**: Cualquier tonalidad de azul en la UI.
-- **Bordes y Contenedores**: Bordes finos (1px - 2px) de color de acento con baja opacidad (`border-compliance-gold/20` o similar), fondos transparentes o semitransparentes oscuros (`rgba(0,0,0,0.3)`).
+- **Bordes y Contenedores**: Bordes finos (1px - 2px) de color de acento con baja opacidad (`rgba(254, 207, 6, 0.2)`), fondos transparentes o semitransparentes oscuros (`#121412` o `rgba(0,0,0,0.35)`).
 
 #### Contenedores y Micro-animaciones
-- Tarjetas de módulos y paneles con fondos transparentes y bordes amarillos/verdes sutiles.
-- Esquinas rectas o ligeramente redondeadas (`rounded-none` o `rounded-md`), evitando el redondeo excesivo tipo móvil comercial.
+- Tarjetas de módulos y paneles MUI (`MuiCard`, `Paper`) con fondos oscuros transparentes y bordes amarillos/verdes sutiles.
+- Esquinas rectas o ligeramente redondeadas (`borderRadius: '8px'` o `'12px'`).
 - Transiciones con curvas rápidas de 100-200ms para interactividad ágil en hover.
 - Conectores visuales: Líneas continuas finas para flujos estructurales y líneas discontinuas (dashed) para flujos de datos.
 
-### Stack de Estilos (Obligatorio)
+### Stack de Estilos — MUI v6 & MUI X (Obligatorio)
 
-#### Tailwind CSS y CSS Personalizado
-- Usar clases de utilidad de Tailwind en combinación con las variables CSS del CMS.
-- **Modo Oscuro Permanente**: Configurar la clase `dark` permanentemente en el elemento `html`. No incluir selectores ni toggles de modo claro en la interfaz (a excepción del estilo de impresión).
-- **Componentes Glassmorphism Oscuro**: `bg-black/30 backdrop-blur-md border border-[var(--co-separator)]`.
+#### MUI Theme & Sx Prop
+- Usar `src/lib/theme.ts` con `ThemeProvider` y `CssBaseline` para asegurar el sistema de diseño centralizado.
+- Usar la prop `sx={{...}}` o `styled` para modificaciones de estilo específicas de componente.
+- **Modo Oscuro Permanente**: Configurar `palette.mode = 'dark'` permanentemente.
+- **Prohibición de Tailwind CSS**: No se utiliza Tailwind CSS ni sus directivas `@apply`.
 
-### Componentes UX Especializados
+### Componentes UX Especializados (MUI v6 & MUI X)
 
 #### Dashboard de Compliance
-- **KPI Cards**: Widgets con borde fino de acento (`#FECF06` o `#00FF41`), números grandes en monospace, labels de descripción y gráfico de tendencia.
-- **Estado de Casos**: Badges tipo "pill" con fondo transparente, borde fino y texto en color de estado: Conforme (verde terminal `#00FF41`), Pendiente (amarillo técnico `#FECF06`), Alerta Crítica (rojo/lima neón).
-- **Timeline de Auditoría**: Línea discontinua (dashed) con nodos circulares verdes y amarillos indicando transacciones de firma electrónica e integridad SHA-256.
+- **KPI Cards**: Widgets `MuiCard` con borde fino de acento (`#FECF06` o `#00FF41`), números grandes en monospace, labels de descripción y `LinearProgress`/`CircularProgress`.
+- **Estado de Casos**: Badges MUI `Chip` con fondo transparente, borde fino y texto en color de estado: Conforme (verde terminal `#00FF41`), Pendiente (amarillo técnico `#FECF06`), Alerta Crítica (rojo `#FF3B30` / lima neón `#9DFF00`).
+- **Tabla de Auditoría Inmutable (MUI X DataGrid)**: Grilla interactiva `@mui/x-data-grid` con columnas personalizadas para hashes SHA-256 encadenados, filtrado y ordenamiento.
 
 #### Planillas y Documentos Oficiales
 - Para visualización en pantalla, mantienen el marco Cyber-Legal Blueprint.

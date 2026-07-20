@@ -15,20 +15,15 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-20 11:52:45",
-      "last_commit": "a9e564f - huellasd (2026-07-20)",
+      "timestamp": "2026-07-20 13:41:26",
+      "last_commit": "0b4d665 - (Material-UI X) (2026-07-20)",
       "modified_files": [
-        "M agent_instructions.json",
-        "M cli.bat",
-        "M cli.py",
-        "M docs/map_arquitectura.md",
-        "M package-lock.json",
-        "M package.json",
-        "M scripts/cli.js",
-        "?? src/app/api/",
-        "?? src/db/sqliteClient.ts"
+        "M .opencode/skills/fullstack-forensic-developer/SKILL.md",
+        "M .opencode/skills/ux-ui-compliance-cms.SKILL.md",
+        "M AGENTS.md",
+        "M docs/design_tokens.md"
       ],
-      "source_files": 78,
+      "source_files": 81,
       "active_routes": 1
     }
   },

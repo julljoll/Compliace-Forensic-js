@@ -1,46 +1,46 @@
-# Sistema de Diseño: Documento de Tokens (Modo Oscuro Permanente)
+# Sistema de Diseño: Documento de Tokens (Modo Oscuro Permanente con MUI v6 & MUI X)
 
-Este documento define los tokens de diseño (Design Tokens) utilizados en la aplicación **SHA256.US CMS de Cumplimiento Forense**. Mapea las variables globales y estilos especificados en el archivo [index.css](file:///c:/VS%20CODE/SHA256/src/index.css) y [tailwind.config.js](file:///c:/VS%20CODE/SHA256/tailwind.config.js).
+Este documento define los tokens de diseño (Design Tokens) utilizados en la aplicación **SHA256.US CMS de Cumplimiento Forense**. Mapea las variables globales y estilos especificados en el tema centralizado [theme.ts](file:///c:/VS%20CODE/Compliace-Forensic-js/src/lib/theme.ts) y [index.css](file:///c:/VS%20CODE/Compliace-Forensic-js/src/index.css).
 
 > [!NOTE]
-> Este proyecto está optimizado y configurado exclusivamente para funcionar en **Modo Oscuro (Dark Mode)** de forma permanente. El selector de modo claro ha sido deshabilitado.
+> Este proyecto está optimizado y configurado exclusivamente para funcionar en **Modo Oscuro (Dark Mode)** de forma permanente mediante `palette.mode = 'dark'` en MUI v6. El selector de modo claro ha sido deshabilitado.
 
 ---
 
-## 1. Tipografía (Ubuntu System)
+## 1. Tipografía (Ubuntu & Fira Code)
 
-El proyecto utiliza la tipografía Ubuntu a nivel de sistema para dar un aspecto moderno, legible y premium.
+El proyecto utiliza la tipografía Ubuntu a nivel de sistema UI y Fira Code para elementos técnicos y hashes SHA-256.
 
-* **Familia Tipográfica:** `'Ubuntu', sans-serif`
-* **Interlineado Base (UI):** `1.6`
+* **Familia Tipográfica Principal:** `'Ubuntu', sans-serif`
+* **Familia Tipográfica Monospace:** `'Fira Code', 'Roboto Mono', monospace`
+* **Interlineado Base (UI):** `1.5`
 * **Interlineado Planillas (Print):** `1.5`
 
 ### Jerarquía y Colores de Encabezados
 
 | Nivel de Encabezado | Color (Hex) | Peso (Weight) | Descripción / Significado |
 | :--- | :--- | :--- | :--- |
-| `h1` | `#00FF41` | `700` (Bold) | Verde Matriz / Hacker. Títulos principales. |
-| `h2` | `#FECF06` | `700` (Bold) | Amarillo / Oro. Títulos de secciones y apartados. |
-| `h3`, `h4` | `#524000` | `600` (SemiBold) | Dorado Oscuro / Marrón. Subtítulos y subdivisiones. |
-| `h5`, `h6` | `#FFFFFF` | `500` (Medium) | Blanco puro. Encabezados de menor jerarquía. |
+| `h1` | `#00FF41` | `700` (Bold) | Verde Matriz Terminal. Títulos principales de módulo. |
+| `h2` | `#FECF06` | `600` (SemiBold) | Amarillo Técnico / Oro. Títulos de secciones. |
+| `h3`, `h4` | `#FECF06` | `600` (SemiBold) | Dorado/Amarillo con fondo `rgba(254,207,6,0.18)` y borde `3px solid #FECF06`. |
+| `h5`, `h6` | `#FFFFFF` | `500` (Medium) | Blanco puro. Encabezados de tarjetas y controles. |
 
 ---
 
-## 2. Paleta de Colores (Modo Oscuro)
+## 2. Paleta de Colores Cyber-Legal (Modo Oscuro)
 
-| Variable CSS | Valor | Uso Semántico |
+| Propiedad MUI | Valor Hex / RGBA | Uso Semántico |
 | :--- | :--- | :--- |
-| `--co-bg` | `#000000` | Fondo general de la aplicación |
-| `--co-surface-1` | `#1C1C1E` | Fondo de tarjetas primarias, paneles |
-| `--co-surface-2` | `#2C2C2E` | Fondos de controles secundarios, inputs |
-| `--co-surface-3` | `#3A3A3C` | Hover de listas y separadores activos |
-| `--co-separator` | `rgba(255,255,255,0.1)` | Bordes y líneas de división secundarias |
-| `--co-accent` | `#0A84FF` | Estado activo, enlaces y botones primarios |
-| `--co-red` | `#FF453A` | Alertas críticas y acciones de borrado |
-| `--co-orange` | `#FF9F0A` | Advertencias de compliance pendientes |
-| `--co-green` | `#30D158` | Cumplimiento conforme y estados completados |
-| `--co-blue` | `#0A84FF` | Información general |
-| `--co-indigo` | `#5E5CE6` | Estados de auditoría |
+| `background.default` | `#524000` | Fondo general de la aplicación (Oliva Oscuro Profundo) |
+| `background.paper` | `#121412` | Fondo de tarjetas primarias, paneles técnicos (`rgba(0,0,0,0.35)`) |
+| `primary.main` | `#FECF06` | Estado activo, acento técnico, botones primarios y bordes |
+| `secondary.main` | `#00FF41` | Verde Matriz Terminal para verificaciones conforme y hashes SHA-256 |
+| `info.main` | `#9DFF00` | Lima Neón para alertas críticas y bases de datos vectoriales RAG |
+| `warning.main` | `#FF9500` | Advertencias de compliance y estados en proceso |
+| `error.main` | `#FF3B30` | Alertas críticas y acciones de borrado |
+| `text.primary` | `#FFFFFF` | Texto principal de lectura |
+| `text.secondary` | `#AEAEB2` | Etiquetas secundarias y metadatos |
+| `divider` | `rgba(254, 207, 6, 0.2)` | Bordes y líneas de división secundarias |
 
 ---
 
@@ -48,27 +48,23 @@ El proyecto utiliza la tipografía Ubuntu a nivel de sistema para dar un aspecto
 
 | Token de Elevación | Valor |
 | :--- | :--- |
-| `--co-shadow-1` | `0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.18)` |
-| `--co-shadow-2` | `0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.12)` |
-| `--co-shadow-3` | `0 8px 32px rgba(0,0,0,0.24), 0 2px 8px rgba(0,0,0,0.12)` |
-| `--co-shadow-modal` | `0 20px 60px rgba(0,0,0,0.45), 0 4px 16px rgba(0,0,0,0.24)` |
+| `--co-shadow-1` | `0 1px 2px rgba(0,0,0,0.2)` |
+| `--co-shadow-2` | `0 2px 6px rgba(0,0,0,0.3)` |
+| `--co-shadow-3` | `0 4px 12px rgba(0,0,0,0.4)` |
+| `--co-shadow-modal` | `0 12px 32px rgba(0,0,0,0.8)` |
 
 ---
 
 ## 4. Bordes y Radios (Borders & Border-Radius)
 
-* **Radio de Botón (`--apple-btn`):** `8px`
-* **Radio de Tarjeta (`--apple-card`):** `16px`
-* **Radio de Panel (`--apple-panel`):** `20px`
-* **Radio de Input:** `8px`
-* **Grosor del Borde:** `1px` por defecto (`1.5px` o `2px` en planillas físicas)
+* **Radio de Botón (`MuiButton`):** `8px`
+* **Radio de Tarjeta (`MuiCard`):** `8px` / `12px`
+* **Radio de Panel (`MuiPaper`):** `16px`
+* **Radio de Input (`MuiTextField`):** `10px`
+* **Grosor del Borde:** `1px` con opacidad `0.2` (`rgba(254, 207, 6, 0.2)`)
 
 ---
 
-## 5. Iconografía (Google Material Design)
+## 5. Iconografía (Google Material Design & MUI Icons)
 
-El proyecto utiliza exclusivamente la librería **Google Material Design Icons (Outlined)** cargada remotamente.
-
-* **Hoja de Estilos:** `https://fonts.googleapis.com/icon?family=Material+Icons+Outlined`
-* **Clase Base:** `material-icons-outlined`
-* **Implementación:** Administrada centralmente en el componente de átomos [AppleIcon.tsx](file:///c:/VS%20CODE/SHA256/src/components/atoms/AppleIcon.tsx) para mapear todos los nombres de iconos semánticos.
+El proyecto utiliza la librería **Google Material Design Icons (Outlined)** y paquetes nativos de `@mui/icons-material`.

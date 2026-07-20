@@ -1,43 +1,34 @@
-import { useState, useMemo } from 'react';
-import { useCMSStore } from '../store/cmsStore';
-import { 
-  BookOpen, Scale, Gavel, FileText, Shield, Search, 
-  Calendar, Info, FolderOpen 
-} from '../components/atoms/AppleIcon';
-import Card from '../components/atoms/Card';
-import Badge from '../components/atoms/Badge';
+'use client';
+
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+
+import { useCMSStore } from '../store/cmsStore';
+import {
+  BookOpen, Scale, Gavel, FileText, Shield, Search,
+  Calendar, Info, FolderOpen, ChevronRight
+} from '../components/atoms/AppleIcon';
 
 const TIPO_ICONS: Record<string, typeof BookOpen> = {
   ISO: Shield, NIST: Shield, LEY: Gavel, MANUAL: FileText, REGLAMENTO: Scale,
 };
 
-const TIPO_STYLES: Record<string, { badge: string; iconBg: string; iconColor: string }> = {
-  ISO: {
-    badge: 'bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/20',
-    iconBg: 'bg-[#00FF41]/10',
-    iconColor: 'text-[#00FF41]',
-  },
-  NIST: {
-    badge: 'bg-[#9DFF00]/10 text-[#9DFF00] border-[#9DFF00]/20',
-    iconBg: 'bg-[#9DFF00]/10',
-    iconColor: 'text-[#9DFF00]',
-  },
-  LEY: {
-    badge: 'bg-[rgba(255,59,48,0.08)] text-[#FF3B30] border-[rgba(255,59,48,0.2)]',
-    iconBg: 'bg-[rgba(255,59,48,0.1)]',
-    iconColor: 'text-[#FF3B30]',
-  },
-  MANUAL: {
-    badge: 'bg-[rgba(255,149,0,0.08)] text-[#FF9500] border-[rgba(255,149,0,0.2)]',
-    iconBg: 'bg-[rgba(255,149,0,0.1)]',
-    iconColor: 'text-[#FF9500]',
-  },
-  REGLAMENTO: {
-    badge: 'bg-[rgba(52,199,89,0.08)] text-[#34C759] border-[rgba(52,199,89,0.2)]',
-    iconBg: 'bg-[rgba(52,199,89,0.1)]',
-    iconColor: 'text-[#34C759]',
-  },
+const TIPO_COLORS: Record<string, { color: string; bg: string }> = {
+  ISO: { color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
+  NIST: { color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
+  LEY: { color: '#FF3B30', bg: 'rgba(255, 59, 48, 0.1)' },
+  MANUAL: { color: '#FF9500', bg: 'rgba(255, 149, 0, 0.1)' },
+  REGLAMENTO: { color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
 };
 
 export default function NormativasPage() {
@@ -48,7 +39,7 @@ export default function NormativasPage() {
   const filteredNormativas = useMemo(() => {
     if (!searchTerm) return normativas;
     const term = searchTerm.toLowerCase();
-    return normativas.filter(n => 
+    return normativas.filter(n =>
       n.codigo.toLowerCase().includes(term) ||
       n.nombre.toLowerCase().includes(term) ||
       n.descripcion.toLowerCase().includes(term) ||
@@ -66,199 +57,134 @@ export default function NormativasPage() {
   }, [casos, selectedNormativaId]);
 
   return (
-    <div className="h-[calc(100vh-140px)] flex flex-col md:flex-row gap-6 apple-fade-in overflow-hidden">
-      {/* Sidebar - Master List */}
-      <div className="w-full md:w-80 flex flex-col bg-black/30 border border-[var(--co-separator)] rounded-md overflow-hidden shrink-0">
-        <div className="p-4 border-b border-[var(--co-separator)] space-y-3">
-          <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-md bg-[var(--apple-accent)]/10 text-[var(--apple-accent)]">
-              <BookOpen size={16} />
-            </div>
-            <div>
-              <h2 className="font-bold text-white text-[15px] tracking-tight">Normativas</h2>
-              <p className="text-[10px] text-[#86868B] font-semibold uppercase tracking-wider">{normativas.length} Referencias normativas_rag</p>
-            </div>
-          </div>
-          
-          <div className="relative">
-            <Search size={14} className="absolute left-3 top-2.5 text-[#86868B]" />
-            <input
-              type="text"
-              placeholder="Buscar normativa..."
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 6 }}>
+      {/* Header */}
+      <Box sx={{ pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
+        <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
+          <BookOpen size={24} className="text-[#FECF06]" />
+          Marco Normativo RAG & Estándares Forenses
+        </Typography>
+        <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
+          Base de conocimiento con 77 documentos normativos (ISO 27037, NIST, COPP, Ley de Delitos Informáticos, MUCCEF 2017).
+        </Typography>
+      </Box>
+
+      <Grid container spacing={3}>
+        {/* Master List */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card sx={{ p: 2 }}>
+            <TextField
+              size="small"
+              placeholder="Buscar por código o norma..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs bg-black/20 border border-[var(--co-separator)] rounded-md focus:border-[var(--apple-accent)] focus:bg-black/30 text-white outline-none transition-all"
+              fullWidth
+              sx={{ mb: 2 }}
             />
-          </div>
-        </div>
 
-        <div className="flex-1 overflow-y-auto p-2 space-y-1">
-          {filteredNormativas.length === 0 ? (
-            <div className="text-center py-8 text-[#86868B] text-xs">
-              No se encontraron normativas
-            </div>
+            <Stack spacing={1} sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
+              {filteredNormativas.map((norm) => {
+                const Icon = TIPO_ICONS[norm.tipo] || BookOpen;
+                const style = TIPO_COLORS[norm.tipo] || TIPO_COLORS.ISO;
+                const isSelected = norm.id === selectedNormativaId;
+
+                return (
+                  <Box
+                    key={norm.id}
+                    onClick={() => setSelectedNormativaId(norm.id)}
+                    sx={{
+                      p: 1.5,
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      backgroundColor: isSelected ? 'rgba(254, 207, 6, 0.15)' : 'rgba(0, 0, 0, 0.2)',
+                      border: `1px solid ${isSelected ? '#FECF06' : 'rgba(254, 207, 6, 0.1)'}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1.5,
+                      transition: 'all 0.2s ease',
+                      '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.1)' },
+                    }}
+                  >
+                    <Box sx={{ p: 1, borderRadius: '6px', backgroundColor: style.bg, color: style.color }}>
+                      <Icon size={18} />
+                    </Box>
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, color: '#FECF06' }}>
+                          {norm.codigo}
+                        </Typography>
+                        <Chip label={norm.tipo} size="small" sx={{ height: 18, fontSize: '9px', backgroundColor: style.bg, color: style.color }} />
+                      </Box>
+                      <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {norm.nombre}
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Stack>
+          </Card>
+        </Grid>
+
+        {/* Detail Panel */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          {selectedNormativa ? (
+            <Card sx={{ p: 3.5, borderLeft: '4px solid #FECF06' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pb: 2, mb: 3, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
+                <Box>
+                  <Chip label={selectedNormativa.codigo} size="small" sx={{ backgroundColor: 'rgba(254, 207, 6, 0.15)', color: '#FECF06', fontWeight: 800, fontFamily: 'monospace', mb: 1 }} />
+                  <Typography component="h2" sx={{ fontSize: '22px', fontWeight: 700, color: '#FFFFFF' }}>
+                    {selectedNormativa.nombre}
+                  </Typography>
+                </Box>
+                <Chip label={selectedNormativa.activa ? 'VIGENTE' : 'INACTIVA'} color={selectedNormativa.activa ? 'success' : 'default'} />
+              </Box>
+
+              <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', mb: 1 }}>
+                Descripción & Alcance Normativo
+              </Typography>
+              <Typography sx={{ fontSize: '14px', color: '#FFFFFF', backgroundColor: 'rgba(0, 0, 0, 0.3)', p: 2, borderRadius: '8px', mb: 3 }}>
+                {selectedNormativa.descripcion}
+              </Typography>
+
+              {selectedNormativa.articulos && selectedNormativa.articulos.length > 0 && (
+                <Box sx={{ mb: 3 }}>
+                  <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', mb: 1 }}>
+                    Articulado Legal / Cláusulas Relacionadas
+                  </Typography>
+                  <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
+                    {selectedNormativa.articulos.map((art) => (
+                      <Chip key={art} label={art} variant="outlined" sx={{ borderColor: 'rgba(254, 207, 6, 0.3)', color: '#AEAEB2' }} />
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+
+              {casosUsandoSelected.length > 0 && (
+                <Box>
+                  <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#00FF41', textTransform: 'uppercase', mb: 1 }}>
+                    Casos Vinculados ({casosUsandoSelected.length})
+                  </Typography>
+                  <Stack spacing={1}>
+                    {casosUsandoSelected.map((c) => (
+                      <Link key={c.id} href={`/casos/${c.id}`} style={{ textDecoration: 'none' }}>
+                        <Box sx={{ p: 1.5, borderRadius: '6px', backgroundColor: 'rgba(0, 255, 65, 0.05)', border: '1px solid rgba(0, 255, 65, 0.2)', display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <FolderOpen size={14} className="text-[#00FF41]" />
+                          <Typography sx={{ fontSize: '12px', color: '#FFFFFF', fontWeight: 700 }}>{c.numeroCaso} — {c.titulo}</Typography>
+                        </Box>
+                      </Link>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+            </Card>
           ) : (
-            filteredNormativas.map(norm => {
-              const Icon = TIPO_ICONS[norm.tipo] || BookOpen;
-              const style = TIPO_STYLES[norm.tipo] || TIPO_STYLES.ISO;
-              const isSelected = norm.id === selectedNormativaId;
-
-              return (
-                <button
-                  key={norm.id}
-                  onClick={() => setSelectedNormativaId(norm.id)}
-                  className={`w-full text-left p-3 rounded-md flex gap-3 transition-all cursor-pointer ${
-                    isSelected 
-                      ? 'bg-[var(--apple-accent)] text-black' 
-                      : 'hover:bg-white/5 text-white'
-                  }`}
-                >
-                  <div className={`p-2 rounded-lg shrink-0 flex items-center justify-center ${
-                    isSelected ? 'bg-white/10 text-white' : style.iconBg
-                  }`}>
-                    <Icon size={16} className={isSelected ? 'text-white' : style.iconColor} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center justify-between mb-0.5 gap-2">
-                      <span className={`font-mono text-[10px] font-bold truncate ${isSelected ? 'text-black font-extrabold' : 'text-[var(--apple-accent)]'}`}>
-                        {norm.codigo}
-                      </span>
-                      <span className={`text-[8px] font-bold px-1 py-0.2 rounded border ${
-                        isSelected 
-                          ? 'border-white/30 text-white/90 bg-white/10' 
-                          : 'border-black/[0.08] text-[#86868B] bg-black/[0.02]'
-                      }`}>
-                        {norm.tipo}
-                      </span>
-                    </div>
-                    <p className={`text-xs font-semibold truncate ${isSelected ? 'text-black' : 'text-white'}`}>
-                      {norm.nombre}
-                    </p>
-                  </div>
-                </button>
-              );
-            })
+            <Card sx={{ p: 6, textAlign: 'center' }}>
+              <Typography sx={{ color: '#AEAEB2' }}>Seleccione una normativa para ver los detalles.</Typography>
+            </Card>
           )}
-        </div>
-      </div>
-
-      {/* Detail View */}
-      <div className="flex-1 bg-black/30 border border-[var(--co-separator)] rounded-md overflow-y-auto p-6 md:p-8 flex flex-col justify-between">
-        {selectedNormativa ? (
-          <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-start justify-between border-b border-[var(--co-separator)] pb-5 flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                <div className={`p-3.5 rounded-md shrink-0 ${TIPO_STYLES[selectedNormativa.tipo]?.iconBg || 'bg-black/20'}`}>
-                  {(() => {
-                    const Icon = TIPO_ICONS[selectedNormativa.tipo] || BookOpen;
-                    return <Icon size={28} className={TIPO_STYLES[selectedNormativa.tipo]?.iconColor || 'text-white'} />;
-                  })()}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="font-mono text-xs font-black text-[var(--apple-accent)] tracking-tight">{selectedNormativa.codigo}</span>
-                    <Badge variant={selectedNormativa.activa ? 'conforme' : 'neutro'}>
-                      {selectedNormativa.activa ? 'VIGENTE' : 'INACTIVA'}
-                    </Badge>
-                  </div>
-                  <h1 className="text-xl font-bold text-white mt-1 tracking-tight">{selectedNormativa.nombre}</h1>
-                </div>
-              </div>
-            </div>
-
-            {/* Content Details */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <div>
-                  <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-2">Descripción General</h3>
-                  <p className="text-sm text-white/95 leading-relaxed bg-black/20 border border-[var(--co-separator)] p-4 rounded-md">
-                    {selectedNormativa.descripcion}
-                  </p>
-                </div>
-
-                {selectedNormativa.articulos && selectedNormativa.articulos.length > 0 && (
-                  <div>
-                    <h3 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-2">Artículos Relacionados</h3>
-                    <div className="flex flex-wrap gap-1.5">
-                      {selectedNormativa.articulos.map(art => (
-                        <span key={art} className="text-xs px-3.5 py-1.5 rounded-md bg-black/20 text-[#86868B] font-medium border border-[var(--co-separator)]">
-                          {art}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Sidebar Metadata */}
-              <div className="space-y-4">
-                <Card className="p-4 border border-[var(--co-separator)] bg-black/20" hoverable={false}>
-                  <h4 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-3">Detalles de Versión</h4>
-                  <div className="space-y-2.5 text-xs text-white">
-                    <div className="flex justify-between">
-                      <span className="text-[#86868B]">Versión actual:</span>
-                      <span className="font-bold">{selectedNormativa.version}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#86868B]">Fecha Vigencia:</span>
-                      <span className="font-bold flex items-center gap-1">
-                        <Calendar size={12} className="text-[#86868B]" />
-                        {new Date(selectedNormativa.fechaVigencia).toLocaleDateString('es')}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#86868B]">Clase:</span>
-                      <span className="font-semibold">{selectedNormativa.tipo}</span>
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Casos utilizando */}
-                <Card className="p-4 border border-[var(--co-separator)] bg-black/20" hoverable={false}>
-                  <h4 className="text-xs font-bold text-[#86868B] uppercase tracking-wider mb-3 flex items-center justify-between">
-                    <span>Casos Vinculados</span>
-                    <Badge variant="neutro">{casosUsandoSelected.length}</Badge>
-                  </h4>
-                  {casosUsandoSelected.length === 0 ? (
-                    <p className="text-xs text-[#86868B] italic">No hay casos vinculados actualmente.</p>
-                  ) : (
-                    <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                      {casosUsandoSelected.map(c => (
-                        <Link
-                          key={c.id}
-                          href={`/casos/${c.id}`}
-                          className="flex items-center gap-2 p-2 rounded-md hover:bg-white/5 text-xs text-white transition-all"
-                        >
-                          <FolderOpen size={12} className="text-[var(--apple-accent)]" />
-                          <div className="min-w-0 flex-1">
-                            <p className="font-bold truncate">{c.numeroCaso}</p>
-                            <p className="text-[10px] text-[#86868B] truncate">{c.titulo}</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </Card>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="text-center py-20 text-[#86868B]">
-            <Info size={40} className="mx-auto mb-3 opacity-20" />
-            <p className="text-sm font-medium">Seleccione una normativa para ver los detalles.</p>
-          </div>
-        )}
-
-        {/* Footer info banner */}
-        <div className="mt-8 pt-5 border-t border-[var(--apple-separator)] flex gap-3 text-xs text-[#86868B] leading-relaxed">
-          <Info size={16} className="text-[var(--apple-accent)] shrink-0 mt-0.5" />
-          <p>
-            Los documentos normativos originales se encuentran intactos en el repositorio <code className="font-mono text-[var(--apple-accent)] bg-[var(--apple-accent)]/10 px-1.5 py-0.5 rounded-md">normativas_rag/</code>.
-            Este panel los referencia para mantener la inalterabilidad y validar el compliance de auditoría en los flujos forenses.
-          </p>
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
