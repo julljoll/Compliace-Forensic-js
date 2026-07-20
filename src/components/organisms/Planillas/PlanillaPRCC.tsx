@@ -60,15 +60,19 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
       <div className="watermark">CONSIGNACIÓN</div>
 
       <header>
-        <div className="logo-container">
-          <div className="logo-branding">
+        <div className="header-top-row">
+          <div className="header-logo-brand">
             <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US Logo" className="logo-img" />
             <span className="logo-text">SHA256.US</span>
           </div>
-          <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
-          <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.</span>
+          <div className="header-lab-info">
+            <div className="lab-title">LABORATORIO DE INFORMÁTICA FORENSE Y CIBERSEGURIDAD</div>
+            <div className="lab-address">
+              Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.
+            </div>
+          </div>
         </div>
-        <div className="acta-header">
+        <div className="header-title-row">
           <h1 className="acta-title">Planilla de Registro de Cadena de Custodia (PRCC)</h1>
           <div className="acta-nro">
             N° PRCC: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}</span>
