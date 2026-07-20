@@ -820,11 +820,11 @@
     background: transparent !important;
   }
 
+  /* Los placeholders referenciales NO se imprimen; las planillas quedan totalmente limpias para llenar a lápiz/bolígrafo */
   .planilla-container .placeholder-field {
-    color: #444444 !important;
-    font-weight: normal !important;
-    font-style: italic !important;
-    visibility: visible !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    color: transparent !important;
   }
 
   /* Fingerprint boxes exact dimensions on print */
