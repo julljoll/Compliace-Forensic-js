@@ -688,19 +688,21 @@
   }
 }
 
-/* ── PRINT MEDIA RULES (Clean and Optimized) ── */
+/* ── PRINT MEDIA RULES (Clean, Exact Parity with Screen Preview) ── */
 @media print {
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-scheme: light !important;
-    color: #000000 !important;
-    border-color: #000000 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
   }
   
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   .no-print, .no-print *, nav, aside, .sidebar, button, .word-ruler, .word-status-bar {
     display: none !important;
   }
@@ -716,7 +718,7 @@
     margin: 0 !important;
     font-family: 'Times New Roman', Times, serif !important;
     font-size: 11pt !important;
-    line-height: 1.5 !important;
+    line-height: 1.4 !important;
   }
 
   .planilla-container .page {
@@ -729,15 +731,136 @@
     box-shadow: none !important;
     border-radius: 0 !important;
     overflow: visible !important;
+    background: #ffffff !important;
+    color: #1d1d1f !important;
   }
 
+  /* Header & Logo styling exact match on print */
+  .planilla-container header {
+    display: flex !important;
+    flex-direction: column !important;
+    border-bottom: 2px solid #1d1d1f !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .planilla-container .header-top-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid #1d1d1f !important;
+  }
+
+  .planilla-container .header-logo-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .planilla-container .logo-img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .planilla-container .logo-text {
+    font-size: 15pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #1d1d1f !important;
+  }
+
+  .planilla-container .header-lab-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    border-left: 1.5px solid #1d1d1f !important;
+    padding-left: 10px !important;
+  }
+
+  .planilla-container .lab-title {
+    font-size: 9.5pt !important;
+    font-weight: 700 !important;
+    color: #1d1d1f !important;
+    text-transform: uppercase !important;
+  }
+
+  .planilla-container .lab-address {
+    font-size: 7.5pt !important;
+    color: #333333 !important;
+  }
+
+  .planilla-container .header-title-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    margin-top: 8px !important;
+  }
+
+  .planilla-container .acta-title {
+    font-size: 13pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    color: #1d1d1f !important;
+  }
+
+  /* Editable and placeholder fields on print */
   .planilla-container [contenteditable="true"] {
-    border-bottom: none !important;
-    background-color: transparent !important;
+    outline: none !important;
+    background: transparent !important;
   }
 
   .planilla-container .placeholder-field {
-    visibility: hidden !important;
+    color: #444444 !important;
+    font-weight: normal !important;
+    font-style: italic !important;
+    visibility: visible !important;
+  }
+
+  /* Fingerprint boxes exact dimensions on print */
+  .planilla-container .thumb-box {
+    width: 28mm !important;
+    height: 38mm !important;
+    max-width: 105px !important;
+    max-height: 145px !important;
+    border: 1.2px dashed #1d1d1f !important;
+    border-radius: 3px !important;
+    background-color: #fafafa !important;
+    margin: 0 auto !important;
+  }
+
+  .planilla-container .thumb-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 3px !important;
+    flex: 1 !important;
+    max-width: 115px !important;
+  }
+
+  .planilla-container .sig-detail-card {
+    border: 1px solid #1d1d1f !important;
+    background-color: #ffffff !important;
+    padding: 8px 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .planilla-container .sig-line {
+    border-bottom: 1px solid #1d1d1f !important;
+    height: 18px !important;
+    width: 100% !important;
+  }
+
+  .planilla-container .sig-underline {
+    border-bottom: 1px dashed #555555 !important;
+    min-height: 16px !important;
+  }
+
+  .planilla-container .dotted-line {
+    border-bottom: 1px dashed #777777 !important;
+    margin-top: 18px !important;
+    height: 1px !important;
   }
 
   /* Prevent page splitting of structural nodes */
