@@ -329,6 +329,17 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
           <div className="checkbox-group" style={{ margin: '5px 0' }}>
             <div className="check-item"><span className="box"></span> <strong>ANÁLISIS DELIMITADO</strong> (Únicamente chats de <strong>WHATSAPP</strong> / Archivos específicos)</div>
           </div>
+          <div style={{ marginTop: '8px', padding: '8px', border: '1px dashed #1d1d1f', backgroundColor: '#fafafa' }}>
+            <div className="label" style={{ fontSize: '8pt', color: '#1d1d1f', fontWeight: 'bold' }}>
+              ESPECIFICACIÓN DE ELEMENTOS A VERIFICAR (Chat, Teléfono/Contacto, Nota de Voz, Imagen o Archivo Específico):
+            </div>
+            <div contentEditable suppressContentEditableWarning style={{ minHeight: '80px', padding: '6px', fontSize: '10pt', lineHeight: '22px' }}>
+              <span className="placeholder-field">[Indique detalladamente el chat/contacto, notas de voz, imágenes o fechas específicas a verificar]</span>
+              <div className="dotted-line"></div>
+              <div className="dotted-line"></div>
+              <div className="dotted-line"></div>
+            </div>
+          </div>
         </div>
       </div>
 
