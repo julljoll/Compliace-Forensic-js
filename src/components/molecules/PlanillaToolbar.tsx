@@ -1,7 +1,18 @@
 import { useRouter } from 'next/navigation';
-import { Printer, Archive, ArrowLeft, AlertTriangle, CheckCircle2 } from '../atoms/AppleIcon';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PrintIcon from '@mui/icons-material/Print';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface CampoRequerido {
   valor: string | undefined;
@@ -29,7 +40,6 @@ export default function PlanillaToolbar({
 
   useEffect(() => {
     setMounted(true);
-    // Initialize preview mode state by checking the DOM
     const container = document.querySelector('.planilla-container');
     if (container) {
       setIsPreview(container.classList.contains('modo-vista-previa'));
@@ -73,91 +83,135 @@ export default function PlanillaToolbar({
   if (!mounted) return null;
 
   return createPortal(
-    <div className="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[95vw]">
-      <div className="flex items-center gap-3 bg-zinc-950/85 border border-zinc-800 rounded-md shadow-2xl px-4 py-3 backdrop-blur-md">
-
+    <Box
+      className="no-print"
+      sx={{
+        position: 'fixed',
+        bottom: 20,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 1300,
+        maxWidth: '95vw',
+      }}
+    >
+      <Paper
+        elevation={8}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          p: '10px 18px',
+          backgroundColor: 'rgba(18, 20, 18, 0.92)',
+          border: '1px solid rgba(254, 207, 6, 0.3)',
+          backdropFilter: 'blur(12px)',
+          borderRadius: '10px',
+        }}
+      >
         {/* Botón Volver */}
-        <button
+        <IconButton
           onClick={handleBack}
           title="Volver al Expediente"
-          className="p-2 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer flex-shrink-0"
+          size="small"
+          sx={{ color: '#AEAEB2', '&:hover': { color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.08)' } }}
         >
-          <ArrowLeft size={18} />
-        </button>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
 
-        {/* Separador */}
-        <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
+        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
 
-        {/* Título y Alternador de Modo */}
-        <div className="min-w-0 pr-2">
-          <p className="text-[12px] font-semibold text-zinc-100 truncate leading-tight">{tituloDocumento}</p>
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Modo:</span>
-            <div className="flex bg-zinc-900 p-0.5 rounded-md border border-zinc-800">
-              <button
-                type="button"
+        {/* Título & Selector Edición / Vista Previa */}
+        <Box sx={{ minWidth: 0 }}>
+          <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.2 }}>
+            {tituloDocumento}
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 0.5 }}>
+            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#AEAEB2', textTransform: 'uppercase' }}>
+              Modo:
+            </Typography>
+            <Stack direction="row" sx={{ background: '#000000', p: '2px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <Button
+                size="small"
                 onClick={() => handleSetPreview(false)}
-                className={`px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  !isPreview
-                    ? 'bg-[var(--apple-accent)] text-black shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                sx={{
+                  px: 1,
+                  py: 0.2,
+                  minWidth: 0,
+                  fontSize: '8px',
+                  fontWeight: 700,
+                  borderRadius: '3px',
+                  color: !isPreview ? '#000000' : '#AEAEB2',
+                  backgroundColor: !isPreview ? '#FECF06' : 'transparent',
+                  '&:hover': { backgroundColor: !isPreview ? '#e0b700' : 'rgba(255,255,255,0.08)' },
+                }}
               >
-                Edición
-              </button>
-              <button
-                type="button"
+                EDICIÓN
+              </Button>
+              <Button
+                size="small"
                 onClick={() => handleSetPreview(true)}
-                className={`px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  isPreview
-                    ? 'bg-[var(--apple-accent)] text-black shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                sx={{
+                  px: 1,
+                  py: 0.2,
+                  minWidth: 0,
+                  fontSize: '8px',
+                  fontWeight: 700,
+                  borderRadius: '3px',
+                  color: isPreview ? '#000000' : '#AEAEB2',
+                  backgroundColor: isPreview ? '#FECF06' : 'transparent',
+                  '&:hover': { backgroundColor: isPreview ? '#e0b700' : 'rgba(255,255,255,0.08)' },
+                }}
               >
-                Vista Previa
-              </button>
-            </div>
-          </div>
-        </div>
+                VISTA PREVIA
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
 
         {/* Badge de validación */}
         {camposRequeridos.length > 0 && (
           <>
-            <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
-            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold flex-shrink-0 ${
-              faltantes.length > 0
-                ? 'bg-amber-500/10 border border border-amber-500/20 text-amber-400'
-                : 'bg-emerald-500/10 border border border-emerald-500/20 text-emerald-400'
-            }`}>
-              {faltantes.length > 0 ? (
-                <>
-                  <AlertTriangle size={12} />
-                  <span>{faltantes.length} vacíos</span>
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 size={12} />
-                  <span>Listo</span>
-                </>
-              )}
-            </div>
+            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
+            <Chip
+              icon={faltantes.length > 0 ? <WarningAmberIcon sx={{ fontSize: '14px !important' }} /> : <CheckCircleIcon sx={{ fontSize: '14px !important' }} />}
+              label={faltantes.length > 0 ? `${faltantes.length} vacíos` : 'Listo'}
+              size="small"
+              sx={{
+                fontSize: '10px',
+                fontWeight: 700,
+                backgroundColor: faltantes.length > 0 ? 'rgba(255, 149, 0, 0.15)' : 'rgba(0, 255, 65, 0.15)',
+                color: faltantes.length > 0 ? '#FF9500' : '#00FF41',
+                border: faltantes.length > 0 ? '1px solid rgba(255, 149, 0, 0.3)' : '1px solid rgba(0, 255, 65, 0.3)',
+              }}
+            />
           </>
         )}
 
-        {/* Separador */}
-        <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
+        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
 
-        {/* Botón Imprimir PDF */}
-        <button
+        {/* Botón Imprimir */}
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<PrintIcon />}
           onClick={handlePrint}
-          className="flex items-center gap-1.5 px-3 py-2 bg-[var(--apple-accent)] hover:bg-[var(--apple-accent)]/85 active:scale-95 text-black rounded-md text-[11px] font-bold transition-all cursor-pointer flex-shrink-0 shadow-lg shadow-[var(--apple-accent)]/20"
+          sx={{
+            backgroundColor: '#FECF06',
+            color: '#000000',
+            fontWeight: 700,
+            fontSize: '11px',
+            px: 2,
+            py: 0.8,
+            boxShadow: '0 4px 12px rgba(254, 207, 6, 0.3)',
+            '&:hover': {
+              backgroundColor: '#e0b700',
+              boxShadow: '0 6px 16px rgba(254, 207, 6, 0.5)',
+            },
+          }}
         >
-          <Printer size={13} />
-          <span>Imprimir</span>
-        </button>
-
-      </div>
-    </div>,
+          Imprimir
+        </Button>
+      </Paper>
+    </Box>,
     document.body
   );
 }

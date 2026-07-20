@@ -15,13 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-20 13:41:26",
-      "last_commit": "0b4d665 - (Material-UI X) (2026-07-20)",
+      "timestamp": "2026-07-20 14:21:28",
+      "last_commit": "2c126b6 - actualizacion de botones (2026-07-20)",
       "modified_files": [
-        "M .opencode/skills/fullstack-forensic-developer/SKILL.md",
-        "M .opencode/skills/ux-ui-compliance-cms.SKILL.md",
+        "D .opencode/skills/fullstack-forensic-developer/SKILL.md",
         "M AGENTS.md",
-        "M docs/design_tokens.md"
+        "M docs/design_tokens.md",
+        "?? .opencode/skills/fullstack-forensic-developer/fullstack-forensic-developer.md"
       ],
       "source_files": 81,
       "active_routes": 1

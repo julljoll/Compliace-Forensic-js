@@ -1,5 +1,8 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import PrintIcon from '@mui/icons-material/Print';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
@@ -31,6 +34,10 @@ const ActaEntrevistaPage = () => {
       );
       if (!confirmar) return;
     }
+    const container = document.querySelector('.planilla-container');
+    if (container) {
+      container.classList.add('modo-vista-previa');
+    }
     window.print();
   };
 
@@ -45,28 +52,30 @@ const ActaEntrevistaPage = () => {
       </div>
       <ActaEntrevista caso={caso} />
 
-      <div className="no-print" style={{ display: 'flex', justifyContent: 'center', marginTop: '24px', marginBottom: '24px' }}>
-        <button
-          type="button"
+      <Box className="no-print" sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={<PrintIcon />}
           onClick={handlePrint}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 24px',
+          sx={{
             backgroundColor: '#FECF06',
             color: '#000000',
-            border: 'none',
-            borderRadius: '6px',
+            fontWeight: 700,
             fontSize: '13px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+            px: 4,
+            py: 1.2,
+            borderRadius: '8px',
+            boxShadow: '0 4px 14px rgba(254, 207, 6, 0.35)',
+            '&:hover': {
+              backgroundColor: '#e0b700',
+              boxShadow: '0 6px 20px rgba(254, 207, 6, 0.5)',
+            },
           }}
         >
-          🖨️ Imprimir Planilla
-        </button>
-      </div>
+          IMPRIMIR PLANILLA COMPLETA (TAMAÑO OFICIO)
+        </Button>
+      </Box>
 
       <PlanillaToolbar
         onPrint={handlePrint}

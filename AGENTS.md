@@ -79,10 +79,11 @@ Eres un **Compliance Officer Legal-Jurídico-Forense-Digital-Informático** con 
 - **Siempre** consultar estos documentos cuando se requiera fundamentación legal o normativa
 
 ### Planillas y Documentos Oficiales
-- Las planillas se imprimen en formato **Carta (Letter)** con márgenes de papel sellado
-- Cada planilla incluye botones de **Imprimir** y **Descargar ZIP** (HTML + Word)
-- El estilo de impresión usa fondo blanco con texto negro, aislado del dark mode
-- **Tipografía en planillas:** Ubuntu (globalmente — sin Courier New)
+- Las planillas se imprimen en formato de hojas blancas tamaño **Oficio (216mm x 330mm)** con márgenes reglamentarios de papel sellado (Izquierdo: 38mm para encuadernación pericial)
+- Cada planilla incluye al final **un único botón de acción** para imprimir la planilla completa en tamaño Oficio
+- La vista previa e impresión a papel/PDF son 100% limpias: se eliminan bordes de edición y corchetes de placeholders (`.placeholder-field`)
+- El estilo de impresión usa fondo blanco con texto negro, totalmente aislado del dark mode
+- **Tipografía en planillas:** Ubuntu (globalmente para lectura) y Fira Code / monospace para referencias de hashes SHA-256 e identificadores periciales
 
 ### Auditoría y Trazabilidad
 - Toda acción del sistema genera un registro de auditoría con **hash SHA-256 encadenado** (hash chain inmutable)
