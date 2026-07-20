@@ -63,7 +63,7 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
             <span className="logo-text">SHA256.US</span>
           </div>
           <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
-          <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
+          <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.</span>
         </div>
         <div className="acta-header">
           <h1 className="acta-title">Acta de Entrega de Resultados y Devolución</h1>
@@ -302,8 +302,8 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
       </div>
 
       <div className="footer">
-        Documento generado bajo los estándares de la Ley de Mensajes de Datos y Firmas Electrónicas y el Manual Único de Cadena de Custodia de Evidencias <br />
-        SHA256 Forensic Lab - Informática Forense y Ciberseguridad al servicio de la justicia.
+        Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y las normas ISO/IEC 27037:2012 / 27042:2015.<br />
+        SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.
       </div>
     </div>
 

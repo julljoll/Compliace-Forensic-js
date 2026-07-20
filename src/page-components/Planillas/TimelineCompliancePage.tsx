@@ -125,7 +125,7 @@ export default function TimelineCompliancePage() {
               Laboratorio de Informática Forense y Ciberseguridad
             </span>
             <span className="address-text">
-              Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quibor, Municipio Jiménez del Estado Lara.
+              Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
             </span>
           </div>
 

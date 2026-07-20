@@ -164,7 +164,7 @@ const ActaAuditoriaTimelinePage = () => {
               <span className="logo-text">SHA256.US</span>
             </div>
             <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
-            <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quibor, Municipio Jiménez del Estado Lara.</span>
+            <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.</span>
           </div>
           <div className="acta-header">
             <h1 className="acta-title">Acta de Auditoría Forense — Timeline del Caso</h1>
