@@ -1,18 +1,7 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MuiButton from '@mui/material/Button';
-
 import { Printer, Archive, ArrowLeft, AlertTriangle, CheckCircle2 } from '../atoms/AppleIcon';
+import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
 
 interface CampoRequerido {
   valor: string | undefined;
@@ -40,6 +29,7 @@ export default function PlanillaToolbar({
 
   useEffect(() => {
     setMounted(true);
+    // Initialize preview mode state by checking the DOM
     const container = document.querySelector('.planilla-container');
     if (container) {
       setIsPreview(container.classList.contains('modo-vista-previa'));
@@ -74,146 +64,91 @@ export default function PlanillaToolbar({
   if (!mounted) return null;
 
   return createPortal(
-    <Box
-      className="no-print"
-      sx={{
-        position: 'fixed',
-        bottom: 20,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 1300,
-        maxWidth: '95vw',
-      }}
-    >
-      <Paper
-        elevation={12}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 2,
-          px: 2.5,
-          py: 1.5,
-          backgroundColor: '#121412',
-          border: '1px solid rgba(254, 207, 6, 0.4)',
-          borderRadius: '12px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
-        }}
-      >
-        {/* Back Button */}
-        <IconButton
+    <div className="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[95vw]">
+      <div className="flex items-center gap-3 bg-zinc-950/85 border border-zinc-800 rounded-md shadow-2xl px-4 py-3 backdrop-blur-md">
+
+        {/* Botón Volver */}
+        <button
           onClick={handleBack}
-          size="small"
-          sx={{ color: '#FECF06', '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.1)' } }}
+          title="Volver al Expediente"
+          className="p-2 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer flex-shrink-0"
         >
           <ArrowLeft size={18} />
-        </IconButton>
+        </button>
 
-        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
+        {/* Separador */}
+        <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
 
-        {/* Title and Mode Switcher */}
-        <Box sx={{ minWidth: 0 }}>
-          <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {tituloDocumento}
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 0.5 }}>
-            <Typography sx={{ fontSize: '10px', color: '#AEAEB2', fontWeight: 700, textTransform: 'uppercase' }}>
-              Modo:
-            </Typography>
-            <Box sx={{ display: 'flex', backgroundColor: '#000000', p: '2px', borderRadius: '6px', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
-              <MuiButton
-                size="small"
+        {/* Título y Alternador de Modo */}
+        <div className="min-w-0 pr-2">
+          <p className="text-[12px] font-semibold text-zinc-100 truncate leading-tight">{tituloDocumento}</p>
+          <div className="flex items-center gap-1.5 mt-1.5">
+            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">Modo:</span>
+            <div className="flex bg-zinc-900 p-0.5 rounded-md border border-zinc-800">
+              <button
+                type="button"
                 onClick={() => handleSetPreview(false)}
-                sx={{
-                  px: 1.5,
-                  py: 0.25,
-                  fontSize: '9px',
-                  fontWeight: 700,
-                  minWidth: 'auto',
-                  borderRadius: '4px',
-                  backgroundColor: !isPreview ? '#FECF06' : 'transparent',
-                  color: !isPreview ? '#000000' : '#AEAEB2',
-                  '&:hover': { backgroundColor: !isPreview ? '#FFE052' : 'rgba(255,255,255,0.05)' },
-                }}
+                className={`px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  !isPreview
+                    ? 'bg-[var(--apple-accent)] text-black shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
               >
                 Edición
-              </MuiButton>
-              <MuiButton
-                size="small"
+              </button>
+              <button
+                type="button"
                 onClick={() => handleSetPreview(true)}
-                sx={{
-                  px: 1.5,
-                  py: 0.25,
-                  fontSize: '9px',
-                  fontWeight: 700,
-                  minWidth: 'auto',
-                  borderRadius: '4px',
-                  backgroundColor: isPreview ? '#FECF06' : 'transparent',
-                  color: isPreview ? '#000000' : '#AEAEB2',
-                  '&:hover': { backgroundColor: isPreview ? '#FFE052' : 'rgba(255,255,255,0.05)' },
-                }}
+                className={`px-2 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  isPreview
+                    ? 'bg-[var(--apple-accent)] text-black shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
               >
                 Vista Previa
-              </MuiButton>
-            </Box>
-          </Stack>
-        </Box>
+              </button>
+            </div>
+          </div>
+        </div>
 
-        {/* Validation Badge */}
+        {/* Badge de validación */}
         {camposRequeridos.length > 0 && (
           <>
-            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
-            <Chip
-              size="small"
-              icon={faltantes.length > 0 ? <AlertTriangle size={12} /> : <CheckCircle2 size={12} />}
-              label={faltantes.length > 0 ? `${faltantes.length} vacíos` : 'Listo'}
-              sx={{
-                fontWeight: 700,
-                backgroundColor: faltantes.length > 0 ? 'rgba(255, 149, 0, 0.15)' : 'rgba(0, 255, 65, 0.15)',
-                color: faltantes.length > 0 ? '#FF9500' : '#00FF41',
-                border: `1px solid ${faltantes.length > 0 ? 'rgba(255, 149, 0, 0.3)' : 'rgba(0, 255, 65, 0.3)'}`,
-              }}
-            />
+            <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-semibold flex-shrink-0 ${
+              faltantes.length > 0
+                ? 'bg-amber-500/10 border border border-amber-500/20 text-amber-400'
+                : 'bg-emerald-500/10 border border border-emerald-500/20 text-emerald-400'
+            }`}>
+              {faltantes.length > 0 ? (
+                <>
+                  <AlertTriangle size={12} />
+                  <span>{faltantes.length} vacíos</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={12} />
+                  <span>Listo</span>
+                </>
+              )}
+            </div>
           </>
         )}
 
-        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
+        {/* Separador */}
+        <div className="w-px h-6 bg-zinc-800 flex-shrink-0" />
 
-        {/* Action Buttons */}
-        <Stack direction="row" spacing={1}>
-          <MuiButton
-            variant="outlined"
-            size="small"
-            onClick={onDownloadZip}
-            startIcon={<Archive size={14} />}
-            sx={{
-              borderColor: '#00FF41',
-              color: '#00FF41',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#52FF80', backgroundColor: 'rgba(0, 255, 65, 0.08)' },
-            }}
-          >
-            ZIP / Word
-          </MuiButton>
+        {/* Botón Imprimir PDF */}
+        <button
+          onClick={onPrint}
+          className="flex items-center gap-1.5 px-3 py-2 bg-[var(--apple-accent)] hover:bg-[var(--apple-accent)]/85 active:scale-95 text-black rounded-md text-[11px] font-bold transition-all cursor-pointer flex-shrink-0 shadow-lg shadow-[var(--apple-accent)]/20"
+        >
+          <Printer size={13} />
+          <span>Imprimir</span>
+        </button>
 
-          <MuiButton
-            variant="contained"
-            size="small"
-            onClick={onPrint}
-            startIcon={<Printer size={14} />}
-            sx={{
-              backgroundColor: '#FECF06',
-              color: '#000000',
-              fontWeight: 800,
-              fontSize: '11px',
-              '&:hover': { backgroundColor: '#FFE052' },
-            }}
-          >
-            Imprimir
-          </MuiButton>
-        </Stack>
-      </Paper>
-    </Box>,
+      </div>
+    </div>,
     document.body
   );
 }

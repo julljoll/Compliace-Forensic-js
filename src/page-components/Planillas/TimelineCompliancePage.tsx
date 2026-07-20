@@ -1,10 +1,5 @@
-import React, { useMemo, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-
 import { useCMSStore } from '../../store/cmsStore';
 import { getTipoProyectoConfig } from '../../data/tiposProyecto';
 import type { CasoCMS, StepState } from '../../store/cmsStore';
@@ -76,21 +71,17 @@ export default function TimelineCompliancePage() {
 
   if (!caso) {
     return (
-      <div className="planilla-container">
-        <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
-          <h2>Expediente No Encontrado</h2>
-          <p>Seleccione un caso válido para generar la línea de tiempo de compliance.</p>
-        </div>
+      <div style={{ padding: '40px', textAlign: 'center', fontFamily: "'Times New Roman', Times, serif" }}>
+        <p style={{ fontSize: '18px', fontWeight: 700 }}>Expediente no encontrado</p>
+        <p style={{ color: '#888', marginTop: '8px' }}>
+          Use el módulo de Auditoría para seleccionar un caso e imprimir su línea de tiempo.
+        </p>
       </div>
     );
   }
 
   const config = getTipoProyectoConfig(caso.tipoProyecto);
   const steps  = caso.steps || {};
-
-  const now = new Date().toLocaleDateString('es-VE', {
-    weekday: 'long', day: '2-digit', month: 'long', year: 'numeric',
-  });
 
   const faseStats = config.fases.map(fase => {
     const pasos = config.pasos.filter(p => fase.pasoIds.includes(p.id));
@@ -114,32 +105,6 @@ export default function TimelineCompliancePage() {
 
   return (
     <div className="planilla-container">
-      <Box
-        className="no-print"
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          p: 2,
-          mb: 3,
-          backgroundColor: '#121412',
-          border: '1px solid rgba(254, 207, 6, 0.3)',
-          borderRadius: '8px',
-        }}
-      >
-        <Box>
-          <Typography component="h1" sx={{ fontSize: '16px', fontWeight: 700, color: '#00FF41', fontFamily: 'monospace' }}>
-            LÍNEA DE TIEMPO DEL PROCESO FORENSE & COMPLIANCE
-          </Typography>
-          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>
-            Auditoría de Hitos Secuenciales · Trazabilidad Hash Chain SHA-256
-          </Typography>
-        </Box>
-        <Stack direction="row" spacing={1}>
-          <Chip label="TIMELINE" size="small" sx={{ backgroundColor: 'rgba(254, 207, 6, 0.15)', color: '#FECF06', fontWeight: 700 }} />
-          <Chip label="SHA256.US" size="small" sx={{ backgroundColor: 'rgba(0, 255, 65, 0.15)', color: '#00FF41', fontWeight: 700 }} />
-        </Stack>
-      </Box>
       <div className="page">
         {/* Encabezado institucional — membrete igual a las demás planillas */}
         <header>
@@ -169,14 +134,14 @@ export default function TimelineCompliancePage() {
           </div>
         </header>
 
-        {/* Datos del expediente */}
-        <div className="section">
-          <div className="section-title">I. Datos e Identificación de la Investigación</div>
-          <table className="evidence-table" style={{ width: '100%', marginBottom: '20px' }}>
+        {/* ── DATOS DEL EXPEDIENTE ── */}
+        <div className="section" style={{ marginBottom: '16px' }}>
+          <div className="section-title">I. Datos de Identificación del Caso</div>
+          <table className="tabla-datos">
             <tbody>
               <tr>
-                <td>N° Expediente</td>
-                <td contentEditable suppressContentEditableWarning><strong>{caso.numeroCaso}</strong></td>
+                <td style={{ width: '30%', fontWeight: 700 }}>N° Expediente</td>
+                <td contentEditable suppressContentEditableWarning style={{ fontWeight: 700 }}>{caso.numeroCaso}</td>
               </tr>
               <tr>
                 <td>Fecha de Inicio</td>
@@ -224,11 +189,9 @@ export default function TimelineCompliancePage() {
           marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '6px',
           border: '1px solid #1d1d1f'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10.5px', fontWeight: 'bold', color: '#1d1d1f' }}>
-            <span>AVANCE GLOBAL DEL CUMPLIMIENTO (COMPLIANCE)</span>
-            <span>
-              {totalCompletados} / {totalPasos} pasos completados ({pct}%)
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 'bold' }}>
+            <span>NIVEL DE AVANCE GLOBAL COMPLIANCE</span>
+            <span>{totalCompletados} de {totalPasos} hitos completados ({pct}%)</span>
           </div>
           <div style={{ background: '#d2d2d7', borderRadius: '4px', height: '8px', overflow: 'hidden', border: '0.5px solid #1d1d1f' }}>
             <div style={{
@@ -270,80 +233,57 @@ export default function TimelineCompliancePage() {
                     {/* Timeline column */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '32px', flexShrink: 0 }}>
                       <div style={{
-                        width: '24px', height: '24px',
-                        borderRadius: '50%',
-                        border: '1.5px solid #1d1d1f',
-                        background: estado === 'completado' ? '#30D158' : estado === 'en_progreso' ? '#FF9F0A' : '#ffffff',
+                        width: '24px', height: '24px', borderRadius: '50%',
+                        background: estado === 'completado' ? '#30D158' : estado === 'en_progreso' ? '#FF9F0A' : '#e5e5ea',
+                        color: estado === 'completado' || estado === 'en_progreso' ? '#fff' : '#8e8e93',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '10px', fontWeight: 'bold',
-                        color: estado === 'completado' ? '#ffffff' : '#1d1d1f',
-                        flexShrink: 0, zIndex: 1,
+                        fontSize: '11px', fontWeight: 'bold', border: '1px solid #1d1d1f', flexShrink: 0
                       }}>
-                        {estado === 'completado' ? '✓' : paso.num}
+                        {estadoMeta.symbol}
                       </div>
                       {!isLast && (
-                        <div style={{ width: '1.5px', flex: 1, background: '#1d1d1f', minHeight: '16px', marginTop: '2px' }} />
+                        <div style={{
+                          width: '2px', flex: 1, minHeight: '16px',
+                          background: estado === 'completado' ? '#30D158' : '#d2d2d7',
+                          marginTop: '2px'
+                        }} />
                       )}
                     </div>
 
-                    {/* Content */}
-                    <div style={{
-                      flex: 1, borderBottom: isLast ? 'none' : '0.5px dashed #8e8e93',
-                      paddingBottom: '8px',
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
-                        <div>
-                          <p style={{ margin: 0, fontSize: '11px', fontWeight: 'bold', color: '#1d1d1f' }}>
-                            Paso {paso.num}: {paso.titulo}
-                          </p>
-                          <p style={{ margin: '2px 0 0', fontSize: '9.5px', color: '#515154' }}>
-                            {paso.action}
-                          </p>
-                        </div>
+                    {/* Step details */}
+                    <div style={{ flex: 1, background: '#fff', border: '1px solid #d2d2d7', borderRadius: '6px', padding: '8px 12px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+                        <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#1d1d1f' }}>
+                          Paso {paso.num}: {paso.titulo}
+                        </span>
                         <span style={{
-                          flexShrink: 0, fontSize: '8.5px', fontWeight: 'bold', textTransform: 'uppercase',
-                          padding: '1px 6px', border: '1px solid #1d1d1f',
-                          background: estado === 'completado' ? 'rgba(48,209,88,0.1)' : estado === 'en_progreso' ? 'rgba(255,159,10,0.1)' : '#ffffff',
-                          color: estado === 'completado' ? '#30D158' : estado === 'en_progreso' ? '#FF9F0A' : '#515154',
+                          fontSize: '9px', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px',
+                          background: estado === 'completado' ? '#e4f8e9' : estado === 'en_progreso' ? '#fff4e5' : '#f2f2f7',
+                          color: estado === 'completado' ? '#1b7d34' : estado === 'en_progreso' ? '#b26200' : '#8e8e93',
+                          border: '0.5px solid #d2d2d7'
                         }}>
-                          {estadoMeta.label}
+                          {estadoMeta.label.toUpperCase()}
                         </span>
                       </div>
 
-                      {/* Step metadata */}
-                      {(stepState?.fechaInicio || stepState?.fechaCompletado || stepState?.responsable) && (
-                        <div style={{ display: 'flex', gap: '12px', marginTop: '4px', fontSize: '9px', color: '#515154', flexWrap: 'wrap' }}>
-                          {stepState.fechaInicio && (
-                            <span>📅 Inicio: <strong>{formatFecha(stepState.fechaInicio)}</strong></span>
-                          )}
-                          {stepState.fechaCompletado && (
-                            <span>✅ Completado: <strong>{formatFecha(stepState.fechaCompletado)}</strong></span>
-                          )}
-                          {stepState.responsable && (
-                            <span>👤 Responsable: <strong>{stepState.responsable}</strong></span>
-                          )}
+                      <div style={{ fontSize: '10px', color: '#515154', marginBottom: '4px', lineHeight: '1.4' }}>
+                        {paso.guide}
+                      </div>
+
+                      {stepState?.fechaCompletado && (
+                        <div style={{ fontSize: '9px', color: '#30D158', fontWeight: 'bold' }}>
+                          ✓ Completado el: {formatFecha(stepState.fechaCompletado)}
                         </div>
                       )}
 
-                      {/* Observaciones */}
-                      {stepState?.observaciones && (
-                        <p style={{
-                          margin: '4px 0 0', fontSize: '9px', color: '#1d1d1f',
-                          fontStyle: 'italic', paddingLeft: '8px',
-                          borderLeft: '1.5px solid #8e8e93',
-                        }}>
-                          {stepState.observaciones}
-                        </p>
-                      )}
-
-                      {/* Normativas */}
-                      {paso.normativas.length > 0 && (
+                      {/* Normativas asociadas */}
+                      {paso.normativas && paso.normativas.length > 0 && (
                         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
-                          {paso.normativas.map((n, ni) => (
-                            <span key={ni} style={{
-                              fontSize: '8px', fontWeight: 'bold',
-                              padding: '1px 4px', border: '0.5px solid #1d1d1f',
-                              background: '#ffffff', color: '#1d1d1f',
+                          {paso.normativas.map(n => (
+                            <span key={n.label} style={{
+                              fontSize: '8px', background: '#f2f2f7', color: '#1d1d1f',
+                              padding: '1px 5px', borderRadius: '3px', border: '0.5px solid #d2d2d7',
+                              fontWeight: '600'
                             }}>
                               {n.label}
                             </span>
@@ -358,45 +298,43 @@ export default function TimelineCompliancePage() {
           ))}
         </div>
 
-        {/* ── Firma y cierre ── */}
-        <div style={{
-          borderTop: '2px solid #1d1d1f', marginTop: '24px', paddingTop: '16px',
-          pageBreakInside: 'avoid'
-        }}>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'space-between' }}>
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <div style={{ borderTop: '1px solid #1d1d1f', marginBottom: '4px', marginTop: '30px' }} />
-              <p style={{ margin: 0, fontSize: '10px', fontWeight: 'bold' }}>{caso.peritoLider || 'Perito Forense'}</p>
-              <p style={{ margin: '1px 0 0', fontSize: '9px', color: '#515154' }}>Perito Forense Líder</p>
-            </div>
-            {caso.compliance && (
-              <div style={{ flex: 1, textAlign: 'center' }}>
-                <div style={{ borderTop: '1px solid #1d1d1f', marginBottom: '4px', marginTop: '30px' }} />
-                <p style={{ margin: 0, fontSize: '10px', fontWeight: 'bold' }}>{caso.compliance}</p>
-                <p style={{ margin: '1px 0 0', fontSize: '9px', color: '#515154' }}>Compliance Officer</p>
-              </div>
-            )}
-            {caso.fiscal && (
-              <div style={{ flex: 1, textAlign: 'center' }}>
-                <div style={{ borderTop: '1px solid #1d1d1f', marginBottom: '4px', marginTop: '30px' }} />
-                <p style={{ margin: 0, fontSize: '10px', fontWeight: 'bold' }}>{caso.fiscal}</p>
-                <p style={{ margin: '1px 0 0', fontSize: '9px', color: '#515154' }}>Fiscal del Ministerio Público</p>
-              </div>
-            )}
+        {/* ── FIRMAS Y VALIDACIÓN PERICIAL ── */}
+        <div className="section" style={{ pageBreakInside: 'avoid', marginTop: '30px' }}>
+          <div className="section-title">III. Certificación Pericial y Firmas de Responsabilidad</div>
+          <div style={{ fontSize: '10px', color: '#515154', marginBottom: '20px', textAlign: 'justify', lineHeight: '1.4' }}>
+            Certifico que la presente Línea de Tiempo de Compliance Forense refleja fielmente el estado, secuencia y trazabilidad inmutable de las operaciones realizadas sobre la evidencia digital asignada al Expediente N° <strong>{caso.numeroCaso}</strong>, bajo estricto cumplimiento de los estándares ISO/IEC 27037:2012, NIST SP 800-86 y el Manual Único de Cadena de Custodia (MUCC-2017).
           </div>
-          <p style={{ textAlign: 'center', fontSize: '8.5px', color: '#515154', marginTop: '16px' }}>
-            Documento de Auditoría Forense · Generado por SHA256.US · MUCC-2017 · ISO/IEC 27037 · {now}
-          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', marginTop: '40px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ borderBottom: '1px solid #1d1d1f', height: '40px', marginBottom: '6px' }} />
+              <div style={{ fontSize: '11px', fontWeight: 'bold' }}>{caso.peritoLider || '__________________________'}</div>
+              <div style={{ fontSize: '9px', color: '#515154' }}>PERITO FORENSE LÍDER</div>
+              <div style={{ fontSize: '8px', color: '#8e8e93' }}>Firma y Sello</div>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ borderBottom: '1px solid #1d1d1f', height: '40px', marginBottom: '6px' }} />
+              <div style={{ fontSize: '11px', fontWeight: 'bold' }}>{caso.fiscal || '__________________________'}</div>
+              <div style={{ fontSize: '9px', color: '#515154' }}>FISCALÍA / REQUISITORIO</div>
+              <div style={{ fontSize: '8px', color: '#8e8e93' }}>Recibido Conformidad</div>
+            </div>
+          </div>
         </div>
 
+        {/* Pie de página institucional */}
+        <footer style={{ marginTop: '30px', borderTop: '1px solid #d2d2d7', paddingTop: '8px', display: 'flex', justifyContent: 'space-between', fontSize: '8px', color: '#8e8e93' }}>
+          <span>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad</span>
+          <span>Formato Oficial Compliance · Impreso el {new Date().toLocaleDateString('es-VE')}</span>
+        </footer>
       </div>
 
       <PlanillaToolbar
         onPrint={handlePrint}
         onDownloadZip={() => downloadPlanillaZip(`TimelineCompliance_${caso.numeroCaso || 'caso'}`, 'Línea de Tiempo Forense Compliance')}
-        tituloDocumento="Línea de Tiempo Forense - Compliance"
+        tituloDocumento="Línea de Tiempo Forense Compliance"
         camposRequeridos={camposRequeridos}
-        casoId={casoId || undefined}
+        casoId={caso.id}
       />
     </div>
   );

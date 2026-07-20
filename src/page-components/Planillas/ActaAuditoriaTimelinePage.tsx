@@ -1,12 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
@@ -64,26 +57,12 @@ const ActaAuditoriaTimelinePage = () => {
       .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
   }, [storeLogs, casoId]);
 
-  const hashFinalCadena = logsDelCaso.length > 0
-    ? logsDelCaso[logsDelCaso.length - 1].hashActual || 'N/A'
-    : 'N/A';
+  const hashFinalCadena = logsDelCaso.length > 0 
+    ? logsDelCaso[logsDelCaso.length - 1].hashActual 
+    : 'GENESIS_HASH_0000000000000000000000000000000000000000000000000000000000000000';
 
-  const hashInicial = logsDelCaso.length > 0
-    ? logsDelCaso[0].hashActual || 'N/A'
-    : 'N/A';
-
-  const getActionLabel = (accion: string) => {
-    const upper = accion.toUpperCase();
-    if (upper.includes('CREAR') || upper.includes('REGISTRADA') || upper.includes('NUEVO')) return 'CREAR';
-    if (upper.includes('ELIMINAR') || upper.includes('ELIMINADA')) return 'ELIMINAR';
-    if (upper.includes('ACTUALIZ') || upper.includes('CAMBIA') || upper.includes('MODIFICAR')) return 'MODIFICAR';
-    if (upper.includes('VERIFICAR') || upper.includes('CUMPLIMIENTO')) return 'VERIFICAR';
-    if (upper.includes('IMPRIM') || upper.includes('PLANILLA')) return 'IMPRIMIR';
-    return accion.substring(0, 12);
-  };
-
-  const fechaImpresion = new Date().toLocaleDateString('es-VE', {
-    day: '2-digit', month: 'long', year: 'numeric',
+  const fechaGeneracion = new Date().toLocaleDateString('es-VE', {
+    year: 'numeric', month: 'long', day: 'numeric',
     hour: '2-digit', minute: '2-digit'
   });
 
@@ -114,47 +93,53 @@ const ActaAuditoriaTimelinePage = () => {
 
   return (
     <div className="planilla-container">
-      {/* MUI Topbar Selector */}
-      <Box
-        className="no-print"
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          p: 2,
-          mb: 3,
-          backgroundColor: '#121412',
-          border: '1px solid rgba(254, 207, 6, 0.3)',
-          borderRadius: '8px',
-        }}
-      >
-        <Box>
-          <Typography component="h1" sx={{ fontSize: '16px', fontWeight: 700, color: '#00FF41', fontFamily: 'monospace' }}>
-            ACTA DE AUDITORÍA & TRAZABILIDAD HASH SHA-256
-          </Typography>
-          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>
-            Historial Inmutable de Transacciones Criptográficas Certificadas
-          </Typography>
-        </Box>
-
-        <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-          <TextField
-            select
-            size="small"
+      {/* ─── SELECTOR DE CASO (NO PRINT) ─── */}
+      <div className="no-print" style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '16px',
+        padding: '16px 24px',
+        background: 'var(--co-surface-1)',
+        borderBottom: '1px solid var(--apple-border)',
+        width: '100%',
+        maxWidth: '215mm',
+        margin: '0 auto 20px auto',
+        borderRadius: '12px',
+        boxShadow: 'var(--apple-shadow)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <label htmlFor="caso-selector" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--apple-text)' }}>
+            Seleccionar Expediente:
+          </label>
+          <select
+            id="caso-selector"
             value={casoId}
-            onChange={(e) => router.push(e.target.value ? `/planillas/acta-auditoria-timeline?casoId=${e.target.value}` : '/planillas/acta-auditoria-timeline')}
-            sx={{ minWidth: 240, '& .MuiInputBase-input': { color: 'white' }, '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.2)' } }}
+            onChange={handleCaseChange}
+            style={{
+              padding: '6px 10px',
+              borderRadius: '6px',
+              border: '1px solid var(--apple-border)',
+              backgroundColor: 'var(--co-surface-2)',
+              color: 'var(--apple-text)',
+              fontSize: '13px',
+              outline: 'none',
+              minWidth: '220px',
+              cursor: 'pointer'
+            }}
           >
-            <MenuItem value="">Todos los Registros Auditados</MenuItem>
-            {casos.map((cs) => (
-              <MenuItem key={cs.id} value={cs.id}>
-                {cs.numeroCaso} — {cs.titulo}
-              </MenuItem>
+            <option value="">-- Seleccione un caso/expediente --</option>
+            {casos.map(el => (
+              <option key={el.id} value={el.id}>
+                {el.numeroCaso || 'Sin Nro'} - {el.titulo}
+              </option>
             ))}
-          </TextField>
-          <Chip label="SHA256 INMUTABLE" size="small" sx={{ backgroundColor: 'rgba(0, 255, 65, 0.15)', color: '#00FF41', fontWeight: 700 }} />
-        </Stack>
-      </Box>
+          </select>
+        </div>
+        <button onClick={handlePrint} className="print-button" style={{ margin: 0, padding: '6px 16px', fontSize: '12px', borderRadius: '8px' }}>
+          🖨️ Imprimir Timeline
+        </button>
+      </div>
 
       <div className="page">
         {/* ─── ENCABEZADO ─── */}
@@ -164,186 +149,168 @@ const ActaAuditoriaTimelinePage = () => {
               <img src="/logo.png" alt="SHA256.US Logo" className="logo-img" />
               <span className="logo-text">SHA256.US</span>
             </div>
-            <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>
-            <span className="address-text">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.</span>
+            <span className="logo-subtext">Laboratorio de Informática Forense & Ciberseguridad</span>
+            <span className="address-text">
+              Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
+            </span>
           </div>
+
           <div className="acta-header">
-            <h1 className="acta-title">Acta de Auditoría Forense — Timeline del Caso</h1>
+            <h1 className="acta-title">ACTA DE TRAZABILIDAD Y CADENA DE CUSTODIA DIGITAL</h1>
+            <div className="acta-subtitle">CERTIFICACIÓN DE REGISTROS DE AUDITORÍA CRIPTOGRÁFICA INMUTABLE</div>
             <div className="acta-nro">
-              N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>
-                <span className="placeholder-field">{c.numeroCaso ? c.numeroCaso : '[EXPEDIENTE]'}</span>
-              </span>
+              N° EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '140px', fontWeight: 'bold' }}>{c.numeroCaso || '[EXPEDIENTE]'}</span>
             </div>
           </div>
         </header>
 
-        {/* ─── I. DATOS DEL CASO ─── */}
+        {/* ─── DATOS DEL EXPEDIENTE ─── */}
         <div className="section">
-          <div className="section-title">I. Datos del Caso y Período de Auditoría</div>
-          <div className="grid-container">
-            <div className="form-group">
-              <div className="label">Caso / Expediente</div>
-              <div className="value" contentEditable suppressContentEditableWarning><span className="placeholder-field">{c.numeroCaso ? c.numeroCaso : '[N° Expediente]'}</span></div>
+          <div className="section-title">I. DATOS DE IDENTIFICACIÓN DEL CASO AUDITADO</div>
+          <table className="tabla-datos">
+            <tbody>
+              <tr>
+                <td style={{ width: '30%', fontWeight: 'bold' }}>N° Expediente / Caso:</td>
+                <td contentEditable suppressContentEditableWarning style={{ fontWeight: 'bold' }}>{c.numeroCaso || 'GENERAL / GLOBAL'}</td>
+              </tr>
+              <tr>
+                <td>Título del Expediente:</td>
+                <td contentEditable suppressContentEditableWarning>{c.titulo || 'Múltiples Casos Auditados'}</td>
+              </tr>
+              <tr>
+                <td>Perito Responsable:</td>
+                <td contentEditable suppressContentEditableWarning>{c.peritoLider || '—'}</td>
+              </tr>
+              <tr>
+                <td>Fecha de Emisión del Acta:</td>
+                <td>{fechaGeneracion}</td>
+              </tr>
+              <tr>
+                <td>Total de Eventos Auditados:</td>
+                <td style={{ fontWeight: 'bold' }}>{logsDelCaso.length} Eventos Registrados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* ─── SECCIÓN II: RESUMEN Y SELLO DE CADENA ─── */}
+        <div className="section">
+          <div className="section-title">II. CERTIFICADO DE INMUTABILIDAD Y SELLO CRIPTOGRÁFICO SHA-256</div>
+          <p className="texto-legal" style={{ marginBottom: '10px' }}>
+            Se hace constar que los siguientes registros representan el historial íntegro, secuencial e inalterable de las operaciones ejecutadas dentro del sistema <strong>SHA256.US Compliance CMS</strong>. Cada evento fue firmado criptográficamente en un esquema de <strong>Hash Chain SHA-256 (Append-Only)</strong> conforme al estándar ISO/IEC 27037:2012 y el Manual Único de Cadena de Custodia de Evidencias Físicas (MUCCEF-2017).
+          </p>
+          
+          <div style={{
+            background: '#f8f9fa',
+            border: '1px solid #1d1d1f',
+            padding: '10px 14px',
+            borderRadius: '4px',
+            margin: '10px 0 16px 0',
+            fontFamily: 'monospace',
+            fontSize: '9.5px',
+            lineHeight: '1.4'
+          }}>
+            <div style={{ fontWeight: 'bold', borderBottom: '1px solid #ddd', paddingBottom: '4px', marginBottom: '4px', color: '#1d1d1f' }}>
+              SELLO FINAL DE LA CADENA DE CUSTODIA (SHA-256):
             </div>
-            <div className="form-group">
-              <div className="label">Título del Caso</div>
-              <div className="value" contentEditable suppressContentEditableWarning><span className="placeholder-field">{c.titulo ? c.titulo : '[Título del Caso]'}</span></div>
+            <div style={{ wordBreak: 'break-all', color: '#000', fontWeight: 'bold' }}>
+              {hashFinalCadena}
             </div>
-            <div className="form-group">
-              <div className="label">Total de Eventos Registrados</div>
-              <div className="value">{logsDelCaso.length} evento{logsDelCaso.length !== 1 ? 's' : ''}</div>
-            </div>
-            <div className="form-group">
-              <div className="label">Fecha de Impresión del Acta</div>
-              <div className="value" contentEditable suppressContentEditableWarning>{fechaImpresion}</div>
-            </div>
-            {logsDelCaso.length > 0 && (
-              <>
-                <div className="form-group">
-                  <div className="label">Primer Evento Registrado</div>
-                  <div className="value">
-                    {new Date(logsDelCaso[0].timestamp).toLocaleString('es-VE')}
-                  </div>
-                </div>
-                <div className="form-group">
-                  <div className="label">Último Evento Registrado</div>
-                  <div className="value">
-                    {new Date(logsDelCaso[logsDelCaso.length - 1].timestamp).toLocaleString('es-VE')}
-                  </div>
-                </div>
-              </>
-            )}
           </div>
         </div>
 
-        {/* ─── II. HASH DE INTEGRIDAD DE LA CADENA ─── */}
+        {/* ─── SECCIÓN III: TIMELINE DE EVENTOS ─── */}
         <div className="section">
-          <div className="section-title">II. Sellado Criptográfico de la Cadena SHA-256</div>
-          <div className="legal-text">
-            <strong>Resguardo de Integridad:</strong> La presente cadena de auditoría ha sido sellada criptográficamente mediante el algoritmo SHA-256 conforme a la norma <strong>ISO/IEC 27037:2012</strong> y al <strong>Manual Único de Cadena de Custodia de Evidencias (MUCC-2017)</strong>. La verificación de cualquier registro garantiza la inalterabilidad del historial completo.
-            <div style={{ fontFamily: 'monospace', marginTop: '5px', fontSize: '8px', fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>
-              Hash SHA-256 Inicial: <span className="placeholder-field">{hashInicial.length > 20 ? `${hashInicial.substring(0, 32)}...${hashInicial.substring(hashInicial.length - 8)}` : hashInicial}</span><br />
-              Hash SHA-256 Final (Cadena): <span className="placeholder-field">{hashFinalCadena.length > 20 ? `${hashFinalCadena.substring(0, 32)}...${hashFinalCadena.substring(hashFinalCadena.length - 8)}` : hashFinalCadena}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ─── III. TIMELINE DE EVENTOS ─── */}
-        <div className="section">
-          <div className="section-title">III. Timeline Cronológico de Eventos del Caso</div>
+          <div className="section-title">III. LÍNEA DE TIEMPO Y REGISTRO DE TRANSACCIONES AUDITADAS</div>
+          
           {logsDelCaso.length === 0 ? (
-            <div className="legal-text" style={{ textAlign: 'center', fontStyle: 'italic' }}>
-              No se encontraron eventos de auditoría para este caso.
+            <div style={{ padding: '20px', textAlign: 'center', color: '#666', fontStyle: 'italic', fontSize: '11px', border: '1px dashed #ccc' }}>
+              No se encontraron registros de auditoría asociados a este expediente.
             </div>
           ) : (
-            <table className="timeline-print-table">
+            <table className="tabla-datos" style={{ fontSize: '9px' }}>
               <thead>
-                <tr>
-                  <th style={{ width: '3%' }}>N°</th>
-                  <th style={{ width: '16%' }}>Fecha y Hora</th>
-                  <th style={{ width: '11%' }}>Acción</th>
-                  <th style={{ width: '37%' }}>Detalle del Evento</th>
-                  <th style={{ width: '13%' }}>Operador</th>
-                  <th style={{ width: '20%' }}>Hash SHA-256</th>
+                <tr style={{ background: '#f2f2f7', textAlign: 'left' }}>
+                  <th style={{ width: '40px', padding: '6px' }}>#</th>
+                  <th style={{ width: '110px', padding: '6px' }}>Fecha / Hora</th>
+                  <th style={{ width: '90px', padding: '6px' }}>Usuario</th>
+                  <th style={{ width: '100px', padding: '6px' }}>Acción</th>
+                  <th style={{ padding: '6px' }}>Detalles de la Operación</th>
+                  <th style={{ width: '120px', padding: '6px', fontFamily: 'monospace' }}>Hash Evento (SHA-256)</th>
                 </tr>
               </thead>
               <tbody>
-                {logsDelCaso.map((log, idx) => (
-                  <tr key={log.id}>
-                    <td style={{ textAlign: 'center', fontWeight: 'bold' }}>{idx + 1}</td>
-                    <td style={{ fontFamily: 'monospace', fontSize: '6.5px' }}>
-                      {new Date(log.timestamp).toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year: '2-digit' })}{' '}
-                      {new Date(log.timestamp).toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                    </td>
-                    <td>
-                      <span style={{
-                        fontWeight: 700,
-                        fontSize: '6.5px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.03em'
-                      }}>
-                        {getActionLabel(log.accion)}
-                      </span>
-                    </td>
-                    <td contentEditable suppressContentEditableWarning>{log.detalle}</td>
-                    <td contentEditable suppressContentEditableWarning>{log.usuario}</td>
-                    <td style={{ fontFamily: 'monospace', fontSize: '6px', wordBreak: 'break-all' }}>
-                      {log.hashActual
-                        ? `${log.hashActual.substring(0, 12)}...${log.hashActual.substring(log.hashActual.length - 6)}`
-                        : '—'
-                      }
-                    </td>
-                  </tr>
-                ))}
+                {logsDelCaso.map((log, index) => {
+                  const fechaStr = new Date(log.timestamp).toLocaleString('es-VE', {
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit'
+                  });
+                  return (
+                    <tr key={log.id || index} style={{ borderBottom: '1px solid #e5e5ea' }}>
+                      <td style={{ fontWeight: 'bold', textAlign: 'center' }}>{index + 1}</td>
+                      <td>{fechaStr}</td>
+                      <td><strong>{log.usuario || 'Sistema'}</strong></td>
+                      <td>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '1px 5px',
+                          borderRadius: '3px',
+                          fontSize: '8px',
+                          fontWeight: 'bold',
+                          background: log.nivel === 'error' ? '#ffeeee' : log.nivel === 'warning' ? '#fff8e6' : '#eef9ff',
+                          color: log.nivel === 'error' ? '#cc0000' : log.nivel === 'warning' ? '#b37400' : '#0066cc',
+                          border: '1px solid rgba(0,0,0,0.1)'
+                        }}>
+                          {log.accion}
+                        </span>
+                      </td>
+                      <td>{log.detalle}</td>
+                      <td style={{ fontFamily: 'monospace', fontSize: '8px', wordBreak: 'break-all' }}>
+                        {log.hashActual ? log.hashActual.substring(0, 16) + '...' : 'N/A'}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}
         </div>
 
-        {/* ─── IV. DECLARACIÓN DE INTEGRIDAD ─── */}
-        <div className="section">
-          <div className="section-title">IV. Declaración de Integridad del Log</div>
-          <div className="legal-text" style={{ fontSize: '7.5px' }}>
-            <p>El presente timeline de auditoría ha sido generado automáticamente por el Sistema de Gestión de Cumplimiento SHA256.US. Cada registro está vinculado criptográficamente al anterior mediante el algoritmo SHA-256, formando una cadena de bloques inmutable. Cualquier alteración posterior de los registros resultaría en una discrepancia del hash verificable que invalidaría la cadena de custodia conforme al <strong>Art. 187 del Código Orgánico Procesal Penal (COPP)</strong>.</p>
-          </div>
-        </div>
+        {/* ─── SECCIÓN IV: FIRMAS Y VALIDACIÓN PERICIAL ─── */}
+        <div className="section" style={{ pageBreakInside: 'avoid', marginTop: '30px' }}>
+          <div className="section-title">IV. DECLARACIÓN Y FIRMAS DE CERTIFICACIÓN PERICIAL</div>
+          <p className="texto-legal" style={{ marginBottom: '40px' }}>
+            El presente documento certifica la validez técnica de los datos expuestos. Cualquier alteración física o digital invalidará el sello de verificación SHA-256. Se firma en constancia a los efectos de su presentación ante la representación fiscal u organismos judiciales pertinentes.
+          </p>
 
-        {/* ─── V. FIRMAS ─── */}
-        <div className="signature-section" style={{ gap: '14mm' }}>
-          <div className="sig-detail-card">
-            <div className="sig-detail-label">PERITO FORENSE RESPONSABLE</div>
-            <div className="sig-line" />
-            <div className="sig-line-label">Firma</div>
-            <div className="sig-field">
-              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', marginTop: '20px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ borderBottom: '1px solid #1d1d1f', height: '40px', marginBottom: '6px' }} />
+              <div style={{ fontSize: '11px', fontWeight: 'bold' }}>{c.peritoLider || '__________________________'}</div>
+              <div style={{ fontSize: '9px', color: '#515154' }}>PERITO INFORMÁTICO FORENSE / RESPONSABLE</div>
+              <div style={{ fontSize: '8px', color: '#8e8e93' }}>Firma y Sello Digital</div>
             </div>
-            <div className="sig-field">
-              C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula de Identidad]</span></span>
-            </div>
-            <div className="fingerprint-row">
-              <div className="thumb-wrapper">
-                <div className="thumb-box" />
-                <span className="thumb-label">PULGAR DER.</span>
-              </div>
-              <div className="thumb-wrapper">
-                <div className="thumb-box" />
-                <span className="thumb-label">PULGAR IZQ.</span>
-              </div>
-            </div>
-          </div>
-          <div className="sig-detail-card">
-            <div className="sig-detail-label">SUPERVISOR DE COMPLIANCE</div>
-            <div className="sig-line" />
-            <div className="sig-line-label">Firma del Supervisor</div>
-            <div className="sig-field">
-              Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Nombre del Supervisor]</span></span>
-            </div>
-            <div className="sig-field">
-              Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Compliance Officer / Coordinador]</span></span>
-            </div>
-            <div className="fingerprint-row">
-              <div className="thumb-wrapper">
-                <div className="thumb-box" />
-                <span className="thumb-label">PULGAR DER.</span>
-              </div>
-              <div className="thumb-wrapper">
-                <div className="thumb-box" />
-                <span className="thumb-label">PULGAR IZQ.</span>
-              </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ borderBottom: '1px solid #1d1d1f', height: '40px', marginBottom: '6px' }} />
+              <div style={{ fontSize: '11px', fontWeight: 'bold' }}>AUDITORÍA DE CUMPLIMIENTO / COMPLIANCE</div>
+              <div style={{ fontSize: '9px', color: '#515154' }}>VALORACIÓN DE INTEGRIDAD SHA-256</div>
+              <div style={{ fontSize: '8px', color: '#8e8e93' }}>Certificación Conforme</div>
             </div>
           </div>
         </div>
 
-        <div className="footer">
-          Acta generada automáticamente bajo los estándares ISO/IEC 27037:2012 y el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017)<br />
-          SHA256 Forensic Lab — Tecnología al servicio de la justicia | Inmutabilidad criptográfica garantizada por SHA-256 Chain
-        </div>
+        {/* Pie de página institucional */}
+        <footer style={{ marginTop: '30px', borderTop: '1px solid #d2d2d7', paddingTop: '8px', display: 'flex', justifyContent: 'space-between', fontSize: '8px', color: '#8e8e93' }}>
+          <span>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad</span>
+          <span>Sello Inmutable SHA-256 · Impreso el {new Date().toLocaleDateString('es-VE')}</span>
+        </footer>
       </div>
 
       <PlanillaToolbar
         onPrint={handlePrint}
-        onDownloadZip={() => downloadPlanillaZip(`AuditoriaTimeline_${c.numeroCaso || 'caso'}`, 'Acta de Auditoría e Inmutabilidad de Línea de Tiempo')}
-        tituloDocumento="Acta de Auditoría Forense — Timeline"
+        onDownloadZip={() => downloadPlanillaZip(`ActaAuditoria_${c.numeroCaso || 'global'}`, 'Acta de Auditoría y Trazabilidad SHA-256')}
+        tituloDocumento="Acta de Auditoría y Trazabilidad SHA-256"
         camposRequeridos={camposRequeridos}
         casoId={casoId}
       />
