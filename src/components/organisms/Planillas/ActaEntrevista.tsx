@@ -77,29 +77,29 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       {/* DATOS DE LA ENTREVISTA */}
       <div className="section">
         <div className="section-title">Datos del Procedimiento (Entrevista)</div>
-        <div className="grid-container">
+        <div className="grid-container" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
           <div className="form-group">
             <div className="label">Lugar de la Entrevista</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Quíbor, Estado Lara — Laboratorio Forense SHA256.US]</span>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              <span className="placeholder-field">[Quíbor, Lara — SHA256.US]</span>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Fecha de la Entrevista</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Fecha (ej: DD/MM/AAAA)]</span>
+            <div className="label">Fecha de Entrevista</div>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              <span className="placeholder-field">[DD/MM/AAAA]</span>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Hora de Inicio</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Hora Inicio (ej: HH:MM)]</span>
+            <div className="label">Hora Inicio</div>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              <span className="placeholder-field">[HH:MM]</span>
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Hora de Término</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Hora Cierre (ej: HH:MM)]</span>
+            <div className="label">Hora Término</div>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              <span className="placeholder-field">[HH:MM]</span>
             </div>
           </div>
         </div>
@@ -108,43 +108,41 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       {/* I. IDENTIFICACIÓN DEL ENTREVISTADO */}
       <div className="section">
         <div className="section-title">I. Datos e Identificación del Entrevistado</div>
-        <div className="grid-container">
-          <div className="form-group">
+        <div className="grid-container" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
+          <div className="form-group" style={{ gridColumn: 'span 2' }}>
             <div className="label">Apellidos y Nombres</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
               {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres]</span>}
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Cédula de Identidad / Pasaporte</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
+            <div className="label">Cédula / Pasaporte</div>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula]</span>}
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Teléfono de Contacto</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
+            <div className="label">Teléfono Contacto</div>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
+              {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group" style={{ gridColumn: 'span 2' }}>
             <div className="label">Correo Electrónico</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
               {c.correo_investigar ? c.correo_investigar : <span className="placeholder-field">[Correo Electrónico]</span>}
             </div>
           </div>
-        </div>
-        <div className="grid-container" style={{ marginTop: '5px' }}>
           <div className="form-group" style={{ gridColumn: 'span 2' }}>
             <div className="label">Dirección de Habitación Habitual</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
+            <div className="value" contentEditable suppressContentEditableWarning style={{ fontSize: '9.5pt' }}>
               <span className="placeholder-field">[Dirección de Habitación]</span>
             </div>
           </div>
         </div>
-        <div className="form-group" style={{ marginTop: '5px' }}>
+        <div className="form-group" style={{ marginTop: '5px', padding: '4px 8px' }}>
           <div className="label">Condición / Rol en la Investigación</div>
-          <div className="checkbox-group" style={{ flexDirection: 'row', gap: '15px', fontSize: '9px' }}>
+          <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px', fontSize: '8.5pt' }}>
             <div className="check-item"><span className="box"></span> Víctima</div>
             <div className="check-item"><span className="box"></span> Testigo / Denunciante</div>
             <div className="check-item"><span className="box"></span> Propietario de la Evidencia</div>
@@ -154,7 +152,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       </div>
 
       {/* Conmutador interactivo (Solo en pantalla) */}
-      <div className="no-print flex gap-2.5 my-4 p-2.5 rounded-lg bg-white/5 border border-white/10">
+      <div className="no-print flex gap-2.5 my-2 p-2 rounded-lg bg-white/5 border border-white/10">
         <span className="text-[11px] font-bold text-gray-400 self-center uppercase tracking-wider">Tipo de Evidencia:</span>
         <button 
           type="button"
@@ -177,42 +175,42 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
         <div className="section-title">II. Relación del Dispositivo y Cuentas de Interés Forense</div>
         
         {tipoEvidencia === 'movil' ? (
-          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={4} className="evidence-table" style={{ fontSize: '9.5pt' }}>
             <tbody>
               <tr>
-                <td>Marca del Dispositivo Móvil</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Marca del Dispositivo Móvil</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_marca ? c.dispositivo_marca : '[Marca (ej: Samsung, Xiaomi, Apple)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Modelo del Dispositivo Móvil</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Modelo del Dispositivo Móvil</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_modelo ? c.dispositivo_modelo : '[Modelo (ej: Galaxy A54, iPhone 13)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Serial / IMEI (IMEI 1 / IMEI 2)</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Serial / IMEI (IMEI 1 / IMEI 2)</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Número IMEI / Serial]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Número Telefónico de la Línea</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Número Telefónico de la Línea</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : '[Nro. Telefónico (+58...)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Operadora de Servicio de Telecomunicaciones</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Operadora de Servicio de Telecomunicaciones</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">[Operadora (ej: Movistar, Digitel, Movilnet)]</strong>
                 </td>
               </tr>
               <tr>
-                <td>Cuentas / Aplicaciones de Interés Forense</td>
-                <td>
-                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
+                <td style={{ padding: '3px 8px' }}>Cuentas / Aplicaciones de Interés Forense</td>
+                <td style={{ padding: '3px 8px' }}>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px' }}>
                     <div className="check-item"><span className="box"></span> WhatsApp</div>
                     <div className="check-item"><span className="box"></span> Telegram</div>
                     <div className="check-item"><span className="box"></span> Correo Electrónico</div>
@@ -221,56 +219,56 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
                 </td>
               </tr>
               <tr>
-                <td>Cuenta / ID de la Aplicación Específica</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Cuenta / ID de la Aplicación Específica</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">[Indique la Cuenta, Nombre de Usuario o ID de la Aplicación a investigar]</strong>
                 </td>
               </tr>
             </tbody>
           </table>
         ) : (
-          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
+          <table border={1} cellSpacing={0} cellPadding={4} className="evidence-table" style={{ fontSize: '9.5pt' }}>
             <tbody>
               <tr>
-                <td>Marca del Computador / Equipo</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Marca del Computador / Equipo</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_marca ? c.dispositivo_marca : '[Marca del Computador (ej: HP, Dell, Lenovo)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Modelo del Computador / Equipo</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Modelo del Computador / Equipo</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_modelo ? c.dispositivo_modelo : '[Modelo del Equipo]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Serial del Equipo / PC</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Serial del Equipo / PC</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial del Computador / Chasis]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Tipo de Unidad de Almacenamiento</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Tipo de Unidad de Almacenamiento</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[Tipo de Disco (ej: SSD NVMe, HDD SATA, USB)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Capacidad de la Unidad de Almacenamiento</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Capacidad de la Unidad de Almacenamiento</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[Capacidad de Almacenamiento (ej: 512 GB / 1 TB)]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Serial de la Unidad de Disco Duro / USB</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Serial de la Unidad de Disco Duro / USB</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[Serial S/N del Disco o Memoria]'}</strong>
                 </td>
               </tr>
               <tr>
-                <td>Servicios / Cuentas de Interés Forense</td>
-                <td>
-                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px' }}>
+                <td style={{ padding: '3px 8px' }}>Servicios / Cuentas de Interés Forense</td>
+                <td style={{ padding: '3px 8px' }}>
+                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px' }}>
                     <div className="check-item"><span className="box"></span> Correo Corporativo</div>
                     <div className="check-item"><span className="box"></span> Historial de Navegación</div>
                     <div className="check-item"><span className="box"></span> Archivos del Sistema</div>
@@ -279,8 +277,8 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
                 </td>
               </tr>
               <tr>
-                <td>Ruta / Carpeta / ID de Cuenta Específica</td>
-                <td contentEditable suppressContentEditableWarning>
+                <td style={{ padding: '3px 8px' }}>Ruta / Carpeta / ID de Cuenta Específica</td>
+                <td style={{ padding: '3px 8px' }} contentEditable suppressContentEditableWarning>
                   <strong className="placeholder-field">[Indique la Ruta de Directorio, Correo o ID de Usuario Específico a examinar]</strong>
                 </td>
               </tr>
@@ -289,8 +287,8 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
         )}
       </div>
 
-      {/* III. FUNDAMENTACIÓN LEGAL Y CONSENTIMIENTO INFORMADO */}
-      <div className="section">
+      {/* III. FUNDAMENTACIÓN LEGAL Y CONSENTIMIENTO INFORMADO (EN PÁGINA SIGUIENTE) */}
+      <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
         <div className="section-title">III. Fundamentación Legal y Consentimiento Informado (Sin Coacción)</div>
         <div className="legal-text">
           En cumplimiento con el <strong>Manual Único de Cadena de Custodia de Evidencias Físicas (MUCC-2017)</strong> y de conformidad con los 
@@ -384,7 +382,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
     {/* Barra de Estado de Word (Solo pantalla) */}
     <div className="word-status-bar no-print">
       <div className="left-info">
-        <div className="status-item">Página 1 de 1</div>
+        <div className="status-item">Página 1 de 2</div>
         <div className="status-item">|</div>
         <div className="status-item">Times New Roman (11pt)</div>
         <div className="status-item">|</div>
