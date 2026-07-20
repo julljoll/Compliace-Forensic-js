@@ -749,8 +749,8 @@
   }
 
   @page {
-    size: 216mm 330mm; /* Oficio Venezolano */
-    margin: 15mm 15mm 15mm 25mm; /* Clean document margins */
+    size: 216mm 330mm; /* Folio / Oficio Venezolano */
+    margin: 0; /* Permite que el padding de la planilla controle los márgenes exactos */
   }
 
   .planilla-container {
@@ -770,17 +770,25 @@
   }
 
   .planilla-container .page {
-    width: 100% !important;
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    width: 216mm !important;
+    min-height: 330mm !important;
+    padding: 20mm 15mm 20mm 38mm !important; /* Márgenes prestablecidos de la vista previa (Top: 20mm, Right: 15mm, Bottom: 20mm, Left: 38mm encuadernación) */
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     overflow: visible !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #1d1d1f !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .planilla-container .page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
   /* Header & Logo styling exact match on print */
