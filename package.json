@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-agent": "node scripts/update-agent-instructions.js"
+    "update-agent": "node scripts/update-agent-instructions.js",
+    "cli": "node scripts/cli.js"
   },
   "keywords": [
     "peritaje",

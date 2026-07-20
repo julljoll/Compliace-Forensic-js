@@ -239,10 +239,10 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
         <div className="section-title">IV. Declaración de Recepción Conforme y Descargo de Responsabilidad</div>
         <div className="legal-text">
           Yo, el ciudadano arriba identificado en la Sección I, mediante la firma de la presente acta, hago constar que he recibido a mi entera satisfacción los resultados técnicos y el dictamen pericial forense listados en la Sección II. <br />
-          Asimismo, <strong>DECLARO RECIBIR CONFORME</strong> el dispositivo físico móvil/computador y los accesorios detallados en la Sección III, manifestando que los mismos me son entregados en el mismo estado físico y operacional de conservación en el cual fueron consignados a este laboratorio pericial (según consta en el Acta de Obtención inicial). Libero al Laboratorio SHA256.US y a sus expertos forenses de toda responsabilidad civil, penal o administrativa posterior sobre la custodia y el estado de la referida evidencia digital.
+          Asimismo, <strong>DECLARO RECIBIR CONFORME</strong> el dispositivo físico y/o medio de almacenamiento consignado, certificando que el valor Hash SHA-256 al momento de la devolución fue verificado y coincide exactamente con el registrado en el Acta de Obtención inicial y la PRCC. Manifiesto que la evidencia me es devuelta en el mismo estado físico y operacional de conservación. Libero al Laboratorio SHA256.US y a sus expertos forenses de toda responsabilidad posterior sobre la custodia y el estado de la referida evidencia digital.
         </div>
         <div className="form-group dev-observaciones-value" contentEditable suppressContentEditableWarning style={{ minHeight: '40px' }}>
-          Observaciones del Propietario (Si aplica): <span className="placeholder-field">[Ninguna. Recibo conforme y sin daños adicionales]</span>
+          Observaciones del Propietario / Consignante (Si aplica): <span className="placeholder-field">[Ninguna. Recibo conforme con verificación Hash SHA-256 idéntica y sin daños]</span>
         </div>
       </div>
 

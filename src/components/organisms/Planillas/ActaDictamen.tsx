@@ -240,12 +240,9 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
 
       {/*  VI. CONCLUSIONES  */}
       <div className="section">
-        <div className="section-title">VI. Conclusiones y Fundamentación Jurídica</div>
+        <div className="section-title">VI. Conclusiones y Fundamentación Jurídica (Consignación Voluntaria Privada)</div>
         <div className="legal-text">
-          Las operaciones técnicas sobre el dispositivo examinado se realizaron en estricto apego al <strong>Artículo 187 del COPP (Cadena de Custodia)</strong>, 
-          resguardando la integridad del medio digital. La correspondencia exacta de los valores hash SHA-256 garantiza científicamente la no alteración de la prueba. 
-          Los elementos probatorios extraídos son conformes al <strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong> (Eficacia Probatoria) 
-          y los tipos penales de la <strong>Ley Especial contra los Delitos Informáticos (2001)</strong>.
+          Las operaciones técnicas sobre la evidencia obtenida mediante <strong>Consignación Voluntaria Privada</strong> se realizaron en estricto apego al <strong>Manual Único de Cadena de Custodia de Evidencias (MUCC-2017)</strong> y el <strong>Artículo 187 del COPP</strong>, resguardando la trazabilidad del medio digital. La correspondencia exacta de los valores hash SHA-256 en las etapas de adquisición, duplicado de trabajo y dictamen (ISO/IEC 27037:2012 e ISO/IEC 27042:2015) garantiza científicamente la inalterabilidad de los datos. Los elementos probatorios extraídos gozan de plena validez conforme al <strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong> (Eficacia Probatoria) y los tipos de la <strong>Ley Especial contra los Delitos Informáticos</strong>.
         </div>
         <div className="form-group conclusiones-value" contentEditable suppressContentEditableWarning style={{ minHeight: '60px', marginTop: '6px' }}>
           <strong className="placeholder-field">CONCLUSIONES DEFINITIVAS: [Indique de manera taxativa las conclusiones forenses del peritaje informático]</strong>

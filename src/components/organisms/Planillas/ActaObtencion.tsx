@@ -98,7 +98,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
 
       {/*  I. DATOS DEL CONSIGNANTE  */}
       <div className="section">
-        <div className="section-title">I. Datos del Consignante (Propietario/Poseedor)</div>
+        <div className="section-title">I. Datos e Identificación del Consignante (Entrega Voluntaria)</div>
         <div className="grid-container">
           <div className="form-group">
             <div className="label">Apellidos y Nombres</div>
@@ -107,22 +107,31 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Cédula de Identidad</div>
+            <div className="label">Cédula de Identidad / Pasaporte</div>
             <div className="value" contentEditable suppressContentEditableWarning>
               {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Teléfono</div>
+            <div className="label">Teléfono de Contacto</div>
             <div className="value" contentEditable suppressContentEditableWarning>
               {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Dirección</div>
+            <div className="label">Dirección de Habitación / Sede</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Dirección de Residencia]</span>
+              <span className="placeholder-field">[Dirección del Consignante]</span>
             </div>
+          </div>
+        </div>
+        <div className="form-group" style={{ marginTop: '5px' }}>
+          <div className="label">Condición Jurídica / Carácter del Consignante (Marque la que corresponda)</div>
+          <div className="checkbox-group" style={{ flexDirection: 'row', gap: '12px', fontSize: '8.5px' }}>
+            <div className="check-item"><span className="box"></span> Propietario Legítimo / Personal</div>
+            <div className="check-item"><span className="box"></span> Representante Legal (con Poder / RIF)</div>
+            <div className="check-item"><span className="box"></span> Custodio / Asignatario Corporativo (Empleado)</div>
+            <div className="check-item"><span className="box"></span> Poseedor / Tercero Autorizado</div>
           </div>
         </div>
       </div>
@@ -277,12 +286,40 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         )}
       </div>
 
-      {/*  III. AUTORIZACIÓN Y ALCANCE  */}
+      {/*  III. REGISTRO DE INTEGRIDAD CRIPTOGRÁFICA DE RECEPCIÓN (ISO/IEC 27037:2012 / MUCC-2017)  */}
       <div className="section">
-        <div className="section-title">III. Autorización y Alcance de la Consignación</div>
+        <div className="section-title">III. Registro de Integridad Forense Inicial (Hash SHA-256 de Consignación)</div>
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
+          <tbody>
+            <tr>
+              <td style={{ width: '30%', fontWeight: 'bold' }}>Hash SHA-256 Inicial (Adquisición / Medio)</td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}>
+                <span className="placeholder-field">[Valor Hash SHA-256 de 64 caracteres hex generado al recibir/clonar]</span>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Algoritmo Auxiliar (MD5)</td>
+              <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}>
+                <span className="placeholder-field">[Valor Hash MD5]</span>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Herramienta / Software de Cálculo</td>
+              <td contentEditable suppressContentEditableWarning>
+                <span className="placeholder-field">[ej: FTK Imager / Guymager / HashMyFiles / Cellebrite / dd]</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/*  IV. AUTORIZACIÓN Y CONSENTIMIENTO DE CONSIGNACIÓN VOLUNTARIA  */}
+      <div className="section">
+        <div className="section-title">IV. Autorización y Consentimiento de Consignación Voluntaria (Sin Coacción)</div>
         <div className="legal-text">
-          Yo, el arriba identificado, en pleno uso de mis facultades, hago entrega material voluntaria del dispositivo descrito (Obtención por Consignación) según el <strong>Manual Único de Cadena de Custodia (2017)</strong>. 
-          <strong>AUTORIZO EXPRESA Y VOLUNTARIAMENTE</strong> al experto informático de SHA256 para que aplique herramientas forenses con el fin de realizar la extracción lógica/física de "Mensajes de Datos" (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), renunciando temporalmente a la privacidad de las comunicaciones (Art. 48 CRBV) bajo los límites de esta autorización:
+          Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando en mi nombre o en representación legítima de la entidad consignante, hago entrega material voluntaria (Obtención por Consignación Directa Privada) de la evidencia descrita conforme al <strong>Manual Único de Cadena de Custodia (MUCC-2017)</strong> y los <strong>Arts. 187 y 225 del COPP</strong>.
+          Declaro bajo juramento que realizo esta consignación <strong>LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO, AMENAZA O CONSTREÑIMIENTO</strong>.
+          <strong>AUTORIZO EXPRESA Y VOLUNTARIAMENTE</strong> al equipo pericial de SHA256.US para la extracción lógica/física de "Mensajes de Datos" (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), duplicación pericial y análisis forense, delimitado al siguiente alcance:
         </div>
         <div className="form-group">
           <div className="label">Alcance de la Autorización (Marque uno)</div>
@@ -295,9 +332,9 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         </div>
       </div>
 
-      {/*  IV. REQUERIMIENTOS DE ACCESO  */}
+      {/*  V. REQUERIMIENTOS DE ACCESO  */}
       <div className="section">
-        <div className="section-title">IV. Requerimientos de Acceso y Preservación</div>
+        <div className="section-title">V. Requerimientos de Acceso y Preservación</div>
         <div className="grid-container">
           <div className="form-group">
             <div className="label">Claves de Acceso / Bloqueo</div>
@@ -316,15 +353,15 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         </div>
       </div>
 
-      {/*  V. MOTIVO  */}
+      {/*  VI. MOTIVO  */}
       <div className="section">
-        <div className="section-title">V. Motivo de la Consignación</div>
+        <div className="section-title">VI. Motivo de la Consignación</div>
         <div className="form-group motive-box" contentEditable suppressContentEditableWarning>
           <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
         </div>
       </div>
 
-      {/*  VI. FIRMAS  */}
+      {/*  VII. FIRMAS  */}
       <div className="signature-section" style={{ gap: '14mm' }}>
         <div className="sig-detail-card">
           <div className="sig-detail-label">EL CONSIGNANTE</div>

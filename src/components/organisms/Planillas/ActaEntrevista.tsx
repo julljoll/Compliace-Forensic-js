@@ -246,16 +246,14 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
 
       {/* III. FUNDAMENTACIÓN LEGAL Y CONSENTIMIENTO INFORMADO */}
       <div className="section">
-        <div className="section-title">III. Fundamentación Legal y Autorización Voluntaria</div>
+        <div className="section-title">III. Fundamentación Legal y Consentimiento Informado (Sin Coacción)</div>
         <div className="legal-text">
-          En cumplimiento con el <strong>Manual Único de Cadena de Custodia de Evidencias Físicas (2017)</strong> y de conformidad con los 
-          <strong> Artículos 187 y 225 del Código Orgánico Procesal Penal (COPP)</strong>, en concordancia con el derecho a la inviolabilidad 
-          de las comunicaciones privadas consagrado en el <strong>Artículo 48 de la Constitución de la República Bolivariana de Venezuela (CRBV)</strong> 
-          y los principios del <strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>, yo, el ciudadano entrevistado arriba 
-          identificado, manifiesto de manera <strong>LIBRE, EXPRESA, INFORMADA Y VOLUNTARIA</strong> mi consentimiento y autorización para que los peritos 
-          del Laboratorio Forense SHA256.US procedan a realizar el examen técnico, análisis informático forense y la respectiva extracción lógica/física 
-          de los datos contenidos en el dispositivo y/o cuentas de mensajería anteriormente descritos. Entiendo que los resultados de esta peritación 
-          formarán parte del expediente de investigación técnica del caso.
+          En cumplimiento con el <strong>Manual Único de Cadena de Custodia de Evidencias Físicas (MUCC-2017)</strong> y de conformidad con los 
+          <strong> Artículos 187 y 225 del Código Orgánico Procesal Penal (COPP)</strong>, el <strong>Artículo 48 de la Constitución (CRBV)</strong> 
+          y el <strong>Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>, yo, el ciudadano entrevistado arriba 
+          identificado, manifiesto de manera <strong>LIBRE, EXPRESA, INFORMADA Y LIBRE DE TODA COACCIÓN FÍSICA O MORAL</strong> mi consentimiento y autorización para que los peritos 
+          del Laboratorio Forense SHA256.US procedan a realizar la entrevista, examen técnico, análisis informático forense y la respectiva extracción lógica/física 
+          de los datos contenidos en el dispositivo y/o cuentas consignadas.
         </div>
       </div>
 

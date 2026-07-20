@@ -111,9 +111,9 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
             </div>
           </div>
           <div className="form-group">
-            <div className="label">Organismo / Despacho que instruye</div>
+            <div className="label">Entidad / Departamento Solicitante</div>
             <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Organismo / Despacho que instruye]</span>
+              <span className="placeholder-field">[Compliance / Dirección Jurídica / Solicitante Privado]</span>
             </div>
           </div>
           <div className="form-group">
@@ -145,13 +145,15 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
 
       {/*  SECCIÓN II  */}
       <div className="section">
-        <div className="section-title">II. Forma de Obtención (MUCC-2017)</div>
+        <div className="section-title">II. Forma de Obtención (MUCC-2017 — Consignación Privada)</div>
         <div className="form-group">
-          <div className="checkbox-group">
-            <div className="check-item"><span className="box"></span> <u>CONSIGNACIÓN</u> <span style={{ fontSize: '7px', color: '#8e8e93' }}>(Entrega voluntaria)</span></div>
-            <div className="check-item"><span className="box"></span> TÉCNICA</div>
-            <div className="check-item"><span className="box"></span> ASEGURAMIENTO</div>
-            <div className="check-item"><span className="box"></span> DERIVACIÓN</div>
+          <div className="checkbox-group" style={{ flexDirection: 'row', gap: '15px' }}>
+            <div className="check-item"><span className="box">X</span> <strong>CONSIGNACIÓN DIRECTA (ENTREGA VOLUNTARIA)</strong></div>
+            <div className="check-item"><span className="box"></span> TÉCNICA (Análisis Pericial Interno)</div>
+            <div className="check-item"><span className="box"></span> DERIVACIÓN CORPORATIVA</div>
+          </div>
+          <div style={{ fontSize: '7.5pt', color: '#666', fontStyle: 'italic', marginTop: '3px' }}>
+            *Nota: Como laboratorio de informática forense privado, la obtención de evidencias se realiza exclusivamente mediante consignación voluntaria del titular, representante o custodio autorizado.
           </div>
         </div>
       </div>
