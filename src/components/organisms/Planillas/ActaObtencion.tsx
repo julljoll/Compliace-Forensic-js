@@ -364,13 +364,23 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
         </div>
       </div>
 
-      {/*  VI. MOTIVO  */}
-      <div className="section">
-        <div className="section-title">VI. Motivo de la Consignación</div>
-        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '130px', padding: '10px', lineHeight: '22px' }}>
+      {/*  VI. MOTIVO DE LA CONSIGNACIÓN (EN PÁGINA SIGUIENTE)  */}
+      <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
+        <div className="section-title">VI. Motivo de la Consignación y Pormenores de la Actuación</div>
+        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '360px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
-            <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa el motivo y las circunstancias de la consignación de la evidencia digital]'}</span>
+            <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa detalladamente el motivo, antecedentes y pormenores de la consignación de la evidencia digital]'}</span>
           </p>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
@@ -448,7 +458,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
     {/* Barra de Estado de Word (Solo pantalla) */}
     <div className="word-status-bar no-print">
       <div className="left-info">
-        <div className="status-item">Página 1 de 1</div>
+        <div className="status-item">Página 1 de 2</div>
         <div className="status-item">|</div>
         <div className="status-item">Times New Roman (11pt)</div>
         <div className="status-item">|</div>
