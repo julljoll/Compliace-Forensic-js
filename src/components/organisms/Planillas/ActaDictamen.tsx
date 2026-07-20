@@ -285,11 +285,21 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
 
       {/*  FIRMAS  */}
       <div className="signature-section" style={{ gap: '14mm', marginTop: '8mm' }}>
-        <div className="sig-detail-card" style={{ gridColumn: 'span 2', maxWidth: '350px', margin: '0 auto' }}>
+        <div className="sig-detail-card" style={{ gridColumn: 'span 2', maxWidth: '380px', margin: '0 auto' }}>
           <div className="sig-detail-label">PERITO FORENSE ACTUANTE</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR DER.</span>
+            </div>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR IZQ.</span>
+            </div>
+          </div>
           <div className="sig-line" />
           <div className="sig-line-label">Firma del Experto Forense</div>
-          <div className="sig-field">
+          <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
           </div>
           <div className="sig-field">
@@ -300,16 +310,6 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
           </div>
           <div className="sig-field">
             INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Inpreabogado]</span></span>
-          </div>
-          <div className="fingerprint-row">
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
           </div>
         </div>
       </div>

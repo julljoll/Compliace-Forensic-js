@@ -393,15 +393,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
       <div className="signature-section" style={{ gap: '14mm' }}>
         <div className="sig-detail-card">
           <div className="sig-detail-label">EL CONSIGNANTE</div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma</div>
-          <div className="sig-field">
-            C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Consignante]</span>}</span>
-          </div>
-          <div className="sig-field">
-            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
-          </div>
-          <div className="fingerprint-row">
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
             <div className="thumb-wrapper">
               <div className="thumb-box" />
               <span className="thumb-label">PULGAR DER.</span>
@@ -411,13 +403,31 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
               <span className="thumb-label">PULGAR IZQ.</span>
             </div>
           </div>
+          <div className="sig-line" />
+          <div className="sig-line-label">Firma del Consignante</div>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad del Consignante]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Número de Teléfono]</span>}</span>
+          </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO RECEPTOR</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR DER.</span>
+            </div>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR IZQ.</span>
+            </div>
+          </div>
           <div className="sig-line" />
-          <div className="sig-line-label">Firma</div>
-          <div className="sig-field">
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Receptor]</span>}</span>
+          <div className="sig-line-label">Firma del Perito Receptor</div>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre y Apellido del Perito]</span>}</span>
           </div>
           <div className="sig-field">
             C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito]</span></span>
@@ -431,20 +441,10 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
           </div>
-          <div className="checkbox-group" style={{ gap: '8px', fontSize: '8px', justifyContent: 'center', marginTop: '4px' }}>
+          <div className="checkbox-group" style={{ gap: '8px', fontSize: '8px', justifyContent: 'center', marginTop: '6px' }}>
             <span style={{ fontWeight: 'bold' }}>Rol ISO 27037:</span>
             <div className="check-item"><span className="box"></span> DEFR</div>
             <div className="check-item"><span className="box"></span> DES</div>
-          </div>
-          <div className="fingerprint-row">
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
           </div>
         </div>
       </div>

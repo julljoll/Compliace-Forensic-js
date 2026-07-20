@@ -247,18 +247,10 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
       </div>
 
       {/*  V. FIRMAS Y HUELLAS DACTILARES  */}
-      <div className="signature-section" style={{ gap: '14mm', marginTop: '8mm' }}>
+      <div className="signature-section" style={{ gap: '14mm', marginTop: '6mm' }}>
         <div className="sig-detail-card">
-          <div className="sig-detail-label">EL RECEPTOR</div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Receptor</div>
-          <div className="sig-field">
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Receptor]</span>}</span>
-          </div>
-          <div className="sig-field">
-            C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Receptor]</span>}</span>
-          </div>
-          <div className="fingerprint-row">
+          <div className="sig-detail-label">RECIBIDO POR (RECEPTOR)</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
             <div className="thumb-wrapper">
               <div className="thumb-box" />
               <span className="thumb-label">PULGAR DER.</span>
@@ -268,12 +260,30 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
               <span className="thumb-label">PULGAR IZQ.</span>
             </div>
           </div>
+          <div className="sig-line" />
+          <div className="sig-line-label">Firma del Receptor / Propietario</div>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Receptor]</span>}</span>
+          </div>
+          <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Receptor]</span>}</span>
+          </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">ENTREGADO POR (PERITO)</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR DER.</span>
+            </div>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR IZQ.</span>
+            </div>
+          </div>
           <div className="sig-line" />
           <div className="sig-line-label">Firma del Perito Forense</div>
-          <div className="sig-field">
+          <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
           </div>
           <div className="sig-field">
@@ -287,16 +297,6 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Forense]</span></span>
-          </div>
-          <div className="fingerprint-row">
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
           </div>
         </div>
       </div>

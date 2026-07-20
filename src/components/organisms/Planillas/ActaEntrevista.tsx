@@ -322,15 +322,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       <div className="signature-section" style={{ gap: '14mm', marginTop: '6mm' }}>
         <div className="sig-detail-card">
           <div className="sig-detail-label">CIUDADANO ENTREVISTADO</div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Entrevistado</div>
-          <div className="sig-field">
-            C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[C.I. del Entrevistado]</span>}</span>
-          </div>
-          <div className="sig-field">
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Entrevistado]</span>}</span>
-          </div>
-          <div className="fingerprint-row">
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
             <div className="thumb-wrapper">
               <div className="thumb-box" />
               <span className="thumb-label">PULGAR DER.</span>
@@ -340,12 +332,30 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
               <span className="thumb-label">PULGAR IZQ.</span>
             </div>
           </div>
+          <div className="sig-line" />
+          <div className="sig-line-label">Firma del Entrevistado</div>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[C.I. del Entrevistado]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Entrevistado]</span>}</span>
+          </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO FORENSE RECEPTOR</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR DER.</span>
+            </div>
+            <div className="thumb-wrapper">
+              <div className="thumb-box" />
+              <span className="thumb-label">PULGAR IZQ.</span>
+            </div>
+          </div>
           <div className="sig-line" />
           <div className="sig-line-label">Firma del Experto Forense</div>
-          <div className="sig-field">
+          <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Forense]</span>}</span>
           </div>
           <div className="sig-field">
@@ -359,16 +369,6 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
-          </div>
-          <div className="fingerprint-row">
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
           </div>
         </div>
       </div>

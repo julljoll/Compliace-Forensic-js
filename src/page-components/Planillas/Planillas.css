@@ -376,10 +376,12 @@
 }
 
 .planilla-container .thumb-box {
-  width: 60px;
-  height: 80px;
-  border: 1px dashed #8e8e93;
-  background-color: #ffffff;
+  width: 38mm;
+  height: 48mm;
+  border: 1.5px dashed #1d1d1f;
+  border-radius: 4px;
+  background-color: #fafafa;
+  margin: 0 auto;
 }
 
 .planilla-container .thumb-label {

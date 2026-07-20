@@ -469,16 +469,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
               <td style={{ width: '35%', verticalAlign: 'top' }}>
                 <div className="sig-detail-card" style={{ minHeight: 'auto', border: 'none', padding: '0', background: 'transparent', gap: '4px' }}>
                   <div className="label">ENTREGA (Consignante)</div>
-                  <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre]</span>}</span></div>
-                  <div className="sig-line" style={{ height: '24px' }} />
-                  <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma</div>
-                  <div className="sig-field" style={{ fontSize: '8px' }}>
-                    C.I.: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula]</span>}</span>
-                  </div>
-                  <div className="sig-field" style={{ fontSize: '8px' }}>
-                    Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
-                  </div>
-                  <div className="fingerprint-row" style={{ marginTop: '4px', paddingTop: '4px' }}>
+                  <div className="fingerprint-row" style={{ marginTop: '4px', paddingBottom: '4px' }}>
                     <div className="thumb-wrapper">
                       <div className="thumb-box" />
                       <span className="thumb-label">PULGAR DER.</span>
@@ -488,14 +479,33 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                       <span className="thumb-label">PULGAR IZQ.</span>
                     </div>
                   </div>
+                  <div className="sig-line" style={{ height: '24px' }} />
+                  <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma del Consignante</div>
+                  <div style={{ fontSize: '9px', marginTop: '4px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre]</span>}</span></div>
+                  <div className="sig-field" style={{ fontSize: '8px' }}>
+                    C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula]</span>}</span>
+                  </div>
+                  <div className="sig-field" style={{ fontSize: '8px' }}>
+                    Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono]</span>}</span>
+                  </div>
                 </div>
               </td>
               <td style={{ width: '35%', verticalAlign: 'top' }}>
                 <div className="sig-detail-card" style={{ minHeight: 'auto', border: 'none', padding: '0', background: 'transparent', gap: '4px' }}>
                   <div className="label">RECIBE (Perito Informático)</div>
-                  <div style={{ fontSize: '9px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span></div>
+                  <div className="fingerprint-row" style={{ marginTop: '4px', paddingBottom: '4px' }}>
+                    <div className="thumb-wrapper">
+                      <div className="thumb-box" />
+                      <span className="thumb-label">PULGAR DER.</span>
+                    </div>
+                    <div className="thumb-wrapper">
+                      <div className="thumb-box" />
+                      <span className="thumb-label">PULGAR IZQ.</span>
+                    </div>
+                  </div>
                   <div className="sig-line" style={{ height: '24px' }} />
-                  <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma</div>
+                  <div className="sig-line-label" style={{ fontSize: '7px' }}>Firma del Perito Informático</div>
+                  <div style={{ fontSize: '9px', marginTop: '4px', marginBottom: '4px' }}>Nombre: <span style={{ fontWeight: 'bold' }} contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span></div>
                   <div className="sig-field" style={{ fontSize: '8px' }}>
                     C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cédula]</span></span>
                   </div>
@@ -507,16 +517,6 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
                   </div>
                   <div className="sig-field" style={{ fontSize: '8px' }}>
                     Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning style={{ minHeight: '16px' }}><span className="placeholder-field">[Cargo]</span></span>
-                  </div>
-                  <div className="fingerprint-row" style={{ marginTop: '4px', paddingTop: '4px' }}>
-                    <div className="thumb-wrapper">
-                      <div className="thumb-box" />
-                      <span className="thumb-label">PULGAR DER.</span>
-                    </div>
-                    <div className="thumb-wrapper">
-                      <div className="thumb-box" />
-                      <span className="thumb-label">PULGAR IZQ.</span>
-                    </div>
                   </div>
                 </div>
               </td>
