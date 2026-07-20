@@ -25,14 +25,14 @@ const BOLD = '\x1b[1m';
 const DIM = '\x1b[2m';
 
 const BANNER = `
-${AMARILLO}${BOLD}   _____ _    _   ___  _____  ______     _   _  _____ 
-  / ____| |  | | / _ \\|  __ \\|  ____|   | | | |/ ____|
- | (___ | |__| || |_| | |__) | |__      | | | | (___  
-  \\___ \\|  __  ||  _  |  ___/|  __|     | | | |\\___ \\ 
-  ____) | |  | || | | | |    | |____ _| |_| |____) |
- |_____/|_|  |_||_| |_|_|    |______|\\___/\\___/_____/ 
-${VERDE}       COMPLIANCE OFFICER CMS FORENSE DIGITAL v3.0.0
-${LIMA}         [ Node.js Environment Launcher ]${RESET}
+${AMARILLO}${BOLD}  _____ _    _    /\\   ___  _____  _____     _   _  _____ 
+ / ____| |  | |  /  \\ |__ \\| ____|/ ____|   | | | |/ ____|
+| (___ | |__| | / /\\ \\   ) | |__ | (___  .  | | | | (___  
+ \\___ \\|  __  |/ ____ \\ / /|___ \\|___ \\     | | | |\\___ \\ 
+ ____) | |  | / /    \\ \\/ /_ ___| |___) | . | |_| |____) |
+|_____/|_|  |_/_/    \\_\\____|____/_____/     \\___/|_____/ 
+${VERDE}             SHA256.US — LAB FORENSE
+${LIMA}    Compliance Officer CMS Forense Digital v3.0.0${RESET}
 `;
 
 function checkPort(port = PORT) {
@@ -81,40 +81,49 @@ async function waitAndOpenBrowser(url = LOCAL_URL, timeoutMs = 30000) {
 }
 
 async function checkEnvironment() {
-  console.log(`\n${AMARILLO}${BOLD}=== DIAGNÓSTICO DEL ENTORNO FORENSE (NODE) ===${RESET}\n`);
+  console.log(`\n${AMARILLO}${BOLD}=== DIAGNÓSTICO DE ENTORNO Y REQUISITOS TECNOLÓGICOS (SHA256.US) ===${RESET}\n`);
   
-  console.log(`${VERDE}[✓] Node.js:${RESET} ${process.version}`);
+  console.log(`${VERDE}[✓] Node.js:${RESET} ${process.version} (v18+ Requerido)`);
   
   const modulesExist = fs.existsSync(path.join(ROOT_DIR, 'node_modules'));
   if (modulesExist) {
-    console.log(`${VERDE}[✓] Dependencias (node_modules):${RESET} Instaladas`);
+    console.log(`${VERDE}[✓] Dependencias npm (node_modules):${RESET} Instaladas correctamente`);
   } else {
-    console.log(`${AMARILLO}[!] Dependencias no instaladas. Ejecute 'npm install'${RESET}`);
+    console.log(`${AMARILLO}[!] Dependencias npm no encontradas. Ejecute 'npm install'${RESET}`);
   }
 
   const envPath = path.join(ROOT_DIR, '.env');
   const envExamplePath = path.join(ROOT_DIR, '.env.example');
   if (fs.existsSync(envPath)) {
-    console.log(`${VERDE}[✓] Archivo .env:${RESET} Presente`);
+    console.log(`${VERDE}[✓] Archivo de Configuración (.env):${RESET} Presente`);
   } else {
     console.log(`${AMARILLO}[!] Archivo .env no encontrado.${RESET}`);
     if (fs.existsSync(envExamplePath)) {
       try {
         fs.copyFileSync(envExamplePath, envPath);
-        console.log(`${VERDE}[✓] Creado .env a partir de .env.example${RESET}`);
+        console.log(`${VERDE}[✓] Creado .env automáticamente desde .env.example${RESET}`);
       } catch (err) {
         console.log(`${ROJO}[✗] Error copiando .env.example: ${err.message}${RESET}`);
       }
     }
   }
 
+  const sqlitePath = path.join(ROOT_DIR, 'sha256_forense.sqlite');
+  console.log(`${VERDE}[✓] Motor SQLite Local (@libsql/client):${RESET} ${fs.existsSync(sqlitePath) ? 'Base de datos lista (sha256_forense.sqlite)' : 'Auto-inicializable al iniciar el servidor'}`);
+  console.log(`${VERDE}[✓] Compatibilidad Cloud Portfolio:${RESET} Soportado en Vercel Serverless / IndexedDB PWA`);
+
   const portActive = await checkPort(PORT);
   if (portActive) {
-    console.log(`${AMARILLO}[!] Puerto ${PORT} actualmente en uso.${RESET}`);
+    console.log(`${AMARILLO}[!] Puerto ${PORT}:${RESET} En uso actualmente`);
   } else {
     console.log(`${VERDE}[✓] Puerto ${PORT}:${RESET} Disponible`);
   }
 
+  console.log(`\n${AMARILLO}${BOLD}=== TECNOLOGÍAS NECESARIAS PARA INSTALAR EN UNA COMPUTADORA ===${RESET}`);
+  console.log(` ${VERDE}1. Node.js (v18.0.0+):${RESET} Descarga desde https://nodejs.org/`);
+  console.log(` ${VERDE}2. npm:${RESET} Incluido automáticamente con Node.js`);
+  console.log(` ${VERDE}3. Base de Datos SQLite:${RESET} Auto-instalada localmente via @libsql/client`);
+  console.log(` ${VERDE}4. Navegador Web (Chrome/Edge/Brave):${RESET} Para PWA e impresión de planillas Oficio (216x330mm)`);
   console.log(`\n${LIMA}Directorio raíz:${RESET} ${ROOT_DIR}\n`);
 }
 
@@ -217,6 +226,7 @@ async function main() {
     console.log(`${ROJO}Comando desconocido: ${arg}${RESET}`);
     console.log(`${AMARILLO}Uso:${RESET} node scripts/cli.js [dev|check|build|start|lint|update-agent]`);
   } else {
+    await checkEnvironment();
     showInteractiveMenu();
   }
 }

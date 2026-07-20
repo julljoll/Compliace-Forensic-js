@@ -1,25 +1,18 @@
-# Mapa de Arquitectura — SHA256.US CMS de Cumplimiento Forense
-
-## Descripción General
-
-CMS de cumplimiento normativo para procesos de peritaje digital.  
-El sistema permite gestionar casos, controlar el cumplimiento legal paso a paso, auditar cada acción con trazabilidad inmutable e imprimir las planillas oficiales requeridas en cada fase del proceso.
-
----
-
-## Arquitectura del Sistema
+# SHA256.US — LAB FORENSE
+## Mapa de Arquitectura del CMS de Cumplimiento Forense v3.0.0
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    CAPA DE PRESENTACIÓN (PWA)                    │
+│             SHA256.US — LAB FORENSE (v3.0.0)                     │
+│              CAPA DE PRESENTACIÓN (Next.js 16 App Router)        │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────────────┐  │
-│  │Dashboard │  │  Casos   │  │Compliance│  │   Planillas      │  │
-│  │   KPIs   │  │ CRUD +   │  │ Checklist│  │ (Acta, PRCC,     │  │
-│  │          │  │ Detalle  │  │ Normativo│  │  Seguimiento)    │  │
+│  │Dashboard │  │  Casos   │  │Compliance│  │   Planillas     │  │
+│  │   KPIs   │  │ CRUD +   │  │ Checklist│  │ (6 imprimibles: │  │
+│  │          │  │ Detalle  │  │ Normativo│  │ Acta, PRCC, etc)│  │
 │  └──────────┘  └──────────┘  └──────────┘  └─────────────────┘  │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────────────┐  │
-│  │Auditoría │  │Normativas│  │  Correo  │  │   Manual Avilla  │  │
-│  │Hash Chain│  │  Legales │  │ Forense  │  │   Referencia     │  │
+│  │Auditoría │  │Normativas│  │ Personal │  │ Manuales Forenses│  │
+│  │Hash Chain│  │  Legales │  │  Peritos │  │ Tutoriales ISO  │  │
 │  └──────────┘  └──────────┘  └──────────┘  └─────────────────┘  │
 ├──────────────────────────────────────────────────────────────────┤
 │                    CAPA DE ESTADO (Zustand)                      │
@@ -29,17 +22,18 @@ El sistema permite gestionar casos, controlar el cumplimiento legal paso a paso,
 │  │  Personal, etc │  │  + hash chain  │  │  Sesión PWA        │  │
 │  └────────────────┘  └────────────────┘  └────────────────────┘  │
 ├──────────────────────────────────────────────────────────────────┤
-│                    CAPA DE PERSISTENCIA                           │
-│  ┌────────────────────────────┐  ┌─────────────────────────────┐ │
-│  │       IndexedDB            │  │   Neon PostgreSQL (opcional)│ │
-│  │  (almacenamiento durable   │  │   Sincronización en la nube │ │
-│  │   local, offline-first)    │  │                             │ │
-│  └────────────────────────────┘  └─────────────────────────────┘ │
+│           CAPA HÍBRIDA DE PERSISTENCIA (Modo Dual)               │
+│  ┌─────────────────────────────┐  ┌────────────────────────────┐ │
+│  │   Entorno Local (Node.js)   │  │   Despliegue Portfolio     │ │
+│  │  • Auto-init SQLite DB      │  │   (Vercel Cloud Serverless)│ │
+│  │    (sha256_forense.sqlite)  │  │  • IndexedDB Browser PWA   │ │
+│  │  • IndexedDB Browser PWA    │  │  • Neon PostgreSQL API     │ │
+│  └─────────────────────────────┘  └────────────────────────────┘ │
 ├──────────────────────────────────────────────────────────────────┤
-│              CAPA DE CONOCIMIENTO (RAG)                           │
+│              CAPA DE CONOCIMIENTO (RAG Normativo)                │
 │  ┌──────────────────────────────────────────────────────────────┐│
-│  │  RAG/ → 16 PDFs normativos + 9 YAMLs de arquitectura       ││
-│  │  src/data/ → etapasForenses.ts + normativasEtapas.ts       ││
+│  │  normativas_rag/ → 77 documentos normativos Markdown         ││
+│  │  src/data/       → etapasForenses.ts + normativasEtapas.ts   ││
 │  └──────────────────────────────────────────────────────────────┘│
 └──────────────────────────────────────────────────────────────────┘
 ```

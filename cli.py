@@ -48,14 +48,14 @@ LOCAL_URL = f"http://localhost:{DEFAULT_PORT}"
 NPM_CMD = "npm.cmd" if sys.platform == "win32" else "npm"
 
 BANNER = f"""{AMARILLO}{BOLD}
-   _____ _    _   ___  _____  ______     _   _  _____ 
-  / ____| |  | | / _ \\|  __ \\|  ____|   | | | |/ ____|
- | (___ | |__| || |_| | |__) | |__      | | | | (___  
-  \\___ \\|  __  ||  _  |  ___/|  __|     | | | |\\___ \\ 
-  ____) | |  | || | | | |    | |____ _| |_| |____) |
- |_____/|_|  |_||_| |_|_|    |______|\\___/\\___/_____/ 
-{VERDE}       COMPLIANCE OFFICER CMS FORENSE DIGITAL v3.0.0
-{LIMA}         [ Laboratorio de Informática Forense ]{RESET}
+  _____ _    _    /\   ___  _____  _____     _   _  _____ 
+ / ____| |  | |  /  \ |__ \| ____|/ ____|   | | | |/ ____|
+| (___ | |__| | / /\ \   ) | |__ | (___  .  | | | | (___  
+ \___ \|  __  |/ ____ \ / /|___ \|___ \     | | | |\___ \ 
+ ____) | |  | / /    \ \/ /_ ___| |___) | . | |_| |____) |
+|_____/|_|  |_/_/    \_\____|____/_____/     \___/|_____/ 
+{VERDE}             SHA256.US — LAB FORENSE
+{LIMA}    Compliance Officer CMS Forense Digital v3.0.0{RESET}
 """
 
 def print_banner():
@@ -262,6 +262,7 @@ def main():
             print(f"{ROJO}Comando desconocido: {arg}{RESET}")
             print(f"{AMARILLO}Uso:{RESET} python cli.py [dev|check|build|start|lint|update-agent]")
     else:
+        check_environment()
         interactive_menu()
 
 if __name__ == "__main__":
