@@ -70,7 +70,6 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   const fetchCasos = useCMSStore(state => state.fetchCasos)
   const { user, logout } = useAuthStore()
   const stats = getEstadisticas()
-  const [dbOnline, setDbOnline] = useState<boolean | null>(null)
 
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
   useEffect(() => {
@@ -111,15 +110,27 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener('keydown', handler)
   }, [])
 
-  const verificarDB = useCallback(async () => {
-    const ok = await checkConnection()
-    setDbOnline(ok)
+  const [sqliteOnline, setSqliteOnline] = useState<boolean | null>(null)
+
+  const verificarSQLite = useCallback(async () => {
+    try {
+      const res = await fetch('/api/db/local')
+      if (res.ok) {
+        const data = await res.json()
+        setSqliteOnline(data.sqlite_ready !== false)
+      } else {
+        setSqliteOnline(false)
+      }
+    } catch {
+      setSqliteOnline(false)
+    }
   }, [])
+
   useEffect(() => {
-    verificarDB()
-    const id = setInterval(verificarDB, 30000)
+    verificarSQLite()
+    const id = setInterval(verificarSQLite, 15000)
     return () => clearInterval(id)
-  }, [verificarDB])
+  }, [verificarSQLite])
 
   useEffect(() => { fetchCasos() }, [fetchCasos])
 
@@ -139,43 +150,37 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
   const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
     <>
-      <div className="px-5 pt-5 pb-3 shrink-0">
-        <div className="flex items-center gap-3">
-          <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="" className="w-9 h-9" />
-          <div>
-            <p className="text-[15px] font-bold tracking-[-0.01em] text-[var(--apple-text)] leading-tight">SHA256.US</p>
-            <p className="text-[10px] font-medium text-[#86868B] tracking-[0.02em]">CMS Forense</p>
+      <div className="p-4 border-b border-[var(--apple-border)] flex items-center justify-between">
+        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-[8px] bg-[#524000] border border-[#FECF06]/40 flex items-center justify-center font-bold text-[#FECF06] text-[13px] shadow-[0_2px_8px_rgba(254,207,6,0.15)] group-hover:scale-105 transition-transform">
+            256
           </div>
-        </div>
+          <div>
+            <p className="text-[13px] font-bold text-[var(--apple-text)] tracking-[-0.01em] group-hover:text-[var(--apple-accent)] transition-colors">SHA256.US</p>
+            <p className="text-[10px] text-[#86868B] tracking-wide uppercase font-semibold">CMS Forense</p>
+          </div>
+        </Link>
       </div>
 
-      <div className="apple-separator mx-4 shrink-0" />
-
-      <nav className="flex-1 overflow-y-auto py-2 px-3 space-y-1">
-        {groups.map((group, groupIdx) => {
-          const items = menuItems.filter(m => m.group === group)
-          if (!items.length) return null
-          const meta = groupMeta[group]
+      <nav className="flex-1 overflow-y-auto p-3 space-y-4">
+        {groups.map(grp => {
+          const items = menuItems.filter(m => m.group === grp)
+          const meta = groupMeta[grp]
           return (
-            <div key={group}>
-              {groupIdx > 0 && (
-                <div className="mx-2 my-2.5 h-px bg-[var(--apple-separator)]" />
-              )}
-              <p className="apple-section-header flex items-center gap-1.5 mb-1">
+            <div key={grp} className="space-y-1">
+              <div className="px-2 py-1 flex items-center gap-1.5 text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">
                 <span>{meta.emoji}</span>
-                <span>{group}</span>
-              </p>
-              <div className="space-y-0.5">
-                {items.map(item => (
-                  <SidebarLink key={item.path} item={item} onClick={onNav} />
-                ))}
+                <span>{grp}</span>
               </div>
+              {items.map(m => (
+                <SidebarLink key={m.path} item={m} onClick={onNav} />
+              ))}
             </div>
           )
         })}
       </nav>
 
-      <div className="px-4 py-3 border-t border-[var(--apple-separator)] space-y-3 shrink-0">
+      <div className="p-3 border-t border-[var(--apple-border)] space-y-2">
         <div className="grid grid-cols-2 gap-2">
           <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
             <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
@@ -196,25 +201,20 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-[var(--apple-text)] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
             <div className="flex items-center gap-1.5 mt-0.5">
-              {!isNeonConfigured ? (
-                <>
-                  <StatusDot status="reconectando" size={6} />
-                  <p className="text-[10px] text-[#FF9500] truncate">Sin configurar (local)</p>
-                </>
-              ) : dbOnline === null ? (
+              {sqliteOnline === null ? (
                 <>
                   <StatusDot status={null} size={6} />
-                  <p className="text-[10px] text-[#86868B] truncate">Verificando Neon DB...</p>
+                  <p className="text-[10px] text-[#86868B] truncate">Verificando SQLite...</p>
                 </>
-              ) : dbOnline ? (
+              ) : sqliteOnline ? (
                 <>
                   <StatusDot status="online" size={6} />
-                  <p className="text-[10px] text-[#34C759] truncate">Conectado</p>
+                  <p className="text-[10px] text-[#34C759] truncate font-medium">SQLite Local (Conectado)</p>
                 </>
               ) : (
                 <>
                   <StatusDot status="offline" size={6} />
-                  <p className="text-[10px] text-[#FF3B30] truncate">Error de conexión Neon</p>
+                  <p className="text-[10px] text-[#FF3B30] truncate font-bold">No Conectado</p>
                 </>
               )}
             </div>
@@ -295,19 +295,19 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
               </button>
 
               <button
-                onClick={verificarDB}
-                title={!isNeonConfigured ? 'Modo local' : dbOnline === null ? 'Verificando...' : dbOnline ? 'Conectado a Neon' : 'Error de conexión'}
-                className="flex items-center gap-1.5 text-[12px] font-medium px-2 py-2 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-all"
+                onClick={verificarSQLite}
+                title={sqliteOnline ? 'Conectado a SQLite Local (sha256_forense.sqlite)' : 'No conectado a SQLite Local'}
+                className="flex items-center gap-1.5 text-[12px] font-medium px-2.5 py-1.5 rounded-[6px] hover:bg-[var(--apple-surface-hover)] transition-all cursor-pointer"
               >
-                <div className={`w-2 h-2 rounded-full shrink-0 ${!isNeonConfigured ? 'bg-[#FF9500] animate-pulse' : dbOnline === null ? 'bg-[#86868B]' : dbOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30]'}`} />
-                <span className={`hidden md:inline ${!isNeonConfigured ? 'text-[#FF9500]' : dbOnline === null ? 'text-[#86868B]' : dbOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
-                  {!isNeonConfigured ? 'Local (Sin Neon)' : dbOnline ? 'En línea' : dbOnline === false ? 'Desconectado' : '...'}
+                <div className={`w-2 h-2 rounded-full shrink-0 ${sqliteOnline === null ? 'bg-[#86868B]' : sqliteOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30] animate-pulse'}`} />
+                <span className={`hidden md:inline ${sqliteOnline === null ? 'text-[#86868B]' : sqliteOnline ? 'text-[#34C759]' : 'text-[#FF3B30] font-bold'}`}>
+                  {sqliteOnline === null ? 'Verificando SQLite...' : sqliteOnline ? 'SQLite Local (Conectado)' : 'No Conectado'}
                 </span>
               </button>
 
               <div className="apple-badge-green hidden sm:inline-flex">
                 <Activity size={11} />
-                <span>PROD</span>
+                <span>LOCAL</span>
               </div>
 
               <button
@@ -318,10 +318,10 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                 <Trash2 size={15} />
               </button>
 
-              <div className="hidden sm:flex items-center gap-1.5 ml-1 select-none">
-                <span className="apple-window-close" />
-                <span className="apple-window-minimize" />
-                <span className="apple-window-zoom" />
+              <div className="hidden sm:flex items-center gap-1.5 ml-2 select-none">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#FFCC00] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Minimizar (Amarillo)" />
+                <span className="w-3.5 h-3.5 rounded-full bg-[#007AFF] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Ampliar (Azul)" />
+                <span className="w-3.5 h-3.5 rounded-full bg-[#FF3B30] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Cerrar (Rojo)" />
               </div>
             </div>
           </div>

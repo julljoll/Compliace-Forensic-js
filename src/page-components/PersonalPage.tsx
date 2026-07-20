@@ -509,7 +509,7 @@ export default function PersonalPage() {
           {casos.length === 0 ? (
             <div className="apple-card p-16 text-center">
               <FolderOpen size={48} className="mx-auto mb-4 text-[#86868B] opacity-25" />
-              <p className="text-[#86868B] font-bold text-xs uppercase tracking-wider">No hay proyectos activos en el servidor Neon Serverless</p>
+              <p className="text-[#86868B] font-bold text-xs uppercase tracking-wider">No hay proyectos activos en el sistema</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -561,7 +561,7 @@ export default function PersonalPage() {
                         </div>
                       </div>
                       <div className="flex justify-end pt-2 border-t border-[rgba(0,0,0,0.06)]">
-                        <button onClick={() => { if (window.confirm(`¿Estás seguro de que deseas eliminar permanentemente el proyecto "${caso.titulo}"? Esta acción no se puede deshacer y eliminará todos los registros en Neon Serverless.`)) { deleteCaso(caso.id); } }}
+                        <button onClick={() => { if (window.confirm(`¿Estás seguro de que deseas eliminar permanentemente el proyecto "${caso.titulo}"? Esta acción no se puede deshacer.`)) { deleteCaso(caso.id); } }}
                           className="flex items-center gap-1 px-3 py-1 rounded bg-[rgba(255,59,48,0.08)] hover:bg-[rgba(255,59,48,0.15)] text-[#FF3B30] text-[9px] font-black uppercase tracking-wider border border-[rgba(255,59,48,0.2)] hover:border-[rgba(255,59,48,0.4)] transition-all cursor-pointer">
                           <Trash2 size={10} /> Eliminar
                         </button>
