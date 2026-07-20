@@ -16,7 +16,7 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
     dispositivo_imei: '',
     dispositivo_numero_tel: '',
     dispositivo_sim_card: '',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     tipoProyecto: '',
     discoduro_serial: '',
     discoduro_capacidad: '',

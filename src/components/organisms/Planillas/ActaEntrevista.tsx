@@ -15,7 +15,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
     dispositivo_imei: '',
     dispositivo_numero_tel: '',
     correo_investigar: '',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     tipoProyecto: '',
     discoduro_serial: '',
     discoduro_capacidad: '',

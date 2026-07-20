@@ -505,7 +505,7 @@ const MOCK_CASOS: CasoCMS[] = [
     prioridad: 'alta',
     fechaCreacion: '2026-07-19T08:00:00.000Z',
     fechaUltimaActualizacion: '2026-07-19T09:30:00.000Z',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     fiscal: 'Dr. Alberto Silva (Fiscalía 12º del M.P. Estado Lara)',
     compliance: 'Conforme',
     despachoFiscal: 'Fiscalía 12º del Ministerio Público',
@@ -532,10 +532,10 @@ const MOCK_CASOS: CasoCMS[] = [
     solicitante_nombre: 'Insp. Jefe Luis Ortega',
     solicitante_cedula: 'V-12.345.678',
     steps: {
-      wp_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:05:00.000Z', fechaCompletado: '2026-07-19T08:15:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Se recibió y se levantaron actas preliminares.' },
-      wp_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:20:00.000Z', fechaCompletado: '2026-07-19T08:30:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Planilla PRCC completada y firmada.' },
-      wp_step3: { estado: 'completado', fechaInicio: '2026-07-19T08:35:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Adquisición forense con AVILLA Forensics y cálculo de hash SHA-256.' },
-      wp_step4: { estado: 'completado', fechaInicio: '2026-07-19T09:05:00.000Z', fechaCompletado: '2026-07-19T09:15:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Dispositivo sellado en bolsa Faraday y guardado en bóveda.' },
+      wp_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:05:00.000Z', fechaCompletado: '2026-07-19T08:15:00.000Z', responsable: '', observaciones: 'Se recibió y se levantaron actas preliminares.' },
+      wp_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:20:00.000Z', fechaCompletado: '2026-07-19T08:30:00.000Z', responsable: '', observaciones: 'Planilla PRCC completada y firmada.' },
+      wp_step3: { estado: 'completado', fechaInicio: '2026-07-19T08:35:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: '', observaciones: 'Adquisición forense con AVILLA Forensics y cálculo de hash SHA-256.' },
+      wp_step4: { estado: 'completado', fechaInicio: '2026-07-19T09:05:00.000Z', fechaCompletado: '2026-07-19T09:15:00.000Z', responsable: '', observaciones: 'Dispositivo sellado en bolsa Faraday y guardado en bóveda.' },
       wp_step5: { estado: 'disponible' }
     }
   },
@@ -550,7 +550,7 @@ const MOCK_CASOS: CasoCMS[] = [
     prioridad: 'media',
     fechaCreacion: '2026-07-19T08:10:00.000Z',
     fechaUltimaActualizacion: '2026-07-19T09:20:00.000Z',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     fiscal: 'Dra. Elena Ramos (Fiscalía 5º del M.P. Estado Lara)',
     compliance: 'Parcial',
     despachoFiscal: 'Fiscalía 5º del Ministerio Público',
@@ -568,8 +568,8 @@ const MOCK_CASOS: CasoCMS[] = [
     solicitante_nombre: 'Tte. Coronel José Gómez',
     solicitante_cedula: 'V-10.123.456',
     steps: {
-      em_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:15:00.000Z', fechaCompletado: '2026-07-19T08:25:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Se identificaron las fuentes y orden judicial de interceptación.' },
-      em_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Obtención y preservación forense de buzón PST con hash verificado.' },
+      em_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:15:00.000Z', fechaCompletado: '2026-07-19T08:25:00.000Z', responsable: '', observaciones: 'Se identificaron las fuentes y orden judicial de interceptación.' },
+      em_step2: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: '', observaciones: 'Obtención y preservación forense de buzón PST con hash verificado.' },
       em_step3: { estado: 'disponible' }
     }
   },
@@ -584,7 +584,7 @@ const MOCK_CASOS: CasoCMS[] = [
     prioridad: 'critica',
     fechaCreacion: '2026-07-19T08:20:00.000Z',
     fechaUltimaActualizacion: '2026-07-19T09:10:00.000Z',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     fiscal: 'Dr. Alberto Silva (Fiscalía 12º del M.P. Estado Lara)',
     compliance: 'Pendiente',
     despachoFiscal: 'Fiscalía 12º del Ministerio Público',
@@ -604,7 +604,7 @@ const MOCK_CASOS: CasoCMS[] = [
     solicitante_nombre: 'Insp. Jefe Luis Ortega',
     solicitante_cedula: 'V-12.345.678',
     steps: {
-      dd_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: 'Carlos Mendoza', observaciones: 'Preservación inicial en sitio con PALADIN y hash generado.' },
+      dd_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: '', observaciones: 'Preservación inicial en sitio con PALADIN y hash generado.' },
       dd_step2: { estado: 'disponible' }
     }
   }

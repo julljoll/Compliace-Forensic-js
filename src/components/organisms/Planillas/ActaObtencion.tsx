@@ -19,7 +19,7 @@ export default function ActaObtencion({ caso }: ActaObtencionProps) {
     dispositivo_estado_fisico: '',
     dispositivo_bateria_estado: '',
     descripcion: '',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     tipoProyecto: '',
     discoduro_serial: '',
     discoduro_capacidad: '',

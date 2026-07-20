@@ -83,7 +83,7 @@ const ActaAuditoriaTimelinePage = () => {
   const fallbackCaso = {
     numeroCaso: '',
     titulo: '',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
   };
 
   const c = caso || fallbackCaso;

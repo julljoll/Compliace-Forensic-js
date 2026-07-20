@@ -17,7 +17,7 @@ export default function PlanillaPRCC({ caso }: PlanillaPRCCProps) {
     dispositivo_imei2: '',
     dispositivo_numero_tel: '',
     dispositivo_sim_card: '',
-    peritoLider: 'Carlos Mendoza',
+    peritoLider: '',
     tipoProyecto: '',
     discoduro_serial: '',
     discoduro_capacidad: '',
