@@ -29,7 +29,7 @@ export const DISPOSITIVOS = [
       'Análisis formal completo e indexación profunda de bases de datos (msgstore.db) con IPED Forensics',
       'Parseo rápido y triaje de artefactos del sistema operativo Android y registros con ALEAPP',
       'Extracción combinada de evidencias multimedia y transcripción de audios .opus',
-      'Respuesta a incidentes y triaje en sitio con distribuciones live (Samurai Linux / PALADIN)',
+      'Respuesta a incidentes y triaje en sitio con la Suite forense PALADIN LINUX',
       'Reconstrucción cronológica de línea de tiempo de comunicaciones'
     ],
     marcoLegal: [

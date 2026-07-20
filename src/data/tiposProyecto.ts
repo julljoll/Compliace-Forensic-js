@@ -53,7 +53,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
       'AVILLA Forensics o Kali Linux + Andriller (ADB) para adquisición',
       'ALEAPP para parseo y triaje de artefactos Android',
       'IPED Forensics para análisis formal completo',
-      'Distribución Samurai Linux / PALADIN para respuesta a incidentes en campo',
+      'Suite forense PALADIN LINUX para respuesta a incidentes en campo',
       'Herramienta de transcripción de audios .opus',
       'Bolsa antiestática Faraday y precintos de seguridad'
     ],

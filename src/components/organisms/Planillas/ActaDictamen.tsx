@@ -198,7 +198,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
                   <div className="check-item"><span className="box"></span> Andriller / ALEAPP / IPED Forensics (Adquisición, Triaje y Análisis Completo)</div>
                   <div className="check-item"><span className="box"></span> FTK Imager (Verificación de Integridad y Clonado Bit a Bit)</div>
                   <div className="check-item"><span className="box"></span> AVILLA Forensics (Adquisición/Extracción Forense Móvil)</div>
-                  <div className="check-item"><span className="box"></span> Samurai Linux / PALADIN (Respuesta a Incidentes y Adquisición en Campo)</div>
+                  <div className="check-item"><span className="box"></span> Suite forense PALADIN LINUX (Respuesta a Incidentes y Adquisición en Campo)</div>
                 </div>
               </td>
             </tr>
@@ -217,7 +217,7 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
               <th style={{ border: '1px solid #1d1d1f', padding: '4px 6px', fontSize: '9.5pt', width: '20%', textAlign: 'left' }}>Algoritmo Auxiliar (MD5)</th>
             </tr>
             <tr>
-              <td>Adquisición Bit a Bit (Original)</td>
+              <td>Adquisición Imagen Forense (Original)</td>
               <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash SHA-256 Original (64 hex)]</span></td>
               <td contentEditable suppressContentEditableWarning style={{ fontSize: '9px', fontFamily: 'monospace' }}><span className="placeholder-field">[Hash MD5]</span></td>
             </tr>
@@ -233,8 +233,19 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
       {/*  V. EXÁMENES Y NARRATIVA TÉCNICA  */}
       <div className="section">
         <div className="section-title">V. Exámenes Practicados y Hallazgos Forenses</div>
-        <div className="form-group examenes-value" contentEditable suppressContentEditableWarning style={{ minHeight: '60px' }}>
-          <span className="placeholder-field">[Detalle aquí las operaciones técnicas de análisis de archivos, recuperación de borrados, logs de chat y extracción practicada]</span>
+        <div className="form-group examenes-value" contentEditable suppressContentEditableWarning style={{ minHeight: '220px', padding: '10px', lineHeight: '22px' }}>
+          <p style={{ margin: 0 }}>
+            <span className="placeholder-field">[Detalle aquí las operaciones técnicas de análisis de archivos, recuperación de borrados, logs de chat y extracción practicada]</span>
+          </p>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
+          <div className="dotted-line"></div>
         </div>
       </div>
 

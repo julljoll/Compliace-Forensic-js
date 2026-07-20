@@ -579,7 +579,7 @@ const MOCK_CASOS: CasoCMS[] = [
     numeroCaso: 'MP-03-2026-DD',
     expediente: 'EXP-45922-2026',
     titulo: 'Preservación e Investigación - Sabotaje de Servidor',
-    descripcion: 'Adquisición forense de unidad de estado sólido (SSD) correspondiente al servidor de base de datos saboteado. Preservación en sitio mediante bloqueador de escritura físico Tableau y software de respuesta a incidentes Samurai Linux / PALADIN. Análisis de imagen forense E01 mediante IPED Forensics para file carving de logs del sistema.',
+    descripcion: 'Adquisición forense de unidad de estado sólido (SSD) correspondiente al servidor de base de datos saboteado. Preservación en sitio mediante bloqueador de escritura físico Tableau y la Suite forense PALADIN LINUX. Análisis de imagen forense E01 mediante IPED Forensics para file carving de logs del sistema.',
     estado: 'iniciado',
     prioridad: 'critica',
     fechaCreacion: '2026-07-19T08:20:00.000Z',
@@ -604,7 +604,7 @@ const MOCK_CASOS: CasoCMS[] = [
     solicitante_nombre: 'Insp. Jefe Luis Ortega',
     solicitante_cedula: 'V-12.345.678',
     steps: {
-      dd_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: '', observaciones: 'Preservación inicial en sitio con PALADIN y hash generado.' },
+      dd_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:30:00.000Z', fechaCompletado: '2026-07-19T09:00:00.000Z', responsable: '', observaciones: 'Preservación inicial en sitio con Suite forense PALADIN LINUX y hash generado.' },
       dd_step2: { estado: 'disponible' }
     }
   }
