@@ -152,9 +152,11 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
     <>
       <div className="p-4 border-b border-[var(--apple-border)] flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-[8px] bg-[#524000] border border-[#FECF06]/40 flex items-center justify-center font-bold text-[#FECF06] text-[13px] shadow-[0_2px_8px_rgba(254,207,6,0.15)] group-hover:scale-105 transition-transform">
-            256
-          </div>
+          <img
+            src="/logo.png"
+            alt="SHA256.US Logo"
+            className="w-8 h-8 rounded-[8px] object-contain bg-[#524000] p-1 border border-[#FECF06]/40 shadow-[0_2px_8px_rgba(254,207,6,0.15)] group-hover:scale-105 transition-transform"
+          />
           <div>
             <p className="text-[13px] font-bold text-[var(--apple-text)] tracking-[-0.01em] group-hover:text-[var(--apple-accent)] transition-colors">SHA256.US</p>
             <p className="text-[10px] text-[#86868B] tracking-wide uppercase font-semibold">CMS Forense</p>
@@ -194,7 +196,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
         <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] transition-colors group cursor-default">
           <img
-            src={user?.profileImage || 'https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png'}
+            src={user?.profileImage || '/favicon.png'}
             alt=""
             className="w-8 h-8 rounded-full object-cover bg-[rgba(0,0,0,0.03)]"
           />

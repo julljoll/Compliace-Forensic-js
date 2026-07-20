@@ -58,7 +58,7 @@ export default function ActaEntrevista({ caso }: ActaEntrevistaProps) {
       <header>
         <div className="header-top-row">
           <div className="header-logo-brand">
-            <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US Logo" className="logo-img" />
+            <img src="/logo.png" alt="SHA256.US Logo" className="logo-img" />
             <span className="logo-text">SHA256.US</span>
           </div>
           <div className="header-lab-info">

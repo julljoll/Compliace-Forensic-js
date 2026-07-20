@@ -1,5 +1,0 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="#FECF06"/>
-  <text x="256" y="250" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-weight="900" font-size="200" fill="#524000" text-anchor="middle" letter-spacing="-5">sha</text>
-  <text x="256" y="430" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-weight="900" font-size="200" fill="#ffffff" text-anchor="middle" letter-spacing="-5">256</text>
-</svg>

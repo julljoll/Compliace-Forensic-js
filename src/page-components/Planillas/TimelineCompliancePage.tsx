@@ -115,7 +115,7 @@ export default function TimelineCompliancePage() {
           <div className="logo-container">
             <div className="logo-branding">
               <img
-                src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg"
+                src="/logo.png"
                 alt="SHA256.US Logo"
                 className="logo-img"
               />

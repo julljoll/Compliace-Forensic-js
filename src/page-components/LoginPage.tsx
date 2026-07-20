@@ -36,7 +36,7 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-[380px] flex flex-col items-center apple-fade-in z-10">
         <div className="w-20 h-20 rounded-md bg-black/30 border border-[var(--co-separator)] flex items-center justify-center mb-6 shadow-md transition-all duration-300">
-          <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US" className="w-11 h-11" />
+          <img src="/logo.png" alt="SHA256.US" className="w-12 h-12 object-contain" />
         </div>
 
         <div className="text-center mb-8">

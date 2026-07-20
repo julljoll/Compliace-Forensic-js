@@ -160,7 +160,7 @@ const ActaAuditoriaTimelinePage = () => {
         <header>
           <div className="logo-container">
             <div className="logo-branding">
-              <img src="https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/favicon.svg" alt="SHA256.US Logo" className="logo-img" />
+              <img src="/logo.png" alt="SHA256.US Logo" className="logo-img" />
               <span className="logo-text">SHA256.US</span>
             </div>
             <span className="logo-subtext">Laboratorio de Informática Forense y Ciberseguridad</span>

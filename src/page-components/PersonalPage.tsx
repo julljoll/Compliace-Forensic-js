@@ -220,7 +220,7 @@ export default function PersonalPage() {
               {user?.rol || 'Usuario'}
             </div>
             <div className="relative group w-32 h-32 mb-6">
-              <img src={user?.profileImage || "https://ik.imagekit.io/lvxdbpx6l/APP%20FORENSICS/avatar.png"} alt="Profile"
+              <img src={user?.profileImage || "/favicon.png"} alt="Profile"
                 className="w-full h-full object-cover rounded-full border-4 border-[rgba(0,0,0,0.08)]" />
               <button onClick={() => fileInputRef.current?.click()}
                 className="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-xs font-bold text-white gap-1">
