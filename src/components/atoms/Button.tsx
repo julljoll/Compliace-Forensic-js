@@ -1,4 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
+import MuiButton from '@mui/material/Button';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'destructive' | 'ghost';
@@ -12,33 +13,59 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   className = '',
   iconOnly = false,
+  disabled,
+  onClick,
+  type,
   ...props
 }) => {
-  const baseStyle = "inline-flex items-center justify-center font-semibold transition-all duration-200 outline-none select-none active:scale-[0.97] cursor-pointer disabled:opacity-50 disabled:pointer-events-none gap-2";
-  
-  const variants = {
-    primary: "bg-[var(--co-accent)] text-[var(--co-accent-fg)] border-none hover:brightness-[1.08] shadow-[0_1px_2px_rgba(0,0,0,0.1)]",
-    secondary: "bg-[var(--co-surface-2)] text-[var(--apple-text)] border-none hover:bg-[var(--apple-surface-hover)]",
-    destructive: "bg-[var(--co-red)] text-white border-none hover:brightness-[1.08]",
-    ghost: "bg-transparent text-[var(--co-accent)] hover:bg-[rgba(0,113,227,0.1)] border-none"
-  };
+  let muiVariant: 'contained' | 'outlined' | 'text' = 'contained';
+  let muiColor: 'primary' | 'secondary' | 'error' | 'inherit' = 'primary';
 
-  const sizes = {
-    sm: "h-8 px-3.5 text-[13px] rounded-[8px]",
-    md: "h-10 px-4.5 text-[15px] rounded-[10px]",
-    lg: "h-12 px-5.5 text-[17px] rounded-[12px]"
-  };
+  if (variant === 'primary') {
+    muiVariant = 'contained';
+    muiColor = 'primary';
+  } else if (variant === 'secondary') {
+    muiVariant = 'contained';
+    muiColor = 'secondary';
+  } else if (variant === 'destructive') {
+    muiVariant = 'contained';
+    muiColor = 'error';
+  } else if (variant === 'ghost') {
+    muiVariant = 'text';
+    muiColor = 'primary';
+  }
 
-  // Adjust width if it's an icon-only button
-  const iconSizeStyle = iconOnly ? (size === 'sm' ? 'w-8 p-0' : size === 'lg' ? 'w-12 p-0' : 'w-10 p-0') : '';
+  const paddingY = size === 'sm' ? '4px' : size === 'lg' ? '12px' : '8px';
+  const paddingX = iconOnly ? (size === 'sm' ? '8px' : size === 'lg' ? '16px' : '12px') : (size === 'sm' ? '14px' : size === 'lg' ? '22px' : '18px');
+  const minWidth = iconOnly ? (size === 'sm' ? '32px' : size === 'lg' ? '48px' : '40px') : 'auto';
 
   return (
-    <button
-      className={`${baseStyle} ${variants[variant]} ${sizes[size]} ${iconSizeStyle} ${className}`}
-      {...props}
+    <MuiButton
+      variant={muiVariant}
+      color={muiColor}
+      disabled={disabled}
+      onClick={onClick}
+      type={type}
+      className={className}
+      sx={{
+        py: paddingY,
+        px: paddingX,
+        minWidth: minWidth,
+        borderRadius: size === 'sm' ? '8px' : size === 'lg' ? '12px' : '10px',
+        fontSize: size === 'sm' ? '13px' : size === 'lg' ? '17px' : '15px',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        '&:active': {
+          transform: 'scale(0.97)',
+        },
+      }}
+      {...(props as Record<string, unknown>)}
     >
       {children}
-    </button>
+    </MuiButton>
   );
 };
 

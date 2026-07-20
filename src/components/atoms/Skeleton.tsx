@@ -1,4 +1,5 @@
 import React from 'react';
+import MuiSkeleton from '@mui/material/Skeleton';
 
 export interface SkeletonProps {
   className?: string;
@@ -13,27 +14,18 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   width,
   height,
 }) => {
-  const shapeClass = {
-    text: 'rounded-[6px] h-4 w-full',
-    rect: 'rounded-[10px]',
-    circle: 'rounded-full'
-  };
-
-  const style: React.CSSProperties = {};
-  if (width !== undefined) style.width = typeof width === 'number' ? `${width}px` : width;
-  if (height !== undefined) style.height = typeof height === 'number' ? `${height}px` : height;
+  const muiVariant = variant === 'rect' ? 'rectangular' : variant === 'circle' ? 'circular' : 'text';
 
   return (
-    <div
-      className={`
-        bg-[var(--co-surface-3)]
-        relative overflow-hidden animate-pulse
-        before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite]
-        before:bg-gradient-to-r before:from-transparent before:via-[rgba(255,255,255,0.06)] before:to-transparent
-        ${shapeClass[variant]}
-        ${className}
-      `}
-      style={style}
+    <MuiSkeleton
+      variant={muiVariant}
+      width={width}
+      height={height}
+      className={className}
+      sx={{
+        backgroundColor: 'rgba(254, 207, 6, 0.08)',
+        borderRadius: variant === 'circle' ? '50%' : variant === 'text' ? '6px' : '10px',
+      }}
     />
   );
 };

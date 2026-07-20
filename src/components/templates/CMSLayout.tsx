@@ -1,8 +1,16 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Stack from '@mui/material/Stack'
+
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, LogOut,
@@ -10,7 +18,6 @@ import {
 } from '../atoms/AppleIcon'
 import { useCMSStore } from '../../store/cmsStore'
 import { useAuthStore } from '../../store/authStore'
-import { checkConnection, isNeonConfigured } from '../../db/neonClient'
 import StatusDot from '../atoms/StatusDot'
 import CommandPalette from '../organisms/CommandPalette'
 
@@ -55,10 +62,36 @@ function SidebarLink({
     <Link
       href={item.path}
       onClick={onClick}
-      className={`apple-sidebar-item min-h-[40px] ${active ? 'apple-sidebar-item-active' : ''}`}
+      style={{ textDecoration: 'none' }}
     >
-      <Icon size={17} strokeWidth={active ? 2.5 : 1.8} className={active ? 'text-[var(--apple-accent)]' : 'text-[#86868B]'} />
-      <span className="text-[14px]">{item.label}</span>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          minHeight: '40px',
+          px: '12px',
+          py: '6px',
+          borderRadius: '8px',
+          transition: 'all 0.2s ease',
+          backgroundColor: active ? 'rgba(254, 207, 6, 0.12)' : 'transparent',
+          borderLeft: active ? '3px solid #FECF06' : '3px solid transparent',
+          '&:hover': {
+            backgroundColor: active ? 'rgba(254, 207, 6, 0.18)' : 'rgba(254, 207, 6, 0.05)',
+          },
+        }}
+      >
+        <Icon size={17} className={active ? 'text-[#FECF06]' : 'text-[#86868B]'} />
+        <Typography
+          sx={{
+            fontSize: '14px',
+            fontWeight: active ? 600 : 400,
+            color: active ? '#FECF06' : '#FFFFFF',
+          }}
+        >
+          {item.label}
+        </Typography>
+      </Box>
     </Link>
   )
 }
@@ -91,24 +124,8 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   }, [])
 
   const [mobileOpen, setMobileOpen] = useState(false)
-  const drawerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => { document.body.style.overflow = '' }
-  }, [mobileOpen])
 
   useEffect(() => { setMobileOpen(false) }, [pathname])
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false) }
-    document.addEventListener('keydown', handler)
-    return () => document.removeEventListener('keydown', handler)
-  }, [])
 
   const [sqliteOnline, setSqliteOnline] = useState<boolean | null>(null)
 
@@ -149,189 +166,234 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   }
 
   const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
-    <>
-      <div className="p-4 border-b border-[var(--apple-border)] flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#121412' }}>
+      <Box sx={{ p: '16px', borderBottom: '1px solid rgba(254, 207, 6, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img
             src="/logo.png"
             alt="SHA256.US Logo"
-            className="w-8 h-8 rounded-[8px] object-contain bg-[#524000] p-1 border border-[#FECF06]/40 shadow-[0_2px_8px_rgba(254,207,6,0.15)] group-hover:scale-105 transition-transform"
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              objectFit: 'contain',
+              backgroundColor: '#524000',
+              padding: '4px',
+              border: '1px solid rgba(254, 207, 6, 0.4)',
+              boxShadow: '0 2px 8px rgba(254, 207, 6, 0.15)',
+            }}
           />
-          <div>
-            <p className="text-[13px] font-bold text-[var(--apple-text)] tracking-[-0.01em] group-hover:text-[var(--apple-accent)] transition-colors">SHA256.US</p>
-            <p className="text-[10px] text-[#86868B] tracking-wide uppercase font-semibold">CMS Forense</p>
-          </div>
+          <Box>
+            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+              SHA256.US
+            </Typography>
+            <Typography sx={{ fontSize: '10px', color: '#86868B', textTransform: 'uppercase', fontWeight: 600 }}>
+              CMS Forense
+            </Typography>
+          </Box>
         </Link>
-      </div>
+      </Box>
 
-      <nav className="flex-1 overflow-y-auto p-3 space-y-4">
-        {groups.map(grp => {
-          const items = menuItems.filter(m => m.group === grp)
-          const meta = groupMeta[grp]
-          return (
-            <div key={grp} className="space-y-1">
-              <div className="px-2 py-1 flex items-center gap-1.5 text-[10px] font-semibold text-[#86868B] uppercase tracking-wider">
-                <span>{meta.emoji}</span>
-                <span>{grp}</span>
-              </div>
-              {items.map(m => (
-                <SidebarLink key={m.path} item={m} onClick={onNav} />
-              ))}
-            </div>
-          )
-        })}
-      </nav>
+      <Box sx={{ flex: 1, overflowY: 'auto', p: '12px' }}>
+        <Stack spacing={2}>
+          {groups.map(grp => {
+            const items = menuItems.filter(m => m.group === grp)
+            const meta = groupMeta[grp]
+            return (
+              <Box key={grp}>
+                <Typography sx={{ px: '8px', py: '4px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10px', fontWeight: 600, color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <span>{meta.emoji}</span>
+                  <span>{grp}</span>
+                </Typography>
+                <Stack spacing={0.5} sx={{ mt: '4px' }}>
+                  {items.map(m => (
+                    <SidebarLink key={m.path} item={m} onClick={onNav} />
+                  ))}
+                </Stack>
+              </Box>
+            )
+          })}
+        </Stack>
+      </Box>
 
-      <div className="p-3 border-t border-[var(--apple-border)] space-y-2">
-        <div className="grid grid-cols-2 gap-2">
-          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
-            <p className="text-[10px] font-semibold text-[#86868B]">Activos</p>
-            <p className="text-[17px] font-bold text-[var(--apple-accent)] tracking-[-0.02em]">{stats.casosActivos}</p>
-          </div>
-          <div className="px-3 py-2 rounded-[8px] bg-[rgba(0,0,0,0.03)]">
-            <p className="text-[10px] font-semibold text-[#86868B]">Cumpl.</p>
-            <p className="text-[17px] font-bold text-[#248A3D] tracking-[-0.02em]">{stats.cumplimientoGeneral}%</p>
-          </div>
-        </div>
+      <Box sx={{ p: '12px', borderTop: '1px solid rgba(254, 207, 6, 0.2)' }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', mb: '12px' }}>
+          <Box sx={{ px: '12px', py: '8px', borderRadius: '8px', backgroundColor: 'rgba(254, 207, 6, 0.05)' }}>
+            <Typography sx={{ fontSize: '10px', fontWeight: 600, color: '#86868B' }}>Activos</Typography>
+            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#FECF06' }}>{stats.casosActivos}</Typography>
+          </Box>
+          <Box sx={{ px: '12px', py: '8px', borderRadius: '8px', backgroundColor: 'rgba(0, 255, 65, 0.05)' }}>
+            <Typography sx={{ fontSize: '10px', fontWeight: 600, color: '#86868B' }}>Cumpl.</Typography>
+            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#00FF41' }}>{stats.cumplimientoGeneral}%</Typography>
+          </Box>
+        </Box>
 
-        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[rgba(0,0,0,0.03)] transition-colors group cursor-default">
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', p: '8px', borderRadius: '8px', backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
           <img
             src={user?.profileImage || '/favicon.png'}
             alt=""
-            className="w-8 h-8 rounded-full object-cover bg-[rgba(0,0,0,0.03)]"
+            style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
           />
-          <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-[var(--apple-text)] truncate leading-tight">{user?.nombre || 'Perito Judicial'}</p>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              {sqliteOnline === null ? (
-                <>
-                  <StatusDot status={null} size={6} />
-                  <p className="text-[10px] text-[#86868B] truncate">Verificando SQLite...</p>
-                </>
-              ) : sqliteOnline ? (
-                <>
-                  <StatusDot status="online" size={6} />
-                  <p className="text-[10px] text-[#34C759] truncate font-medium">SQLite Local (Conectado)</p>
-                </>
-              ) : (
-                <>
-                  <StatusDot status="offline" size={6} />
-                  <p className="text-[10px] text-[#FF3B30] truncate font-bold">No Conectado</p>
-                </>
-              )}
-            </div>
-          </div>
-          <button
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {user?.nombre || 'Perito Judicial'}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', mt: '2px' }}>
+              <StatusDot status={sqliteOnline ? 'online' : sqliteOnline === false ? 'offline' : null} size={6} />
+              <Typography sx={{ fontSize: '10px', color: sqliteOnline ? '#00FF41' : '#FF3B30' }}>
+                {sqliteOnline ? 'SQLite Local' : 'No Conectado'}
+              </Typography>
+            </Box>
+          </Box>
+          <IconButton
             onClick={() => { logout(); router.replace('/login') }}
+            size="small"
             title="Cerrar sesión"
-            className="p-2 rounded-[6px] hover:bg-red-500/10 text-[#86868B] hover:text-[#FF3B30] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
+            sx={{ color: '#86868B', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)' } }}
           >
             <LogOut size={14} />
-          </button>
-        </div>
-      </div>
-    </>
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
   )
 
   return (
-    <div className="flex h-[100dvh] bg-[var(--apple-bg)] font-sans text-[var(--apple-text)] overflow-hidden">
-      <aside className="print:hidden w-[272px] apple-sidebar flex-col shrink-0 hidden sm:flex">
-        <SidebarContent />
-      </aside>
-
-      <div
-        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 sm:hidden ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setMobileOpen(false)}
-        aria-hidden="true"
-      />
-
-      <div
-        ref={drawerRef}
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] max-w-[85vw] flex flex-col bg-[var(--apple-sidebar-bg)] backdrop-blur-[40px] border-r border-[var(--apple-border)] shadow-[4px_0_24px_rgba(0,0,0,0.12)] transform transition-transform duration-300 ease-out sm:hidden ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        aria-label="Menú de navegación"
-        role="dialog"
-        aria-modal="true"
+    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: '#524000', color: '#FFFFFF', overflow: 'hidden' }}>
+      {/* Desktop Sidebar */}
+      <Box
+        component="aside"
+        sx={{
+          width: '272px',
+          flexShrink: 0,
+          display: { xs: 'none', sm: 'block' },
+          borderRight: '1px solid rgba(254, 207, 6, 0.2)',
+          backgroundColor: '#121412',
+          '@media print': { display: 'none' },
+        }}
       >
-        <button
-          onClick={() => setMobileOpen(false)}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-[rgba(0,0,0,0.06)] text-[#86868B] hover:text-[var(--apple-text)] transition-colors min-w-[36px] min-h-[36px] flex items-center justify-center"
-          aria-label="Cerrar menú"
+        <SidebarContent />
+      </Box>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: '280px',
+              backgroundColor: '#121412',
+              borderRight: '1px solid rgba(254, 207, 6, 0.2)',
+            },
+          },
+        }}
+        sx={{ display: { xs: 'block', sm: 'none' } }}
+      >
+        <Box sx={{ position: 'relative', height: '100%' }}>
+          <IconButton
+            onClick={() => setMobileOpen(false)}
+            sx={{ position: 'absolute', top: 12, right: 12, zIndex: 10, color: '#86868B' }}
+          >
+            <X size={16} />
+          </IconButton>
+          <SidebarContent onNav={() => setMobileOpen(false)} />
+        </Box>
+      </Drawer>
+
+      {/* Main Container */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden', backgroundColor: '#524000' }}>
+        <Box
+          component="header"
+          sx={{
+            height: '48px',
+            borderBottom: '1px solid rgba(82, 64, 0, 0.4)',
+            backgroundColor: 'rgba(18, 20, 18, 0.9)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            px: { xs: 2, sm: 3 },
+            zIndex: 10,
+            '@media print': { display: 'none' },
+          }}
         >
-          <X size={16} />
-        </button>
-        <SidebarContent onNav={() => setMobileOpen(false)} />
-      </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <IconButton
+              onClick={() => setMobileOpen(true)}
+              sx={{ display: { xs: 'flex', sm: 'none' }, color: '#86868B' }}
+            >
+              <Menu size={20} />
+            </IconButton>
 
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[var(--apple-bg)] print:bg-white print:overflow-visible">
-        <header className="print:hidden shrink-0 border-b border-[#524000]/40 bg-[#121412]/90 backdrop-blur-md z-10">
-          <div className="flex items-center justify-between px-4 sm:px-6 h-[48px]">
-            <div className="flex items-center gap-2 min-w-0">
-              <button
-                id="hamburger-btn"
-                onClick={() => setMobileOpen(true)}
-                aria-label="Abrir menú de navegación"
-                aria-expanded={mobileOpen}
-                className="sm:hidden flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-white/5 hover:text-[#FECF06] transition-all"
-              >
-                <Menu size={20} strokeWidth={2} />
-              </button>
-              <nav className="flex items-center gap-1.5 text-xs font-mono font-medium min-w-0" aria-label="Ubicación actual">
-                <Link href="/dashboard" className="text-[#00FF41] font-extrabold hidden xs:block shrink-0 hover:underline">SHA256.US</Link>
-                {pathname !== '/dashboard' && (
-                  <>
-                    <ChevronRight size={11} className="text-gray-500 shrink-0 hidden xs:block" />
-                    <span className="text-white truncate font-sans font-bold">{getBreadcrumb()}</span>
-                  </>
-                )}
-                <span className="text-white truncate font-sans font-bold xs:hidden">{getBreadcrumb()}</span>
-              </nav>
-            </div>
+            <Breadcrumbs
+              separator={<ChevronRight size={11} className="text-gray-500" />}
+              aria-label="breadcrumb"
+              sx={{ '& .MuiBreadcrumbs-separator': { color: '#86868B' } }}
+            >
+              <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+                <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41', fontFamily: 'monospace' }}>
+                  SHA256.US
+                </Typography>
+              </Link>
+              {pathname !== '/dashboard' && (
+                <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF' }}>
+                  {getBreadcrumb()}
+                </Typography>
+              )}
+            </Breadcrumbs>
+          </Box>
 
-            <div className="flex items-center gap-1.5 shrink-0">
-              <button
-                onClick={() => setCommandPaletteOpen(true)}
-                title="Buscador Spotlight (⌘K)"
-                className="flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-white/5 hover:text-[#FECF06] transition-all"
-              >
-                <Search size={15} />
-              </button>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+            <IconButton
+              onClick={() => setCommandPaletteOpen(true)}
+              title="Buscador Spotlight (⌘K)"
+              sx={{ color: '#86868B', '&:hover': { color: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.08)' } }}
+            >
+              <Search size={15} />
+            </IconButton>
 
-              <button
-                onClick={verificarSQLite}
-                title={sqliteOnline ? 'Conectado a SQLite Local (sha256_forense.sqlite)' : 'No conectado a SQLite Local'}
-                className="flex items-center gap-1.5 text-[11px] font-mono font-bold px-2 py-1 rounded bg-[#0a0c0a] border border-[#524000] hover:border-[#FECF06]/50 transition-all cursor-pointer"
-              >
-                <div className={`w-2 h-2 rounded-full shrink-0 ${sqliteOnline === null ? 'bg-gray-400' : sqliteOnline ? 'bg-[#34C759]' : 'bg-[#FF3B30] animate-pulse'}`} />
-                <span className={`hidden md:inline ${sqliteOnline === null ? 'text-gray-400' : sqliteOnline ? 'text-[#34C759]' : 'text-[#FF3B30]'}`}>
-                  {sqliteOnline === null ? 'SQLite...' : sqliteOnline ? 'SQLite Local' : 'No Conectado'}
-                </span>
-              </button>
+            <Box
+              onClick={verificarSQLite}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                px: '8px',
+                py: '4px',
+                borderRadius: '4px',
+                backgroundColor: '#0a0c0a',
+                border: '1px solid #524000',
+                cursor: 'pointer',
+                '&:hover': { borderColor: 'rgba(254, 207, 6, 0.5)' },
+              }}
+            >
+              <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: sqliteOnline ? '#00FF41' : '#FF3B30' }} />
+              <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, color: sqliteOnline ? '#00FF41' : '#FF3B30', display: { xs: 'none', md: 'block' } }}>
+                {sqliteOnline ? 'SQLite Local' : 'No Conectado'}
+              </Typography>
+            </Box>
 
-              <button
-                onClick={limpiarDatos}
-                title="Limpiar datos temporales"
-                className="flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-red-500/10 hover:text-[#FF3B30] transition-all"
-              >
-                <Trash2 size={14} />
-              </button>
+            <IconButton
+              onClick={limpiarDatos}
+              title="Limpiar datos temporales"
+              sx={{ color: '#86868B', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)' } }}
+            >
+              <Trash2 size={14} />
+            </IconButton>
+          </Stack>
+        </Box>
 
-              <div className="hidden sm:flex items-center gap-1.5 ml-2 select-none">
-                <span className="w-3 h-3 rounded-full bg-[#FFCC00] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Minimizar (Amarillo)" />
-                <span className="w-3 h-3 rounded-full bg-[#007AFF] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Ampliar (Azul)" />
-                <span className="w-3 h-3 rounded-full bg-[#FF3B30] hover:opacity-80 transition-opacity cursor-pointer border border-black/20" title="Cerrar (Rojo)" />
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main className="flex-1 overflow-y-auto print:overflow-visible print:m-0 print:p-0 -webkit-overflow-scrolling-touch">
-          <div className="w-full max-w-6xl mx-auto px-4 py-5 sm:px-6 sm:py-8 md:px-10 md:py-12 apple-fade-in print:max-w-none print:m-0 print:p-0">
+        <Box component="main" sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 3, md: 4 } }}>
+          <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
             {children}
-          </div>
-        </main>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
       <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
-    </div>
+    </Box>
   )
 }

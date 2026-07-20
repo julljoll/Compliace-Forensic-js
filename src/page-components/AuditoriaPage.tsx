@@ -1,14 +1,28 @@
+'use client';
+
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import Chip from '@mui/material/Chip';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+
 import { useCMSStore } from '../store/cmsStore';
 import { useAuditStore } from '../store/auditStore';
 import {
   Activity, Printer, Clock,
-  Search, ShieldCheck, AlertTriangle, Check,
+  ShieldCheck, AlertTriangle,
   FolderOpen, ChevronRight, X, Hash, User, Filter, ArrowLeft
 } from '../components/atoms/AppleIcon';
 
-import Card from '../components/atoms/Card';
 import Button from '../components/atoms/Button';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -31,13 +45,13 @@ function getRelativeTime(dateString: string) {
   }
 }
 
-const ACTION_META: Record<string, { label: string; color: string; bg: string; border: string }> = {
-  crear:     { label: 'CREAR',     color: 'var(--co-green)',  bg: 'rgba(52,199,89,0.08)',  border: 'rgba(52,199,89,0.25)'  },
-  eliminar:  { label: 'ELIMINAR',  color: 'var(--co-red)',    bg: 'rgba(255,59,48,0.08)',  border: 'rgba(255,59,48,0.25)'  },
-  modificar: { label: 'MODIFICAR', color: 'var(--co-blue)',   bg: 'rgba(254,207,6,0.08)', border: 'rgba(254,207,6,0.25)' },
-  verificar: { label: 'VERIFICAR', color: 'var(--co-purple)', bg: 'rgba(175,82,222,0.08)', border: 'rgba(175,82,222,0.25)' },
-  imprimir:  { label: 'IMPRIMIR',  color: 'var(--co-indigo)', bg: 'rgba(88,86,214,0.08)',  border: 'rgba(88,86,214,0.25)'  },
-  default:   { label: 'SISTEMA',   color: 'var(--co-gray-1)', bg: 'var(--co-surface-3)',   border: 'var(--co-gray-4)'      },
+const ACTION_META: Record<string, { label: string; color: string; bg: string }> = {
+  crear:     { label: 'CREAR',     color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
+  eliminar:  { label: 'ELIMINAR',  color: '#FF3B30', bg: 'rgba(255, 59, 48, 0.1)' },
+  modificar: { label: 'MODIFICAR', color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
+  verificar: { label: 'VERIFICAR', color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
+  imprimir:  { label: 'IMPRIMIR',  color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
+  default:   { label: 'SISTEMA',   color: '#AEAEB2', bg: 'rgba(255, 255, 255, 0.06)' },
 };
 
 function getActionMeta(accion: string) {
@@ -50,19 +64,13 @@ function getActionMeta(accion: string) {
   return ACTION_META.default;
 }
 
-const ESTADO_META: Record<string, { label: string; color: string; bg: string; border: string; dot: string }> = {
-  iniciado:   { label: 'Iniciado',   color: 'var(--co-blue)',   bg: 'rgba(254,207,6,0.08)',   border: 'rgba(254,207,6,0.2)',   dot: 'var(--co-blue)'   },
-  en_proceso: { label: 'En Proceso', color: 'var(--co-orange)', bg: 'rgba(255,149,0,0.08)',   border: 'rgba(255,149,0,0.2)',   dot: 'var(--co-orange)' },
-  analisis:   { label: 'Análisis',   color: 'var(--co-purple)', bg: 'rgba(175,82,222,0.08)',  border: 'rgba(175,82,222,0.2)',  dot: 'var(--co-purple)' },
-  informe:    { label: 'Informe',    color: 'var(--co-indigo)', bg: 'rgba(88,86,214,0.08)',   border: 'rgba(88,86,214,0.2)',   dot: 'var(--co-indigo)' },
-  cerrado:    { label: 'Cerrado',    color: 'var(--co-green)',  bg: 'rgba(52,199,89,0.08)',   border: 'rgba(52,199,89,0.2)',   dot: 'var(--co-green)'  },
-  archivado:  { label: 'Archivado',  color: 'var(--co-gray-1)', bg: 'var(--co-surface-3)',    border: 'var(--co-gray-4)',      dot: 'var(--co-gray-2)' },
-};
-
-const TIPO_LABEL: Record<string, string> = {
-  forense_whatsapp:  'Móvil Android',
-  forense_email:     'Correo Electrónico',
-  forense_discoduro: 'Computadora / Disco',
+const ESTADO_META: Record<string, { label: string; color: string; bg: string }> = {
+  iniciado:   { label: 'Iniciado',   color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
+  en_proceso: { label: 'En Proceso', color: '#FF9500', bg: 'rgba(255, 149, 0, 0.1)' },
+  analisis:   { label: 'Análisis',   color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
+  informe:    { label: 'Informe',    color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
+  cerrado:    { label: 'Cerrado',    color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
+  archivado:  { label: 'Archivado',  color: '#AEAEB2', bg: 'rgba(255, 255, 255, 0.06)' },
 };
 
 const SESSION_ACTIONS = new Set(['INICIO_SESION', 'SISTEMA_INICIADO', 'SESION_CERRADA']);
@@ -77,7 +85,6 @@ export default function AuditoriaPage() {
   const verifyChain = useAuditStore(s => s.verifyChain);
   const clearLogs   = useAuditStore(s => s.clearLogs);
 
-  // vista: 'casos' = grid de cards | 'logs' = consola filtrada por caso
   const [vista, setVista]             = useState<'casos' | 'logs'>('casos');
   const [casoId, setCasoId]           = useState<string | null>(null);
   const [actionFilter, setActionFilter] = useState('todos');
@@ -90,7 +97,6 @@ export default function AuditoriaPage() {
     loadLogs().finally(() => setLoading(false));
   }, [loadLogs]);
 
-  // ── Combined logs ──
   const allLogs = useMemo(() => {
     const map = new Map<string, any>();
     storeLogs.forEach(l => map.set(l.id || `${l.timestamp}-${l.detalle}`, l));
@@ -103,21 +109,12 @@ export default function AuditoriaPage() {
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }, [storeLogs, cmsLogs]);
 
-  // ── Event count per case ──
   const countByCaso = useMemo(() => {
     const acc: Record<string, number> = {};
     allLogs.forEach(l => { if (l.casoId) acc[l.casoId] = (acc[l.casoId] || 0) + 1; });
     return acc;
   }, [allLogs]);
 
-  // ── Last event timestamp per case ──
-  const lastEventByCaso = useMemo(() => {
-    const acc: Record<string, string> = {};
-    allLogs.forEach(l => { if (l.casoId && !acc[l.casoId]) acc[l.casoId] = l.timestamp; });
-    return acc;
-  }, [allLogs]);
-
-  // ── Filtered logs for log view ──
   const logsFiltrados = useMemo(() => {
     return allLogs.filter(log => {
       const matchCaso = !casoId || log.casoId === casoId;
@@ -137,7 +134,6 @@ export default function AuditoriaPage() {
     });
   }, [allLogs, casoId, actionFilter, busqueda]);
 
-  // ── KPIs ──
   const kpis = useMemo(() => ({
     totalEvents:    allLogs.length,
     casosActivos:   casos.filter(c => c.estado !== 'archivado' && c.estado !== 'cerrado').length,
@@ -145,7 +141,6 @@ export default function AuditoriaPage() {
     ultimoEvento:   allLogs[0]?.timestamp || null,
   }), [allLogs, casos]);
 
-  // ── Handlers ──
   const handleVerify = async () => {
     setVerificando(true);
     setIntegridad(null);
@@ -187,391 +182,236 @@ export default function AuditoriaPage() {
   const casoCurrent = casoId ? casos.find(c => c.id === casoId) : null;
   const estadoMeta  = casoCurrent ? (ESTADO_META[casoCurrent.estado] || ESTADO_META.iniciado) : null;
 
-  return (
-    <div className="flex flex-col min-h-0 apple-fade-in pb-8">
+  // DataGrid Columns definition
+  const columns: GridColDef[] = [
+    {
+      field: 'accion',
+      headerName: 'Acción',
+      width: 130,
+      renderCell: (params) => {
+        const meta = getActionMeta(params.value);
+        return (
+          <Chip
+            label={meta.label}
+            size="small"
+            sx={{
+              backgroundColor: meta.bg,
+              color: meta.color,
+              border: `1px solid ${meta.color}`,
+              fontWeight: 700,
+              fontSize: '10px',
+            }}
+          />
+        );
+      },
+    },
+    {
+      field: 'detalle',
+      headerName: 'Detalle del Evento',
+      flex: 1,
+      minWidth: 260,
+      renderCell: (params) => (
+        <Typography sx={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 500, my: 'auto' }}>
+          {params.value}
+        </Typography>
+      ),
+    },
+    {
+      field: 'usuario',
+      headerName: 'Perito / Usuario',
+      width: 160,
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', my: 'auto' }}>
+          <User size={12} className="text-[#AEAEB2]" />
+          <Typography sx={{ fontSize: '12px', color: '#AEAEB2' }}>{params.value}</Typography>
+        </Box>
+      ),
+    },
+    {
+      field: 'hashActual',
+      headerName: 'Hash SHA-256',
+      width: 180,
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', my: 'auto' }}>
+          <Hash size={12} className="text-[#00FF41]" />
+          <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#FECF06' }}>
+            {params.value ? `${params.value.slice(0, 10)}...` : '—'}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      field: 'timestamp',
+      headerName: 'Fecha / Hora',
+      width: 170,
+      renderCell: (params) => (
+        <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontFamily: 'monospace', my: 'auto' }}>
+          {new Date(params.value).toLocaleString('es-VE')}
+        </Typography>
+      ),
+    },
+  ];
 
-      {/* ── Page Header ── */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[var(--co-separator)] pb-4 mb-5 shrink-0">
-        <div className="flex items-center gap-3">
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', pb: 4 }}>
+      {/* Header */}
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'flex-end' }, gap: 2, pb: 2, mb: 3, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           {vista === 'logs' && (
-            <button
-              onClick={handleBack}
-              className="w-8 h-8 rounded-full flex items-center justify-center border border-[var(--co-separator)] text-[var(--co-gray-1)] hover:bg-[var(--co-surface-2)] hover:text-[var(--apple-text)] transition-all"
-            >
-              <ArrowLeft size={14} />
-            </button>
+            <IconButton onClick={handleBack} sx={{ color: '#AEAEB2', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
+              <ArrowLeft size={16} />
+            </IconButton>
           )}
-          <div>
-            <h1 className="text-apple-title-1 font-bold text-[var(--apple-text)] flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-[8px] bg-[var(--co-accent)]/10 border border-[var(--co-accent)]/20 flex items-center justify-center">
-                <Activity className="text-[var(--co-accent)]" size={18} strokeWidth={2.5} />
-              </div>
-              {vista === 'casos' ? 'Consola de Auditoría Forense' : (
-                <span className="flex items-center gap-2">
-                  Auditoría
-                  <ChevronRight size={16} className="text-[var(--co-gray-2)]" />
-                  <span className="text-[var(--co-accent)]">{casoCurrent?.numeroCaso}</span>
-                </span>
-              )}
-            </h1>
-            <p className="text-[13px] text-[var(--co-gray-1)] font-medium mt-0.5">
+          <Box>
+            <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Activity size={22} className="text-[#FECF06]" />
+              {vista === 'casos' ? 'Consola de Auditoría Forense' : `Auditoría / ${casoCurrent?.numeroCaso}`}
+            </Typography>
+            <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
               {vista === 'casos'
                 ? 'Seleccione un expediente para auditar su trazabilidad y línea de tiempo de cumplimiento'
-                : `${casoCurrent?.titulo} — SHA-256 Chain · MUCC-2017 · ISO/IEC 27037`}
-            </p>
-          </div>
-        </div>
+                : `${casoCurrent?.titulo} — Cadena Criptográfica Inmutable SHA-256`}
+            </Typography>
+          </Box>
+        </Box>
 
-        <div className="flex items-center gap-2 flex-wrap">
-          <Button
-            onClick={handleVerify}
-            variant="primary"
-            size="sm"
-            disabled={verificando || allLogs.length === 0}
-            className="gap-1.5"
-          >
-            <ShieldCheck size={14} strokeWidth={2.5} />
+        <Stack direction="row" spacing={1.5}>
+          <Button onClick={handleVerify} variant="primary" size="sm" disabled={verificando || allLogs.length === 0}>
+            <ShieldCheck size={14} />
             {verificando ? 'Verificando...' : 'Verificar SHA-256'}
           </Button>
           {vista === 'logs' && casoId && (
-            <Button
-              onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)}
-              variant="secondary"
-              size="sm"
-              className="gap-1.5 font-semibold"
-            >
+            <Button onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)} variant="secondary" size="sm">
               <Printer size={14} />
               Imprimir Línea de Tiempo
             </Button>
           )}
-        </div>
-      </div>
+        </Stack>
+      </Box>
 
-      {/* ── KPI Strip ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5 shrink-0">
+      {/* KPI Cards */}
+      <Grid container spacing={2} sx={{ mb: 3 }}>
         {[
-          { label: 'Total Eventos',    value: kpis.totalEvents,    icon: <Hash size={14}/>,     color: 'var(--co-accent)'  },
-          { label: 'Casos Auditados',  value: kpis.casosAuditados, icon: <FolderOpen size={14}/>,color: 'var(--co-purple)' },
-          { label: 'Casos Activos',    value: kpis.casosActivos,   icon: <Activity size={14}/>, color: 'var(--co-green)'   },
-          { label: 'Último Evento',    value: kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : '—', icon: <Clock size={14}/>, color: 'var(--co-orange)' },
+          { label: 'Total Eventos',    value: kpis.totalEvents,    icon: <Hash size={14}/>,     color: '#FECF06' },
+          { label: 'Casos Auditados',  value: kpis.casosAuditados, icon: <FolderOpen size={14}/>,color: '#9DFF00' },
+          { label: 'Casos Activos',    value: kpis.casosActivos,   icon: <Activity size={14}/>, color: '#00FF41' },
+          { label: 'Último Evento',    value: kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : '—', icon: <Clock size={14}/>, color: '#FF9500' },
         ].map((k, i) => (
-          <Card key={i} className="p-3.5 flex items-center gap-3" hoverable={false}>
-            <div className="w-8 h-8 rounded-[8px] flex items-center justify-center shrink-0"
-              style={{ background: `color-mix(in srgb, ${k.color} 12%, transparent)` }}>
-              <span style={{ color: k.color }}>{k.icon}</span>
-            </div>
-            <div className="min-w-0">
-              <div className="text-[11px] font-semibold text-[var(--co-gray-1)] uppercase tracking-wider leading-none">{k.label}</div>
-              <div className="text-[18px] font-bold text-[var(--apple-text)] leading-tight mt-0.5 tabular-nums">{k.value}</div>
-            </div>
-          </Card>
+          <Grid key={i} size={{ xs: 6, md: 3 }}>
+            <Card sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Box sx={{ width: 36, height: 36, borderRadius: '8px', backgroundColor: 'rgba(254, 207, 6, 0.08)', display: 'flex', alignItems: 'center', justifyCenter: 'center', color: k.color }}>
+                {k.icon}
+              </Box>
+              <Box>
+                <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 600, textTransform: 'uppercase' }}>{k.label}</Typography>
+                <Typography sx={{ fontSize: '18px', color: '#FFFFFF', fontWeight: 700 }}>{k.value}</Typography>
+              </Box>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
 
-      {/* ── Integrity Alert ── */}
+      {/* Alert */}
       {integridad && (
-        <div className={`flex items-center gap-3 p-3.5 mb-4 rounded-[12px] border shrink-0 ${
-          integridad.valid
-            ? 'bg-[var(--co-green)]/5 border-[var(--co-green)]/20'
-            : 'bg-[var(--co-red)]/5 border-[var(--co-red)]/20'
-        }`}>
-          {integridad.valid
-            ? <ShieldCheck size={18} className="shrink-0 text-[var(--co-green)]" />
-            : <AlertTriangle size={18} className="shrink-0 text-[var(--co-red)]" />}
-          <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-bold text-[var(--apple-text)]">
-              {integridad.valid ? 'Integridad Verificada ✓' : 'Alerta de Integridad'}
-            </p>
-            <p className="text-[12px] text-[var(--co-gray-1)] mt-0.5">{integridad.message}</p>
-          </div>
-          <button onClick={() => setIntegridad(null)}
-            className="shrink-0 p-1.5 rounded-full hover:bg-[var(--co-surface-3)] text-[var(--co-gray-1)] transition-all">
-            <X size={12} />
-          </button>
-        </div>
+        <Alert
+          severity={integridad.valid ? 'success' : 'error'}
+          onClose={() => setIntegridad(null)}
+          sx={{ mb: 3, borderRadius: '12px', backgroundColor: integridad.valid ? 'rgba(0, 255, 65, 0.08)' : 'rgba(255, 59, 48, 0.08)', color: '#FFFFFF', border: `1px solid ${integridad.valid ? '#00FF41' : '#FF3B30'}` }}
+        >
+          <AlertTitle sx={{ fontWeight: 700, color: integridad.valid ? '#00FF41' : '#FF3B30' }}>
+            {integridad.valid ? 'Integridad Verificada ✓' : 'Alerta de Cripto-Integridad'}
+          </AlertTitle>
+          {integridad.message}
+        </Alert>
       )}
 
-      {/* ══════════════════════════════════════════
-          VISTA: GRID DE EXPEDIENTES (CARDS)
-      ══════════════════════════════════════════ */}
+      {/* Cases Grid */}
       {vista === 'casos' && (
-        <div>
-          <p className="text-[11px] font-bold text-[var(--co-gray-1)] uppercase tracking-wider mb-4">
-            {casos.length} Expediente{casos.length !== 1 ? 's' : ''} — Seleccione uno para auditar
-          </p>
+        <Grid container spacing={2}>
+          {casos.map((caso) => {
+            const count = countByCaso[caso.id] || 0;
+            const meta = ESTADO_META[caso.estado] || ESTADO_META.iniciado;
+            return (
+              <Grid key={caso.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                <Card
+                  onClick={() => handleSelectCaso(caso.id)}
+                  sx={{ cursor: 'pointer', p: 2.5, transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', borderColor: '#FECF06' } }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+                    <Chip label={meta.label} size="small" sx={{ backgroundColor: meta.bg, color: meta.color, fontWeight: 700, fontSize: '10px' }} />
+                    <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#AEAEB2' }}>{caso.numeroCaso}</Typography>
+                  </Box>
+                  <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', mb: 1 }}>{caso.titulo}</Typography>
+                  <Typography sx={{ fontSize: '12px', color: '#AEAEB2', mb: 2 }}>{caso.descripcion}</Typography>
 
-          {casos.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <FolderOpen size={48} className="text-[var(--co-gray-3)] mb-4" />
-              <p className="text-[16px] font-semibold text-[var(--co-gray-1)]">Sin expedientes registrados</p>
-              <p className="text-[13px] text-[var(--co-gray-2)] mt-1">Cree un nuevo caso para comenzar la trazabilidad forense.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {casos.map(c => {
-                const meta    = ESTADO_META[c.estado] || ESTADO_META.iniciado;
-                const count   = countByCaso[c.id] || 0;
-                const lastEvt = lastEventByCaso[c.id];
-                const pct     = c.porcentajeCompletado || 0;
-
-                return (
-                  <button
-                    key={c.id}
-                    onClick={() => handleSelectCaso(c.id)}
-                    className="text-left w-full group"
-                  >
-                    <Card className="p-4 h-full flex flex-col gap-3 border border-[var(--co-separator)] hover:border-[var(--co-accent)]/30 hover:shadow-[0_0_0_3px_rgba(0,113,227,0.08)] transition-all duration-200">
-
-                      {/* Top row */}
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div className="w-7 h-7 rounded-[6px] flex items-center justify-center shrink-0"
-                            style={{ background: meta.bg, border: `1px solid ${meta.border}` }}>
-                            <div className="w-2 h-2 rounded-full" style={{ background: meta.dot }} />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[11px] font-bold text-[var(--co-accent)] truncate leading-none">
-                              {c.numeroCaso || 'Sin Nro'}
-                            </p>
-                            <p className="text-[9px] font-semibold text-[var(--co-gray-2)] mt-0.5 uppercase tracking-wide">
-                              {TIPO_LABEL[c.tipoProyecto] || c.tipoProyecto}
-                            </p>
-                          </div>
-                        </div>
-                        <span
-                          className="shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-[4px] border"
-                          style={{ color: meta.color, background: meta.bg, borderColor: meta.border }}
-                        >
-                          {meta.label}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <p className="text-[13px] font-semibold text-[var(--apple-text)] leading-snug line-clamp-2 flex-1">
-                        {c.titulo}
-                      </p>
-
-                      {/* Progress bar */}
-                      <div>
-                        <div className="flex justify-between text-[10px] font-semibold text-[var(--co-gray-1)] mb-1">
-                          <span>Compliance</span>
-                          <span className="tabular-nums">{pct}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-[var(--co-surface-3)] rounded-full overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all"
-                            style={{
-                              width: `${pct}%`,
-                              background: pct >= 80 ? 'var(--co-green)' : pct >= 40 ? 'var(--co-orange)' : 'var(--co-accent)'
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Footer stats */}
-                      <div className="flex items-center justify-between pt-1 border-t border-[var(--co-separator)]">
-                        <span className="text-[11px] text-[var(--co-gray-1)] flex items-center gap-1.5">
-                          <Activity size={10} />
-                          <span className="font-bold tabular-nums text-[var(--apple-text)]">{count}</span>
-                          <span>evento{count !== 1 ? 's' : ''}</span>
-                        </span>
-                        <span className="text-[10px] text-[var(--co-gray-2)] font-medium">
-                          {lastEvt ? getRelativeTime(lastEvt) : 'Sin eventos'}
-                        </span>
-                      </div>
-
-                      {/* CTA hover hint */}
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--co-accent)] opacity-0 group-hover:opacity-100 transition-opacity -mt-1">
-                        <Printer size={11} />
-                        Ver trazabilidad e imprimir línea de tiempo
-                        <ChevronRight size={11} className="ml-auto" />
-                      </div>
-                    </Card>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1.5, borderTop: '1px solid rgba(254, 207, 6, 0.15)' }}>
+                    <Typography sx={{ fontSize: '12px', color: '#00FF41', fontWeight: 600 }}>
+                      {count} eventos auditados
+                    </Typography>
+                    <ChevronRight size={16} className="text-[#FECF06]" />
+                  </Box>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
       )}
 
-      {/* ══════════════════════════════════════════
-          VISTA: LOG DETALLADO DEL CASO
-      ══════════════════════════════════════════ */}
-      {vista === 'logs' && casoCurrent && (
-        <div className="flex flex-col gap-3 flex-1 min-h-0">
-
-          {/* Case summary header */}
-          <Card className="p-4 flex flex-col sm:flex-row sm:items-center gap-4" hoverable={false}>
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
-                style={{ background: estadoMeta?.bg, border: `1px solid ${estadoMeta?.border}`, color: estadoMeta?.color }}>
-                <FolderOpen size={18} />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-[15px] font-bold text-[var(--apple-text)]">{casoCurrent.titulo}</p>
-                  <span
-                    className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-[4px] border"
-                    style={{ color: estadoMeta?.color, background: estadoMeta?.bg, borderColor: estadoMeta?.border }}
-                  >
-                    {estadoMeta?.label}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 mt-0.5 text-[11px] text-[var(--co-gray-1)] font-medium flex-wrap">
-                  <span className="flex items-center gap-1"><Hash size={10} />{casoCurrent.numeroCaso}</span>
-                  <span className="flex items-center gap-1"><User size={10} />{casoCurrent.peritoLider || 'Sin asignar'}</span>
-                  <span className="flex items-center gap-1"><Activity size={10} />
-                    <strong className="text-[var(--apple-text)]">{logsFiltrados.length}</strong>&nbsp;eventos
-                  </span>
-                  <span className="flex items-center gap-1">
-                    Compliance: <strong className="text-[var(--apple-text)]">{casoCurrent.porcentajeCompletado || 0}%</strong>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <Button
-              onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)}
-              variant="primary"
-              size="sm"
-              className="gap-1.5 shrink-0 whitespace-nowrap"
-            >
-              <Printer size={14} />
-              Imprimir Línea de Tiempo
-            </Button>
-          </Card>
-
-          {/* Toolbar */}
-          <Card className="p-2.5 flex flex-col sm:flex-row gap-2 shrink-0" hoverable={false}>
-            <div className="relative flex-1">
-              <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--co-gray-1)]" />
-              <input
-                type="text"
-                placeholder="Buscar eventos, peritos, acciones..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
-                className="w-full text-[13px] bg-[var(--co-surface-2)] text-[var(--apple-text)] border border-[var(--co-gray-5)] rounded-[8px] pl-9 pr-3 py-2 outline-none focus:border-[var(--co-accent)] focus:ring-[2px] focus:ring-[var(--co-accent)]/20 transition-all"
-              />
-              {busqueda && (
-                <button onClick={() => setBusqueda('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--co-gray-2)] hover:text-[var(--apple-text)]">
-                  <X size={12} />
-                </button>
-              )}
-            </div>
-            <select
+      {/* MUI X DataGrid Logs View */}
+      {vista === 'logs' && (
+        <Card sx={{ p: 2 }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 2 }}>
+            <TextField
+              size="small"
+              placeholder="Buscar por evento, perito o detalle..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              fullWidth
+            />
+            <TextField
+              select
+              size="small"
               value={actionFilter}
-              onChange={e => setActionFilter(e.target.value)}
-              className="bg-[var(--co-surface-2)] border border-[var(--co-gray-5)] rounded-[8px] text-[12px] font-semibold px-3 py-2 outline-none text-[var(--apple-text)] cursor-pointer"
+              onChange={(e) => setActionFilter(e.target.value)}
+              sx={{ minWidth: 180 }}
             >
-              <option value="todos">Todas las acciones</option>
-              <option value="crear">Creaciones</option>
-              <option value="modificar">Modificaciones</option>
-              <option value="eliminar">Eliminaciones</option>
-              <option value="imprimir">Impresiones</option>
-            </select>
-            <button
-              onClick={() => { setVista('casos'); setCasoId(null); }}
-              className="flex items-center gap-1.5 text-[12px] font-semibold text-[var(--co-gray-1)] hover:text-[var(--apple-text)] px-3 py-2 rounded-[8px] border border-[var(--co-separator)] hover:bg-[var(--co-surface-2)] transition-all"
-            >
-              <Filter size={12} />
-              Cambiar caso
-            </button>
-            {allLogs.length > 0 && (
-              <button
-                onClick={handleClearLogs}
-                className="text-[12px] font-semibold text-[var(--co-red)] hover:bg-[var(--co-red)]/8 px-3 py-2 rounded-[8px] border border-transparent hover:border-[var(--co-red)]/20 transition-all shrink-0"
-              >
-                Vaciar log
-              </button>
-            )}
-          </Card>
+              <MenuItem value="todos">Todas las acciones</MenuItem>
+              <MenuItem value="crear">Creaciones</MenuItem>
+              <MenuItem value="modificar">Modificaciones</MenuItem>
+              <MenuItem value="eliminar">Eliminaciones</MenuItem>
+              <MenuItem value="imprimir">Impresiones</MenuItem>
+            </TextField>
+          </Stack>
 
-          {/* Log list */}
-          <Card className="p-0 overflow-hidden flex flex-col" hoverable={false}>
-            <div className="px-4 py-2.5 border-b border-[var(--co-separator)] bg-[var(--co-surface-2)] flex items-center justify-between shrink-0">
-              <span className="text-[11px] font-bold text-[var(--co-gray-1)] uppercase tracking-wider flex items-center gap-1.5">
-                <Activity size={11} /> Trazabilidad del Proceso
-              </span>
-              <span className="text-[10px] font-semibold text-[var(--co-gray-2)]">{logsFiltrados.length} entradas</span>
-            </div>
-
-            <div className="overflow-y-auto max-h-[50vh]">
-              {loading ? (
-                <div className="py-16 text-center text-[var(--co-gray-1)] text-sm animate-pulse">
-                  Cargando registros criptográficos...
-                </div>
-              ) : logsFiltrados.length === 0 ? (
-                <div className="py-16 text-center">
-                  <Clock size={36} className="text-[var(--co-gray-3)] mx-auto mb-3 opacity-40" />
-                  <p className="text-[14px] font-semibold text-[var(--co-gray-1)]">Sin eventos para este caso</p>
-                  <p className="text-[12px] text-[var(--co-gray-2)] mt-1">Este expediente aún no tiene eventos registrados en la cadena de auditoría.</p>
-                </div>
-              ) : (
-                logsFiltrados.map((log, idx) => {
-                  const meta    = getActionMeta(log.accion);
-                  const isLast  = idx === logsFiltrados.length - 1;
-                  return (
-                    <div
-                      key={log.id || idx}
-                      className={`flex items-start gap-3 px-4 py-3 hover:bg-[var(--co-surface-2)]/40 transition-colors group ${!isLast ? 'border-b border-[var(--co-separator)]' : ''}`}
-                    >
-                      {/* Timeline dot + line */}
-                      <div className="flex flex-col items-center shrink-0 mt-1" style={{ width: '16px' }}>
-                        <div className="w-2 h-2 rounded-full shrink-0" style={{ background: meta.color }} />
-                        {!isLast && <div className="w-px flex-1 mt-1" style={{ background: 'var(--co-separator)', minHeight: '20px' }} />}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <span
-                            className="text-[9.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-[4px] border leading-none"
-                            style={{ color: meta.color, background: meta.bg, borderColor: meta.border }}
-                          >
-                            {meta.label}
-                          </span>
-                          {log.hashActual && (
-                            <span className="text-[9px] font-bold text-[var(--co-green)] bg-[var(--co-green)]/8 border border-[var(--co-green)]/20 rounded-full px-2 py-0.5 flex items-center gap-1">
-                              <Check size={9} strokeWidth={3} /> SHA-256
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[13px] font-medium text-[var(--apple-text)] leading-snug" title={log.detalle}>
-                          {log.detalle}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-3 mt-1.5">
-                          <span className="text-[11px] text-[var(--co-gray-1)] flex items-center gap-1">
-                            <User size={10} /> {log.usuario}
-                          </span>
-                          {(log.hashActual || log.hashAnterior) && (
-                            <span className="text-[10px] font-mono text-[var(--co-gray-2)] flex items-center gap-1">
-                              <Hash size={9} />
-                              {log.hashAnterior ? `${log.hashAnterior.slice(0, 6)}…` : '000000…'}
-                              <ChevronRight size={9} className="opacity-40" />
-                              <span style={{ color: 'var(--co-accent)' }}>{log.hashActual ? `${log.hashActual.slice(0, 6)}…` : '—'}</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Timestamp */}
-                      <div className="shrink-0 text-right">
-                        <p className="text-[10.5px] font-semibold text-[var(--co-gray-1)] tabular-nums whitespace-nowrap">
-                          {new Date(log.timestamp).toLocaleDateString('es-VE', { day: '2-digit', month: '2-digit', year: '2-digit' })}
-                          {' '}
-                          {new Date(log.timestamp).toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                        </p>
-                        <p className="text-[9.5px] text-[var(--co-gray-2)] mt-0.5">{getRelativeTime(log.timestamp)}</p>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </Card>
-        </div>
+          <Box sx={{ height: 450, width: '100%' }}>
+            <DataGrid
+              rows={logsFiltrados.map((l, index) => ({ ...l, id: l.id || index }))}
+              columns={columns}
+              pageSizeOptions={[10, 25, 50]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10 } },
+              }}
+              sx={{
+                border: 'none',
+                color: '#FFFFFF',
+                '& .MuiDataGrid-cell': {
+                  borderColor: 'rgba(254, 207, 6, 0.15)',
+                },
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                  borderColor: 'rgba(254, 207, 6, 0.2)',
+                },
+                '& .MuiDataGrid-footerContainer': {
+                  borderColor: 'rgba(254, 207, 6, 0.15)',
+                },
+                '& .MuiTablePagination-root': {
+                  color: '#AEAEB2',
+                },
+              }}
+            />
+          </Box>
+        </Card>
       )}
-    </div>
+    </Box>
   );
 }

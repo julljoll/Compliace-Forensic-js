@@ -27,7 +27,15 @@
   "author": "Laboratorio de Informática Forense",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@libsql/client": "^0.17.4",
+    "@mui/icons-material": "^9.2.0",
+    "@mui/material": "^9.2.0",
+    "@mui/material-nextjs": "^9.1.1",
+    "@mui/x-data-grid": "^9.10.0",
+    "@mui/x-date-pickers": "^9.10.0",
+    "@mui/x-tree-view": "^9.10.0",
     "@neondatabase/serverless": "^1.1.0",
     "axios": "^1.15.2",
     "date-fns": "^4.1.0",
@@ -42,9 +50,6 @@
     "@types/node": "26.1.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.12",
-    "tailwindcss": "^3.4.17",
     "typescript": "^6.0.3"
   }
 }

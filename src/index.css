@@ -1,126 +1,120 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
-@layer base {
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+h1 {
+  color: #00FF41 !important; /* Verde Matriz */
+  font-family: 'Ubuntu', monospace !important;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-size: clamp(22px, 4.5vw, 32px) !important;
+  line-height: 1.25;
+}
+h2 {
+  color: #FECF06 !important; /* Amarillo Oro */
+  font-family: 'Ubuntu', monospace !important;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: clamp(18px, 3.5vw, 26px) !important;
+  line-height: 1.3;
+}
+h3, h4 {
+  color: #FECF06 !important; /* Amarillo Oro */
+  font-family: 'Ubuntu', monospace !important;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: clamp(15px, 2.5vw, 20px) !important;
+  line-height: 1.4;
+  background-color: rgba(254, 207, 6, 0.18) !important;
+  border-left: 3px solid #FECF06 !important;
+  padding-left: 8px !important;
+}
+h5, h6 {
+  color: #FFFFFF !important; /* Blanco */
+  font-weight: 500;
+  font-size: clamp(13px, 2vw, 16px) !important;
+  line-height: 1.45;
+}
 
-  h1 {
-    color: #00FF41 !important; /* Verde Matriz */
-    font-family: 'Ubuntu', monospace !important;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    font-size: clamp(22px, 4.5vw, 32px) !important;
-    line-height: 1.25;
-  }
-  h2 {
-    color: #FECF06 !important; /* Amarillo Oro */
-    font-family: 'Ubuntu', monospace !important;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    font-size: clamp(18px, 3.5vw, 26px) !important;
-    line-height: 1.3;
-  }
-  h3, h4 {
-    color: #FECF06 !important; /* Amarillo Oro */
-    font-family: 'Ubuntu', monospace !important;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    font-size: clamp(15px, 2.5vw, 20px) !important;
-    line-height: 1.4;
-    background-color: rgba(254, 207, 6, 0.18) !important;
-    border-left: 3px solid #FECF06 !important;
-    padding-left: 8px !important;
-  }
-  h5, h6 {
-    color: #FFFFFF !important; /* Blanco */
-    font-weight: 500;
-    font-size: clamp(13px, 2vw, 16px) !important;
-    line-height: 1.45;
-  }
+:root {
+  /* Compliance Officer (CO) Design Tokens - Cyber-Legal Blueprint Dark Theme */
+  --co-bg: #524000; /* deep dark tone */
+  --login-bg: linear-gradient(135deg, #524000 0%, #211a00 100%);
+  --co-surface-1: rgba(0, 0, 0, 0.35); /* semi-transparent technical environment */
+  --co-surface-2: rgba(254, 207, 6, 0.05);
+  --co-surface-3: rgba(254, 207, 6, 0.1);
+  --co-accent: #FECF06; /* Technical yellow */
+  --co-accent-fg: #000000;
+  --co-red: #FF3B30;
+  --co-orange: #FF9500;
+  --co-yellow: #FECF06;
+  --co-green: #00FF41; /* Terminal green */
+  --co-blue: #FECF06; /* Avoid blue, map to yellow */
+  --co-purple: #9DFF00; /* Lime */
+  --co-indigo: #00FF41;
+  --co-gray-1: #AEAEB2;
+  --co-gray-2: #E5E5EA;
+  --co-gray-3: #48484A;
+  --co-gray-4: rgba(255, 255, 255, 0.06);
+  --co-gray-5: #3a3a3c;
+  --co-gray-6: #1c1c1e;
+  --co-separator: rgba(254, 207, 6, 0.2); /* technical Yellow thin border */
+  --co-vibrancy: rgba(82, 64, 0, 0.85);
 
-  :root {
-    /* Compliance Officer (CO) Design Tokens - Cyber-Legal Blueprint Dark Theme */
-    --co-bg: #524000; /* deep dark tone */
-    --login-bg: linear-gradient(135deg, #524000 0%, #211a00 100%);
-    --co-surface-1: rgba(0, 0, 0, 0.35); /* semi-transparent technical environment */
-    --co-surface-2: rgba(254, 207, 6, 0.05);
-    --co-surface-3: rgba(254, 207, 6, 0.1);
-    --co-accent: #FECF06; /* Technical yellow */
-    --co-accent-fg: #000000;
-    --co-red: #FF3B30;
-    --co-orange: #FF9500;
-    --co-yellow: #FECF06;
-    --co-green: #00FF41; /* Terminal green */
-    --co-blue: #FECF06; /* Avoid blue, map to yellow */
-    --co-purple: #9DFF00; /* Lime */
-    --co-indigo: #00FF41;
-    --co-gray-1: #AEAEB2;
-    --co-gray-2: #E5E5EA;
-    --co-gray-3: #48484A;
-    --co-gray-4: rgba(255, 255, 255, 0.06);
-    --co-gray-5: #3a3a3c;
-    --co-gray-6: #1c1c1e;
-    --co-separator: rgba(254, 207, 6, 0.2); /* technical Yellow thin border */
-    --co-vibrancy: rgba(82, 64, 0, 0.85);
+  /* Shadows - Minimalist technical elevation */
+  --co-shadow-0: none;
+  --co-shadow-1: 0 1px 2px rgba(0,0,0,0.2);
+  --co-shadow-2: 0 2px 6px rgba(0,0,0,0.3);
+  --co-shadow-3: 0 4px 12px rgba(0,0,0,0.4);
+  --co-shadow-modal: 0 12px 32px rgba(0,0,0,0.8);
 
-    /* Shadows - Minimalist technical elevation */
-    --co-shadow-0: none;
-    --co-shadow-1: 0 1px 2px rgba(0,0,0,0.2);
-    --co-shadow-2: 0 2px 6px rgba(0,0,0,0.3);
-    --co-shadow-3: 0 4px 12px rgba(0,0,0,0.4);
-    --co-shadow-modal: 0 12px 32px rgba(0,0,0,0.8);
+  /* Sync legacy variables for dark mode */
+  --apple-bg: var(--co-bg);
+  --apple-bg-secondary: var(--co-surface-1);
+  --apple-surface: var(--co-surface-1);
+  --apple-surface-hover: rgba(254, 207, 6, 0.06);
+  --apple-surface-active: rgba(254, 207, 6, 0.12);
+  --apple-border: var(--co-separator);
+  --apple-border-strong: rgba(254, 207, 6, 0.35);
+  --apple-accent: var(--co-accent);
+  --apple-accent-light: #00FF41;
+  --apple-text: #FFFFFF;
+  --apple-text-muted: var(--co-gray-1);
+  --apple-text-secondary: var(--co-gray-2);
+  --apple-separator: var(--co-separator);
+  --apple-sidebar-bg: var(--co-vibrancy);
+  --apple-btn-sec-bg: rgba(254, 207, 6, 0.08);
+  --apple-shadow: var(--co-shadow-1);
+  --apple-shadow-hover: var(--co-shadow-2);
 
-    /* Sync legacy variables for dark mode */
-    --apple-bg: var(--co-bg);
-    --apple-bg-secondary: var(--co-surface-1);
-    --apple-surface: var(--co-surface-1);
-    --apple-surface-hover: rgba(254, 207, 6, 0.06);
-    --apple-surface-active: rgba(254, 207, 6, 0.12);
-    --apple-border: var(--co-separator);
-    --apple-border-strong: rgba(254, 207, 6, 0.35);
-    --apple-accent: var(--co-accent);
-    --apple-accent-light: #00FF41;
-    --apple-text: #FFFFFF;
-    --apple-text-muted: var(--co-gray-1);
-    --apple-text-secondary: var(--co-gray-2);
-    --apple-separator: var(--co-separator);
-    --apple-sidebar-bg: var(--co-vibrancy);
-    --apple-btn-sec-bg: rgba(254, 207, 6, 0.08);
-    --apple-shadow: var(--co-shadow-1);
-    --apple-shadow-hover: var(--co-shadow-2);
+  font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: var(--apple-text);
+  background-color: var(--apple-bg);
+}
 
-    font-family: 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-    color-scheme: dark;
-    color: var(--apple-text);
-    background-color: var(--apple-bg);
-  }
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--apple-bg);
+  color: var(--apple-text);
+}
 
-  body {
-    margin: 0;
-    min-width: 320px;
-    min-height: 100vh;
-    background-color: var(--apple-bg);
-    color: var(--apple-text);
-  }
+#root {
+  width: 100%;
+  height: 100dvh;
+}
 
-  #root {
-    width: 100%;
-    height: 100dvh;
-  }
+* { box-sizing: border-box; }
 
-  * { box-sizing: border-box; }
-
-  ::selection {
-    background-color: rgba(254, 207, 6, 0.3);
-    color: #FFFFFF;
-  }
+::selection {
+  background-color: rgba(254, 207, 6, 0.3);
+  color: #FFFFFF;
 }
 
 /* ── macOS Scrollbar ── */
@@ -132,43 +126,50 @@
 }
 ::-webkit-scrollbar-thumb:hover { background-color: rgba(254, 207, 6, 0.4); }
 
-@layer components {
-  /* ── Cyber-Legal Sidebar ── */
-  .apple-sidebar {
-    background-color: #121412 !important;
-    border-right: 1px solid rgba(254, 207, 6, 0.2) !important;
-  }
+.apple-sidebar {
+  background-color: #121412 !important;
+  border-right: 1px solid rgba(254, 207, 6, 0.2) !important;
+}
 
-  .apple-acrylic {
-    background-color: #121412 !important;
-    border: 1px solid rgba(254, 207, 6, 0.2) !important;
-  }
+.apple-acrylic {
+  background-color: #121412 !important;
+  border: 1px solid rgba(254, 207, 6, 0.2) !important;
+}
 
-  .apple-card {
-    background-color: #121412 !important;
-    border: 1px solid rgba(254, 207, 6, 0.2) !important;
-    border-radius: 8px !important;
-    transition: border-color 0.2s ease, background-color 0.2s ease !important;
-  }
-  .apple-card:hover {
-    border-color: rgba(254, 207, 6, 0.45) !important;
-  }
+.apple-card {
+  background-color: #121412 !important;
+  border: 1px solid rgba(254, 207, 6, 0.2) !important;
+  border-radius: 8px !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease !important;
+}
+.apple-card:hover {
+  border-color: rgba(254, 207, 6, 0.45) !important;
+}
 
-  .check-item-conforme {
-    background-color: rgba(52, 199, 89, 0.03) !important;
-    border-color: rgba(52, 199, 89, 0.2) !important;
-  }
+.check-item-conforme {
+  background-color: rgba(52, 199, 89, 0.03) !important;
+  border-color: rgba(52, 199, 89, 0.2) !important;
+}
 
-  .check-item-pendiente {
-    background-color: rgba(255, 149, 0, 0.04) !important;
-    border-color: rgba(255, 149, 0, 0.3) !important;
-  }
+.check-item-pendiente {
+  background-color: rgba(255, 149, 0, 0.04) !important;
+  border-color: rgba(255, 149, 0, 0.3) !important;
+}
 
-  /* ── Apple-style Buttons ── */
-  .apple-btn {
-    @apply px-4 py-2 rounded-[8px] font-semibold text-[13px] transition-all duration-200 outline-none inline-flex items-center justify-center gap-2 select-none;
-    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
+.apple-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+}
+
   .apple-btn:active {
     transform: scale(0.97);
   }
@@ -454,10 +455,6 @@
     text-transform: uppercase;
     line-height: 1.4;
   }
-
-
-}
-
 
 /* ── Keyframes ── */
 @keyframes appleFadeUp {

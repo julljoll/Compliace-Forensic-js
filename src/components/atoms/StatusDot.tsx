@@ -1,4 +1,5 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 
 export interface StatusDotProps {
   status: 'online' | 'offline' | 'reconectando' | null;
@@ -11,25 +12,47 @@ export const StatusDot: React.FC<StatusDotProps> = ({
   className = '',
   size = 8
 }) => {
-  const statusColors = {
-    online: 'bg-[var(--co-green)]',
-    offline: 'bg-[var(--co-red)]',
-    reconectando: 'bg-[var(--co-yellow)]',
-    null: 'bg-[var(--co-gray-1)]'
+  const colors: Record<string, string> = {
+    online: '#00FF41',
+    offline: '#FF3B30',
+    reconectando: '#FECF06',
+    null: '#AEAEB2',
   };
 
   const statusKey = status === null ? 'null' : status;
+  const color = colors[statusKey];
 
   return (
-    <div className={`relative inline-flex ${className}`}>
+    <Box className={className} sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
       {(status === 'online' || status === 'reconectando') && (
-        <span className={`absolute inline-flex h-full w-full rounded-full animate-ping opacity-75 ${statusColors[status]}`} />
+        <Box
+          sx={{
+            position: 'absolute',
+            width: size,
+            height: size,
+            borderRadius: '50%',
+            backgroundColor: color,
+            opacity: 0.75,
+            animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite',
+            '@keyframes ping': {
+              '75%, 100%': {
+                transform: 'scale(2)',
+                opacity: 0,
+              },
+            },
+          }}
+        />
       )}
-      <span 
-        className={`relative inline-flex rounded-full ${statusColors[statusKey]}`}
-        style={{ width: `${size}px`, height: `${size}px` }}
+      <Box
+        sx={{
+          position: 'relative',
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          backgroundColor: color,
+        }}
       />
-    </div>
+    </Box>
   );
 };
 

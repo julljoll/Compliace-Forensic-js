@@ -1,4 +1,7 @@
 import React, { InputHTMLAttributes } from 'react';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { AlertCircle } from './AppleIcon';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -13,44 +16,82 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   helpText,
   className = '',
   id,
+  type,
+  placeholder,
+  value,
+  onChange,
+  disabled,
   ...props
 }, ref) => {
   const inputId = id || `input-${Math.random().toString(36).slice(2, 6)}`;
-  
+
   return (
-    <div className="w-full flex flex-col items-start">
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
       {label && (
-        <label
+        <Typography
+          component="label"
           htmlFor={inputId}
-          className="block text-[11px] font-semibold uppercase tracking-[0.05em] text-[var(--co-gray-1)] mb-1.5 select-none"
+          sx={{
+            fontSize: '11px',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: '#AEAEB2',
+            mb: '6px',
+            userSelect: 'none',
+          }}
         >
           {label}
-        </label>
+        </Typography>
       )}
-      <input
-        ref={ref}
+      <TextField
+        inputRef={ref}
         id={inputId}
-        className={`
-          w-full text-[15px] bg-[var(--co-surface-2)] text-[var(--apple-text)]
-          border rounded-[10px] px-3.5 py-2.5 outline-none transition-all duration-200
-          placeholder-[var(--co-gray-2)] shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]
-          ${error 
-            ? 'border-[var(--co-red)] focus:border-[var(--co-red)] focus:ring-[3px] focus:ring-[var(--co-red)]/15' 
-            : 'border-[var(--co-gray-5)] focus:border-[var(--co-accent)] focus:ring-[3px] focus:ring-[var(--co-accent)]/20'
-          }
-          ${className}
-        `}
-        {...props}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange as any}
+        disabled={disabled}
+        error={Boolean(error)}
+        variant="outlined"
+        fullWidth
+        className={className}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            borderRadius: '10px',
+            fontSize: '15px',
+            color: '#FFFFFF',
+            '& fieldset': {
+              borderColor: error ? '#FF3B30' : 'rgba(254, 207, 6, 0.2)',
+            },
+            '&:hover fieldset': {
+              borderColor: error ? '#FF3B30' : 'rgba(254, 207, 6, 0.45)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: error ? '#FF3B30' : '#FECF06',
+            },
+          },
+          '& .MuiInputBase-input': {
+            py: '10px',
+            px: '14px',
+          },
+        }}
+        {...(props as Record<string, unknown>)}
       />
       {error ? (
-        <p className="text-[13px] text-[var(--co-red)] mt-1.5 flex items-center gap-1.5 font-medium apple-fade-in">
-          <AlertCircle size={12} className="shrink-0 text-[var(--co-red)]" />
-          <span>{error}</span>
-        </p>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', mt: '6px' }}>
+          <AlertCircle size={12} className="text-[#FF3B30] shrink-0" />
+          <Typography sx={{ fontSize: '13px', color: '#FF3B30', fontWeight: 500 }}>
+            {error}
+          </Typography>
+        </Box>
       ) : helpText ? (
-        <p className="text-[12px] text-[var(--co-gray-1)] mt-1.5">{helpText}</p>
+        <Typography sx={{ fontSize: '12px', color: '#AEAEB2', mt: '6px' }}>
+          {helpText}
+        </Typography>
       ) : null}
-    </div>
+    </Box>
   );
 });
 
