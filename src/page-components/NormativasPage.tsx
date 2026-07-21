@@ -12,15 +12,26 @@ import TextField from '@mui/material/TextField';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import GavelIcon from '@mui/icons-material/Gavel';
+import DescriptionIcon from '@mui/icons-material/Description';
+import SecurityIcon from '@mui/icons-material/Security';
+import ScaleIcon from '@mui/icons-material/Scale';
+import SearchIcon from '@mui/icons-material/Search';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InfoIcon from '@mui/icons-material/Info';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useCMSStore } from '../store/cmsStore';
-import {
-  BookOpen, Scale, Gavel, FileText, Shield, Search,
-  Calendar, Info, FolderOpen, ChevronRight
-} from '../components/atoms/AppleIcon';
 
-const TIPO_ICONS: Record<string, typeof BookOpen> = {
-  ISO: Shield, NIST: Shield, LEY: Gavel, MANUAL: FileText, REGLAMENTO: Scale,
+const TIPO_ICONS: Record<string, any> = {
+  ISO: SecurityIcon,
+  NIST: SecurityIcon,
+  LEY: GavelIcon,
+  MANUAL: DescriptionIcon,
+  REGLAMENTO: ScaleIcon,
 };
 
 const TIPO_COLORS: Record<string, { color: string; bg: string }> = {
@@ -61,7 +72,7 @@ export default function NormativasPage() {
       {/* Header */}
       <Box sx={{ pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
         <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
-          <BookOpen size={24} className="text-[#FECF06]" />
+          <MenuBookIcon sx={{ fontSize: 28, color: '#FECF06' }} />
           Marco Normativo RAG & Estándares Forenses
         </Typography>
         <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
@@ -72,7 +83,7 @@ export default function NormativasPage() {
       <Grid container spacing={3}>
         {/* Master List */}
         <Grid size={{ xs: 12, md: 4 }}>
-          <Card sx={{ p: 2 }}>
+          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
             <TextField
               size="small"
               placeholder="Buscar por código o norma..."
@@ -84,7 +95,7 @@ export default function NormativasPage() {
 
             <Stack spacing={1} sx={{ maxHeight: '60vh', overflowY: 'auto' }}>
               {filteredNormativas.map((norm) => {
-                const Icon = TIPO_ICONS[norm.tipo] || BookOpen;
+                const IconComponent = TIPO_ICONS[norm.tipo] || MenuBookIcon;
                 const style = TIPO_COLORS[norm.tipo] || TIPO_COLORS.ISO;
                 const isSelected = norm.id === selectedNormativaId;
 
@@ -98,27 +109,23 @@ export default function NormativasPage() {
                       cursor: 'pointer',
                       backgroundColor: isSelected ? 'rgba(254, 207, 6, 0.15)' : 'rgba(0, 0, 0, 0.2)',
                       border: `1px solid ${isSelected ? '#FECF06' : 'rgba(254, 207, 6, 0.1)'}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1.5,
-                      transition: 'all 0.2s ease',
-                      '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.1)' },
+                      '&:hover': {
+                        borderColor: '#FECF06',
+                      },
                     }}
                   >
-                    <Box sx={{ p: 1, borderRadius: '6px', backgroundColor: style.bg, color: style.color }}>
-                      <Icon size={18} />
-                    </Box>
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, color: '#FECF06' }}>
+                    <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                      <IconComponent sx={{ color: style.color, fontSize: 20 }} />
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <Typography sx={{ fontSize: '13px', fontWeight: 700, color: isSelected ? '#FECF06' : '#FFFFFF' }}>
                           {norm.codigo}
                         </Typography>
-                        <Chip label={norm.tipo} size="small" sx={{ height: 18, fontSize: '9px', backgroundColor: style.bg, color: style.color }} />
+                        <Typography noWrap sx={{ fontSize: '11px', color: '#AEAEB2' }}>
+                          {norm.nombre}
+                        </Typography>
                       </Box>
-                      <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {norm.nombre}
-                      </Typography>
-                    </Box>
+                      <Chip label={norm.tipo} size="small" sx={{ height: 18, fontSize: '9px', backgroundColor: style.bg, color: style.color, fontWeight: 700 }} />
+                    </Stack>
                   </Box>
                 );
               })}
@@ -126,61 +133,85 @@ export default function NormativasPage() {
           </Card>
         </Grid>
 
-        {/* Detail Panel */}
+        {/* Details View */}
         <Grid size={{ xs: 12, md: 8 }}>
           {selectedNormativa ? (
-            <Card sx={{ p: 3.5, borderLeft: '4px solid #FECF06' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pb: 2, mb: 3, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
+            <Card sx={{ p: 3, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+              <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                 <Box>
-                  <Chip label={selectedNormativa.codigo} size="small" sx={{ backgroundColor: 'rgba(254, 207, 6, 0.15)', color: '#FECF06', fontWeight: 800, fontFamily: 'monospace', mb: 1 }} />
-                  <Typography component="h2" sx={{ fontSize: '22px', fontWeight: 700, color: '#FFFFFF' }}>
-                    {selectedNormativa.nombre}
+                  <Typography variant="h5" sx={{ color: '#FECF06', fontWeight: 800 }}>
+                    {selectedNormativa.codigo} — {selectedNormativa.nombre}
+                  </Typography>
+                  <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
+                    Versión: {selectedNormativa.version} | Vigencia: {selectedNormativa.fechaVigencia}
                   </Typography>
                 </Box>
-                <Chip label={selectedNormativa.activa ? 'VIGENTE' : 'INACTIVA'} color={selectedNormativa.activa ? 'success' : 'default'} />
-              </Box>
+                <Chip
+                  label={selectedNormativa.tipo}
+                  sx={{
+                    backgroundColor: TIPO_COLORS[selectedNormativa.tipo]?.bg || 'rgba(254, 207, 6, 0.1)',
+                    color: TIPO_COLORS[selectedNormativa.tipo]?.color || '#FECF06',
+                    fontWeight: 800,
+                  }}
+                />
+              </Stack>
 
-              <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', mb: 1 }}>
-                Descripción & Alcance Normativo
-              </Typography>
-              <Typography sx={{ fontSize: '14px', color: '#FFFFFF', backgroundColor: 'rgba(0, 0, 0, 0.3)', p: 2, borderRadius: '8px', mb: 3 }}>
+              <Typography sx={{ fontSize: '14px', color: '#E5E5EA', lineHeight: 1.6, mb: 3 }}>
                 {selectedNormativa.descripcion}
               </Typography>
 
+              {/* Artículos de Fundamentación */}
               {selectedNormativa.articulos && selectedNormativa.articulos.length > 0 && (
                 <Box sx={{ mb: 3 }}>
-                  <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', mb: 1 }}>
-                    Articulado Legal / Cláusulas Relacionadas
+                  <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 700, mb: 1, textTransform: 'uppercase' }}>
+                    Artículos y Cláusulas Normativas
                   </Typography>
-                  <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
-                    {selectedNormativa.articulos.map((art) => (
-                      <Chip key={art} label={art} variant="outlined" sx={{ borderColor: 'rgba(254, 207, 6, 0.3)', color: '#AEAEB2' }} />
+                  <Stack spacing={1}>
+                    {selectedNormativa.articulos.map((art, idx) => (
+                      <Accordion key={idx} sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3)', color: '#FFFFFF', border: '1px solid rgba(254, 207, 6, 0.15)' }}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#FECF06' }} />}>
+                          <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FECF06' }}>
+                            {art.split(':')[0] || `Artículo ${idx + 1}`}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography sx={{ fontSize: '12px', color: '#E5E5EA', lineHeight: 1.5 }}>
+                            {art}
+                          </Typography>
+                        </AccordionDetails>
+                      </Accordion>
                     ))}
                   </Stack>
                 </Box>
               )}
 
-              {casosUsandoSelected.length > 0 && (
-                <Box>
-                  <Typography component="h3" sx={{ fontSize: '14px', fontWeight: 700, color: '#00FF41', textTransform: 'uppercase', mb: 1 }}>
-                    Casos Vinculados ({casosUsandoSelected.length})
-                  </Typography>
+              {/* Casos Vinculados */}
+              <Box>
+                <Typography variant="subtitle2" sx={{ color: '#9DFF00', fontWeight: 700, mb: 1, textTransform: 'uppercase' }}>
+                  Casos de Compliance Vinculados ({casosUsandoSelected.length})
+                </Typography>
+                {casosUsandoSelected.length > 0 ? (
                   <Stack spacing={1}>
-                    {casosUsandoSelected.map((c) => (
+                    {casosUsandoSelected.map(c => (
                       <Link key={c.id} href={`/casos/${c.id}`} style={{ textDecoration: 'none' }}>
-                        <Box sx={{ p: 1.5, borderRadius: '6px', backgroundColor: 'rgba(0, 255, 65, 0.05)', border: '1px solid rgba(0, 255, 65, 0.2)', display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <FolderOpen size={14} className="text-[#00FF41]" />
-                          <Typography sx={{ fontSize: '12px', color: '#FFFFFF', fontWeight: 700 }}>{c.numeroCaso} — {c.titulo}</Typography>
+                        <Box sx={{ p: 1.5, backgroundColor: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(157, 255, 0, 0.2)', borderRadius: '6px', '&:hover': { borderColor: '#9DFF00' } }}>
+                          <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>
+                            Caso #{c.numeroCaso} — {c.titulo}
+                          </Typography>
                         </Box>
                       </Link>
                     ))}
                   </Stack>
-                </Box>
-              )}
+                ) : (
+                  <Typography sx={{ fontSize: '12px', color: '#AEAEB2', italic: 'true' }}>
+                    No hay expedientes vinculados a esta norma actualmente.
+                  </Typography>
+                )}
+              </Box>
             </Card>
           ) : (
-            <Card sx={{ p: 6, textAlign: 'center' }}>
-              <Typography sx={{ color: '#AEAEB2' }}>Seleccione una normativa para ver los detalles.</Typography>
+            <Card sx={{ p: 4, textAlign: 'center', backgroundColor: '#1E1800' }}>
+              <Typography sx={{ color: '#AEAEB2' }}>Seleccione una norma de la lista para ver su fundamentación legal.</Typography>
             </Card>
           )}
         </Grid>

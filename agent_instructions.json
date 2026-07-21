@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.0.0",
-    "updated": "2026-07-20",
+    "updated": "2026-07-21",
     "sources": [
       "RAG/manual-procedimiento.yaml",
       "RAG/arquitectura_cadena_custodia.yaml",
@@ -15,18 +15,13 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-20 16:19:08",
-      "last_commit": "77d6fa0 - actualizacion de impresion (2026-07-20)",
+      "timestamp": "2026-07-21 11:41:49",
+      "last_commit": "d66a907 - ultima actualizacion 3.5 (2026-07-21)",
       "modified_files": [
-        "M .opencode/agents/compliance-officer.md",
-        "M .opencode/agents/legal-analyst.md",
-        "M .opencode/agents/perito-forense.md",
-        "M .opencode/skills/fullstack-forensic-developer/fullstack-forensic-developer.md",
-        "M .opencode/skills/ux-ui-compliance-cms.SKILL.md",
-        "M AGENTS.md",
-        "M next-env.d.ts"
+        "M src/page-components/AuditoriaPage.tsx",
+        "M src/page-components/NormativasPage.tsx"
       ],
-      "source_files": 81,
+      "source_files": 99,
       "active_routes": 1
     }
   },

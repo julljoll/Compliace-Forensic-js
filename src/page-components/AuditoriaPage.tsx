@@ -13,17 +13,23 @@ import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Button from '@mui/material/Button';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import PrintIcon from '@mui/icons-material/Print';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import WarningIcon from '@mui/icons-material/Warning';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
+import NumbersIcon from '@mui/icons-material/Numbers';
+import PersonIcon from '@mui/icons-material/Person';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { useCMSStore } from '../store/cmsStore';
 import { useAuditStore } from '../store/auditStore';
-import {
-  Activity, Printer, Clock,
-  ShieldCheck, AlertTriangle,
-  FolderOpen, ChevronRight, X, Hash, User, Filter, ArrowLeft
-} from '../components/atoms/AppleIcon';
-
-import Button from '../components/atoms/Button';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -147,11 +153,11 @@ export default function AuditoriaPage() {
     try {
       const res = await verifyChain();
       setIntegridad(res.valid
-        ? { valid: true,  message: 'Cadena SHA-256 íntegra. No se detectaron alteraciones.' }
-        : { valid: false, message: `¡ALERTA CRÍTICA! Cadena comprometida en ID: ${res.brokenAt || 'Desconocido'}.` }
+        ? { valid: true,  message: 'Auditoría local consistente. Historial verificado conforme a registros de sistema.' }
+        : { valid: false, message: `Inconsistencia detectada en ID: ${res.brokenAt || 'Desconocido'}.` }
       );
     } catch {
-      setIntegridad({ valid: false, message: 'No se pudo completar la verificación criptográfica.' });
+      setIntegridad({ valid: false, message: 'No se pudo completar la verificación del historial.' });
     } finally {
       setVerificando(false);
     }
@@ -207,211 +213,249 @@ export default function AuditoriaPage() {
     },
     {
       field: 'detalle',
-      headerName: 'Detalle del Evento',
+      headerName: 'Detalle de la Operación',
       flex: 1,
-      minWidth: 260,
+      minWidth: 200,
       renderCell: (params) => (
-        <Typography sx={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 500, my: 'auto' }}>
+        <Typography variant="body2" sx={{ color: '#FFFFFF', fontSize: '13px', lineHeight: 1.4 }}>
           {params.value}
         </Typography>
       ),
     },
     {
       field: 'usuario',
-      headerName: 'Perito / Usuario',
+      headerName: 'Usuario / Responsable',
       width: 160,
       renderCell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', my: 'auto' }}>
-          <User size={12} className="text-[#AEAEB2]" />
-          <Typography sx={{ fontSize: '12px', color: '#AEAEB2' }}>{params.value}</Typography>
-        </Box>
-      ),
-    },
-    {
-      field: 'hashActual',
-      headerName: 'Hash SHA-256',
-      width: 180,
-      renderCell: (params) => (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', my: 'auto' }}>
-          <Hash size={12} className="text-[#00FF41]" />
-          <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#FECF06' }}>
-            {params.value ? `${params.value.slice(0, 10)}...` : '—'}
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <PersonIcon sx={{ fontSize: 16, color: '#FECF06' }} />
+          <Typography variant="body2" sx={{ color: '#E5E5EA', fontSize: '12px' }}>
+            {params.value || 'Sistema'}
           </Typography>
-        </Box>
+        </Stack>
       ),
     },
     {
       field: 'timestamp',
       headerName: 'Fecha / Hora',
-      width: 170,
+      width: 180,
       renderCell: (params) => (
-        <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontFamily: 'monospace', my: 'auto' }}>
+        <Typography variant="body2" sx={{ color: '#AEAEB2', fontFamily: 'monospace', fontSize: '11px' }}>
           {new Date(params.value).toLocaleString('es-VE')}
         </Typography>
       ),
     },
   ];
 
+  const rows = logsFiltrados.map((log, idx) => ({
+    id: log.id || idx,
+    accion: log.accion,
+    detalle: log.detalle,
+    usuario: log.usuario,
+    timestamp: log.timestamp,
+  }));
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', pb: 4 }}>
-      {/* Header */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'flex-end' }, gap: 2, pb: 2, mb: 3, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          {vista === 'logs' && (
-            <IconButton onClick={handleBack} sx={{ color: '#AEAEB2', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
-              <ArrowLeft size={16} />
-            </IconButton>
-          )}
-          <Box>
-            <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Activity size={22} className="text-[#FECF06]" />
-              {vista === 'casos' ? 'Consola de Auditoría Forense' : `Auditoría / ${casoCurrent?.numeroCaso}`}
-            </Typography>
-            <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
-              {vista === 'casos'
-                ? 'Seleccione un expediente para auditar su trazabilidad y línea de tiempo de cumplimiento'
-                : `${casoCurrent?.titulo} — Cadena Criptográfica Inmutable SHA-256`}
-            </Typography>
-          </Box>
+    <Box sx={{ p: 3, maxWidth: 1400, mx: 'auto' }}>
+      {/* Encabezado */}
+      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Box>
+          <Typography variant="h4" sx={{ color: '#FECF06', fontWeight: 800, fontFamily: 'Ubuntu, sans-serif' }}>
+            Módulo de Auditoría Local
+          </Typography>
+
         </Box>
-
         <Stack direction="row" spacing={1.5}>
-          <Button onClick={handleVerify} variant="primary" size="sm" disabled={verificando || allLogs.length === 0}>
-            <ShieldCheck size={14} />
-            {verificando ? 'Verificando...' : 'Verificar SHA-256'}
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<VerifiedUserIcon />}
+            onClick={handleVerify}
+            disabled={verificando}
+            sx={{
+              color: '#00FF41',
+              borderColor: 'rgba(0, 255, 65, 0.4)',
+              fontWeight: 700,
+              '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.1)' },
+            }}
+          >
+            {verificando ? 'Verificando...' : 'VERIFICAR AUDITORÍA'}
           </Button>
-          {vista === 'logs' && casoId && (
-            <Button onClick={() => router.push(`/planillas/acta-auditoria-timeline?casoId=${casoId}`)} variant="secondary" size="sm">
-              <Printer size={14} />
-              Imprimir Línea de Tiempo
-            </Button>
-          )}
+
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<PrintIcon />}
+            onClick={() => router.push(casoId ? `/planillas/acta-auditoria-timeline?casoId=${casoId}` : '/planillas/acta-auditoria-timeline')}
+            sx={{
+              backgroundColor: '#FECF06',
+              color: '#000000',
+              fontWeight: 700,
+              '&:hover': { backgroundColor: '#e0b700' },
+            }}
+          >
+            IMPRIMIR ACTA DE AUDITORÍA
+          </Button>
         </Stack>
-      </Box>
+      </Stack>
 
-      {/* KPI Cards */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        {[
-          { label: 'Total Eventos',    value: kpis.totalEvents,    icon: <Hash size={14}/>,     color: '#FECF06' },
-          { label: 'Casos Auditados',  value: kpis.casosAuditados, icon: <FolderOpen size={14}/>,color: '#9DFF00' },
-          { label: 'Casos Activos',    value: kpis.casosActivos,   icon: <Activity size={14}/>, color: '#00FF41' },
-          { label: 'Último Evento',    value: kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : '—', icon: <Clock size={14}/>, color: '#FF9500' },
-        ].map((k, i) => (
-          <Grid key={i} size={{ xs: 6, md: 3 }}>
-            <Card sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Box sx={{ width: 36, height: 36, borderRadius: '8px', backgroundColor: 'rgba(254, 207, 6, 0.08)', display: 'flex', alignItems: 'center', justifyCenter: 'center', color: k.color }}>
-                {k.icon}
-              </Box>
-              <Box>
-                <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 600, textTransform: 'uppercase' }}>{k.label}</Typography>
-                <Typography sx={{ fontSize: '18px', color: '#FFFFFF', fontWeight: 700 }}>{k.value}</Typography>
-              </Box>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Alert */}
+      {/* Alerta de Integridad */}
       {integridad && (
         <Alert
           severity={integridad.valid ? 'success' : 'error'}
-          onClose={() => setIntegridad(null)}
-          sx={{ mb: 3, borderRadius: '12px', backgroundColor: integridad.valid ? 'rgba(0, 255, 65, 0.08)' : 'rgba(255, 59, 48, 0.08)', color: '#FFFFFF', border: `1px solid ${integridad.valid ? '#00FF41' : '#FF3B30'}` }}
+          sx={{ mb: 3, backgroundColor: integridad.valid ? 'rgba(0, 255, 65, 0.1)' : 'rgba(255, 59, 48, 0.1)', border: `1px solid ${integridad.valid ? '#00FF41' : '#FF3B30'}` }}
         >
           <AlertTitle sx={{ fontWeight: 700, color: integridad.valid ? '#00FF41' : '#FF3B30' }}>
-            {integridad.valid ? 'Integridad Verificada ✓' : 'Alerta de Cripto-Integridad'}
+            {integridad.valid ? 'Integridad Verificada' : 'Alerta de Auditoría'}
           </AlertTitle>
           {integridad.message}
         </Alert>
       )}
 
-      {/* Cases Grid */}
-      {vista === 'casos' && (
-        <Grid container spacing={2}>
-          {casos.map((caso) => {
-            const count = countByCaso[caso.id] || 0;
-            const meta = ESTADO_META[caso.estado] || ESTADO_META.iniciado;
-            return (
-              <Grid key={caso.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <Card
-                  onClick={() => handleSelectCaso(caso.id)}
-                  sx={{ cursor: 'pointer', p: 2.5, transition: 'all 0.2s ease', '&:hover': { transform: 'translateY(-2px)', borderColor: '#FECF06' } }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-                    <Chip label={meta.label} size="small" sx={{ backgroundColor: meta.bg, color: meta.color, fontWeight: 700, fontSize: '10px' }} />
-                    <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#AEAEB2' }}>{caso.numeroCaso}</Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', mb: 1 }}>{caso.titulo}</Typography>
-                  <Typography sx={{ fontSize: '12px', color: '#AEAEB2', mb: 2 }}>{caso.descripcion}</Typography>
-
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1.5, borderTop: '1px solid rgba(254, 207, 6, 0.15)' }}>
-                    <Typography sx={{ fontSize: '12px', color: '#00FF41', fontWeight: 600 }}>
-                      {count} eventos auditados
-                    </Typography>
-                    <ChevronRight size={16} className="text-[#FECF06]" />
-                  </Box>
-                </Card>
-              </Grid>
-            );
-          })}
+      {/* KPIs */}
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <TimelineIcon sx={{ color: '#FECF06', fontSize: 28 }} />
+              <Box>
+                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
+                  Total de Eventos
+                </Typography>
+                <Typography variant="h5" sx={{ color: '#FFFFFF', fontWeight: 800 }}>
+                  {kpis.totalEvents}
+                </Typography>
+              </Box>
+            </Stack>
+          </Card>
         </Grid>
-      )}
 
-      {/* MUI X DataGrid Logs View */}
-      {vista === 'logs' && (
-        <Card sx={{ p: 2 }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 2 }}>
-            <TextField
-              size="small"
-              placeholder="Buscar por evento, perito o detalle..."
-              value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
-              fullWidth
-            />
-            <TextField
-              select
-              size="small"
-              value={actionFilter}
-              onChange={(e) => setActionFilter(e.target.value)}
-              sx={{ minWidth: 180 }}
-            >
-              <MenuItem value="todos">Todas las acciones</MenuItem>
-              <MenuItem value="crear">Creaciones</MenuItem>
-              <MenuItem value="modificar">Modificaciones</MenuItem>
-              <MenuItem value="eliminar">Eliminaciones</MenuItem>
-              <MenuItem value="imprimir">Impresiones</MenuItem>
-            </TextField>
-          </Stack>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <FolderOpenIcon sx={{ color: '#00FF41', fontSize: 28 }} />
+              <Box>
+                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
+                  Casos Auditados
+                </Typography>
+                <Typography variant="h5" sx={{ color: '#FFFFFF', fontWeight: 800 }}>
+                  {kpis.casosAuditados}
+                </Typography>
+              </Box>
+            </Stack>
+          </Card>
+        </Grid>
 
-          <Box sx={{ height: 450, width: '100%' }}>
-            <DataGrid
-              rows={logsFiltrados.map((l, index) => ({ ...l, id: l.id || index }))}
-              columns={columns}
-              pageSizeOptions={[10, 25, 50]}
-              initialState={{
-                pagination: { paginationModel: { pageSize: 10 } },
-              }}
-              sx={{
-                border: 'none',
-                color: '#FFFFFF',
-                '& .MuiDataGrid-cell': {
-                  borderColor: 'rgba(254, 207, 6, 0.15)',
-                },
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                  borderColor: 'rgba(254, 207, 6, 0.2)',
-                },
-                '& .MuiDataGrid-footerContainer': {
-                  borderColor: 'rgba(254, 207, 6, 0.15)',
-                },
-                '& .MuiTablePagination-root': {
-                  color: '#AEAEB2',
-                },
-              }}
-            />
-          </Box>
-        </Card>
-      )}
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <AccessTimeIcon sx={{ color: '#9DFF00', fontSize: 28 }} />
+              <Box>
+                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
+                  Último Registro
+                </Typography>
+                <Typography variant="subtitle2" sx={{ color: '#FFFFFF', fontWeight: 700 }}>
+                  {kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : 'Sin eventos'}
+                </Typography>
+              </Box>
+            </Stack>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+              <VerifiedUserIcon sx={{ color: '#00FF41', fontSize: 28 }} />
+              <Box>
+                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
+                  Almacenamiento Local
+                </Typography>
+                <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 700 }}>
+                  IndexedDB 100% Offline
+                </Typography>
+              </Box>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Controles de Filtro */}
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
+        <TextField
+          size="small"
+          placeholder="Buscar en el registro de auditoría..."
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          sx={{
+            flex: 1,
+            backgroundColor: '#1E1800',
+            borderRadius: '6px',
+            '& .MuiOutlinedInput-root': {
+              color: '#FFFFFF',
+              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.3)' },
+              '&:hover fieldset': { borderColor: '#FECF06' },
+            },
+          }}
+        />
+
+        <TextField
+          select
+          size="small"
+          value={actionFilter}
+          onChange={(e) => setActionFilter(e.target.value)}
+          sx={{
+            minWidth: 160,
+            backgroundColor: '#1E1800',
+            borderRadius: '6px',
+            '& .MuiOutlinedInput-root': {
+              color: '#FFFFFF',
+              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.3)' },
+            },
+          }}
+        >
+          <MenuItem value="todos">Todas las Acciones</MenuItem>
+          <MenuItem value="crear">Creación</MenuItem>
+          <MenuItem value="modificar">Modificación</MenuItem>
+          <MenuItem value="eliminar">Eliminación</MenuItem>
+          <MenuItem value="imprimir">Impresión</MenuItem>
+        </TextField>
+      </Stack>
+
+      {/* Tabla MUI X DataGrid */}
+      <Card sx={{ backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)', borderRadius: '8px', overflow: 'hidden' }}>
+        <Box sx={{ height: 600, width: '100%' }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            loading={loading}
+            pageSizeOptions={[10, 25, 50, 100]}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 25 } },
+            }}
+            sx={{
+              border: 'none',
+              color: '#FFFFFF',
+              fontFamily: 'Ubuntu, sans-serif',
+              '& .MuiDataGrid-cell': {
+                borderBottom: '1px solid rgba(254, 207, 6, 0.1)',
+              },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                borderBottom: '2px solid rgba(254, 207, 6, 0.3)',
+                color: '#FECF06',
+                fontWeight: 700,
+              },
+              '& .MuiDataGrid-footerContainer': {
+                borderTop: '1px solid rgba(254, 207, 6, 0.2)',
+                color: '#AEAEB2',
+              },
+              '& .MuiTablePagination-root': {
+                color: '#AEAEB2',
+              },
+            }}
+          />
+        </Box>
+      </Card>
     </Box>
   );
 }
