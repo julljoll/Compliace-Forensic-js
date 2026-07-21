@@ -100,7 +100,7 @@
 .planilla-container .page {
   width: 216mm;
   max-width: 216mm;
-  min-height: 330mm;
+  min-height: 0;
   padding: 40mm 15mm 15mm 30mm; /* 1ra Página: Top 4cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
   margin: 0 auto 30px auto;
   background: #ffffff !important;
@@ -109,6 +109,7 @@
   border: 1px solid #D0D0D0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .planilla-container .page ~ .page,
@@ -779,29 +780,22 @@
   .planilla-container .page {
     width: 216mm !important;
     max-width: 216mm !important;
-    min-height: 330mm !important;
+    min-height: 0 !important;
     padding: 40mm 15mm 15mm 30mm !important; /* Primera página: Top 4cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
     margin: 0 auto !important;
     box-sizing: border-box !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #1d1d1f !important;
-    page-break-after: always !important;
-    break-after: page !important;
   }
 
   .planilla-container .page ~ .page,
   .planilla-container .page:nth-of-type(n+2) {
     padding: 15mm 15mm 15mm 30mm !important; /* Segunda página en adelante: Top 1.5cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
-  }
-
-  .planilla-container .page:last-child {
-    page-break-after: auto !important;
-    break-after: auto !important;
   }
 
   /* Header & Logo styling exact match on print */

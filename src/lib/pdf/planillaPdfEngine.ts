@@ -2,10 +2,11 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 /**
- * Genera un Blob PDF de alta fidelidad a partir de elementos DOM de planilla forense (.planilla-container .page).
+ * Genera un Blob PDF de alta fidelidad respetando las proporciones naturales y la distribución multi-hoja.
  * Tamaño exacto de hoja: Folio / Oficio (216mm x 330mm).
  * - Página 1: Margen superior 4cm (40mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
  * - Páginas 2+: Margen superior 1.5cm (15mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
+ * NO comprime ni deforma el contenido.
  */
 export async function generatePdfBlobFromElement(
   element: HTMLElement,
@@ -13,8 +14,8 @@ export async function generatePdfBlobFromElement(
 ): Promise<Blob> {
   await document.fonts.ready;
 
-  const pdfWidth = 216;
-  const pdfHeight = 330;
+  const pdfWidth = 216; // mm
+  const pdfHeight = 330; // mm
 
   const pdf = new jsPDF({
     orientation: 'portrait',
@@ -35,6 +36,8 @@ export async function generatePdfBlobFromElement(
     }
   }
 
+  let isFirstPdfPage = true;
+
   if (pageElements.length > 0) {
     for (let i = 0; i < pageElements.length; i++) {
       const pageEl = pageElements[i];
@@ -46,15 +49,30 @@ export async function generatePdfBlobFromElement(
       });
 
       const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      // Calcular alto proporcional real sin deformación ni compresión
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      if (i > 0) {
-        pdf.addPage([pdfWidth, pdfHeight], 'portrait');
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      while (heightLeft > 0) {
+        if (!isFirstPdfPage) {
+          pdf.addPage([pdfWidth, pdfHeight], 'portrait');
+        } else {
+          isFirstPdfPage = false;
+        }
+
+        // Renderizar fragmento correspondiente de la hoja de forma proporcional
+        pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+        heightLeft -= pdfHeight;
+        position -= pdfHeight;
+
+        // Romper si el residuo es insignificante (< 5mm)
+        if (heightLeft <= 5) break;
       }
-
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
     }
   } else {
-    // Fallback si no hay estructura .page explícita
+    // Fallback para contenedor global
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
@@ -71,7 +89,7 @@ export async function generatePdfBlobFromElement(
     heightLeft -= pdfHeight;
 
     while (heightLeft > 5) {
-      position = heightLeft - imgHeight;
+      position -= pdfHeight;
       pdf.addPage([pdfWidth, pdfHeight], 'portrait');
       pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
       heightLeft -= pdfHeight;
