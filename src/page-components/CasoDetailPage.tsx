@@ -751,21 +751,32 @@ export default function CasoDetailPage() {
         {activeTab === 'planillas' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 apple-fade-in">
             {[
-              { title: 'Acta de Obtención por Consignación', desc: 'Registro de entrega formal del equipo telefónico/digital.', path: '/planillas/acta-obtencion' },
-              { title: 'Acta de Entrevista', desc: 'Fijación formal de declaraciones del imputado o solicitante.', path: '/planillas/acta-entrevista' },
-              { title: 'Planilla de Registro de Cadena de Custodia (PRCC)', desc: 'Planilla oficial de trazabilidad forense A4.', path: '/planillas/prcc-derivacion' },
+              { title: '1. Acta de Obtención por Consignación', desc: 'Registro de entrega formal de evidencias (MUCC-2017).', path: '/planillas/acta-obtencion', norma: 'MUCC-2017' },
+              { title: '2. Acta de Entrevista Técnico-Pericial', desc: 'Fijación formal de declaraciones del consignante o imputado.', path: '/planillas/acta-entrevista', norma: 'ISO 27037' },
+              { title: '3. Planilla de Registro Cadena de Custodia (PRCC)', desc: 'Planilla oficial de trazabilidad e inmutabilidad de evidencia.', path: '/planillas/prcc', norma: 'ISO 27037 / COPP' },
+              { title: '4. Dictamen Pericial Informático', desc: 'Informe técnico pericial de conclusiones forenses.', path: '/planillas/dictamen', norma: 'ISO 27042 / COPP' },
+              { title: '5. Acta de Entrega de Resultados', desc: 'Acta formal de devolución y cierre del procedimiento.', path: '/planillas/entrega-resultados', norma: 'MUCC-2017' },
+              { title: '6. Acta de Auditoría y Hash Chain', desc: 'Certificación de inmutabilidad criptográfica SHA-256.', path: '/planillas/acta-auditoria-timeline', norma: 'RFC 3227 / ISO 27037' },
+              { title: '7. Informe de Trazabilidad Compliance', desc: 'Resumen ejecutivo de avance y cumplimiento forense.', path: '/planillas/timeline-compliance', norma: 'NIST SP 800-86' },
             ].map((planilla, idx) => (
-              <Card key={idx} className="flex flex-col justify-between p-5" hoverable={true}>
+              <Card key={idx} className="flex flex-col justify-between p-5 border border-[#FECF06]/20 bg-[#1E1800]/40" hoverable={true}>
                 <div>
-                  <h4 className="font-bold text-[14px] text-[var(--apple-text)] mb-1.5">{planilla.title}</h4>
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="font-bold text-[13px] text-[#FECF06] mb-1">{planilla.title}</h4>
+                    <span className="text-[9px] font-mono font-bold bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/30 px-2 py-0.5 rounded">
+                      {planilla.norma}
+                    </span>
+                  </div>
                   <p className="text-[12px] text-[var(--co-gray-1)] leading-relaxed mb-4">{planilla.desc}</p>
                 </div>
-                <Link 
-                  href={`${planilla.path}?casoId=${caso.id}`} 
-                  className="w-full flex justify-center items-center py-2 bg-[var(--co-surface-2)] text-[var(--co-accent)] font-semibold text-[13px] border border-[var(--co-separator)] rounded-lg hover:bg-[var(--co-accent)] hover:text-white transition-all text-center"
-                >
-                  Abrir Planilla Oficial
-                </Link>
+                <div className="flex gap-2">
+                  <Link 
+                    href={`${planilla.path}?casoId=${caso.id}`} 
+                    className="w-full flex justify-center items-center py-2 bg-[#FECF06] text-black font-bold text-[12px] rounded-lg hover:bg-[#e0b700] transition-all text-center"
+                  >
+                    📄 Abrir Planilla (DOM / react-pdf)
+                  </Link>
+                </div>
               </Card>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { generatePdfBlobFromElement } from '@/lib/pdf/planillaPdfEngine';
 
 let cachedCssText: string | null = null;
 
@@ -14,10 +15,18 @@ const getPlanillasCssText = async (): Promise<string> => {
 };
 
 export const downloadPlanillaZip = async (fileNamePrefix: string, title: string) => {
-  const element = document.querySelector('.planilla-container .page');
+  const element = document.querySelector('.planilla-container .page') as HTMLElement;
   if (!element) {
     alert('No se encontró el área imprimible de la planilla.');
     return;
+  }
+
+  // Generate PDF Blob
+  let pdfBlob: Blob | null = null;
+  try {
+    pdfBlob = await generatePdfBlobFromElement(element, title);
+  } catch (err) {
+    console.error('Error generando PDF para el zip:', err);
   }
 
   // Get the inner content of the page
@@ -173,6 +182,9 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   const zip = new JSZip();
   zip.file(`${fileNamePrefix}.html`, htmlTemplate);
   zip.file(`${fileNamePrefix}.doc`, wordTemplate);
+  if (pdfBlob) {
+    zip.file(`${fileNamePrefix}.pdf`, pdfBlob);
+  }
 
   // Generate and trigger download
   const content = await zip.generateAsync({ type: 'blob' });
@@ -185,3 +197,4 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
+
