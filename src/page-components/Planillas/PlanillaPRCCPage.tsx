@@ -162,7 +162,7 @@ const PlanillaPRCCPage = () => {
               '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.12)' },
             }}
           >
-            DESCARGAR ZIP (HTML+DOC+PDF)
+            DESCARGAR ZIP (HTML+PDF)
           </Button>
 
           <Box sx={{ display: 'flex', gap: 1.5 }}>

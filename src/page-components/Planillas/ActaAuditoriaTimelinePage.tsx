@@ -227,7 +227,7 @@ const ActaAuditoriaTimelinePage = () => {
                 '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.12)' },
               }}
             >
-              ZIP (HTML+DOC+PDF)
+              ZIP (HTML+PDF)
             </Button>
 
             <Button

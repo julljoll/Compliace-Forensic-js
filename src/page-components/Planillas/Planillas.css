@@ -100,7 +100,7 @@
 .planilla-container .page {
   width: 216mm;
   min-height: 330mm;
-  padding: 20mm 15mm 20mm 38mm; /* Left: 38mm (binding), Right: 15mm, Top/Bottom: 20mm */
+  padding: 40mm 15mm 15mm 30mm; /* Margen Superior: 4cm, Derecho: 1.5cm, Inferior: 1.5cm, Izquierdo: 3cm */
   margin: 0 auto;
   background: #ffffff !important;
   color: #1d1d1f !important;
@@ -592,7 +592,7 @@
 }
 
 .word-ruler .margin-left-shaded {
-  width: 38mm;
+  width: 30mm;
   height: 100%;
   background: #111111;
   border-right: 1px solid rgba(254, 207, 6, 0.25);
@@ -772,7 +772,7 @@
   .planilla-container .page {
     width: 216mm !important;
     min-height: 330mm !important;
-    padding: 20mm 15mm 20mm 38mm !important; /* Márgenes prestablecidos de la vista previa (Top: 20mm, Right: 15mm, Bottom: 20mm, Left: 38mm encuadernación) */
+    padding: 40mm 15mm 15mm 30mm !important; /* Top: 40mm (4cm), Right: 15mm (1.5cm), Bottom: 15mm (1.5cm), Left: 30mm (3cm) */
     margin: 0 auto !important;
     box-sizing: border-box !important;
     border: none !important;

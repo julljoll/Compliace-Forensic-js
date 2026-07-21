@@ -26,7 +26,7 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   try {
     pdfBlob = await generatePdfBlobFromElement(element, title);
   } catch (err) {
-    console.error('Error generando PDF para el zip:', err);
+    console.error('Error generando PDF para el paquete:', err);
   }
 
   // Get the inner content of the page
@@ -49,7 +49,6 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   <title>${title}</title>
   <style>
     ${planillasCssText}
-    /* Set page margins for print/preview */
     body {
       margin: 0;
       padding: 0;
@@ -59,10 +58,10 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
     .page {
       border: none !important;
       box-shadow: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      width: 100% !important;
-      min-height: 0 !important;
+      padding: 40mm 15mm 15mm 30mm !important;
+      margin: 0 auto !important;
+      width: 216mm !important;
+      min-height: 330mm !important;
     }
   </style>
 </head>
@@ -75,113 +74,9 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
 </body>
 </html>`;
 
-  // Word (DOC) file content
-  const wordTemplate = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-  <meta charset="utf-8">
-  <title>${title}</title>
-  <!--[if gte mso 9]>
-  <xml>
-    <w:WordDocument>
-      <w:View>Print</w:View>
-      <w:Zoom>100</w:Zoom>
-      <w:DoNotOptimizeForBrowser/>
-    </w:WordDocument>
-  </xml>
-  <![endif]-->
-  <style>
-    @page {
-      size: legal; /* Legal maps to Oficio in Microsoft Word standard configurations */
-      margin: 20mm 15mm 20mm 38mm;
-    }
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 11pt;
-      line-height: 1.5;
-    }
-    ${planillasCssText}
-    /* Word specific resets & compatibility overrides (No Flexbox/Grid support in Word) */
-    .page {
-      width: 100% !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .grid-container, .signature-section, .signature-grid {
-      display: block !important;
-      width: 100% !important;
-      clear: both !important;
-    }
-    .form-group {
-      display: block !important;
-      float: left !important;
-      width: 48% !important;
-      margin-right: 1% !important;
-      margin-bottom: 8px !important;
-    }
-    .sig-detail-card, .sig-card {
-      display: block !important;
-      float: left !important;
-      width: 48% !important;
-      margin-right: 1% !important;
-    }
-    header {
-      display: block !important;
-      width: 100% !important;
-      clear: both !important;
-      border-bottom: 2px solid #000000 !important;
-      padding-bottom: 10px !important;
-      margin-bottom: 20px !important;
-    }
-    .logo-container {
-      display: block !important;
-      float: left !important;
-      width: 60% !important;
-    }
-    .acta-header, .form-header-info {
-      display: block !important;
-      float: right !important;
-      width: 38% !important;
-      text-align: right !important;
-    }
-    .fingerprint-row {
-      display: block !important;
-      width: 100% !important;
-      clear: both !important;
-      margin-top: 4px !important;
-    }
-    .thumb-wrapper {
-      display: block !important;
-      float: left !important;
-      width: 45% !important;
-      margin-right: 5% !important;
-      text-align: center !important;
-    }
-    .check-item {
-      display: inline-block !important;
-      margin-right: 15px !important;
-      margin-bottom: 5px !important;
-    }
-    .checkbox-group {
-      display: block !important;
-      width: 100% !important;
-    }
-  </style>
-</head>
-<body>
-  <div class="planilla-container">
-    <div class="page">
-      ${cleanContent}
-    </div>
-  </div>
-</body>
-</html>`;
-
-  // Create Zip
+  // Create Zip (Contiene unicamente HTML y PDF oficial)
   const zip = new JSZip();
   zip.file(`${fileNamePrefix}.html`, htmlTemplate);
-  zip.file(`${fileNamePrefix}.doc`, wordTemplate);
   if (pdfBlob) {
     zip.file(`${fileNamePrefix}.pdf`, pdfBlob);
   }
@@ -197,4 +92,3 @@ export const downloadPlanillaZip = async (fileNamePrefix: string, title: string)
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
-
