@@ -22,16 +22,14 @@ const ActaEntregaResultadosPage = () => {
   }, []);
 
   return (
-    <div className="planilla-container">
-      <PlanillaDocumentViewer
-        title={`Acta de Entrega de Resultados y Devolución — Caso #${caso?.numeroCaso || 'N/A'}`}
-        filenamePrefix={`Acta_Entrega_Resultados_${caso?.numeroCaso || 'EXP'}`}
-        tipoEvidencia={tipoEvidencia}
-        onTipoEvidenciaChange={setTipoEvidencia}
-      >
-        <ActaEntregaResultados caso={caso} tipoEvidencia={tipoEvidencia} />
-      </PlanillaDocumentViewer>
-    </div>
+    <PlanillaDocumentViewer
+      title={`Acta de Entrega de Resultados y Devolución — Caso #${caso?.numeroCaso || 'N/A'}`}
+      filenamePrefix={`Acta_Entrega_Resultados_${caso?.numeroCaso || 'EXP'}`}
+      tipoEvidencia={tipoEvidencia}
+      onTipoEvidenciaChange={setTipoEvidencia}
+    >
+      <ActaEntregaResultados caso={caso} tipoEvidencia={tipoEvidencia} />
+    </PlanillaDocumentViewer>
   );
 };
 

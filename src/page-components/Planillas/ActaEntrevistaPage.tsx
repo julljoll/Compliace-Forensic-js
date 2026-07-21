@@ -22,16 +22,14 @@ const ActaEntrevistaPage = () => {
   }, []);
 
   return (
-    <div className="planilla-container">
-      <PlanillaDocumentViewer
-        title={`Acta de Entrevista Técnico-Pericial — Caso #${caso?.numeroCaso || 'N/A'}`}
-        filenamePrefix={`Acta_Entrevista_${caso?.numeroCaso || 'EXP'}`}
-        tipoEvidencia={tipoEvidencia}
-        onTipoEvidenciaChange={setTipoEvidencia}
-      >
-        <ActaEntrevista caso={caso} tipoEvidencia={tipoEvidencia} />
-      </PlanillaDocumentViewer>
-    </div>
+    <PlanillaDocumentViewer
+      title={`Acta de Entrevista Técnico-Pericial — Caso #${caso?.numeroCaso || 'N/A'}`}
+      filenamePrefix={`Acta_Entrevista_${caso?.numeroCaso || 'EXP'}`}
+      tipoEvidencia={tipoEvidencia}
+      onTipoEvidenciaChange={setTipoEvidencia}
+    >
+      <ActaEntrevista caso={caso} tipoEvidencia={tipoEvidencia} />
+    </PlanillaDocumentViewer>
   );
 };
 

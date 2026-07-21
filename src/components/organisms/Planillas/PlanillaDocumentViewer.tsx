@@ -82,23 +82,32 @@ export default function PlanillaDocumentViewer({
           width: '100%',
           maxWidth: '216mm',
           backgroundColor: '#1E1800',
-          border: '1px solid rgba(254, 207, 6, 0.3)',
+          border: '1px solid rgba(254, 207, 6, 0.4)',
           borderRadius: '8px',
           px: 2,
           py: 1,
           mb: 2.5,
           display: 'flex',
           alignItems: 'center',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: 1.5,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.5)',
         }}
       >
-        {/* TITULO Y MODO TEXTO VIVO */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <EditNoteIcon sx={{ color: '#00FF41', fontSize: 20 }} />
-          <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 700, fontSize: '12px', lineHeight: 1.2 }}>
+        {/* TITULO DE LA PLANILLA */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+          <EditNoteIcon sx={{ color: '#00FF41', fontSize: 22 }} />
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: '#FECF06 !important',
+              fontWeight: 700,
+              fontSize: '13px',
+              lineHeight: 1.2,
+              letterSpacing: '0.01em',
+            }}
+          >
             {title}
           </Typography>
         </Box>
@@ -107,7 +116,7 @@ export default function PlanillaDocumentViewer({
         {tipoEvidencia && onTipoEvidenciaChange && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <span style={{ fontSize: '10px', fontWeight: 700, color: '#AEAEB2', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Formato:
+              FORMATO EVIDENCIA:
             </span>
             <ToggleButtonGroup
               value={tipoEvidencia}
@@ -118,7 +127,7 @@ export default function PlanillaDocumentViewer({
               size="small"
               sx={{
                 backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                border: '1px solid rgba(254, 207, 6, 0.25)',
+                border: '1px solid rgba(254, 207, 6, 0.3)',
                 '& .MuiToggleButton-root': {
                   color: '#AEAEB2',
                   fontSize: '10px',
@@ -130,6 +139,7 @@ export default function PlanillaDocumentViewer({
                   '&.Mui-selected': {
                     backgroundColor: '#FECF06',
                     color: '#000000',
+                    fontWeight: 800,
                     '&:hover': { backgroundColor: '#e0b700' },
                   },
                 },
@@ -155,7 +165,7 @@ export default function PlanillaDocumentViewer({
             </span>
           </Tooltip>
 
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '11px', minWidth: '38px', textAlign: 'center', fontFamily: 'monospace' }}>
+          <Typography variant="body2" sx={{ color: '#FFFFFF !important', fontWeight: 700, fontSize: '11px', minWidth: '38px', textAlign: 'center', fontFamily: 'monospace' }}>
             {zoom}%
           </Typography>
 
@@ -229,8 +239,9 @@ export default function PlanillaDocumentViewer({
         </Box>
       </Box>
 
-      {/* ÁREA DE DOCUMENTO EN TEXTO VIVO CON ZOOM Y MARGENES */}
+      {/* CONTENEDOR PRINCIPAL DE LA PLANILLA (IMPRESIÓN Y PDF) */}
       <Box
+        className="planilla-container"
         sx={{
           width: '100%',
           display: 'flex',

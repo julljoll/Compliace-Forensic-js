@@ -56,7 +56,7 @@ const ActaAuditoriaTimelinePage = () => {
   const c = caso || fallbackCaso;
 
   return (
-    <div className="planilla-container">
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* SELECTOR DE CASO (NO IMPRIMIBLE) */}
       <Box className="no-print" sx={{ width: '100%', maxWidth: '216mm', mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
         <label htmlFor="caso-selector" style={{ fontSize: '12px', fontWeight: '600', color: '#FECF06' }}>
@@ -257,7 +257,7 @@ const ActaAuditoriaTimelinePage = () => {
           </footer>
         </div>
       </PlanillaDocumentViewer>
-    </div>
+    </Box>
   );
 };
 

@@ -22,16 +22,14 @@ const ActaObtencionPage = () => {
   }, []);
 
   return (
-    <div className="planilla-container">
-      <PlanillaDocumentViewer
-        title={`Acta de Obtención por Consignación — Caso #${caso?.numeroCaso || 'N/A'}`}
-        filenamePrefix={`Acta_Obtencion_${caso?.numeroCaso || 'EXP'}`}
-        tipoEvidencia={tipoEvidencia}
-        onTipoEvidenciaChange={setTipoEvidencia}
-      >
-        <ActaObtencion caso={caso} tipoEvidencia={tipoEvidencia} />
-      </PlanillaDocumentViewer>
-    </div>
+    <PlanillaDocumentViewer
+      title={`Acta de Obtención por Consignación — Caso #${caso?.numeroCaso || 'N/A'}`}
+      filenamePrefix={`Acta_Obtencion_${caso?.numeroCaso || 'EXP'}`}
+      tipoEvidencia={tipoEvidencia}
+      onTipoEvidenciaChange={setTipoEvidencia}
+    >
+      <ActaObtencion caso={caso} tipoEvidencia={tipoEvidencia} />
+    </PlanillaDocumentViewer>
   );
 };
 

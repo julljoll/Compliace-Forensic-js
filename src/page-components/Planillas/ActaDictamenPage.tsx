@@ -22,16 +22,14 @@ const ActaDictamenPage = () => {
   }, []);
 
   return (
-    <div className="planilla-container">
-      <PlanillaDocumentViewer
-        title={`Dictamen Pericial Informático Forense — Caso #${caso?.numeroCaso || 'N/A'}`}
-        filenamePrefix={`Dictamen_Pericial_${caso?.numeroCaso || 'EXP'}`}
-        tipoEvidencia={tipoEvidencia}
-        onTipoEvidenciaChange={setTipoEvidencia}
-      >
-        <ActaDictamen caso={caso} tipoEvidencia={tipoEvidencia} />
-      </PlanillaDocumentViewer>
-    </div>
+    <PlanillaDocumentViewer
+      title={`Dictamen Pericial Informático Forense — Caso #${caso?.numeroCaso || 'N/A'}`}
+      filenamePrefix={`Dictamen_Pericial_${caso?.numeroCaso || 'EXP'}`}
+      tipoEvidencia={tipoEvidencia}
+      onTipoEvidenciaChange={setTipoEvidencia}
+    >
+      <ActaDictamen caso={caso} tipoEvidencia={tipoEvidencia} />
+    </PlanillaDocumentViewer>
   );
 };
 

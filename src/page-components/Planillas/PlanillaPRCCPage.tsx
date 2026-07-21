@@ -22,16 +22,14 @@ const PlanillaPRCCPage = () => {
   }, []);
 
   return (
-    <div className="planilla-container">
-      <PlanillaDocumentViewer
-        title={`Planilla del Registro de Cadena de Custodia (PRCC) — Caso #${caso?.numeroCaso || 'N/A'}`}
-        filenamePrefix={`Planilla_PRCC_${caso?.numeroCaso || 'EXP'}`}
-        tipoEvidencia={tipoEvidencia}
-        onTipoEvidenciaChange={setTipoEvidencia}
-      >
-        <PlanillaPRCC caso={caso} tipoEvidencia={tipoEvidencia} />
-      </PlanillaDocumentViewer>
-    </div>
+    <PlanillaDocumentViewer
+      title={`Planilla del Registro de Cadena de Custodia (PRCC) — Caso #${caso?.numeroCaso || 'N/A'}`}
+      filenamePrefix={`Planilla_PRCC_${caso?.numeroCaso || 'EXP'}`}
+      tipoEvidencia={tipoEvidencia}
+      onTipoEvidenciaChange={setTipoEvidencia}
+    >
+      <PlanillaPRCC caso={caso} tipoEvidencia={tipoEvidencia} />
+    </PlanillaDocumentViewer>
   );
 };
 

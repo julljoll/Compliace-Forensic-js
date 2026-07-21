@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
  * Tamaño exacto de hoja: Folio / Oficio (216mm x 330mm).
  * - Página 1: Margen superior 4cm (40mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
  * - Páginas 2+: Margen superior 1.5cm (15mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
- * NO comprime ni deforma el contenido.
+ * NO comprime ni recorta el contenido.
  */
 export async function generatePdfBlobFromElement(
   element: HTMLElement,
@@ -36,6 +36,30 @@ export async function generatePdfBlobFromElement(
     }
   }
 
+  const prepareClonedDom = (clonedDoc: Document) => {
+    // Desactivar trasformaciones de zoom y forzar overflow visible en el clon
+    const clonedPages = clonedDoc.querySelectorAll<HTMLElement>('.page');
+    clonedPages.forEach(p => {
+      p.style.transform = 'none';
+      p.style.overflow = 'visible';
+      p.style.height = 'auto';
+      p.style.maxHeight = 'none';
+    });
+
+    const clonedContainers = clonedDoc.querySelectorAll<HTMLElement>('.planilla-container');
+    clonedContainers.forEach(c => {
+      c.style.transform = 'none';
+      c.style.overflow = 'visible';
+      c.style.height = 'auto';
+      c.style.maxHeight = 'none';
+    });
+
+    const noPrintItems = clonedDoc.querySelectorAll<HTMLElement>('.no-print');
+    noPrintItems.forEach(n => {
+      n.style.display = 'none';
+    });
+  };
+
   let isFirstPdfPage = true;
 
   if (pageElements.length > 0) {
@@ -46,10 +70,10 @@ export async function generatePdfBlobFromElement(
         useCORS: true,
         logging: false,
         backgroundColor: '#FFFFFF',
+        onclone: prepareClonedDom,
       });
 
       const imgData = canvas.toDataURL('image/jpeg', 0.98);
-      // Calcular alto proporcional real sin deformación ni compresión
       const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
       let heightLeft = imgHeight;
@@ -62,22 +86,20 @@ export async function generatePdfBlobFromElement(
           isFirstPdfPage = false;
         }
 
-        // Renderizar fragmento correspondiente de la hoja de forma proporcional
         pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
         heightLeft -= pdfHeight;
         position -= pdfHeight;
 
-        // Romper si el residuo es insignificante (< 5mm)
         if (heightLeft <= 5) break;
       }
     }
   } else {
-    // Fallback para contenedor global
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
       logging: false,
       backgroundColor: '#FFFFFF',
+      onclone: prepareClonedDom,
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.98);
