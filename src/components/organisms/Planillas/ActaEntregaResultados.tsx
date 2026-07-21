@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
-import SmartphoneIcon from '@mui/icons-material/Smartphone';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import { CasoCMS } from '../../../store/cmsStore';
+import { PlanillaFolioTemplate } from '../../templates/Planillas/PlanillaFolioTemplate';
+import { PlanillaSectionTitle } from '../../molecules/Planillas/PlanillaSectionTitle';
+import { PlanillaFieldLabel } from '../../atoms/Planillas/PlanillaFieldLabel';
+import { PlanillaEditableValue } from '../../atoms/Planillas/PlanillaEditableValue';
+import { PlanillaCheckboxGroup } from '../../atoms/Planillas/PlanillaCheckboxGroup';
+import { PlanillaThumbBox } from '../../atoms/Planillas/PlanillaThumbBox';
 
 interface ActaEntregaResultadosProps {
   caso?: CasoCMS;
@@ -52,138 +53,61 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
   };
 
   return (
-    <>
-      {/* Regla de Word (Solo pantalla) */}
-      <div className="word-ruler no-print">
-        <div className="margin-left-shaded" title="Margen Izquierdo (38mm) — Área de Encuadernación" />
-        <div className="ruler-text-zone">
-          <div className="ruler-ticks" />
-        </div>
-        <div className="margin-right-shaded" title="Margen Derecho (15mm)" />
-      </div>
-
-      <div className="page" onClick={handleCheckboxClick}>
-      <header>
-        <div className="header-top-row">
-          <div className="header-logo-brand">
-            <img src="/logo.png" alt="SHA256.US Logo" className="logo-img" />
-            <span className="logo-text">SHA256.US</span>
-          </div>
-          <div className="header-lab-info">
-            <div className="lab-title">LABORATORIO DE INFORMÁTICA FORENSE Y CIBERSEGURIDAD</div>
-            <div className="lab-address">
-              Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina Nº 8, Quíbor, Municipio Jiménez del Estado Lara.
-            </div>
-          </div>
-        </div>
-        <div className="header-title-row">
-          <h1 className="acta-title">Acta de Entrega de Resultados y Devolución</h1>
-          <div className="acta-nro">
-            N° CAUSA / EXPEDIENTE: <span className="box-inline" contentEditable suppressContentEditableWarning style={{ minWidth: '120px', textAlign: 'center', fontWeight: 'bold' }}>{c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}</span>
-          </div>
-        </div>
-      </header>
-
-      {/* DATOS DE LA DEVOLUCIÓN */}
+    <PlanillaFolioTemplate
+      title="Acta de Entrega de Resultados y Devolución"
+      nroLabel="N° EXPEDIENTE:"
+      nroValue={c.numeroCaso ? c.numeroCaso : <span className="placeholder-field">[EXPEDIENTE]</span>}
+      watermarkText="ENTREGA Y DEVOLUCIÓN"
+      onClick={handleCheckboxClick}
+    >
+      {/*  I. DATOS DE LA RECEPCIÓN DE RESULTADOS  */}
       <div className="section">
-        <div className="section-title">Datos de la Entrega Material</div>
+        <PlanillaSectionTitle>I. Datos de la Recepción de Resultados</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
-            <div className="label">Lugar de Entrega / Devolución</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Quíbor, Estado Lara — Laboratorio Forense SHA256.US]</span>
-            </div>
+            <PlanillaFieldLabel>Apellidos y Nombres de quien Recibe</PlanillaFieldLabel>
+            <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres]" />
           </div>
           <div className="form-group">
-            <div className="label">Fecha y Hora de la Entrega</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              <span className="placeholder-field">[Fecha y Hora (ej: DD/MM/AAAA - HH:MM)]</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/*  I. DATOS DEL RECEPTOR  */}
-      <div className="section">
-        <div className="section-title">I. Datos e Identificación del Receptor (Propietario/Poseedor)</div>
-        <div className="grid-container">
-          <div className="form-group">
-            <div className="label">Apellidos y Nombres</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Apellidos y Nombres del Receptor]</span>}
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="label">Cédula de Identidad</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="label">N° de Teléfono</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Teléfono de Contacto]</span>}
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="label">N° Registro Cadena de Custodia (PRCC)</div>
-            <div className="value" contentEditable suppressContentEditableWarning>
-              {c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}
-            </div>
+            <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
+            <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
           </div>
         </div>
       </div>
 
       {/*  II. ENTREGABLES  */}
       <div className="section">
-        <div className="section-title">II. Documentos y Resultados Entregados</div>
+        <PlanillaSectionTitle>II. Documentos y Resultados Entregados</PlanillaSectionTitle>
         <div className="form-group">
-          <div className="checkbox-group" style={{ flexDirection: 'column', gap: '5px' }}>
-            <div className="check-item"><span className="box"></span> <strong>DICTAMEN FORENSE ORIGINAL</strong> (Documento físico en papel sellado)</div>
-            <div className="check-item"><span className="box"></span> <strong>SOPORTE DIGITAL (DVD-R / Pendrive)</strong> conteniendo el reporte de extracción forense, chats recuperados y anexos fotográficos.</div>
-            <div className="check-item"><span className="box"></span> <strong>ACTA DE DEVOLUCIÓN DEL DISPOSITIVO FÍSICO</strong></div>
-          </div>
+          <PlanillaCheckboxGroup
+            style={{ flexDirection: 'column', gap: '5px' }}
+            options={[
+              { id: 'e1', label: 'DICTAMEN FORENSE ORIGINAL (Documento físico en papel sellado)' },
+              { id: 'e2', label: 'SOPORTE DIGITAL (DVD-R / Pendrive) conteniendo el reporte de extracción forense y anexos' },
+              { id: 'e3', label: 'ACTA DE DEVOLUCIÓN DEL DISPOSITIVO FÍSICO' },
+            ]}
+          />
         </div>
       </div>
 
-
-
-      {/*  III. DETALLE DEL DISPOSITIVO DEVUELTO  */}
+      {/* III. DETALLE DEL DISPOSITIVO DEVUELTO */}
       <div className="section">
-        <div className="section-title">III. Descripción del Dispositivo Devuelto ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</div>
-        
+        <PlanillaSectionTitle>III. Detalle de la Evidencia Devuelta ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</PlanillaSectionTitle>
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-                <td>Equipo / Dispositivo</td>
-                <td contentEditable suppressContentEditableWarning>
-                  Teléfono Móvil: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
+                <td>Equipo Devuelto</td>
+                <td>
+                  <PlanillaEditableValue
+                    value={c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : undefined}
+                    placeholder="[Marca / Modelo del Teléfono Móvil]"
+                  />
                 </td>
               </tr>
               <tr>
                 <td>IMEI 1 / Serial</td>
-                <td contentEditable suppressContentEditableWarning>
-                  {c.dispositivo_imei ? c.dispositivo_imei : <span className="placeholder-field">[IMEI / S/N]</span>}
-                </td>
-              </tr>
-              <tr>
-                <td>Línea Telefónica / SIM</td>
-                <td contentEditable suppressContentEditableWarning>
-                  {c.dispositivo_numero_tel ? `${c.dispositivo_numero_tel} (SIM: ${c.dispositivo_sim_card || ''})` : <span className="placeholder-field">[Nro. Telefónico / SIM]</span>}
-                </td>
-              </tr>
-              <tr>
-                <td>Accesorios Devueltos</td>
-                <td>
-                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '15px' }}>
-                    <div className="check-item"><span className="box"></span> Cargador</div>
-                    <div className="check-item"><span className="box"></span> Cable de Datos USB</div>
-                    <div className="check-item"><span className="box"></span> Tarjeta SIM</div>
-                    <div className="check-item"><span className="box"></span> Tarjeta MicroSD</div>
-                    <div className="check-item"><span className="box"></span> Forro / Estuche</div>
-                  </div>
-                </td>
+                <td><PlanillaEditableValue value={c.dispositivo_imei} placeholder="[IMEI / Serial]" /></td>
               </tr>
             </tbody>
           </table>
@@ -191,36 +115,21 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-                <td>Computador Devuelto</td>
-                <td contentEditable suppressContentEditableWarning>
-                  Equipo: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[HP, Dell Laptop]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial: <strong className="placeholder-field">{c.dispositivo_imei ? c.dispositivo_imei : '[Serial Placa/Equipo]'}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td>Unidad de Disco Duro</td>
-                <td contentEditable suppressContentEditableWarning>
-                  Disco Interno: <strong className="placeholder-field">{c.discoduro_marca || c.discoduro_modelo ? `${c.discoduro_marca || ''} ${c.discoduro_modelo || ''}`.trim() : '[Marca y Modelo]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Capacidad: <strong className="placeholder-field">{c.discoduro_capacidad ? c.discoduro_capacidad : '[ej: 480 GB SSD]'}</strong>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Serial: <strong className="placeholder-field">{c.discoduro_serial ? c.discoduro_serial : '[S/N Disco]'}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td>Memorias Externas / USB</td>
-                <td contentEditable suppressContentEditableWarning>
-                  <span className="placeholder-field">[Memorias USB / Tarjetas SD (Marca, Modelo, Capacidad, Serial)]</span>
-                </td>
-              </tr>
-              <tr>
-                <td>Accesorios Devueltos</td>
+                <td>Computador / Disco Devuelto</td>
                 <td>
-                  <div className="checkbox-group" style={{ flexDirection: 'row', gap: '10px' }}>
-                    <div className="check-item"><span className="box"></span> Cargador / Cable de Poder</div>
-                    <div className="check-item"><span className="box"></span> Teclado / Mouse</div>
-                    <div className="check-item"><span className="box"></span> Estuche / Bolso</div>
-                    <div className="check-item"><span className="box"></span> Cable de Red LAN</div>
-                    <div className="check-item"><span className="box"></span> Discos de Drivers</div>
-                  </div>
+                  <PlanillaEditableValue
+                    value={c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : undefined}
+                    placeholder="[Marca / Modelo del Computador]"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Serial del Equipo / Disco</td>
+                <td>
+                  <PlanillaEditableValue
+                    value={c.discoduro_serial || c.dispositivo_imei ? `${c.discoduro_serial || c.dispositivo_imei || ''}`.trim() : undefined}
+                    placeholder="[Serial de la Unidad de Almacenamiento]"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -228,92 +137,41 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
         )}
       </div>
 
-      {/*  IV. DECLARACIÓN DE CONFORMIDAD  */}
+      {/*  IV. DEVOLUCIÓN DE LA EVIDENCIA FÍSICA  */}
       <div className="section">
-        <div className="section-title">IV. Declaración de Recepción Conforme y Descargo de Responsabilidad</div>
+        <PlanillaSectionTitle>IV. Conformidad de Devolución de la Evidencia Física</PlanillaSectionTitle>
         <div className="legal-text">
-          Yo, el ciudadano arriba identificado en la Sección I, mediante la firma de la presente acta, hago constar que he recibido a mi entera satisfacción los resultados técnicos y el dictamen pericial forense listados en la Sección II. <br />
-          Asimismo, <strong>DECLARO RECIBIR CONFORME</strong> el dispositivo físico y/o medio de almacenamiento consignado, certificando que el valor Hash SHA-256 al momento de la devolución fue verificado y coincide exactamente con el registrado en el Acta de Obtención inicial y la PRCC. Manifiesto que la evidencia me es devuelta en el mismo estado físico y operacional de conservación. Libero al Laboratorio SHA256.US y a sus expertos forenses de toda responsabilidad posterior sobre la custodia y el estado de la referida evidencia digital.
-        </div>
-        <div className="form-group dev-observaciones-value" contentEditable suppressContentEditableWarning style={{ minHeight: '40px' }}>
-          Observaciones del Propietario / Consignante (Si aplica): <span className="placeholder-field">[Ninguna. Recibo conforme con verificación Hash SHA-256 idéntica y sin daños]</span>
+          Hago constar que en la fecha y hora indicadas recibo a mi entera satisfacción la evidencia física anteriormente descrita, verificando que se encuentra en el mismo estado de integridad en el que fue consignada en el laboratorio SHA256.US.
         </div>
       </div>
 
-      {/*  V. FIRMAS Y HUELLAS DACTILARES  */}
-      <div className="signature-section" style={{ gap: '14mm', marginTop: '6mm' }}>
+      {/* V. FIRMAS DE DEVOLUCIÓN Y RECEPCIÓN */}
+      <div className="signature-section" style={{ gap: '14mm', marginTop: '30px' }}>
         <div className="sig-detail-card">
-          <div className="sig-detail-label">RECIBIDO POR (RECEPTOR)</div>
+          <div className="sig-detail-label">QUIEN RECIBE LOS RESULTADOS</div>
           <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
           <div className="sig-line" />
-          <div className="sig-line-label">Firma del Receptor / Propietario</div>
+          <div className="sig-line-label">Firma de Conformidad de Recepción</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Receptor]</span>}</span>
-          </div>
-          <div className="sig-field">
-            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Receptor]</span>}</span>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</span>
           </div>
         </div>
         <div className="sig-detail-card">
-          <div className="sig-detail-label">ENTREGADO POR (PERITO)</div>
+          <div className="sig-detail-label">PERITO ENTREGADOR</div>
           <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR DER.</span>
-            </div>
-            <div className="thumb-wrapper">
-              <div className="thumb-box" />
-              <span className="thumb-label">PULGAR IZQ.</span>
-            </div>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
           <div className="sig-line" />
-          <div className="sig-line-label">Firma del Perito Forense</div>
+          <div className="sig-line-label">Firma del Perito Entregador</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
-            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito]</span>}</span>
-          </div>
-          <div className="sig-field">
-            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[C.I. del Perito]</span></span>
-          </div>
-          <div className="sig-field">
-            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV (Colegio de Ingenieros)]</span></span>
-          </div>
-          <div className="sig-field">
-            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° Inpreabogado]</span></span>
-          </div>
-          <div className="sig-field">
-            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Forense]</span></span>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre y Apellido del Perito]</span>}</span>
           </div>
         </div>
       </div>
-
-      <div className="footer">
-        Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y las normas ISO/IEC 27037:2012 / 27042:2015.<br />
-        SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.
-      </div>
-    </div>
-
-    {/* Barra de Estado de Word (Solo pantalla) */}
-    <div className="word-status-bar no-print">
-      <div className="left-info">
-        <div className="status-item">Página 1 de 1</div>
-        <div className="status-item">|</div>
-        <div className="status-item">Times New Roman (11pt)</div>
-        <div className="status-item">|</div>
-        <div className="status-item">Llenado Manual: [Activo]</div>
-      </div>
-      <div className="right-info">
-        <div className="status-item">Formato: Oficio Venezolano (216x330mm)</div>
-      </div>
-    </div>
-  </>
+    </PlanillaFolioTemplate>
   );
 }

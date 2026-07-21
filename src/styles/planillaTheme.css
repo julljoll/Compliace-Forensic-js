@@ -1,0 +1,480 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   SHA256.US — PLANILLA DESIGN SYSTEM & CENTRALIZED STYLING ENGINE
+   Cyber-Legal Blueprint (Papel Folio Venezolano 216mm x 330mm)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Dimensions & Margins */
+  --planilla-width: 216mm;
+  --planilla-height: 330mm;
+  --margin-top-p1: 40mm;   /* Margen Superior Primera Página: 4cm */
+  --margin-top-pn: 15mm;   /* Margen Superior Páginas Subsecuentes: 1.5cm */
+  --margin-left: 30mm;     /* Margen Izquierdo Encuadernación: 3cm */
+  --margin-right: 15mm;    /* Margen Derecho: 1.5cm */
+  --margin-bottom: 15mm;   /* Margen Inferior: 1.5cm */
+
+  /* Palette - Print / Document Canvas */
+  --planilla-bg: #ffffff;
+  --planilla-text: #1d1d1f;
+  --planilla-text-muted: #515154;
+  --planilla-border-dark: #1d1d1f;
+  --planilla-border-light: #e5e5ea;
+  --planilla-placeholder: #8e8e93;
+
+  /* Typography Fonts */
+  --font-legal: 'Times New Roman', Times, serif;
+  --font-ui: 'Ubuntu', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'Roboto Mono', Consolas, monospace;
+
+  /* Accent Colors (Cyber-Legal Blueprint) */
+  --color-gold: #FECF06;
+  --color-green: #00FF41;
+  --color-dark-bg: #1E1800;
+}
+
+/* Lienzo de Documento */
+.planilla-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-legal);
+  color: var(--planilla-text);
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+/* Hoja Folio Física */
+.planilla-container .page {
+  width: var(--planilla-width);
+  max-width: var(--planilla-width);
+  min-height: var(--planilla-height);
+  padding: var(--margin-top-p1) var(--margin-right) var(--margin-bottom) var(--margin-left);
+  margin: 0 auto 20px auto;
+  box-sizing: border-box;
+  background-color: var(--planilla-bg);
+  color: var(--planilla-text);
+  position: relative;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  overflow: visible;
+  font-size: 10.5pt;
+  line-height: 1.4;
+}
+
+.planilla-container .page ~ .page,
+.planilla-container .page:nth-of-type(n+2) {
+  padding: var(--margin-top-pn) var(--margin-right) var(--margin-bottom) var(--margin-left);
+}
+
+/* Marca de Agua */
+.planilla-container .watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-size: 56pt;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.03);
+  letter-spacing: 0.15em;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-family: var(--font-ui);
+}
+
+/* Encabezados y Membrete */
+.planilla-container header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--planilla-border-dark);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+
+.planilla-container .header-top-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--planilla-border-dark);
+}
+
+.planilla-container .header-logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.planilla-container .logo-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.planilla-container .logo-text {
+  font-size: 15pt;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--planilla-text);
+  font-family: var(--font-ui);
+}
+
+.planilla-container .header-lab-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-left: 1.5px solid var(--planilla-border-dark);
+  padding-left: 10px;
+}
+
+.planilla-container .lab-title {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: var(--planilla-text);
+  text-transform: uppercase;
+  font-family: var(--font-ui);
+}
+
+.planilla-container .lab-address {
+  font-size: 7.5pt;
+  color: var(--planilla-text-muted);
+  line-height: 1.2;
+}
+
+.planilla-container .header-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 4px;
+}
+
+.planilla-container .acta-title {
+  font-size: 14pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0;
+  letter-spacing: 0.025em;
+  font-family: var(--font-ui);
+}
+
+.planilla-container .acta-nro {
+  font-size: 10pt;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* Secciones y Títulos Romanos */
+.planilla-container .section {
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.planilla-container .section-title {
+  font-size: 10.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: #f2f2f7;
+  padding: 4px 8px;
+  border-left: 3px solid var(--planilla-border-dark);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  font-family: var(--font-ui);
+}
+
+/* Campos de Formulario y Grids */
+.planilla-container .grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+}
+
+.planilla-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.planilla-container .form-group .label {
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: var(--planilla-text-muted);
+  text-transform: uppercase;
+  font-family: var(--font-ui);
+}
+
+.planilla-container .form-group .value {
+  font-size: 10pt;
+  color: var(--planilla-text);
+  min-height: 1.2em;
+}
+
+/* Edición Nativa en Pantalla */
+.planilla-container [contenteditable="true"] {
+  outline: none;
+  cursor: text;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  min-height: 1.2em;
+}
+
+.planilla-container [contenteditable="true"]:hover {
+  background-color: rgba(254, 207, 6, 0.08);
+  border-bottom: 1px dashed #FECF06;
+}
+
+.planilla-container [contenteditable="true"]:focus {
+  background-color: rgba(254, 207, 6, 0.12);
+  border-bottom: 1.5px solid #FECF06;
+}
+
+.planilla-container .placeholder-field {
+  color: var(--planilla-placeholder) !important;
+  font-style: italic;
+  border-bottom: 1px dashed #aeaeb2;
+}
+
+/* Casillas de Verificación */
+.planilla-container .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  font-size: 9pt;
+  margin-top: 4px;
+}
+
+.planilla-container .check-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.planilla-container .check-item .box {
+  width: 14px;
+  height: 14px;
+  border: 1.2px solid var(--planilla-border-dark);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 900;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: var(--font-ui);
+}
+
+/* Tablas Periciales de Evidencia */
+.planilla-container table.evidence-table,
+.planilla-container table.tabla-datos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 9.5pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.planilla-container table.evidence-table td,
+.planilla-container table.evidence-table th,
+.planilla-container table.tabla-datos td,
+.planilla-container table.tabla-datos th {
+  border: 1px solid var(--planilla-border-dark);
+  padding: 6px 8px;
+  vertical-align: middle;
+}
+
+.planilla-container table.evidence-table td:first-child,
+.planilla-container table.tabla-datos td:first-child {
+  font-weight: 700;
+  background-color: #f9f9fb;
+  width: 32%;
+  font-family: var(--font-ui);
+  font-size: 9pt;
+}
+
+/* Tarjetas de Firmas Periciales y Huella Dactilar */
+.planilla-container .signature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.planilla-container .sig-card {
+  border: 1px solid var(--planilla-border-dark);
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.planilla-container .sig-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.planilla-container .sig-firma-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.planilla-container .sig-box {
+  border-bottom: 1.2px solid var(--planilla-border-dark);
+  height: 50px;
+  width: 100%;
+}
+
+.planilla-container .sig-label {
+  font-size: 7.5pt;
+  font-weight: 700;
+  color: var(--planilla-text-muted);
+  margin-top: 3px;
+  font-family: var(--font-ui);
+}
+
+.planilla-container .thumb-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.planilla-container .thumb-box {
+  width: 28mm;
+  height: 38mm;
+  border: 1.2px dashed var(--planilla-border-dark);
+  border-radius: 3px;
+  background-color: #fafafa;
+}
+
+.planilla-container .thumb-label {
+  font-size: 7pt;
+  font-weight: 700;
+  color: var(--planilla-text-muted);
+  font-family: var(--font-ui);
+}
+
+/* Pie de Página */
+.planilla-container footer {
+  margin-top: 20px;
+  border-top: 1px solid var(--planilla-border-light);
+  padding-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+  color: var(--planilla-text-muted);
+  font-family: var(--font-ui);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PRINT MEDIA RULES (Cero Corchetes de Placeholder + Evasión de Cortes)
+   ══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-scheme: light !important;
+  }
+
+  html, body, #__next, root, main, [class*="MuiBox"], [class*="CMSLayout"], .cms-layout, .planilla-container {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    position: static !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .no-print,
+  .no-print * {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+  }
+
+  @page {
+    size: 216mm 330mm;
+    margin: 0;
+  }
+
+  .planilla-container .page {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 auto !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .planilla-container .page:last-child,
+  .planilla-container .page:last-of-type {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* Anticortes estrictos */
+  .planilla-container tr,
+  .planilla-container td,
+  .planilla-container th,
+  .planilla-container .section,
+  .planilla-container .form-group,
+  .planilla-container .sig-card,
+  .planilla-container .sig-detail-card,
+  .planilla-container .signature-section,
+  .planilla-container .evidence-table,
+  .planilla-container .tabla-datos,
+  .planilla-container header {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Ocultar corchetes de placeholder en papel/PDF para llenado manuscrito a mano */
+  .planilla-container .placeholder-field {
+    color: transparent !important;
+    visibility: hidden !important;
+    display: inline-block !important;
+    min-width: 70px !important;
+    border-bottom: 1px dashed #000000 !important;
+  }
+
+  .planilla-container [contenteditable="true"] {
+    outline: none !important;
+    border-bottom: none !important;
+    background: transparent !important;
+  }
+}

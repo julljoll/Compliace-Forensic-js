@@ -1,3 +1,5 @@
+@import '../../styles/planillaTheme.css';
+
 .planilla-container {
   /* Redefine light mode variables to isolate from global dark mode */
   --co-bg: #F5F5F7;
