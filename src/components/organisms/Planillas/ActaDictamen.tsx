@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import Box from '@mui/material/Box';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import { CasoCMS } from '../../../store/cmsStore';
 
 interface ActaDictamenProps {
@@ -117,24 +122,45 @@ export default function ActaDictamen({ caso }: ActaDictamenProps) {
         </div>
       </div>
 
-      {/* Conmutador interactivo (Solo en pantalla) */}
-      <div className="no-print flex gap-2.5 my-4 p-2.5 rounded-lg bg-white/5 border border-white/10">
-        <span className="text-[11px] font-bold text-gray-400 self-center uppercase tracking-wider">Tipo de Evidencia:</span>
-        <button 
-          type="button"
-          onClick={() => setTipoEvidencia('movil')} 
-          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'movil' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
+      {/* Conmutador interactivo Cyber-Legal Blueprint MUI v6 (Solo en pantalla) */}
+      <Box className="no-print" sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1.5, p: 1.5, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)', borderRadius: '8px' }}>
+        <span style={{ fontSize: '11px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          TIPO DE EVIDENCIA:
+        </span>
+        <ToggleButtonGroup
+          value={tipoEvidencia}
+          exclusive
+          onChange={(_, nextValue) => {
+            if (nextValue) setTipoEvidencia(nextValue);
+          }}
+          size="small"
+          sx={{
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            border: '1px solid rgba(254, 207, 6, 0.2)',
+            '& .MuiToggleButton-root': {
+              color: '#AEAEB2',
+              fontSize: '11px',
+              fontWeight: 700,
+              px: 2,
+              py: 0.5,
+              textTransform: 'none',
+              border: 'none',
+              '&.Mui-selected': {
+                backgroundColor: '#FECF06',
+                color: '#000000',
+                '&:hover': { backgroundColor: '#e0b700' },
+              },
+            },
+          }}
         >
-          📱 Dispositivo Móvil
-        </button>
-        <button 
-          type="button"
-          onClick={() => setTipoEvidencia('computadora')} 
-          className={`px-3 py-1.5 rounded text-[11px] font-bold border transition-colors ${tipoEvidencia === 'computadora' ? 'bg-[#0a84ff] border-[#0a84ff] text-white' : 'bg-white border-gray-300 text-black'}`}
-        >
-          💻 Computador / Almacenamiento
-        </button>
-      </div>
+          <ToggleButton value="movil">
+            <SmartphoneIcon sx={{ fontSize: 16, mr: 0.8 }} /> Dispositivo Móvil
+          </ToggleButton>
+          <ToggleButton value="computadora">
+            <LaptopMacIcon sx={{ fontSize: 16, mr: 0.8 }} /> Computador / Almacenamiento
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
 
       {/*  II. IDENTIFICACIÓN DE LA EVIDENCIA  */}
       <div className="section">

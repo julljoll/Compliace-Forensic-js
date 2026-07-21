@@ -806,6 +806,31 @@
     break-after: auto !important;
   }
 
+  /* Evasión de cortes arbitrarios en filas de tabla, secciones y firmas */
+  .planilla-container tr,
+  .planilla-container td,
+  .planilla-container th,
+  .planilla-container .section,
+  .planilla-container .form-group,
+  .planilla-container .sig-card,
+  .planilla-container .sig-detail-card,
+  .planilla-container .signature-section,
+  .planilla-container .evidence-table,
+  .planilla-container .tabla-datos,
+  .planilla-container header {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Ocultar corchetes explicativos de placeholder en impresión para llenado manuscrito a mano */
+  .planilla-container .placeholder-field {
+    color: transparent !important;
+    visibility: hidden !important;
+    display: inline-block !important;
+    min-width: 70px !important;
+    border-bottom: 1px dashed #000000 !important;
+  }
+
   /* Header & Logo styling exact match on print */
   .planilla-container header {
     display: flex !important;
