@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
@@ -13,6 +13,10 @@ const PlanillaPRCCPage = () => {
   const { casos } = useCMSStore();
   const caso = casos.find(c => c.id === casoId);
 
+  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+    caso?.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -22,8 +26,10 @@ const PlanillaPRCCPage = () => {
       <PlanillaDocumentViewer
         title={`Planilla del Registro de Cadena de Custodia (PRCC) — Caso #${caso?.numeroCaso || 'N/A'}`}
         filenamePrefix={`Planilla_PRCC_${caso?.numeroCaso || 'EXP'}`}
+        tipoEvidencia={tipoEvidencia}
+        onTipoEvidenciaChange={setTipoEvidencia}
       >
-        <PlanillaPRCC caso={caso} />
+        <PlanillaPRCC caso={caso} tipoEvidencia={tipoEvidencia} />
       </PlanillaDocumentViewer>
     </div>
   );

@@ -8,9 +8,10 @@ import { CasoCMS } from '../../../store/cmsStore';
 
 interface ActaEntregaResultadosProps {
   caso?: CasoCMS;
+  tipoEvidencia?: 'movil' | 'computadora';
 }
 
-export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosProps) {
+export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTipoEvidencia }: ActaEntregaResultadosProps) {
   const fallbackCaso = {
     numeroCaso: '',
     numeroPRCC: '',
@@ -30,9 +31,10 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
   };
 
   const c = caso || fallbackCaso;
-  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+  const [internalTipoEvidencia] = useState<'movil' | 'computadora'>(
     c.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
   );
+  const tipoEvidencia = externalTipoEvidencia || internalTipoEvidencia;
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -144,45 +146,7 @@ export default function ActaEntregaResultados({ caso }: ActaEntregaResultadosPro
         </div>
       </div>
 
-      {/* Conmutador interactivo Cyber-Legal Blueprint MUI v6 (Solo en pantalla) */}
-      <Box className="no-print" sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1.5, p: 1.5, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)', borderRadius: '8px' }}>
-        <span style={{ fontSize: '11px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          TIPO DE EVIDENCIA:
-        </span>
-        <ToggleButtonGroup
-          value={tipoEvidencia}
-          exclusive
-          onChange={(_, nextValue) => {
-            if (nextValue) setTipoEvidencia(nextValue);
-          }}
-          size="small"
-          sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            border: '1px solid rgba(254, 207, 6, 0.2)',
-            '& .MuiToggleButton-root': {
-              color: '#AEAEB2',
-              fontSize: '11px',
-              fontWeight: 700,
-              px: 2,
-              py: 0.5,
-              textTransform: 'none',
-              border: 'none',
-              '&.Mui-selected': {
-                backgroundColor: '#FECF06',
-                color: '#000000',
-                '&:hover': { backgroundColor: '#e0b700' },
-              },
-            },
-          }}
-        >
-          <ToggleButton value="movil">
-            <SmartphoneIcon sx={{ fontSize: 16, mr: 0.8 }} /> Dispositivo Móvil
-          </ToggleButton>
-          <ToggleButton value="computadora">
-            <LaptopMacIcon sx={{ fontSize: 16, mr: 0.8 }} /> Computador / Almacenamiento
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
+
 
       {/*  III. DETALLE DEL DISPOSITIVO DEVUELTO  */}
       <div className="section">

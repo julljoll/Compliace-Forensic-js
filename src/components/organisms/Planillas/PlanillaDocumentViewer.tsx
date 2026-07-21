@@ -6,6 +6,10 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -19,12 +23,16 @@ interface PlanillaDocumentViewerProps {
   children: React.ReactNode;
   title?: string;
   filenamePrefix?: string;
+  tipoEvidencia?: 'movil' | 'computadora';
+  onTipoEvidenciaChange?: (val: 'movil' | 'computadora') => void;
 }
 
 export default function PlanillaDocumentViewer({
   children,
   title = 'Documento Pericial Forense',
   filenamePrefix = 'Planilla_Forense',
+  tipoEvidencia,
+  onTipoEvidenciaChange,
 }: PlanillaDocumentViewerProps) {
   const [zoom, setZoom] = useState<number>(100);
   const [showMarginGuides, setShowMarginGuides] = useState<boolean>(false);
@@ -67,7 +75,7 @@ export default function PlanillaDocumentViewer({
 
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* BARRA DE HERRAMIENTAS DE PREVISUALIZACIÓN DE DOCUMENTO FOLIO (NO IMPRIMIBLE) */}
+      {/* BARRA DE HERRAMIENTAS Y CONTROL SUPERIOR (NO IMPRIMIBLE) */}
       <Box
         className="no-print"
         sx={{
@@ -90,13 +98,52 @@ export default function PlanillaDocumentViewer({
         {/* TITULO Y MODO TEXTO VIVO */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <EditNoteIcon sx={{ color: '#00FF41', fontSize: 20 }} />
-          <Box>
-            <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 700, fontSize: '12px', lineHeight: 1.2 }}>
-              {title}
-            </Typography>
-
-          </Box>
+          <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 700, fontSize: '12px', lineHeight: 1.2 }}>
+            {title}
+          </Typography>
         </Box>
+
+        {/* SELECTOR DE TIPO DE EVIDENCIA (SI APLICA PARA LA PLANILLA) */}
+        {tipoEvidencia && onTipoEvidenciaChange && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <span style={{ fontSize: '10px', fontWeight: 700, color: '#AEAEB2', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Formato:
+            </span>
+            <ToggleButtonGroup
+              value={tipoEvidencia}
+              exclusive
+              onChange={(_, nextVal) => {
+                if (nextVal) onTipoEvidenciaChange(nextVal);
+              }}
+              size="small"
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                border: '1px solid rgba(254, 207, 6, 0.25)',
+                '& .MuiToggleButton-root': {
+                  color: '#AEAEB2',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  px: 1.5,
+                  py: 0.4,
+                  textTransform: 'none',
+                  border: 'none',
+                  '&.Mui-selected': {
+                    backgroundColor: '#FECF06',
+                    color: '#000000',
+                    '&:hover': { backgroundColor: '#e0b700' },
+                  },
+                },
+              }}
+            >
+              <ToggleButton value="movil">
+                <SmartphoneIcon sx={{ fontSize: 14, mr: 0.5 }} /> Dispositivo Móvil
+              </ToggleButton>
+              <ToggleButton value="computadora">
+                <LaptopMacIcon sx={{ fontSize: 14, mr: 0.5 }} /> Computador / Almacenamiento
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        )}
 
         {/* CONTROLES DE ZOOM Y GUÍAS DE MARGEN */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -108,7 +155,7 @@ export default function PlanillaDocumentViewer({
             </span>
           </Tooltip>
 
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '11px', minWidth: '42px', textAlign: 'center', fontFamily: 'monospace' }}>
+          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '11px', minWidth: '38px', textAlign: 'center', fontFamily: 'monospace' }}>
             {zoom}%
           </Typography>
 
@@ -121,7 +168,7 @@ export default function PlanillaDocumentViewer({
           </Tooltip>
 
           <Tooltip title="Restablecer Zoom a 100%">
-            <IconButton size="small" onClick={handleResetZoom} sx={{ color: '#AEAEB2', ml: 0.5 }}>
+            <IconButton size="small" onClick={handleResetZoom} sx={{ color: '#AEAEB2', ml: 0.2 }}>
               <RestartAltIcon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -133,7 +180,7 @@ export default function PlanillaDocumentViewer({
               startIcon={<GridViewIcon fontSize="small" />}
               onClick={() => setShowMarginGuides(!showMarginGuides)}
               sx={{
-                ml: 1,
+                ml: 0.5,
                 fontSize: '10px',
                 fontWeight: 700,
                 color: showMarginGuides ? '#00FF41' : '#AEAEB2',
@@ -141,7 +188,7 @@ export default function PlanillaDocumentViewer({
                 '&:hover': { borderColor: showMarginGuides ? '#00FF41' : '#FFFFFF' },
               }}
             >
-              {showMarginGuides ? 'GUÍAS ACTIVAS' : 'MOSTRAR MÁRGENES'}
+              {showMarginGuides ? 'GUÍAS ACTIVAS' : 'MÁRGENES'}
             </Button>
           </Tooltip>
         </Box>

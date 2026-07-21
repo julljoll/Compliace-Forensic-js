@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCMSStore } from '../../store/cmsStore';
 import './Planillas.css';
@@ -13,6 +13,10 @@ const ActaEntregaResultadosPage = () => {
   const { casos } = useCMSStore();
   const caso = casos.find(c => c.id === casoId);
 
+  const [tipoEvidencia, setTipoEvidencia] = useState<'movil' | 'computadora'>(
+    caso?.tipoProyecto === 'forense_discoduro' ? 'computadora' : 'movil'
+  );
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -20,10 +24,12 @@ const ActaEntregaResultadosPage = () => {
   return (
     <div className="planilla-container">
       <PlanillaDocumentViewer
-        title={`Acta de Entrega de Resultados Forenses — Caso #${caso?.numeroCaso || 'N/A'}`}
+        title={`Acta de Entrega de Resultados y Devolución — Caso #${caso?.numeroCaso || 'N/A'}`}
         filenamePrefix={`Acta_Entrega_Resultados_${caso?.numeroCaso || 'EXP'}`}
+        tipoEvidencia={tipoEvidencia}
+        onTipoEvidenciaChange={setTipoEvidencia}
       >
-        <ActaEntregaResultados caso={caso} />
+        <ActaEntregaResultados caso={caso} tipoEvidencia={tipoEvidencia} />
       </PlanillaDocumentViewer>
     </div>
   );
