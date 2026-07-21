@@ -99,14 +99,21 @@
 /* Page Card representation on screen (Oficio Size) */
 .planilla-container .page {
   width: 216mm;
+  max-width: 216mm;
   min-height: 330mm;
-  padding: 40mm 15mm 15mm 30mm; /* Margen Superior: 4cm, Derecho: 1.5cm, Inferior: 1.5cm, Izquierdo: 3cm */
-  margin: 0 auto;
+  padding: 40mm 15mm 15mm 30mm; /* 1ra Página: Top 4cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
+  margin: 0 auto 30px auto;
   background: #ffffff !important;
   color: #1d1d1f !important;
   position: relative;
   border: 1px solid #D0D0D0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.planilla-container .page ~ .page,
+.planilla-container .page:nth-of-type(n+2) {
+  padding: 15mm 15mm 15mm 30mm; /* 2da Página en adelante: Top 1.5cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
 }
 
 /* Header & Logos */
@@ -771,19 +778,25 @@
 
   .planilla-container .page {
     width: 216mm !important;
+    max-width: 216mm !important;
     min-height: 330mm !important;
-    padding: 40mm 15mm 15mm 30mm !important; /* Top: 40mm (4cm), Right: 15mm (1.5cm), Bottom: 15mm (1.5cm), Left: 30mm (3cm) */
+    padding: 40mm 15mm 15mm 30mm !important; /* Primera página: Top 4cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
     margin: 0 auto !important;
     box-sizing: border-box !important;
     border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
     color: #1d1d1f !important;
     page-break-after: always !important;
     break-after: page !important;
+  }
+
+  .planilla-container .page ~ .page,
+  .planilla-container .page:nth-of-type(n+2) {
+    padding: 15mm 15mm 15mm 30mm !important; /* Segunda página en adelante: Top 1.5cm, Right 1.5cm, Bottom 1.5cm, Left 3cm */
   }
 
   .planilla-container .page:last-child {

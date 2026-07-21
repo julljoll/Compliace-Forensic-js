@@ -14,7 +14,6 @@ import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import './Planillas.css';
 import PlanillaPdfViewer from '../../components/organisms/Planillas/PlanillaPdfViewer';
-import PlanillaGatingDialog, { CampoFaltante } from '../../components/molecules/Planillas/PlanillaGatingDialog';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
 import { generatePdfBlobFromElement, printPdfBlob } from '@/lib/pdf/planillaPdfEngine';
 
@@ -29,8 +28,6 @@ const ActaAuditoriaTimelinePage = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [gatingOpen, setGatingOpen] = useState<boolean>(false);
-  const [actionPending, setActionPending] = useState<'print' | 'preview' | null>(null);
 
   const handleCaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     router.push(e.target.value ? `/planillas/acta-auditoria-timeline?casoId=${e.target.value}` : '/planillas/acta-auditoria-timeline');
@@ -71,16 +68,8 @@ const ActaAuditoriaTimelinePage = () => {
 
   const c = caso || fallbackCaso;
 
-  const camposRequeridos: CampoFaltante[] = [
-    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-    { valor: caso?.titulo, nombre: 'Título del Caso' },
-    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Responsable' },
-  ];
-
-  const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
-
   const handleCompilePdf = async () => {
-    const el = document.querySelector('.planilla-container .page') as HTMLElement;
+    const el = document.querySelector('.planilla-container') as HTMLElement;
     if (!el) return;
     setIsGenerating(true);
     try {
@@ -94,26 +83,22 @@ const ActaAuditoriaTimelinePage = () => {
     }
   };
 
-  const executeAction = (action: 'print' | 'preview') => {
-    if (action === 'print') {
-      if (pdfBlob) {
-        printPdfBlob(pdfBlob);
+  const handlePrint = async () => {
+    if (pdfBlob) {
+      printPdfBlob(pdfBlob);
+    } else {
+      const el = document.querySelector('.planilla-container') as HTMLElement;
+      if (el) {
+        try {
+          const blob = await generatePdfBlobFromElement(el, `Acta_Auditoria_${caso?.numeroCaso || 'EXP'}`);
+          setPdfBlob(blob);
+          printPdfBlob(blob);
+        } catch {
+          window.print();
+        }
       } else {
-        const container = document.querySelector('.planilla-container');
-        if (container) container.classList.add('modo-vista-previa');
         window.print();
       }
-    } else if (action === 'preview') {
-      handleCompilePdf();
-    }
-  };
-
-  const handleTriggerAction = (action: 'print' | 'preview') => {
-    if (faltantes.length > 0) {
-      setActionPending(action);
-      setGatingOpen(true);
-    } else {
-      executeAction(action);
     }
   };
 
@@ -234,7 +219,7 @@ const ActaAuditoriaTimelinePage = () => {
               variant="outlined"
               size="small"
               startIcon={<PictureAsPdfIcon />}
-              onClick={() => handleTriggerAction('preview')}
+              onClick={handleCompilePdf}
               sx={{
                 color: '#FECF06',
                 borderColor: 'rgba(254, 207, 6, 0.4)',
@@ -250,7 +235,7 @@ const ActaAuditoriaTimelinePage = () => {
               variant="contained"
               size="small"
               startIcon={<PrintIcon />}
-              onClick={() => handleTriggerAction('print')}
+              onClick={handlePrint}
               sx={{
                 backgroundColor: '#FECF06',
                 color: '#000000',
@@ -440,17 +425,6 @@ const ActaAuditoriaTimelinePage = () => {
           isGenerating={isGenerating}
         />
       )}
-
-      {/* GATING VALIDATOR DIALOG */}
-      <PlanillaGatingDialog
-        open={gatingOpen}
-        onClose={() => setGatingOpen(false)}
-        onConfirmProceed={() => {
-          if (actionPending) executeAction(actionPending);
-        }}
-        camposFaltantes={faltantes}
-        nombrePlanilla="Acta de Trazabilidad y Cadena de Custodia Digital"
-      />
     </div>
   );
 };

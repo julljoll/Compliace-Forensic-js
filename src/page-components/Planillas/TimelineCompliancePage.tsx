@@ -15,7 +15,6 @@ import { getTipoProyectoConfig } from '../../data/tiposProyecto';
 import type { CasoCMS, StepState } from '../../store/cmsStore';
 import './Planillas.css';
 import PlanillaPdfViewer from '../../components/organisms/Planillas/PlanillaPdfViewer';
-import PlanillaGatingDialog, { CampoFaltante } from '../../components/molecules/Planillas/PlanillaGatingDialog';
 import { downloadPlanillaZip } from './downloadPlanillaZip';
 import { generatePdfBlobFromElement, printPdfBlob } from '@/lib/pdf/planillaPdfEngine';
 
@@ -54,8 +53,6 @@ export default function TimelineCompliancePage() {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [gatingOpen, setGatingOpen] = useState<boolean>(false);
-  const [actionPending, setActionPending] = useState<'print' | 'preview' | null>(null);
 
   const caso: CasoCMS | undefined = useMemo(
     () => (casoId ? casos.find(c => c.id === casoId) : undefined),
@@ -90,16 +87,8 @@ export default function TimelineCompliancePage() {
   const totalCompletados = config.pasos.filter(p => steps[p.id]?.estado === 'completado').length;
   const pct              = totalPasos > 0 ? Math.round((totalCompletados / totalPasos) * 100) : 0;
 
-  const camposRequeridos: CampoFaltante[] = [
-    { valor: caso?.numeroCaso, nombre: 'Número de Caso / Expediente' },
-    { valor: caso?.titulo, nombre: 'Título del Caso' },
-    { valor: caso?.peritoLider, nombre: 'Nombre del Perito Forense' },
-  ];
-
-  const faltantes = camposRequeridos.filter(f => !f.valor || f.valor === 'N/A' || !f.valor.trim());
-
   const handleCompilePdf = async () => {
-    const el = document.querySelector('.planilla-container .page') as HTMLElement;
+    const el = document.querySelector('.planilla-container') as HTMLElement;
     if (!el) return;
     setIsGenerating(true);
     try {
@@ -113,26 +102,22 @@ export default function TimelineCompliancePage() {
     }
   };
 
-  const executeAction = (action: 'print' | 'preview') => {
-    if (action === 'print') {
-      if (pdfBlob) {
-        printPdfBlob(pdfBlob);
+  const handlePrint = async () => {
+    if (pdfBlob) {
+      printPdfBlob(pdfBlob);
+    } else {
+      const el = document.querySelector('.planilla-container') as HTMLElement;
+      if (el) {
+        try {
+          const blob = await generatePdfBlobFromElement(el, `Timeline_Compliance_${caso?.numeroCaso || 'EXP'}`);
+          setPdfBlob(blob);
+          printPdfBlob(blob);
+        } catch {
+          window.print();
+        }
       } else {
-        const container = document.querySelector('.planilla-container');
-        if (container) container.classList.add('modo-vista-previa');
         window.print();
       }
-    } else if (action === 'preview') {
-      handleCompilePdf();
-    }
-  };
-
-  const handleTriggerAction = (action: 'print' | 'preview') => {
-    if (faltantes.length > 0) {
-      setActionPending(action);
-      setGatingOpen(true);
-    } else {
-      executeAction(action);
     }
   };
 
@@ -224,7 +209,7 @@ export default function TimelineCompliancePage() {
               variant="outlined"
               size="small"
               startIcon={<PictureAsPdfIcon />}
-              onClick={() => handleTriggerAction('preview')}
+              onClick={handleCompilePdf}
               sx={{
                 color: '#FECF06',
                 borderColor: 'rgba(254, 207, 6, 0.4)',
@@ -240,7 +225,7 @@ export default function TimelineCompliancePage() {
               variant="contained"
               size="small"
               startIcon={<PrintIcon />}
-              onClick={() => handleTriggerAction('print')}
+              onClick={handlePrint}
               sx={{
                 backgroundColor: '#FECF06',
                 color: '#000000',
@@ -449,17 +434,6 @@ export default function TimelineCompliancePage() {
           isGenerating={isGenerating}
         />
       )}
-
-      {/* GATING VALIDATOR DIALOG */}
-      <PlanillaGatingDialog
-        open={gatingOpen}
-        onClose={() => setGatingOpen(false)}
-        onConfirmProceed={() => {
-          if (actionPending) executeAction(actionPending);
-        }}
-        camposFaltantes={faltantes}
-        nombrePlanilla="Informe de Trazabilidad y Compliance Forense"
-      />
     </div>
   );
 }

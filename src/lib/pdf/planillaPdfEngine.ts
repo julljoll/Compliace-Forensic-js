@@ -2,28 +2,17 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 /**
- * Genera un Blob PDF de alta fidelidad a partir de un elemento DOM de planilla forense (.planilla-container .page).
- * Tamaño exacto de hoja: Oficio (216mm x 330mm).
+ * Genera un Blob PDF de alta fidelidad a partir de elementos DOM de planilla forense (.planilla-container .page).
+ * Tamaño exacto de hoja: Folio / Oficio (216mm x 330mm).
+ * - Página 1: Margen superior 4cm (40mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
+ * - Páginas 2+: Margen superior 1.5cm (15mm), izquierdo 3cm (30mm), inferior 1.5cm (15mm), derecho 1.5cm (15mm).
  */
 export async function generatePdfBlobFromElement(
   element: HTMLElement,
   title: string = 'Planilla_Forense'
 ): Promise<Blob> {
-  // Asegurar que las imágenes y fuentes estén cargadas
   await document.fonts.ready;
 
-  // Renderizar canvas con alta resolución (scale: 2)
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    logging: false,
-    backgroundColor: '#FFFFFF',
-    windowWidth: 1024,
-  });
-
-  const imgData = canvas.toDataURL('image/jpeg', 0.98);
-
-  // Dimensiones del papel Oficio en milímetros: 216mm x 330mm
   const pdfWidth = 216;
   const pdfHeight = 330;
 
@@ -34,26 +23,61 @@ export async function generatePdfBlobFromElement(
     compress: true,
   });
 
-  // Calcular alto proporcional en mm
-  const imgWidth = pdfWidth;
-  const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-  let heightLeft = imgHeight;
-  let position = 0;
-
-  // Primera página
-  pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-  heightLeft -= pdfHeight;
-
-  // Páginas adicionales si el contenido sobrepasa la longitud de 1 hoja Oficio
-  while (heightLeft > 5) {
-    position = heightLeft - imgHeight;
-    pdf.addPage([pdfWidth, pdfHeight], 'portrait');
-    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-    heightLeft -= pdfHeight;
+  // Buscar todas las hojas .page dentro del contenedor
+  let pageElements = Array.from(element.querySelectorAll<HTMLElement>('.page'));
+  if (pageElements.length === 0 && element.classList.contains('page')) {
+    pageElements = [element];
+  }
+  if (pageElements.length === 0) {
+    const parentContainer = element.closest('.planilla-container');
+    if (parentContainer) {
+      pageElements = Array.from(parentContainer.querySelectorAll<HTMLElement>('.page'));
+    }
   }
 
-  // Establecer metadatos del documento PDF
+  if (pageElements.length > 0) {
+    for (let i = 0; i < pageElements.length; i++) {
+      const pageEl = pageElements[i];
+      const canvas = await html2canvas(pageEl, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#FFFFFF',
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+      if (i > 0) {
+        pdf.addPage([pdfWidth, pdfHeight], 'portrait');
+      }
+
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+    }
+  } else {
+    // Fallback si no hay estructura .page explícita
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#FFFFFF',
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+    const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+    heightLeft -= pdfHeight;
+
+    while (heightLeft > 5) {
+      position = heightLeft - imgHeight;
+      pdf.addPage([pdfWidth, pdfHeight], 'portrait');
+      pdf.addImage(imgData, 'JPEG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+      heightLeft -= pdfHeight;
+    }
+  }
+
   pdf.setProperties({
     title: title,
     subject: 'Planilla Pericial Forense Digital — SHA256.US',
