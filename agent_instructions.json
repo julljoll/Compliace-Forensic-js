@@ -15,19 +15,14 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-22 09:00:56",
-      "last_commit": "13e6e9e - tailwind eliminado (2026-07-22)",
+      "timestamp": "2026-07-22 09:08:47",
+      "last_commit": "cd0f705 - actualizacion planilla (2026-07-22)",
       "modified_files": [
-        "M src/components/organisms/Planillas/PlanillaPdfViewer.tsx",
-        "M src/page-components/Planillas/ActaAuditoriaTimelinePage.tsx",
-        "M src/page-components/Planillas/ActaDictamenPage.tsx",
-        "M src/page-components/Planillas/ActaEntregaResultadosPage.tsx",
-        "M src/page-components/Planillas/ActaEntrevistaPage.tsx",
-        "M src/page-components/Planillas/ActaObtencionPage.tsx",
-        "M src/page-components/Planillas/PlanillaPRCCPage.tsx",
-        "M src/page-components/Planillas/TimelineCompliancePage.tsx",
-        "?? src/lib/pdf/documents/",
-        "?? src/lib/pdf/reactPdfStyles.ts"
+        "M src/lib/pdf/documents/ActaDictamenPdf.tsx",
+        "M src/lib/pdf/documents/ActaEntregaResultadosPdf.tsx",
+        "M src/lib/pdf/documents/ActaEntrevistaPdf.tsx",
+        "M src/lib/pdf/documents/ActaObtencionPdf.tsx",
+        "M src/lib/pdf/documents/PlanillaPRCCPdf.tsx"
       ],
       "source_files": 106,
       "active_routes": 1
