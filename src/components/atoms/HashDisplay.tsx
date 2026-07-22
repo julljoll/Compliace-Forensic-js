@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { Copy, Check } from './AppleIcon';
 
 export interface HashDisplayProps {
   hash: string;
-  className?: string;
 }
 
-export const HashDisplay: React.FC<HashDisplayProps> = ({ hash, className = '' }) => {
+export const HashDisplay: React.FC<HashDisplayProps> = ({ hash }) => {
   const [copied, setCopied] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   if (!hash) return null;
-
-  const truncated = hash; // Rule 2: Show hashes complete (64 hex characters)
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -26,33 +26,40 @@ export const HashDisplay: React.FC<HashDisplayProps> = ({ hash, className = '' }
   };
 
   return (
-    <div 
-      className={`relative inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] bg-[var(--co-surface-2)] border border-[var(--co-separator)] text-[var(--co-gray-1)] ${className}`}
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
+    <Box
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        px: '10px',
+        py: '4px',
+        borderRadius: '6px',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        border: '1px solid rgba(254, 207, 6, 0.25)',
+      }}
     >
-      <span className="font-mono text-[12px] tracking-tight select-all break-all">{truncated}</span>
-      <button
-        onClick={handleCopy}
-        className="p-0.5 rounded hover:bg-[var(--apple-surface-hover)] text-[var(--co-gray-2)] hover:text-[var(--apple-text)] transition-colors active:scale-90"
-        title={copied ? "¡Copiado!" : "Copiar hash completo"}
-        aria-label="Copiar hash completo"
+      <Typography
+        sx={{
+          fontFamily: 'monospace',
+          fontSize: '11px',
+          color: '#00FF41',
+          userSelect: 'all',
+          wordBreak: 'break-all',
+        }}
       >
-        {copied ? (
-          <Check size={12} className="text-[var(--co-green)]" />
-        ) : (
-          <Copy size={12} />
-        )}
-      </button>
+        {hash}
+      </Typography>
 
-      {/* Premium Hover Tooltip for Full Hash */}
-      {showTooltip && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-[999] px-3 py-1.5 rounded-[8px] bg-white text-[var(--apple-text)] border border-[var(--co-separator)] text-[11px] font-mono shadow-[var(--co-shadow-3)] pointer-events-none select-all break-all w-[320px] max-w-[90vw] text-center">
-          <p className="font-semibold text-[var(--co-gray-1)] text-[9px] uppercase tracking-wider mb-0.5 select-none">SHA-256 Completo</p>
-          {hash}
-        </div>
-      )}
-    </div>
+      <Tooltip title={copied ? '¡Copiado!' : 'Copiar SHA-256'}>
+        <IconButton
+          onClick={handleCopy}
+          size="small"
+          sx={{ color: '#AEAEB2', p: '2px', '&:hover': { color: '#FECF06' } }}
+        >
+          {copied ? <Check size={12} style={{ color: '#00FF41' }} /> : <Copy size={12} />}
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 };
 

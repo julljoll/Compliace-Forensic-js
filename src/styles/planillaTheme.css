@@ -472,9 +472,30 @@
     border-bottom: 1px dashed #000000 !important;
   }
 
+  /* Evasión Estricta de Desbordamiento de Márgenes */
+  .planilla-container,
+  .planilla-container .page,
+  .planilla-container .section,
+  .planilla-container table,
+  .planilla-container tr,
+  .planilla-container td,
+  .planilla-container th,
+  .planilla-container .form-group,
+  .planilla-container .value,
+  .planilla-container .legal-text,
   .planilla-container [contenteditable="true"] {
-    outline: none !important;
-    border-bottom: none !important;
-    background: transparent !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .planilla-container table.evidence-table,
+  .planilla-container table.tabla-datos {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
   }
 }
+

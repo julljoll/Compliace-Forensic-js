@@ -5,6 +5,7 @@ export interface IconProps {
   className?: string;
   strokeWidth?: number;
   fill?: string;
+  style?: React.CSSProperties;
 }
 
 export type CMSIcon = (props: IconProps) => React.JSX.Element;
@@ -14,10 +15,12 @@ function MaterialIcon({
   name,
   size = 20,
   className = '',
+  style,
 }: {
   name: string;
   size?: number;
   className?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <span
@@ -29,6 +32,7 @@ function MaterialIcon({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
+        ...style,
       }}
     >
       {name}

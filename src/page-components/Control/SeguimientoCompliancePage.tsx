@@ -71,7 +71,7 @@ export default function SeguimientoCompliancePage() {
       <Box sx={{ pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
-            <ShieldCheck size={24} className="text-[#FECF06]" />
+            <ShieldCheck size={24} style={{ color: '#FECF06' }} />
             Control & Seguimiento de Compliance Forense
           </Typography>
           <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>

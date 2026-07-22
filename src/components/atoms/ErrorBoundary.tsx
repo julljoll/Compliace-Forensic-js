@@ -1,4 +1,8 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { AlertTriangle, RefreshCw, Home } from './AppleIcon';
 
 interface Props {
@@ -56,37 +60,36 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <div className="flex items-center justify-center min-h-[50vh] p-8">
-          <div className="apple-card p-8 max-w-md text-center space-y-5">
-            <div className="w-16 h-16 rounded-full bg-[rgba(255,59,48,0.1)] flex items-center justify-center mx-auto">
-              <AlertTriangle size={28} className="text-[#FF3B30]" />
-            </div>
-            <div>
-              <h2 className="text-[20px] font-bold text-[#1D1D1F] tracking-[-0.02em] mb-1">Error en la aplicación</h2>
-              <p className="text-[14px] text-[#86868B] leading-relaxed">
-                Ocurrió un error inesperado. El sistema ha registrado el incidente.
-              </p>
-            </div>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', p: 4 }}>
+          <Card sx={{ p: 4, maxWidth: '440px', width: '100%', textAlign: 'center', backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+            <Box sx={{ width: 64, height: 64, borderRadius: '50%', backgroundColor: 'rgba(255, 59, 48, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
+              <AlertTriangle size={28} style={{ color: '#FF3B30' }} />
+            </Box>
+            <Typography variant="h6" sx={{ color: '#FECF06', fontWeight: 800, mb: 1 }}>
+              Error en la aplicación
+            </Typography>
+            <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mb: 2 }}>
+              Ocurrió un error inesperado. El sistema ha registrado el incidente.
+            </Typography>
+
             {this.state.error && (
-              <details className="text-left">
-                <summary className="text-[12px] text-[#86868B] cursor-pointer hover:text-[#1D1D1F] font-medium">
-                  Ver detalle técnico
-                </summary>
-                <pre className="mt-2 p-3 rounded-[8px] bg-[#F5F5F7] text-[11px] text-[#FF3B30] overflow-auto max-h-32 border border-[rgba(0,0,0,0.06)]">
+              <Box sx={{ textAlign: 'left', mb: 3 }}>
+                <Typography component="pre" sx={{ p: 2, borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.4)', fontSize: '11px', color: '#FF3B30', overflowX: 'auto', fontFamily: 'monospace' }}>
                   {this.state.error.message}
-                </pre>
-              </details>
+                </Typography>
+              </Box>
             )}
-            <div className="flex justify-center gap-3 pt-1">
-              <button onClick={this.handleReset} className="apple-btn apple-btn-primary text-[13px]">
-                <RefreshCw size={14} /> Reintentar
-              </button>
-              <button onClick={() => window.location.href = '/'} className="apple-btn apple-btn-secondary text-[13px]">
-                <Home size={14} /> Ir al inicio
-              </button>
-            </div>
-          </div>
-        </div>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+              <Button onClick={this.handleReset} variant="contained" startIcon={<RefreshCw size={14} />} sx={{ backgroundColor: '#FECF06', color: '#000000', fontWeight: 700 }}>
+                Reintentar
+              </Button>
+              <Button onClick={() => window.location.href = '/'} variant="outlined" startIcon={<Home size={14} />} sx={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.3)' }}>
+                Ir al inicio
+              </Button>
+            </Box>
+          </Card>
+        </Box>
       );
     }
 

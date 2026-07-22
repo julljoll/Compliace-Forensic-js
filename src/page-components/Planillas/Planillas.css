@@ -971,16 +971,34 @@
     height: 1px !important;
   }
 
-  /* Prevent page splitting of structural nodes */
+  /* Prevent page splitting of structural nodes & margin overflow */
+  .planilla-container,
+  .planilla-container .page,
   .planilla-container table,
   .planilla-container tr,
+  .planilla-container td,
+  .planilla-container th,
   .planilla-container .form-group,
   .planilla-container .section,
   .planilla-container .sig-card,
   .planilla-container .sig-detail-card,
   .planilla-container .signature-section,
+  .planilla-container .legal-text,
   .planilla-container .footer {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .planilla-container table,
+  .planilla-container table.evidence-table,
+  .planilla-container table.tabla-datos {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
   }
 }

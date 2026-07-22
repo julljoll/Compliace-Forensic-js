@@ -329,7 +329,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
             </IconButton>
 
             <Breadcrumbs
-              separator={<ChevronRight size={11} className="text-gray-500" />}
+              separator={<ChevronRight size={11} style={{ color: '#86868B' }} />}
               aria-label="breadcrumb"
               sx={{ '& .MuiBreadcrumbs-separator': { color: '#86868B' } }}
             >

@@ -193,7 +193,7 @@ export default function DashboardPage() {
               <Card sx={{ p: 2.5, borderLeft: '4px solid #00FF41' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 700, textTransform: 'uppercase' }}>Casos en Custodia</Typography>
-                  <FolderOpen size={18} className="text-[#00FF41]" />
+                  <FolderOpen size={18} style={{ color: '#00FF41' }} />
                 </Box>
                 <Typography sx={{ fontSize: '32px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'monospace', my: 1 }}>{stats.casosActivos}</Typography>
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
@@ -207,7 +207,7 @@ export default function DashboardPage() {
               <Card sx={{ p: 2.5, borderLeft: '4px solid #FECF06' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 700, textTransform: 'uppercase' }}>Índice Compliance %</Typography>
-                  <ShieldCheck size={18} className="text-[#FECF06]" />
+                  <ShieldCheck size={18} style={{ color: '#FECF06' }} />
                 </Box>
                 <Typography sx={{ fontSize: '32px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'monospace', my: 1 }}>{stats.cumplimientoGeneral}%</Typography>
                 <LinearProgress variant="determinate" value={stats.cumplimientoGeneral} sx={{ height: 6, borderRadius: 3, backgroundColor: 'rgba(254, 207, 6, 0.15)', '& .MuiLinearProgress-bar': { backgroundColor: '#FECF06' } }} />
@@ -218,7 +218,7 @@ export default function DashboardPage() {
               <Card sx={{ p: 2.5, borderLeft: '4px solid #9DFF00' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 700, textTransform: 'uppercase' }}>Alertas Trazabilidad</Typography>
-                  <AlertTriangle size={18} className="text-[#9DFF00]" />
+                  <AlertTriangle size={18} style={{ color: '#9DFF00' }} />
                 </Box>
                 <Typography sx={{ fontSize: '32px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'monospace', my: 1 }}>{stats.tareasPendientes}</Typography>
                 <Typography sx={{ fontSize: '10px', color: '#9DFF00', fontWeight: 700 }}>Revisión de Gating Requerida</Typography>
@@ -229,7 +229,7 @@ export default function DashboardPage() {
               <Card sx={{ p: 2.5, borderLeft: '4px solid #FFFFFF' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography sx={{ fontSize: '11px', color: '#AEAEB2', fontWeight: 700, textTransform: 'uppercase' }}>Dictámenes Periciales</Typography>
-                  <ClipboardList size={18} className="text-white" />
+                  <ClipboardList size={18} style={{ color: '#FFFFFF' }} />
                 </Box>
                 <Typography sx={{ fontSize: '32px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'monospace', my: 1 }}>{stats.casosCerrados}</Typography>
                 <Typography sx={{ fontSize: '10px', color: '#AEAEB2' }}>Listos para Impresión / PDF</Typography>

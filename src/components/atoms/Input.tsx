@@ -81,7 +81,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
       />
       {error ? (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', mt: '6px' }}>
-          <AlertCircle size={12} className="text-[#FF3B30] shrink-0" />
+          <AlertCircle size={12} style={{ color: '#FF3B30', flexShrink: 0 }} />
           <Typography sx={{ fontSize: '13px', color: '#FF3B30', fontWeight: 500 }}>
             {error}
           </Typography>

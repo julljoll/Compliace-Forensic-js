@@ -1,4 +1,12 @@
 import Link from 'next/link';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import LinearProgress from '@mui/material/LinearProgress';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import { User, Calendar, ChevronRight, Trash2, Smartphone, Mail, HardDrive } from '../../atoms/AppleIcon';
 import { CasoCMS, EstadoCaso, NivelCumplimiento, TipoProyecto } from '../../../store/cmsStore';
 
@@ -8,10 +16,10 @@ const TIPO_ICONOS: Record<TipoProyecto, any> = {
   forense_discoduro: HardDrive,
 };
 
-const TIPO_BADGE: Record<TipoProyecto, string> = {
-  forense_whatsapp: 'bg-green-500/10 text-[#00FF41] border-green-500/20',
-  forense_email: 'bg-yellow-500/10 text-[#FECF06] border-yellow-500/20',
-  forense_discoduro: 'bg-purple-500/10 text-[#9DFF00] border-purple-500/20',
+const TIPO_COLORS: Record<TipoProyecto, { color: string; bg: string }> = {
+  forense_whatsapp: { color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
+  forense_email: { color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
+  forense_discoduro: { color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
 };
 
 const TIPO_LABEL: Record<TipoProyecto, string> = {
@@ -29,84 +37,119 @@ interface CasoCardProps {
   cumplimientoIcon: Record<NivelCumplimiento, { icon: any; color: string; label: string }>;
 }
 
-const PRIORIDAD_SHADOWS: Record<string, string> = {
-  critica: 'shadow-[0_0_8px_rgba(255,59,48,0.25)]',
-  alta: 'shadow-[0_0_8px_rgba(255,149,0,0.25)]',
-  media: 'shadow-[0_0_8px_rgba(255,204,0,0.25)]',
-  baja: 'shadow-[0_0_8px_rgba(52,199,89,0.25)]',
+const PRIORIDAD_COLORS: Record<string, string> = {
+  critica: '#FF3B30',
+  alta: '#FF9500',
+  media: '#FECF06',
+  baja: '#00FF41',
 };
 
 export default function CasoCard({
   caso,
   deleteCaso,
   estados,
-  estadoColors,
-  prioridadColors,
   cumplimientoIcon,
 }: CasoCardProps) {
-  const estadoConf = estadoColors[caso.estado] || estadoColors.iniciado;
   const cumplConf = cumplimientoIcon[caso.nivelCumplimientoGeneral];
   const CumplIcon = cumplConf.icon;
   const TipoIcon = TIPO_ICONOS[caso.tipoProyecto] || Smartphone;
+  const tipoColor = TIPO_COLORS[caso.tipoProyecto] || TIPO_COLORS.forense_whatsapp;
+  const prioColor = PRIORIDAD_COLORS[caso.prioridad] || '#FECF06';
 
   return (
-    <div className="apple-card p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:translate-y-[-2px] group">
-      <div className={`w-1.5 h-10 rounded-full ${prioridadColors[caso.prioridad]} shrink-0 ${PRIORIDAD_SHADOWS[caso.prioridad] || ''}`} />
+    <Card
+      sx={{
+        p: 2.5,
+        backgroundColor: '#1E1800',
+        border: '1px solid rgba(254, 207, 6, 0.25)',
+        borderLeft: `4px solid ${prioColor}`,
+        borderRadius: '8px',
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { xs: 'flex-start', sm: 'center' },
+        gap: 2,
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          borderColor: '#FECF06',
+          transform: 'translateY(-2px)',
+        },
+      }}
+    >
+      <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1, flexWrap: 'wrap' }}>
+          <Typography sx={{ fontFamily: 'monospace', fontWeight: 800, fontSize: '12px', color: '#FECF06' }}>
+            {caso.numeroCaso}
+          </Typography>
 
-      <div className="flex-1 min-w-0 w-full">
-        <div className="flex flex-wrap items-center gap-1.5 mb-1">
-          <span className="font-mono font-black text-[var(--apple-accent)] text-xs tracking-tighter uppercase">{caso.numeroCaso}</span>
-          <div className={`text-[9px] px-2 py-0.5 rounded-md border font-bold uppercase tracking-tight ${estadoConf}`}>
-            {estados.find(e => e.value === caso.estado)?.label}
-          </div>
-          <div className={`flex items-center gap-1 text-[8px] px-1.5 py-0.5 rounded-md border font-bold uppercase tracking-tight ${TIPO_BADGE[caso.tipoProyecto] || TIPO_BADGE.forense_whatsapp}`}>
-            <TipoIcon size={10} />
-            {TIPO_LABEL[caso.tipoProyecto] || 'WhatsApp'}
-          </div>
-        </div>
-        <h3 className="font-bold text-white truncate text-sm mb-1 group-hover:text-[var(--apple-accent)] transition-colors">{caso.titulo}</h3>
-        <div className="flex items-center gap-4 text-[11px] text-[#86868B] font-medium">
-          <span className="flex items-center gap-1.5"><User size={12} className="opacity-50" />{caso.peritoLider}</span>
-          <span className="flex items-center gap-1.5"><Calendar size={12} className="opacity-50" />{new Date(caso.fechaCreacion).toLocaleDateString('es')}</span>
-        </div>
-      </div>
+          <Chip
+            icon={<TipoIcon size={12} style={{ color: tipoColor.color }} />}
+            label={TIPO_LABEL[caso.tipoProyecto] || 'WhatsApp'}
+            size="small"
+            sx={{ height: 20, fontSize: '10px', backgroundColor: tipoColor.bg, color: tipoColor.color, fontWeight: 700 }}
+          />
+        </Stack>
 
-      <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3 shrink-0 border-t border-white/5 sm:border-0 pt-3 sm:pt-0">
-        <div className="flex items-center gap-2">
-           <div className={`p-1 rounded-md ${cumplConf.color.replace('text', 'bg')}/10`}>
-              <CumplIcon size={14} className={cumplConf.color} />
-           </div>
-           <span className="text-[10px] font-bold text-[#86868B]/70 uppercase tracking-widest">{cumplConf.label}</span>
-        </div>
-        <div className="w-full sm:w-28">
-          <div className="flex justify-between text-[9px] font-bold text-[#86868B] mb-1 uppercase tracking-tighter">
-            <span>Progreso</span>
-            <span>{caso.porcentajeCompletado}%</span>
-          </div>
-          <div className="h-1 bg-black/20 rounded-full overflow-hidden">
-            <div className="h-full bg-[var(--apple-accent)] rounded-full transition-all duration-700 ease-out" style={{ width: `${caso.porcentajeCompletado}%` }} />
-          </div>
-        </div>
-      </div>
-
-      <div className="hidden sm:flex items-center gap-1.5 shrink-0 ml-2">
-        <Link href={`/casos/${caso.id}`} className="p-2 rounded-md bg-black/20 text-[#86868B] hover:bg-[var(--apple-accent)] hover:text-black transition-all">
-          <ChevronRight size={16} strokeWidth={2.5} />
+        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none' }}>
+          <Typography sx={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', mb: 1, '&:hover': { color: '#FECF06' } }}>
+            {caso.titulo}
+          </Typography>
         </Link>
-        <button onClick={() => deleteCaso(caso.id)} className="p-2 rounded-md bg-black/20 text-[#86868B] hover:bg-[#FF3B30] hover:text-white transition-all">
-          <Trash2 size={14} />
-        </button>
-      </div>
 
-      <div className="flex sm:hidden items-center justify-end gap-2 w-full mt-2">
-        <Link href={`/casos/${caso.id}`} className="flex-1 flex justify-center items-center py-2 rounded-md bg-[var(--apple-accent)] text-black font-bold text-xs uppercase tracking-widest shadow-lg">
-          Abrir Registro
-          <ChevronRight size={14} className="ml-1" strokeWidth={3} />
+        <Stack direction="row" spacing={2} sx={{ fontSize: '12px', color: '#AEAEB2' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <User size={13} style={{ color: '#AEAEB2' }} />
+            <span>{caso.peritoLider || 'Perito Asignado'}</span>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Calendar size={13} style={{ color: '#AEAEB2' }} />
+            <span>{new Date(caso.fechaCreacion).toLocaleDateString('es-VE')}</span>
+          </Box>
+        </Stack>
+      </Box>
+
+      {/* Progress & Compliance */}
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'row', sm: 'column' }, alignItems: { xs: 'center', sm: 'flex-end' }, justifyContent: 'space-between', width: { xs: '100%', sm: 'auto' }, gap: 1.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <CumplIcon size={16} style={{ color: '#00FF41' }} />
+          <Typography sx={{ fontSize: '11px', fontWeight: 700, color: '#AEAEB2', textTransform: 'uppercase' }}>
+            {cumplConf.label}
+          </Typography>
+        </Box>
+
+        <Box sx={{ width: { xs: '120px', sm: '130px' } }}>
+          <Typography sx={{ fontSize: '10px', color: '#AEAEB2', fontWeight: 700, textAlign: 'right', mb: 0.5 }}>
+            Progreso: {caso.porcentajeCompletado}%
+          </Typography>
+          <LinearProgress
+            variant="determinate"
+            value={caso.porcentajeCompletado || 0}
+            sx={{ height: 6, borderRadius: 3, backgroundColor: 'rgba(0, 255, 65, 0.15)', '& .MuiLinearProgress-bar': { backgroundColor: '#00FF41' } }}
+          />
+        </Box>
+      </Box>
+
+      {/* Actions */}
+      <Stack direction="row" spacing={1} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none' }}>
+          <IconButton size="small" sx={{ color: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.1)', '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.25)' } }}>
+            <ChevronRight size={18} />
+          </IconButton>
         </Link>
-        <button onClick={() => deleteCaso(caso.id)} className="p-2 px-4 rounded-md bg-red-500/10 text-[#FF3B30] border border-red-500/20">
+        <IconButton size="small" onClick={() => deleteCaso(caso.id)} sx={{ color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)', '&:hover': { backgroundColor: 'rgba(255, 59, 48, 0.25)' } }}>
           <Trash2 size={16} />
-        </button>
-      </div>
-    </div>
+        </IconButton>
+      </Stack>
+
+      <Box sx={{ display: { xs: 'flex', sm: 'none' }, width: '100%', gap: 1, mt: 1 }}>
+        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none', flex: 1 }}>
+          <Button fullWidth variant="contained" size="small" sx={{ backgroundColor: '#FECF06', color: '#000000', fontWeight: 700 }}>
+            Abrir Expediente
+          </Button>
+        </Link>
+        <IconButton onClick={() => deleteCaso(caso.id)} sx={{ color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)' }}>
+          <Trash2 size={16} />
+        </IconButton>
+      </Box>
+    </Card>
   );
 }

@@ -1,3 +1,6 @@
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { CMSIcon } from '../atoms/AppleIcon';
 
 interface KpiCardProps {
@@ -5,28 +8,40 @@ interface KpiCardProps {
   value: string | number;
   sub?: string;
   icon: CMSIcon;
-  accent?: boolean;
   color?: string;
 }
 
-export default function KpiCard({ 
-  title, 
-  value, 
-  sub, 
-  icon: Icon, 
-  accent = false, 
-  color = 'text-[var(--apple-accent)]' 
+export default function KpiCard({
+  title,
+  value,
+  sub,
+  icon: Icon,
+  color = '#FECF06',
 }: KpiCardProps) {
   return (
-    <div className={`apple-card p-5 group ${accent ? 'border-[var(--apple-border-strong)] bg-black/10' : ''}`}>
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.04em] text-[#86868B]">{title}</p>
-        <div className={`p-2 rounded-md ${color.replace('text', 'bg')}/10 transition-transform group-hover:scale-110`}>
-          <Icon size={16} className={color} strokeWidth={2} />
-        </div>
-      </div>
-      <div className={`text-[28px] font-bold mb-0.5 tracking-[-0.03em] ${color}`}>{value}</div>
-      {sub && <p className="text-[12px] text-[#86868B] font-normal">{sub}</p>}
-    </div>
+    <Card
+      sx={{
+        p: 2.5,
+        backgroundColor: '#1E1800',
+        border: '1px solid rgba(254, 207, 6, 0.25)',
+        borderLeft: `4px solid ${color}`,
+        borderRadius: '8px',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 1 }}>
+        <Typography sx={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', color: '#AEAEB2' }}>
+          {title}
+        </Typography>
+        <Icon size={16} style={{ color }} />
+      </Box>
+      <Typography sx={{ fontSize: '28px', fontWeight: 800, color: '#FFFFFF', fontFamily: 'monospace', mb: 0.5 }}>
+        {value}
+      </Typography>
+      {sub && (
+        <Typography sx={{ fontSize: '12px', color: '#AEAEB2' }}>
+          {sub}
+        </Typography>
+      )}
+    </Card>
   );
 }

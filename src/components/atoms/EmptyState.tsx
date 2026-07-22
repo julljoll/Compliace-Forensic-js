@@ -1,11 +1,12 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 export interface EmptyStateProps {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   title: string;
   description: string;
   action?: React.ReactNode;
-  className?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
@@ -13,25 +14,32 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   title,
   description,
   action,
-  className = '',
 }) => {
   return (
-    <div className={`flex flex-col items-center justify-center text-center p-8 border border-dashed border-[var(--co-separator)] rounded-[20px] bg-[var(--co-surface-1)]/30 ${className}`}>
-      <div className="p-4 rounded-full bg-[var(--co-surface-2)] text-[var(--co-gray-1)] mb-4 shadow-[var(--co-shadow-1)]">
-        <Icon size={36} className="text-[var(--co-gray-1)] shrink-0" />
-      </div>
-      <h3 className="text-[17px] font-bold text-[var(--apple-text)] tracking-[-0.1px]">
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        p: 4,
+        border: '1px dashed rgba(254, 207, 6, 0.3)',
+        borderRadius: '16px',
+        backgroundColor: '#1E1800',
+      }}
+    >
+      <Box sx={{ p: 2, borderRadius: '50%', backgroundColor: 'rgba(254, 207, 6, 0.1)', mb: 2 }}>
+        <Icon size={36} style={{ color: '#FECF06' }} />
+      </Box>
+      <Typography variant="h6" sx={{ color: '#FFFFFF', fontWeight: 700 }}>
         {title}
-      </h3>
-      <p className="text-[15px] text-[var(--co-gray-1)] mt-2 max-w-sm leading-relaxed">
+      </Typography>
+      <Typography sx={{ fontSize: '14px', color: '#AEAEB2', mt: 1, maxWidth: '360px' }}>
         {description}
-      </p>
-      {action && (
-        <div className="mt-5">
-          {action}
-        </div>
-      )}
-    </div>
+      </Typography>
+      {action && <Box sx={{ mt: 3 }}>{action}</Box>}
+    </Box>
   );
 };
 
