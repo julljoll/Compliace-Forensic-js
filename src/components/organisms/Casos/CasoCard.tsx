@@ -89,7 +89,7 @@ export default function CasoCard({
           />
         </Stack>
 
-        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none' }}>
+        <Link href={`/control/seguimiento-compliance?casoId=${caso.id}`} style={{ textDecoration: 'none' }}>
           <Typography sx={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', mb: 1, '&:hover': { color: '#FECF06' } }}>
             {caso.titulo}
           </Typography>
@@ -130,7 +130,7 @@ export default function CasoCard({
 
       {/* Actions */}
       <Stack direction="row" spacing={1} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none' }}>
+        <Link href={`/control/seguimiento-compliance?casoId=${caso.id}`} style={{ textDecoration: 'none' }}>
           <IconButton size="small" sx={{ color: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.1)', '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.25)' } }}>
             <ChevronRight size={18} />
           </IconButton>
@@ -141,7 +141,7 @@ export default function CasoCard({
       </Stack>
 
       <Box sx={{ display: { xs: 'flex', sm: 'none' }, width: '100%', gap: 1, mt: 1 }}>
-        <Link href={`/casos/${caso.id}`} style={{ textDecoration: 'none', flex: 1 }}>
+        <Link href={`/control/seguimiento-compliance?casoId=${caso.id}`} style={{ textDecoration: 'none', flex: 1 }}>
           <Button fullWidth variant="contained" size="small" sx={{ backgroundColor: '#FECF06', color: '#000000', fontWeight: 700 }}>
             Abrir Expediente
           </Button>

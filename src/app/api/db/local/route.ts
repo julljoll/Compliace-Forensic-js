@@ -1,32 +1,50 @@
 import { NextResponse } from 'next/server';
-import { initLocalSQLiteDatabase, queryLocalSQLite } from '@/db/sqliteClient';
+import {
+  initLocalSQLiteDatabase,
+  getCasosSQLite,
+  addCasoSQLite,
+  updateCasoSQLite,
+  deleteCasoSQLite,
+  getUsersSQLite,
+  addUserSQLite,
+  updateUserSQLite,
+  deleteUserSQLite,
+  getAuditLogsSQLite,
+  addAuditLogSQLite
+} from '@/db/sqliteClient';
 
 export async function GET() {
   try {
-    const initialized = await initLocalSQLiteDatabase();
-    const casos = await queryLocalSQLite('SELECT * FROM casos ORDER BY fecha_actualizacion DESC');
+    await initLocalSQLiteDatabase();
+    const casos = await getCasosSQLite();
+    const users = await getUsersSQLite();
+    const logs = await getAuditLogsSQLite();
     
     return NextResponse.json({
       status: 'online',
       mode: process.env.VERCEL ? 'vercel_cloud' : 'local_node',
-      sqlite_ready: initialized,
+      sqlite_ready: true,
       total_casos: casos ? casos.length : 0,
       casos: casos || [],
+      users: users || [],
+      logs: logs || []
     });
   } catch (error: any) {
     return NextResponse.json({
-      status: 'fallback_indexeddb',
+      status: 'error',
       mode: process.env.VERCEL ? 'vercel_cloud' : 'local_node',
       sqlite_ready: false,
-      error: error?.message || 'IndexedDB client-side fallback active',
+      error: error?.message || 'Error en servidor local SQLite',
+      casos: []
     }, { status: 200 });
   }
 }
 
 export async function POST(request: Request) {
   try {
+    await initLocalSQLiteDatabase();
     const body = await request.json();
-    const { action, caso, log } = body;
+    const { action, caso, id, data, user, log } = body;
 
     if (action === 'init') {
       const ok = await initLocalSQLiteDatabase();
@@ -34,63 +52,48 @@ export async function POST(request: Request) {
     }
 
     if (action === 'save_caso' && caso) {
-      await initLocalSQLiteDatabase();
-      await queryLocalSQLite(`
-        INSERT INTO casos (id, numero_caso, titulo, descripcion, estado, prioridad, fiscal, perito_lider, compliance, fases_completadas, total_fases, porcentaje_completado, total_evidencias, datos_json, fecha_creacion, fecha_actualizacion)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(id) DO UPDATE SET
-          titulo=excluded.titulo,
-          descripcion=excluded.descripcion,
-          estado=excluded.estado,
-          prioridad=excluded.prioridad,
-          fiscal=excluded.fiscal,
-          perito_lider=excluded.perito_lider,
-          compliance=excluded.compliance,
-          fases_completadas=excluded.fases_completadas,
-          total_fases=excluded.total_fases,
-          porcentaje_completado=excluded.porcentaje_completado,
-          total_evidencias=excluded.total_evidencias,
-          datos_json=excluded.datos_json,
-          fecha_actualizacion=excluded.fecha_actualizacion
-      `, [
-        caso.id,
-        caso.numeroCaso || caso.numero_caso || `CASO-${Date.now()}`,
-        caso.titulo || 'Caso Forense',
-        caso.descripcion || '',
-        caso.estado || 'iniciado',
-        caso.prioridad || 'media',
-        caso.fiscal || '',
-        caso.peritoLider || '',
-        caso.compliance || 'Pendiente',
-        caso.fasesCompletadas || 0,
-        caso.totalFases || 0,
-        caso.porcentajeCompletado || 0,
-        caso.totalEvidencias || 0,
-        JSON.stringify(caso),
-        caso.fechaCreacion || new Date().toISOString(),
-        new Date().toISOString()
-      ]);
-      return NextResponse.json({ success: true });
+      const res = await addCasoSQLite(caso);
+      return NextResponse.json(res);
+    }
+
+    if (action === 'update_caso' && id) {
+      const ok = await updateCasoSQLite(id, data || {});
+      return NextResponse.json({ success: ok });
+    }
+
+    if (action === 'delete_caso' && id) {
+      const ok = await deleteCasoSQLite(id);
+      return NextResponse.json({ success: ok });
+    }
+
+    if (action === 'get_casos') {
+      const casos = await getCasosSQLite();
+      return NextResponse.json({ success: true, casos });
+    }
+
+    if (action === 'get_users') {
+      const users = await getUsersSQLite();
+      return NextResponse.json({ success: true, users });
+    }
+
+    if (action === 'add_user' && user) {
+      const res = await addUserSQLite(user);
+      return NextResponse.json(res);
+    }
+
+    if (action === 'update_user' && id) {
+      const ok = await updateUserSQLite(id, data || {});
+      return NextResponse.json({ success: ok });
+    }
+
+    if (action === 'delete_user' && id) {
+      const ok = await deleteUserSQLite(id);
+      return NextResponse.json({ success: ok });
     }
 
     if (action === 'add_audit_log' && log) {
-      await initLocalSQLiteDatabase();
-      await queryLocalSQLite(`
-        INSERT INTO audit_logs (id, timestamp, accion, usuario, rol, detalles, hash, prev_hash, caso_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(id) DO NOTHING
-      `, [
-        log.id || `LOG-${Date.now()}`,
-        log.timestamp || new Date().toISOString(),
-        log.accion || 'ACCION',
-        log.usuario || 'Perito System',
-        log.rol || 'perito',
-        typeof log.detalles === 'object' ? JSON.stringify(log.detalles) : (log.detalles || ''),
-        log.hash || '',
-        log.prevHash || log.prev_hash || '',
-        log.casoId || log.caso_id || null
-      ]);
-      return NextResponse.json({ success: true });
+      const ok = await addAuditLogSQLite(log);
+      return NextResponse.json({ success: ok });
     }
 
     return NextResponse.json({ success: false, error: 'Acción no soportada' }, { status: 400 });

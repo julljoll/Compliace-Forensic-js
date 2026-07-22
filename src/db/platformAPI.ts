@@ -1,4 +1,16 @@
 
+import {
+  getCasosSQLite,
+  addCasoSQLite,
+  updateCasoSQLite,
+  deleteCasoSQLite,
+  getUsersSQLite,
+  addUserSQLite,
+  updateUserSQLite,
+  getAuditLogsSQLite,
+  addAuditLogSQLite
+} from './sqliteClient';
+
 declare global {
   interface Window {
     electronAPI?: {
@@ -38,7 +50,7 @@ declare global {
 }
 
 export interface UserDB {
-  id: number;
+  id: number | string;
   username: string;
   nombre: string;
   apellido: string;
@@ -55,11 +67,11 @@ export interface UserDB {
 
 export const platformAPI = {
   get platform() {
-    return window.electronAPI?.platform || 'browser';
+    return window.electronAPI?.platform || 'local_desktop';
   },
 
   get operationMode() {
-    return window.electronAPI?.operationMode || 'production';
+    return window.electronAPI?.operationMode || 'local_sqlite';
   },
 
   dialog: {
@@ -97,72 +109,178 @@ export const platformAPI = {
 
   db: {
     getCasos: async (userId: number = 1): Promise<any[]> => {
-      if (window.electronAPI?.db?.getCasos) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.getCasos) {
         return window.electronAPI.db.getCasos(userId);
       }
-      return [];
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local');
+          if (res.ok) {
+            const data = await res.json();
+            return data.casos || [];
+          }
+        } catch (e) {}
+      }
+      return getCasosSQLite();
     },
     addCaso: async (caso: any) => {
-      if (window.electronAPI?.db?.addCaso) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.addCaso) {
         return window.electronAPI.db.addCaso(caso);
       }
-      return { success: false, error: 'No electronAPI' };
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'save_caso', caso })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            return data;
+          }
+        } catch (e) {}
+      }
+      return addCasoSQLite(caso);
     },
     updateCaso: async (id: string, data: any) => {
-      if (window.electronAPI?.db?.updateCaso) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.updateCaso) {
         return window.electronAPI.db.updateCaso(id, data);
       }
-      return false;
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'update_caso', id, data })
+          });
+          if (res.ok) {
+            const resData = await res.json();
+            return resData.success;
+          }
+        } catch (e) {}
+      }
+      return updateCasoSQLite(id, data);
     },
     deleteCaso: async (id: string) => {
-      if (window.electronAPI?.db?.deleteCaso) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.deleteCaso) {
         return window.electronAPI.db.deleteCaso(id);
       }
-      return false;
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_caso', id })
+          });
+          if (res.ok) {
+            const resData = await res.json();
+            return resData.success;
+          }
+        } catch (e) {}
+      }
+      return deleteCasoSQLite(id);
     },
     saveState: async (userId: number, state: any) => {
-      if (window.electronAPI?.db?.saveState) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.saveState) {
         return window.electronAPI.db.saveState(userId, state);
       }
-      return { success: false };
+      return { success: true };
     },
     loadState: async (userId: number) => {
-      if (window.electronAPI?.db?.loadState) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.loadState) {
         return window.electronAPI.db.loadState(userId);
       }
       return null;
     },
     getUsers: async (): Promise<UserDB[]> => {
-      if (window.electronAPI?.db?.getUsers) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.getUsers) {
         return window.electronAPI.db.getUsers();
       }
-      return [];
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.users && data.users.length > 0) return data.users;
+          }
+        } catch (e) {}
+      }
+      return getUsersSQLite();
     },
     addUser: async (userIdMaker: number, user: any) => {
-      if (window.electronAPI?.db?.addUser) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.addUser) {
         return window.electronAPI.db.addUser(userIdMaker, user);
       }
-      return { success: false, error: 'No electronAPI' };
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'add_user', user })
+          });
+          if (res.ok) {
+            return await res.json();
+          }
+        } catch (e) {}
+      }
+      return addUserSQLite(user);
     },
     updateUser: async (userIdMaker: number, userId: number, data: any) => {
-      if (window.electronAPI?.db?.updateUser) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.updateUser) {
         return window.electronAPI.db.updateUser(userIdMaker, userId, data);
       }
-      return { success: false, error: 'No electronAPI' };
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'update_user', id: String(userId), data })
+          });
+          if (res.ok) {
+            return await res.json();
+          }
+        } catch (e) {}
+      }
+      return updateUserSQLite(String(userId), data);
     },
     getAuditLogs: async () => {
-      if (window.electronAPI?.db?.getAuditLogs) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.getAuditLogs) {
         return window.electronAPI.db.getAuditLogs();
       }
-      return [];
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.logs) return data.logs;
+          }
+        } catch (e) {}
+      }
+      return getAuditLogsSQLite();
     },
     addAuditLog: async (log: any) => {
-      if (window.electronAPI?.db?.addAuditLog) {
+      if (typeof window !== 'undefined' && window.electronAPI?.db?.addAuditLog) {
         return window.electronAPI.db.addAuditLog(log);
       }
-      return false;
+      if (typeof window !== 'undefined') {
+        try {
+          const res = await fetch('/api/db/local', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'add_audit_log', log })
+          });
+          if (res.ok) {
+            const resData = await res.json();
+            return resData.success;
+          }
+        } catch (e) {}
+      }
+      return addAuditLogSQLite(log);
     }
   },
+
+
+
 
   auth: {
     login: async (credentials: any) => {

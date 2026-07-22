@@ -87,9 +87,10 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
         subtitle: `Caso #${caso.numeroCaso} | Expediente: ${caso.expediente || 'N/D'} | Perito: ${caso.peritoLider}`,
         icon: FolderOpen,
         action: () => {
-          router.push(`/casos/${caso.id}`);
+          router.push(`/control/seguimiento-compliance?casoId=${caso.id}`);
           onClose();
         }
+
       });
     });
 

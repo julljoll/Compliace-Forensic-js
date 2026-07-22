@@ -215,10 +215,32 @@ export const indexedDBStorage = {
         db.close();
         resolve(count);
       };
-      tx.onerror = () => {
-        db.close();
-        reject(tx.error);
-      };
     });
+  },
+
+  /** Puebla un store con datos iniciales si está vacío */
+  async seedStoreIfEmpty(storeName: string, defaultData: any[]): Promise<number> {
+    const count = await this.getCount(storeName).catch(() => 0);
+    if (count === 0 && Array.isArray(defaultData) && defaultData.length > 0) {
+      const { store, db } = await getTransaction(storeName, 'readwrite');
+      return new Promise((resolve, reject) => {
+        let inserted = 0;
+        const tx = store.transaction;
+        defaultData.forEach((item) => {
+          store.put(item);
+          inserted++;
+        });
+        tx.oncomplete = () => {
+          db.close();
+          console.info(`[IndexedDB] Store '${storeName}' sembrado exitosamente con ${inserted} registros iniciales.`);
+          resolve(inserted);
+        };
+        tx.onerror = () => {
+          db.close();
+          reject(tx.error);
+        };
+      });
+    }
+    return 0;
   },
 };

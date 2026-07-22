@@ -78,6 +78,13 @@ export async function initDatabase() {
         estado VARCHAR(50) NOT NULL,
         prioridad VARCHAR(50) DEFAULT 'media',
         fiscal VARCHAR(255),
+        perito_lider VARCHAR(255),
+        compliance VARCHAR(100) DEFAULT 'Pendiente',
+        fases_completadas INTEGER DEFAULT 0,
+        total_fases INTEGER DEFAULT 0,
+        porcentaje_completado INTEGER DEFAULT 0,
+        total_evidencias INTEGER DEFAULT 0,
+        nivel_cumplimiento_general VARCHAR(100) DEFAULT 'no_aplica',
         dispositivo_marca VARCHAR(255),
         dispositivo_modelo VARCHAR(255),
         dispositivo_imei VARCHAR(255),
@@ -109,6 +116,13 @@ export async function initDatabase() {
     `);
 
     // Migraciones automáticas mediante ALTER TABLE si la tabla ya existía sin estas columnas
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS perito_lider VARCHAR(255)`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS compliance VARCHAR(100) DEFAULT 'Pendiente'`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS fases_completadas INTEGER DEFAULT 0`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS total_fases INTEGER DEFAULT 0`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS porcentaje_completado INTEGER DEFAULT 0`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS total_evidencias INTEGER DEFAULT 0`);
+    await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS nivel_cumplimiento_general VARCHAR(100) DEFAULT 'no_aplica'`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS tipo_proyecto VARCHAR(100) DEFAULT 'forense_whatsapp'`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS solicitante_nombre VARCHAR(255)`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS solicitante_cedula VARCHAR(100)`);
@@ -119,6 +133,27 @@ export async function initDatabase() {
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_marca VARCHAR(255)`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS discoduro_modelo VARCHAR(255)`);
     await sqlClient(`ALTER TABLE casos ADD COLUMN IF NOT EXISTS steps TEXT`);
+
+    // Tabla de personal y peritos
+    await sqlClient(`
+      CREATE TABLE IF NOT EXISTS personal (
+        id VARCHAR(255) PRIMARY KEY,
+        nombre VARCHAR(255) NOT NULL,
+        apellido VARCHAR(255) NOT NULL,
+        ci VARCHAR(100) NOT NULL,
+        cargo VARCHAR(255),
+        rol VARCHAR(100) NOT NULL,
+        organismo VARCHAR(255),
+        despacho VARCHAR(255),
+        email VARCHAR(255) UNIQUE NOT NULL,
+        telefono VARCHAR(100),
+        username VARCHAR(100),
+        activo BOOLEAN DEFAULT true,
+        ranking INTEGER DEFAULT 5,
+        profile_image TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
     // Tabla de usuarios autorizados (login por correo)
     await sqlClient(`
@@ -162,6 +197,7 @@ export async function initDatabase() {
     return false;
   }
 }
+
 
 // --- Casos (Proyectos) ---
 

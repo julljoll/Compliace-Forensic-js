@@ -193,8 +193,9 @@ export default function NormativasPage() {
                 {casosUsandoSelected.length > 0 ? (
                   <Stack spacing={1}>
                     {casosUsandoSelected.map(c => (
-                      <Link key={c.id} href={`/casos/${c.id}`} style={{ textDecoration: 'none' }}>
+                      <Link key={c.id} href={`/control/seguimiento-compliance?casoId=${c.id}`} style={{ textDecoration: 'none' }}>
                         <Box sx={{ p: 1.5, backgroundColor: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(157, 255, 0, 0.2)', borderRadius: '6px', '&:hover': { borderColor: '#9DFF00' } }}>
+
                           <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>
                             Caso #{c.numeroCaso} — {c.titulo}
                           </Typography>

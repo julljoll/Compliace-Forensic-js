@@ -15,26 +15,26 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-22 12:26:59",
-      "last_commit": "075e3cc - border (2026-07-22)",
+      "timestamp": "2026-07-22 18:21:52",
+      "last_commit": "8557dc3 - actualizacion claude (2026-07-22)",
       "modified_files": [
         "M agent_instructions.json",
-        "M src/components/organisms/Planillas/PlanillaPdfViewer.tsx",
-        "M src/lib/pdf/documents/ActaAuditoriaTimelinePdf.tsx",
-        "M src/lib/pdf/documents/ActaDictamenPdf.tsx",
-        "M src/lib/pdf/documents/ActaEntregaResultadosPdf.tsx",
-        "M src/lib/pdf/documents/ActaEntrevistaPdf.tsx",
-        "M src/lib/pdf/documents/ActaObtencionPdf.tsx",
-        "M src/lib/pdf/documents/PlanillaPRCCPdf.tsx",
-        "M src/lib/pdf/reactPdfStyles.ts",
-        "M src/page-components/Planillas/ActaDictamenPage.tsx",
-        "M src/page-components/Planillas/ActaEntregaResultadosPage.tsx",
-        "M src/page-components/Planillas/ActaEntrevistaPage.tsx",
-        "M src/page-components/Planillas/ActaObtencionPage.tsx",
-        "M src/page-components/Planillas/PlanillaPRCCPage.tsx",
-        "?? src/lib/export/"
+        "D src/app/(dashboard)/casos/[id]/page.tsx",
+        "M src/app/api/db/local/route.ts",
+        "M src/components/organisms/Casos/CasoCard.tsx",
+        "M src/components/organisms/CommandPalette.tsx",
+        "M src/db/indexedDB.ts",
+        "M src/db/neonClient.ts",
+        "M src/db/platformAPI.ts",
+        "M src/db/sqliteClient.ts",
+        "D src/page-components/CasoDetailPage.tsx",
+        "M src/page-components/CasosPage.tsx",
+        "M src/page-components/NormativasPage.tsx",
+        "M src/page-components/PersonalPage.tsx",
+        "M src/store/cmsStore.ts",
+        "?? src/components/organisms/AdminCompliancePanel.tsx"
       ],
-      "source_files": 107,
+      "source_files": 106,
       "active_routes": 1
     }
   },

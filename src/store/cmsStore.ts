@@ -4,6 +4,7 @@ import { useAuditStore } from './auditStore';
 import { getPasosPorTipo } from '../data/tiposProyecto';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
 import { platformAPI } from '../db/platformAPI';
+import { indexedDBStorage } from '../db/indexedDB';
 
 // ─── Enumeraciones ────────────────────────────────────────────────────────────
 
@@ -13,7 +14,7 @@ export type EstadoTarea = 'pendiente' | 'en_progreso' | 'completada' | 'bloquead
 export type TipoNormativa = 'ISO' | 'NIST' | 'LEY' | 'MANUAL' | 'REGLAMENTO';
 export type NivelCumplimiento = 'conforme' | 'parcial' | 'no_conforme' | 'no_aplica';
 export type TipoEvidencia = 'dispositivo_movil' | 'computador' | 'memoria' | 'imagen_forense' | 'documento' | 'otro';
-export type RolPersonal = 'perito_lider' | 'perito_asistente' | 'fiscal' | 'compliance_officer' | 'coordinador';
+export type RolPersonal = 'perito_lider' | 'perito_asistente' | 'fiscal' | 'compliance_officer' | 'coordinador' | 'admin';
 export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro';
 export type EstadoPaso = 'bloqueado' | 'disponible' | 'en_progreso' | 'completado';
 
@@ -41,6 +42,8 @@ export interface Personal {
   activo: boolean;
   ranking?: number;
   profileImage?: string;
+  profile_image?: string;
+  username?: string;
 }
 
 export interface Normativa {
@@ -272,6 +275,7 @@ interface CMSState {
   // Acciones - Personal
   addPersonal: (p: Omit<Personal, 'id'>) => void;
   updatePersonal: (id: string, datos: Partial<Personal>) => void;
+  deletePersonal: (id: string) => Promise<void>;
   
   // Acciones - Normativas
   addNormativa: (n: Omit<Normativa, 'id'>) => void;
@@ -627,7 +631,7 @@ const neonStorage = {
 export const useCMSStore = create<CMSState>()(
   persist(
     (set, get) => ({
-      casos: MOCK_CASOS,
+      casos: [],
       evidencias: [],
       tareas: [],
       fases: [],
@@ -659,7 +663,20 @@ export const useCMSStore = create<CMSState>()(
             });
             set({ normativas: finalNormativas });
 
-            const casosDB = platformAPI.db ? await platformAPI.db.getCasos(1) : null;
+            let casosDB = platformAPI.db ? await platformAPI.db.getCasos(1) : [];
+            const isAlreadySeeded = typeof window !== 'undefined' ? localStorage.getItem('sha256_initial_seeded_v1') === 'true' : false;
+
+            if ((!casosDB || casosDB.length === 0) && !isAlreadySeeded) {
+              // Sembrar casos iniciales por PRIMERA Y ÚNICA VEZ en SQLite Local
+              for (const mc of MOCK_CASOS) {
+                await platformAPI.db.addCaso(mc).catch(() => {});
+              }
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('sha256_initial_seeded_v1', 'true');
+              }
+              casosDB = await platformAPI.db.getCasos(1).catch(() => []);
+            }
+
             if (casosDB && casosDB.length > 0) {
                 const mapeados: CasoCMS[] = casosDB.map((c: any) => {
                     let completed = {};
@@ -714,24 +731,24 @@ export const useCMSStore = create<CMSState>()(
 
                     return {
                         id: c.id.toString(),
-                        tipoProyecto: c.tipo_proyecto || 'forense_whatsapp',
-                        numeroCaso: c.numero_caso,
-                        titulo: c.titulo,
-                        descripcion: c.descripcion,
-                        estado: c.estado,
+                        tipoProyecto: c.tipo_proyecto || c.tipoProyecto || 'forense_whatsapp',
+                        numeroCaso: c.numero_caso || c.numeroCaso || '',
+                        titulo: c.titulo || 'Caso Forense',
+                        descripcion: c.descripcion || '',
+                        estado: c.estado || 'iniciado',
                         prioridad: c.prioridad || 'media',
-                        fechaCreacion: c.created_at,
-                        fechaUltimaActualizacion: c.updated_at,
-                        peritoLider: 'Perito',
-                        fiscal: c.fiscal,
-                        normativasAplicadas: [],
-                        fasesCompletadas: completedCount,
-                        totalFases: totalSteps,
-                        porcentajeCompletado: pct,
-                        totalEvidencias: 0,
-                        nivelCumplimientoGeneral: 'no_aplica',
-                        etiquetas: [],
-                        notas: '',
+                        fechaCreacion: c.fecha_creacion || c.created_at || c.fechaCreacion || now(),
+                        fechaUltimaActualizacion: c.fecha_actualizacion || c.updated_at || c.fechaUltimaActualizacion || now(),
+                        peritoLider: c.perito_lider || c.peritoLider || 'Perito',
+                        fiscal: c.fiscal || '',
+                        normativasAplicadas: c.normativas_aplicadas || c.normativasAplicadas || [],
+                        fasesCompletadas: c.fases_completadas ?? c.fasesCompletadas ?? completedCount,
+                        totalFases: c.total_fases ?? c.totalFases ?? totalSteps,
+                        porcentajeCompletado: c.porcentaje_completado ?? c.porcentajeCompletado ?? pct,
+                        totalEvidencias: c.total_evidencias ?? c.totalEvidencias ?? 0,
+                        nivelCumplimientoGeneral: c.nivel_cumplimiento_general || c.nivelCumplimientoGeneral || 'no_aplica',
+                        etiquetas: c.etiquetas || [],
+                        notas: c.notas || '',
                         steps: finalSteps,
                         compliance_checklist: compliance,
                         dispositivo_marca: c.dispositivo_marca,
@@ -755,14 +772,52 @@ export const useCMSStore = create<CMSState>()(
                         discoduro_modelo: c.discoduro_modelo || c.discoduroModelo || '',
                     };
                 });
-                set({ casos: mapeados });
-            } else {
-                // BUG-003: Si la base de datos no está disponible u offline, mantener los casos locales de Zustand persistidos.
-                console.info('[CMS] Sin conexión DB o vacía — usando datos persistidos localmente.');
-                if (get().casos.length === 0) {
-                  set({ casos: MOCK_CASOS });
-                }
+
+                // Combinar casos recuperados de DB con casos almacenados localmente
+                const localCasos = get().casos || [];
+                const mergedCasos = [...mapeados];
+                localCasos.forEach(lc => {
+                  if (!mergedCasos.some(mc => mc.id === lc.id)) {
+                    mergedCasos.push(lc);
+                    // Resguardo preventivo en SQLite para casos locales
+                    platformAPI.db.addCaso({
+                      id: lc.id,
+                      numero_caso: lc.numeroCaso,
+                      titulo: lc.titulo,
+                      descripcion: lc.descripcion,
+                      estado: lc.estado,
+                      prioridad: lc.prioridad,
+                      perito_lider: lc.peritoLider,
+                      fiscal: lc.fiscal,
+                      tipo_proyecto: lc.tipoProyecto,
+                      steps: lc.steps,
+                      completed_steps: lc.completed_steps,
+                      step_metadata: lc.step_metadata,
+                      compliance_checklist: lc.compliance_checklist,
+                      fecha_creacion: lc.fechaCreacion,
+                      fecha_actualizacion: lc.fechaUltimaActualizacion,
+                      fases_completadas: lc.fasesCompletadas,
+                      total_fases: lc.totalFases,
+                      porcentaje_completado: lc.porcentajeCompletado,
+                      total_evidencias: lc.totalEvidencias,
+                      nivel_cumplimiento_general: lc.nivelCumplimientoGeneral,
+                      solicitante_nombre: lc.solicitante_nombre,
+                      solicitante_cedula: lc.solicitante_cedula,
+                      correo_investigar: lc.correo_investigar,
+                      correo_proveedor: lc.correo_proveedor,
+                      discoduro_serial: lc.discoduro_serial,
+                      discoduro_capacidad: lc.discoduro_capacidad,
+                      discoduro_marca: lc.discoduro_marca,
+                      discoduro_modelo: lc.discoduro_modelo,
+                    }).catch(() => {});
+                  }
+                });
+                set({ casos: mergedCasos });
             }
+ else {
+                set({ casos: [] });
+            }
+
         } catch (err) {
             console.error('Error fetching casos', err);
         }
@@ -779,6 +834,13 @@ export const useCMSStore = create<CMSState>()(
                 estado: caso.estado,
                 prioridad: caso.prioridad || 'media',
                 fiscal: caso.fiscal || '',
+                perito_lider: caso.peritoLider || '',
+                compliance: caso.compliance || 'Conforme',
+                fases_completadas: caso.fasesCompletadas || 0,
+                total_fases: caso.totalFases || 0,
+                porcentaje_completado: caso.porcentajeCompletado || 0,
+                total_evidencias: caso.totalEvidencias || 0,
+                nivel_cumplimiento_general: caso.nivelCumplimientoGeneral || 'conforme',
                 dispositivo_marca: caso.dispositivo_marca || '',
                 dispositivo_modelo: caso.dispositivo_modelo || '',
                 dispositivo_imei: caso.dispositivo_imei || '',
@@ -803,7 +865,10 @@ export const useCMSStore = create<CMSState>()(
                 discoduro_capacidad: caso.discoduro_capacidad || '',
                 discoduro_marca: caso.discoduro_marca || '',
                 discoduro_modelo: caso.discoduro_modelo || '',
+                fecha_creacion: now(),
+                fecha_actualizacion: now(),
             };
+
             const result = platformAPI.db ? await platformAPI.db.addCaso(payload) : null;
             
             if (result && result.success) {
@@ -839,6 +904,7 @@ export const useCMSStore = create<CMSState>()(
                   discoduro_modelo: payload.discoduro_modelo,
                 };
                 set(s => ({ casos: [...s.casos, nuevo] }));
+                await indexedDBStorage.setItem('casos', nuevo).catch(() => {});
                 get().addAuditLog({ accion: 'CASO_CREADO', detalle: `Caso ${caso.numeroCaso} creado exitosamente en Neon`, nivel: 'success', casoId: id, usuario: caso.peritoLider });
                 useAuditStore.getState().addEntry({
                   accion: 'CASO_CREADO',
@@ -882,6 +948,7 @@ export const useCMSStore = create<CMSState>()(
               discoduro_modelo: caso.discoduro_modelo,
             };
             set(s => ({ casos: [...s.casos, fallbackCaso] }));
+            await indexedDBStorage.setItem('casos', fallbackCaso).catch(() => {});
             get().addAuditLog({ accion: 'CASO_CREADO_LOCAL', detalle: `Caso ${caso.numeroCaso} guardado localmente (sin conexión a Neon)`, nivel: 'warning', casoId: fallbackCaso.id, usuario: caso.peritoLider });
             useAuditStore.getState().addEntry({
               accion: 'CASO_CREADO_LOCAL',
@@ -897,6 +964,10 @@ export const useCMSStore = create<CMSState>()(
         set(s => ({
           casos: s.casos.map(c => c.id === id ? { ...c, ...datos, fechaUltimaActualizacion: now() } : c)
         }));
+        const casoActualizado = get().casos.find(c => c.id === id);
+        if (casoActualizado) {
+          await indexedDBStorage.setItem('casos', casoActualizado).catch(() => {});
+        }
         try {
           if (platformAPI.db) {
             const mappedData: any = { ...datos };
@@ -932,15 +1003,30 @@ export const useCMSStore = create<CMSState>()(
         get().addAuditLog({ accion: 'CASO_ACTUALIZADO', detalle: `Caso ${id} actualizado`, nivel: 'info', casoId: id, usuario: 'sistema' });
       },
       deleteCaso: async (id) => {
-        set(s => ({ casos: s.casos.filter(c => c.id !== id) }));
+        const casoAEliminar = get().casos.find(c => c.id === id);
+        set(s => ({
+          casos: s.casos.filter(c => c.id !== id),
+          evidencias: s.evidencias.filter(e => e.casoId !== id),
+          tareas: s.tareas.filter(t => t.casoId !== id),
+          casoSeleccionado: s.casoSeleccionado === id ? null : s.casoSeleccionado,
+        }));
         try {
           if (platformAPI.db) {
             await platformAPI.db.deleteCaso(id);
           }
+          await indexedDBStorage.deleteItem('casos', id).catch(() => {});
         } catch (e) {
           console.error('Error al eliminar caso en DB:', e);
         }
-        get().addAuditLog({ accion: 'CASO_ELIMINADO', detalle: `Caso ${id} eliminado`, nivel: 'warning', casoId: id, usuario: 'sistema' });
+        const numero = casoAEliminar?.numeroCaso || id;
+        get().addAuditLog({ accion: 'ELIMINACION_CASO_ADMIN', detalle: `Caso ${numero} eliminado permanentemente de la base de datos por cuenta admin`, nivel: 'error', casoId: id, usuario: 'admin' });
+        useAuditStore.getState().addEntry({
+          accion: 'ELIMINACION_CASO_ADMIN',
+          detalle: `Eliminación permanente de Caso ${numero} — ${casoAEliminar?.titulo || 'Caso Forense'}`,
+          usuario: 'admin',
+          nivel: 'error',
+          casoId: id,
+        });
       },
       seleccionarCaso: (id) => {
         set({ casoSeleccionado: id });
@@ -1368,6 +1454,26 @@ export const useCMSStore = create<CMSState>()(
       },
       updatePersonal: (id, datos) => {
         set(s => ({ personal: s.personal.map(p => p.id === id ? { ...p, ...datos } : p) }));
+      },
+      deletePersonal: async (id) => {
+        const colab = get().personal.find(p => p.id === id);
+        set(s => ({ personal: s.personal.filter(p => p.id !== id) }));
+        try {
+          if (platformAPI.db?.updateUser) {
+            await platformAPI.db.updateUser(1, Number(id), { activo: 0, deshabilitado: true });
+          }
+          await indexedDBStorage.deleteItem('personal', id).catch(() => {});
+        } catch (e) {
+          console.error('Error al eliminar personal en DB:', e);
+        }
+        const nombreColab = colab ? `${colab.nombre} ${colab.apellido}` : id;
+        get().addAuditLog({ accion: 'ELIMINACION_USUARIO_ADMIN', detalle: `Usuario ${nombreColab} eliminado permanentemente por cuenta admin`, nivel: 'error', usuario: 'admin' });
+        useAuditStore.getState().addEntry({
+          accion: 'ELIMINACION_USUARIO_ADMIN',
+          detalle: `Eliminación de usuario/colaborador: ${nombreColab} (ID: ${id})`,
+          usuario: 'admin',
+          nivel: 'error',
+        });
       },
 
       // ── Normativas ──

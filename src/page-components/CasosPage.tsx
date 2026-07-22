@@ -103,7 +103,7 @@ export default function CasosPage() {
 
     setIsModalOpen(false);
     setNewTitulo('');
-    if (casoId) router.push(`/casos/${casoId}`);
+    if (casoId) router.push(`/control/seguimiento-compliance?casoId=${casoId}`);
   };
 
   return (
@@ -165,7 +165,8 @@ export default function CasosPage() {
           return (
             <Grid key={caso.id} size={{ xs: 12, sm: 6, md: 4 }}>
               <Card
-                onClick={() => router.push(`/casos/${caso.id}`)}
+                onClick={() => router.push(`/control/seguimiento-compliance?casoId=${caso.id}`)}
+
                 sx={{
                   p: 3,
                   cursor: 'pointer',

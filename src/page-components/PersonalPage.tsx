@@ -28,6 +28,7 @@ import {
 } from '../components/atoms/AppleIcon';
 
 import Button from '../components/atoms/Button';
+import AdminCompliancePanel from '../components/organisms/AdminCompliancePanel';
 
 const ROLES = [
   { value: 'perito_lider', label: 'Perito Líder' },
@@ -39,9 +40,10 @@ const ROLES = [
 
 export default function PersonalPage() {
   const { user, changePassword, updateProfileImage } = useAuthStore();
+  const isAdmin = user?.rol === 'admin' || user?.email === 'julljoll@gmail.com' || user?.email === 'admin@sha256.us';
   const [personal, setPersonal] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'projects'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'projects' | 'admin'>(isAdmin ? 'admin' : 'profile');
   const { casos, deleteCaso, personal: cmsPersonal, addPersonal, updatePersonal } = useCMSStore();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -212,8 +214,16 @@ export default function PersonalPage() {
           <Tab value="profile" label="Mi Perfil" sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
           <Tab value="collaborators" label={`Colaboradores (${personal.length})`} sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
           <Tab value="projects" label={`Mis Proyectos (${casos.length})`} sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
+          {isAdmin && (
+            <Tab 
+              value="admin" 
+              label="Control Admin Global" 
+              sx={{ color: '#FF3B30', '&.Mui-selected': { color: '#FF3B30', fontWeight: 800 } }} 
+            />
+          )}
         </Tabs>
       </Box>
+
 
       {/* Tab: Profile */}
       {activeTab === 'profile' && (
@@ -354,6 +364,12 @@ export default function PersonalPage() {
           ))}
         </Grid>
       )}
+
+      {/* Tab: Admin Compliance Panel */}
+      {activeTab === 'admin' && isAdmin && (
+        <AdminCompliancePanel />
+      )}
     </Box>
+
   );
 }
