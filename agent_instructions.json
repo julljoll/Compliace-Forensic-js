@@ -15,10 +15,16 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-22 09:14:48",
-      "last_commit": "5d0a05e - actualizar (2026-07-22)",
+      "timestamp": "2026-07-22 09:24:56",
+      "last_commit": "93867a0 - acta de optencion (2026-07-22)",
       "modified_files": [
-        "M src/lib/pdf/documents/ActaObtencionPdf.tsx"
+        "M src/lib/pdf/documents/ActaAuditoriaTimelinePdf.tsx",
+        "M src/lib/pdf/documents/ActaDictamenPdf.tsx",
+        "M src/lib/pdf/documents/ActaEntregaResultadosPdf.tsx",
+        "M src/lib/pdf/documents/ActaEntrevistaPdf.tsx",
+        "M src/lib/pdf/documents/ActaObtencionPdf.tsx",
+        "M src/lib/pdf/documents/PlanillaPRCCPdf.tsx",
+        "M src/lib/pdf/reactPdfStyles.ts"
       ],
       "source_files": 106,
       "active_routes": 1

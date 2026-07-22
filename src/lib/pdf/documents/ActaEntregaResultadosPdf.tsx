@@ -1,6 +1,6 @@
 import React from 'react';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { pdfStyles } from '../reactPdfStyles';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { pdfStyles, formatCleanValue } from '../reactPdfStyles';
 
 interface Props {
   caso: any;
@@ -8,15 +8,22 @@ interface Props {
 
 export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = c.numeroCaso || '[EXPEDIENTE]';
+  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
   const fecha = new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <Document title={`Acta_Entrega_${numeroExpediente}`}>
+    <Document title={`Acta_Entrega_${c.numeroCaso || 'EXP'}`}>
       <Page size={[612, 936]} style={pdfStyles.page}>
+        {/* Header Unificado */}
         <View style={pdfStyles.headerContainer}>
-          <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          <View style={pdfStyles.headerBrandRow}>
+            <Image src="/logo.png" style={pdfStyles.headerLogo} />
+            <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          </View>
           <Text style={pdfStyles.subLogoText}>LABORATORIO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</Text>
+          <Text style={pdfStyles.addressText}>
+            Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
+          </Text>
         </View>
 
         <View style={pdfStyles.titleBlock}>
@@ -38,16 +45,16 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso }) => {
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Receptor / Solicitante:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_nombre || '[Nombre del Receptor]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_nombre)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_cedula || '[Cédula de Identidad]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula, '______________________')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>II. CONSTANCIA DE DEVOLUCIÓN Y RECEPCIÓN DE CONFORMIDAD</Text>
         <Text style={pdfStyles.paragraph}>
-          Por medio de la presente se hace constante entrega formal del Dictamen Pericial Informático Forense final y la devolución del dispositivo o evidencia digital consignada ({c.dispositivo_marca || 'Dispositivo'} {c.dispositivo_modelo || ''}, Serial/IMEI: {c.dispositivo_imei || 'N/A'}) en perfecto estado físico y con los precintos de seguridad debidamente validados.
+          Por medio de la presente se hace constante entrega formal del Dictamen Pericial Informático Forense final y la devolución del dispositivo o evidencia digital consignada ({formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')}, Serial/IMEI: {formatCleanValue(c.dispositivo_imei, '___________________')}) en perfecto estado físico y con los precintos de seguridad debidamente validados.
         </Text>
 
         <Text style={pdfStyles.sectionTitle}>III. FIRMAS DE ENTREGADO Y RECIBIDO CONFORME</Text>
@@ -58,7 +65,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL RECEPTOR</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {c.solicitante_cedula || '___________________'}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula, '___________________')}</Text>
           </View>
 
           <View style={pdfStyles.signatureCard}>
@@ -67,7 +74,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>PERITO ENTREGANTE</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>{c.peritoLider || 'Ing. Perito Forense Digital'}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
           </View>
         </View>
 

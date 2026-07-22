@@ -1,6 +1,6 @@
 import React from 'react';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { pdfStyles } from '../reactPdfStyles';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { pdfStyles, formatCleanValue } from '../reactPdfStyles';
 
 interface Props {
   caso: any;
@@ -8,15 +8,22 @@ interface Props {
 
 export const ActaDictamenPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = c.numeroCaso || '[EXPEDIENTE]';
+  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
   const fecha = new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <Document title={`Dictamen_Pericial_${numeroExpediente}`}>
+    <Document title={`Dictamen_Pericial_${c.numeroCaso || 'EXP'}`}>
       <Page size={[612, 936]} style={pdfStyles.page}>
+        {/* Header Unificado */}
         <View style={pdfStyles.headerContainer}>
-          <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          <View style={pdfStyles.headerBrandRow}>
+            <Image src="/logo.png" style={pdfStyles.headerLogo} />
+            <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          </View>
           <Text style={pdfStyles.subLogoText}>LABORATORIO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</Text>
+          <Text style={pdfStyles.addressText}>
+            Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
+          </Text>
         </View>
 
         <View style={pdfStyles.titleBlock}>
@@ -30,11 +37,11 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso }) => {
         <Text style={pdfStyles.sectionTitle}>I. PREÁMBULO Y PERITO ACTUANTE</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.peritoLider || 'Ing. Perito Forense Digital'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Solicitante / Despacho:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.fiscal || c.solicitante_nombre || 'Consignación Privada'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.fiscal || c.solicitante_nombre, 'Consignación Privada')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha de Emisión del Dictamen:</Text>
@@ -49,10 +56,10 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso }) => {
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>
-              {c.dispositivo_marca || 'Samsung'} {c.dispositivo_modelo || 'S21'}
+              {formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')}
             </Text>
             <Text style={[pdfStyles.tableCell, { width: '70%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>
-              {c.hashGenesis || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+              {formatCleanValue(c.hashGenesis, '________________________________________________________________')}
             </Text>
           </View>
         </View>
@@ -77,8 +84,8 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>ING. PERITO INFORMÁTICO FORENSE DIGITAL</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>{c.peritoLider || 'Ing. Perito Forense Digital'}</Text>
-            <Text style={{ fontSize: 6.5, color: '#666666' }}>CIV N°: [CIV] / INPREABOGADO: [INPRE] / ACCREDITED FORENSIC EXPERT</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
+            <Text style={{ fontSize: 6.5, color: '#666666' }}>CIV N°: ___________ / INPREABOGADO: ___________</Text>
           </View>
         </View>
 

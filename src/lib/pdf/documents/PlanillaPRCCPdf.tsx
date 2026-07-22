@@ -1,6 +1,6 @@
 import React from 'react';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { pdfStyles } from '../reactPdfStyles';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { pdfStyles, formatCleanValue } from '../reactPdfStyles';
 
 interface Props {
   caso: any;
@@ -8,33 +8,40 @@ interface Props {
 
 export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = c.numeroCaso || '[EXPEDIENTE]';
+  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
   const fecha = new Date().toLocaleDateString('es-VE');
 
   return (
-    <Document title={`Planilla_PRCC_${numeroExpediente}`}>
+    <Document title={`Planilla_PRCC_${c.numeroCaso || 'EXP'}`}>
       <Page size={[612, 936]} style={pdfStyles.page}>
+        {/* Header Unificado */}
         <View style={pdfStyles.headerContainer}>
-          <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          <View style={pdfStyles.headerBrandRow}>
+            <Image src="/logo.png" style={pdfStyles.headerLogo} />
+            <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          </View>
           <Text style={pdfStyles.subLogoText}>LABORATORIO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</Text>
+          <Text style={pdfStyles.addressText}>
+            Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
+          </Text>
         </View>
 
         <View style={pdfStyles.titleBlock}>
           <Text style={pdfStyles.mainTitle}>PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)</Text>
           <Text style={pdfStyles.subTitle}>CONTROL SECUENCIAL DE TRAZABILIDAD Y HASH SHA-256</Text>
           <View style={pdfStyles.expedienteBox}>
-            <Text>PRCC N°: {c.numeroPRCC || `PRCC-2026-${numeroExpediente}`}</Text>
+            <Text>PRCC N°: {formatCleanValue(c.numeroPRCC, 'PRCC-2026-______')}</Text>
           </View>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>I. DATOS DEL CONSIGNANTE, DEL CASO Y ORGANISMO</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Consignante / Solicitante:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_nombre || '[Apellidos y Nombres del Consignante]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_nombre)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_cedula || '[Cédula de Identidad]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula, '______________________')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>N° de Expediente / Caso:</Text>
@@ -56,7 +63,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
         <Text style={pdfStyles.sectionTitle}>III. OPERARIOS (PERITO INFORMÁTICO) — MUCC-2017</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Responsable:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.peritoLider || 'Ing. Perito Forense Digital'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>IV. DESCRIPCIÓN DE LA EVIDENCIA DIGITAL CONSIGNADA</Text>
@@ -68,13 +75,13 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Equipo Móvil / Computador</Text>
             <Text style={[pdfStyles.tableCell, { width: '70%' }]}>
-              {c.dispositivo_marca || 'Samsung'} {c.dispositivo_modelo || 'S21'} (S/N / IMEI: {c.dispositivo_imei || '358921098471209'})
+              {formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')} (IMEI/Serial: {formatCleanValue(c.dispositivo_imei, '_________________')})
             </Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
             <Text style={[pdfStyles.tableCell, { width: '70%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>
-              {c.hashGenesis || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+              {formatCleanValue(c.hashGenesis, '________________________________________________________________')}
             </Text>
           </View>
         </View>
@@ -90,8 +97,8 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '15%' }]}>{fecha}</Text>
-            <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{c.solicitante_nombre || 'Consignante'}</Text>
-            <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{c.peritoLider || 'Perito Receptor'}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{formatCleanValue(c.solicitante_nombre, 'Consignante')}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{formatCleanValue(c.peritoLider, 'Perito Receptor')}</Text>
             <Text style={[pdfStyles.tableCell, { width: '20%' }]}>Recepcion e Imagen</Text>
             <Text style={[pdfStyles.tableCell, { width: '15%' }]}>________________</Text>
           </View>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { pdfStyles } from '../reactPdfStyles';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { pdfStyles, formatCleanValue } from '../reactPdfStyles';
 
 interface Props {
   caso: any;
@@ -8,15 +8,22 @@ interface Props {
 
 export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = c.numeroCaso || '[EXPEDIENTE]';
+  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
   const fecha = new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <Document title={`Acta_Entrevista_${numeroExpediente}`}>
+    <Document title={`Acta_Entrevista_${c.numeroCaso || 'EXP'}`}>
       <Page size={[612, 936]} style={pdfStyles.page}>
+        {/* Header Unificado */}
         <View style={pdfStyles.headerContainer}>
-          <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          <View style={pdfStyles.headerBrandRow}>
+            <Image src="/logo.png" style={pdfStyles.headerLogo} />
+            <Text style={pdfStyles.logoText}>SHA256.US</Text>
+          </View>
           <Text style={pdfStyles.subLogoText}>LABORATORIO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</Text>
+          <Text style={pdfStyles.addressText}>
+            Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
+          </Text>
         </View>
 
         <View style={pdfStyles.titleBlock}>
@@ -40,19 +47,19 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
         <Text style={pdfStyles.sectionTitle}>I. DATOS E IDENTIFICACIÓN DEL ENTREVISTADO</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_nombre || '[Apellidos y Nombres del Entrevistado]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_nombre)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / Pasaporte:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.solicitante_cedula || '[Cédula de Identidad]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula, '______________________')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Teléfono de Contacto Principal:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.dispositivo_numero_tel || '[Teléfono de Contacto]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_numero_tel, '______________________')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Correo Electrónico:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.correo_investigar || '[Correo Electrónico]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.correo_investigar, '______________________')}</Text>
         </View>
 
         <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', marginTop: 4, marginBottom: 2 }}>
@@ -60,7 +67,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
         </Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 4 }}>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>X</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{c.solicitante_nombre ? 'X' : ''}</Text></View>
             <Text style={{ fontSize: 7.5 }}>Víctima</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
@@ -76,17 +83,17 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
         <Text style={pdfStyles.sectionTitle}>II. RELACIÓN DEL DISPOSITIVO Y CUENTAS ASOCIADAS</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Equipo / Evidencia:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.dispositivo_marca || 'Samsung'} {c.dispositivo_modelo || 'S21'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Serial / IMEI:</Text>
-          <Text style={pdfStyles.fieldValue}>{c.dispositivo_imei || '[Serial / IMEI]'}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_imei, '___________________________')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>III. DECLARACIÓN TÉCNICO-PERICIAL DEL ENTREVISTADO</Text>
         <View style={{ borderWidth: 1, borderColor: '#000000', padding: 8, minHeight: 220, marginBottom: 10 }}>
           <Text style={pdfStyles.paragraph}>
-            Comparece el entrevistado manifestando los antecedentes técnicos del dispositivo, contraseñas de acceso proporcionadas voluntariamente y pormenores de los hechos objeto de la investigación forense digital. Declara bajo juramento la autenticidad de la información consignada.
+            ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
           </Text>
         </View>
 
@@ -98,7 +105,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL ENTREVISTADO</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {c.solicitante_cedula || '___________________'}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula, '___________________')}</Text>
           </View>
 
           <View style={pdfStyles.signatureCard}>
@@ -107,7 +114,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>PERITO ENTREVISTADOR</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>{c.peritoLider || 'Ing. Perito Forense Digital'}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
           </View>
         </View>
 

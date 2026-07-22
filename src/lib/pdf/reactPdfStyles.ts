@@ -2,6 +2,13 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const FOLIO_SIZE: [number, number] = [612, 936];
 
+export function formatCleanValue(val?: string, defaultBlank: string = '________________________________________'): string {
+  if (!val || val.trim() === '' || (val.startsWith('[') && val.endsWith(']'))) {
+    return defaultBlank;
+  }
+  return val;
+}
+
 export const pdfStyles = StyleSheet.create({
   page: {
     size: [612, 936],
@@ -17,7 +24,7 @@ export const pdfStyles = StyleSheet.create({
   },
   headerContainer: {
     position: 'absolute',
-    top: 30,
+    top: 25,
     left: 85.04,
     right: 42.52,
     flexDirection: 'column',
@@ -25,6 +32,17 @@ export const pdfStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
     paddingBottom: 6,
+  },
+  headerBrandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 2,
+  },
+  headerLogo: {
+    width: 24,
+    height: 24,
   },
   logoText: {
     fontSize: 14,
@@ -35,6 +53,7 @@ export const pdfStyles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Helvetica-Bold',
     marginTop: 2,
+    textAlign: 'center',
   },
   addressText: {
     fontSize: 6.5,
@@ -68,7 +87,7 @@ export const pdfStyles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
   },
   sectionTitle: {
-    fontSize: 10,
+    fontSize: 9.5,
     fontFamily: 'Helvetica-Bold',
     backgroundColor: '#EAEAEA',
     padding: 4,
