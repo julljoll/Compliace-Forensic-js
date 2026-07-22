@@ -15,29 +15,21 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-22 08:17:53",
-      "last_commit": "fec752c - 3.6 (2026-07-21)",
+      "timestamp": "2026-07-22 09:00:56",
+      "last_commit": "13e6e9e - tailwind eliminado (2026-07-22)",
       "modified_files": [
-        "M src/app/not-found.tsx",
-        "M src/components/atoms/AppleIcon.tsx",
-        "M src/components/atoms/EmptyState.tsx",
-        "M src/components/atoms/ErrorBoundary.tsx",
-        "M src/components/atoms/HashDisplay.tsx",
-        "M src/components/atoms/Input.tsx",
-        "M src/components/atoms/Toast.tsx",
-        "M src/components/molecules/KpiCard.tsx",
-        "M src/components/molecules/NormativaAccordion.tsx",
-        "M src/components/organisms/Casos/CasoCard.tsx",
-        "M src/components/organisms/Casos/CasosFilters.tsx",
-        "M src/components/organisms/Compliance/ComplianceKPIs.tsx",
-        "M src/components/templates/CMSLayout.tsx",
-        "M src/page-components/Control/SeguimientoCompliancePage.tsx",
-        "M src/page-components/DashboardPage.tsx",
-        "M src/page-components/Planillas/Planillas.css",
-        "M src/styles/planillaTheme.css",
-        "D tailwind.config.js"
+        "M src/components/organisms/Planillas/PlanillaPdfViewer.tsx",
+        "M src/page-components/Planillas/ActaAuditoriaTimelinePage.tsx",
+        "M src/page-components/Planillas/ActaDictamenPage.tsx",
+        "M src/page-components/Planillas/ActaEntregaResultadosPage.tsx",
+        "M src/page-components/Planillas/ActaEntrevistaPage.tsx",
+        "M src/page-components/Planillas/ActaObtencionPage.tsx",
+        "M src/page-components/Planillas/PlanillaPRCCPage.tsx",
+        "M src/page-components/Planillas/TimelineCompliancePage.tsx",
+        "?? src/lib/pdf/documents/",
+        "?? src/lib/pdf/reactPdfStyles.ts"
       ],
-      "source_files": 99,
+      "source_files": 106,
       "active_routes": 1
     }
   },
