@@ -8,7 +8,7 @@ interface Props {
 
 export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
+  const numeroExpediente = formatCleanValue(c.numeroCaso);
   const fecha = new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
@@ -51,15 +51,15 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / Pasaporte:</Text>
-          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula, '______________________')}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Teléfono de Contacto Principal:</Text>
-          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_numero_tel, '______________________')}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_numero_tel)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Correo Electrónico:</Text>
-          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.correo_investigar, '______________________')}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.correo_investigar)}</Text>
         </View>
 
         <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', marginTop: 4, marginBottom: 2 }}>
@@ -87,13 +87,13 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Serial / IMEI:</Text>
-          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_imei, '___________________________')}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.dispositivo_imei)}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>III. DECLARACIÓN TÉCNICO-PERICIAL DEL ENTREVISTADO</Text>
-        <View style={{ borderWidth: 1, borderColor: '#000000', padding: 8, minHeight: 220, marginBottom: 10 }}>
+        <View style={{ borderWidth: 1, borderColor: '#000000', padding: 8, minHeight: 200, marginBottom: 10 }}>
           <Text style={pdfStyles.paragraph}>
-            ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+            Comparece el entrevistado manifestando los antecedentes técnicos del dispositivo, contraseñas de acceso proporcionadas voluntariamente y pormenores de los hechos objeto de la investigación forense digital. Declara bajo juramento la autenticidad de la información consignada.
           </Text>
         </View>
 
@@ -105,7 +105,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL ENTREVISTADO</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula, '___________________')}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula)}</Text>
           </View>
 
           <View style={pdfStyles.signatureCard}>

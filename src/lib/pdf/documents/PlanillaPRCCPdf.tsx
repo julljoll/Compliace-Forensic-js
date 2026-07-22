@@ -8,7 +8,7 @@ interface Props {
 
 export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
   const c = caso || {};
-  const numeroExpediente = formatCleanValue(c.numeroCaso, '___________________');
+  const numeroExpediente = formatCleanValue(c.numeroCaso);
   const fecha = new Date().toLocaleDateString('es-VE');
 
   return (
@@ -30,7 +30,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
           <Text style={pdfStyles.mainTitle}>PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)</Text>
           <Text style={pdfStyles.subTitle}>CONTROL SECUENCIAL DE TRAZABILIDAD Y HASH SHA-256</Text>
           <View style={pdfStyles.expedienteBox}>
-            <Text>PRCC N°: {formatCleanValue(c.numeroPRCC, 'PRCC-2026-______')}</Text>
+            <Text>PRCC N°: {formatCleanValue(c.numeroPRCC)}</Text>
           </View>
         </View>
 
@@ -41,7 +41,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
-          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula, '______________________')}</Text>
+          <Text style={pdfStyles.fieldValue}>{formatCleanValue(c.solicitante_cedula)}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>N° de Expediente / Caso:</Text>
@@ -75,13 +75,13 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Equipo Móvil / Computador</Text>
             <Text style={[pdfStyles.tableCell, { width: '70%' }]}>
-              {formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')} (IMEI/Serial: {formatCleanValue(c.dispositivo_imei, '_________________')})
+              {formatCleanValue(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : '')} (IMEI/Serial: {formatCleanValue(c.dispositivo_imei)})
             </Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
             <Text style={[pdfStyles.tableCell, { width: '70%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>
-              {formatCleanValue(c.hashGenesis, '________________________________________________________________')}
+              {formatCleanValue(c.hashGenesis)}
             </Text>
           </View>
         </View>
@@ -100,7 +100,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso }) => {
             <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{formatCleanValue(c.solicitante_nombre, 'Consignante')}</Text>
             <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{formatCleanValue(c.peritoLider, 'Perito Receptor')}</Text>
             <Text style={[pdfStyles.tableCell, { width: '20%' }]}>Recepcion e Imagen</Text>
-            <Text style={[pdfStyles.tableCell, { width: '15%' }]}>________________</Text>
+            <Text style={[pdfStyles.tableCell, { width: '15%' }]}>Conforme</Text>
           </View>
         </View>
 

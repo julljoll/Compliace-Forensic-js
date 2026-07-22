@@ -178,14 +178,14 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso }) => {
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>PIN / PUK Tarjeta SIM:</Text>
-          <Text style={pdfStyles.fieldValue}>PIN: _______ / PUK: ______________</Text>
+          <Text style={pdfStyles.fieldValue}>PIN / PUK de tarjeta SIM resguardado</Text>
         </View>
 
         {/* VII. MOTIVO DE CONSIGNACIÓN */}
         <Text style={pdfStyles.sectionTitle}>VII. MOTIVO DE LA CONSIGNACIÓN Y PORMENORES DEL CASO</Text>
-        <View style={{ borderWidth: 1, borderColor: '#000000', padding: 8, minHeight: 160, marginBottom: 10 }}>
+        <View style={{ borderWidth: 1, borderColor: '#000000', padding: 8, minHeight: 140, marginBottom: 10 }}>
           <Text style={pdfStyles.paragraph}>
-            {c.descripcion && !c.descripcion.startsWith('[') ? c.descripcion : '________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________'}
+            {c.descripcion && !c.descripcion.startsWith('[') ? c.descripcion : 'Consignación voluntaria de teléfono celular para la extracción pericial de mensajes de datos, chats de WhatsApp, registro de llamadas e imágenes multimedia, preservación de integridad mediante hash SHA-256 e incorporación al registro de cadena de custodia para fines probatorios.'}
           </Text>
         </View>
 
@@ -203,7 +203,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso }) => {
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL CONSIGNANTE</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula, '___________________')}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {formatCleanValue(c.solicitante_cedula)}</Text>
           </View>
 
           <View style={pdfStyles.signatureCard}>
@@ -218,7 +218,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso }) => {
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>PERITO INFORMÁTICO FORENSE</Text>
             <Text style={{ fontSize: 7, marginTop: 2 }}>{formatCleanValue(c.peritoLider, 'Ing. Perito Forense Digital')}</Text>
-            <Text style={{ fontSize: 6.5, color: '#666666' }}>CIV N°: ___________ | INPREABOGADO: ___________</Text>
+            <Text style={{ fontSize: 6.5, color: '#666666' }}>CIV N°: [CIV] | INPREABOGADO: [INPRE]</Text>
           </View>
         </View>
 

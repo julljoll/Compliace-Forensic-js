@@ -2,7 +2,7 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const FOLIO_SIZE: [number, number] = [612, 936];
 
-export function formatCleanValue(val?: string, defaultBlank: string = '________________________________________'): string {
+export function formatCleanValue(val?: string, defaultBlank: string = ''): string {
   if (!val || val.trim() === '' || (val.startsWith('[') && val.endsWith(']'))) {
     return defaultBlank;
   }
@@ -14,8 +14,8 @@ export const pdfStyles = StyleSheet.create({
     size: [612, 936],
     backgroundColor: '#FFFFFF',
     paddingTop: 113.4, // 40mm para primera página
-    paddingLeft: 85.04, // 30mm encuadernación
-    paddingRight: 42.52, // 15mm
+    paddingLeft: 85.04, // 30mm encuadernación (3.0 cm)
+    paddingRight: 42.52, // 15mm (1.5 cm)
     paddingBottom: 50, // 15mm + margen footer
     fontFamily: 'Helvetica',
     fontSize: 9,
@@ -126,7 +126,7 @@ export const pdfStyles = StyleSheet.create({
   },
   fieldRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     marginVertical: 3,
   },
   fieldLabel: {
@@ -138,8 +138,9 @@ export const pdfStyles = StyleSheet.create({
     flex: 1,
     fontSize: 8.5,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#666666',
-    paddingBottom: 2,
+    borderBottomColor: '#000000',
+    minHeight: 14,
+    paddingBottom: 1,
   },
   paragraph: {
     fontSize: 8.5,
