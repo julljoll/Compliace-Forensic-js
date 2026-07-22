@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Box from '@mui/material/Box'
@@ -10,11 +10,12 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Stack from '@mui/material/Stack'
+import Chip from '@mui/material/Chip'
 
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
   BookOpen, Users, Activity, ChevronRight, LogOut,
-  Trash2, Menu, X, Search
+  Trash2, Menu, X, Search, Shield
 } from '../atoms/AppleIcon'
 import { useCMSStore } from '../../store/cmsStore'
 import { useAuthStore } from '../../store/authStore'
@@ -24,14 +25,14 @@ import CommandPalette from '../organisms/CommandPalette'
 const menuItems = [
   { path: '/dashboard',                            label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
   { path: '/casos',                                label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
-  { path: '/control/seguimiento-compliance',       label: 'Etapas de Casos',          icon: ShieldCheck,     group: 'Control' },
+  { path: '/control/seguimiento-compliance',       label: 'Seguimiento Normativo',    icon: ShieldCheck,     group: 'Control' },
   { path: '/planillas/acta-obtencion',             label: 'Acta de Obtención',        icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/acta-entrevista',            label: 'Acta de Entrevista',       icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/prcc',                       label: 'Planilla PRCC',            icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/dictamen',                   label: 'Acta Dictamen',            icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/entrega-resultados',         label: 'Entrega de Resultados',    icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/normativas',                           label: 'Normativas',               icon: BookOpen,        group: 'Planillas Oficiales' },
-  { path: '/auditoria',                            label: 'Auditoría',                icon: Activity,        group: 'Sistema' },
+  { path: '/normativas',                           label: 'Normativas RAG',           icon: BookOpen,        group: 'Planillas Oficiales' },
+  { path: '/auditoria',                            label: 'Auditoría SHA-256',        icon: Activity,        group: 'Sistema' },
   { path: '/personal',                             label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ]
 
@@ -166,46 +167,50 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   }
 
   const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#121412' }}>
-      <Box sx={{ p: '16px', borderBottom: '1px solid rgba(254, 207, 6, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#0D1117', borderRight: '1px solid rgba(48,54,61,0.8)' }}>
+      <Box sx={{ p: '14px 16px', borderBottom: '1px solid rgba(48,54,61,0.8)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
           <img
             src="/logo.png"
             alt="SHA256.US Logo"
             style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
+              width: '30px',
+              height: '30px',
+              borderRadius: '6px',
               objectFit: 'contain',
-              backgroundColor: '#524000',
+              backgroundColor: 'rgba(254, 207, 6, 0.08)',
               padding: '4px',
-              border: '1px solid rgba(254, 207, 6, 0.4)',
-              boxShadow: '0 2px 8px rgba(254, 207, 6, 0.15)',
+              border: '1px solid rgba(254, 207, 6, 0.3)',
             }}
           />
           <Box>
-            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#E6EDF3', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
               SHA256.US
             </Typography>
-            <Typography sx={{ fontSize: '10px', color: '#86868B', textTransform: 'uppercase', fontWeight: 600 }}>
-              CMS Forense
+            <Typography sx={{ fontSize: '9px', color: '#8B949E', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.06em' }}>
+              Compliance Officer CMS
             </Typography>
           </Box>
         </Link>
+        <Chip
+          label="v3"
+          size="small"
+          sx={{ fontSize: '9px', height: '18px', backgroundColor: 'rgba(254,207,6,0.1)', color: '#FECF06', border: '1px solid rgba(254,207,6,0.2)', fontWeight: 700 }}
+        />
       </Box>
 
-      <Box sx={{ flex: 1, overflowY: 'auto', p: '12px' }}>
-        <Stack spacing={2}>
+      <Box sx={{ flex: 1, overflowY: 'auto', p: '8px 10px' }}>
+        <Stack spacing={1.5}>
           {groups.map(grp => {
             const items = menuItems.filter(m => m.group === grp)
             const meta = groupMeta[grp]
             return (
               <Box key={grp}>
-                <Typography sx={{ px: '8px', py: '4px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10px', fontWeight: 600, color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <Typography sx={{ px: '8px', py: '6px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9.5px', fontWeight: 700, color: '#484F58', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                   <span>{meta.emoji}</span>
                   <span>{grp}</span>
                 </Typography>
-                <Stack spacing={0.5} sx={{ mt: '4px' }}>
+                <Stack spacing={0.25}>
                   {items.map(m => (
                     <SidebarLink key={m.path} item={m} onClick={onNav} />
                   ))}
@@ -216,59 +221,62 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
         </Stack>
       </Box>
 
-      <Box sx={{ p: '12px', borderTop: '1px solid rgba(254, 207, 6, 0.2)' }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', mb: '12px' }}>
-          <Box sx={{ px: '12px', py: '8px', borderRadius: '8px', backgroundColor: 'rgba(254, 207, 6, 0.05)' }}>
-            <Typography sx={{ fontSize: '10px', fontWeight: 600, color: '#86868B' }}>Activos</Typography>
-            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#FECF06' }}>{stats.casosActivos}</Typography>
+      <Box sx={{ p: '10px', borderTop: '1px solid rgba(48,54,61,0.8)' }}>
+        {/* KPI mini bar */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', mb: '10px' }}>
+          <Box sx={{ px: '10px', py: '7px', borderRadius: '6px', backgroundColor: 'rgba(254, 207, 6, 0.06)', border: '1px solid rgba(254,207,6,0.12)' }}>
+            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Activos</Typography>
+            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#FECF06', lineHeight: 1.2 }}>{stats.casosActivos}</Typography>
           </Box>
-          <Box sx={{ px: '12px', py: '8px', borderRadius: '8px', backgroundColor: 'rgba(0, 255, 65, 0.05)' }}>
-            <Typography sx={{ fontSize: '10px', fontWeight: 600, color: '#86868B' }}>Cumpl.</Typography>
-            <Typography sx={{ fontSize: '17px', fontWeight: 700, color: '#00FF41' }}>{stats.cumplimientoGeneral}%</Typography>
+          <Box sx={{ px: '10px', py: '7px', borderRadius: '6px', backgroundColor: 'rgba(0, 255, 65, 0.05)', border: '1px solid rgba(0,255,65,0.12)' }}>
+            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Cumpl.</Typography>
+            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#00FF41', lineHeight: 1.2 }}>{stats.cumplimientoGeneral}%</Typography>
           </Box>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px', p: '8px', borderRadius: '8px', backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
-          <img
-            src={user?.profileImage || '/favicon.png'}
-            alt=""
-            style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
-          />
+        {/* User card */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', p: '8px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(48,54,61,0.6)' }}>
+          <Box sx={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'rgba(254,207,6,0.15)', border: '1px solid rgba(254,207,6,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Typography sx={{ fontSize: '11px', fontWeight: 700, color: '#FECF06' }}>
+              {(user?.nombre || 'P').charAt(0).toUpperCase()}
+            </Typography>
+          </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#E6EDF3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 }}>
               {user?.nombre || 'Perito Judicial'}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '6px', mt: '2px' }}>
-              <StatusDot status={sqliteOnline ? 'online' : sqliteOnline === false ? 'offline' : null} size={6} />
-              <Typography sx={{ fontSize: '10px', color: sqliteOnline ? '#00FF41' : '#FF3B30' }}>
-                {sqliteOnline ? 'SQLite Local' : 'No Conectado'}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', mt: '2px' }}>
+              <StatusDot status={sqliteOnline ? 'online' : sqliteOnline === false ? 'offline' : null} size={5} />
+              <Typography sx={{ fontSize: '9px', color: sqliteOnline ? '#00FF41' : '#FF3B30', fontFamily: 'monospace' }}>
+                {sqliteOnline ? 'SQLite OK' : 'Offline'}
               </Typography>
             </Box>
           </Box>
-          <IconButton
-            onClick={() => { logout(); router.replace('/login') }}
-            size="small"
-            title="Cerrar sesión"
-            sx={{ color: '#86868B', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)' } }}
-          >
-            <LogOut size={14} />
-          </IconButton>
+          <Tooltip title="Cerrar sesión" placement="top">
+            <IconButton
+              onClick={() => { logout(); router.replace('/login') }}
+              size="small"
+              sx={{ color: '#484F58', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.08)' } }}
+            >
+              <LogOut size={13} />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Box>
     </Box>
   )
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: '#524000', color: '#FFFFFF', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: '#0D1117', color: '#E6EDF3', overflow: 'hidden' }}>
       {/* Desktop Sidebar */}
       <Box
         component="aside"
         sx={{
-          width: '272px',
+          width: '256px',
           flexShrink: 0,
           display: { xs: 'none', sm: 'block' },
-          borderRight: '1px solid rgba(254, 207, 6, 0.2)',
-          backgroundColor: '#121412',
+          borderRight: '1px solid rgba(48,54,61,0.8)',
+          backgroundColor: '#0D1117',
           '@media print': { display: 'none' },
         }}
       >
@@ -284,9 +292,9 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
         slotProps={{
           paper: {
             sx: {
-              width: '280px',
-              backgroundColor: '#121412',
-              borderRight: '1px solid rgba(254, 207, 6, 0.2)',
+              width: '270px',
+              backgroundColor: '#0D1117',
+              borderRight: '1px solid rgba(48,54,61,0.8)',
             },
           },
         }}
@@ -304,14 +312,14 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
       </Drawer>
 
       {/* Main Container */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden', backgroundColor: '#524000' }}>
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden', backgroundColor: '#0D1117' }}>
         <Box
           component="header"
           sx={{
-            height: '48px',
-            borderBottom: '1px solid rgba(82, 64, 0, 0.4)',
-            backgroundColor: 'rgba(18, 20, 18, 0.9)',
-            backdropFilter: 'blur(8px)',
+            height: '46px',
+            borderBottom: '1px solid rgba(48,54,61,0.8)',
+            backgroundColor: 'rgba(13, 17, 23, 0.95)',
+            backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -334,12 +342,12 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
               sx={{ '& .MuiBreadcrumbs-separator': { color: '#86868B' } }}
             >
               <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-                <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41', fontFamily: 'monospace' }}>
+                <Typography sx={{ fontSize: '11px', fontWeight: 800, color: '#00FF41', fontFamily: 'monospace', letterSpacing: '0.04em' }}>
                   SHA256.US
                 </Typography>
               </Link>
               {pathname !== '/dashboard' && (
-                <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF' }}>
+                <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#8B949E' }}>
                   {getBreadcrumb()}
                 </Typography>
               )}
@@ -355,26 +363,29 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
               <Search size={15} />
             </IconButton>
 
-            <Box
-              onClick={verificarSQLite}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                px: '8px',
-                py: '4px',
-                borderRadius: '4px',
-                backgroundColor: '#0a0c0a',
-                border: '1px solid #524000',
-                cursor: 'pointer',
-                '&:hover': { borderColor: 'rgba(254, 207, 6, 0.5)' },
-              }}
-            >
-              <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: sqliteOnline ? '#00FF41' : '#FF3B30' }} />
-              <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', fontWeight: 700, color: sqliteOnline ? '#00FF41' : '#FF3B30', display: { xs: 'none', md: 'block' } }}>
-                {sqliteOnline ? 'SQLite Local' : 'No Conectado'}
-              </Typography>
-            </Box>
+            <Tooltip title={sqliteOnline ? 'BD Local activa — click para verificar' : 'Sin conexión local'} placement="bottom">
+              <Box
+                onClick={verificarSQLite}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  px: '8px',
+                  py: '3px',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(13,17,23,0.8)',
+                  border: `1px solid ${sqliteOnline ? 'rgba(0,255,65,0.2)' : 'rgba(255,59,48,0.2)'}`,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  '&:hover': { borderColor: sqliteOnline ? 'rgba(0,255,65,0.5)' : 'rgba(255,59,48,0.5)' },
+                }}
+              >
+                <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: sqliteOnline ? '#00FF41' : '#FF3B30', boxShadow: sqliteOnline ? '0 0 4px #00FF41' : 'none' }} />
+                <Typography sx={{ fontSize: '10px', fontFamily: 'monospace', fontWeight: 700, color: sqliteOnline ? '#00FF41' : '#FF3B30', display: { xs: 'none', md: 'block' } }}>
+                  {sqliteOnline ? 'SQLite OK' : 'Offline'}
+                </Typography>
+              </Box>
+            </Tooltip>
 
             <IconButton
               onClick={limpiarDatos}
@@ -386,8 +397,8 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
           </Stack>
         </Box>
 
-        <Box component="main" sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 3, md: 4 } }}>
-          <Box sx={{ maxWidth: '1200px', mx: 'auto' }}>
+        <Box component="main" sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 2.5, md: 3 }, backgroundColor: '#0D1117' }}>
+          <Box sx={{ maxWidth: '1280px', mx: 'auto' }}>
             {children}
           </Box>
         </Box>

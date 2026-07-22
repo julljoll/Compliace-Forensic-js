@@ -19,6 +19,7 @@ const ActaEntregaResultadosPage = () => {
   return (
     <PlanillaPdfViewer
       title={`Acta de Entrega de Resultados y Devolución — Caso #${caso?.numeroCaso || 'N/A'}`}
+      caso={caso}
       document={<ActaEntregaResultadosPdf caso={caso} />}
     />
   );

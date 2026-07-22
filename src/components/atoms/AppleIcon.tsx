@@ -44,6 +44,9 @@ function MaterialIcon({
 export function ArrowLeft(props: IconProps) {
   return <MaterialIcon name="arrow_back" {...props} />;
 }
+export function ArrowRight(props: IconProps) {
+  return <MaterialIcon name="arrow_forward" {...props} />;
+}
 export function ChevronDown(props: IconProps) {
   return <MaterialIcon name="expand_more" {...props} />;
 }

@@ -15,15 +15,26 @@
       "RAG/skill_claude.json"
     ],
     "latest_project_changes": {
-      "timestamp": "2026-07-22 09:29:21",
-      "last_commit": "26908c0 - logos (2026-07-22)",
+      "timestamp": "2026-07-22 12:26:59",
+      "last_commit": "075e3cc - border (2026-07-22)",
       "modified_files": [
+        "M agent_instructions.json",
+        "M src/components/organisms/Planillas/PlanillaPdfViewer.tsx",
+        "M src/lib/pdf/documents/ActaAuditoriaTimelinePdf.tsx",
+        "M src/lib/pdf/documents/ActaDictamenPdf.tsx",
+        "M src/lib/pdf/documents/ActaEntregaResultadosPdf.tsx",
         "M src/lib/pdf/documents/ActaEntrevistaPdf.tsx",
         "M src/lib/pdf/documents/ActaObtencionPdf.tsx",
         "M src/lib/pdf/documents/PlanillaPRCCPdf.tsx",
-        "M src/lib/pdf/reactPdfStyles.ts"
+        "M src/lib/pdf/reactPdfStyles.ts",
+        "M src/page-components/Planillas/ActaDictamenPage.tsx",
+        "M src/page-components/Planillas/ActaEntregaResultadosPage.tsx",
+        "M src/page-components/Planillas/ActaEntrevistaPage.tsx",
+        "M src/page-components/Planillas/ActaObtencionPage.tsx",
+        "M src/page-components/Planillas/PlanillaPRCCPage.tsx",
+        "?? src/lib/export/"
       ],
-      "source_files": 106,
+      "source_files": 107,
       "active_routes": 1
     }
   },

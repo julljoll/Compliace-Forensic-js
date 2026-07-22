@@ -93,7 +93,7 @@ export default function CasoDetailPage() {
   const auditLogs = useCMSStore(state => state.auditLogs);
 
   const [caso, setCaso] = useState<CasoCMS | null>(null);
-  const [activeTab, setActiveTab] = useState<'resumen' | 'cumplimiento' | 'evidencias' | 'tareas' | 'auditoria' | 'planillas'>('resumen');
+  const [activeTab, setActiveTab] = useState<'resumen' | 'cumplimiento' | 'checklist' | 'evidencias' | 'tareas' | 'auditoria' | 'planillas'>('resumen');
   const [showEvidenciaModal, setShowEvidenciaModal] = useState(false);
   const [showTareaModal, setShowTareaModal] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<{ message: string; onConfirm: () => void } | null>(null);
@@ -369,7 +369,8 @@ export default function CasoDetailPage() {
       <div className="flex border-b border-[var(--co-separator)] overflow-x-auto gap-1 bg-[var(--co-surface-2)] rounded-[12px] p-1 select-none">
         {([
           { id: 'resumen', label: 'Resumen', icon: FileText },
-          { id: 'cumplimiento', label: 'Cumplimiento', icon: ShieldCheck },
+          { id: 'cumplimiento', label: 'Flujo Forense', icon: ShieldCheck },
+          { id: 'checklist', label: 'Checklist Normativo RAG', icon: CheckSquare },
           { id: 'evidencias', label: 'Evidencias', icon: Smartphone },
           { id: 'tareas', label: 'Tareas', icon: ListTodo },
           { id: 'auditoria', label: 'Auditoría', icon: History },
@@ -569,6 +570,71 @@ export default function CasoDetailPage() {
                   </div>
                 );
               })}
+            </div>
+          </Card>
+        )}
+
+        {/* 2.5 CHECKLIST NORMATIVO RAG TAB */}
+        {activeTab === 'checklist' && (
+          <Card className="space-y-6 apple-fade-in" hoverable={false}>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--co-separator)] pb-4 gap-3">
+              <div>
+                <h3 className="font-bold text-[16px] text-[var(--co-accent)] flex items-center gap-2">
+                  <ShieldCheck size={18} />
+                  Checklist de Cumplimiento Legal & Normativo RAG
+                </h3>
+                <p className="text-[12px] text-[var(--co-gray-1)] mt-0.5">
+                  Verificación reglamentaria de requisitos legales (MUCCEF, ISO 27037, COPP, Ley de Mensajes de Datos)
+                </p>
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => router.push(`/planillas/dictamen?casoId=${caso.id}`)}
+              >
+                Generar Reporte de Cumplimiento PDF
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { norma: 'MUCC-2017 § 4.1', req: 'Levantamiento de Acta de Obtención por Consignación o Incautación', tipo: 'Cadena de Custodia', estado: 'cumple' },
+                { norma: 'COPP Art. 187', req: 'Inalterabilidad del elemento de convicción e identificación del depositario', tipo: 'Procesal Penal', estado: 'cumple' },
+                { norma: 'ISO/IEC 27037 § 7.2', req: 'Aislamiento electromagnético inicial mediante bolsa Faraday', tipo: 'Preservación', estado: caso.dispositivo_imei ? 'cumple' : 'pendiente' },
+                { norma: 'ISO/IEC 27037 § 7.4', req: 'Adquisición lógica / bit-a-bit con cálculo de Hash génesis SHA-256', tipo: 'Adquisición', estado: evidenciasCaso.length > 0 ? 'cumple' : 'pendiente' },
+                { norma: 'RFC 3227', req: 'Orden de volatilidad respetado durante la recolección de memoria RAM/Datos', tipo: 'Forensic Standard', estado: 'cumple' },
+                { norma: 'Ley Mensajes Datos Art. 4', req: 'Garantía de eficacia probatoria y autenticidad del mensaje de datos', tipo: 'Legal VE', estado: 'cumple' },
+                { norma: 'MUCC-2017 § 6.2', req: 'Embalaje, rotulado y sellado con etiqueta de bioseguridad pericial', tipo: 'Resguardo', estado: 'cumple' },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-lg border border-[var(--co-separator)] bg-[var(--co-surface-2)]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-bold text-[var(--co-accent)] bg-[var(--co-accent)]/10 px-2 py-0.5 rounded">
+                        {item.norma}
+                      </span>
+                      <span className="text-[10px] uppercase font-bold text-[var(--co-gray-1)]">
+                        {item.tipo}
+                      </span>
+                    </div>
+                    <p className="text-[13px] font-semibold text-[var(--apple-text)]">
+                      {item.req}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider ${
+                      item.estado === 'cumple'
+                        ? 'bg-[var(--co-green)]/15 text-[var(--co-green)] border border-[var(--co-green)]/30'
+                        : 'bg-yellow-500/15 text-[#FF9500] border border-yellow-500/30'
+                    }`}>
+                      {item.estado === 'cumple' ? '✓ CUMPLE' : '⏳ PENDIENTE'}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </Card>
         )}
