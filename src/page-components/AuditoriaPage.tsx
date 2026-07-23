@@ -245,6 +245,16 @@ export default function AuditoriaPage() {
         </Typography>
       ),
     },
+    {
+      field: 'hashActual',
+      headerName: 'Hash SHA-256 (Hash Chain Inmutable)',
+      width: 340,
+      renderCell: (params) => (
+        <Typography variant="body2" sx={{ color: '#00FF41', fontFamily: 'Fira Code, monospace', fontSize: '10.5px' }}>
+          {params.value || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
+        </Typography>
+      ),
+    },
   ];
 
   const rows = logsFiltrados.map((log, idx) => ({
@@ -253,6 +263,7 @@ export default function AuditoriaPage() {
     detalle: log.detalle,
     usuario: log.usuario,
     timestamp: log.timestamp,
+    hashActual: (log as any).hashActual || (log as any).hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
   }));
 
   return (

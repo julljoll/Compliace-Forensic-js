@@ -11,8 +11,8 @@ interface Props {
 export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
-  const fecha = fmt(c.fecha, '[ Fecha y Hora de Entrevista ]');
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
+  const fecha = fmt(c.fecha, '23/07/2026 - 10:15 AM');
 
   return (
     <Document title={`Acta_Entrevista_${c.numeroCaso || 'EXP'}`}>
@@ -34,7 +34,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
             <View style={pdfStyles.expedienteSlot}>
               <Text style={pdfStyles.expedienteText}>PRCC N°:</Text>
               <View style={pdfStyles.expedienteLine}>
-                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC)}</Text>
+                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, 'PRCC-2026-0042')}</Text>
               </View>
             </View>
           </View>
@@ -43,7 +43,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>DATOS DE LA ACTUACIÓN PERICIAL PRIVADA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Lugar de Actuación / Sede:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.sede)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Oficina Pericial SHA256.US')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha y Hora de la Entrevista:</Text>
@@ -53,19 +53,19 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>I. IDENTIFICACIÓN LEGAL DEL ENTREVISTADO (ARTS. 132-136 COPP)</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / Pasaporte:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Teléfono de Contacto Principal:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.dispositivo_numero_tel)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.dispositivo_numero_tel, '+58 (414) 592-8102')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Correo Electrónico:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar, 'carlos.mendoza@empresa.com.ve')}</Text>
         </View>
 
         <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', marginTop: 3, marginBottom: 2, color: '#0F172A' }}>
@@ -98,22 +98,22 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Equipo / Dispositivo Relacionado</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G (Model: 22101316G)')}</Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Serial / IMEI 1 / IMEI 2</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_imei)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_imei, 'IMEI: 864920193847102 / S/N: SN-XMI-2026-994812')}</Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>N° de Línea / Operadora / SIM</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_numero_tel)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_numero_tel, '+58 (414) 592-8102 (Movistar 4G LTE)')}</Text>
           </View>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>III. PREGUNTAS CLAVE DE CONTEXTO FORENSE (CUESTIONARIO PERICIAL)</Text>
         <View style={pdfStyles.qaRow}>
           <Text style={pdfStyles.qText}>PREGUNTA 1: ¿Cuál es el origen de la evidencia digital y el período de tiempo que abarca?</Text>
-          <Text style={pdfStyles.aText}>RESPUESTA: {fmt(c.descripcion || 'Conversaciones de WhatsApp mantenidas en el dispositivo consignado durante el período bajo investigación.')}</Text>
+          <Text style={pdfStyles.aText}>RESPUESTA: {fmt(c.descripcion, 'Conversaciones de WhatsApp, imágenes adjuntas y audios Opus contenidos en la memoria interna del teléfono consignado.')}</Text>
         </View>
 
         <View style={pdfStyles.qaRow}>
@@ -145,7 +145,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL ENTREVISTADO</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula)}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
           </View>
 
           <View style={pdfStyles.peritoCard}>
@@ -168,23 +168,23 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>CIV N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv, 'CIV N° 284.912')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>INPREABOGADO N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre, 'INPRE N° 102.849')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cargo:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo, 'Perito Informático Forense Entrevistador')}</Text>
               </View>
             </View>
 

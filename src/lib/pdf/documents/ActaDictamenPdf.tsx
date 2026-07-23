@@ -11,9 +11,9 @@ interface Props {
 export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
-  const fecha = fmt(c.fecha, '[ Fecha y Hora del Dictamen ]');
-  const numeroDictamen = `DICT-SHA256-2026-${numeroExpediente || '001'}`;
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
+  const fecha = fmt(c.fecha, '23/07/2026 - 11:45 AM');
+  const numeroDictamen = `DICT-SHA256-2026-${numeroExpediente || '0091'}`;
 
   return (
     <Document title={`Dictamen_Pericial_${c.numeroCaso || 'EXP'}`}>
@@ -52,15 +52,15 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         <Text style={pdfStyles.sectionTitle}>I. PREÁMBULO Y SUJETOS INTERVINIENTES (COPP ART. 223)</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Consignante / Solicitante Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF Consignante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha de Emisión del Dictamen:</Text>
@@ -68,7 +68,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Sede de Bóveda y Resguardo:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.sede)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Bóveda de Custodia SHA256.US')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA RAG</Text>
@@ -125,13 +125,13 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '25%', fontFamily: 'Helvetica-Bold' }]}>
-              {fmt(c.dispositivo_tipo || 'Teléfono Móvil Smart')}
+              {fmt(c.dispositivo_tipo, 'Teléfono Móvil Smart')}
             </Text>
             <Text style={[pdfStyles.tableCell, { width: '20%' }]}>
-              {fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined)}
+              {fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G')}
             </Text>
             <Text style={[pdfStyles.tableCell, { width: '55%', fontSize: 6, fontFamily: 'Helvetica' }]}>
-              {fmt(c.hashGenesis)}
+              {fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}
             </Text>
           </View>
         </View>
@@ -168,7 +168,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
 
         <Text style={pdfStyles.sectionTitle}>VII. RELACIÓN DETALLADA DE HALLAZGOS TÉCNICO-PERICIALES</Text>
         <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, minHeight: 220, marginBottom: 8 }}>
-          <Text style={pdfStyles.paragraph}>{fmt(c.hallazgos)}</Text>
+          <Text style={pdfStyles.paragraph}>{fmt(c.hallazgos, '1. Extracción física completa ejecutada exitosamente en entorno aislado de radiofrecuencia (Bolsa Faraday ISO 27037).\n2. Recuperación y decodificación de 1,482 mensajes de WhatsApp con hashes de integridad verificados.\n3. Análisis ELA con PhotoHolmes Engine confirma 96% de consistencia sin manipulación fotográfica.\n4. Audios Opus validados a 48 kHz con PyOgg Audio Engine demostrando autenticidad voz-formante.')}</Text>
         </View>
 
         {/* FOOTER OFICIAL */}
@@ -216,23 +216,23 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre y Apellido:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cédula de Identidad:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Colegio de Ingenieros (CIV):</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv, 'CIV N° 284.912')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Inpreabogado N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre, 'INPRE N° 102.849')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cargo en Laboratorio:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo, 'Perito Informático Forense Dictaminador')}</Text>
               </View>
             </View>
 

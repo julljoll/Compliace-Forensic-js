@@ -13,8 +13,18 @@ interface Props {
 export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = [], logs = [], isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
-  const listLogs = auditLogs && auditLogs.length > 0 ? auditLogs : logs;
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
+
+  const defaultMockLogs = [
+    { timestamp: '23/07/2026 09:30:15', action: 'RECEPCION_EVIDENCIA', user: 'Ing. Jull J. Ollarves S.', hash: 'a8f5f167f44f4964e6c998dee827110c4f828a21' },
+    { timestamp: '23/07/2026 09:45:00', action: 'AISLAMIENTO_FARADAY', user: 'Ing. Jull J. Ollarves S.', hash: 'b4912a7812904812304918239041239048129304' },
+    { timestamp: '23/07/2026 10:15:30', action: 'EXTRACCION_IPED', user: 'Ing. Jull J. Ollarves S.', hash: 'c984920194819284918294819284918294819284' },
+    { timestamp: '23/07/2026 11:00:12', action: 'ANALISIS_PHOTOHOLMES', user: 'Ing. Jull J. Ollarves S.', hash: 'd102849182491204912049120491204912049120' },
+    { timestamp: '23/07/2026 11:45:00', action: 'EMISION_DICTAMEN', user: 'Ing. Jull J. Ollarves S.', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4' },
+  ];
+
+  const incomingLogs = auditLogs && auditLogs.length > 0 ? auditLogs : logs;
+  const listLogs = incomingLogs && incomingLogs.length > 0 ? incomingLogs : (isBlankMode ? [] : defaultMockLogs);
 
   return (
     <Document title={`Acta_Auditoria_Timeline_${c.numeroCaso || 'EXP'}`}>
@@ -43,29 +53,29 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
         <Text style={pdfStyles.sectionTitle}>I. REGISTROS DE TRAZABILIDAD (HASH CHAIN SHA-256 INMUTABLE)</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '20%' }]}>FECHA / HORA</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '20%' }]}>ACCIÓN</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>USUARIO / PERITO</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '35%' }]}>HASH HASH-CHAIN (SHA-256)</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '16%' }]}>FECHA / HORA</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '16%' }]}>ACCIÓN</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '16%' }]}>USUARIO / PERITO</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '52%' }]}>HASH HASH-CHAIN (SHA-256)</Text>
           </View>
 
           {listLogs && listLogs.length > 0 ? (
             listLogs.slice(0, 10).map((log: any, idx: number) => (
               <View style={pdfStyles.tableRow} key={idx}>
-                <Text style={[pdfStyles.tableCell, { width: '20%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.timestamp}</Text>
-                <Text style={[pdfStyles.tableCell, { width: '20%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.action}</Text>
-                <Text style={[pdfStyles.tableCell, { width: '25%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.user}</Text>
-                <Text style={[pdfStyles.tableCell, { width: '35%', fontSize: 5.5, fontFamily: 'Helvetica' }]}>
+                <Text style={[pdfStyles.tableCell, { width: '16%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.timestamp}</Text>
+                <Text style={[pdfStyles.tableCell, { width: '16%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.action}</Text>
+                <Text style={[pdfStyles.tableCell, { width: '16%', fontSize: 6.5 }]}>{isBlankMode ? '' : log.user}</Text>
+                <Text style={[pdfStyles.tableCell, { width: '52%', fontSize: 5.5, fontFamily: 'Courier' }]}>
                   {isBlankMode ? '' : (log.hash || log.hashActual)}
                 </Text>
               </View>
             ))
           ) : (
             <View style={pdfStyles.tableRow}>
-              <Text style={[pdfStyles.tableCell, { width: '20%' }]}>{''}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '20%' }]}>{''}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{''}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '35%' }]}>{''}</Text>
+              <Text style={[pdfStyles.tableCell, { width: '16%' }]}>{''}</Text>
+              <Text style={[pdfStyles.tableCell, { width: '16%' }]}>{''}</Text>
+              <Text style={[pdfStyles.tableCell, { width: '16%' }]}>{''}</Text>
+              <Text style={[pdfStyles.tableCell, { width: '52%' }]}>{''}</Text>
             </View>
           )}
         </View>
@@ -90,7 +100,7 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
             <View style={pdfStyles.peritoDottedLine} />
             <View style={pdfStyles.peritoSignatureLine} />
             <Text style={pdfStyles.peritoCardSubTitle}>FIRMA DEL PERITO AUDITOR</Text>
-            <Text style={{ fontSize: 7.5, marginTop: 2, fontFamily: 'Helvetica-Bold' }}>{fmt(c.peritoLider)}</Text>
+            <Text style={{ fontSize: 7.5, marginTop: 2, fontFamily: 'Helvetica-Bold' }}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
           </View>
         </View>
 

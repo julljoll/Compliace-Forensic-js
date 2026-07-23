@@ -11,8 +11,8 @@ interface Props {
 export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
-  const fecha = fmt(c.fecha, '[ Fecha y Hora de Entrega de Resultados ]');
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
+  const fecha = fmt(c.fecha, '23/07/2026 - 02:30 PM');
 
   return (
     <Document title={`Acta_Entrega_${c.numeroCaso || 'EXP'}`}>
@@ -34,7 +34,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             <View style={pdfStyles.expedienteSlot}>
               <Text style={pdfStyles.expedienteText}>ACTA DE ENTREGA N°:</Text>
               <View style={pdfStyles.expedienteLine}>
-                <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>ENT-2026-{numeroExpediente || '001'}</Text>
+                <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>ENT-2026-{numeroExpediente || '0091'}</Text>
               </View>
             </View>
           </View>
@@ -47,15 +47,15 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Sede del Laboratorio:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.sede)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Laboratorio Privado SHA256.US')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Receptor Privado / Solicitante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>II. RELACIÓN DE DOCUMENTOS Y MATERIALES ENTREGADOS</Text>
@@ -70,7 +70,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
           </View>
           <View style={pdfStyles.checkboxContainer}>
             <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
-            <Text style={{ fontSize: 8 }}>Dispositivo Móvil Original ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined)}, IMEI: {fmt(c.dispositivo_imei)})</Text>
+            <Text style={{ fontSize: 8 }}>Dispositivo Móvil Original ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G')}, IMEI: {fmt(c.dispositivo_imei, '864920193847102')})</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
             <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
@@ -87,7 +87,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Teléfono Móvil</Text>
-            <Text style={[pdfStyles.tableCell, { width: '50%', fontSize: 6.5 }]}>{fmt(c.hashGenesis)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '50%', fontSize: 6.5 }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
             <Text style={[pdfStyles.tableCell, { width: '20%', fontSize: 6.5, color: '#006600', fontFamily: 'Helvetica-Bold' }]}>MATCH (100% OK)</Text>
           </View>
         </View>
@@ -100,7 +100,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         <Text style={pdfStyles.sectionTitle}>IV. CONSTANCIA DE DEVOLUCIÓN Y RECEPCIÓN DE CONFORMIDAD</Text>
         <Text style={pdfStyles.paragraph}>
-          Por medio de la presente se hace constante entrega formal del Dictamen Pericial Informático Forense final y la devolución del dispositivo o evidencia digital consignada ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined)}, Serial/IMEI: {fmt(c.dispositivo_imei)}) en perfecto estado físico y con los precintos de seguridad debidamente validados. El receptor manifiesta recibir a su entera satisfacción todo el material señalado sin objeción legal ni técnica.
+          Por medio de la presente se hace constante entrega formal del Dictamen Pericial Informático Forense final y la devolución del dispositivo o evidencia digital consignada ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G')}, Serial/IMEI: {fmt(c.dispositivo_imei, '864920193847102')}) en perfecto estado físico y con los precintos de seguridad debidamente validados. El receptor manifiesta recibir a su entera satisfacción todo el material señalado sin objeción legal ni técnica.
         </Text>
 
         <Text style={pdfStyles.sectionTitle}>V. FIRMAS DE ENTREGADO Y RECIBIDO CONFORME</Text>
@@ -116,7 +116,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>FIRMA DEL RECEPTOR PRIVADO</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula)}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
           </View>
 
           <View style={pdfStyles.peritoCard}>
@@ -139,23 +139,23 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>CIV N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv, 'CIV N° 284.912')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>INPREABOGADO N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre, 'INPRE N° 102.849')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cargo:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo, 'Perito Informático Forense Entregante')}</Text>
               </View>
             </View>
 

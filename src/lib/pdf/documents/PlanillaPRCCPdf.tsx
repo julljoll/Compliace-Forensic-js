@@ -11,9 +11,9 @@ interface Props {
 export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
-  const numeroPRCC = fmt(c.numeroPRCC, '[ PRCC-2026-0042 ]');
-  const fecha = fmt(c.fecha, '[ Fecha y Hora de Apertura ]');
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
+  const numeroPRCC = fmt(c.numeroPRCC, 'PRCC-2026-0042');
+  const fecha = fmt(c.fecha, '23/07/2026 - 09:30 AM');
 
   return (
     <Document title={`Planilla_PRCC_${c.numeroCaso || 'EXP'}`}>
@@ -46,11 +46,11 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         <Text style={pdfStyles.sectionTitle}>I. DATOS DEL CASO, CONSIGNANTE Y ORGANISMO RECEPTOR</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres Consignante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>N° de Expediente / Caso:</Text>
@@ -58,7 +58,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Sede de Resguardo / Bóveda:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.sede)}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Bóveda de Custodia SHA256.US')}</Text>
         </View>
 
         {/* SECCIÓN II: FORMA DE OBTENCIÓN */}
@@ -83,11 +83,11 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         <View style={{ paddingHorizontal: 2, marginVertical: 3 }}>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>a. Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
           </View>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>b. C.I:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6, marginBottom: 2 }}>
@@ -117,15 +117,15 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Equipo Móvil / Computador</Text>
-            <Text style={[pdfStyles.tableCell, { width: '70%' }]}>{fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '70%' }]}>{fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G (IMEI: 864920193847102)')}</Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Precinto de Seguridad</Text>
-            <Text style={[pdfStyles.tableCell, { width: '70%' }]}>{fmt(c.precinto_numero || 'Tamper-Evident Seal SEC-2026-8849')}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '70%' }]}>{fmt(c.precinto_numero, 'Tamper-Evident Seal SEC-2026-8849')}</Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '30%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
-            <Text style={[pdfStyles.tableCell, { width: '70%', fontSize: 6.5 }]}>{fmt(c.hashGenesis)}</Text>
+            <Text style={[pdfStyles.tableCell, { width: '70%', fontSize: 6.5 }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
           </View>
         </View>
 
@@ -146,7 +146,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 85 }}>Fecha y Hora:</Text>
             <Text style={pdfStyles.fieldValue}>{fecha}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 60, marginLeft: 10 }}>Propósito:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.proposito_traslado || 'Ingreso a Bóveda Forense & Análisis IPED/PhotoHolmes')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.proposito_traslado, 'Ingreso a Bóveda Forense & Análisis IPED/PhotoHolmes')}</Text>
           </View>
 
           {/* Entregado por */}
@@ -155,9 +155,9 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 100 }}>Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 35, marginLeft: 10 }}>C.I.:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4, marginBottom: 4 }}>
@@ -181,9 +181,9 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 100 }}>Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 35, marginLeft: 10 }}>C.I.:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula)}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4, marginBottom: 2 }}>
@@ -216,7 +216,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             </View>
             <View style={pdfStyles.signatureLine} />
             <Text style={pdfStyles.signatureLabel}>CUSTODIO SALIENTE / CONSIGNANTE</Text>
-            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula)}</Text>
+            <Text style={{ fontSize: 7, marginTop: 2 }}>C.I.: {fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
           </View>
 
           <View style={pdfStyles.peritoCard}>
@@ -239,23 +239,23 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>CIV N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv, 'CIV N° 284.912')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>INPREABOGADO N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre, 'INPRE N° 102.849')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cargo:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCargo, 'Perito Informático Forense Senior')}</Text>
               </View>
             </View>
 

@@ -11,7 +11,7 @@ interface Props {
 export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
 
   return (
     <Document title={`Acta_Desprecintado_${c.numeroCaso || 'EXP'}`}>
@@ -32,7 +32,7 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
             <View style={pdfStyles.expedienteSlot}>
               <Text style={pdfStyles.expedienteText}>PRCC N°:</Text>
               <View style={pdfStyles.expedienteLine}>
-                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, '[ PRCC-2026-0042 ]')}</Text>
+                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, 'PRCC-2026-0042')}</Text>
               </View>
             </View>
           </View>
@@ -41,11 +41,11 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
         <Text style={pdfStyles.sectionTitle}>I. DATOS DE LA BOLSA / SOBRE DE CUSTODIA Y PRECINTO</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Código de Bolsa Faraday / Sobre:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.codigoSobre, '[ Bolsa Faraday Inviolable #BF-SHA-0092 ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.codigoSobre, 'Bolsa Faraday Inviolable #BF-SHA-0092')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Número de Precinto de Seguridad:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.numeroPrecinto, '[ Precinto Holográfico SHA256-88192 ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.numeroPrecinto, 'Precinto Holográfico SHA256-88192')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Estado del Precinto al Recibir:</Text>
@@ -55,15 +55,15 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
         <Text style={pdfStyles.sectionTitle}>II. PROCEDIMIENTO DE APERTURA Y ASIGNACIÓN A ESTACIÓN FORENSE</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Estación de Trabajo / Write-Blocker:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.estacionTrabajo, '[ Estación Forense N° 01 (Tableau Write-Blocker T8u) ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.estacionTrabajo, 'Estación Forense N° 01 (Tableau Write-Blocker T8u)')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Analista Responsable:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, '[ Ing. Perito Analista de Laboratorio SHA256.US ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Testigo de Apertura de Laboratorio:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, '[ Oficial de Control de Custodia SHA256.US ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, 'Lcda. María Elena Torres (Oficial de Custodia)')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>III. CONSTANCIA DE APERTURA SIN NULIDAD</Text>
@@ -91,11 +91,11 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
             </View>
           </View>
@@ -116,11 +116,11 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.testigoNombre || 'Supervisor de Laboratorio')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.testigoNombre, 'Lcda. María Elena Torres')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.testigoCedula || 'V-00.000.000')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.testigoCedula, 'V-16.294.012')}</Text>
               </View>
             </View>
           </View>

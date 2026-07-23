@@ -11,7 +11,7 @@ interface Props {
 export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
-  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
+  const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
 
   return (
     <Document title={`Acta_Sanitizacion_${c.numeroCaso || 'EXP'}`}>
@@ -32,7 +32,7 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
             <View style={pdfStyles.expedienteSlot}>
               <Text style={pdfStyles.expedienteText}>PRCC N°:</Text>
               <View style={pdfStyles.expedienteLine}>
-                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, '[ PRCC-2026-0042 ]')}</Text>
+                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, 'PRCC-2026-0042')}</Text>
               </View>
             </View>
           </View>
@@ -41,21 +41,21 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
         <Text style={pdfStyles.sectionTitle}>I. DATOS DEL CASO Y REPOSITORIO A SANITIZAR</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cliente / Empresa Contratante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.empresa || c.solicitante_nombre, '[ Nombre de la Empresa / Cliente Contratante ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.empresa || c.solicitante_nombre, 'Inversiones & Servicios Corporativos C.A.')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Servidor / Storage de Proceso:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.servidorStorage, '[ Nodo Storage SHA256 / Vol. Encriptado ZFS-POOL-02 ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.servidorStorage, 'Nodo Storage SHA256 / Vol. Encriptado ZFS-POOL-02')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha y Hora de Sanitización:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.fechaSanitizacion || c.fecha, '[ Fecha y Hora del Borrado Criptográfico ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.fechaSanitizacion || c.fecha, '23/07/2026 - 04:15 PM')}</Text>
         </View>
 
         <Text style={pdfStyles.sectionTitle}>II. ESPECIFICACIÓN DE COPIAS BIT A BIT E IMÁGENES ELIMINADAS</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Imágenes Forenses Eliminadas:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.archivosSanitizados, '[ Imagen Raw .E01 / Clon Bit a Bit / Dump de Memoria RAM ]')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.archivosSanitizados, 'Imagen Forense Raw .E01 / Clon Bit a Bit / Dump de Memoria RAM')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Hash SHA-256 de Verificación Previa:</Text>
@@ -93,11 +93,11 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
               </View>
             </View>
           </View>
@@ -118,11 +118,11 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.solicitante_nombre)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.solicitante_cedula)}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
               </View>
             </View>
           </View>
