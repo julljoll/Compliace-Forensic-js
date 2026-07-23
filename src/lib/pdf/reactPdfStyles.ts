@@ -3,14 +3,18 @@ import { StyleSheet } from '@react-pdf/renderer';
 export const FOLIO_SIZE: [number, number] = [612, 936];
 
 /**
- * Función de formateo limpia: Garantiza que en la vista previa e impresión
- * no existan textos placeholder o ficticios entre corchetes [...].
+ * Función de formateo:
+ * - isBlankMode = false: Muestra en pantalla los valores reales del caso o placeholders de ejemplo ilustrativos.
+ * - isBlankMode = true: Limpia los campos (devuelve vacíos) para imprimir la planilla en blanco y ser llena a mano.
  */
-export function formatValue(val?: string, isBlankMode: boolean = true, defaultBlank: string = ''): string {
-  if (!val || val.trim() === '' || val.includes('[') || val.includes(']')) {
-    return defaultBlank;
+export function formatValue(val?: string, isBlankMode: boolean = false, defaultPlaceholder: string = ''): string {
+  if (isBlankMode) {
+    return '';
   }
-  return val.trim();
+  if (val && val.trim() !== '' && !val.includes('[')) {
+    return val.trim();
+  }
+  return defaultPlaceholder;
 }
 
 export const NORMATIVA_FOOTER_LINE_1 = 'Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.';
@@ -24,10 +28,10 @@ export const pdfStyles = StyleSheet.create({
   page: {
     size: [612, 936], // Hoja Folio (216mm x 330mm)
     backgroundColor: '#FFFFFF',
-    paddingTop: 138,      // Margen Superior de 4.8 cm para la Hoja 1 (despejando el membrete)
+    paddingTop: 113.39,   // Margen Superior: 4 cm (113.39 pt)
     paddingLeft: 85.04,   // Margen Izquierdo: 3 cm (85.04 pt) - Encuadernación Pericial
     paddingRight: 42.52,  // Margen Derecho: 1.5 cm (42.52 pt)
-    paddingBottom: 55,    // Margen Inferior: 1.5 cm (55 pt para footer de 2 líneas)
+    paddingBottom: 42.52, // Margen Inferior: 1.5 cm (42.52 pt)
     fontFamily: 'Helvetica',
     fontSize: 8.5,
     color: '#1E293B',
@@ -36,10 +40,10 @@ export const pdfStyles = StyleSheet.create({
   pageSecond: {
     size: [612, 936],
     backgroundColor: '#FFFFFF',
-    paddingTop: 50,       // Hoja 2+: Sin encabezado, inicio despejado en la parte superior
-    paddingLeft: 85.04,
-    paddingRight: 42.52,
-    paddingBottom: 55,
+    paddingTop: 42.52,    // Margen Superior Hoja 2+: 1.5 cm (42.52 pt)
+    paddingLeft: 85.04,   // Margen Izquierdo: 3 cm (85.04 pt)
+    paddingRight: 42.52,  // Margen Derecho: 1.5 cm (42.52 pt)
+    paddingBottom: 42.52, // Margen Inferior: 1.5 cm (42.52 pt)
     fontFamily: 'Helvetica',
     fontSize: 8.5,
     color: '#1E293B',
@@ -47,7 +51,7 @@ export const pdfStyles = StyleSheet.create({
   },
   headerContainer: {
     position: 'absolute',
-    top: 40,
+    top: 25,
     left: 85.04,
     right: 42.52,
     flexDirection: 'column',

@@ -1,17 +1,18 @@
 import React from 'react';
-import { Document, Page, Text, View, Image, Svg, Rect, Path, Line } from '@react-pdf/renderer';
-import { pdfStyles, formatValue, NORMATIVA_FOOTER_LINE_1, NORMATIVA_FOOTER_LINE_2 } from '../reactPdfStyles';
+import { Document, Page, Text, View, Svg, Rect, Path, Line } from '@react-pdf/renderer';
+import { pdfStyles, formatValue } from '../reactPdfStyles';
+import { PlanillaHeader, PlanillaFooter } from '../PlanillaHeaderFooter';
 
 interface Props {
   caso?: any;
   isBlankMode?: boolean;
 }
 
-export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) => {
+export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) => {
   const c = caso || {};
-  const fmt = (val?: string) => formatValue(val, isBlankMode);
-  const numeroExpediente = fmt(c.numeroCaso);
-  const fecha = fmt(c.fecha);
+  const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
+  const numeroExpediente = fmt(c.numeroCaso, '[ EXP-2026-SHA-0091 ]');
+  const fecha = fmt(c.fecha, '[ Fecha y Hora del Dictamen ]');
   const numeroDictamen = `DICT-SHA256-2026-${numeroExpediente || '001'}`;
 
   return (
@@ -20,16 +21,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
       {/* PÁGINA 1 — ENCABEZADO INSTITUCIONAL, PREÁMBULO Y MARCO NORMATIVO RAG      */}
       {/* ========================================================================= */}
       <Page size={[612, 936]} style={pdfStyles.page}>
-        <View style={pdfStyles.headerContainer}>
-          <View style={pdfStyles.headerBrandRow}>
-            <Image src="/logo.png" style={pdfStyles.headerLogo} />
-            <Text style={pdfStyles.logoText}>SHA256.US</Text>
-          </View>
-          <Text style={pdfStyles.subLogoText}>LABORATORIO PRIVADO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</Text>
-          <Text style={pdfStyles.addressText}>
-            Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.
-          </Text>
-        </View>
+        <PlanillaHeader />
 
         {/* Clasificación Documental */}
         <View style={pdfStyles.classificationBanner}>
@@ -102,10 +94,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </View>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
 
       {/* ========================================================================= */}
@@ -148,10 +137,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </View>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
 
       {/* ========================================================================= */}
@@ -186,10 +172,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </View>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
 
       {/* ========================================================================= */}
@@ -268,10 +251,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </View>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
 
       {/* ========================================================================= */}
@@ -371,10 +351,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </View>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
 
       {/* ========================================================================= */}
@@ -434,10 +411,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = true }) =
         </Text>
 
         {/* FOOTER OFICIAL */}
-        <View style={pdfStyles.footer} fixed>
-          <Text style={pdfStyles.footerTextLine}>{NORMATIVA_FOOTER_LINE_1}</Text>
-          <Text style={[pdfStyles.footerTextLine, { fontFamily: 'Helvetica-Bold' }]}>{NORMATIVA_FOOTER_LINE_2}</Text>
-        </View>
+        <PlanillaFooter />
       </Page>
     </Document>
   );
