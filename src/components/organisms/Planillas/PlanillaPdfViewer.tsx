@@ -9,13 +9,7 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import DescriptionIcon from '@mui/icons-material/Description';
-import PrintIcon from '@mui/icons-material/Print';
-import DownloadIcon from '@mui/icons-material/Download';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditNoteIcon from '@mui/icons-material/EditNote';
-import HtmlIcon from '@mui/icons-material/Html';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
-import { exportPlanillaToHtmlEmail } from '@/lib/export/exportHtmlEmail';
 
 const PDFViewerNative = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFViewer),
@@ -50,10 +44,7 @@ const NORMATIVAS_PLANILLA = [
 
 export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Previa PDF', isGenerating = false, actions, caso }: PlanillaPdfViewerProps) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [isDownloading, setIsDownloading] = useState<boolean>(false);
-  const [isPreviewBlank, setIsPreviewBlank] = useState<boolean>(false);
   const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
-  const [isExportingHtml, setIsExportingHtml] = useState<boolean>(false);
 
   useEffect(() => {
     if (pdfBlob) {
@@ -75,64 +66,6 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
       setIsExportingWord(false);
     }
   };
-
-  const handleExportHtmlEmail = async () => {
-    setIsExportingHtml(true);
-    try {
-      const element = window.document.querySelector('.planilla-container') as HTMLElement;
-      await exportPlanillaToHtmlEmail(caso, title, element);
-    } catch (err) {
-      console.error('Error al exportar HTML Email:', err);
-    } finally {
-      setIsExportingHtml(false);
-    }
-  };
-
-  // Descarga el PDF completamente LIMPIO / EN BLANCO para ser llenado a mano
-  const handleDownloadCleanPdf = async () => {
-    if (!document) return;
-    setIsDownloading(true);
-    try {
-      const { pdf } = await import('@react-pdf/renderer');
-      const cleanDocument = React.cloneElement(document, { isBlankMode: true });
-      const blob = await pdf(cleanDocument).toBlob();
-      const url = URL.createObjectURL(blob);
-      const link = window.document.createElement('a');
-      link.href = url;
-      const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_');
-      link.download = `${cleanTitle}_LIMPIA_EN_BLANCO.pdf`;
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error('Error generando PDF limpio:', err);
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  // Imprime la versión en blanco
-  const handlePrintClean = async () => {
-    if (!document) {
-      window.print();
-      return;
-    }
-    try {
-      const { pdf } = await import('@react-pdf/renderer');
-      const cleanDocument = React.cloneElement(document, { isBlankMode: true });
-      const blob = await pdf(cleanDocument).toBlob();
-      const url = URL.createObjectURL(blob);
-      const win = window.open(url, '_blank');
-      win?.print();
-    } catch (err) {
-      window.print();
-    }
-  };
-
-  const currentDocument = document
-    ? React.cloneElement(document, { isBlankMode: isPreviewBlank })
-    : undefined;
 
   return (
     <Box sx={{ width: '100%', maxWidth: '1100px', mx: 'auto', my: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -170,62 +103,8 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-          {/* Botón principal: DESCARGAR PDF LIMPIO (EN BLANCO) */}
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={isDownloading ? <CircularProgress size={14} sx={{ color: '#000' }} /> : <DownloadIcon />}
-            onClick={handleDownloadCleanPdf}
-            disabled={isDownloading}
-            sx={{
-              backgroundColor: '#FECF06',
-              color: '#000000',
-              fontWeight: 800,
-              fontSize: '11px',
-              px: 2,
-              '&:hover': { backgroundColor: '#E5B800' },
-            }}
-          >
-            DESCARGAR PDF LIMPIO
-          </Button>
-
-          {/* Imprimir en blanco */}
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<PrintIcon />}
-            onClick={handlePrintClean}
-            sx={{
-              borderColor: 'rgba(254, 207, 6, 0.4)',
-              color: '#FECF06',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.08)' },
-            }}
-          >
-            IMPRIMIR LIMPIO
-          </Button>
-
-          {/* Toggle para cambiar la vista previa en pantalla */}
-          <Button
-            variant={isPreviewBlank ? 'contained' : 'outlined'}
-            size="small"
-            startIcon={isPreviewBlank ? <VisibilityIcon /> : <EditNoteIcon />}
-            onClick={() => setIsPreviewBlank(!isPreviewBlank)}
-            sx={{
-              borderColor: 'rgba(157, 255, 0, 0.4)',
-              color: isPreviewBlank ? '#000000' : '#9DFF00',
-              backgroundColor: isPreviewBlank ? '#9DFF00' : 'transparent',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': {
-                borderColor: '#9DFF00',
-                backgroundColor: isPreviewBlank ? '#85E600' : 'rgba(157, 255, 0, 0.1)',
-              },
-            }}
-          >
-            {isPreviewBlank ? 'VER CON EJEMPLOS' : 'PREVISUALIZAR BLANCO'}
-          </Button>
+          {/* Selección de dispositivo / acciones adicionales */}
+          {actions}
 
           {/* Exportar a Word (.DOCX) */}
           <Button
@@ -241,28 +120,8 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
               fontSize: '11px',
               '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.08)' },
             }}>
-              DESCARGAR WORD (.DOCX)
-            </Button>
-
-          {/* Exportar a HTML para Correo Electrónico */}
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={isExportingHtml ? <CircularProgress size={14} sx={{ color: '#9DFF00' }} /> : <HtmlIcon />}
-            onClick={handleExportHtmlEmail}
-            disabled={isExportingHtml}
-            sx={{
-              borderColor: 'rgba(157, 255, 0, 0.4)',
-              color: '#9DFF00',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#9DFF00', backgroundColor: 'rgba(157, 255, 0, 0.08)' },
-            }}
-          >
-            GENERAR HTML
+            DESCARGAR WORD (.DOCX)
           </Button>
-
-          {actions}
         </Box>
       </Box>
 
@@ -286,9 +145,9 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
             <CircularProgress sx={{ color: '#FECF06' }} size={40} />
             <Typography sx={{ fontSize: '14px', fontWeight: 700, fontFamily: 'monospace' }}>Procesando documento PDF...</Typography>
           </Box>
-        ) : currentDocument ? (
+        ) : document ? (
           <PDFViewerNative style={{ width: '100%', height: '100%', border: 'none' }}>
-            {currentDocument as any}
+            {document as any}
           </PDFViewerNative>
         ) : blobUrl ? (
           <iframe src={blobUrl} style={{ width: '100%', height: '100%', border: 'none' }} title={title} />
