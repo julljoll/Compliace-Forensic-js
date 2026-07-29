@@ -487,6 +487,46 @@ const NORMATIVAS_INICIALES: Normativa[] = [
     version: '2024', fechaVigencia: '2024-01-10', activa: true,
     urlReferencia: 'normativas_rag/Informatica/analisis forense en android con avilla forensics.md',
     articulos: ['Depuración USB', 'Extracción Físca', 'Análisis de Bases de Datos']
+  },
+  {
+    id: 'n24', codigo: 'PERITAJE-MANUAL', tipo: 'MANUAL',
+    nombre: 'Manual del Perito Informático Forense en el Proceso Penal y Civil',
+    descripcion: 'Tratado de metodología pericial y criminalística digital. Define las reglas de actuación del experto informático forense en el levantamiento de evidencias, valoración de la prueba digital, técnicas de preservación sin contaminación de muestras y estructura de rendición del dictamen pericial en sala de juicio conforme al estándar Daubert.',
+    version: '2024', fechaVigencia: '2024-02-01', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/el peritaje informático.md',
+    articulos: ['Acreditación de Idoneidad', 'Metodología Pericial', 'Rendición de Dictamen', 'Cadena de Custodia']
+  },
+  {
+    id: 'n25', codigo: 'CRIM-DIN', tipo: 'REGLAMENTO',
+    nombre: 'Criminología Digital y Metodología de la Evidencia Informática',
+    descripcion: 'Compendio doctrinario y normativo sobre la ciencia de la criminología aplicada al entorno digital. Regula los patrones de conducta en la comisión de ciberdelitos, perfilamiento de sospechosos, preservación de trazas en redes y análisis de causalidad tecnológica en entornos corporativos.',
+    version: '2023', fechaVigencia: '2023-11-15', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/LA_CRIMINOLOGÍA_UNA_CIENCIA_DINAMICA.md',
+    articulos: ['Profilaxis Criminal', 'Comportamiento en Redes', 'Análisis Causal', 'Fijación de Trazas']
+  },
+  {
+    id: 'n26', codigo: 'NORM-ECO-DIG', tipo: 'REGLAMENTO',
+    nombre: 'Normalización y Estandarización de Pruebas en Economía Digital',
+    descripcion: 'Normas y recomendaciones técnicas para la auditoría y peritaje de transacciones en la economía digital, blockchain, contratos inteligentes y activos criptográficos. Establece directrices para la preservación de bitácoras contables digitales e integridad de libros electrónicos.',
+    version: '2024', fechaVigencia: '2024-03-20', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/Normalizacion_economia_digital.md',
+    articulos: ['Trazabilidad Financiera', 'Contratos Inteligentes', 'Libros Electrónicos', 'Auditoría Criptográfica']
+  },
+  {
+    id: 'n27', codigo: 'CYB-DELITOS', tipo: 'LEY',
+    nombre: 'Marco Comparado de Ciberseguridad y Derecho Penal Informático',
+    descripcion: 'Estudio y sistematización de legislación comparada en ciberdelincuencia, Convenio de Budapest y adecuación procesal venezolana. Define tipos penales cibernéticos, cooperación internacional en evidencia transfronteriza y extracción remota autorizada.',
+    version: '2023', fechaVigencia: '2023-09-10', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/cyb_ecu_delitos_inform.md',
+    articulos: ['Convenio de Budapest', 'Delitos Transfronterizos', 'Cooperación Internacional', 'Evidencia Remota']
+  },
+  {
+    id: 'n28', codigo: 'BIBLIO-FORENSE', tipo: 'MANUAL',
+    nombre: 'Compendio Doctrinario y Bibliográfico de Informática Forense',
+    descripcion: 'Reopilación bibliográfica, jurisprudencial y doctrinal en materia de prueba digital. Reúne sentencias de la Sala de Casación Penal y Constitucional del Tribunal Supremo de Justicia (TSJ) sobre la admisibilidad de mensajes WhatsApp, correos y registros de auditoría.',
+    version: '2024', fechaVigencia: '2024-06-01', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/borrador para lista de leyes-bibliografias.md',
+    articulos: ['Jurisprudencia TSJ', 'Admisibilidad de WhatsApp', 'Valoración Probatoria', 'Doctrina Pericial']
   }
 ];
 
