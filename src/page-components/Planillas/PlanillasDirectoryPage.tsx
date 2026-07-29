@@ -272,8 +272,13 @@ export default function PlanillasDirectoryPage() {
                           {p.descripcion}
                         </Typography>
 
-                        {/* Normativas RAG Chips */}
+                        {/* Normativas RAG Chips + Portada Badge */}
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
+                          <Chip
+                            label="📄 PORTADA FOLIADA"
+                            size="small"
+                            sx={{ backgroundColor: 'rgba(0, 255, 65, 0.12)', color: '#00FF41', border: '1px solid rgba(0, 255, 65, 0.3)', fontSize: '10px', height: '20px', fontWeight: 800 }}
+                          />
                           {p.normativas.map(n => (
                             <Chip
                               key={n}

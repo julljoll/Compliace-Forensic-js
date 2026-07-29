@@ -71,7 +71,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Bóveda de Custodia SHA256.US')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA RAG</Text>
+        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA</Text>
         <Text style={pdfStyles.paragraph}>
           El presente dictamen técnico se fundamenta rigurosamente en las disposiciones legales venezolanas e internacionales en materia forense digital:
         </Text>
@@ -358,16 +358,16 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
       {/* PÁGINA 6 — REFERENCIAS NORMATIVAS Y CADENA BIBLIOGRÁFICA                 */}
       {/* ========================================================================= */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>XI. INDICE DE REFERENCIAS NORMATIVAS RAG Y LITERATURA ESPECIALIZADA</Text>
+        <Text style={pdfStyles.sectionTitle}>XI. ÍNDICE DE REFERENCIAS NORMATIVAS Y LITERATURA ESPECIALIZADA</Text>
         <Text style={pdfStyles.paragraph}>
-          El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas precargadas en el repositorio del laboratorio SHA256.US:
+          El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas oficiales aplicables al procedimiento pericial:
         </Text>
 
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Código / Norma</Text>
             <Text style={[pdfStyles.tableHeaderCell, { width: '50%' }]}>Título Oficial del Documento / Gaceta</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Módulo RAG</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Módulo Normativo</Text>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '25%', fontFamily: 'Helvetica-Bold' }]}>MUCC-2017</Text>

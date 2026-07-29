@@ -2,6 +2,7 @@ import React from 'react';
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { pdfStyles, formatValue } from '../reactPdfStyles';
 import { PlanillaHeader, PlanillaFooter } from '../PlanillaHeaderFooter';
+import PlanillaCoverPagePdf from '../PlanillaCoverPagePdf';
 
 interface Props {
   caso?: any;
@@ -15,6 +16,10 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
 
   return (
     <Document title={`Acta_Sanitizacion_${c.numeroCaso || 'EXP'}`}>
+      {/* PÁGINA 1 (FOLIO 01) — PORTADA DINÁMICA FOLIADA */}
+      <PlanillaCoverPagePdf planillaId="acta-sanitizacion" caso={caso} isBlankMode={isBlankMode} />
+
+      {/* PÁGINA 2 — ENCABEZADO INSTITUCIONAL */}
       <Page size={[612, 936]} style={pdfStyles.page}>
         <PlanillaHeader />
 

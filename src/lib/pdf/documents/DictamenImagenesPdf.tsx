@@ -21,6 +21,7 @@ import React from 'react';
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { pdfStyles, formatValue } from '../reactPdfStyles';
 import { PlanillaHeader, PlanillaFooter } from '../PlanillaHeaderFooter';
+import PlanillaCoverPagePdf from '../PlanillaCoverPagePdf';
 import {
   ElaMapSvg,
   CopyMoveDetectionSvg,
@@ -42,6 +43,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
 
   return (
     <Document title={`Dictamen_Pericial_Imagenes_${c.numeroCaso || 'EXP'}`}>
+      {/* PÁGINA 1 (FOLIO 01) — PORTADA DINÁMICA FOLIADA CON LEYENDA SECCIONAL */}
+      <PlanillaCoverPagePdf planillaId="dictamen-imagenes" caso={caso} isBlankMode={isBlankMode} />
 
       {/* ====================================================================== */}
       {/* PÁGINA 1 — PORTADA, PREÁMBULO INSTITUCIONAL Y MARCO NORMATIVO RAG      */}
@@ -115,7 +118,7 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
         </View>
 
         {/* Sección II — Marco Jurídico */}
-        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA RAG</Text>
+        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA</Text>
         <Text style={pdfStyles.paragraph}>
           El presente dictamen se fundamenta en las siguientes disposiciones legales venezolanas e internacionales en materia de forensía digital fotográfica:
         </Text>
@@ -447,19 +450,19 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
       </Page>
 
       {/* ====================================================================== */}
-      {/* PÁGINA 8 — BIBLIOGRAFÍA NORMATIVA RAG                                  */}
+      {/* PÁGINA 8 — BIBLIOGRAFÍA NORMATIVA                                      */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>XI. ÍNDICE DE REFERENCIAS NORMATIVAS RAG Y LITERATURA ESPECIALIZADA</Text>
+        <Text style={pdfStyles.sectionTitle}>XI. ÍNDICE DE REFERENCIAS NORMATIVAS Y LITERATURA ESPECIALIZADA</Text>
         <Text style={pdfStyles.paragraph}>
-          El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas precargadas en el repositorio del Laboratorio SHA256.US:
+          El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas oficiales aplicables al procedimiento pericial:
         </Text>
 
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '22%' }]}>Código / Norma</Text>
             <Text style={[pdfStyles.tableHeaderCell, { width: '53%' }]}>Título Oficial del Documento / Gaceta</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Módulo RAG / Referencia</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Módulo Normativo / Referencia</Text>
           </View>
           {[
             ['MUCC-2017', 'Manual Único de Cadena de Custodia de Evidencias de Venezuela (§ 4-7)', 'Informática Forense'],
