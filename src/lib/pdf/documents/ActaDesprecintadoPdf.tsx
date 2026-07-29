@@ -66,11 +66,11 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Analista Responsable:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Testigo de Apertura de Laboratorio:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, 'Ms. Mary E. Torres (Custody Officer)')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, 'Lcda. María Elena Torres (Oficial de Custodia)')}</Text>
         </View>
 
         {/* 3.0 REMOCIÓN CONTROLADA */}
@@ -108,7 +108,7 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

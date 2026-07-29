@@ -94,7 +94,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Consignante / Solicitante:</Text>

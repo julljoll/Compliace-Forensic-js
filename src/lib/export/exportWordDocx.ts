@@ -79,7 +79,7 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
       <!-- 3.0 OPERARIOS PERICIALES -->
       <div id="seccion-3.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">3.0 OPERARIOS PERICIALES DE FIJACIÓN Y COLECCIÓN (MUCC-2017)</div>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">a. Nombres y Apellidos:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.peritoLider || 'Eng. Christopher V. Vance'}</td></tr>
+        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">a. Nombres y Apellidos:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.peritoLider || 'Ing. Christopher V. Vance'}</td></tr>
         <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">b. C.I:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.peritoCedula || 'V-19.823.104'}</td></tr>
       </table>
 

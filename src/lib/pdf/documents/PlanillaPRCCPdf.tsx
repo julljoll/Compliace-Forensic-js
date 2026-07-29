@@ -87,7 +87,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         <View style={{ paddingHorizontal: 2, marginVertical: 3 }}>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>a. Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
           </View>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>b. C.I:</Text>
@@ -186,7 +186,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 100 }}>Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 35, marginLeft: 10 }}>C.I.:</Text>
             <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
           </View>
@@ -244,7 +244,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

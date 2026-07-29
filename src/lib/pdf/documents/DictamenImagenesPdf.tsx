@@ -94,7 +94,7 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
         <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 MARCO NORMATIVO Y PREÁMBULO INSTITUCIONAL</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Consignante / Solicitante:</Text>
@@ -425,7 +425,7 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
 
             <View style={{ marginTop: 4, width: '100%' }}>
               {[
-                ['Nombre y Apellido:', fmt(c.peritoLider, 'Eng. Christopher V. Vance')],
+                ['Nombre y Apellido:', fmt(c.peritoLider, 'Ing. Christopher V. Vance')],
                 ['Cédula de Identidad:', fmt(c.peritoCedula, 'V-19.823.104')],
                 ['Colegio de Ingenieros (CIV):', fmt(c.peritoCiv, 'CIV N° 284.912')],
                 ['INPREABOGADO N°:', fmt(c.peritoInpre, 'INPRE N° 102.849')],

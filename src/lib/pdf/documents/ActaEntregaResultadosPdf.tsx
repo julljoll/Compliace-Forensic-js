@@ -26,7 +26,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
 
         <View style={pdfStyles.titleBlock}>
           <Text style={pdfStyles.mainTitle}>ACTA DE ENTREGA DE RESULTADOS Y DEVOLUCIÓN DE EVIDENCIA</Text>
-          <Text style={pdfStyles.subTitle}>ENTREGA FORMAL DE INFORME Y DEVOLUCIÓN DE DISPOSITIVO MÓVIL (MUCC-2017 & ISO 27037)</Text>
+          <Text style={pdfStyles.subTitle}>ENTREGA FORMAL DE INFORME Y DEVOLUCIÓN DE DISPOSITIVO (MUCC-2017 CIERRE, ISO/IEC 27037 SEC. 8 &amp; ART. 187 COPP)</Text>
           
           <View style={pdfStyles.expedienteBox}>
             <View style={pdfStyles.expedienteSlot}>
@@ -148,7 +148,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

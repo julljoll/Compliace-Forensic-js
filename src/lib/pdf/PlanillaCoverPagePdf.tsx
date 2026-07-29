@@ -215,7 +215,7 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
   const expNumero = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
   const prccNumero = fmt(c.numeroPRCC, 'PRCC-2026-0042');
   const fechaEmision = fmt(c.fecha, '23/07/2026 - 09:30 AM');
-  const perito = fmt(peritoNombre || c.peritoAsignado, 'Eng. Charles P. Vance (Forensic Expert CIP-8492)');
+  const perito = fmt(peritoNombre || c.peritoAsignado, 'Ing. Christopher V. Vance (Perito Informático Forense CIV N° 284.912)');
 
   return (
     <Page size={[612, 936]} style={pdfStyles.page}>
