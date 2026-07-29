@@ -25,7 +25,7 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
 
         <View style={pdfStyles.titleBlock}>
           <Text style={pdfStyles.mainTitle}>ACTA DE APERTURA Y DESPRECINTADO DE EVIDENCIA EN LABORATORIO</Text>
-          <Text style={pdfStyles.subTitle}>VERIFICACIÓN FORMAL DE PRECINTO E INTEGRIDAD DE SOBRE DE CUSTODIA (MUCC-2017 FASE 2 & ISO/IEC 27037 SEC. 7)</Text>
+          <Text style={pdfStyles.subTitle}>VERIFICACIÓN FORMAL DE PRECINTO E INTEGRIDAD DE SOBRE DE CUSTODIA (MUCC-2017 FASE 2, ISO/IEC 27037 SEC. 7.2 & ART. 187 COPP)</Text>
           
           <View style={pdfStyles.expedienteBox}>
             <View style={pdfStyles.expedienteSlot}>
