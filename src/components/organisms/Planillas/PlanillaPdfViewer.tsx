@@ -13,9 +13,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import ImageIcon from '@mui/icons-material/Image';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
-import { exportPlanillaToSvg } from '@/lib/export/exportSvg';
 
 const PDFViewerNative = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFViewer),
@@ -53,7 +51,6 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isPreviewBlank, setIsPreviewBlank] = useState<boolean>(false);
   const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
-  const [isExportingSvg, setIsExportingSvg] = useState<boolean>(false);
 
   useEffect(() => {
     if (pdfBlob) {
@@ -73,18 +70,6 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
       console.error('Error al exportar Word:', err);
     } finally {
       setIsExportingWord(false);
-    }
-  };
-
-  const handleExportSvg = async () => {
-    setIsExportingSvg(true);
-    try {
-      const element = window.document.querySelector('.planilla-container') as HTMLElement;
-      await exportPlanillaToSvg(caso, title, element);
-    } catch (err) {
-      console.error('Error al exportar SVG:', err);
-    } finally {
-      setIsExportingSvg(false);
     }
   };
 
@@ -240,28 +225,9 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
               fontWeight: 700,
               fontSize: '11px',
               '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.08)' },
-            }}
-          >
-            DESCARGAR WORD (.DOCX)
-          </Button>
-
-          {/* Exportar a Imagen SVG */}
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={isExportingSvg ? <CircularProgress size={14} sx={{ color: '#FECF06' }} /> : <ImageIcon />}
-            onClick={handleExportSvg}
-            disabled={isExportingSvg}
-            sx={{
-              borderColor: 'rgba(254, 207, 6, 0.4)',
-              color: '#FECF06',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.08)' },
-            }}
-          >
-            DESCARGAR SVG (.ZIP)
-          </Button>
+            }}>
+              DESCARGAR WORD (.DOCX)
+            </Button>
 
           {actions}
         </Box>

@@ -18,11 +18,9 @@ import DownloadIcon from '@mui/icons-material/Download';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import GridViewIcon from '@mui/icons-material/GridView';
 import DescriptionIcon from '@mui/icons-material/Description';
-import ImageIcon from '@mui/icons-material/Image';
 import CircularProgress from '@mui/material/CircularProgress';
 import { printPdfBlob, generatePdfBlobFromElement } from '@/lib/pdf/planillaPdfEngine';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
-import { exportPlanillaToSvg } from '@/lib/export/exportSvg';
 
 interface PlanillaDocumentViewerProps {
   children: React.ReactNode;
@@ -44,7 +42,6 @@ export default function PlanillaDocumentViewer({
   const [zoom, setZoom] = useState<number>(100);
   const [showMarginGuides, setShowMarginGuides] = useState<boolean>(false);
   const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
-  const [isExportingSvg, setIsExportingSvg] = useState<boolean>(false);
 
   const handleZoomIn = () => setZoom(prev => Math.min(prev + 15, 200));
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 15, 50));
@@ -59,18 +56,6 @@ export default function PlanillaDocumentViewer({
       console.error('Error exportando Word en PlanillaDocumentViewer:', err);
     } finally {
       setIsExportingWord(false);
-    }
-  };
-
-  const handleExportSvg = async () => {
-    setIsExportingSvg(true);
-    try {
-      const el = document.querySelector('.planilla-container') as HTMLElement;
-      await exportPlanillaToSvg(caso, title, el);
-    } catch (err) {
-      console.error('Error exportando SVG en PlanillaDocumentViewer:', err);
-    } finally {
-      setIsExportingSvg(false);
     }
   };
 
@@ -253,23 +238,6 @@ export default function PlanillaDocumentViewer({
             }}
           >
             DESCARGAR WORD (.DOCX)
-          </Button>
-
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={isExportingSvg ? <CircularProgress size={14} sx={{ color: '#9DFF00' }} /> : <ImageIcon fontSize="small" />}
-            onClick={handleExportSvg}
-            disabled={isExportingSvg}
-            sx={{
-              color: '#9DFF00',
-              borderColor: 'rgba(157, 255, 0, 0.4)',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#9DFF00', backgroundColor: 'rgba(157, 255, 0, 0.12)' },
-            }}
-          >
-            DESCARGAR SVG (.ZIP)
           </Button>
 
           <Button
