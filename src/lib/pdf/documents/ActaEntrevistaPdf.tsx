@@ -44,7 +44,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>DATOS DE LA ACTUACIÓN PERICIAL PRIVADA</Text>
+        {/* 1.0 DATOS GENERALES */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 DATOS GENERALES Y LUGAR DE LA ENTREVISTA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Lugar de Actuación / Sede:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Oficina Pericial SHA256.US')}</Text>
@@ -54,8 +55,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           <Text style={pdfStyles.fieldValue}>{fecha}</Text>
         </View>
 
-        {/* 1.0 IDENTIFICACIÓN DEL ENTREVISTADO */}
-        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</Text>
+        {/* 2.0 IDENTIFICACIÓN DEL ENTREVISTADO */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
@@ -95,8 +96,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        {/* 2.0 CONTEXTO DE LA INVESTIGACIÓN */}
-        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 CONTEXTO DE LA INVESTIGACIÓN Y ANTECEDENTES DEL CASO</Text>
+        {/* 3.0 DECLARACIÓN TÉCNICO-PERICIAL */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 DECLARACIÓN TÉCNICO-PERICIAL Y ANTECEDENTES</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '35%' }]}>Parámetro de Contexto Evidencial</Text>
@@ -116,8 +117,6 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        {/* 3.0 CREDENCIALES, CLAVES Y PARÁMETROS */}
-        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 CREDENCIALES, CLAVES Y PARÁMETROS DE ACCESO FACILITADOS</Text>
         <View style={pdfStyles.qaRow}>
           <Text style={pdfStyles.qText}>PREGUNTA 1: ¿Cuál es el origen de la evidencia digital y el período de tiempo que abarca?</Text>
           <Text style={pdfStyles.aText}>RESPUESTA: {fmt(c.descripcion, 'Conversaciones de WhatsApp, imágenes adjuntas y audios Opus contenidos en la memoria interna del teléfono consignado.')}</Text>
@@ -134,8 +133,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
 
       {/* PÁGINA 2 — CONSENTIMIENTO Y FIRMAS */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        {/* 4.0 OBSERVACIONES TÉCNICAS */}
-        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 OBSERVACIONES TÉCNICAS Y DECLARACIÓN JURADA</Text>
+        {/* 4.0 CONOCIMIENTO DE DERECHOS Y AUTORIZACIÓN FORENSE */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 CONOCIMIENTO DE DERECHOS Y AUTORIZACIÓN FORENSE</Text>
         <Text style={pdfStyles.paragraph}>
           El entrevistado manifiesta de manera expresa que rinde la presente declaración de forma LIBRE, CONSCIENTE Y VOLUNTARIA, sin haber sido objeto de coacción, violencia, dolo, engaño o promesas indebidas. Autoriza al equipo pericial de SHA256.US para la incorporación de esta entrevista al expediente forense N° {numeroExpediente}.
         </Text>
