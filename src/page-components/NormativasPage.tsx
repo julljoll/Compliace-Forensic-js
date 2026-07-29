@@ -21,10 +21,20 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import PolicyIcon from '@mui/icons-material/Policy';
+import CategoryIcon from '@mui/icons-material/Category';
 
 import { useCMSStore } from '../store/cmsStore';
 import { NORMATIVAS_ETAPAS } from '../data/normativasEtapas';
 import { PLANILLAS_REGISTRY } from '../data/planillasRegistry';
+
+const CATEGORIAS_FILTRO = [
+  { id: 'todas', label: 'Todas', emoji: '📚' },
+  { id: 'ISO', label: 'ISO & NIST', emoji: '🛡️' },
+  { id: 'LEY', label: 'Leyes TICs & Penal', emoji: '⚖️' },
+  { id: 'MANUAL', label: 'Cadena de Custodia', emoji: '📋' },
+  { id: 'REGLAMENTO', label: 'Doctrina & Normas', emoji: '📕' },
+];
 
 const TIPO_ICONS: Record<string, any> = {
   ISO: SecurityIcon,
@@ -45,22 +55,34 @@ const TIPO_COLORS: Record<string, { color: string; bg: string }> = {
 export default function NormativasPage() {
   const { normativas } = useCMSStore();
   const [selectedNormativaId, setSelectedNormativaId] = useState<string | null>(normativas[0]?.id || null);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('todas');
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Filtrado por categoría y término de búsqueda
   const filteredNormativas = useMemo(() => {
-    if (!searchTerm) return normativas;
-    const term = searchTerm.toLowerCase();
-    return normativas.filter(n =>
-      n.codigo.toLowerCase().includes(term) ||
-      n.nombre.toLowerCase().includes(term) ||
-      n.descripcion.toLowerCase().includes(term) ||
-      n.tipo.toLowerCase().includes(term)
-    );
-  }, [normativas, searchTerm]);
+    return normativas.filter(n => {
+      // Filtro por categoría
+      if (categoriaSeleccionada !== 'todas') {
+        if (categoriaSeleccionada === 'ISO' && n.tipo !== 'ISO' && n.tipo !== 'NIST') return false;
+        if (categoriaSeleccionada === 'LEY' && n.tipo !== 'LEY') return false;
+        if (categoriaSeleccionada === 'MANUAL' && n.tipo !== 'MANUAL') return false;
+        if (categoriaSeleccionada === 'REGLAMENTO' && n.tipo !== 'REGLAMENTO') return false;
+      }
+      // Filtro por término
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        return n.codigo.toLowerCase().includes(term) ||
+               n.nombre.toLowerCase().includes(term) ||
+               n.descripcion.toLowerCase().includes(term) ||
+               n.tipo.toLowerCase().includes(term);
+      }
+      return true;
+    });
+  }, [normativas, categoriaSeleccionada, searchTerm]);
 
   const selectedNormativa = useMemo(() => {
-    return normativas.find(n => n.id === selectedNormativaId) || null;
-  }, [normativas, selectedNormativaId]);
+    return normativas.find(n => n.id === selectedNormativaId) || filteredNormativas[0] || null;
+  }, [normativas, selectedNormativaId, filteredNormativas]);
 
   // Etapas procesales extraídas de NORMATIVAS_ETAPAS
   const etapasNormativa = useMemo(() => {
@@ -91,16 +113,43 @@ export default function NormativasPage() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 6 }}>
-      {/* Header */}
+      {/* Header Institucional */}
       <Box sx={{ pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
         <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
           <MenuBookIcon sx={{ fontSize: 28, color: '#FECF06' }} />
-          Marco Normativo Legal & Estándares Forenses
+          Marco Normativo Legal &amp; Sustento de Compliance Forense
         </Typography>
         <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
-          Base de conocimiento técnico-jurídica con los estándares ISO, NIST, COPP, Ley de Mensajes de Datos, Ley de Delitos Informáticos y MUCC-2017 aplicados en peritajes digitales.
+          Base de conocimiento interactiva con {normativas.length} normas, leyes y estándares (ISO 27037/27042, NIST SP 800-101, MUCC-2017, COPP y Ley de Mensajes de Datos) que garantizan la admisibilidad procesal de cada peritaje.
         </Typography>
       </Box>
+
+      {/* Barra de Filtros Rápidos por Categoría Temática */}
+      <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', pb: 0.5 }}>
+        {CATEGORIAS_FILTRO.map(cat => {
+          const isSelected = categoriaSeleccionada === cat.id;
+          return (
+            <Chip
+              key={cat.id}
+              label={`${cat.emoji} ${cat.label}`}
+              onClick={() => setCategoriaSeleccionada(cat.id)}
+              sx={{
+                fontWeight: 700,
+                fontSize: '12px',
+                cursor: 'pointer',
+                backgroundColor: isSelected ? '#FECF06' : '#161B22',
+                color: isSelected ? '#0D1117' : '#C9D1D9',
+                border: `1px solid ${isSelected ? '#FECF06' : 'rgba(255, 255, 255, 0.1)'}`,
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  backgroundColor: isSelected ? '#FECF06' : 'rgba(254, 207, 6, 0.15)',
+                  color: isSelected ? '#0D1117' : '#FECF06',
+                },
+              }}
+            />
+          );
+        })}
+      </Stack>
 
       <Grid container spacing={3}>
         {/* Lista Maestra de Normativas */}
@@ -124,7 +173,7 @@ export default function NormativasPage() {
               {filteredNormativas.map((norm) => {
                 const IconComponent = TIPO_ICONS[norm.tipo] || MenuBookIcon;
                 const style = TIPO_COLORS[norm.tipo] || TIPO_COLORS.ISO;
-                const isSelected = norm.id === selectedNormativaId;
+                const isSelected = selectedNormativa && norm.id === selectedNormativa.id;
 
                 return (
                   <Box
@@ -162,11 +211,11 @@ export default function NormativasPage() {
           </Card>
         </Grid>
 
-        {/* Vista Detallada Ampliada */}
+        {/* Vista Detallada Didáctica de Sustento Legal */}
         <Grid size={{ xs: 12, md: 8 }}>
           {selectedNormativa ? (
             <Card sx={{ p: 3, backgroundColor: '#161B22', border: '1px solid rgba(254, 207, 6, 0.3)', borderRadius: '12px' }}>
-              {/* Encabezado Principal */}
+              {/* Encabezado de la Norma */}
               <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, pb: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <Box>
                   <Typography variant="h5" sx={{ color: '#FECF06', fontWeight: 800, letterSpacing: '-0.01em' }}>
@@ -187,28 +236,69 @@ export default function NormativasPage() {
                 />
               </Stack>
 
-              {/* Descripción Extensa de la Norma */}
+              {/* Bloque A: Ficha Didáctica de Sustento Jurídico & Compliance */}
               <Box sx={{ mb: 3.5, backgroundColor: '#0D1117', p: 2.5, borderRadius: '8px', borderLeft: '4px solid #FECF06' }}>
-                <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 700, mb: 1, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.5px' }}>
-                  Objeto, Alcance &amp; Relevancia Pericial
+                <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 800, mb: 1, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <PolicyIcon sx={{ fontSize: 18, color: '#FECF06' }} />
+                  📌 Sustento Jurídico &amp; Valor Probatorio en el Compliance
                 </Typography>
                 <Typography sx={{ fontSize: '13.5px', color: '#E6EDF3', lineHeight: 1.65, textAlign: 'justify' }}>
                   {selectedNormativa.descripcion}
                 </Typography>
               </Box>
 
-              {/* Etapas Operativas de la Norma (si están registradas) */}
+              {/* Bloque B: Principios Técnico-Forenses Exigidos por la Norma */}
+              <Box sx={{ mb: 3.5 }}>
+                <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
+                  <VerifiedUserIcon sx={{ fontSize: 18, color: '#00FF41' }} />
+                  ⚙️ Principios Técnicos &amp; Garantías de Admisibilidad Procesal
+                </Typography>
+                <Grid container spacing={1.5}>
+                  <Grid size={{ xs: 12, sm: 4 }}>
+                    <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '8px', border: '1px solid rgba(0, 255, 65, 0.2)', height: '100%' }}>
+                      <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41', mb: 0.5 }}>
+                        Inmutabilidad Criptográfica
+                      </Typography>
+                      <Typography sx={{ fontSize: '11px', color: '#8B949E', lineHeight: 1.4 }}>
+                        Cálculo y verificación continua del hash SHA-256 para prevenir cualquier impugnación por alteración de la muestra.
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, sm: 4 }}>
+                    <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '8px', border: '1px solid rgba(157, 255, 0, 0.2)', height: '100%' }}>
+                      <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#9DFF00', mb: 0.5 }}>
+                        Trazabilidad Ininterrumpida
+                      </Typography>
+                      <Typography sx={{ fontSize: '11px', color: '#8B949E', lineHeight: 1.4 }}>
+                        Registro riguroso de cada custodio, ubicación física, precinto y traspaso formal de la evidencia.
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, sm: 4 }}>
+                    <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '8px', border: '1px solid rgba(254, 207, 6, 0.2)', height: '100%' }}>
+                      <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#FECF06', mb: 0.5 }}>
+                        Objetividad &amp; Repetibilidad
+                      </Typography>
+                      <Typography sx={{ fontSize: '11px', color: '#8B949E', lineHeight: 1.4 }}>
+                        Uso estricto de herramientas forenses validadas que permiten reproducir los resultados en juicio oral.
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/* Bloque C: Etapas Procesales Operativas de la Norma */}
               {etapasNormativa && etapasNormativa.length > 0 && (
                 <Box sx={{ mb: 3.5 }}>
-                  <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
-                    <AccountTreeIcon sx={{ fontSize: 18, color: '#00FF41' }} />
+                  <Typography variant="subtitle2" sx={{ color: '#9DFF00', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
+                    <AccountTreeIcon sx={{ fontSize: 18, color: '#9DFF00' }} />
                     Etapas Procesales &amp; Fases de Cumplimiento Estandarizadas
                   </Typography>
                   <Grid container spacing={1.5}>
                     {etapasNormativa.map((et, idx) => (
                       <Grid key={et.id || idx} size={{ xs: 12, sm: 6 }}>
-                        <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '8px', border: '1px solid rgba(0, 255, 65, 0.2)', height: '100%' }}>
-                          <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41', mb: 0.5 }}>
+                        <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '8px', border: '1px solid rgba(157, 255, 0, 0.2)', height: '100%' }}>
+                          <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#9DFF00', mb: 0.5 }}>
                             {et.nombre}
                           </Typography>
                           <Typography sx={{ fontSize: '11.5px', color: '#8B949E', lineHeight: 1.4 }}>
@@ -221,12 +311,12 @@ export default function NormativasPage() {
                 </Box>
               )}
 
-              {/* Artículos y Cláusulas Normativas en Acordeón */}
+              {/* Bloque D: Artículos y Cláusulas Normativas en Acordeón */}
               {selectedNormativa.articulos && selectedNormativa.articulos.length > 0 && (
                 <Box sx={{ mb: 3.5 }}>
-                  <Typography variant="subtitle2" sx={{ color: '#9DFF00', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
-                    <VerifiedUserIcon sx={{ fontSize: 18, color: '#9DFF00' }} />
-                    Articulado y Fundamentación Jurídico-Técnica ({selectedNormativa.articulos.length} Numerales)
+                  <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
+                    <GavelIcon sx={{ fontSize: 18, color: '#FECF06' }} />
+                    📜 Articulado y Numerales Clave Desglosados ({selectedNormativa.articulos.length} Numerales)
                   </Typography>
                   <Stack spacing={1}>
                     {selectedNormativa.articulos.map((art, idx) => {
@@ -252,11 +342,11 @@ export default function NormativasPage() {
                 </Box>
               )}
 
-              {/* Planillas Oficiales que Implementan esta Norma */}
+              {/* Bloque E: Materialización en las Planillas Oficiales del CMS */}
               <Box>
-                <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
-                  <AssignmentIcon sx={{ fontSize: 18, color: '#FECF06' }} />
-                  Planillas Oficiales que Implementan esta Norma ({planillasVinculadas.length})
+                <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
+                  <AssignmentIcon sx={{ fontSize: 18, color: '#00FF41' }} />
+                  🔗 Planillas Oficiales del CMS que Materializan esta Norma ({planillasVinculadas.length})
                 </Typography>
                 {planillasVinculadas.length > 0 ? (
                   <Grid container spacing={1.5}>

@@ -22,33 +22,71 @@ import { useAuthStore } from '../../store/authStore'
 import StatusDot from '../atoms/StatusDot'
 import CommandPalette from '../organisms/CommandPalette'
 
-const menuItems = [
-  { path: '/dashboard',                            label: 'Panel Principal',          icon: LayoutDashboard, group: 'Control' },
-  { path: '/casos',                                label: 'Gestión de Casos',         icon: FolderOpen,      group: 'Control' },
-  { path: '/control/seguimiento-compliance',       label: 'Seguimiento Normativo',    icon: ShieldCheck,     group: 'Control' },
-  { path: '/planillas',                            label: 'Directorio de Planillas',  icon: BookOpen,        group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-obtencion',             label: '1.1 Acta Obtención',       icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-consentimiento',        label: '1.2 Consentimiento & Data',icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/prcc',                       label: '2.1 Planilla PRCC',        icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-desprecintado',         label: '2.2 Desprecintado Lab',    icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-entrevista',            label: '2.3 Acta Entrevista',      icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/timeline-compliance',        label: '3.1 Timeline Compliance',  icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-auditoria-timeline',    label: '3.2 Auditoría Hash SHA',   icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/dictamen',                   label: '3.3 Dictamen Pericial',    icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/entrega-resultados',         label: '4.1 Entrega Resultados',   icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/planillas/acta-sanitizacion',          label: '4.2 Sanitización Wipe',    icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/normativas',                           label: 'Marco Normativo',          icon: Shield,          group: 'Planillas Oficiales' },
-  { path: '/auditoria',                            label: 'Auditoría SHA-256',        icon: Activity,        group: 'Sistema' },
-  { path: '/personal',                             label: 'Personal',                 icon: Users,           group: 'Sistema' },
+const menuGroups = [
+  {
+    groupTitle: 'Panel & Operaciones',
+    emoji: '📊',
+    items: [
+      { path: '/dashboard', label: 'Panel Principal', icon: LayoutDashboard },
+      { path: '/casos', label: 'Gestión de Casos', icon: FolderOpen },
+      { path: '/control/seguimiento-compliance', label: 'Seguimiento Compliance', icon: ShieldCheck },
+    ],
+  },
+  {
+    groupTitle: 'Planillas Oficiales',
+    emoji: '📄',
+    isCollapsible: true,
+    mainPath: '/planillas',
+    mainLabel: 'Directorio General',
+    mainIcon: BookOpen,
+    etapas: [
+      {
+        etapaNombre: 'Etapa 1: Consignación & Consentimiento',
+        items: [
+          { path: '/planillas/acta-obtencion', label: '1.1 Acta Obtención', icon: ClipboardList },
+          { path: '/planillas/acta-consentimiento', label: '1.2 Consentimiento & Data', icon: ClipboardList },
+        ],
+      },
+      {
+        etapaNombre: 'Etapa 2: Custodia & Laboratorio',
+        items: [
+          { path: '/planillas/prcc', label: '2.1 Planilla PRCC', icon: ClipboardList },
+          { path: '/planillas/acta-desprecintado', label: '2.2 Desprecintado Lab', icon: ClipboardList },
+          { path: '/planillas/acta-entrevista', label: '2.3 Acta Entrevista', icon: ClipboardList },
+        ],
+      },
+      {
+        etapaNombre: 'Etapa 3: Análisis & Dictamen',
+        items: [
+          { path: '/planillas/acta-auditoria-timeline', label: '3.1 Auditoría Hash SHA', icon: ClipboardList },
+          { path: '/planillas/dictamen', label: '3.2 Dictámenes Periciales', icon: ClipboardList },
+        ],
+      },
+      {
+        etapaNombre: 'Etapa 4: Cierre & Devolución',
+        items: [
+          { path: '/planillas/acta-sanitizacion', label: '4.1 Sanitización Wipe', icon: ClipboardList },
+          { path: '/planillas/entrega-resultados', label: '4.2 Entrega Resultados', icon: ClipboardList },
+        ],
+      },
+    ],
+  },
+  {
+    groupTitle: 'Marco Legal & Auditoría',
+    emoji: '⚖️',
+    items: [
+      { path: '/normativas', label: 'Marco Normativo RAG', icon: Shield },
+      { path: '/auditoria', label: 'Auditoría SHA-256', icon: Activity },
+    ],
+  },
+  {
+    groupTitle: 'Administración',
+    emoji: '⚙️',
+    items: [
+      { path: '/personal', label: 'Personal & Peritos', icon: Users },
+    ],
+  },
 ]
-
-const groups = ['Control', 'Planillas Oficiales', 'Sistema']
-
-const groupMeta: Record<string, { emoji: string }> = {
-  'Control':              { emoji: '📊' },
-  'Planillas Oficiales':  { emoji: '📄' },
-  'Sistema':              { emoji: '⚙️' },
-}
 
 function useIsActive(path: string) {
   const pathname = usePathname()
@@ -59,9 +97,11 @@ function useIsActive(path: string) {
 function SidebarLink({
   item,
   onClick,
+  isSubItem = false,
 }: {
-  item: typeof menuItems[number]
+  item: { path: string; label: string; icon: any }
   onClick?: () => void
+  isSubItem?: boolean
 }) {
   const Icon = item.icon
   const active = useIsActive(item.path)
@@ -75,25 +115,26 @@ function SidebarLink({
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
-          minHeight: '40px',
-          px: '12px',
-          py: '6px',
-          borderRadius: '8px',
-          transition: 'all 0.2s ease',
+          gap: isSubItem ? '8px' : '10px',
+          minHeight: isSubItem ? '32px' : '38px',
+          pl: isSubItem ? '20px' : '12px',
+          pr: '12px',
+          py: '4px',
+          borderRadius: '6px',
+          transition: 'all 0.15s ease',
           backgroundColor: active ? 'rgba(254, 207, 6, 0.12)' : 'transparent',
           borderLeft: active ? '3px solid #FECF06' : '3px solid transparent',
           '&:hover': {
-            backgroundColor: active ? 'rgba(254, 207, 6, 0.18)' : 'rgba(254, 207, 6, 0.05)',
+            backgroundColor: active ? 'rgba(254, 207, 6, 0.18)' : 'rgba(254, 207, 6, 0.06)',
           },
         }}
       >
-        <Icon size={17} className={active ? 'text-[#FECF06]' : 'text-[#86868B]'} />
+        <Icon size={isSubItem ? 14 : 16} className={active ? 'text-[#FECF06]' : 'text-[#86868B]'} />
         <Typography
           sx={{
-            fontSize: '14px',
-            fontWeight: active ? 600 : 400,
-            color: active ? '#FECF06' : '#FFFFFF',
+            fontSize: isSubItem ? '12.5px' : '13.5px',
+            fontWeight: active ? 700 : 400,
+            color: active ? '#FECF06' : isSubItem ? '#C9D1D9' : '#FFFFFF',
           }}
         >
           {item.label}
@@ -110,6 +151,15 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   const fetchCasos = useCMSStore(state => state.fetchCasos)
   const { user, logout } = useAuthStore()
   const stats = getEstadisticas()
+
+  // Estado para colapsar/desplegar seccion de planillas
+  const [planillasExpanded, setPlanillasExpanded] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (pathname.startsWith('/planillas')) {
+      setPlanillasExpanded(true)
+    }
+  }, [pathname])
 
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
   useEffect(() => {
@@ -168,12 +218,18 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   }
 
   const getBreadcrumb = () => {
-    const match = menuItems.find(m => pathname === m.path || (m.path !== '/dashboard' && pathname.startsWith(m.path + '/')))
-    return match?.label ?? 'Panel Principal'
+    if (pathname.startsWith('/planillas')) return 'Directorio de Planillas'
+    if (pathname.startsWith('/casos')) return 'Gestión de Casos'
+    if (pathname.startsWith('/control')) return 'Seguimiento Compliance'
+    if (pathname.startsWith('/normativas')) return 'Marco Normativo RAG'
+    if (pathname.startsWith('/auditoria')) return 'Auditoría SHA-256'
+    if (pathname.startsWith('/personal')) return 'Personal & Peritos'
+    return 'Panel Principal'
   }
 
   const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#0D1117', borderRight: '1px solid rgba(48,54,61,0.8)' }}>
+      {/* Brand Header */}
       <Box sx={{ p: '14px 16px', borderBottom: '1px solid rgba(48,54,61,0.8)', display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
           <img
@@ -205,25 +261,77 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
         />
       </Box>
 
+      {/* Navigation Groups */}
       <Box sx={{ flex: 1, overflowY: 'auto', p: '8px 10px' }}>
-        <Stack spacing={1.5}>
-          {groups.map(grp => {
-            const items = menuItems.filter(m => m.group === grp)
-            const meta = groupMeta[grp]
-            return (
-              <Box key={grp}>
-                <Typography sx={{ px: '8px', py: '6px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9.5px', fontWeight: 700, color: '#484F58', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  <span>{meta.emoji}</span>
-                  <span>{grp}</span>
-                </Typography>
+        <Stack spacing={2}>
+          {menuGroups.map(grp => (
+            <Box key={grp.groupTitle}>
+              {/* Group Header */}
+              <Typography sx={{ px: '8px', py: '4px', mb: '4px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9.5px', fontWeight: 800, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <span>{grp.emoji}</span>
+                <span>{grp.groupTitle}</span>
+              </Typography>
+
+              {!grp.isCollapsible ? (
+                /* Simple Links */
                 <Stack spacing={0.25}>
-                  {items.map(m => (
+                  {grp.items?.map(m => (
                     <SidebarLink key={m.path} item={m} onClick={onNav} />
                   ))}
                 </Stack>
-              </Box>
-            )
-          })}
+              ) : (
+                /* Collapsible Planillas Group */
+                <Box sx={{ backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', p: '2px', border: '1px solid rgba(255,255,255,0.04)' }}>
+                  <Box
+                    onClick={() => setPlanillasExpanded(!planillasExpanded)}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justify: 'space-between',
+                      px: '10px',
+                      py: '6px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      '&:hover': { backgroundColor: 'rgba(254,207,6,0.08)' },
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <grp.mainIcon size={16} className={pathname.startsWith('/planillas') ? 'text-[#FECF06]' : 'text-[#86868B]'} />
+                      <Typography sx={{ fontSize: '13px', fontWeight: 700, color: pathname.startsWith('/planillas') ? '#FECF06' : '#FFFFFF' }}>
+                        {grp.mainLabel}
+                      </Typography>
+                    </Box>
+                    <ChevronRight
+                      size={14}
+                      className="text-[#86868B]"
+                      style={{
+                        transform: planillasExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.2s ease',
+                      }}
+                    />
+                  </Box>
+
+                  {/* Sub-items agrupados por etapas cuando está expandido */}
+                  {planillasExpanded && (
+                    <Stack spacing={1.5} sx={{ mt: '6px', pb: '6px' }}>
+                      {grp.etapas.map(etapa => (
+                        <Box key={etapa.etapaNombre}>
+                          <Typography sx={{ px: '14px', py: '2px', fontSize: '9px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                            {etapa.etapaNombre}
+                          </Typography>
+                          <Stack spacing={0.25}>
+                            {etapa.items.map(m => (
+                              <SidebarLink key={m.path} item={m} onClick={onNav} isSubItem />
+                            ))}
+                          </Stack>
+                        </Box>
+                      ))}
+                    </Stack>
+                  )}
+                </Box>
+              )}
+            </Box>
+          ))}
         </Stack>
       </Box>
 
