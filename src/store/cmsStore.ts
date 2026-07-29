@@ -569,7 +569,7 @@ const MOCK_CASOS: CasoCMS[] = [
     notas: 'Se extrajo el buzón PST cumpliendo el orden de volatilidad.',
     correo_investigar: 'empleado@empresa-victima.com',
     correo_proveedor: 'Exchange Corporativo (IMAP)',
-    solicitante_nombre: 'Tte. Coronel José Gómez',
+    solicitante_nombre: 'Lt. Col. Joseph Gomez',
     solicitante_cedula: 'V-10.123.456',
     steps: {
       em_step1: { estado: 'completado', fechaInicio: '2026-07-19T08:15:00.000Z', fechaCompletado: '2026-07-19T08:25:00.000Z', responsable: '', observaciones: 'Se identificaron las fuentes y orden judicial de interceptación.' },

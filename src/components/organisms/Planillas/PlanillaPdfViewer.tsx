@@ -260,7 +260,7 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
               '&:hover': { borderColor: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.08)' },
             }}
           >
-            DESCARGAR SVG
+            DESCARGAR SVG (.ZIP)
           </Button>
 
           {actions}

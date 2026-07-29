@@ -181,7 +181,7 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
                 <td>Precinto de Seguridad</td>
                 <td>
                   N°: <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '80px', display: 'inline-block' }}>[Precinto]</span>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Estado:
+                  <span style={{ marginLeft: '16px' }}>Estado:</span>
                   <PlanillaCheckboxGroup
                     fontSize="8.5px"
                     style={{ display: 'inline-flex', marginLeft: '8px', gap: '8px' }}
@@ -258,7 +258,7 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
                 <td>Precinto de Seguridad</td>
                 <td>
                   N°: <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ borderBottom: '1px dashed #ccc', minWidth: '80px', display: 'inline-block' }}>[Precinto]</span>
-                  &nbsp;&nbsp;&nbsp;&nbsp; Estado:
+                  <span style={{ marginLeft: '16px' }}>Estado:</span>
                   <PlanillaCheckboxGroup
                     fontSize="8.5px"
                     style={{ display: 'inline-flex', marginLeft: '8px', gap: '8px' }}

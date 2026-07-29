@@ -17,11 +17,11 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
   const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
 
   const defaultMockLogs = [
-    { timestamp: '23/07/2026 09:30:15', action: 'RECEPCION_EVIDENCIA', user: 'Ing. Jull J. Ollarves S.', hash: 'a8f5f167f44f4964e6c998dee827110c4f828a21' },
-    { timestamp: '23/07/2026 09:45:00', action: 'AISLAMIENTO_FARADAY', user: 'Ing. Jull J. Ollarves S.', hash: 'b4912a7812904812304918239041239048129304' },
-    { timestamp: '23/07/2026 10:15:30', action: 'EXTRACCION_IPED', user: 'Ing. Jull J. Ollarves S.', hash: 'c984920194819284918294819284918294819284' },
-    { timestamp: '23/07/2026 11:00:12', action: 'ANALISIS_PHOTOHOLMES', user: 'Ing. Jull J. Ollarves S.', hash: 'd102849182491204912049120491204912049120' },
-    { timestamp: '23/07/2026 11:45:00', action: 'EMISION_DICTAMEN', user: 'Ing. Jull J. Ollarves S.', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4' },
+    { timestamp: '23/07/2026 09:30:15', action: 'RECEPCION_EVIDENCIA', user: 'Eng. Christopher V. Vance', hash: 'a8f5f167f44f4964e6c998dee827110c4f828a21' },
+    { timestamp: '23/07/2026 09:45:00', action: 'AISLAMIENTO_FARADAY', user: 'Eng. Christopher V. Vance', hash: 'b4912a7812904812304918239041239048129304' },
+    { timestamp: '23/07/2026 10:15:30', action: 'EXTRACCION_IPED', user: 'Eng. Christopher V. Vance', hash: 'c984920194819284918294819284918294819284' },
+    { timestamp: '23/07/2026 11:00:12', action: 'ANALISIS_PHOTOHOLMES', user: 'Eng. Christopher V. Vance', hash: 'd102849182491204912049120491204912049120' },
+    { timestamp: '23/07/2026 11:45:00', action: 'EMISION_DICTAMEN', user: 'Eng. Christopher V. Vance', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4' },
   ];
 
   const incomingLogs = auditLogs && auditLogs.length > 0 ? auditLogs : logs;
@@ -121,7 +121,7 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
             <View style={pdfStyles.peritoDottedLine} />
             <View style={pdfStyles.peritoSignatureLine} />
             <Text style={pdfStyles.peritoCardSubTitle}>FIRMA DEL PERITO AUDITOR</Text>
-            <Text style={{ fontSize: 7.5, marginTop: 2, fontFamily: 'Helvetica-Bold' }}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+            <Text style={{ fontSize: 7.5, marginTop: 2, fontFamily: 'Helvetica-Bold' }}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
           </View>
         </View>
 

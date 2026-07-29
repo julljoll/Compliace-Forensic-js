@@ -56,7 +56,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Receptor Privado / Solicitante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
@@ -148,7 +148,7 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

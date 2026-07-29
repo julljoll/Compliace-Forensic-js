@@ -52,11 +52,11 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         <Text style={pdfStyles.sectionTitle}>I. PREÁMBULO Y SUJETOS INTERVINIENTES (COPP ART. 223)</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Consignante / Solicitante Privado:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF Consignante:</Text>
@@ -216,7 +216,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre y Apellido:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Cédula de Identidad:</Text>

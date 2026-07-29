@@ -60,7 +60,7 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
 
       <!-- 2.0 FORMA DE OBTENCIÓN -->
       <div id="seccion-2.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 12px; margin-bottom: 8px; text-transform: uppercase;">2.0 FORMA DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</div>
-      <p style="font-size: 8.5pt; margin: 4px 0;">[ X ] Consignación Directa Privada (Entrega Voluntaria) &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] Adquisición Técnico-Pericial Interna</p>
+      <p style="font-size: 8.5pt; margin: 4px 0;">[ X ] Consignación Directa Privada (Entrega Voluntaria) &#160;&#160;&#160;&#160; [ &#160; ] Adquisición Técnico-Pericial Interna</p>
 
       <!-- LEYENDA PERICIAL DE AUTENTICIDAD -->
       <div style="background-color: #F8FAFC; border: 1px solid #CBD5E1; padding: 8px; margin-top: 6px; margin-bottom: 10px;">

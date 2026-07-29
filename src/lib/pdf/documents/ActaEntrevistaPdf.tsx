@@ -58,7 +58,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / Pasaporte:</Text>
@@ -70,7 +70,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Correo Electrónico:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar, 'carlos.mendoza@empresa.com.ve')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar, 'alexander.wright@corporate.com')}</Text>
         </View>
 
         <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', marginTop: 3, marginBottom: 2, color: '#0F172A' }}>
@@ -177,7 +177,7 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

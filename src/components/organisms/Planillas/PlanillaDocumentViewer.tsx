@@ -269,7 +269,7 @@ export default function PlanillaDocumentViewer({
               '&:hover': { borderColor: '#9DFF00', backgroundColor: 'rgba(157, 255, 0, 0.12)' },
             }}
           >
-            DESCARGAR SVG
+            DESCARGAR SVG (.ZIP)
           </Button>
 
           <Button
