@@ -44,7 +44,8 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>I. DATOS DE LA ACTUACIÓN Y RECEPTOR DE LA EVIDENCIA</Text>
+        {/* 1.0 IDENTIFICACIÓN DE LA ENTREGA */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha y Hora de Entrega:</Text>
           <Text style={pdfStyles.fieldValue}>{fecha}</Text>
@@ -62,7 +63,8 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
           <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. RELACIÓN DE DOCUMENTOS Y MATERIALES ENTREGADOS</Text>
+        {/* 2.0 INVENTARIO DE EVIDENCIA */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 INVENTARIO DE EVIDENCIA FÍSICA Y DIGITAL DEVUELTA</Text>
         <View style={{ marginVertical: 4 }}>
           <View style={pdfStyles.checkboxContainer}>
             <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
@@ -82,7 +84,8 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>III. VERIFICACIÓN DE INTEGRIDAD Y RE-CORROBORACIÓN HASH SHA-256</Text>
+        {/* 3.0 RE-PRECINTADO Y VERIFICACIÓN */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 RE-PRECINTADO Y VERIFICACIÓN DE ESTADO FINAL</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '30%' }]}>Evidencia devuelta</Text>
@@ -102,12 +105,14 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
 
       {/* PÁGINA 2 — CONSTANCIA Y FIRMAS */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>IV. CONSTANCIA DE DEVOLUCIÓN Y RECEPCIÓN DE CONFORMIDAD</Text>
+        {/* 4.0 CONSTANCIA DE CONFORMIDAD */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 CONSTANCIA DE CONFORMIDAD DEL SOLICITANTE</Text>
         <Text style={pdfStyles.paragraph}>
           Por medio de la presente se hace constante entrega formal del Dictamen Pericial Informático Forense final y la devolución del dispositivo o evidencia digital consignada ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G')}, Serial/IMEI: {fmt(c.dispositivo_imei, '864920193847102')}) en perfecto estado físico y con los precintos de seguridad debidamente validados. El receptor manifiesta recibir a su entera satisfacción todo el material señalado sin objeción legal ni técnica.
         </Text>
 
-        <Text style={pdfStyles.sectionTitle}>V. FIRMAS DE ENTREGADO Y RECIBIDO CONFORME</Text>
+        {/* 5.0 FIRMAS Y REGISTRO DACTILAR */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 FIRMAS Y REGISTRO DACTILAR DE RECEPCIÓN</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.signatureCard}>
             <View style={{ flexDirection: 'row', gap: 6, marginBottom: 4 }}>

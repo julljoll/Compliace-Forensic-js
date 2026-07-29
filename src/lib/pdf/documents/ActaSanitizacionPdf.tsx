@@ -43,7 +43,8 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>I. DATOS DEL CASO Y REPOSITORIO A SANITIZAR</Text>
+        {/* 1.0 EVIDENCIA Y MEDIOS DIGITALES */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 EVIDENCIA Y MEDIOS DIGITALES A SANITIZAR</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cliente / Empresa Contratante:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.empresa || c.solicitante_nombre, 'Inversiones & Servicios Corporativos C.A.')}</Text>
@@ -57,7 +58,8 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
           <Text style={pdfStyles.fieldValue}>{fmt(c.fechaSanitizacion || c.fecha, '23/07/2026 - 04:15 PM')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. ESPECIFICACIÓN DE COPIAS BIT A BIT E IMÁGENES ELIMINADAS</Text>
+        {/* 2.0 METODOLOGÍA DE BORRADO SEGURO */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 METODOLOGÍA DE BORRADO SEGURO (OVERWRITE / CRYPTO-ERASE)</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Imágenes Forenses Eliminadas:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.archivosSanitizados, 'Imagen Forense Raw .E01 / Clon Bit a Bit / Dump de Memoria RAM')}</Text>
@@ -73,14 +75,24 @@ export const ActaSanitizacionPdf: React.FC<Props> = ({ caso, isBlankMode = false
           <Text style={pdfStyles.fieldValue}>{fmt(c.estandarWipe, 'NIST SP 800-88 Rev. 1 Purge (Overwrite Pseudorandom 3-Pass)')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>III. CERTIFICACIÓN Y CONFORMIDAD DE DESTRUCCIÓN IRREVERSIBLE</Text>
+        {/* 3.0 REGISTRO DE SOFTWARE */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 REGISTRO DE SOFTWARE Y LOGS DE SANITIZACIÓN</Text>
+        <View style={{ padding: 6, backgroundColor: '#F8F9FA', borderRadius: 4, marginBottom: 8, borderLeftWidth: 3, borderLeftColor: '#FECF06' }}>
+          <Text style={{ fontSize: 7, color: '#111111', lineHeight: 1.4, textAlign: 'justify' }}>
+            Se ejecutó la herramienta Nwipe v0.34 (DoD 5220.22-M 3-Pass) y hdparm Secure Erase con registro de logs firmados criptográficamente por la clave privada del servidor.
+          </Text>
+        </View>
+
+        {/* 4.0 VERIFICACIÓN Y CERTIFICADO */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 VERIFICACIÓN Y CERTIFICADO DE ZEROIZATION</Text>
         <View style={{ padding: 6, backgroundColor: '#F8F9FA', borderRadius: 4, marginBottom: 8, borderLeftWidth: 3, borderLeftColor: '#00FF41' }}>
           <Text style={{ fontSize: 7, color: '#111111', lineHeight: 1.4, textAlign: 'justify' }}>
             Se certifica que una vez vencido el periodo reglamentario de retención y habiendo entregado el dictamen final al cliente, se ejecutó la destrucción irreversible de todas las copias de trabajo temporales en los servidores del laboratorio SHA256.US. Los bloques de memoria fueron sobreescritos y desasignados de forma no recuperable.
           </Text>
         </View>
 
-        {/* RECUADRO DE FIRMAS Y HUELLAS */}
+        {/* 5.0 FIRMAS Y CONSTANCIA */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 FIRMAS Y CONSTANCIA DE SANITIZACIÓN</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.peritoCard}>
             <Text style={pdfStyles.peritoCardHeaderTitle}>OFICIAL DE SEGURIDAD SHA256.US</Text>

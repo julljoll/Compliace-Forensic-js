@@ -261,8 +261,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       </table>
     </div>
 
-    <!-- I. DATOS DE LA ACTUACIÓN -->
-    <div class="section-header">I. DATOS DE LA ACTUACIÓN Y DEL CONSIGNANTE PRIVADO</div>
+    <!-- 1.0 DATOS DE LA ACTUACIÓN -->
+    <div id="seccion-1.0" class="section-header">1.0 DATOS DE LA ACTUACIÓN Y DEL CONSIGNANTE PRIVADO</div>
     <table class="field-table">
       <tr><td class="field-label">Apellidos y Nombres Consignante:</td><td class="field-value">${c.solicitante_nombre || ''}</td></tr>
       <tr><td class="field-label">Cédula de Identidad / RIF:</td><td class="field-value">${c.solicitante_cedula || ''}</td></tr>
@@ -270,8 +270,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       <tr><td class="field-label">Plataformas Forenses:</td><td class="field-value">IPED Forensics v4.1, PhotoHolmes Python Engine (ELA), PyOgg Audio Engine</td></tr>
     </table>
 
-    <!-- II. FORMA DE OBTENCIÓN -->
-    <div class="section-header">II. FORMA DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</div>
+    <!-- 2.0 FORMA DE OBTENCIÓN -->
+    <div id="seccion-2.0" class="section-header">2.0 FORMA DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</div>
     <p style="font-size: 8.5pt; margin: 4px 0;">[ X ] Consignación Directa Privada (Entrega Voluntaria) &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] Adquisición Técnico-Pericial Interna</p>
 
     <!-- LEYENDA PROFESIONAL DE AUTENTICIDAD DE AUDIO Y FIDELIDAD -->
@@ -282,8 +282,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       </div>
     </div>
 
-    <!-- III. OPERARIOS PERICIALES -->
-    <div class="section-header">III. OPERARIOS PERICIALES DE FIJACIÓN Y COLECCIÓN (MUCC-2017)</div>
+    <!-- 3.0 OPERARIOS PERICIALES -->
+    <div id="seccion-3.0" class="section-header">3.0 OPERARIOS PERICIALES DE FIJACIÓN Y COLECCIÓN (MUCC-2017)</div>
     <table class="field-table">
       <tr><td class="field-label">a. Nombres y Apellidos:</td><td class="field-value">${c.peritoLider || ''}</td></tr>
       <tr><td class="field-label">b. C.I:</td><td class="field-value">${c.peritoCedula || ''}</td></tr>
@@ -297,8 +297,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       </tr>
     </table>
 
-    <!-- IV. DESCRIPCIÓN DE EVIDENCIA DIGITAL (100% LIMPIA PARA A MANO) -->
-    <div class="section-header">IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL CONSIGNADA</div>
+    <!-- 4.0 DESCRIPCIÓN DE EVIDENCIA DIGITAL (100% LIMPIA PARA A MANO) -->
+    <div id="seccion-4.0" class="section-header">4.0 DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL CONSIGNADA</div>
     <table class="data-table">
       <thead>
         <tr><th style="width: 35%;">Evidencia / Dispositivo</th><th style="width: 65%;">Especificación Técnica / Serial / Hash SHA-256 Génesis</th></tr>
@@ -311,8 +311,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
     </table>
 
     ${isPRCC ? `
-    <!-- V. CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS (PRCC RECUADROS DACTILARES) -->
-    <div class="section-header">V. CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS DE CADENA DE CUSTODIA (MUCC-2017)</div>
+    <!-- 5.0 CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS -->
+    <div id="seccion-5.0" class="section-header">5.0 CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS DE CADENA DE CUSTODIA (MUCC-2017)</div>
     <div style="border: 1px solid #0F172A; padding: 6px; margin-top: 6px;">
       <div style="font-weight: bold; font-size: 8.5pt; color: #0F172A;">REGISTRO DE TRASLADO N° 01:</div>
       <table class="field-table" style="margin-top: 4px;">
@@ -344,8 +344,8 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
     </div>
     ` : ''}
 
-    <!-- CERTIFICACIÓN FINAL -->
-    <div class="section-header">${isPRCC ? 'VI' : 'V'}. CERTIFICACIÓN PERICIAL, FIRMAS Y RESPONSABILIDAD LEGAL</div>
+    <!-- 6.0 CERTIFICACIÓN FINAL -->
+    <div id="seccion-6.0" class="section-header">${isPRCC ? '6.0' : '5.0'}. CERTIFICACIÓN PERICIAL, FIRMAS Y RESPONSABILIDAD LEGAL</div>
     <table class="fingerprint-table">
       <tr>
         <td class="box-firma" style="width: 48%;">

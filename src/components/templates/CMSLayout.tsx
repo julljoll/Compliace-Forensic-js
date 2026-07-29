@@ -37,7 +37,7 @@ const menuItems = [
   { path: '/planillas/dictamen',                   label: '3.3 Dictamen Pericial',    icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/entrega-resultados',         label: '4.1 Entrega Resultados',   icon: ClipboardList,   group: 'Planillas Oficiales' },
   { path: '/planillas/acta-sanitizacion',          label: '4.2 Sanitización Wipe',    icon: ClipboardList,   group: 'Planillas Oficiales' },
-  { path: '/normativas',                           label: 'Normativas RAG',           icon: Shield,          group: 'Planillas Oficiales' },
+  { path: '/normativas',                           label: 'Marco Normativo',          icon: Shield,          group: 'Planillas Oficiales' },
   { path: '/auditoria',                            label: 'Auditoría SHA-256',        icon: Activity,        group: 'Sistema' },
   { path: '/personal',                             label: 'Personal',                 icon: Users,           group: 'Sistema' },
 ]

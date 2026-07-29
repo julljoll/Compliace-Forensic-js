@@ -46,8 +46,8 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
           </View>
         </View>
 
-        {/* DATOS DE LA ACTUACIÓN */}
-        <Text style={pdfStyles.sectionTitle}>DATOS DE LA ACTUACIÓN FORENSE PRIVADA</Text>
+        {/* 1.0 DATOS DE LA ACTUACIÓN */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Sede de Recepción Pericial:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Laboratorio Privado SHA256.US')}</Text>
@@ -57,11 +57,11 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
           <Text style={pdfStyles.fieldValue}>{fecha}</Text>
         </View>
 
-        {/* I. DATOS DEL CONSIGNANTE */}
-        <Text style={pdfStyles.sectionTitle}>I. IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO (ENTREGA VOLUNTARIA)</Text>
+        {/* 2.0 DATOS DEL CONSIGNANTE */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
@@ -73,7 +73,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Correo Electrónico:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar, 'carlos.mendoza@empresa.com.ve')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.correo_investigar, 'alexander.wright@corporate.com')}</Text>
         </View>
 
         <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', marginTop: 3, marginBottom: 2 }}>
@@ -98,8 +98,8 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
           </View>
         </View>
 
-        {/* II. ESPECIFICACIÓN TÉCNICA DEL TELÉFONO MÓVIL */}
-        <Text style={pdfStyles.sectionTitle}>II. DESCRIPCIÓN TÉCNICA RIGUROSA DEL TELÉFONO MÓVIL CONSIGNADO (NIST SP 800-101)</Text>
+        {/* 3.0 ESPECIFICACIÓN TÉCNICA DEL TELÉFONO MÓVIL */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 ESPECIFICACIÓN TÉCNICA RIGUROSA DEL DISPOSITIVO</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '35%' }]}>Parámetro de Evidencia Móvil</Text>
@@ -125,31 +125,17 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>N° de Línea / Operadora / SIM ICCID</Text>
             <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.dispositivo_numero_tel, '+58 (414) 592-8102 (Movistar 4G LTE / ICCID: 89580210049281029412)')}</Text>
           </View>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Estado Físico / Pantalla / Batería</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.estado_fisico, 'Pantalla intacta sin fisuras, carcasa con desgaste menor 9.5/10, puerto USB-C funcional.')}</Text>
-          </View>
         </View>
 
-        {/* III. PROTOCOLO DE AISLAMIENTO */}
-        <Text style={pdfStyles.sectionTitle}>III. AISLAMIENTO ELECTROMAGNÉTICO Y PRECINTO (ISO 27037)</Text>
-        <View style={pdfStyles.table}>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Bolsa / Embalaje Faraday</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.bolsa_faraday, 'Bolsa Faraday Anti-RF Tipo Militar III (ISO 27037 § 7.3)')}</Text>
-          </View>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Aislamiento de Redes RF</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.aislamiento_rf, 'Modo Avión ON / Wi-Fi & Bluetooth OFF / SIM Card Retirada')}</Text>
-          </View>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Precinto de Seguridad Inalterable</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%' }]}>{fmt(c.precinto_numero, 'Tamper-Evident Seal N° SEC-2026-8849')}</Text>
-          </View>
+        {/* 4.0 ESTADO FÍSICO */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</Text>
+        <View style={pdfStyles.fieldRow}>
+          <Text style={pdfStyles.fieldLabel}>Estado Físico del Dispositivo:</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.estado_fisico, 'Pantalla intacta sin fisuras, carcasa con desgaste menor 9.5/10, puerto USB-C funcional.')}</Text>
         </View>
 
-        {/* IV. INTEGRIDAD SHA-256 & SUITE FORENSE */}
-        <Text style={pdfStyles.sectionTitle}>IV. INTEGRIDAD SHA-256 & SUITE FORENSE (INTERPOL / PYTHON ENGINES)</Text>
+        {/* 5.0 ALCANCE Y AUTORIZACIÓN */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 ALCANCE Y AUTORIZACIÓN EXPRESA DEL EXAMEN PERICIAL</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
@@ -169,23 +155,14 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
 
       {/* PÁGINA 2 — HOJA DE FIRMAS Y DECLARACIONES */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>V. DECLARACIÓN DE CONSENTIMIENTO VOLUNTARIO PRIVADO Y ALCANCE LEGAL</Text>
+        {/* 6.0 CUSTODIA INICIAL Y EMPACADO */}
+        <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO</Text>
         <Text style={pdfStyles.paragraph}>
           Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando libremente, hago entrega material voluntaria (Obtención por Consignación Directa Privada) del teléfono móvil descrito al laboratorio privado SHA256.US conforme al Manual Único de Cadena de Custodia (MUCC-2017) y Arts. 187 y 225 del COPP. Declaro bajo juramento que realizo esta consignación LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO O AMENAZA. AUTORIZO EXPRESA Y VOLUNTARIAMENTE al equipo pericial del laboratorio privado SHA256.US para la extracción lógica/física de Mensajes de Datos (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), procesados con IPED Forensics, PhotoHolmes y PyOgg.
         </Text>
 
-        <Text style={pdfStyles.sectionTitle}>VI. REQUERIMIENTOS DE ACCESO (CREDENCIALES PROPORCIONADAS)</Text>
-        <View style={pdfStyles.fieldRow}>
-          <Text style={pdfStyles.fieldLabel}>PIN / Contraseña Desbloqueo:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.credenciales_acceso, 'PIN: 849201 / Patrón: Z (Esquina Sup. Izq. a Inf. Der.)')}</Text>
-        </View>
-
-        <Text style={pdfStyles.sectionTitle}>VII. MOTIVO DE LA CONSIGNACIÓN PRIVADA Y PORMENORES DEL CASO</Text>
-        <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, minHeight: 110, marginBottom: 8 }}>
-          <Text style={pdfStyles.paragraph}>{fmt(c.descripcion, 'Consignación voluntaria efectuada por el titular del dispositivo a fines de realizar la extracción pericial de conversaciones de WhatsApp, imágenes adjuntas y notas de voz Opus contenidas en la memoria interna, garantizando la preservación de la cadena de custodia según norma ISO/IEC 27037:2012.')}</Text>
-        </View>
-
-        <Text style={pdfStyles.sectionTitle}>VIII. CERTIFICACIÓN PERICIAL PRIVADA, FIRMAS Y REGISTRO DACTILAR</Text>
+        {/* 7.0 FIRMAS Y REGISTRO DACTILAR */}
+        <Text id="seccion-7.0" style={pdfStyles.sectionTitle}>7.0 FIRMAS DE CONFORMIDAD, CERTIFICACIÓN Y CUSTODIA</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.signatureCard}>
             <View style={{ flexDirection: 'row', gap: 6, marginBottom: 4 }}>
@@ -221,7 +198,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

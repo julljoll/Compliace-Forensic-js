@@ -63,9 +63,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
       watermarkText="CONSIGNACIÓN"
       onClick={handleCheckboxClick}
     >
-      {/* DATOS DE LA ACTUACIÓN */}
+      {/* 1.0 DATOS DE LA ACTUACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle>Datos de la Actuación Forense</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-1.0">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
@@ -78,9 +78,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         </div>
       </div>
 
-      {/*  I. DATOS DEL CONSIGNANTE  */}
+      {/* 2.0 DATOS DEL CONSIGNANTE */}
       <div className="section">
-        <PlanillaSectionTitle>I. Datos e Identificación del Consignante (Entrega Voluntaria)</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
@@ -114,9 +114,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         </div>
       </div>
 
-      {/*  II. DESCRIPCIÓN DEL DISPOSITIVO  */}
+      {/* 3.0 ESPECIFICACIÓN TÉCNICA */}
       <div className="section">
-        <PlanillaSectionTitle>II. Descripción Técnica de la Evidencia ({tipoEvidencia === 'movil' ? 'Dispositivo Móvil' : 'Computador / Almacenamiento'})</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-3.0">3.0 ESPECIFICACIÓN TÉCNICA RIGUROSA DEL DISPOSITIVO</PlanillaSectionTitle>
         
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
@@ -275,9 +275,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         )}
       </div>
 
-      {/*  III. INTEGRIDAD FORENSE INICIAL  */}
+      {/* 4.0 ESTADO FÍSICO */}
       <div className="section">
-        <PlanillaSectionTitle>III. Registro de Integridad Forense Inicial (Hash SHA-256 de Consignación)</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-4.0">4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</PlanillaSectionTitle>
         <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
           <tbody>
             <tr>
@@ -302,9 +302,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         </table>
       </div>
 
-      {/*  IV. AUTORIZACIÓN Y CONSENTIMIENTO  */}
+      {/* 5.0 ALCANCE Y AUTORIZACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle>IV. Autorización y Consentimiento de Consignación Voluntaria (Sin Coacción)</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-5.0">5.0 ALCANCE Y AUTORIZACIÓN EXPRESA DEL EXAMEN PERICIAL</PlanillaSectionTitle>
         <div className="legal-text">
           Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando en mi nombre o en representación legítima de la entidad consignante, hago entrega material voluntaria (Obtención por Consignación Directa Privada) de la evidencia descrita conforme al <strong>Manual Único de Cadena de Custodia (MUCC-2017)</strong> y los <strong>Arts. 187 y 225 del COPP</strong>.
           Declaro bajo juramento que realizo esta consignación <strong>LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO, AMENAZA O CONSTREÑIMIENTO</strong>.
@@ -334,9 +334,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         </div>
       </div>
 
-      {/*  V. REQUERIMIENTOS DE ACCESO  */}
+      {/* 6.0 CUSTODIA INICIAL */}
       <div className="section">
-        <PlanillaSectionTitle>V. Requerimientos de Acceso y Preservación</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-6.0">6.0 CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Claves de Acceso / Bloqueo</PlanillaFieldLabel>
@@ -359,9 +359,9 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         </div>
       </div>
 
-      {/*  VI. MOTIVO DE LA CONSIGNACIÓN  */}
+      {/* 7.0 FIRMAS DE CONFORMIDAD */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle>VI. Motivo de la Consignación y Pormenores de la Actuación</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-7.0">7.0 FIRMAS DE CONFORMIDAD, CERTIFICACIÓN Y CUSTODIA</PlanillaSectionTitle>
         <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '360px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
             <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa detalladamente el motivo, antecedentes y pormenores de la consignación de la evidencia digital]'}</span>

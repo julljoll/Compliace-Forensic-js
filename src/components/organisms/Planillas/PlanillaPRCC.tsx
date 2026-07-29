@@ -61,9 +61,9 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
       watermarkText="CADENA CUSTODIA"
       onClick={handleCheckboxClick}
     >
-      {/* SECCIÓN I */}
+      {/* SECCIÓN 1.0 */}
       <div className="section">
-        <PlanillaSectionTitle>I. Datos del Consignante, del Caso y Organismo</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-1.0">1.0 REGISTRO GENERAL DE EVIDENCIA DIGITAL (PRCC-COPP)</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Apellidos y Nombres del Consignante</PlanillaFieldLabel>
@@ -84,9 +84,9 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
         </div>
       </div>
 
-      {/* SECCIÓN II */}
+      {/* SECCIÓN 2.0 */}
       <div className="section">
-        <PlanillaSectionTitle>II. Forma de Obtención (MUCC-2017 — Consignación Privada)</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 CARACTERÍSTICAS TÉCNICAS Y MARCAS DE IDENTIFICACIÓN</PlanillaSectionTitle>
         <div className="form-group">
           <PlanillaCheckboxGroup
             style={{ flexDirection: 'row', gap: '15px' }}
@@ -102,9 +102,9 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
         </div>
       </div>
 
-      {/* SECCIÓN III */}
+      {/* SECCIÓN 3.0 */}
       <div className="section">
-        <PlanillaSectionTitle>III. Operarios (Perito Informático) — MUCC-2017</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-3.0">3.0 HISTORIAL DE TRASPASOS, CUSTODIOS Y CAMBIOS DE CUSTODIA</PlanillaSectionTitle>
         <div className="signature-grid">
           <div className="sig-card">
             <PlanillaFieldLabel>A. Fijación (Nombre y Credencial)</PlanillaFieldLabel>
@@ -131,9 +131,9 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
         </div>
       </div>
 
-      {/* SECCIÓN IV */}
+      {/* SECCIÓN 4.0 */}
       <div className="section">
-        <PlanillaSectionTitle>IV. Descripción de la Evidencia Digital Consignada ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-4.0">4.0 ALMACENAMIENTO EN BÓVEDA PRIVADA DE EVIDENCIAS</PlanillaSectionTitle>
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
@@ -222,9 +222,9 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
         )}
       </div>
 
-      {/* SECCIÓN V */}
+      {/* SECCIÓN 5.0 */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle>V. Continuidad y Registro de Traslados de Cadena de Custodia</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-5.0">5.0 CERTIFICACIÓN DE INTEGRIDAD Y VERIFICACIÓN SHA-256</PlanillaSectionTitle>
         <table border={1} cellSpacing={0} cellPadding={6} className="tabla-datos">
           <thead>
             <tr style={{ background: '#f2f2f7', textAlign: 'center', fontSize: '9px' }}>

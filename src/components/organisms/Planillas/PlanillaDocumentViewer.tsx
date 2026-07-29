@@ -17,7 +17,12 @@ import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import GridViewIcon from '@mui/icons-material/GridView';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ImageIcon from '@mui/icons-material/Image';
+import CircularProgress from '@mui/material/CircularProgress';
 import { printPdfBlob, generatePdfBlobFromElement } from '@/lib/pdf/planillaPdfEngine';
+import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
+import { exportPlanillaToSvg } from '@/lib/export/exportSvg';
 
 interface PlanillaDocumentViewerProps {
   children: React.ReactNode;
@@ -25,6 +30,7 @@ interface PlanillaDocumentViewerProps {
   filenamePrefix?: string;
   tipoEvidencia?: 'movil' | 'computadora';
   onTipoEvidenciaChange?: (val: 'movil' | 'computadora') => void;
+  caso?: any;
 }
 
 export default function PlanillaDocumentViewer({
@@ -33,13 +39,40 @@ export default function PlanillaDocumentViewer({
   filenamePrefix = 'Planilla_Forense',
   tipoEvidencia,
   onTipoEvidenciaChange,
+  caso,
 }: PlanillaDocumentViewerProps) {
   const [zoom, setZoom] = useState<number>(100);
   const [showMarginGuides, setShowMarginGuides] = useState<boolean>(false);
+  const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
+  const [isExportingSvg, setIsExportingSvg] = useState<boolean>(false);
 
   const handleZoomIn = () => setZoom(prev => Math.min(prev + 15, 200));
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 15, 50));
   const handleResetZoom = () => setZoom(100);
+
+  const handleExportWordDocx = async () => {
+    setIsExportingWord(true);
+    try {
+      const el = document.querySelector('.planilla-container') as HTMLElement;
+      await exportPlanillaToWordDocx(caso, title, el);
+    } catch (err) {
+      console.error('Error exportando Word en PlanillaDocumentViewer:', err);
+    } finally {
+      setIsExportingWord(false);
+    }
+  };
+
+  const handleExportSvg = async () => {
+    setIsExportingSvg(true);
+    try {
+      const el = document.querySelector('.planilla-container') as HTMLElement;
+      await exportPlanillaToSvg(caso, title, el);
+    } catch (err) {
+      console.error('Error exportando SVG en PlanillaDocumentViewer:', err);
+    } finally {
+      setIsExportingSvg(false);
+    }
+  };
 
   const handlePrintDocument = async () => {
     const el = document.querySelector('.planilla-container') as HTMLElement;
@@ -203,19 +236,53 @@ export default function PlanillaDocumentViewer({
           </Tooltip>
         </Box>
 
-        {/* ACCIONES DE IMPRESIÓN Y DESCARGA VECTORIAL */}
+        {/* ACCIONES DE IMPRESIÓN Y DESCARGA VECTORIAL Y WORD */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Button
             variant="outlined"
             size="small"
-            startIcon={<DownloadIcon fontSize="small" />}
-            onClick={handleDownloadPdf}
+            startIcon={isExportingWord ? <CircularProgress size={14} sx={{ color: '#00FF41' }} /> : <DescriptionIcon fontSize="small" />}
+            onClick={handleExportWordDocx}
+            disabled={isExportingWord}
             sx={{
               color: '#00FF41',
               borderColor: 'rgba(0, 255, 65, 0.4)',
               fontWeight: 700,
               fontSize: '11px',
               '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.12)' },
+            }}
+          >
+            DESCARGAR WORD (.DOCX)
+          </Button>
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={isExportingSvg ? <CircularProgress size={14} sx={{ color: '#9DFF00' }} /> : <ImageIcon fontSize="small" />}
+            onClick={handleExportSvg}
+            disabled={isExportingSvg}
+            sx={{
+              color: '#9DFF00',
+              borderColor: 'rgba(157, 255, 0, 0.4)',
+              fontWeight: 700,
+              fontSize: '11px',
+              '&:hover': { borderColor: '#9DFF00', backgroundColor: 'rgba(157, 255, 0, 0.12)' },
+            }}
+          >
+            DESCARGAR SVG
+          </Button>
+
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<DownloadIcon fontSize="small" />}
+            onClick={handleDownloadPdf}
+            sx={{
+              color: '#FECF06',
+              borderColor: 'rgba(254, 207, 6, 0.4)',
+              fontWeight: 700,
+              fontSize: '11px',
+              '&:hover': { borderColor: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.12)' },
             }}
           >
             DESCARGAR PDF

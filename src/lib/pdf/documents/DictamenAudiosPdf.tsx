@@ -90,8 +90,8 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        {/* Sección I — Preámbulo y Sujetos Intervinientes */}
-        <Text style={pdfStyles.sectionTitle}>I. PREÁMBULO Y SUJETOS INTERVINIENTES (COPP ART. 223)</Text>
+        {/* 1.0 MARCO NORMATIVO */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
@@ -121,8 +121,8 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           <Text style={pdfStyles.fieldValue}>{fmt(c.telefono_origen, '+58 414-5928102 (REGISTRADO ANTE CONATEL)')}</Text>
         </View>
 
-        {/* Sección II — Marco Jurídico */}
-        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA</Text>
+        {/* 2.0 ACREDITACIÓN PERICIAL */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 ACREDITACIÓN PERICIAL E IDENTIFICACIÓN DE AUDIOS</Text>
         <Text style={pdfStyles.paragraph}>
           El presente dictamen se fundamenta en las disposiciones legales venezolanas e internacionales en materia de forensía de audio digital y mensajería instantánea:
         </Text>
@@ -149,7 +149,8 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
       {/* PÁGINA 2 — ACREDITACIÓN PERICIAL + OBJETO + TABLA SHA-256              */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>III. DECLARACIÓN DE IMPARCIALIDAD Y ACREDITACIÓN PERICIAL</Text>
+        {/* 3.0 METODOLOGÍA DE DECODIFICACIÓN */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 METODOLOGÍA DE DECODIFICACIÓN OPUS Y METADATOS</Text>
         <View style={pdfStyles.impartialityBox}>
           <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
             JURAMENTO Y DECLARACIÓN DE OBJETIVIDAD CIENTÍFICA (COPP ART. 225 / ESTÁNDAR DAUBERT — FRE RULE 702):
@@ -159,12 +160,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>IV. OBJETO PERICIAL Y PLANTEAMIENTO TÉCNICO-CIENTÍFICO</Text>
+        {/* 4.0 ESPECTROGRAMA Y ANÁLISIS */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ESPECTROGRAMA Y ANÁLISIS DE FRECUENCIA AUDIO</Text>
         <Text style={pdfStyles.paragraph}>
           El presente peritaje tiene por objeto determinar la <Text style={{ fontFamily: 'Helvetica-Bold' }}>AUTENTICIDAD, INTEGRIDAD, CONTINUIDAD E INALTERABILIDAD</Text> de la nota de voz WhatsApp en formato Ogg/Opus consignada voluntariamente ante el Laboratorio SHA256.US. Mediante la aplicación de análisis espectral de frecuencias, análisis de formantes de voz (F1/F2/F3), medición de relación señal-ruido (SNR) y verificación criptográfica triple, se determinará si el audio ha sido editado, cortado, manipulado por síntesis vocal o alterado electrónicamente.
         </Text>
 
-        <Text style={pdfStyles.sectionTitle}>V. IDENTIFICACIÓN DE LA EVIDENCIA E INTEGRIDAD SHA-256 (MUCC-2017 § 5.1)</Text>
+        {/* 5.0 CÁLCULO DE PITCH */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 CÁLCULO DE PITCH, FORMANTES Y CONTINUIDAD</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '20%' }]}>Formato / Codec</Text>
@@ -216,7 +219,8 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
       {/* PÁGINA 3 — METODOLOGÍA FORENSE + HALLAZGOS ESPECÍFICOS DE AUDIO        */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>VI. METODOLOGÍA Y HERRAMIENTAS FORENSES CERTIFICADAS (ISO/IEC 27042 § 6)</Text>
+        {/* 6.0 VERIFICACIÓN DE EDICIÓN */}
+        <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 VERIFICACIÓN DE EDICIÓN Y CORTE DE ONDA</Text>
         <Text style={pdfStyles.paragraph}>
           Se aplicó el protocolo estandarizado de forensía acústica digital conforme a ISO/IEC 27042:2015. El archivo de audio fue procesado sobre duplicado forense verificado mediante triple hash. Herramientas utilizadas:
         </Text>
@@ -234,230 +238,71 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           ))}
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>VII. RELACIÓN DETALLADA DE HALLAZGOS TÉCNICO-PERICIALES (ISO/IEC 27042 § 7)</Text>
-        <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, minHeight: 200, marginBottom: 8 }}>
-          <Text style={pdfStyles.paragraph}>
-            {fmt(c.hallazgos,
-              '1. Análisis de Codec Opus — PyOgg Engine: El archivo PTT-20260615-WA0017.opus fue decodificado exitosamente ' +
-              'confirma frecuencia de muestreo de 48,000 Hz constante, codec Opus VBR, 1 canal (Mono), 743 frames completos ' +
-              'sin frames corruptos ni truncados.\n\n' +
-              '2. Análisis Espectral de Frecuencias: El espectrograma de 0-24 kHz evidencia energía concentrada en la banda ' +
-              '0-8 kHz (rango de voz humana), con el límite de banda Opus correctamente preservado a 8 kHz. No se detectan ' +
-              'discontinuidades espectrales indicativas de cortes o empalmes.\n\n' +
-              '3. Análisis de Formantes F1/F2/F3 (Praat v6.3): Los formantes de voz F1 (620 Hz), F2 (1.850 Hz) y F3 (2.740 Hz) ' +
-              'son constantes y coherentes durante toda la duración del audio. La ausencia de variaciones abruptas confirma ' +
-              'que la voz ES HUMANA y NO SINTÉTICA (descartada síntesis TTS y deep fake de voz).\n\n' +
-              '4. Análisis SNR por Segmento: La relación señal-ruido por segmento oscila entre 43.8 dB y 44.6 dB, ' +
-              'con picos de 58.1 dB en silencios naturales. Este perfil es consistente con un audio de captura directa ' +
-              'sin edición post-producción.\n\n' +
-              '5. Análisis de Silencios (Segmentación): Los silencios detectados (4 pausas naturales de 0.2-0.8s) son ' +
-              'coherentes con el patrón de habla natural, sin silencios abruptos o cortes digitales.'
-            )}
-          </Text>
-        </View>
-
         <PlanillaFooter />
       </Page>
 
-      {/* ====================================================================== */}
-      {/* PÁGINA 4 — FIGURA 1: ESPECTROGRAMA DE FRECUENCIAS                      */}
-      {/* ====================================================================== */}
+      {/* PÁGINA 4 — ANEXO ESPECTROGRAMA */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         <Text style={pdfStyles.sectionTitle}>ANEXO GRÁFICO I — ESPECTROGRAMA DE FRECUENCIAS (0-24 kHz) — PyOgg Opus Engine</Text>
         <Text style={pdfStyles.paragraph}>
-          El <Text style={{ fontFamily: 'Helvetica-Bold' }}>Espectrograma de Frecuencias</Text> es la representación gráfica tridimensional de la energía acústica del audio en función de la frecuencia (Hz/kHz), el tiempo (segundos) y la amplitud (intensidad de color). Es el método estándar en forensía acústica para detectar cortes, empalmes, ediciones o alteraciones en archivos de audio digital.
+          El <Text style={{ fontFamily: 'Helvetica-Bold' }}>Espectrograma de Frecuencias</Text> es la representación gráfica tridimensional de la energía acústica.
         </Text>
 
         <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, marginBottom: 8 }}>
-          <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 6 }}>
-            FIGURA 1: ESPECTROGRAMA — DISTRIBUCIÓN DE ENERGÍA ACÚSTICA (Frecuencia × Tiempo × Amplitud)
-          </Text>
           <SpectrogramSvg width={484} height={175} isBlank={isBlank} />
-          <View style={{ backgroundColor: '#F8FAFC', borderWidth: 0.5, borderColor: '#CBD5E1', padding: 5, marginTop: 6 }}>
-            <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
-              INTERPRETACIÓN PERICIAL — LEYENDA TÉCNICA DEL ESPECTROGRAMA:
-            </Text>
-            <Text style={{ fontSize: 6.5, color: '#1E293B', textAlign: 'justify', lineHeight: 1.35 }}>
-              {isBlank ? '' : 'El espectrograma procesado mediante PyOgg Audio Engine sobre el archivo PTT-20260615-WA0017.opus confirma: (a) Frecuencia de muestreo constante de 48,000 Hz en todos los 743 frames; (b) Ausencia de discontinuidades espectrales o "cortes" en la trama frecuencia-tiempo (ninguna franja de silencio abrupta no natural); (c) Boundary del codec Opus correctamente preservado a 8 kHz (línea punteada verde); (d) Relación señal-ruido SNR de 44.2 dB, categoría ALTA FIDELIDAD. La continuidad espectral prueba que el audio ES CONTINUO, ÍNTEGRO Y SIN EDICIÓN. CONCLUSIÓN: AUDIO 100% AUTÉNTICO Y FIEL (MUCC-2017 § 5.1 / ISO 27042 § 7.3).'}
-            </Text>
-          </View>
-        </View>
-
-        <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginTop: 6, marginBottom: 3 }}>
-          FUNDAMENTACIÓN CIENTÍFICA DEL MÉTODO ESPECTRAL:
-        </Text>
-        <View style={{ paddingLeft: 6 }}>
-          {[
-            ['Base científica:', 'Koenig, B.E. (1990). "Spectrographic voice identification: a forensic survey." J. Acoust. Soc. Am. 88(6).'],
-            ['Revisión por pares:', 'Champod, C. & Meuwly, D. (2000). "The Inference of Identity in Forensic Speaker Recognition." Speech Communication.'],
-            ['Estándar técnico:', 'NIST FRVT 2023 — Evaluación de sistemas de reconocimiento de voz forense por NIST IARPA.'],
-            ['Aceptación judicial:', 'El análisis espectral acústico ha sido aceptado como evidencia pericial en tribunales federales de EEUU (Daubert), la UE y Venezuela (COPP Art. 223).'],
-          ].map(([bold, text], i) => (
-            <Text key={i} style={{ fontSize: 7, color: '#1E293B', marginBottom: 2 }}>
-              • <Text style={{ fontFamily: 'Helvetica-Bold' }}>{bold}</Text>{' '}{text}
-            </Text>
-          ))}
         </View>
 
         <PlanillaFooter />
       </Page>
 
-      {/* ====================================================================== */}
-      {/* PÁGINA 5 — FIGURA 2: WAVEFORM TEMPORAL + FORMANTES F1/F2/F3            */}
-      {/* ====================================================================== */}
+      {/* PÁGINA 5 — WAVEFORM */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         <Text style={pdfStyles.sectionTitle}>ANEXO GRÁFICO II — WAVEFORM TEMPORAL + ANÁLISIS DE FORMANTES F1/F2/F3</Text>
         <Text style={pdfStyles.paragraph}>
-          El <Text style={{ fontFamily: 'Helvetica-Bold' }}>análisis de formantes de voz</Text> identifica las resonancias características del tracto vocal humano. Los formantes F1 (cavidad faríngea), F2 (cavidad oral) y F3 (cavidad labial) son únicos para cada individuo y permiten verificar la autenticidad de la voz y descartar síntesis mediante inteligencia artificial (TTS, Deep Fake de Voz).
+          El <Text style={{ fontFamily: 'Helvetica-Bold' }}>análisis de formantes de voz</Text> identifica las resonancias características.
         </Text>
 
         <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, marginBottom: 8 }}>
-          <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 6 }}>
-            FIGURA 2: WAVEFORM TEMPORAL + ANÁLISIS DE FORMANTES DE VOZ F1/F2/F3 — Praat v6.3
-          </Text>
           <WaveformFormanteSvg width={484} height={170} isBlank={isBlank} />
-          <View style={{ backgroundColor: '#F8FAFC', borderWidth: 0.5, borderColor: '#CBD5E1', padding: 5, marginTop: 6 }}>
-            <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
-              INTERPRETACIÓN PERICIAL — LEYENDA TÉCNICA DE FORMANTES:
-            </Text>
-            <Text style={{ fontSize: 6.5, color: '#1E293B', textAlign: 'justify', lineHeight: 1.35 }}>
-              {isBlank ? '' : 'El análisis de formantes ejecutado con Praat v6.3 sobre el archivo Opus decodificado con PyOgg confirma: F1 = 620 Hz (±15 Hz), F2 = 1.850 Hz (±30 Hz), F3 = 2.740 Hz (±25 Hz). Las variaciones de formante son continuas y coherentes con el patrón de habla humano natural. La ausencia de "saltos" o discontinuidades en las trayectorias formánticas descarta síntesis vocal por TTS (Text-to-Speech) o clonación de voz por IA. La forma de onda temporal confirma 4 pausas naturales de 0.2-0.8 s coherentes con la prosodia declarada. CONCLUSIÓN: VOZ HUMANA AUTÉNTICA, NO SINTÉTICA. AUDIO ÍNTEGRO.'}
-            </Text>
-          </View>
-        </View>
-
-        <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginTop: 6, marginBottom: 3 }}>
-          PARÁMETROS TÉCNICOS DEL ANÁLISIS DE FORMANTES:
-        </Text>
-        <View style={pdfStyles.table}>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '20%' }]}>Formante</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '20%' }]}>Frecuencia (Hz)</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '25%' }]}>Variación Máxima</Text>
-            <Text style={[pdfStyles.tableHeaderCell, { width: '35%' }]}>Interpretación Pericial</Text>
-          </View>
-          {[
-            ['F1 (Faringe)', isBlank ? '' : '620 Hz', isBlank ? '' : '±15 Hz', 'CONSISTENTE — Vocal "a/e" detectada'],
-            ['F2 (Oral)', isBlank ? '' : '1.850 Hz', isBlank ? '' : '±30 Hz', 'CONSISTENTE — Articulación normal'],
-            ['F3 (Labial)', isBlank ? '' : '2.740 Hz', isBlank ? '' : '±25 Hz', 'CONSISTENTE — VOZ HUMANA AUTÉNTICA'],
-          ].map(([form, freq, var_, interp], i) => (
-            <View key={i} style={pdfStyles.tableRow}>
-              <Text style={[pdfStyles.tableCell, { width: '20%', fontFamily: 'Helvetica-Bold' }]}>{form}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '20%', fontFamily: 'Courier', fontSize: 7 }]}>{freq}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '25%' }]}>{var_}</Text>
-              <Text style={[pdfStyles.tableCell, { width: '35%', fontSize: 6.5, color: '#006600', fontFamily: 'Helvetica-Bold' }]}>{interp}</Text>
-            </View>
-          ))}
         </View>
 
         <PlanillaFooter />
       </Page>
 
-      {/* ====================================================================== */}
-      {/* PÁGINA 6 — FIGURA 3: SNR + TABLA TRIPLE HASH OPUS                      */}
-      {/* ====================================================================== */}
+      {/* PÁGINA 6 — SNR */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         <Text style={pdfStyles.sectionTitle}>ANEXO GRÁFICO III — ANÁLISIS SNR + TABLA DE INTEGRIDAD CRIPTOGRÁFICA</Text>
         <Text style={pdfStyles.paragraph}>
-          La <Text style={{ fontFamily: 'Helvetica-Bold' }}>Relación Señal-Ruido (SNR)</Text> mide la proporción entre la señal de voz útil y el ruido de fondo. Un SNR superior a 40 dB certifica audio de alta fidelidad sin degradación artificial. El análisis de silencios detecta cortes, empalmes o ediciones mediante la identificación de patrones de silencio atípicos.
+          La <Text style={{ fontFamily: 'Helvetica-Bold' }}>Relación Señal-Ruido (SNR)</Text> mide la proporción entre la señal de voz útil y el ruido de fondo.
         </Text>
 
         <View style={{ borderWidth: 1, borderColor: '#0F172A', backgroundColor: '#FFFFFF', padding: 6, marginBottom: 8 }}>
-          <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 6 }}>
-            FIGURA 3: ANÁLISIS SNR POR SEGMENTO + TABLA DE INTEGRIDAD CRIPTOGRÁFICA DEL ARCHIVO OPUS
-          </Text>
           <SnrBarchartSvg width={484} height={155} isBlank={isBlank} />
-          <View style={{ backgroundColor: '#F8FAFC', borderWidth: 0.5, borderColor: '#CBD5E1', padding: 5, marginTop: 6 }}>
-            <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
-              INTERPRETACIÓN PERICIAL — ANÁLISIS SNR E INTEGRIDAD CRIPTOGRÁFICA:
-            </Text>
-            <Text style={{ fontSize: 6.5, color: '#1E293B', textAlign: 'justify', lineHeight: 1.35 }}>
-              {isBlank ? '' : 'El SNR promedio del archivo es 44.2 dB (categoría ALTA FIDELIDAD, umbral forense ≥ 40 dB). Los silencios naturales alcanzan 58.1 dB de SNR, coherente con capturas directas sin edición. La verificación criptográfica triple (MD5/SHA-1/SHA-256) del archivo PTT-20260615-WA0017.opus arroja coincidencia exacta entre el hash de apertura registrado en el momento de la consignación y el hash calculado al cierre del análisis. CONCLUSIÓN: El archivo de audio ES ÍNTEGRO, SIN CORTES, SIN EMPALMES, SIN EDICIÓN POST-PRODUCCIÓN y 100% AUTÉNTICO conforme al MUCC-2017 § 5.1.'}
-            </Text>
-          </View>
         </View>
 
         <PlanillaFooter />
       </Page>
 
-      {/* ====================================================================== */}
-      {/* PÁGINA 7 — CONCLUSIONES, LIMITACIONES, JURAMENTO Y FIRMA DACTILAR      */}
-      {/* ====================================================================== */}
+      {/* PÁGINA 7 — CONCLUSIONES */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>VIII. CONCLUSIONES PERICIALES Y DICTAMEN FINAL (COPP ART. 225 / FRE RULE 702)</Text>
+        {/* 7.0 CONCLUSIONES PERICIALES */}
+        <Text id="seccion-7.0" style={pdfStyles.sectionTitle}>7.0 CONCLUSIONES PERICIALES Y REGISTRO DE CADENA</Text>
         <View style={{ borderWidth: 1.5, borderColor: '#006600', backgroundColor: '#F0FFF0', padding: 8, marginBottom: 8 }}>
           <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#006600', marginBottom: 4, textAlign: 'center' }}>
             DICTAMEN: AUDIO WHATSAPP AUTÉNTICO, ÍNTEGRO Y VÁLIDO COMO MEDIO PROBATORIO
           </Text>
           <Text style={{ fontSize: 7.5, color: '#1E293B', textAlign: 'justify', lineHeight: 1.4 }}>
-            {isBlank ? '' : `Con base en los análisis técnico-científicos ejecutados en el Laboratorio SHA256.US — específicamente análisis espectral de frecuencias (SNR 44.2 dB, codec Opus 48 kHz íntegro), análisis de formantes de voz (F1/F2/F3 consistentes, VOZ HUMANA CONFIRMADA) y verificación criptográfica triple (MD5/SHA-1/SHA-256 MATCH) conforme al MUCC-2017, el suscrito Perito dictamina formalmente que la nota de voz WhatsApp identificada como ${numeroExpediente} (PTT-20260615-WA0017.opus) ES ABSOLUTAMENTE AUTÉNTICA, ÍNTEGRA Y FIEL. No se detectan ediciones, cortes, empalmes, síntesis de voz artificial ni manipulaciones digitales de ningún tipo. El audio constituye PLENA PRUEBA DIGITAL conforme a la Ley sobre Mensajes de Datos y Firmas Electrónicas y el COPP Art. 223.`}
+            {isBlank ? '' : `Con base en los análisis técnico-científicos ejecutados en el Laboratorio SHA256.US — específicamente análisis espectral de frecuencias (SNR 44.2 dB, codec Opus 48 kHz íntegro), análisis de formantes de voz (F1/F2/F3 consistentes, VOZ HUMANA CONFIRMADA) y verificación criptográfica triple (MD5/SHA-1/SHA-256 MATCH) conforme al MUCC-2017, el suscrito Perito dictamina formalmente que la nota de voz WhatsApp identificada como ${numeroExpediente} (PTT-20260615-WA0017.opus) ES ABSOLUTAMENTE AUTÉNTICA, ÍNTEGRA Y FIEL. No se detectan ediciones, cortes, empalmes, síntesis de voz artificial ni manipulaciones digitales de ningún tipo.`}
           </Text>
-        </View>
-
-        <Text style={pdfStyles.sectionTitle}>IX. LIMITACIONES TÉCNICAS DEL ANÁLISIS PERICIAL (FRE RULE 702-b)</Text>
-        <View style={pdfStyles.limitationsBox}>
-          <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#D97706', marginBottom: 2 }}>
-            ALCANCE Y LIMITACIONES EXPRESAS DEL DICTAMEN:
-          </Text>
-          <Text style={{ fontSize: 7, color: '#1E293B', textAlign: 'justify', lineHeight: 1.35 }}>
-            El presente análisis se limita estrictamente al archivo de audio consignado en formato Ogg/Opus. Las conclusiones no se extienden a los servidores centrales de WhatsApp Inc. / Meta Platforms Inc., a las claves de cifrado E2E (end-to-end encryption), ni a la cadena de transmisión de red (no se analiza la autenticidad del número remitente a nivel de red SS7). El análisis de voz no constituye identificación biométrica de locutores sino verificación de autenticidad del contenido acústico del archivo.
-          </Text>
-        </View>
-
-        <Text style={pdfStyles.sectionTitle}>X. JURAMENTO PERICIAL, FIRMA Y REGISTRO DACTILAR (COPP ART. 225 / MUCC-2017 § 7)</Text>
-        <View style={{ alignItems: 'center', marginTop: 6 }}>
-          <View style={[pdfStyles.peritoCard, { width: '72%' }]}>
-            <Text style={pdfStyles.peritoCardHeaderTitle}>PERITO INFORMÁTICO FORENSE DICTAMINADOR — ANÁLISIS DE AUDIOS WHATSAPP</Text>
-            <View style={pdfStyles.peritoCardDividerLine} />
-
-            <View style={{ flexDirection: 'row', gap: 12, justifyContent: 'center', marginVertical: 3 }}>
-              <View style={pdfStyles.peritoThumbBox}>
-                <Text style={pdfStyles.peritoThumbText}>PULGAR DER.</Text>
-              </View>
-              <View style={pdfStyles.peritoThumbBox}>
-                <Text style={pdfStyles.peritoThumbText}>PULGAR IZQ.</Text>
-              </View>
-            </View>
-            <View style={pdfStyles.peritoDottedLine} />
-            <View style={pdfStyles.peritoSignatureLine} />
-            <Text style={pdfStyles.peritoCardSubTitle}>FIRMA DEL PERITO INFORMÁTICO FORENSE</Text>
-
-            <View style={{ marginTop: 4, width: '100%' }}>
-              {[
-                ['Nombre y Apellido:', fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')],
-                ['Cédula de Identidad:', fmt(c.peritoCedula, 'V-19.823.104')],
-                ['Colegio de Ingenieros (CIV):', fmt(c.peritoCiv, 'CIV N° 284.912')],
-                ['INPREABOGADO N°:', fmt(c.peritoInpre, 'INPRE N° 102.849')],
-                ['Especialización:', 'Informática Forense — Análisis Acústico Digital y WhatsApp'],
-                ['Cargo en Laboratorio:', 'Perito Informático Forense Dictaminador'],
-              ].map(([label, val], i) => (
-                <View key={i} style={pdfStyles.peritoFieldRow}>
-                  <Text style={pdfStyles.peritoFieldLabel}>{label}</Text>
-                  <Text style={pdfStyles.peritoFieldValue}>{isBlank ? '' : val}</Text>
-                </View>
-              ))}
-            </View>
-
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, justifyContent: 'center', gap: 6 }}>
-              <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>Rol ISO 27037:</Text>
-              {['DEFR', 'DES'].map(role => (
-                <View key={role} style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                  <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
-                  <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>{role}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
         </View>
 
         <PlanillaFooter />
       </Page>
 
-      {/* ====================================================================== */}
-      {/* PÁGINA 8 — BIBLIOGRAFÍA NORMATIVA                                      */}
-      {/* ====================================================================== */}
+      {/* PÁGINA 8 — BIBLIOGRAFÍA NORMATIVA */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>XI. ÍNDICE DE REFERENCIAS NORMATIVAS Y LITERATURA ESPECIALIZADA</Text>
+        {/* 8.0 ANEXO DE TRAZABILIDAD */}
+        <Text id="seccion-8.0" style={pdfStyles.sectionTitle}>8.0 ANEXO DE TRAZABILIDAD SHA-256</Text>
         <Text style={pdfStyles.paragraph}>
           El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas oficiales aplicables al procedimiento pericial:
         </Text>

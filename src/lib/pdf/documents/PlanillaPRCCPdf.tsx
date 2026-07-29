@@ -46,11 +46,11 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
         </View>
 
-        {/* SECCIÓN I: DATOS DEL CASO Y DEL CONSIGNANTE */}
-        <Text style={pdfStyles.sectionTitle}>I. DATOS DEL CASO, CONSIGNANTE Y ORGANISMO RECEPTOR</Text>
+        {/* 1.0 REGISTRO GENERAL DE EVIDENCIA */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 REGISTRO GENERAL DE EVIDENCIA DIGITAL (PRCC-COPP)</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres Consignante:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Cédula de Identidad / RIF:</Text>
@@ -65,8 +65,8 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           <Text style={pdfStyles.fieldValue}>{fmt(c.sede, 'Sede Principal Quíbor - Bóveda de Custodia SHA256.US')}</Text>
         </View>
 
-        {/* SECCIÓN II: FORMA DE OBTENCIÓN */}
-        <Text style={pdfStyles.sectionTitle}>II. FORMA DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</Text>
+        {/* 2.0 CARACTERÍSTICAS TÉCNICAS */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 CARACTERÍSTICAS TÉCNICAS Y MARCAS DE IDENTIFICACIÓN</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 4 }}>
           <View style={pdfStyles.checkboxContainer}>
             <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
@@ -82,12 +82,12 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
         </View>
 
-        {/* SECCIÓN III: OPERARIOS PERICIALES */}
-        <Text style={pdfStyles.sectionTitle}>III. OPERARIOS PERICIALES DE FIJACIÓN Y COLECCIÓN (MUCC-2017)</Text>
+        {/* 3.0 HISTORIAL DE TRASPASOS */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 HISTORIAL DE TRASPASOS, CUSTODIOS Y CAMBIOS DE CUSTODIA</Text>
         <View style={{ paddingHorizontal: 2, marginVertical: 3 }}>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>a. Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
           </View>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 8, color: '#0F172A', width: 110 }}>b. C.I:</Text>
@@ -112,8 +112,8 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
         </View>
 
-        {/* SECCIÓN IV: DESCRIPCIÓN DE LA EVIDENCIA DIGITAL */}
-        <Text style={pdfStyles.sectionTitle}>IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL CONSIGNADA</Text>
+        {/* 4.0 ALMACENAMIENTO EN BÓVEDA */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ALMACENAMIENTO EN BÓVEDA PRIVADA DE EVIDENCIAS</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '30%' }]}>Evidencia / Dispositivo</Text>
@@ -139,7 +139,8 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
 
       {/* PÁGINA 2 — CONTINUIDAD Y TRASLADOS */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>V. CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS DE CADENA DE CUSTODIA (MUCC-2017)</Text>
+        {/* 5.0 CERTIFICACIÓN DE INTEGRIDAD */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 CERTIFICACIÓN DE INTEGRIDAD Y VERIFICACIÓN SHA-256</Text>
         
         {/* BLOQUE DE TRASLADO N° 01 */}
         <View style={{ borderWidth: 1, borderColor: '#0F172A', padding: 5, marginBottom: 8, backgroundColor: '#FFFFFF' }}>
@@ -159,7 +160,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 100 }}>Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Alexander R. Wright')}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 35, marginLeft: 10 }}>C.I.:</Text>
             <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_cedula, 'V-18.492.019')}</Text>
           </View>
@@ -185,7 +186,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <View style={pdfStyles.fieldRow}>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 100 }}>Nombres y Apellidos:</Text>
-            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+            <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
             <Text style={{ fontFamily: 'Helvetica-Bold', fontSize: 7.5, color: '#0F172A', width: 35, marginLeft: 10 }}>C.I.:</Text>
             <Text style={pdfStyles.fieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
           </View>
@@ -243,7 +244,7 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

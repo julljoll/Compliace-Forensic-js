@@ -29,7 +29,7 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
   const expNumero = c.numeroCaso || 'EXP-2026-SHA-0091';
   const prccNumero = c.numeroPRCC || 'PRCC-2026-0042';
   const fechaEmision = c.fecha || '23/07/2026 - 09:30 AM';
-  const perito = peritoNombre || c.peritoAsignado || 'Ing. Carlos Perdomo (Perito Forense CIP-8492)';
+  const perito = peritoNombre || c.peritoAsignado || 'Eng. Charles P. Vance (Forensic Expert CIP-8492)';
 
   return (
     <Paper
@@ -68,18 +68,6 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
             DOSSIER FORENSE OFICIAL — FOLIO 01 (PORTADA RECEPTORA)
           </Typography>
         </Box>
-        <Chip
-          label={registry.codigo}
-          size="small"
-          sx={{
-            backgroundColor: '#2A2100',
-            color: '#00FF41',
-            fontWeight: 800,
-            fontSize: '11px',
-            fontFamily: 'monospace',
-            border: '1px solid #00FF41',
-          }}
-        />
       </Box>
 
       {/* Bloque Central con Título y Subtítulo */}
@@ -177,12 +165,28 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
             </TableHead>
             <TableBody>
               {registry.sections.map((sec) => (
-                <TableRow key={sec.numero} sx={{ '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.05)' } }}>
+                <TableRow
+                  key={sec.numero}
+                  onClick={() => {
+                    const el = document.getElementById(`seccion-${sec.numero}`);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.12)' },
+                  }}
+                >
                   <TableCell sx={{ color: '#00FF41', fontWeight: 800, fontFamily: 'monospace', fontSize: '12px' }}>
-                    {sec.numero}
+                    <a href={`#seccion-${sec.numero}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                      {sec.numero}
+                    </a>
                   </TableCell>
                   <TableCell sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}>
-                    {sec.titulo}
+                    <a href={`#seccion-${sec.numero}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                      {sec.numero} {sec.titulo}
+                    </a>
                   </TableCell>
                   <TableCell sx={{ color: '#94A3B8', fontSize: '11px' }}>
                     {sec.descripcion} {sec.camposCount ? `(${sec.camposCount} ítems)` : ''}
@@ -194,11 +198,11 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
         </TableContainer>
       </Box>
 
-      {/* Normativas RAG Ancladas */}
+      {/* Normativas Ancladas */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 2 }}>
         <GavelIcon sx={{ color: '#9DFF00', fontSize: 16 }} />
         <Typography sx={{ fontSize: '11px', fontWeight: 800, color: '#9DFF00', mr: 1 }}>
-          MARCO NORMATIVO RAG ANCLADO:
+          MARCO NORMATIVO APLICABLE:
         </Typography>
         {registry.normativas.map((norm, idx) => (
           <Chip

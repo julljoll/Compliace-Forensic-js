@@ -56,9 +56,9 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
       watermarkText="DICTAMEN PERICIAL"
       onClick={handleCheckboxClick}
     >
-      {/* I. DATOS DE IDENTIFICACIÓN PERICIAL */}
+      {/* 1.0 MARCO NORMATIVO Y REQUISITOS */}
       <div className="section">
-        <PlanillaSectionTitle>I. Identificación del Perito y Requisitorio</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-1.0">1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Perito Informático Forense Responsable</PlanillaFieldLabel>
@@ -71,9 +71,9 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         </div>
       </div>
 
-      {/* II. IDENTIFICACIÓN DE LA EVIDENCIA */}
+      {/* 2.0 ACREDITACIÓN PERICIAL */}
       <div className="section">
-        <PlanillaSectionTitle>II. Identificación de la Evidencia Técnica Examinada ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 ACREDITACIÓN PERICIAL E IDENTIFICACIÓN DE IMÁGENES</PlanillaSectionTitle>
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
@@ -119,9 +119,9 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         )}
       </div>
 
-      {/* III. CONCLUSIONES PERICIALES */}
+      {/* 7.0 CONCLUSIONES PERICIALES */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle>III. Conclusiones Técnico-Periciales Legales</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-7.0">7.0 CONCLUSIONES PERICIALES Y REGISTRO DE CADENA</PlanillaSectionTitle>
         <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '420px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
             <span className="placeholder-field">[Indique aquí las conclusiones técnico-periciales, hallazgos, hashes de verificación SHA-256 y valoración legal del dictamen]</span>

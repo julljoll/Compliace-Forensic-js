@@ -176,7 +176,7 @@ export default function DashboardPage() {
               CENTRO DE MANDO COMPLIANCE FORENSE
             </Typography>
             <Typography component="h2" sx={{ fontSize: '13px', fontWeight: 600, color: '#FECF06', mt: 0.25 }}>
-              SHA256.US — Sistema de Auditoría Digital Inmutable & Control Normativo RAG
+              SHA256.US — Sistema de Auditoría Digital Inmutable & Control Normativo Legal
             </Typography>
             <Stack direction="row" spacing={0.75} useFlexGap sx={{ flexWrap: 'wrap', mt: 1.25 }}>
               {['ISO/IEC 27037:2012', 'NIST SP 800-86', 'MUCC-2017 (MP-CICPC)', 'COPP Art. 187/225'].map(n => (
@@ -468,7 +468,7 @@ export default function DashboardPage() {
           {wizardStep === 0 && (
             <Stack spacing={1.5}>
               <Typography sx={{ fontSize: '12px', color: '#8B949E' }}>
-                Seleccione el tipo de peritaje para cargar la matriz normativa RAG correspondiente:
+                Seleccione el tipo de peritaje para cargar la matriz normativa correspondiente:
               </Typography>
               {TIPOS_INFO.map((item) => (
                 <Box

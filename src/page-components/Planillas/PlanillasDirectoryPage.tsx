@@ -257,7 +257,7 @@ export default function PlanillasDirectoryPage() {
                           </Typography>
                           {p.isNew && (
                             <Chip
-                              label="NUEVA RAG"
+                              label="NUEVA PLANILLA"
                               size="small"
                               sx={{ backgroundColor: '#00FF4122', color: '#00FF41', border: '1px solid #00FF4155', fontWeight: 800, height: '18px', fontSize: '9px' }}
                             />
@@ -272,7 +272,7 @@ export default function PlanillasDirectoryPage() {
                           {p.descripcion}
                         </Typography>
 
-                        {/* Normativas RAG Chips + Portada Badge */}
+                        {/* Normativas Aplicables Chips + Portada Badge */}
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
                           <Chip
                             label="📄 PORTADA FOLIADA"

@@ -73,7 +73,7 @@ export default function NormativasPage() {
       <Box sx={{ pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
         <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41', display: 'flex', alignItems: 'center', gap: 1 }}>
           <MenuBookIcon sx={{ fontSize: 28, color: '#FECF06' }} />
-          Marco Normativo RAG & Estándares Forenses
+          Marco Normativo Legal & Estándares Forenses
         </Typography>
         <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mt: 0.5 }}>
           Base de conocimiento con 77 documentos normativos (ISO 27037, NIST, COPP, Ley de Delitos Informáticos, MUCCEF 2017).

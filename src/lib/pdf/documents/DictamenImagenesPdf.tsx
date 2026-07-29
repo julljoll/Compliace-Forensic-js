@@ -90,8 +90,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
           </View>
         </View>
 
-        {/* Sección I — Preámbulo y Sujetos Intervinientes */}
-        <Text style={pdfStyles.sectionTitle}>I. PREÁMBULO Y SUJETOS INTERVINIENTES (COPP ART. 223)</Text>
+        {/* 1.0 MARCO NORMATIVO */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 MARCO NORMATIVO Y PREÁMBULO INSTITUCIONAL</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Informático Forense Privado:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
@@ -117,8 +117,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
           <Text style={pdfStyles.fieldValue}>{fmt(c.descripcion, 'IMG_20260615_143207.jpg — Xiaomi Redmi Note 12 Pro 5G | 3024×4032 px | 3.2 MB')}</Text>
         </View>
 
-        {/* Sección II — Marco Jurídico */}
-        <Text style={pdfStyles.sectionTitle}>II. MARCO JURÍDICO Y FUNDAMENTACIÓN NORMATIVA</Text>
+        {/* 2.0 ACREDITACIÓN DE PERITOS */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 ACREDITACIÓN DE PERITOS Y OBJETO PERICIAL</Text>
         <Text style={pdfStyles.paragraph}>
           El presente dictamen se fundamenta en las siguientes disposiciones legales venezolanas e internacionales en materia de forensía digital fotográfica:
         </Text>
@@ -145,7 +145,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
       {/* PÁGINA 2 — ACREDITACIÓN PERICIAL + OBJETO + TABLA SHA-256              */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>III. DECLARACIÓN DE IMPARCIALIDAD Y ACREDITACIÓN PERICIAL</Text>
+        {/* 3.0 METODOLOGÍA CIENTÍFICA */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 METODOLOGÍA CIENTÍFICA (ISO/IEC 27042:2015)</Text>
         <View style={pdfStyles.impartialityBox}>
           <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
             JURAMENTO Y DECLARACIÓN DE OBJETIVIDAD CIENTÍFICA (COPP ART. 225 / ESTÁNDAR DAUBERT — FRE RULE 702):
@@ -155,12 +156,14 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
           </Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>IV. OBJETO PERICIAL Y PLANTEAMIENTO TÉCNICO-CIENTÍFICO</Text>
+        {/* 4.0 ANÁLISIS ELA */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ANÁLISIS ELA (ERROR LEVEL ANALYSIS) Y HALLAZGOS</Text>
         <Text style={pdfStyles.paragraph}>
           El presente peritaje tiene por objeto determinar la <Text style={{ fontFamily: 'Helvetica-Bold' }}>AUTENTICIDAD, INTEGRIDAD, ORIGEN E INALTERABILIDAD</Text> de la imagen digital consignada voluntariamente ante el Laboratorio SHA256.US. Mediante la aplicación de las técnicas forenses fotográficas: Análisis de Nivel de Error (ELA), Detección de Regiones Clonadas (Copy-Move), JPEG Ghost Overlay y extracción de metadatos EXIF, se determinará si la imagen ha sido objeto de edición, fotomontaje, recorte o inserción artificial de elementos.
         </Text>
 
-        <Text style={pdfStyles.sectionTitle}>V. IDENTIFICACIÓN DE LA EVIDENCIA E INTEGRIDAD SHA-256 (MUCC-2017 § 5.1)</Text>
+        {/* 5.0 DETECCIÓN COPY-MOVE */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 DETECCIÓN COPY-MOVE Y ANÁLISIS ESTRUCTURAL</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '22%' }]}>Tipo de Archivo</Text>
@@ -212,7 +215,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
       {/* PÁGINA 3 — METODOLOGÍA FORENSE + HALLAZGOS ESPECÍFICOS DE IMAGEN       */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>VI. METODOLOGÍA Y HERRAMIENTAS FORENSES CERTIFICADAS (ISO/IEC 27042 § 6)</Text>
+        {/* 6.0 ANÁLISIS JPEG GHOSTS */}
+        <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 ANÁLISIS JPEG GHOSTS Y METADATOS EXIF</Text>
         <Text style={pdfStyles.paragraph}>
           Se aplicó el protocolo estandarizado de forensía fotográfica digital conforme a ISO/IEC 27042:2015. La imagen fue procesada en entorno controlado sobre duplicado forense verificado con hash SHA-256. Herramientas utilizadas:
         </Text>
@@ -380,7 +384,8 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
       {/* PÁGINA 7 — CONCLUSIONES, LIMITACIONES, JURAMENTO Y FIRMA DACTILAR      */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>VIII. CONCLUSIONES PERICIALES Y DICTAMEN FINAL (COPP ART. 225 / FRE RULE 702)</Text>
+        {/* 7.0 CONCLUSIONES TÉCNICO-PERICIALES */}
+        <Text id="seccion-7.0" style={pdfStyles.sectionTitle}>7.0 CONCLUSIONES TÉCNICO-PERICIALES Y HASHES SHA-256</Text>
         <View style={{ borderWidth: 1.5, borderColor: '#006600', backgroundColor: '#F0FFF0', padding: 8, marginBottom: 8 }}>
           <Text style={{ fontSize: 8, fontFamily: 'Helvetica-Bold', color: '#006600', marginBottom: 4, textAlign: 'center' }}>
             DICTAMEN: IMAGEN DIGITAL AUTÉNTICA, ÍNTEGRA Y VÁLIDA COMO MEDIO PROBATORIO
@@ -453,7 +458,7 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
       {/* PÁGINA 8 — BIBLIOGRAFÍA NORMATIVA                                      */}
       {/* ====================================================================== */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>XI. ÍNDICE DE REFERENCIAS NORMATIVAS Y LITERATURA ESPECIALIZADA</Text>
+        <Text id="seccion-8.0" style={pdfStyles.sectionTitle}>8.0 ANEXO NORMATIVO Y REGISTRO DE AUDITORÍA</Text>
         <Text style={pdfStyles.paragraph}>
           El presente trabajo pericial consulta y se fundamenta en las siguientes fuentes técnico-jurídicas oficiales aplicables al procedimiento pericial:
         </Text>

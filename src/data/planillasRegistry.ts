@@ -252,7 +252,7 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
     sections: [
       {
         numero: '1.0',
-        titulo: 'MARCO NORMATIVO RAG Y PREÁMBULO INSTITUCIONAL',
+        titulo: 'MARCO NORMATIVO Y PREÁMBULO INSTITUCIONAL',
         descripcion: 'Bases legales, justificación técnico-científica y acreditación.',
         camposCount: 6,
       },
@@ -470,8 +470,8 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
       {
         numero: '4.0',
-        titulo: 'ESTADO DE CUMPLIMIENTO REGULATORIO RAG',
-        descripcion: 'Checklist de normas aplicadas de las 77 normativas RAG.',
+        titulo: 'ESTADO DE CUMPLIMIENTO REGULATORIO Y NORMATIVO',
+        descripcion: 'Checklist de normas aplicadas del marco legal-forense.',
         camposCount: 5,
       },
       {

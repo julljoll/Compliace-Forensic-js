@@ -55,7 +55,8 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>I. REGISTROS DE TRAZABILIDAD (HASH CHAIN SHA-256 INMUTABLE)</Text>
+        {/* 1.0 RESUMEN DE TRAZABILIDAD */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 RESUMEN DE TRAZABILIDAD Y HASH CHAIN SHA-256</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '16%' }]}>FECHA / HORA</Text>
@@ -85,11 +86,26 @@ export const ActaAuditoriaTimelinePdf: React.FC<Props> = ({ caso, auditLogs = []
           )}
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. VALIDACIÓN PERICIAL DE INTEGRIDAD Y NO MANIPULACIÓN</Text>
+        {/* 2.0 CRONOLOGÍA DE EVENTOS */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 CRONOLOGÍA DE EVENTOS Y OPERACIONES PERICIALES</Text>
+        <Text style={pdfStyles.paragraph}>
+          El conjunto de operaciones periciales fue registrado secuencialmente desde el momento del ingreso hasta la emisión del certificado final.
+        </Text>
+
+        {/* 3.0 VERIFICACIÓN INMUTABLE */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 VERIFICACIÓN INMUTABLE DE LOGS DE SISTEMA</Text>
         <Text style={pdfStyles.paragraph}>
           El presente informe valida que los logs expuestos corresponden a la cadena inmutable procesada criptográficamente con algoritmo SHA-256, sin modificaciones ni interrupciones en la trazabilidad. Cada registro generado por la plataforma SHA256.US queda enlazado de forma indeleble al bloque previo.
         </Text>
 
+        {/* 4.0 ESTADO DE CUMPLIMIENTO */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ESTADO DE CUMPLIMIENTO REGULATORIO Y NORMATIVO</Text>
+        <Text style={pdfStyles.paragraph}>
+          Los logs auditan el cumplimiento de las normativas ISO/IEC 27037:2012 y MUCC-2017 para garantizar plena validez probatoria.
+        </Text>
+
+        {/* 5.0 VALIDACIÓN Y SELLO */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 VALIDACIÓN Y SELLO DE INTEGRIDAD DIGITAL</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={[pdfStyles.peritoCard, { width: '65%', marginHorizontal: 'auto' }]}>
             <Text style={pdfStyles.peritoCardHeaderTitle}>OFICIAL DE COMPLIANCE / PERITO AUDITOR</Text>

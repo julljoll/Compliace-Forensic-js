@@ -60,9 +60,9 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
       watermarkText="ENTREGA Y DEVOLUCIÓN"
       onClick={handleCheckboxClick}
     >
-      {/*  I. DATOS DE LA RECEPCIÓN DE RESULTADOS  */}
+      {/* 1.0 IDENTIFICACIÓN DE LA ENTREGA */}
       <div className="section">
-        <PlanillaSectionTitle>I. Datos de la Recepción de Resultados</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-1.0">1.0 IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Apellidos y Nombres de quien Recibe</PlanillaFieldLabel>
@@ -75,9 +75,9 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
         </div>
       </div>
 
-      {/*  II. ENTREGABLES  */}
+      {/* 2.0 INVENTARIO DE EVIDENCIA */}
       <div className="section">
-        <PlanillaSectionTitle>II. Documentos y Resultados Entregados</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 INVENTARIO DE EVIDENCIA FÍSICA Y DIGITAL DEVUELTA</PlanillaSectionTitle>
         <div className="form-group">
           <PlanillaCheckboxGroup
             style={{ flexDirection: 'column', gap: '5px' }}
@@ -90,9 +90,9 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
         </div>
       </div>
 
-      {/* III. DETALLE DEL DISPOSITIVO DEVUELTO */}
+      {/* 3.0 RE-PRECINTADO Y VERIFICACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle>III. Detalle de la Evidencia Devuelta ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-3.0">3.0 RE-PRECINTADO Y VERIFICACIÓN DE ESTADO FINAL</PlanillaSectionTitle>
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
@@ -137,16 +137,17 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
         )}
       </div>
 
-      {/*  IV. DEVOLUCIÓN DE LA EVIDENCIA FÍSICA  */}
+      {/* 4.0 CONSTANCIA DE CONFORMIDAD */}
       <div className="section">
-        <PlanillaSectionTitle>IV. Conformidad de Devolución de la Evidencia Física</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-4.0">4.0 CONSTANCIA DE CONFORMIDAD DEL SOLICITANTE</PlanillaSectionTitle>
         <div className="legal-text">
           Hago constar que en la fecha y hora indicadas recibo a mi entera satisfacción la evidencia física anteriormente descrita, verificando que se encuentra en el mismo estado de integridad en el que fue consignada en el laboratorio SHA256.US.
         </div>
       </div>
 
-      {/* V. FIRMAS DE DEVOLUCIÓN Y RECEPCIÓN */}
+      {/* 5.0 FIRMAS Y REGISTRO DACTILAR */}
       <div className="signature-section" style={{ gap: '14mm', marginTop: '30px' }}>
+        <PlanillaSectionTitle id="seccion-5.0">5.0 FIRMAS Y REGISTRO DACTILAR DE RECEPCIÓN</PlanillaSectionTitle>
         <div className="sig-detail-card">
           <div className="sig-detail-label">QUIEN RECIBE LOS RESULTADOS</div>
           <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>

@@ -59,9 +59,9 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
       watermarkText="ENTREVISTA"
       onClick={handleCheckboxClick}
     >
-      {/* DATOS DE LA ACTUACIÓN */}
+      {/* 1.0 DATOS DE LA ACTUACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle>Datos de la Actuación Pericial</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-1.0">1.0 DATOS GENERALES Y LUGAR DE LA ENTREVISTA</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
@@ -74,9 +74,9 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
         </div>
       </div>
 
-      {/* I. DATOS DEL ENTREVISTADO */}
+      {/* 2.0 DATOS DEL ENTREVISTADO */}
       <div className="section">
-        <PlanillaSectionTitle>I. Datos e Identificación del Entrevistado</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
@@ -114,9 +114,9 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
         </div>
       </div>
 
-      {/* II. RELACIÓN DEL DISPOSITIVO */}
+      {/* 3.0 DECLARACIÓN TÉCNICO-PERICIAL */}
       <div className="section">
-        <PlanillaSectionTitle>II. Relación del Dispositivo y Cuentas Asociadas ({tipoEvidencia === 'movil' ? 'Móvil' : 'Computador'})</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-3.0">3.0 DECLARACIÓN TÉCNICO-PERICIAL Y ANTECEDENTES</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Equipo / Evidencia</PlanillaFieldLabel>
@@ -132,9 +132,9 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
         </div>
       </div>
 
-      {/* III. DESARROLLO DE LA ENTREVISTA */}
+      {/* 4.0 CONOCIMIENTO DE DERECHOS */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle>III. Declaración Técnico-Pericial del Entrevistado</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-4.0">4.0 CONOCIMIENTO DE DERECHOS Y AUTORIZACIÓN FORENSE</PlanillaSectionTitle>
         <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '400px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
             <span className="placeholder-field">[Describa en detalle la declaración del entrevistado sobre el uso del equipo, claves de acceso, antecedentes y hechos relacionados]</span>

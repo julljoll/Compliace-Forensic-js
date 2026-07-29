@@ -51,7 +51,7 @@ const ROLES_FORENSES: { value: RolPersonal; label: string; desc: string; color: 
   { value: 'perito_lider', label: 'Perito Líder Informático', desc: 'ISO 27037/27042 — Dictamen pericial y custodia', color: '#FECF06' },
   { value: 'perito_asistente', label: 'Perito Asistente de Extracción', desc: 'Adquisición física/lógica IPED & FTK', color: '#00FF41' },
   { value: 'fiscal', label: 'Fiscal Adscrito MP', desc: 'Control de legalidad COPP y orden de allanamiento', color: '#9DFF00' },
-  { value: 'compliance_officer', label: 'Compliance Officer Legal-Forense', desc: 'Auditoría inmutable RAG y verificación de cadena de custodia', color: '#00E5FF' },
+  { value: 'compliance_officer', label: 'Compliance Officer Legal-Forense', desc: 'Auditoría inmutable y verificación de cadena de custodia', color: '#00E5FF' },
   { value: 'coordinador', label: 'Coordinador Técnico de Lab', desc: 'Gestión de laboratorio y asignación de expedientes', color: '#E040FB' },
   { value: 'admin', label: 'Administrador Global Plataforma', desc: 'Acceso total: Borrado de BD, usuarios y políticas', color: '#FF3B30' },
 ];

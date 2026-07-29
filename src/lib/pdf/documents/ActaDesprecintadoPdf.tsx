@@ -43,7 +43,8 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>I. DATOS DE LA BOLSA / SOBRE DE CUSTODIA Y PRECINTO</Text>
+        {/* 1.0 IDENTIFICACIÓN DEL PAQUETE */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DEL PAQUETE Y PRECINTO DE SEGURIDAD</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Código de Bolsa Faraday / Sobre:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.codigoSobre, 'Bolsa Faraday Inviolable #BF-SHA-0092')}</Text>
@@ -54,31 +55,42 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Estado del Precinto al Recibir:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.estadoPrecinto, 'Intacto / Inviolado / Sello Holográfico sin alteraciones')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.estadoPrecinto, 'Intacto / Inviolado / Sello Holográfico sin alterations')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. PROCEDIMIENTO DE APERTURA Y ASIGNACIÓN A ESTACIÓN FORENSE</Text>
+        {/* 2.0 COMPROBACIÓN DE INTEGRIDAD */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 COMPROBACIÓN DE INTEGRIDAD DE LA BOLSA FARADAY / EMBALAJE</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Estación de Trabajo / Write-Blocker:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.estacionTrabajo, 'Estación Forense N° 01 (Tableau Write-Blocker T8u)')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Perito Analista Responsable:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
         </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Testigo de Apertura de Laboratorio:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, 'Lcda. María Elena Torres (Oficial de Custodia)')}</Text>
+          <Text style={pdfStyles.fieldValue}>{fmt(c.testigoApertura, 'Ms. Mary E. Torres (Custody Officer)')}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>III. CONSTANCIA DE APERTURA SIN NULIDAD</Text>
+        {/* 3.0 REMOCIÓN CONTROLADA */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 REMOCIÓN CONTROLADA DEL PRECINTO Y EXTRACCIÓN DE EVIDENCIA</Text>
         <View style={{ padding: 6, backgroundColor: '#F8F9FA', borderRadius: 4, marginBottom: 8, borderLeftWidth: 3, borderLeftColor: '#FECF06' }}>
           <Text style={{ fontSize: 7, color: '#111111', lineHeight: 1.4, textAlign: 'justify' }}>
             Se hace constar formalmente que en la sede del Laboratorio Privado SHA256.US se procedió a la remoción e inspección del precinto de la bolsa contenedora de la evidencia digital. Se verificó que el contenido corresponde exactamente con el inventario de la Planilla de Registro de Cadena de Custodia (PRCC) y no presenta signos de fuerza o alteración previa.
           </Text>
         </View>
 
-        {/* RECUADRO DE FIRMAS Y HUELLAS */}
+        {/* 4.0 REGISTRO FOTOGRÁFICO */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 REGISTRO FOTOGRÁFICO DE APERTURA Y VERIFICACIÓN VISUAL</Text>
+        <View style={{ padding: 6, backgroundColor: '#F8F9FA', borderRadius: 4, marginBottom: 8, borderLeftWidth: 3, borderLeftColor: '#00FF41' }}>
+          <Text style={{ fontSize: 7, color: '#111111', lineHeight: 1.4, textAlign: 'justify' }}>
+            Se tomaron fotografías macro de alta resolución del precinto intacto y del proceso de corte térmico/mecánico del empaque secundario para constancia en el expediente pericial.
+          </Text>
+        </View>
+
+        {/* 5.0 FIRMAS DE CERTIFICACIÓN */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 FIRMAS DE CERTIFICACIÓN DEL ANALISTA FORENSE</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.peritoCard}>
             <Text style={pdfStyles.peritoCardHeaderTitle}>PERITO ANALISTA EN LABORATORIO</Text>
@@ -96,7 +108,7 @@ export const ActaDesprecintadoPdf: React.FC<Props> = ({ caso, isBlankMode = fals
             <View style={{ marginTop: 4, width: '100%' }}>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
-                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Jull J. Ollarves S.')}</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Eng. Christopher V. Vance')}</Text>
               </View>
               <View style={pdfStyles.peritoFieldRow}>
                 <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>

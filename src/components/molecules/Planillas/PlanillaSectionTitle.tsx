@@ -3,11 +3,12 @@ import React from 'react';
 interface PlanillaSectionTitleProps {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  id?: string;
 }
 
-export function PlanillaSectionTitle({ children, style }: PlanillaSectionTitleProps) {
+export function PlanillaSectionTitle({ children, style, id }: PlanillaSectionTitleProps) {
   return (
-    <div className="section-title" style={style}>
+    <div id={id} className="section-title" style={style}>
       {children}
     </div>
   );

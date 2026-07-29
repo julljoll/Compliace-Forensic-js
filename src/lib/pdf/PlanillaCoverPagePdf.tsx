@@ -1,7 +1,7 @@
 import React from 'react';
-import { Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Link, StyleSheet } from '@react-pdf/renderer';
 import { pdfStyles, formatValue } from './reactPdfStyles';
-import { PlanillaHeader, PlanillaFooter } from './PlanillaHeaderFooter';
+import { PlanillaFooter } from './PlanillaHeaderFooter';
 import { getPlanillaRegistry } from '../../data/planillasRegistry';
 
 interface PlanillaCoverPagePdfProps {
@@ -98,32 +98,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     paddingVertical: 4,
     paddingHorizontal: 8,
-    marginTop: 4,
-    marginBottom: 6,
-    borderRadius: 2,
+    marginBottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   legendHeaderText: {
     color: '#FECF06',
-    fontSize: 8,
+    fontSize: 7.5,
     fontFamily: 'Helvetica-Bold',
-    letterSpacing: 0.5,
   },
   table: {
     width: '100%',
     borderWidth: 1,
     borderColor: '#CBD5E1',
-    borderRadius: 3,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   tableRowHeader: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: '#E2E8F0',
     borderBottomWidth: 1,
-    borderBottomColor: '#CBD5E1',
-    paddingVertical: 3,
+    borderBottomColor: '#94A3B8',
+    paddingVertical: 4,
     paddingHorizontal: 6,
   },
   tableRow: {
@@ -136,87 +132,67 @@ const styles = StyleSheet.create({
   },
   colNum: {
     width: '12%',
-    fontSize: 7.5,
+    fontSize: 7,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
   },
   colTitle: {
-    width: '53%',
-    fontSize: 7.5,
+    width: '50%',
+    fontSize: 7,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
   },
   colDesc: {
-    width: '35%',
-    fontSize: 6.8,
+    width: '38%',
+    fontSize: 6.5,
     color: '#475569',
   },
   colHeader: {
     fontSize: 7,
     fontFamily: 'Helvetica-Bold',
-    color: '#334155',
-    textTransform: 'uppercase',
+    color: '#0F172A',
   },
   normativasContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 4,
     marginTop: 4,
-    marginBottom: 8,
   },
   normChip: {
     backgroundColor: '#F1F5F9',
     borderWidth: 1,
     borderColor: '#CBD5E1',
+    borderRadius: 3,
     paddingHorizontal: 5,
     paddingVertical: 2,
-    borderRadius: 3,
   },
   normChipText: {
     fontSize: 6.5,
     fontFamily: 'Helvetica-Bold',
-    color: '#334155',
+    color: '#1E293B',
   },
-  signaturesBlock: {
-    marginTop: 'auto',
-    borderTopWidth: 1.5,
-    borderTopColor: '#0F172A',
-    paddingTop: 6,
+  signatureBoxRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    marginTop: 10,
+    marginBottom: 8,
+    gap: 8,
   },
-  signatureBox: {
-    width: '45%',
-    alignItems: 'center',
+  sigBox: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#94A3B8',
+    borderRadius: 3,
+    backgroundColor: '#F8FAFC',
+    height: 55,
+    padding: 4,
+    justifyContent: 'space-between',
   },
-  signatureLine: {
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#0F172A',
-    marginBottom: 4,
-    height: 24,
-  },
-  sigText: {
-    fontSize: 7,
+  sigLabel: {
+    fontSize: 6,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
     textAlign: 'center',
-  },
-  sigSubtext: {
-    fontSize: 6,
-    color: '#64748B',
-    textAlign: 'center',
-  },
-  fingerprintBox: {
-    width: 44,
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#0F172A',
-    borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FAFAFA',
   },
   fingerprintText: {
     fontSize: 5.5,
@@ -239,12 +215,10 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
   const expNumero = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
   const prccNumero = fmt(c.numeroPRCC, 'PRCC-2026-0042');
   const fechaEmision = fmt(c.fecha, '23/07/2026 - 09:30 AM');
-  const perito = fmt(peritoNombre || c.peritoAsignado, 'Ing. Carlos Perdomo (Perito Forense CIP-8492)');
+  const perito = fmt(peritoNombre || c.peritoAsignado, 'Eng. Charles P. Vance (Forensic Expert CIP-8492)');
 
   return (
     <Page size={[612, 936]} style={pdfStyles.page}>
-      <PlanillaHeader />
-
       {/* Banner de Clasificación Legal */}
       <View style={styles.classificationBanner}>
         <Text style={styles.classificationText}>
@@ -254,7 +228,6 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
 
       {/* Bloque Central de Título */}
       <View style={styles.coverTitleBox}>
-        <Text style={styles.codeBadge}>{registry.codigo}</Text>
         <Text style={styles.coverMainTitle}>{registry.nombreOficial}</Text>
         <Text style={styles.coverSubtitle}>{registry.subtitulo}</Text>
 
@@ -299,8 +272,16 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
               index % 2 === 1 ? { backgroundColor: '#F8FAFC' } : {},
             ]}
           >
-            <Text style={styles.colNum}>{sec.numero}</Text>
-            <Text style={styles.colTitle}>{sec.titulo}</Text>
+            <Text style={styles.colNum}>
+              <Link src={`#seccion-${sec.numero}`} style={{ color: '#0F172A', textDecoration: 'none' }}>
+                {sec.numero}
+              </Link>
+            </Text>
+            <Text style={styles.colTitle}>
+              <Link src={`#seccion-${sec.numero}`} style={{ color: '#0F172A', textDecoration: 'none' }}>
+                {sec.numero} {sec.titulo}
+              </Link>
+            </Text>
             <Text style={styles.colDesc}>
               {sec.descripcion}{' '}
               {sec.camposCount ? `(${sec.camposCount} ítems)` : ''}
@@ -309,9 +290,9 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
         ))}
       </View>
 
-      {/* Normativas RAG Ancladas */}
+      {/* Normativas Ancladas */}
       <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginTop: 2 }}>
-        MARCO NORMATIVO RAG APLICABLE A ESTA PLANILLA:
+        MARCO NORMATIVO APLICABLE:
       </Text>
       <View style={styles.normativasContainer}>
         {registry.normativas.map((norm, i) => (

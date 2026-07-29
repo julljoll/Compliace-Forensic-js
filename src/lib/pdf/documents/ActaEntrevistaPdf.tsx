@@ -54,7 +54,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           <Text style={pdfStyles.fieldValue}>{fecha}</Text>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>I. IDENTIFICACIÓN LEGAL DEL ENTREVISTADO (ARTS. 132-136 COPP)</Text>
+        {/* 1.0 IDENTIFICACIÓN DEL ENTREVISTADO */}
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</Text>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Apellidos y Nombres:</Text>
           <Text style={pdfStyles.fieldValue}>{fmt(c.solicitante_nombre, 'Carlos Eduardo Mendoza Rivas')}</Text>
@@ -94,7 +95,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>II. RELACIÓN DEL DISPOSITIVO Y CUENTAS VINCULADAS (ISO 27037 & NIST SP 800-101)</Text>
+        {/* 2.0 CONTEXTO DE LA INVESTIGACIÓN */}
+        <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 CONTEXTO DE LA INVESTIGACIÓN Y ANTECEDENTES DEL CASO</Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableHeaderCell, { width: '35%' }]}>Parámetro de Contexto Evidencial</Text>
@@ -114,7 +116,8 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </View>
         </View>
 
-        <Text style={pdfStyles.sectionTitle}>III. PREGUNTAS CLAVE DE CONTEXTO FORENSE (CUESTIONARIO PERICIAL)</Text>
+        {/* 3.0 CREDENCIALES, CLAVES Y PARÁMETROS */}
+        <Text id="seccion-3.0" style={pdfStyles.sectionTitle}>3.0 CREDENCIALES, CLAVES Y PARÁMETROS DE ACCESO FACILITADOS</Text>
         <View style={pdfStyles.qaRow}>
           <Text style={pdfStyles.qText}>PREGUNTA 1: ¿Cuál es el origen de la evidencia digital y el período de tiempo que abarca?</Text>
           <Text style={pdfStyles.aText}>RESPUESTA: {fmt(c.descripcion, 'Conversaciones de WhatsApp, imágenes adjuntas y audios Opus contenidos en la memoria interna del teléfono consignado.')}</Text>
@@ -131,12 +134,14 @@ export const ActaEntrevistaPdf: React.FC<Props> = ({ caso, isBlankMode = false }
 
       {/* PÁGINA 2 — CONSENTIMIENTO Y FIRMAS */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        <Text style={pdfStyles.sectionTitle}>IV. CONSENTIMIENTO Y GARANTÍAS CONSTITUCIONALES (COPP ART. 187/225)</Text>
+        {/* 4.0 OBSERVACIONES TÉCNICAS */}
+        <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 OBSERVACIONES TÉCNICAS Y DECLARACIÓN JURADA</Text>
         <Text style={pdfStyles.paragraph}>
           El entrevistado manifiesta de manera expresa que rinde la presente declaración de forma LIBRE, CONSCIENTE Y VOLUNTARIA, sin haber sido objeto de coacción, violencia, dolo, engaño o promesas indebidas. Autoriza al equipo pericial de SHA256.US para la incorporación de esta entrevista al expediente forense N° {numeroExpediente}.
         </Text>
 
-        <Text style={pdfStyles.sectionTitle}>V. CERTIFICACIÓN PERICIAL, FIRMAS Y REGISTRO DACTILAR</Text>
+        {/* 5.0 FIRMAS Y HUELLAS */}
+        <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 FIRMAS Y HUELLAS DACTILARES DE LA ENTREVISTA</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.signatureCard}>
             <View style={{ flexDirection: 'row', gap: 6, marginBottom: 4 }}>
