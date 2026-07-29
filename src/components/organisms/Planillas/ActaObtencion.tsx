@@ -278,6 +278,21 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
       {/* 4.0 ESTADO FÍSICO */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-4.0">4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</PlanillaSectionTitle>
+        
+        <div style={{ marginTop: '8px', marginBottom: '10px', padding: '10px', border: '1px dashed #0F172A', backgroundColor: '#F8FAFC', borderRadius: '4px' }}>
+          <PlanillaFieldLabel style={{ fontSize: '8.5pt', color: '#0F172A', fontWeight: 'bold' }}>
+            ESTADO FÍSICO, OBSERVACIONES DE RECEPCIÓN Y ACCESORIOS (Escriba a lápiz o digite en 5 líneas):
+          </PlanillaFieldLabel>
+          <div contentEditable suppressContentEditableWarning style={{ minHeight: '95px', padding: '6px', fontSize: '9.5pt', lineHeight: '22px' }}>
+            <span className="placeholder-field">{c.dispositivo_estado_fisico ? c.dispositivo_estado_fisico : '[Describa detalladamente el estado de la pantalla, bordes, cámara, puerto de carga, batería, estuche y protector]'}</span>
+            <div className="dotted-line"></div>
+            <div className="dotted-line"></div>
+            <div className="dotted-line"></div>
+            <div className="dotted-line"></div>
+            <div className="dotted-line"></div>
+          </div>
+        </div>
+
         <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
           <tbody>
             <tr>

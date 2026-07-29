@@ -1,0 +1,9 @@
+[
+  {
+    "chunk_id": "block_0",
+    "type": "seccion",
+    "articulo_num": null,
+    "texto": "<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2136\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1989\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2133\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2614\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2256\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2039\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2327\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2542\n})>\n<pikepdf.Stream(owner=<...>, data=b'/P <</MCID 0 >>BDC\\n/'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1103\n})>",
+    "char_count": 1043
+  }
+]

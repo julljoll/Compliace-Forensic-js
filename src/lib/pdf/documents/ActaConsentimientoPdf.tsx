@@ -25,7 +25,7 @@ export const ActaConsentimientoPdf: React.FC<Props> = ({ caso, isBlankMode = fal
 
         <View style={pdfStyles.titleBlock}>
           <Text style={pdfStyles.mainTitle}>ACTA DE CONSENTIMIENTO INFORMADO, AUTORIZACIÓN DE ACCESO Y HÁBEAS DATA</Text>
-          <Text style={pdfStyles.subTitle}>DECLARACIÓN JURADA DE LEGITIMACIÓN DE POSESIÓN Y AUTORIZACIÓN EXPRESA DE INSPECCIÓN (ART. 60 CRBV, ARTS. 4 Y 6 LMD FE, ISO 27037)</Text>
+          <Text style={pdfStyles.subTitle}>DECLARACIÓN JURADA DE LEGITIMACIÓN DE POSESIÓN Y AUTORIZACIÓN EXPRESA DE INSPECCIÓN (ARTS. 28 Y 60 CRBV, ARTS. 4 Y 6 LMD FE, ISO 27037)</Text>
           
           <View style={pdfStyles.expedienteBox}>
             <View style={pdfStyles.expedienteSlot}>

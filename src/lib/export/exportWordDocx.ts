@@ -189,8 +189,8 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
       <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; margin-bottom: 18px; text-align: left;">
         <thead>
           <tr style="background-color: #E2E8F0;">
-            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 15%; font-family: Arial, sans-serif;">N° SECC.</th>
-            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 45%; font-family: Arial, sans-serif;">DENOMINACIÓN DE LA SECCIÓN</th>
+            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 9%; font-family: Arial, sans-serif;">N° SECC.</th>
+            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 51%; font-family: Arial, sans-serif;">DENOMINACIÓN DE LA SECCIÓN</th>
             <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 40%; font-family: Arial, sans-serif;">DESCRIPCIÓN Y CAMPOS</th>
           </tr>
         </thead>

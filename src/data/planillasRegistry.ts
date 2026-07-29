@@ -84,7 +84,7 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
     nombreOficial: 'ACTA DE CONSENTIMIENTO INFORMADO & HÁBEAS DATA',
     subtitulo: 'AUTORIZACIÓN EXPLÍCITA DE INSPECCIÓN TÉCNICO-PERICIAL Y EXENCIÓN DE RESPONSABILIDAD',
     etapaLegal: 'ETAPA 1: Consignación & Consentimiento Informado',
-    normativas: ['CRBV Art. 60', 'LMD FE Arts. 4 y 6', 'ISO/IEC 27701', 'COPP Art. 225'],
+    normativas: ['CRBV Arts. 28 y 60', 'LMD FE Arts. 4 y 6', 'ISO/IEC 27701', 'COPP Art. 225'],
     sections: [
       {
         numero: '1.0',
@@ -211,27 +211,27 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
     sections: [
       {
         numero: '1.0',
-        titulo: 'IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA',
-        descripcion: 'Datos personales, cargo corporativo y rol en la investigación.',
-        camposCount: 5,
+        titulo: 'DATOS GENERALES Y LUGAR DE LA ENTREVISTA',
+        descripcion: 'Sede de recepción, fecha, hora y expediente pericial.',
+        camposCount: 2,
       },
       {
         numero: '2.0',
-        titulo: 'CONTEXTO DE LA INVESTIGACIÓN Y ANTECEDENTES DEL CASO',
-        descripcion: 'Narración de los hechos relevantes y cronología del incidente.',
-        camposCount: 4,
+        titulo: 'IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA',
+        descripcion: 'Nombres, C.I., contacto, dirección y rol en la investigación.',
+        camposCount: 5,
       },
       {
         numero: '3.0',
-        titulo: 'CREDENCIALES, CLAVES Y PARÁMETROS DE ACCESO FACILITADOS',
-        descripcion: 'Suministro de PIN, contraseñas y patrones bajo reserva confidencial.',
-        camposCount: 4,
+        titulo: 'DECLARACIÓN TÉCNICO-PERICIAL Y ANTECEDENTES',
+        descripcion: 'Marca, modelo y serial del equipo o evidencia relacionada.',
+        camposCount: 2,
       },
       {
         numero: '4.0',
-        titulo: 'OBSERVACIONES TÉCNICAS Y DECLARACIÓN JURADA',
-        descripcion: 'Constancia de veracidad de los datos aportados.',
-        camposCount: 3,
+        titulo: 'CONOCIMIENTO DE DERECHOS Y AUTORIZACIÓN FORENSE',
+        descripcion: 'Declaración detallada sobre claves, antecedentes y contexto.',
+        camposCount: 2,
       },
       {
         numero: '5.0',

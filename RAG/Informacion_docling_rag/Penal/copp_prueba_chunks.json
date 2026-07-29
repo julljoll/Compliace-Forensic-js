@@ -1,0 +1,17 @@
+[
+  {
+    "chunk_id": "art_187_0",
+    "type": "articulo",
+    "articulo_num": "187",
+    "hierarchy": {
+      "titulo": "",
+      "capitulo": "",
+      "seccion": ""
+    },
+    "hierarchy_path": "General",
+    "parent_id": "sec_root",
+    "texto": "[General] Artículo 187. Cadena de custodia de evidencias digitales.",
+    "raw_texto": "Artículo 187. Cadena de custodia de evidencias digitales.",
+    "char_count": 57
+  }
+]

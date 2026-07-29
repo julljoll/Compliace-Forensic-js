@@ -119,6 +119,52 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         )}
       </div>
 
+      {/* 3.0 METODOLOGÍA CIENTÍFICA */}
+      <div className="section">
+        <PlanillaSectionTitle id="seccion-3.0">3.0 METODOLOGÍA CIENTÍFICA FORENSE (ISO/IEC 27042:2015 &amp; DAUBERT STANDARD)</PlanillaSectionTitle>
+        <div className="form-group" style={{ fontSize: '8.5pt', color: '#1d1d1f', backgroundColor: '#fafafa', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
+          Procesamiento mediante herramientas científicas de inspección pericial (IPED Forensics v4.1, PhotoHolmes Python Engine ELA y PyOgg Audio Engine). Preservación estricta de la estructura de contenedores nativos y trazabilidad criptográfica.
+        </div>
+      </div>
+
+      {/* 4.0 ANÁLISIS ELA / ESPECTROGRAMA */}
+      <div className="section">
+        <PlanillaSectionTitle id="seccion-4.0">4.0 ANÁLISIS ELA (ERROR LEVEL ANALYSIS) / ESPECTROGRAMA ACÚSTICO</PlanillaSectionTitle>
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
+          <tbody>
+            <tr>
+              <td style={{ width: '35%', fontWeight: 'bold' }}>Técnica de Análisis Aplicada</td>
+              <td>[X] Error Level Analysis (ELA) &nbsp;&nbsp;&nbsp;&nbsp; [X] Espectrograma de Frecuencia (48 kHz)</td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Respuesta de Frecuencia / Matriz ELA</td>
+              <td><PlanillaEditableValue placeholder="[Respuesta frecuencial continua e ininterrumpida / Niveles de compresión uniformes]" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* 5.0 DETECCIÓN COPY-MOVE Y METADATOS */}
+      <div className="section">
+        <PlanillaSectionTitle id="seccion-5.0">5.0 DETECCIÓN COPY-MOVE, EXIF Y ESTRUCTURA DE CONTENEDOR</PlanillaSectionTitle>
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
+          <tbody>
+            <tr>
+              <td style={{ width: '35%', fontWeight: 'bold' }}>Verificación EXIF / OggOpus</td>
+              <td><PlanillaEditableValue placeholder="[Encabezados intactos / Coincidencia de timestamp / Bit-rate VBR continuo]" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* 6.0 VERIFICACIÓN DE NO ALTERACIÓN */}
+      <div className="section">
+        <PlanillaSectionTitle id="seccion-6.0">6.0 VERIFICACIÓN DE NO ALTERACIÓN Y CONTINUIDAD DIGITAL</PlanillaSectionTitle>
+        <div style={{ fontSize: '8.5pt', color: '#1E293B', padding: '6px 0' }}>
+          El análisis no evidencia manipulaciones, cortes, sobreposición de pistas ni re-salvados de terceros.
+        </div>
+      </div>
+
       {/* 7.0 CONCLUSIONES PERICIALES */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
         <PlanillaSectionTitle id="seccion-7.0">7.0 CONCLUSIONES PERICIALES Y REGISTRO DE CADENA</PlanillaSectionTitle>

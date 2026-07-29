@@ -13,7 +13,9 @@ import PrintIcon from '@mui/icons-material/Print';
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import HtmlIcon from '@mui/icons-material/Html';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
+import { exportPlanillaToHtmlEmail } from '@/lib/export/exportHtmlEmail';
 
 const PDFViewerNative = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFViewer),
@@ -51,6 +53,7 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isPreviewBlank, setIsPreviewBlank] = useState<boolean>(false);
   const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
+  const [isExportingHtml, setIsExportingHtml] = useState<boolean>(false);
 
   useEffect(() => {
     if (pdfBlob) {
@@ -70,6 +73,18 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
       console.error('Error al exportar Word:', err);
     } finally {
       setIsExportingWord(false);
+    }
+  };
+
+  const handleExportHtmlEmail = async () => {
+    setIsExportingHtml(true);
+    try {
+      const element = window.document.querySelector('.planilla-container') as HTMLElement;
+      await exportPlanillaToHtmlEmail(caso, title, element);
+    } catch (err) {
+      console.error('Error al exportar HTML Email:', err);
+    } finally {
+      setIsExportingHtml(false);
     }
   };
 
@@ -228,6 +243,24 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
             }}>
               DESCARGAR WORD (.DOCX)
             </Button>
+
+          {/* Exportar a HTML para Correo Electrónico */}
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={isExportingHtml ? <CircularProgress size={14} sx={{ color: '#9DFF00' }} /> : <HtmlIcon />}
+            onClick={handleExportHtmlEmail}
+            disabled={isExportingHtml}
+            sx={{
+              borderColor: 'rgba(157, 255, 0, 0.4)',
+              color: '#9DFF00',
+              fontWeight: 700,
+              fontSize: '11px',
+              '&:hover': { borderColor: '#9DFF00', backgroundColor: 'rgba(157, 255, 0, 0.08)' },
+            }}
+          >
+            GENERAR HTML
+          </Button>
 
           {actions}
         </Box>

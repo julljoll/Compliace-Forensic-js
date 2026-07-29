@@ -129,13 +129,20 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
 
         {/* 4.0 ESTADO FÍSICO */}
         <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</Text>
-        <View style={pdfStyles.fieldRow}>
-          <Text style={pdfStyles.fieldLabel}>Estado Físico del Dispositivo:</Text>
-          <Text style={pdfStyles.fieldValue}>{fmt(c.estado_fisico, 'Pantalla intacta sin fisuras, carcasa con desgaste menor 9.5/10, puerto USB-C funcional.')}</Text>
+        <View style={{ marginTop: 3, marginBottom: 5, borderWidth: 1, borderColor: '#CBD5E1', borderRadius: 3, padding: 5, backgroundColor: '#F8FAFC' }}>
+          <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
+            ESTADO FÍSICO Y OBSERVACIONES VISUALES DE RECEPCIÓN (5 líneas de pauta pericial):
+          </Text>
+          <Text style={{ fontSize: 6.5, color: '#1E293B', lineHeight: 1.35 }}>
+            {fmt(c.dispositivo_estado_fisico, '1. _____________________________________________________________________\n2. _____________________________________________________________________\n3. _____________________________________________________________________\n4. _____________________________________________________________________\n5. _____________________________________________________________________')}
+          </Text>
         </View>
 
         {/* 5.0 ALCANCE Y AUTORIZACIÓN */}
         <Text id="seccion-5.0" style={pdfStyles.sectionTitle}>5.0 ALCANCE Y AUTORIZACIÓN EXPRESA DEL EXAMEN PERICIAL</Text>
+        <Text style={pdfStyles.paragraph}>
+          Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando libremente, hago entrega material voluntaria (Obtención por Consignación Directa Privada) de la evidencia descrita conforme al Manual Único de Cadena de Custodia (MUCC-2017) y Arts. 187 y 225 del COPP. Declaro bajo juramento que realizo esta consignación LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO O AMENAZA. AUTORIZO EXPRESA Y VOLUNTARIAMENTE al equipo pericial de SHA256.US para la extracción lógica/física de Mensajes de Datos (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas) y análisis forense.
+        </Text>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
@@ -144,7 +151,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Software Forense / Librerías</Text>
             <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>
-              IPED Forensics v4.1 (Pol. Fed. Brasil / INTERPOL), PhotoHolmes Engine (photoholmes: ELA) & PyOgg Audio Engine (PyOgg: Opus WhatsApp)
+              IPED Forensics v4.1 (Pol. Fed. Brasil / INTERPOL), PhotoHolmes Engine (photoholmes: ELA) &amp; PyOgg Audio Engine (PyOgg: Opus WhatsApp)
             </Text>
           </View>
         </View>
@@ -153,13 +160,30 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
         <PlanillaFooter />
       </Page>
 
-      {/* PÁGINA 2 — HOJA DE FIRMAS Y DECLARACIONES */}
+      {/* PÁGINA 3 — HOJA DE FIRMAS Y DECLARACIONES */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         {/* 6.0 CUSTODIA INICIAL Y EMPACADO */}
         <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO</Text>
-        <Text style={pdfStyles.paragraph}>
-          Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando libremente, hago entrega material voluntaria (Obtención por Consignación Directa Privada) del teléfono móvil descrito al laboratorio privado SHA256.US conforme al Manual Único de Cadena de Custodia (MUCC-2017) y Arts. 187 y 225 del COPP. Declaro bajo juramento que realizo esta consignación LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO O AMENAZA. AUTORIZO EXPRESA Y VOLUNTARIAMENTE al equipo pericial del laboratorio privado SHA256.US para la extracción lógica/física de Mensajes de Datos (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas), procesados con IPED Forensics, PhotoHolmes y PyOgg.
-        </Text>
+        <View style={pdfStyles.table}>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Bolsa Faraday / Apantallamiento</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              [X] Bolsa de Aislamiento Electromagnético RF (N° Bolsa: {fmt(c.bolsaFaraday, 'FARADAY-SHA-2026-081')})
+            </Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Precinto de Seguridad Plástico</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              N° Precinto: {fmt(c.precintoNumero, 'SHA-2026-VNZ-9941')} (Estado: Intacto / Sin alteración)
+            </Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Estado de Aislamiento de Red</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              [X] Modo Avión Activado / Tarjeta SIM Retirada / WiFi y Bluetooth Desactivados
+            </Text>
+          </View>
+        </View>
 
         {/* 7.0 FIRMAS Y REGISTRO DACTILAR */}
         <Text id="seccion-7.0" style={pdfStyles.sectionTitle}>7.0 FIRMAS DE CONFORMIDAD, CERTIFICACIÓN Y CUSTODIA</Text>

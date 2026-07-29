@@ -1,0 +1,15 @@
+[
+  {
+    "chunk_id": "hierarchical_block_0",
+    "type": "seccion_jerarquica",
+    "articulo_num": null,
+    "hierarchy": {
+      "seccion": "Bloque 0"
+    },
+    "hierarchy_path": "Sección > Bloque 0",
+    "parent_id": "root",
+    "texto": "[Bloque 0] Sentencia N° 123. TSJ Sala Penal. Validez de la prueba digital.",
+    "raw_texto": "Sentencia N° 123. TSJ Sala Penal. Validez de la prueba digital.",
+    "char_count": 63
+  }
+]

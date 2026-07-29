@@ -1,0 +1,9 @@
+[
+  {
+    "chunk_id": "block_0",
+    "type": "seccion",
+    "articulo_num": null,
+    "texto": "<pikepdf.Array([ pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4227\n}), pikepdf.Stream(owner=<...>, data=b'-14.22 16.32 -14.94 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4238\n}), pikepdf.Stream(owner=<...>, data=b'-.36 -3.12 -.78 -6.1'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4371\n}), pikepdf.Stream(owner=<...>, data=b'-3.06 0 -2.28 -.18 -'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 3961\n}), pikepdf.Stream(owner=<...>, data=b'-11.94 -.18 -11.94 -'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 3722\n}), pikepdf.Stream(owner=<...>, data=b'-10.92 10.2 -11.04 1'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4206\n}), pikepdf.Stream(owner=<...>, data=b'-6.48 -2.64 -6.12 -2'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 3472\n}), pikepdf.Stream(owner=<...>, data=b'.3 0 .12 0 0 0 c\\nh\\nS'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 5155\n}) ])>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4614\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4717\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 5248\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 5010\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4367\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nBT\\n/TT2 1 Tf'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 4137\n})>",
+    "char_count": 1637
+  }
+]

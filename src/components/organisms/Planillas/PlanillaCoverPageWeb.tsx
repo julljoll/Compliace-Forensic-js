@@ -158,8 +158,8 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
           <Table size="small">
             <TableHead>
               <TableRow sx={{ backgroundColor: '#21262D' }}>
-                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '12%' }}>N° SECC.</TableCell>
-                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '50%' }}>DENOMINACIÓN DE LA SECCIÓN</TableCell>
+                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '9%' }}>N° SECC.</TableCell>
+                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '53%' }}>DENOMINACIÓN DE LA SECCIÓN</TableCell>
                 <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '38%' }}>RESUMEN DE CONTENIDO</TableCell>
               </TableRow>
             </TableHead>
@@ -185,7 +185,7 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
                   </TableCell>
                   <TableCell sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}>
                     <a href={`#seccion-${sec.numero}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                      {sec.numero} {sec.titulo}
+                      {sec.titulo}
                     </a>
                   </TableCell>
                   <TableCell sx={{ color: '#94A3B8', fontSize: '11px' }}>

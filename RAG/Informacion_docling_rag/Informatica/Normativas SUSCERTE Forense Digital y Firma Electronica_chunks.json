@@ -1,0 +1,9 @@
+[
+  {
+    "chunk_id": "block_0",
+    "type": "seccion",
+    "articulo_num": null,
+    "texto": "<pikepdf.Stream(owner=<...>, data=<...>, {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1227761\n})>",
+    "char_count": 96
+  }
+]

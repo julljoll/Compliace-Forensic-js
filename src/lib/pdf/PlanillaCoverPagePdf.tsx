@@ -131,13 +131,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   colNum: {
-    width: '12%',
+    width: '9%',
     fontSize: 7,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
   },
   colTitle: {
-    width: '50%',
+    width: '53%',
     fontSize: 7,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
@@ -279,7 +279,7 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
             </Text>
             <Text style={styles.colTitle}>
               <Link src={`#seccion-${sec.numero}`} style={{ color: '#0F172A', textDecoration: 'none' }}>
-                {sec.numero} {sec.titulo}
+                {sec.titulo}
               </Link>
             </Text>
             <Text style={styles.colDesc}>
