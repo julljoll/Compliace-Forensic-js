@@ -336,10 +336,21 @@ const NORMATIVAS_INICIALES: Normativa[] = [
   },
   {
     id: 'n4', codigo: 'MUCC-2017', tipo: 'MANUAL',
-    nombre: 'Manual Único de Cadena de Custodia de Evidencias',
-    descripcion: 'Manual Único de Cadena de Custodia de Evidencias Físicas y Digitales de la República Bolivariana de Venezuela, publicado en Gaceta Oficial N° 41.247 en septiembre de 2017. Es de obligatorio cumplimiento para todos los órganos de investigación penal y laboratorios forenses. Regula el proceso continuo e ininterrumpido de resguardo técnico de la evidencia, exigiendo el llenado de la Planilla PRCC y el uso de precintos numerados.',
-    version: 'Final 29/09/2017', fechaVigencia: '2017-09-29', activa: true,
-    urlReferencia: 'normativas_rag/MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).md',
+    nombre: 'Manual Único de Cadena de Custodia de Evidencias Físicas y Digitales',
+    descripcion: 'Manual Único de Cadena de Custodia de Evidencias Físicas y Digitales de la República Bolivariana de Venezuela, elaborado conjuntamente por el MPPRIJP, Ministerio Público, CICPC y GNB, publicado en Gaceta Oficial N° 41.247 (septiembre 2017). Es de obligatorio cumplimiento para todos los órganos de investigación penal y laboratorios forenses. Concibe la Cadena de Custodia como un sistema integral articulado en 4 Fases (Inicial, Laboratorio, Disposición Judicial y Disposición Final), 4 Modalidades de Obtención (Técnica, Aseguramiento, Consignación y Derivación) y 3 Figuras de Carácter Continuo (Resguardo Temporal, Traslado y Transferencia). Exige el llenado ininterrumpido de la Planilla PRCC, etiquetado formal y uso de precintos numéricos de alta seguridad.',
+    version: 'Gaceta Oficial N° 41.247 (29/09/2017)', fechaVigencia: '2017-09-29', activa: true,
+    urlReferencia: 'normativas_rag/Informatica/MANUAL_ÚNICO_DE_CADENA DE_CUSTODIA_DE_EVIDENCIAS_(VERSIÓN_FINAL_29SEP17).md',
+    articulos: [
+      'Fase 1: Obtención Técnica en Sitio del Suceso (Fijación, Colección, Embalaje y Rotulación)',
+      'Fase 1: Modalidades de Obtención (Técnica, Aseguramiento, Consignación y Derivación)',
+      'Fase 1: Procedimiento Obligatorio de Registro en Planilla PRCC',
+      'Fase 2: Peritación en Laboratorio (Recepción, Apertura de Precinto, Designación de Peritos, Peritaje y Remisión)',
+      'Fase 3: Disposición Judicial (Resguardo Judicial y Exhibición en Audiencia)',
+      'Fase 4: Disposición Final (Devolución, Entrega, Destrucción y Consumida en Peritaje)',
+      'Figura de Carácter Continuo: Proceso de Resguardo Temporal y Depósito de Evidencias',
+      'Figura de Carácter Continuo: Procedimiento de Traslado con Embalaje de Seguridad',
+      'Figura de Carácter Continuo: Actividad de Transferencia y Traspaso Formal entre Custodios'
+    ]
   },
   {
     id: 'n5', codigo: 'ACPO-v5', tipo: 'MANUAL',

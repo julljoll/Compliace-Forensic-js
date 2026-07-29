@@ -247,6 +247,103 @@ export default function NormativasPage() {
                 </Typography>
               </Box>
 
+              {/* Panel Especializado Exclusivo para MUCC-2017 */}
+              {selectedNormativa.codigo.toLowerCase().includes('mucc') && (
+                <Box sx={{ mb: 3.5, p: 2.5, backgroundColor: 'rgba(254, 207, 6, 0.05)', borderRadius: '10px', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
+                  <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 800, mb: 2, textTransform: 'uppercase', fontSize: '13px', display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <AccountTreeIcon sx={{ fontSize: 20, color: '#FECF06' }} />
+                    🏛️ Estructura Sistémica del MUCC-2017 (Gaceta Oficial N° 41.247)
+                  </Typography>
+
+                  {/* 4 Fases Sistémicas */}
+                  <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41', textTransform: 'uppercase', mb: 1, letterSpacing: '0.04em' }}>
+                    1. Las 4 Fases Obligatorias del Sistema de Cadena de Custodia
+                  </Typography>
+                  <Grid container spacing={1.5} sx={{ mb: 2.5 }}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(0, 255, 65, 0.2)' }}>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41' }}>Fase I: Inicial</Typography>
+                        <Typography sx={{ fontSize: '11px', color: '#8B949E', mt: 0.3 }}>Protección, observación, fijación, colección, embalaje, rotulación y llenado de Planilla PRCC.</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(0, 255, 65, 0.2)' }}>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41' }}>Fase II: Laboratorio / Peritación</Typography>
+                        <Typography sx={{ fontSize: '11px', color: '#8B949E', mt: 0.3 }}>Recepción, verificación de precinto, desprecintado, peritaje especializado y remisión del dictamen.</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(0, 255, 65, 0.2)' }}>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41' }}>Fase III: Disposición Judicial</Typography>
+                        <Typography sx={{ fontSize: '11px', color: '#8B949E', mt: 0.3 }}>Resguardo judicial y exhibición formal de la evidencia en audiencia de juicio oral.</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6 }}>
+                      <Box sx={{ p: 1.5, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(0, 255, 65, 0.2)' }}>
+                        <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#00FF41' }}>Fase IV: Disposición Final</Typography>
+                        <Typography sx={{ fontSize: '11px', color: '#8B949E', mt: 0.3 }}>Cierre definitivo: devolución a propietario, entrega, destrucción ordenada o consumida en ensayo.</Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  {/* 4 Modalidades de Obtención */}
+                  <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#9DFF00', textTransform: 'uppercase', mb: 1, letterSpacing: '0.04em' }}>
+                    2. Las 4 Modalidades de Obtención Inicial
+                  </Typography>
+                  <Grid container spacing={1.5} sx={{ mb: 2.5 }}>
+                    <Grid size={{ xs: 12, sm: 3 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(157, 255, 0, 0.2)', textAlign: 'center' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#9DFF00' }}>Técnica</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Sitio del Suceso</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 3 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(157, 255, 0, 0.2)', textAlign: 'center' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#9DFF00' }}>Aseguramiento</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Búsqueda Judicial</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 3 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(157, 255, 0, 0.2)', textAlign: 'center' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#9DFF00' }}>Consignación</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Entrega Voluntaria</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 3 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(157, 255, 0, 0.2)', textAlign: 'center' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#9DFF00' }}>Derivación</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Sub-muestras Lab</Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  {/* 3 Figuras Continuas */}
+                  <Typography sx={{ fontSize: '12px', fontWeight: 800, color: '#FECF06', textTransform: 'uppercase', mb: 1, letterSpacing: '0.04em' }}>
+                    3. Las 3 Figuras de Carácter Continuo
+                  </Typography>
+                  <Grid container spacing={1.5}>
+                    <Grid size={{ xs: 12, sm: 4 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#FECF06' }}>Resguardo Temporal</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Depósito, ingreso, custodia y egreso controlado.</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 4 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#FECF06' }}>Procedimiento de Traslado</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Transporte seguro con embalaje e inalterabilidad.</Typography>
+                      </Box>
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 4 }}>
+                      <Box sx={{ p: 1.2, backgroundColor: '#0D1117', borderRadius: '6px', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
+                        <Typography sx={{ fontSize: '11.5px', fontWeight: 800, color: '#FECF06' }}>Transferencia de Custodios</Typography>
+                        <Typography sx={{ fontSize: '10.5px', color: '#8B949E', mt: 0.2 }}>Firma y traspaso formal de responsabilidad en PRCC.</Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              )}
+
               {/* Bloque B: Principios Técnico-Forenses Exigidos por la Norma */}
               <Box sx={{ mb: 3.5 }}>
                 <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
