@@ -143,18 +143,6 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
         <Text style={pdfStyles.paragraph}>
           Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y actuando libremente, hago entrega material voluntaria (Obtención por Consignación Directa Privada) de la evidencia descrita conforme al Manual Único de Cadena de Custodia (MUCC-2017) y Arts. 187 y 225 del COPP. Declaro bajo juramento que realizo esta consignación LIBRE DE TODA COACCIÓN, VIOLENCIA, DOLO O AMENAZA. AUTORIZO EXPRESA Y VOLUNTARIAMENTE al equipo pericial de SHA256.US para la extracción lógica/física de Mensajes de Datos (Art. 4, Ley sobre Mensajes de Datos y Firmas Electrónicas) y análisis forense.
         </Text>
-        <View style={pdfStyles.table}>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Génesis</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
-          </View>
-          <View style={pdfStyles.tableRow}>
-            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Software Forense / Librerías</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>
-              IPED Forensics v4.1 (Pol. Fed. Brasil / INTERPOL), PhotoHolmes Engine (photoholmes: ELA) &amp; PyOgg Audio Engine (PyOgg: Opus WhatsApp)
-            </Text>
-          </View>
-        </View>
 
         {/* FOOTER OFICIAL */}
         <PlanillaFooter />
@@ -162,9 +150,22 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
 
       {/* PÁGINA 3 — HOJA DE FIRMAS Y DECLARACIONES */}
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
-        {/* 6.0 CUSTODIA INICIAL Y EMPACADO */}
-        <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO</Text>
+
+        {/* 6.0 CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO (MUCC-2017 p. 37) */}
+        <Text id="seccion-6.0" style={pdfStyles.sectionTitle}>6.0 CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO EN BOLSA FARADAY / PRECINTO</Text>
         <View style={pdfStyles.table}>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Inicial (Embalaje — MUCC-2017 p. 37)</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Algoritmo Auxiliar MD5 (Verificación cruzada)</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>{fmt(c.hashMd5, 'd41d8cd98f00b204e9800998ecf8427e')}</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Herramienta de Cálculo</Text>
+            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>{fmt(c.herramientaHash, 'FTK Imager v4.7 / Guymager / HashMyFiles / Cellebrite UFED')}</Text>
+          </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Bolsa Faraday / Apantallamiento</Text>
             <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>

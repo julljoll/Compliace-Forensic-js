@@ -156,3 +156,61 @@ npm run update-agent # Sincronizar metadatos de agent_instructions.json
 ### Mantenimiento de Agentes
 - **Script de actualización:** `scripts/update-agent-instructions.js` — actualiza metadatos de `agent_instructions.json`
 - **Ejecutar después de cambios significativos:** `npm run update-agent`
+
+---
+
+## Regla de Doble Arquitectura de Planillas (OBLIGATORIO)
+
+### ⚠️ Regla de Sincronización Permanente
+
+Las planillas forenses del CMS tienen **DOS arquitecturas de renderizado paralelas**. Toda corrección, campo nuevo, sección nueva o ajuste legal aplicado a una planilla **DEBE aplicarse simultáneamente a ambas**:
+
+| Planilla | Archivo Web Interactivo | Archivo PDF (react-pdf) |
+|---|---|---|
+| Acta de Obtención | `src/components/organisms/Planillas/ActaObtencion.tsx` | `src/lib/pdf/documents/ActaObtencionPdf.tsx` |
+| Acta de Entrevista | `src/components/organisms/Planillas/ActaEntrevista.tsx` | `src/lib/pdf/documents/ActaEntrevistaPdf.tsx` |
+| Acta Dictamen | `src/components/organisms/Planillas/ActaDictamen.tsx` | `src/lib/pdf/documents/ActaDictamenPdf.tsx` |
+| Acta Entrega | `src/components/organisms/Planillas/ActaEntregaResultados.tsx` | `src/lib/pdf/documents/ActaEntregaResultadosPdf.tsx` |
+| PRCC | `src/components/organisms/Planillas/PlanillaPRCC.tsx` | `src/lib/pdf/documents/PlanillaPRCCPdf.tsx` |
+| Acta Consentimiento | *(solo PDF)* | `src/lib/pdf/documents/ActaConsentimientoPdf.tsx` |
+| Acta Desprecintado | *(solo PDF)* | `src/lib/pdf/documents/ActaDesprecintadoPdf.tsx` |
+| Acta Sanitización | *(solo PDF)* | `src/lib/pdf/documents/ActaSanitizacionPdf.tsx` |
+| Dictamen Imágenes | *(solo PDF extendido)* | `src/lib/pdf/documents/DictamenImagenesPdf.tsx` |
+| Dictamen Audios | *(solo PDF extendido)* | `src/lib/pdf/documents/DictamenAudiosPdf.tsx` |
+
+### Checklist de Sincronización (al editar cualquier planilla)
+- [ ] ¿La corrección/campo nuevo se aplicó al archivo **Web TSX** (`organisms/Planillas/`)?
+- [ ] ¿La misma corrección se aplicó al archivo **PDF** (`lib/pdf/documents/`)?
+- [ ] ¿Se actualizó `camposCount` en `src/data/planillasRegistry.ts` si cambiaron los campos?
+- [ ] ¿Se ejecutó `npm run build` y el resultado es **0 errores TypeScript**?
+
+### Estándar Mínimo de Firmas (MUCC-2017 + COPP)
+Toda sección de firmas en cualquier planilla DEBE contener:
+- **Consignante / Entrevistado / Receptor:** Nombre, C.I., Pulgar Derecho, Pulgar Izquierdo
+- **Perito Actuante:** Nombre, C.I., CIV N°, INPREABOGADO N°, Cargo, Pulgar Derecho, Pulgar Izquierdo
+- **Dictamen Pericial:** Mínimo 2 peritos con sus respectivos datos y pulgares bilaterales (COPP Art. 223)
+- **N° PRCC** obligatorio en Acta de Entrega de Resultados (cierre de cadena de custodia MUCC-2017)
+- **Hash SHA-256** registrado en la sección de custodia/embalaje (sección 6.0), NO en la sección de estado físico (MUCC-2017 p. 37)
+
+### Arquitectura de Directorios de Planillas
+```
+src/
+├── components/organisms/Planillas/   ← Arquitectura A: Web Interactiva (HTML/CSS editable en CMS)
+│   ├── ActaObtencion.tsx
+│   ├── ActaDictamen.tsx
+│   ├── ActaEntrevista.tsx
+│   ├── ActaEntregaResultados.tsx
+│   └── PlanillaPRCC.tsx
+│
+└── lib/pdf/documents/                ← Arquitectura B: react-pdf (PDF imprimible descargable)
+    ├── ActaObtencionPdf.tsx
+    ├── ActaDictamenPdf.tsx           (Dictamen genérico)
+    ├── DictamenImagenesPdf.tsx       (Dictamen especializado imágenes ELA)
+    ├── DictamenAudiosPdf.tsx         (Dictamen especializado audios Opus)
+    ├── ActaEntrevistaPdf.tsx
+    ├── ActaEntregaResultadosPdf.tsx
+    ├── PlanillaPRCCPdf.tsx
+    ├── ActaConsentimientoPdf.tsx
+    ├── ActaDesprecintadoPdf.tsx
+    └── ActaSanitizacionPdf.tsx
+```

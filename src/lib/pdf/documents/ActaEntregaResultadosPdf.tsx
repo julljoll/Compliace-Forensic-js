@@ -45,7 +45,11 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
         </View>
 
         {/* 1.0 IDENTIFICACIÓN DE LA ENTREGA */}
-        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES</Text>
+        <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 IDENTIFICACIÓN DE LA ENTREGA, N° PRCC Y RECEPCIÓN DE INFORMES</Text>
+        <View style={pdfStyles.fieldRow}>
+          <Text style={pdfStyles.fieldLabel}>N° PRCC Correlativo (Cierre Cadena de Custodia — MUCC-2017):</Text>
+          <Text style={[pdfStyles.fieldValue, { fontFamily: 'Helvetica-Bold' }]}>{fmt(c.numeroPRCC, 'PRCC-2026-SHA-0042')}</Text>
+        </View>
         <View style={pdfStyles.fieldRow}>
           <Text style={pdfStyles.fieldLabel}>Fecha y Hora de Entrega:</Text>
           <Text style={pdfStyles.fieldValue}>{fecha}</Text>

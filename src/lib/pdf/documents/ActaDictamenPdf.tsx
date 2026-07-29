@@ -250,6 +250,102 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
         </View>
 
+        {/* SECCIÓN VIII: TRAZABILIDAD SHA-256 E INTEGRIDAD CRIPTOGRÁFICA (ISO/IEC 27037 Sec. 8) */}
+        <Text style={pdfStyles.sectionTitle}>VIII. ANEXO DE TRAZABILIDAD SHA-256 E INTEGRIDAD CRIPTOGRÁFICA</Text>
+        <View style={pdfStyles.table}>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '40%' }]}>Parámetro de Integridad</Text>
+            <Text style={[pdfStyles.tableHeaderCell, { width: '60%' }]}>Valor / Identificador</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '40%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Archivo Original Analizado</Text>
+            <Text style={[pdfStyles.tableCell, { width: '60%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '40%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Copia de Trabajo Pericial</Text>
+            <Text style={[pdfStyles.tableCell, { width: '60%', fontSize: 6.5 }]}>{fmt(c.hashCopiaPericial, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '40%', fontFamily: 'Helvetica-Bold' }]}>Fecha y Hora del Cálculo de Hash</Text>
+            <Text style={[pdfStyles.tableCell, { width: '60%' }]}>{fmt(c.fechaHash, '23/07/2026 — 11:47:32 VET UTC-4')}</Text>
+          </View>
+          <View style={pdfStyles.tableRow}>
+            <Text style={[pdfStyles.tableCell, { width: '40%', fontFamily: 'Helvetica-Bold' }]}>Herramienta de Verificación</Text>
+            <Text style={[pdfStyles.tableCell, { width: '60%', fontSize: 6.5 }]}>{fmt(c.herramientaHash, 'HashMyFiles v2.43 / sha256sum / IPED Forensics v4.1')}</Text>
+          </View>
+        </View>
+
+        {/* FIRMAS DE LOS DOS PERITOS — COPP Art. 223 */}
+        <Text style={[pdfStyles.sectionTitle, { marginTop: 8 }]}>CERTIFICACIÓN DE PERITOS — COPP ART. 223 (MÍNIMO 2 PERITOS)</Text>
+        <View style={pdfStyles.signatureSection}>
+          {/* PERITO 1 */}
+          <View style={pdfStyles.peritoCard}>
+            <Text style={pdfStyles.peritoCardHeaderTitle}>PERITO INFORMÁTICO FORENSE N° 1</Text>
+            <View style={pdfStyles.peritoCardDividerLine} />
+            <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center', marginVertical: 3 }}>
+              <View style={pdfStyles.peritoThumbBox}>
+                <Text style={pdfStyles.peritoThumbText}>PULGAR DER.</Text>
+              </View>
+              <View style={pdfStyles.peritoThumbBox}>
+                <Text style={pdfStyles.peritoThumbText}>PULGAR IZQ.</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.peritoSignatureLine} />
+            <Text style={pdfStyles.peritoCardSubTitle}>FIRMA DEL PERITO PRINCIPAL</Text>
+            <View style={{ marginTop: 4, width: '100%' }}>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoLider, 'Ing. Christopher V. Vance')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCedula, 'V-19.823.104')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>CIV N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCiv, 'CIV N° 284.912')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>INPREABOGADO N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoInpre, 'INPRE N° 102.849')}</Text>
+              </View>
+            </View>
+          </View>
+          {/* PERITO 2 */}
+          <View style={pdfStyles.peritoCard}>
+            <Text style={pdfStyles.peritoCardHeaderTitle}>PERITO INFORMÁTICO FORENSE N° 2</Text>
+            <View style={pdfStyles.peritoCardDividerLine} />
+            <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center', marginVertical: 3 }}>
+              <View style={pdfStyles.peritoThumbBox}>
+                <Text style={pdfStyles.peritoThumbText}>PULGAR DER.</Text>
+              </View>
+              <View style={pdfStyles.peritoThumbBox}>
+                <Text style={pdfStyles.peritoThumbText}>PULGAR IZQ.</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.peritoSignatureLine} />
+            <Text style={pdfStyles.peritoCardSubTitle}>FIRMA DEL CO-PERITO</Text>
+            <View style={{ marginTop: 4, width: '100%' }}>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>Nombre:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCoautor, '[Nombre del Co-Perito]')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>C.I. N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCoautorCedula, 'V-[Cédula]')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>CIV N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCoautorCiv, 'CIV N° [N°]')}</Text>
+              </View>
+              <View style={pdfStyles.peritoFieldRow}>
+                <Text style={pdfStyles.peritoFieldLabel}>INPREABOGADO N°:</Text>
+                <Text style={pdfStyles.peritoFieldValue}>{fmt(c.peritoCoautorInpre, 'INPRE N° [N°]')}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
         {/* FOOTER OFICIAL */}
         <PlanillaFooter />
       </Page>

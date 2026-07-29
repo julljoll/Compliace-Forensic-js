@@ -53,9 +53,9 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
       {
         numero: '4.0',
-        titulo: 'ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS',
-        descripcion: 'Condición física de pantalla, carcasa, SIMs, tarjetas SD y accesorios.',
-        camposCount: 6,
+        titulo: 'ESTADO FÍSICO Y OBSERVACIONES VISUALES',
+        descripcion: 'Condición física de pantalla, carcasa, SIMs, tarjetas SD y accesorios. Observaciones de recepción.',
+        camposCount: 5,
       },
       {
         numero: '5.0',
@@ -65,14 +65,14 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
       {
         numero: '6.0',
-        titulo: 'CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO',
-        descripcion: 'N° de precinto, bolsa de apantallamiento electromagnético y primer custodio.',
-        camposCount: 4,
+        titulo: 'CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO EN BOLSA FARADAY / PRECINTO',
+        descripcion: 'Hash SHA-256 calculado al momento del embalaje (MUCC-2017 p. 37), N° de precinto, bolsa Faraday y primer custodio.',
+        camposCount: 5,
       },
       {
         numero: '7.0',
-        titulo: 'FIRMAS DE CONFORMIDAD, CERTIFICACIÓN Y CUSTODIA',
-        descripcion: 'Firma consignante, perito responsable y huellas dactilares.',
+        titulo: 'ANTECEDENTES, MOTIVO DE LA CONSIGNACIÓN Y FIRMAS DE CONFORMIDAD',
+        descripcion: 'Naración de hechos que motivan la consignación, firma consignante, perito responsable y huellas dactilares.',
         camposCount: 3,
       },
     ],
@@ -294,9 +294,9 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
       {
         numero: '8.0',
-        titulo: 'ANEXO NORMATIVO Y REGISTRO DE AUDITORÍA',
-        descripcion: 'Cadena de auditoría inmutable de procesamiento.',
-        camposCount: 3,
+        titulo: 'ANEXO NORMATIVO — TRAZABILIDAD SHA-256 E INTEGRIDAD CRIPTOGRÁFICA',
+        descripcion: 'Hash SHA-256 del archivo original, copia de trabajo, fecha de cálculo y herramienta de verificación.',
+        camposCount: 4,
       },
     ],
   },
@@ -411,9 +411,9 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
     sections: [
       {
         numero: '1.0',
-        titulo: 'IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES',
-        descripcion: 'Acto de entrega al solicitante o tribunal, fecha y acta de cierre.',
-        camposCount: 5,
+        titulo: 'IDENTIFICACIÓN DE LA ENTREGA, N° PRCC Y RECEPCIÓN DE INFORMES',
+        descripcion: 'N° Expediente, N° PRCC de cierre, datos del receptor, fecha/hora y sede de entrega.',
+        camposCount: 6,
       },
       {
         numero: '2.0',

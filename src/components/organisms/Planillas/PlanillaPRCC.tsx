@@ -86,7 +86,7 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
 
       {/* SECCIÓN 2.0 */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-2.0">2.0 CARACTERÍSTICAS TÉCNICAS Y MARCAS DE IDENTIFICACIÓN</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-2.0">2.0 MODALIDAD DE OBTENCIÓN Y CARACTERÍSTICAS TÉCNICAS DE LA EVIDENCIA</PlanillaSectionTitle>
         <div className="form-group">
           <PlanillaCheckboxGroup
             style={{ flexDirection: 'row', gap: '15px' }}
@@ -97,18 +97,18 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
             ]}
           />
           <div style={{ fontSize: '7.5pt', color: '#666', fontStyle: 'italic', marginTop: '3px' }}>
-            *Nota: Como laboratorio de informática forense privado, la obtención de evidencias se realiza exclusivamente mediante consignación voluntaria del titular, representante o custodio autorizado.
+            *Nota: Modalidad de Obtención conforme al MUCC-2017 Fase 1. Como laboratorio privado SHA256.US la obtención se realiza principalmente por Consignación Directa (Art. 45 MUCC-2017).
           </div>
         </div>
       </div>
 
       {/* SECCIÓN 3.0 */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-3.0">3.0 HISTORIAL DE TRASPASOS, CUSTODIOS Y CAMBIOS DE CUSTODIA</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-3.0">3.0 REGISTRO DE CUSTODIOS ACTUANTES Y RESPONSABILIDAD PERICIAL</PlanillaSectionTitle>
         <div className="signature-grid">
           <div className="sig-card">
-            <PlanillaFieldLabel>A. Fijación (Nombre y Credencial)</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
+            <PlanillaFieldLabel>A. Custodio Receptor / Fijación (Nombre y Credencial)</PlanillaFieldLabel>
+            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito Receptor]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
             <div className="sig-row">
               <div className="sig-firma-col">
                 <div className="sig-box" />
@@ -118,8 +118,8 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
             </div>
           </div>
           <div className="sig-card">
-            <PlanillaFieldLabel>B. Colección (Nombre y Credencial)</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
+            <PlanillaFieldLabel>B. Custodio de Traslado / Colección (Nombre y Credencial)</PlanillaFieldLabel>
+            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito de Traslado]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
             <div className="sig-row">
               <div className="sig-firma-col">
                 <div className="sig-box" />

@@ -292,29 +292,6 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
             <div className="dotted-line"></div>
           </div>
         </div>
-
-        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
-          <tbody>
-            <tr>
-              <td style={{ width: '30%', fontWeight: 'bold' }}>Hash SHA-256 Inicial (Adquisición / Medio)</td>
-              <td>
-                <PlanillaEditableValue placeholder="[Valor Hash SHA-256 de 64 caracteres hex generado al recibir/clonar]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ fontWeight: 'bold' }}>Algoritmo Auxiliar (MD5)</td>
-              <td>
-                <PlanillaEditableValue placeholder="[Valor Hash MD5]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ fontWeight: 'bold' }}>Herramienta / Software de Cálculo</td>
-              <td>
-                <PlanillaEditableValue placeholder="[ej: FTK Imager / Guymager / HashMyFiles / Cellebrite / dd]" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
 
       {/* 5.0 ALCANCE Y AUTORIZACIÓN */}
@@ -351,7 +328,7 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
 
       {/* 6.0 CUSTODIA INICIAL */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-6.0">6.0 CUSTODIA INICIAL Y EMPACADO EN BOLSA FARADAY / PRECINTO</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-6.0">6.0 CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO EN BOLSA FARADAY / PRECINTO</PlanillaSectionTitle>
         <div className="grid-container">
           <div className="form-group">
             <PlanillaFieldLabel>Claves de Acceso / Bloqueo</PlanillaFieldLabel>
@@ -372,22 +349,41 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
             />
           </div>
         </div>
+        {/* Hash SHA-256 — según MUCC-2017 p. 37: se calcula al momento del embalaje y registro PRCC */}
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table" style={{ marginTop: '10px' }}>
+          <tbody>
+            <tr>
+              <td style={{ width: '32%', fontWeight: 'bold' }}>Hash SHA-256 Inicial (Al momento del embalaje / Adquisición)</td>
+              <td>
+                <PlanillaEditableValue placeholder="[Valor Hash SHA-256 de 64 caracteres hex — calculado en el embalaje y registro PRCC]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Algoritmo Auxiliar (MD5)</td>
+              <td>
+                <PlanillaEditableValue placeholder="[Valor Hash MD5 — verificación cruzada]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Herramienta / Software de Cálculo</td>
+              <td>
+                <PlanillaEditableValue placeholder="[ej: FTK Imager v4.7 / Guymager / HashMyFiles / Cellebrite UFED / dd]" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      {/* 7.0 FIRMAS DE CONFORMIDAD */}
+      {/* 7.0 ANTECEDENTES, MOTIVO Y FIRMAS DE CONFORMIDAD */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle id="seccion-7.0">7.0 FIRMAS DE CONFORMIDAD, CERTIFICACIÓN Y CUSTODIA</PlanillaSectionTitle>
-        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '360px', padding: '12px', lineHeight: '24px' }}>
+        <PlanillaSectionTitle id="seccion-7.0">7.0 ANTECEDENTES, MOTIVO DE LA CONSIGNACIÓN Y FIRMAS DE CONFORMIDAD</PlanillaSectionTitle>
+        <PlanillaFieldLabel style={{ fontSize: '8.5pt', fontWeight: 'bold', marginBottom: '4px', display: 'block' }}>
+          MOTIVO Y ANTECEDENTES DE LA CONSIGNACIÓN (Describa los hechos que motivan la entrega de la evidencia):
+        </PlanillaFieldLabel>
+        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '220px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
             <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Describa detalladamente el motivo, antecedentes y pormenores de la consignación de la evidencia digital]'}</span>
           </p>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
-          <div className="dotted-line"></div>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>

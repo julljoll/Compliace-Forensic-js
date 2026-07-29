@@ -106,7 +106,7 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
                 </td>
               </tr>
               <tr>
-                <td>Unidad de Disco Duro Examinda</td>
+                <td>Unidad de Disco Duro Examinada</td>
                 <td>
                   <PlanillaEditableValue
                     value={c.discoduro_serial || c.discoduro_capacidad ? `${c.discoduro_marca || ''} ${c.discoduro_capacidad || ''} S/N: ${c.discoduro_serial || ''}`.trim() : undefined}
@@ -192,17 +192,67 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         </div>
       </div>
 
-      {/* IV. FIRMA DEL PERITO */}
-      <div className="signature-section" style={{ marginTop: '20px' }}>
-        <div className="sig-detail-card" style={{ gridColumn: 'span 2', maxWidth: '320px', margin: '0 auto' }}>
-          <div className="sig-detail-label">EL PERITO INFORMÁTICO FORENSE</div>
+      {/* 8.0 ANEXO SHA-256 Y TRAZABILIDAD CRIPTOGRÁFICA (ISO/IEC 27037 Sec. 8) */}
+      <div className="section">
+        <PlanillaSectionTitle id="seccion-8.0">8.0 ANEXO NORMATIVO — REGISTRO DE TRAZABILIDAD SHA-256 E INTEGRIDAD CRIPTOGRÁFICA</PlanillaSectionTitle>
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
+          <tbody>
+            <tr>
+              <td style={{ width: '32%', fontWeight: 'bold' }}>Hash SHA-256 del Archivo Original Analizado</td>
+              <td><PlanillaEditableValue placeholder="[Hash SHA-256 — 64 caracteres hex del archivo objeto de peritaje]" style={{ fontSize: '9px', fontFamily: 'monospace' }} /></td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Hash SHA-256 de la Copia de Trabajo Pericial</td>
+              <td><PlanillaEditableValue placeholder="[Hash SHA-256 — copia de trabajo utilizada en el análisis (debe coincidir con original)]" style={{ fontSize: '9px', fontFamily: 'monospace' }} /></td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Fecha y Hora del Cálculo de Hash</td>
+              <td><PlanillaEditableValue placeholder="[DD/MM/AAAA — HH:MM:SS — Zona horaria VET UTC-4]" /></td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold' }}>Herramienta de Verificación de Integridad</td>
+              <td><PlanillaEditableValue placeholder="[ej: HashMyFiles v2.43 / sha256sum / FTK Imager v4.7 / IPED Forensics v4.1]" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* FIRMAS DEL PERITO — Mínimo 2 peritos según COPP Art. 223 */}
+      <div className="signature-section" style={{ marginTop: '20px', gap: '10mm' }}>
+        <div className="sig-detail-card">
+          <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 1</div>
           <div className="fingerprint-row" style={{ margin: '6px 0 10px 0', justifyContent: 'center' }}>
             <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
           <div className="sig-line" />
           <div className="sig-line-label">Firma y Sello del Perito Acreditado</div>
-          <div className="sig-field" style={{ marginTop: '8px', textAlign: 'center' }}>
+          <div className="sig-field" style={{ marginTop: '6px', textAlign: 'center' }}>
             <strong>{c.peritoLider || '[Nombre del Perito Responsable]'}</strong>
+          </div>
+          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV]</span></span>
+          </div>
+          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE]</span></span>
+          </div>
+        </div>
+        <div className="sig-detail-card">
+          <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 2 (COPP Art. 223)</div>
+          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0', justifyContent: 'center' }}>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
+          </div>
+          <div className="sig-line" />
+          <div className="sig-line-label">Firma y Sello del Co-Perito Acreditado</div>
+          <div className="sig-field" style={{ marginTop: '6px', textAlign: 'center' }}>
+            <strong><span className="placeholder-field">[Nombre del Co-Perito]</span></strong>
+          </div>
+          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV]</span></span>
+          </div>
+          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE]</span></span>
           </div>
         </div>
       </div>

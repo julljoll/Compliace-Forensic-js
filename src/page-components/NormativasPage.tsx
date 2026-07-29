@@ -408,34 +408,63 @@ export default function NormativasPage() {
                 </Box>
               )}
 
-              {/* Bloque D: Artículos y Cláusulas Normativas en Acordeón */}
+              {/* Bloque D: Artículos y Numerales Clave Desglosados en Grid Mosaico de Tarjetas */}
               {selectedNormativa.articulos && selectedNormativa.articulos.length > 0 && (
                 <Box sx={{ mb: 3.5 }}>
                   <Typography variant="subtitle2" sx={{ color: '#FECF06', fontWeight: 800, mb: 1.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1, fontSize: '13px' }}>
                     <GavelIcon sx={{ fontSize: 18, color: '#FECF06' }} />
                     📜 Articulado y Numerales Clave Desglosados ({selectedNormativa.articulos.length} Numerales)
                   </Typography>
-                  <Stack spacing={1}>
+                  <Grid container spacing={1.5}>
                     {selectedNormativa.articulos.map((art, idx) => {
-                      const tituloArt = art.split(':')[0] || `Artículo ${idx + 1}`;
+                      const tituloArt = art.split(':')[0] || `Numeral ${idx + 1}`;
                       const contenidoArt = art.includes(':') ? art.substring(art.indexOf(':') + 1).trim() : art;
+                      const numBadge = String(idx + 1).padStart(2, '0');
 
                       return (
-                        <Accordion key={idx} sx={{ backgroundColor: '#0D1117', color: '#E6EDF3', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '6px !important', '&:before': { display: 'none' } }}>
-                          <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#FECF06' }} />}>
-                            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FECF06' }}>
-                              {tituloArt}
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.05)', pt: 1.5 }}>
-                            <Typography sx={{ fontSize: '12px', color: '#C9D1D9', lineHeight: 1.6, textAlign: 'justify' }}>
+                        <Grid key={idx} size={{ xs: 12, sm: 6 }}>
+                          <Box
+                            sx={{
+                              p: 2,
+                              backgroundColor: '#0D1117',
+                              borderRadius: '8px',
+                              border: '1px solid rgba(254, 207, 6, 0.25)',
+                              height: '100%',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              transition: 'all 0.2s ease',
+                              '&:hover': {
+                                borderColor: '#FECF06',
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 4px 16px rgba(254, 207, 6, 0.1)',
+                              },
+                            }}
+                          >
+                            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
+                              <Chip
+                                label={`N° ${numBadge}`}
+                                size="small"
+                                sx={{
+                                  height: 20,
+                                  fontSize: '10px',
+                                  fontWeight: 800,
+                                  backgroundColor: 'rgba(254, 207, 6, 0.15)',
+                                  color: '#FECF06',
+                                  border: '1px solid rgba(254, 207, 6, 0.4)',
+                                }}
+                              />
+                              <Typography sx={{ fontSize: '12.5px', fontWeight: 800, color: '#FFFFFF', flex: 1 }}>
+                                {tituloArt}
+                              </Typography>
+                            </Stack>
+                            <Typography sx={{ fontSize: '11.5px', color: '#C9D1D9', lineHeight: 1.5, textAlign: 'justify', flex: 1 }}>
                               {contenidoArt}
                             </Typography>
-                          </AccordionDetails>
-                        </Accordion>
+                          </Box>
+                        </Grid>
                       );
                     })}
-                  </Stack>
+                  </Grid>
                 </Box>
               )}
 
