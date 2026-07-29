@@ -207,8 +207,8 @@ export const PlanillaPRCCPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </View>
         </View>
 
-        {/* SECCIÓN VI: FIRMAS Y RESPONSABILIDAD */}
-        <Text style={pdfStyles.sectionTitle}>VI. CERTIFICACIÓN PERICIAL, FIRMAS Y RESPONSABILIDAD DE CUSTODIA</Text>
+        {/* SECCIÓN 5.1: FIRMAS Y RESPONSABILIDAD */}
+        <Text style={pdfStyles.sectionTitle}>5.1 FIRMAS Y CERTIFICACIÓN FINAL DE CUSTODIA (COPP ART. 187)</Text>
         <View style={pdfStyles.signatureSection}>
           <View style={pdfStyles.signatureCard}>
             <View style={{ flexDirection: 'row', gap: 6, marginBottom: 4 }}>
