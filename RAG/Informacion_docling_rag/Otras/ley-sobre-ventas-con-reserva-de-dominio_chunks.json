@@ -1,9 +1,0 @@
-[
-  {
-    "chunk_id": "block_0",
-    "type": "seccion",
-    "articulo_num": null,
-    "texto": "<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nq\\n265.5 0 0 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2248\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nq\\n265.5 0 0 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2386\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nq\\n265.5 0 0 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2235\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nq\\n265.5 0 0 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 2324\n})>\n<pikepdf.Stream(owner=<...>, data=b'/GS1 gs\\nq\\n265.5 0 0 '..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 459\n})>",
-    "char_count": 583
-  }
-]

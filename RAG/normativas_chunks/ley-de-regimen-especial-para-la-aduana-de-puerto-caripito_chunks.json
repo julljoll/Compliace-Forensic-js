@@ -1,9 +1,0 @@
-[
-  {
-    "chunk_id": "block_0",
-    "type": "seccion",
-    "articulo_num": null,
-    "texto": "<pikepdf.Stream(owner=<...>, data=b'BT\\r99.75 679.5  TD\\r0'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1464\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r226.5 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1565\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r226.5 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1568\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r84.75 679.5  TD\\r0'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1539\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r226.5 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1531\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r226.5 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1439\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r84.75 679.5  TD\\r0'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1519\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r226.5 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 1500\n})>\n<pikepdf.Stream(owner=<...>, data=b'BT\\r84.75 680.25  TD\\r'..., {\n  \"/Filter\": \"/FlateDecode\",\n  \"/Length\": 593\n})>",
-    "char_count": 1051
-  }
-]
