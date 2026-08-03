@@ -76,20 +76,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    minWidth: 140,
+    flex: 1,
   },
   expLabel: {
-    fontSize: 7,
+    fontSize: 7.5,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
   },
+  expLine: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#0F172A',
+    minHeight: 14,
+    minWidth: 100,
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+  },
   expValue: {
-    fontSize: 7.5,
+    fontSize: 8,
     fontFamily: 'Helvetica-Bold',
     color: '#1E293B',
-    backgroundColor: '#E2E8F0',
-    paddingHorizontal: 4,
-    paddingVertical: 1,
-    borderRadius: 2,
+    textAlign: 'center',
   },
   legendHeader: {
     backgroundColor: '#0F172A',
@@ -234,15 +242,21 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
         <View style={styles.expedienteRow}>
           <View style={styles.expSlot}>
             <Text style={styles.expLabel}>EXPEDIENTE:</Text>
-            <Text style={styles.expValue}>{expNumero}</Text>
+            <View style={styles.expLine}>
+              <Text style={styles.expValue}>{expNumero}</Text>
+            </View>
           </View>
           <View style={styles.expSlot}>
             <Text style={styles.expLabel}>PRCC N°:</Text>
-            <Text style={styles.expValue}>{prccNumero}</Text>
+            <View style={styles.expLine}>
+              <Text style={styles.expValue}>{prccNumero}</Text>
+            </View>
           </View>
           <View style={styles.expSlot}>
             <Text style={styles.expLabel}>FECHA:</Text>
-            <Text style={styles.expValue}>{fechaEmision}</Text>
+            <View style={styles.expLine}>
+              <Text style={styles.expValue}>{fechaEmision}</Text>
+            </View>
           </View>
         </View>
       </View>

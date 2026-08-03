@@ -41,6 +41,12 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
                 <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>ENT-2026-{numeroExpediente || '0091'}</Text>
               </View>
             </View>
+            <View style={pdfStyles.expedienteSlot}>
+              <Text style={pdfStyles.expedienteText}>FECHA:</Text>
+              <View style={pdfStyles.expedienteLine}>
+                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.fecha, '23/07/2026')}</Text>
+              </View>
+            </View>
           </View>
         </View>
 

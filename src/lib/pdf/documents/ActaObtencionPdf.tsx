@@ -43,6 +43,12 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
                 <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.numeroPRCC, 'PRCC-2026-0042')}</Text>
               </View>
             </View>
+            <View style={pdfStyles.expedienteSlot}>
+              <Text style={pdfStyles.expedienteText}>FECHA:</Text>
+              <View style={pdfStyles.expedienteLine}>
+                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fmt(c.fecha, '23/07/2026')}</Text>
+              </View>
+            </View>
           </View>
         </View>
 
@@ -156,33 +162,48 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Hash SHA-256 Inicial (Embalaje — MUCC-2017 p. 37)</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5, fontFamily: 'Helvetica' }]}>{fmt(c.hashGenesis, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')}</Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', justifyContent: 'center' }]}>
+              <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A' }}>
+                {isBlankMode ? '____________________________________________________________________' : fmt(c.hashGenesis, '____________________________________________________________________')}
+              </Text>
+            </View>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Algoritmo Auxiliar MD5 (Verificación cruzada)</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>{fmt(c.hashMd5, 'd41d8cd98f00b204e9800998ecf8427e')}</Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', justifyContent: 'center' }]}>
+              <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A' }}>
+                {isBlankMode ? '________________________________________' : fmt(c.hashMd5, '________________________________________')}
+              </Text>
+            </View>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Herramienta de Cálculo</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 6.5 }]}>{fmt(c.herramientaHash, 'FTK Imager v4.7 / Guymager / HashMyFiles / Cellebrite UFED')}</Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', justifyContent: 'center' }]}>
+              <Text style={{ fontSize: 7, fontFamily: 'Helvetica' }}>
+                {isBlankMode ? '________________________________________' : fmt(c.herramientaHash, '________________________________________')}
+              </Text>
+            </View>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Bolsa Faraday / Apantallamiento</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
-              [X] Bolsa de Aislamiento Electromagnético RF (N° Bolsa: {fmt(c.bolsaFaraday, 'FARADAY-SHA-2026-081')})
-            </Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              <Text>[   ] Bolsa de Aislamiento Electromagnético RF      [   ] Caja Rígida Anti-Impactos</Text>
+              <Text style={{ marginTop: 3 }}>N° Bolsa Faraday: {isBlankMode ? '___________________________________' : fmt(c.bolsaFaraday, '___________________________________')}</Text>
+            </View>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Precinto de Seguridad Plástico</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
-              N° Precinto: {fmt(c.precintoNumero, 'SHA-2026-VNZ-9941')} (Estado: Intacto / Sin alteración)
-            </Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              <Text>N° Precinto: {isBlankMode ? '___________________________________' : fmt(c.precintoNumero, '___________________________________')}</Text>
+              <Text style={{ marginTop: 3 }}>Estado: [   ] Intacto / Sin alteración      [   ] Violado / Alterado</Text>
+            </View>
           </View>
           <View style={pdfStyles.tableRow}>
             <Text style={[pdfStyles.tableCell, { width: '35%', fontFamily: 'Helvetica-Bold' }]}>Estado de Aislamiento de Red</Text>
-            <Text style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
-              [X] Modo Avión Activado / Tarjeta SIM Retirada / WiFi y Bluetooth Desactivados
-            </Text>
+            <View style={[pdfStyles.tableCell, { width: '65%', fontSize: 7 }]}>
+              <Text>[   ] Modo Avión Activado          [   ] Tarjeta SIM Retirada</Text>
+              <Text style={{ marginTop: 3 }}>[   ] WiFi Desactivado                 [   ] Bluetooth Desactivado</Text>
+            </View>
           </View>
         </View>
 

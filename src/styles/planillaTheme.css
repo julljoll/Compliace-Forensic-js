@@ -213,29 +213,41 @@
   min-height: 1.2em;
 }
 
-/* Edición Nativa en Pantalla */
+/* Edición Nativa en Pantalla y Espacio para Llenar a Mano */
 .planilla-container [contenteditable="true"] {
   outline: none;
   cursor: text;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  border-bottom: 1.5px solid #000000;
   transition: all 0.2s ease;
-  min-height: 1.2em;
+  min-height: 1.4em;
+  min-width: 140px;
+  display: inline-block;
+  padding: 0 4px;
 }
 
 .planilla-container [contenteditable="true"]:hover {
   background-color: rgba(254, 207, 6, 0.08);
-  border-bottom: 1px dashed #FECF06;
+  border-bottom: 2px solid #FECF06;
 }
 
 .planilla-container [contenteditable="true"]:focus {
   background-color: rgba(254, 207, 6, 0.12);
-  border-bottom: 1.5px solid #FECF06;
+  border-bottom: 2px solid #FECF06;
 }
 
 .planilla-container .placeholder-field {
   color: var(--planilla-placeholder) !important;
   font-style: italic;
-  border-bottom: 1px dashed #aeaeb2;
+  border-bottom: 1.5px solid #000000;
+  min-width: 160px;
+  display: inline-block;
+}
+
+.planilla-container .box-inline {
+  border-bottom: 1.5px solid #000000;
+  min-width: 150px;
+  display: inline-block;
+  padding: 0 6px;
 }
 
 /* Casillas de Verificación */

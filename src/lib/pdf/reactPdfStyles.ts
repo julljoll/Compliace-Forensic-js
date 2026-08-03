@@ -134,19 +134,23 @@ export const pdfStyles = StyleSheet.create({
   expedienteSlot: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '48%',
+    minWidth: 140,
+    flex: 1,
   },
   expedienteText: {
     fontSize: 8.5,
     fontFamily: 'Helvetica-Bold',
     color: '#0F172A',
+    marginRight: 4,
   },
   expedienteLine: {
     flex: 1,
     borderBottomWidth: 1,
     borderBottomColor: '#0F172A',
-    minHeight: 12,
+    minHeight: 14,
+    minWidth: 120,
     marginLeft: 4,
+    justifyContent: 'center',
   },
   sectionTitle: {
     fontSize: 9,

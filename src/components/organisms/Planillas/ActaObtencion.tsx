@@ -327,47 +327,75 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
       </div>
 
       {/* 6.0 CUSTODIA INICIAL */}
+      {/* 6.0 CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO EN BOLSA FARADAY / PRECINTO */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-6.0">6.0 CUSTODIA INICIAL, HASH SHA-256 Y EMPACADO EN BOLSA FARADAY / PRECINTO</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Claves de Acceso / Bloqueo</PlanillaFieldLabel>
-            <PlanillaCheckboxGroup
-              options={[
-                { id: 'pin1', label: 'Contraseña / PIN:' },
-                { id: 'pin2', label: 'Sin Bloqueo' },
-              ]}
-            />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Estado de Aislamiento / Conexión</PlanillaFieldLabel>
-            <PlanillaCheckboxGroup
-              options={[
-                { id: 'ais1', label: 'Modo Avión Activado / WiFi Apagado' },
-                { id: 'ais2', label: 'Unidad Desconectada de Red' },
-              ]}
-            />
-          </div>
-        </div>
-        {/* Hash SHA-256 — según MUCC-2017 p. 37: se calcula al momento del embalaje y registro PRCC */}
-        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table" style={{ marginTop: '10px' }}>
+        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table" style={{ marginTop: '8px', width: '100%', borderCollapse: 'collapse', borderColor: '#CBD5E1' }}>
           <tbody>
             <tr>
-              <td style={{ width: '32%', fontWeight: 'bold' }}>Hash SHA-256 Inicial (Al momento del embalaje / Adquisición)</td>
-              <td>
-                <PlanillaEditableValue placeholder="[Valor Hash SHA-256 de 64 caracteres hex — calculado en el embalaje y registro PRCC]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
+              <td style={{ width: '35%', fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Hash SHA-256 Inicial (Embalaje — MUCC-2017 p. 37)
+              </td>
+              <td style={{ padding: '6px 8px' }}>
+                <PlanillaEditableValue placeholder="[____________________________________________________________________]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
               </td>
             </tr>
             <tr>
-              <td style={{ fontWeight: 'bold' }}>Algoritmo Auxiliar (MD5)</td>
-              <td>
-                <PlanillaEditableValue placeholder="[Valor Hash MD5 — verificación cruzada]" style={{ fontSize: '9px', fontFamily: 'monospace' }} />
+              <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Algoritmo Auxiliar MD5 (Verificación cruzada)
+              </td>
+              <td style={{ padding: '6px 8px' }}>
+                <PlanillaEditableValue placeholder="[________________________________________]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
               </td>
             </tr>
             <tr>
-              <td style={{ fontWeight: 'bold' }}>Herramienta / Software de Cálculo</td>
-              <td>
-                <PlanillaEditableValue placeholder="[ej: FTK Imager v4.7 / Guymager / HashMyFiles / Cellebrite UFED / dd]" />
+              <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Herramienta / Software de Cálculo
+              </td>
+              <td style={{ padding: '6px 8px' }}>
+                <PlanillaEditableValue placeholder="[________________________________________]" style={{ fontSize: '9pt', width: '100%', minWidth: '220px' }} />
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Bolsa Faraday / Apantallamiento RF
+              </td>
+              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] Bolsa de Aislamiento Electromagnético RF</span>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] Caja Rígida Anti-Impactos</span>
+                </div>
+                <div style={{ marginTop: '5px', fontSize: '8.5pt', color: '#334155' }}>
+                  N° Bolsa Faraday: <span style={{ borderBottom: '1.5px solid #000', display: 'inline-block', minWidth: '200px' }}>&nbsp;</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Precinto de Seguridad Plástico
+              </td>
+              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div>
+                    N° Precinto: <span style={{ borderBottom: '1.5px solid #000', display: 'inline-block', minWidth: '200px' }}>&nbsp;</span>
+                  </div>
+                  <div>
+                    Estado: [ &nbsp;&nbsp;&nbsp; ] Intacto / Sin alteración &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp;&nbsp;&nbsp; ] Violado / Alterado
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
+                Estado de Aislamiento de Red
+              </td>
+              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+                <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] Modo Avión Activado</span>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] Tarjeta SIM Retirada</span>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] WiFi Desactivado</span>
+                  <span>[ &nbsp;&nbsp;&nbsp; ] Bluetooth Desactivado</span>
+                </div>
               </td>
             </tr>
           </tbody>
