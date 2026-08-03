@@ -8,8 +8,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from '@mui/material/ToggleButton';
 import DescriptionIcon from '@mui/icons-material/Description';
+import PrintIcon from '@mui/icons-material/Print';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
+import { printPdfBlob } from '@/lib/pdf/planillaPdfEngine';
 
 const PDFViewerNative = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFViewer),
@@ -45,6 +50,9 @@ const NORMATIVAS_PLANILLA = [
 export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Previa PDF', isGenerating = false, actions, caso }: PlanillaPdfViewerProps) {
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [isExportingWord, setIsExportingWord] = useState<boolean>(false);
+  const [isPrinting, setIsPrinting] = useState<boolean>(false);
+  // Por defecto se visualiza e imprime en blanco (limpio para rellenar a lápiz)
+  const [isBlankMode, setIsBlankMode] = useState<boolean>(true);
 
   useEffect(() => {
     if (pdfBlob) {
@@ -66,6 +74,25 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
       setIsExportingWord(false);
     }
   };
+
+  const handlePrintBlank = async () => {
+    if (!document) return;
+    setIsPrinting(true);
+    try {
+      const { pdf } = await import('@react-pdf/renderer');
+      // Forzar renderizado en blanco sin datos para impresión limpia a lápiz
+      const blankDoc = React.cloneElement(document, { isBlankMode: true });
+      const blob = await pdf(blankDoc).toBlob();
+      printPdfBlob(blob);
+    } catch (err) {
+      console.error('Error al imprimir planilla en blanco:', err);
+    } finally {
+      setIsPrinting(false);
+    }
+  };
+
+  // Clona el documento React pasando la propiedad isBlankMode dinámica
+  const activeDocument = document ? React.cloneElement(document, { isBlankMode }) : null;
 
   return (
     <Box sx={{ width: '100%', maxWidth: '1100px', mx: 'auto', my: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -102,9 +129,65 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
           </Stack>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+          {/* Selector Modo en Blanco vs Con Datos del Caso */}
+          <ToggleButtonGroup
+            value={isBlankMode ? 'blank' : 'filled'}
+            exclusive
+            onChange={(_, val) => {
+              if (val !== null) setIsBlankMode(val === 'blank');
+            }}
+            size="small"
+            sx={{
+              backgroundColor: '#0D1117',
+              border: '1px solid rgba(254, 207, 6, 0.4)',
+              borderRadius: '6px',
+              '& .MuiToggleButton-root': {
+                color: '#8B949E',
+                fontSize: '11px',
+                fontWeight: 700,
+                px: 1.5,
+                py: 0.5,
+                textTransform: 'none',
+                border: 'none',
+                '&.Mui-selected': {
+                  backgroundColor: isBlankMode ? '#FECF06' : '#00FF41',
+                  color: '#000000',
+                  fontWeight: 800,
+                  '&:hover': { backgroundColor: isBlankMode ? '#E5B800' : '#00CC33' },
+                },
+              },
+            }}
+          >
+            <ToggleButton value="blank">
+              <EditNoteIcon sx={{ fontSize: 15, mr: 0.5 }} /> ✏️ PLANILLA EN BLANCO
+            </ToggleButton>
+            <ToggleButton value="filled">
+              📋 CON DATOS
+            </ToggleButton>
+          </ToggleButtonGroup>
+
           {/* Selección de dispositivo / acciones adicionales */}
           {actions}
+
+          {/* Botón Principal: IMPRIMIR PLANILLA EN BLANCO */}
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={isPrinting ? <CircularProgress size={14} sx={{ color: '#000000' }} /> : <PrintIcon />}
+            onClick={handlePrintBlank}
+            disabled={isPrinting || !document}
+            sx={{
+              backgroundColor: '#FECF06',
+              color: '#000000',
+              fontWeight: 800,
+              fontSize: '11px',
+              px: 2,
+              '&:hover': { backgroundColor: '#E5B800' },
+            }}
+          >
+            🖨️ IMPRIMIR EN BLANCO
+          </Button>
 
           {/* Exportar a Word (.DOCX) */}
           <Button
@@ -119,8 +202,9 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
               fontWeight: 700,
               fontSize: '11px',
               '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.08)' },
-            }}>
-            DESCARGAR WORD (.DOCX)
+            }}
+          >
+            WORD (.DOCX)
           </Button>
         </Box>
       </Box>
@@ -145,9 +229,9 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
             <CircularProgress sx={{ color: '#FECF06' }} size={40} />
             <Typography sx={{ fontSize: '14px', fontWeight: 700, fontFamily: 'monospace' }}>Procesando documento PDF...</Typography>
           </Box>
-        ) : document ? (
+        ) : activeDocument ? (
           <PDFViewerNative style={{ width: '100%', height: '100%', border: 'none' }}>
-            {document as any}
+            {activeDocument as any}
           </PDFViewerNative>
         ) : blobUrl ? (
           <iframe src={blobUrl} style={{ width: '100%', height: '100%', border: 'none' }} title={title} />

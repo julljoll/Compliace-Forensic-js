@@ -32,8 +32,7 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
         <tr>
           <td style="text-align: center; padding-bottom: 8px;">
             <div style="font-size: 16pt; font-weight: bold; color: #0F172A; letter-spacing: 1.5px; font-family: Arial, sans-serif;">SHA256.US</div>
-            <div style="font-size: 8.5pt; font-weight: bold; color: #1E293B; margin-top: 2px; font-family: Arial, sans-serif;">LABORATORIO PRIVADO DE INFORMÁTICA FORENSE &amp; CIBERSEGURIDAD</div>
-            <div style="font-size: 7pt; color: #475569; margin-top: 2px; font-family: Arial, sans-serif;">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.</div>
+            <div style="font-size: 8.5pt; font-weight: bold; color: #1E293B; margin-top: 2px; font-family: Arial, sans-serif;">Lab. Informática Forense</div>
           </td>
         </tr>
       </table>
@@ -149,15 +148,14 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
         </tr>
       </table>
 
-      <!-- FOOTER OFICIAL DE 2 LÍNEAS TAMAÑO 8 PT -->
-      <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #CBD5E1; margin-top: 25px; padding-top: 6px;">
-        <tr>
-          <td style="font-size: 8pt; color: #334155; text-align: center; line-height: 1.3; font-family: Arial, sans-serif;">
-            Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.<br/>
-            <b>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.</b>
-          </td>
-        </tr>
-      </table>
+      <footer role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="width: 100%; border-top: 1px solid #CBD5E1; margin-top: 25px; padding-top: 6px; font-family: Arial, sans-serif; text-align: center;">
+        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
+        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
+        <div style="font-size: 7.5pt; color: #334155; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #475569; margin-top: 3px;">
+          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
+        </address>
+      </footer>
     `;
   }
 
@@ -218,14 +216,14 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
       </table>
 
       <!-- FOOTER DE PORTADA -->
-      <table style="width: 100%; border-collapse: collapse; border-top: 1px solid #CBD5E1; margin-top: 35px; padding-top: 6px;">
-        <tr>
-          <td style="font-size: 8pt; color: #475569; text-align: center; line-height: 1.3; font-family: Arial, sans-serif;">
-            Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.<br/>
-            <b>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.</b>
-          </td>
-        </tr>
-      </table>
+      <footer role="contentinfo" aria-label="Pie de página de portada SHA256.US" itemscope itemtype="https://schema.org/Organization" style="width: 100%; border-top: 1px solid #CBD5E1; margin-top: 35px; padding-top: 6px; font-family: Arial, sans-serif; text-align: center;">
+        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
+        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
+        <div style="font-size: 7.5pt; color: #475569; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #64748B; margin-top: 3px;">
+          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
+        </address>
+      </footer>
     </div>
 
     <!-- SALTO DE PÁGINA ESPECÍFICO DE WORD -->

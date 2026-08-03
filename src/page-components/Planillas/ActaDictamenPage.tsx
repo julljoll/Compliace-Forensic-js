@@ -31,8 +31,8 @@ const ActaDictamenPage = () => {
   const isImageMode = dictamenMode === 'imagenes';
 
   const currentDocument = isImageMode
-    ? <DictamenImagenesPdf caso={caso} isBlankMode={false} />
-    : <DictamenAudiosPdf caso={caso} isBlankMode={false} />;
+    ? <DictamenImagenesPdf caso={caso} />
+    : <DictamenAudiosPdf caso={caso} />;
 
   const currentTitle = isImageMode
     ? `Dictamen Pericial — Análisis de IMÁGENES — Caso #${caso?.numeroCaso || 'N/A'}`

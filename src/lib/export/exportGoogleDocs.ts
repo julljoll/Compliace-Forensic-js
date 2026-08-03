@@ -242,8 +242,7 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       <tr>
         <td>
           <div class="header-logo">SHA256.US</div>
-          <div class="header-subtitle">LABORATORIO PRIVADO DE INFORMÁTICA FORENSE & CIBERSEGURIDAD</div>
-          <div class="header-address">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.</div>
+          <div class="header-subtitle">Lab. Informática Forense</div>
         </td>
       </tr>
     </table>
@@ -360,15 +359,15 @@ export function exportPlanillaToGoogleDocs(caso: any, title: string = 'Planilla_
       </tr>
     </table>
 
-    <!-- FOOTER OFICIAL DE 2 LÍNEAS TAMAÑO 8 PT -->
-    <table class="footer-table">
-      <tr>
-        <td class="footer-text">
-          Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.<br/>
-          <b>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.</b>
-        </td>
-      </tr>
-    </table>
+    <!-- FOOTER OFICIAL CON ESTRUCTURA SEMÁNTICA SEO -->
+    <footer class="footer-table" role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="width: 100%; border-top: 1px solid #CBD5E1; margin-top: 25px; padding-top: 6px; text-align: center;">
+      <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
+      <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
+      <div style="font-size: 7.5pt; color: #334155; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
+      <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #475569; margin-top: 3px;">
+        <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
+      </address>
+    </footer>
 
   </div>
 </body>

@@ -172,10 +172,14 @@ export async function exportPlanillaToSvgZip(options: SvgExportOptions) {
         <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">⚖️ Ley de Mensajes de Datos</span>
       </div>
 
-      <div style="position: absolute; bottom: 25px; left: 25px; right: 25px; border-top: 1px solid #CBD5E1; padding-top: 6px; text-align: center; font-size: 8pt; color: #475569;">
-        Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.<br/>
-        <b>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.</b>
-      </div>
+      <footer role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="position: absolute; bottom: 25px; left: 25px; right: 25px; border-top: 1px solid #CBD5E1; padding-top: 6px; text-align: center;">
+        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
+        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
+        <div style="font-size: 7.5pt; color: #334155; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #475569; margin-top: 3px;">
+          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
+        </address>
+      </footer>
     </div>
   </foreignObject>
 </svg>`;
@@ -194,8 +198,7 @@ export async function exportPlanillaToSvgZip(options: SvgExportOptions) {
         <tr>
           <td style="text-align: center;">
             <div style="font-size: 16pt; font-weight: bold; color: #0F172A; letter-spacing: 1.5px;">SHA256.US</div>
-            <div style="font-size: 8.5pt; font-weight: bold; color: #1E293B; margin-top: 2px;">LABORATORIO PRIVADO DE INFORMÁTICA FORENSE &amp; CIBERSEGURIDAD</div>
-            <div style="font-size: 7pt; color: #475569; margin-top: 2px; margin-bottom: 6px;">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara.</div>
+            <div style="font-size: 8.5pt; font-weight: bold; color: #1E293B; margin-top: 2px;">Lab. Informática Forense</div>
           </td>
         </tr>
       </table>
@@ -245,11 +248,14 @@ export async function exportPlanillaToSvgZip(options: SvgExportOptions) {
         </tr>
       </table>
 
-      <!-- FOOTER OFICIAL DE 2 LÍNEAS TAMAÑO 8 PT -->
-      <div style="position: absolute; bottom: 25px; left: 25px; right: 25px; border-top: 1px solid #CBD5E1; padding-top: 6px; text-align: center; font-size: 8pt; color: #475569;">
-        Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos y Firmas Electrónicas, el Manual Único de Cadena de Custodia de Evidencias (MUCC-2017) y la norma ISO/IEC 27037:2012.<br/>
-        <b>SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo.</b>
-      </div>
+      <footer role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="position: absolute; bottom: 25px; left: 25px; right: 25px; border-top: 1px solid #CBD5E1; padding-top: 6px; text-align: center;">
+        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
+        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
+        <div style="font-size: 7.5pt; color: #334155; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
+        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #475569; margin-top: 3px;">
+          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
+        </address>
+      </footer>
     </div>
   </foreignObject>
 </svg>`;

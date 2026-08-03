@@ -26,7 +26,7 @@ const ActaObtencionPage = () => {
     <PlanillaPdfViewer
       title={`Acta de Obtención por Consignación — Caso #${caso?.numeroCaso || 'N/A'}`}
       caso={caso}
-      document={<ActaObtencionPdf caso={caso} tipoEvidencia={tipoEvidencia} isBlankMode={false} />}
+      document={<ActaObtencionPdf caso={caso} tipoEvidencia={tipoEvidencia} />}
       actions={
         <TextField
           select

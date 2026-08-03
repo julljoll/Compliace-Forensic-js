@@ -71,19 +71,19 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
         <Text id="seccion-2.0" style={pdfStyles.sectionTitle}>2.0 INVENTARIO DE EVIDENCIA FÍSICA Y DIGITAL DEVUELTA</Text>
         <View style={{ marginVertical: 4 }}>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
             <Text style={{ fontSize: 8 }}>Dictamen Pericial Informático Forense Privado (Impreso en Papel Folio & Anexo Gráfico ELA/PyOgg)</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
             <Text style={{ fontSize: 8 }}>Planilla de Registro de Cadena de Custodia (PRCC final con cierres de transferencias)</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
             <Text style={{ fontSize: 8 }}>Dispositivo Móvil Original ({fmt(c.dispositivo_marca ? `${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : undefined, 'Xiaomi Redmi Note 12 Pro 5G')}, IMEI: {fmt(c.dispositivo_imei, '864920193847102')})</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
             <Text style={{ fontSize: 8 }}>Dispositivo de Almacenamiento Cifrado (Pendrive USB con copia de respaldo e informe digital)</Text>
           </View>
         </View>
@@ -175,11 +175,11 @@ export const ActaEntregaResultadosPdf: React.FC<Props> = ({ caso, isBlankMode = 
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, justifyContent: 'center', gap: 6 }}>
               <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>Rol ISO 27037:</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
                 <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>DEFR</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
                 <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>DES</Text>
               </View>
             </View>

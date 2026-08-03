@@ -443,7 +443,7 @@ export const DictamenImagenesPdf: React.FC<Props> = ({ caso, isBlankMode = false
               <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>Rol ISO 27037:</Text>
               {['DEFR', 'DES'].map(role => (
                 <View key={role} style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                  <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+                  <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
                   <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>{role}</Text>
                 </View>
               ))}

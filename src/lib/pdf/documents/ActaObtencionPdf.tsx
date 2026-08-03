@@ -81,7 +81,7 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
         </Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 4 }}>
           <View style={pdfStyles.checkboxContainer}>
-            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+            <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
             <Text style={{ fontSize: 7.5 }}>Propietario Legítimo</Text>
           </View>
           <View style={pdfStyles.checkboxContainer}>
@@ -246,11 +246,11 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4, justifyContent: 'center', gap: 6 }}>
               <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>Rol ISO 27037:</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
                 <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>DEFR</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>✓</Text></View>
+                <View style={pdfStyles.checkboxBox}><Text style={pdfStyles.checkboxCheck}>{isBlankMode ? '' : '✓'}</Text></View>
                 <Text style={{ fontSize: 6.5, fontFamily: 'Helvetica-Bold' }}>DES</Text>
               </View>
             </View>

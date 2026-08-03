@@ -97,52 +97,48 @@
 .planilla-container .header-top-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--planilla-border-dark);
+  border-bottom: 1.5px solid var(--planilla-border-dark);
 }
 
 .planilla-container .header-logo-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  justify-content: center;
+  gap: 10px;
 }
 
 .planilla-container .logo-img {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
 }
 
-.planilla-container .logo-text {
-  font-size: 15pt;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--planilla-text);
-  font-family: var(--font-ui);
-}
-
-.planilla-container .header-lab-info {
+.planilla-container .logo-brand-text-col {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  border-left: 1.5px solid var(--planilla-border-dark);
-  padding-left: 10px;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.planilla-container .lab-title {
-  font-size: 9.5pt;
-  font-weight: 700;
+.planilla-container .logo-text {
+  font-size: 16pt;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   color: var(--planilla-text);
-  text-transform: uppercase;
-  font-family: var(--font-ui);
+  font-family: var(--font-mono);
+  line-height: 1;
 }
 
-.planilla-container .lab-address {
-  font-size: 7.5pt;
+.planilla-container .logo-subtext {
+  font-size: 9pt;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--planilla-text-muted);
-  line-height: 1.2;
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+  margin-top: 3px;
 }
 
 .planilla-container .header-title-row {

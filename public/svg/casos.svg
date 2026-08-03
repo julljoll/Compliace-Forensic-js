@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad-casos" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="50%" stop-color="#161B22"/>
+      <stop offset="100%" stop-color="#0D1117"/>
+    </linearGradient>
+
+    <pattern id="grid-casos" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#21262D" stroke-width="1" opacity="0.4"/>
+    </pattern>
+
+    <filter id="glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#bg-grad-casos)"/>
+  <rect width="1200" height="750" fill="url(#grid-casos)"/>
+
+  <!-- TOP HEADER -->
+  <rect x="30" y="30" width="1140" height="65" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="60" y="70" fill="#FECF06" font-family="Ubuntu, sans-serif" font-weight="700" font-size="20">CASO N° CAS-2026-0891</text>
+  <text x="320" y="70" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-weight="500" font-size="16">Extracción Pericial Forense WhatsApp &amp; Email</text>
+
+  <rect x="1000" y="48" width="140" height="30" rx="15" fill="rgba(254, 207, 6, 0.15)" stroke="#FECF06" stroke-width="1"/>
+  <text x="1025" y="68" fill="#FECF06" font-family="Fira Code, monospace" font-size="12" font-weight="600">EN CUSTODIA</text>
+
+  <!-- CASE TABS NAVIGATION BAR -->
+  <rect x="30" y="115" width="1140" height="45" rx="6" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+  
+  <!-- Active Tab: Evidencias -->
+  <rect x="40" y="122" width="140" height="32" rx="4" fill="#FECF06"/>
+  <text x="75" y="143" fill="#0D1117" font-family="Ubuntu, sans-serif" font-weight="700" font-size="13">EVIDENCIAS (4)</text>
+
+  <text x="210" y="143" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="500" font-size="13">General</text>
+  <text x="310" y="143" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="500" font-size="13">Cadena de Custodia</text>
+  <text x="490" y="143" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="500" font-size="13">Dictámenes Periciales</text>
+  <text x="680" y="143" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="500" font-size="13">Planillas MUCC</text>
+  <text x="820" y="143" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="500" font-size="13">Auditoría Hash</text>
+
+  <!-- EVIDENCES GRID -->
+  <!-- Evidence Card 1: WhatsApp DB -->
+  <rect x="30" y="180" width="555" height="250" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="50" y="200" width="50" height="50" rx="8" fill="rgba(0, 255, 65, 0.1)" stroke="#00FF41"/>
+  <!-- WhatsApp Icon Visual -->
+  <circle cx="75" cy="225" r="14" fill="none" stroke="#00FF41" stroke-width="2"/>
+  <path d="M 68 220 Q 75 228 82 220" fill="none" stroke="#00FF41" stroke-width="2"/>
+
+  <text x="115" y="222" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="18" font-weight="700">msgstore.db.crypt14 (WhatsApp)</text>
+  <text x="115" y="242" fill="#8B949E" font-family="Fira Code, monospace" font-size="12">Tipo: Extracción de Conversaciones Opus &amp; Chats</text>
+
+  <!-- Technical Table Info inside Card -->
+  <rect x="50" y="265" width="515" height="145" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <text x="70" y="290" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Tamaño del archivo:</text>
+  <text x="210" y="290" fill="#FFFFFF" font-family="Fira Code, monospace" font-size="12">142.8 MB (149,742,080 bytes)</text>
+
+  <text x="70" y="320" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Hash SHA-256 (Original):</text>
+  <text x="210" y="320" fill="#00FF41" font-family="Fira Code, monospace" font-size="11">e3b0c44298fc1c149afbf4c8996fb92427ae41e4... [MATCH]</text>
+
+  <text x="70" y="350" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Herramienta Forense:</text>
+  <text x="210" y="350" fill="#FECF06" font-family="Ubuntu, sans-serif" font-size="12" font-weight="600">IPED Forensics v4.1 + PyOgg Engine</text>
+
+  <text x="70" y="380" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Estado ELA / Audio:</text>
+  <text x="210" y="380" fill="#9DFF00" font-family="Ubuntu, sans-serif" font-size="12" font-weight="600">Autenticidad Integridad Confirmada</text>
+
+  <!-- Evidence Card 2: Physical Disk E01 -->
+  <rect x="615" y="180" width="555" height="250" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="635" y="200" width="50" height="50" rx="8" fill="rgba(254, 207, 6, 0.1)" stroke="#FECF06"/>
+  <!-- Hard Drive Icon Visual -->
+  <rect x="647" y="215" width="26" height="20" rx="2" fill="none" stroke="#FECF06" stroke-width="2"/>
+  <circle cx="655" cy="225" r="2" fill="#FECF06"/>
+
+  <text x="700" y="222" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="18" font-weight="700">Evidencia_Disco_Fisico.E01 (FTK)</text>
+  <text x="700" y="242" fill="#8B949E" font-family="Fira Code, monospace" font-size="12">Tipo: Imagen Bit a Bit de Disco Rígido 500GB</text>
+
+  <rect x="635" y="265" width="515" height="145" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <text x="655" y="290" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Adquisición por:</text>
+  <text x="795" y="290" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="12">Perito Lcdo. M. Rodríguez (CIV #198.420)</text>
+
+  <text x="655" y="320" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Hash SHA-256 FTK:</text>
+  <text x="795" y="320" fill="#00FF41" font-family="Fira Code, monospace" font-size="11">7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1f... [MATCH]</text>
+
+  <text x="655" y="350" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Normativa Aplicada:</text>
+  <text x="795" y="350" fill="#9DFF00" font-family="Ubuntu, sans-serif" font-size="12">ISO/IEC 27037:2012 &amp; MUCC-2017 Cap. 4</text>
+
+  <text x="655" y="380" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="12">Ubicación Física:</text>
+  <text x="795" y="380" fill="#FECF06" font-family="Ubuntu, sans-serif" font-size="12">Bóveda de Evidencias N° 4 - Sobre Faraday</text>
+
+  <!-- LOWER EXPEDIENTE DETAIL PANEL -->
+  <rect x="30" y="455" width="1140" height="260" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="55" y="495" fill="#FECF06" font-family="Ubuntu, sans-serif" font-size="16" font-weight="700">HISTORIAL DE CADENA DE CUSTODIA Y TRANSFERENCIAS MUCC</text>
+
+  <line x1="55" y1="515" x2="1145" y2="515" stroke="#30363D" stroke-width="1"/>
+
+  <!-- Step Nodes Timeline horizontal -->
+  <circle cx="100" cy="570" r="14" fill="#00FF41"/>
+  <text x="96" y="575" fill="#0D1117" font-family="Ubuntu, sans-serif" font-weight="700" font-size="12">1</text>
+  <text x="70" y="605" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="13" font-weight="600">Obtención</text>
+  <text x="60" y="625" fill="#8B949E" font-family="Fira Code, monospace" font-size="11">Acta N° 001</text>
+
+  <line x1="120" y1="570" x2="330" y2="570" stroke="#00FF41" stroke-width="3"/>
+
+  <circle cx="350" cy="570" r="14" fill="#00FF41"/>
+  <text x="346" y="575" fill="#0D1117" font-family="Ubuntu, sans-serif" font-weight="700" font-size="12">2</text>
+  <text x="310" y="605" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="13" font-weight="600">Forense IPED</text>
+  <text x="310" y="625" fill="#8B949E" font-family="Fira Code, monospace" font-size="11">Extracción Bit</text>
+
+  <line x1="370" y1="570" x2="580" y2="570" stroke="#00FF41" stroke-width="3"/>
+
+  <circle cx="600" cy="570" r="14" fill="#FECF06" filter="url(#glow-gold)"/>
+  <text x="596" y="575" fill="#0D1117" font-family="Ubuntu, sans-serif" font-weight="700" font-size="12">3</text>
+  <text x="555" y="605" fill="#FECF06" font-family="Ubuntu, sans-serif" font-size="13" font-weight="700">Dictamen Pericial</text>
+  <text x="565" y="625" fill="#8B949E" font-family="Fira Code, monospace" font-size="11">En Redacción</text>
+
+  <line x1="620" y1="570" x2="830" y2="570" stroke="#30363D" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <circle cx="850" cy="570" r="14" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+  <text x="846" y="575" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="700" font-size="12">4</text>
+  <text x="825" y="605" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13">Firma PRCC</text>
+
+  <line x1="870" y1="570" x2="1080" y2="570" stroke="#30363D" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <circle cx="1100" cy="570" r="14" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+  <text x="1096" y="575" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="700" font-size="12">5</text>
+  <text x="1065" y="605" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13">Entrega Final</text>
+
+  <!-- Hash Stamp Footnote -->
+  <rect x="55" y="660" width="1090" height="35" rx="4" fill="#0D1117" stroke="#21262D"/>
+  <text x="75" y="683" fill="#9DFF00" font-family="Fira Code, monospace" font-size="11">REGISTRO INMUTABLE NEON: 0x9f8a...c32d4 | CERTIFICADO COPP ART. 223 COMPLIANT</text>
+</svg>

@@ -171,27 +171,43 @@ export default function DashboardPage() {
       {/* Institutional Header */}
       <Box sx={{ pb: 2, borderBottom: '1px solid rgba(48,54,61,0.8)' }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'center' }, gap: 2 }}>
-          <Box>
-            <Typography component="h1" sx={{ fontSize: { xs: '18px', sm: '24px' }, fontWeight: 800, color: '#00FF41', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
-              CENTRO DE MANDO COMPLIANCE FORENSE
-            </Typography>
-            <Typography component="h2" sx={{ fontSize: '13px', fontWeight: 600, color: '#FECF06', mt: 0.25 }}>
-              SHA256.US — Sistema de Auditoría Digital Inmutable & Control Normativo Legal
-            </Typography>
-            <Stack direction="row" spacing={0.75} useFlexGap sx={{ flexWrap: 'wrap', mt: 1.25 }}>
-              {['ISO/IEC 27037:2012', 'NIST SP 800-86', 'MUCC-2017 (MP-CICPC)', 'COPP Art. 187/225'].map(n => (
-                <Chip
-                  key={n}
-                  label={n}
-                  size="small"
-                  sx={{
-                    fontSize: '9.5px', height: '18px',
-                    backgroundColor: 'rgba(254,207,6,0.08)', color: '#FECF06',
-                    border: '1px solid rgba(254,207,6,0.2)', fontFamily: 'monospace', fontWeight: 700,
-                  }}
-                />
-              ))}
-            </Stack>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.75 }}>
+            <img
+              src="/logo.png"
+              alt="SHA256.US — Lab. Informática Forense"
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '8px',
+                objectFit: 'contain',
+                backgroundColor: 'rgba(254, 207, 6, 0.08)',
+                padding: '5px',
+                border: '1px solid rgba(254, 207, 6, 0.4)',
+                flexShrink: 0,
+              }}
+            />
+            <Box>
+              <Typography component="h1" sx={{ fontSize: { xs: '18px', sm: '22px' }, fontWeight: 800, color: '#00FF41', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+                CENTRO DE MANDO COMPLIANCE FORENSE
+              </Typography>
+              <Typography component="h2" sx={{ fontSize: '13px', fontWeight: 700, color: '#FECF06', mt: 0.4 }}>
+                SHA256.US — Lab. Informática Forense
+              </Typography>
+              <Stack direction="row" spacing={0.75} useFlexGap sx={{ flexWrap: 'wrap', mt: 1 }}>
+                {['ISO/IEC 27037:2012', 'NIST SP 800-86', 'MUCC-2017 (MP-CICPC)', 'COPP Art. 187/225'].map(n => (
+                  <Chip
+                    key={n}
+                    label={n}
+                    size="small"
+                    sx={{
+                      fontSize: '9.5px', height: '18px',
+                      backgroundColor: 'rgba(254,207,6,0.08)', color: '#FECF06',
+                      border: '1px solid rgba(254,207,6,0.2)', fontFamily: 'monospace', fontWeight: 700,
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Box>
           </Box>
 
           <Button onClick={() => handleOpenWizard()} variant="contained" color="primary" size="medium">

@@ -231,26 +231,31 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#0D1117', borderRight: '1px solid rgba(48,54,61,0.8)' }}>
       {/* Brand Header */}
       <Box sx={{ p: '14px 16px', borderBottom: '1px solid rgba(48,54,61,0.8)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
+        <Link
+          href="/dashboard"
+          title="SHA256.US — Lab. Informática Forense"
+          aria-label="SHA256.US — Lab. Informática Forense"
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}
+        >
           <img
             src="/logo.png"
-            alt="SHA256.US Logo"
+            alt="SHA256.US — Lab. Informática Forense"
             style={{
-              width: '30px',
-              height: '30px',
+              width: '34px',
+              height: '34px',
               borderRadius: '6px',
               objectFit: 'contain',
               backgroundColor: 'rgba(254, 207, 6, 0.08)',
               padding: '4px',
-              border: '1px solid rgba(254, 207, 6, 0.3)',
+              border: '1px solid rgba(254, 207, 6, 0.35)',
             }}
           />
-          <Box>
-            <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#E6EDF3', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography component="span" sx={{ fontSize: '14px', fontWeight: 800, color: '#FECF06', letterSpacing: '0.02em', lineHeight: 1.1, fontFamily: 'monospace' }}>
               SHA256.US
             </Typography>
-            <Typography sx={{ fontSize: '9px', color: '#8B949E', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.06em' }}>
-              Compliance Officer CMS
+            <Typography component="span" sx={{ fontSize: '10px', color: '#00FF41', fontWeight: 700, letterSpacing: '0.02em', lineHeight: 1.2, mt: '2px' }}>
+              Lab. Informática Forense
             </Typography>
           </Box>
         </Link>
