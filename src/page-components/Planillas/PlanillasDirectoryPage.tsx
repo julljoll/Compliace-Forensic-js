@@ -2,17 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Stack from '@mui/material/Stack';
 import { useCMSStore } from '../../store/cmsStore';
 import { FileText, ChevronRight } from '../../components/atoms/AppleIcon';
 
@@ -39,7 +28,7 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
     etapaNumero: 1,
     etapaNombre: 'ETAPA 1: Consignación & Consentimiento Informado',
     etapaDesc: 'Fase de Adquisición Privada Voluntaria y Deslinde de Responsabilidad Legítima',
-    color: '#FECF06',
+    color: '#D9A700',
     planillas: [
       {
         id: 'acta-obtencion',
@@ -64,7 +53,7 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
     etapaNumero: 2,
     etapaNombre: 'ETAPA 2: Custodia & Laboratorio Forense',
     etapaDesc: 'Fase de Trazabilidad Ininterrumpida, Resguardo RF e Inspección en Cámara',
-    color: '#00FF41',
+    color: '#008837',
     planillas: [
       {
         id: 'prcc',
@@ -97,7 +86,7 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
     etapaNumero: 3,
     etapaNombre: 'ETAPA 3: Análisis Técnico & Certificación Pericial',
     etapaDesc: 'Fase de Peritaje Criptográfico, Verificación Causal y Emisión de Dictamen de 8 Folios',
-    color: '#9DFF00',
+    color: '#005EA2',
     planillas: [
       {
         id: 'acta-auditoria-timeline',
@@ -139,7 +128,7 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
     etapaNumero: 4,
     etapaNombre: 'ETAPA 4: Sanitización, Cierre & Devolución Criptográfica',
     etapaDesc: 'Fase de Cierre Procesal, Restitución de Equipos y Destrucción Segura de Copias de Trabajo',
-    color: '#FFB800',
+    color: '#C05621',
     planillas: [
       {
         id: 'acta-sanitizacion',
@@ -167,178 +156,128 @@ export default function PlanillasDirectoryPage() {
   const [selectedCasoId, setSelectedCasoId] = useState<string>('');
 
   return (
-    <Box sx={{ p: { xs: 2, md: 3 }, backgroundColor: '#0D1117', minHeight: '100vh', color: '#E6EDF3' }}>
+    <div className="container-fluid p-3 p-md-4 min-vh-100" style={{ backgroundColor: '#F0F4F8', color: '#1B2A4A' }}>
       {/* Header institucional */}
-      <Box sx={{ mb: 4, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, gap: 2 }}>
-        <Box>
-          <Typography variant="h4" sx={{ color: '#FECF06', fontWeight: 800, letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <FileText size={32} className="text-[#FECF06]" />
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4 p-3 bg-white border rounded-3 shadow-sm">
+        <div>
+          <h1 className="h4 fw-bold mb-1 d-flex align-items-center gap-2" style={{ color: '#112E51' }}>
+            <FileText size={28} className="text-primary" />
             Directorio Oficial de Planillas Forenses
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#8B949E', mt: 0.5 }}>
+          </h1>
+          <p className="text-secondary small mb-0">
             Sistema de documentación legal-forense estructurado en 4 etapas procesales secuenciales conforme al MUCC, COPP, ISO 27037 y LMD FE.
-          </Typography>
-        </Box>
+          </p>
+        </div>
 
         {/* Filtro de Caso Activo */}
-        <Box sx={{ minWidth: 260 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="select-caso-label" sx={{ color: '#FECF06', fontSize: '12px' }}>
-              Caso Forense Asociado
-            </InputLabel>
-            <Select
-              labelId="select-caso-label"
-              value={selectedCasoId}
-              label="Caso Forense Asociado"
-              onChange={(e) => setSelectedCasoId(e.target.value)}
-              sx={{
-                backgroundColor: '#161B22',
-                color: '#E6EDF3',
-                fontSize: '13px',
-                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(254, 207, 6, 0.4)' },
-                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#FECF06' },
-              }}
-            >
-              <MenuItem value="">
-                <em>-- Ninguno (Ver plantillas generales) --</em>
-              </MenuItem>
-              {casos.map(c => (
-                <MenuItem key={c.id} value={c.id}>
-                  Caso #{c.numeroCaso} — {c.titulo || c.tipoProyecto}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Box>
+        <div style={{ minWidth: '280px' }}>
+          <label htmlFor="select-caso" className="form-label small fw-bold text-uppercase mb-1" style={{ color: '#005EA2', fontSize: '11px' }}>
+            Caso Forense Asociado
+          </label>
+          <select
+            id="select-caso"
+            className="form-select form-select-sm border-secondary shadow-sm fw-semibold"
+            value={selectedCasoId}
+            onChange={(e) => setSelectedCasoId(e.target.value)}
+            style={{ fontSize: '13px', backgroundColor: '#FFFFFF' }}
+          >
+            <option value="">-- Ninguno (Ver plantillas generales) --</option>
+            {casos.map(c => (
+              <option key={c.id} value={c.id}>
+                Caso #{c.numeroCaso} — {c.titulo || c.tipoProyecto}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Grid de 4 Etapas Legales */}
-      <Stack spacing={4}>
+      <div className="d-flex flex-column gap-4">
         {ETAPAS_LEGALES.map((etapa) => (
-          <Box key={etapa.etapaNumero} sx={{ backgroundColor: '#161B22', borderRadius: '12px', p: 2.5, border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div key={etapa.etapaNumero} className="usa-card bg-white p-3 p-md-4 border rounded-3 shadow-sm">
             {/* Encabezado de Etapa */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, pb: 1, borderBottom: `2px solid ${etapa.color}` }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box sx={{ width: 32, height: 32, borderRadius: '8px', backgroundColor: `${etapa.color}1A`, color: etapa.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '14px' }}>
+            <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom" style={{ borderBottomColor: etapa.color }}>
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  className="d-flex align-items-center justify-content-center fw-bold rounded-2 text-white"
+                  style={{ width: '36px', height: '36px', backgroundColor: etapa.color, fontSize: '14px' }}
+                >
                   E{etapa.etapaNumero}
-                </Box>
-                <Box>
-                  <Typography variant="h6" sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '16px' }}>
+                </div>
+                <div>
+                  <h2 className="h6 fw-bold mb-0" style={{ color: '#112E51' }}>
                     {etapa.etapaNombre}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#8B949E' }}>
+                  </h2>
+                  <span className="text-secondary small" style={{ fontSize: '12px' }}>
                     {etapa.etapaDesc}
-                  </Typography>
-                </Box>
-              </Box>
+                  </span>
+                </div>
+              </div>
 
-              <Chip
-                label={`${etapa.planillas.length} Planillas Oficiales`}
-                size="small"
-                sx={{ backgroundColor: 'rgba(255,255,255,0.05)', color: etapa.color, fontSize: '11px', fontWeight: 700 }}
-              />
-            </Box>
+              <span className="usa-tag usa-tag--info fw-bold" style={{ fontSize: '11px' }}>
+                {etapa.planillas.length} Planillas Oficiales
+              </span>
+            </div>
 
             {/* Tarjetas de Planillas dentro de la Etapa */}
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: etapa.planillas.length === 3 ? '1fr 1fr 1fr' : '1fr 1fr' }, gap: 2 }}>
+            <div className="row g-3">
               {etapa.planillas.map((p) => (
-                <Box key={p.id}>
-                  <Card
-                    sx={{
-                      backgroundColor: '#0D1117',
-                      border: '1px solid rgba(48,54,61,0.8)',
-                      borderRadius: '8px',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      transition: 'all 0.2s ease',
-                      '&:hover': {
-                        borderColor: etapa.color,
-                        transform: 'translateY(-2px)',
-                        boxShadow: `0 4px 12px ${etapa.color}15`,
-                      },
-                    }}
-                  >
-                    <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', p: 2 }}>
-                      <Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-                          <Typography variant="caption" sx={{ color: etapa.color, fontWeight: 800, fontFamily: 'monospace' }}>
-                            PASO {p.paso}
-                          </Typography>
-                          {p.isNew && (
-                            <Chip
-                              label="NUEVA PLANILLA"
-                              size="small"
-                              sx={{ backgroundColor: '#00FF4122', color: '#00FF41', border: '1px solid #00FF4155', fontWeight: 800, height: '18px', fontSize: '9px' }}
-                            />
-                          )}
-                        </Box>
+                <div key={p.id} className={etapa.planillas.length === 3 ? 'col-12 col-md-4' : 'col-12 col-md-6'}>
+                  <div className="card h-100 border rounded-3 shadow-sm d-flex flex-column justify-content-between p-3" style={{ backgroundColor: '#FFFFFF' }}>
+                    <div>
+                      <div className="d-flex align-items-center justify-content-between mb-2">
+                        <span className="fw-bold font-monospace small" style={{ color: etapa.color }}>
+                          PASO {p.paso}
+                        </span>
+                        {p.isNew && (
+                          <span className="usa-tag" style={{ backgroundColor: '#008837', color: '#FFFFFF', fontSize: '9px', fontWeight: 700 }}>
+                            NUEVA PLANILLA
+                          </span>
+                        )}
+                      </div>
 
-                        <Typography variant="subtitle1" sx={{ color: '#E6EDF3', fontWeight: 700, fontSize: '14px', lineHeight: 1.3, mb: 1 }}>
-                          {p.nombre}
-                        </Typography>
+                      <h3 className="h6 fw-bold mb-2" style={{ color: '#1B2A4A', fontSize: '14px', lineHeight: 1.3 }}>
+                        {p.nombre}
+                      </h3>
 
-                        <Typography variant="body2" sx={{ color: '#8B949E', fontSize: '12px', mb: 2, minHeight: '36px' }}>
-                          {p.descripcion}
-                        </Typography>
+                      <p className="text-secondary small mb-3" style={{ fontSize: '12px', minHeight: '36px' }}>
+                        {p.descripcion}
+                      </p>
 
-                        {/* Normativas Aplicables Chips + Portada Badge */}
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                          <Chip
-                            label="📄 PORTADA FOLIADA"
-                            size="small"
-                            sx={{ backgroundColor: 'rgba(0, 255, 65, 0.12)', color: '#00FF41', border: '1px solid rgba(0, 255, 65, 0.3)', fontSize: '10px', height: '20px', fontWeight: 800 }}
-                          />
-                          {p.normativas.map(n => (
-                            <Chip
-                              key={n}
-                              label={n}
-                              size="small"
-                              sx={{ backgroundColor: 'rgba(254, 207, 6, 0.08)', color: '#FECF06', fontSize: '10px', height: '20px' }}
-                            />
-                          ))}
-                        </Box>
-                      </Box>
+                      {/* Normativas Aplicables Chips + Portada Badge */}
+                      <div className="d-flex flex-wrap gap-1 mb-3">
+                        <span className="usa-tag usa-tag--info" style={{ fontSize: '10px' }}>
+                          📄 PORTADA FOLIADA
+                        </span>
+                        {p.normativas.map(n => (
+                          <span key={n} className="badge bg-light text-dark border" style={{ fontSize: '10px', fontWeight: 600 }}>
+                            {n}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
 
-                      {/* Botón de Acción */}
-                      <Box sx={{ pt: 1, borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="caption" sx={{ color: '#484F58', fontSize: '10px' }}>
-                          PDF Folio (216x330mm)
-                        </Typography>
+                    {/* Botón de Acción */}
+                    <div className="pt-2 border-top d-flex align-items-center justify-content-between mt-auto">
+                      <span className="text-muted" style={{ fontSize: '10px' }}>
+                        PDF Folio (216x330mm)
+                      </span>
 
-                        <Link
-                          href={`${p.ruta}${selectedCasoId ? `?casoId=${selectedCasoId}` : ''}`}
-                          style={{ textDecoration: 'none' }}
-                        >
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            endIcon={<ChevronRight size={14} />}
-                            sx={{
-                              borderColor: etapa.color,
-                              color: etapa.color,
-                              fontWeight: 700,
-                              fontSize: '11px',
-                              px: 1.5,
-                              py: 0.4,
-                              '&:hover': {
-                                backgroundColor: `${etapa.color}15`,
-                                borderColor: etapa.color,
-                              },
-                            }}
-                          >
-                            Generar / Ver
-                          </Button>
-                        </Link>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Box>
+                      <Link
+                        href={`${p.ruta}${selectedCasoId ? `?casoId=${selectedCasoId}` : ''}`}
+                        className="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-1"
+                        style={{ fontSize: '11px' }}
+                      >
+                        Generar / Ver <ChevronRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Box>
-          </Box>
+            </div>
+          </div>
         ))}
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 }

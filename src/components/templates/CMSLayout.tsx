@@ -1,16 +1,8 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
-import Breadcrumbs from '@mui/material/Breadcrumbs'
-import Stack from '@mui/material/Stack'
-import Chip from '@mui/material/Chip'
 
 import {
   LayoutDashboard, FolderOpen, ShieldCheck, ClipboardList,
@@ -21,6 +13,7 @@ import { useCMSStore } from '../../store/cmsStore'
 import { useAuthStore } from '../../store/authStore'
 import StatusDot from '../atoms/StatusDot'
 import CommandPalette from '../organisms/CommandPalette'
+import USWDSGovBanner from '../organisms/Planillas/USWDSGovBanner'
 
 const menuGroups = [
   {
@@ -109,37 +102,21 @@ function SidebarLink({
     <Link
       href={item.path}
       onClick={onClick}
-      style={{ textDecoration: 'none' }}
+      className={`d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded-2 transition-all ${
+        active
+          ? 'bg-primary bg-opacity-25 text-warning border-start border-3 border-warning fw-bold'
+          : 'text-white-50 hover-bg-light'
+      }`}
+      style={{
+        paddingLeft: isSubItem ? '1.5rem' : '0.75rem',
+        fontSize: isSubItem ? '12.5px' : '13.5px',
+        backgroundColor: active ? 'rgba(217, 167, 0, 0.15)' : 'transparent',
+        borderLeft: active ? '3px solid var(--usa-gold)' : '3px solid transparent',
+        color: active ? 'var(--usa-gold)' : isSubItem ? 'var(--usa-border)' : '#FFFFFF',
+      }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: isSubItem ? '8px' : '10px',
-          minHeight: isSubItem ? '32px' : '38px',
-          pl: isSubItem ? '20px' : '12px',
-          pr: '12px',
-          py: '4px',
-          borderRadius: '6px',
-          transition: 'all 0.15s ease',
-          backgroundColor: active ? 'rgba(254, 207, 6, 0.12)' : 'transparent',
-          borderLeft: active ? '3px solid #FECF06' : '3px solid transparent',
-          '&:hover': {
-            backgroundColor: active ? 'rgba(254, 207, 6, 0.18)' : 'rgba(254, 207, 6, 0.06)',
-          },
-        }}
-      >
-        <Icon size={isSubItem ? 14 : 16} className={active ? 'text-[#FECF06]' : 'text-[#86868B]'} />
-        <Typography
-          sx={{
-            fontSize: isSubItem ? '12.5px' : '13.5px',
-            fontWeight: active ? 700 : 400,
-            color: active ? '#FECF06' : isSubItem ? '#C9D1D9' : '#FFFFFF',
-          }}
-        >
-          {item.label}
-        </Typography>
-      </Box>
+      <Icon size={isSubItem ? 14 : 16} style={{ color: active ? 'var(--usa-gold)' : '#94A3B8' }} />
+      <span>{item.label}</span>
     </Link>
   )
 }
@@ -152,7 +129,6 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuthStore()
   const stats = getEstadisticas()
 
-  // Estado para colapsar/desplegar seccion de planillas
   const [planillasExpanded, setPlanillasExpanded] = useState<boolean>(true)
 
   useEffect(() => {
@@ -175,9 +151,9 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const metaTheme = document.querySelector('meta[name="theme-color"]')
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-    if (metaTheme) metaTheme.setAttribute('content', '#524000')
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+    if (metaTheme) metaTheme.setAttribute('content', '#112E51')
   }, [])
 
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -228,302 +204,244 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
   }
 
   const SidebarContent = ({ onNav }: { onNav?: () => void }) => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#0D1117', borderRight: '1px solid rgba(48,54,61,0.8)' }}>
+    <div className="d-flex flex-column h-100" style={{ backgroundColor: '#112E51', borderRight: '1px solid #1A2536' }}>
       {/* Brand Header */}
-      <Box sx={{ p: '14px 16px', borderBottom: '1px solid rgba(48,54,61,0.8)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="p-3 border-bottom border-white border-opacity-10 d-flex align-items-center justify-content-between">
         <Link
           href="/dashboard"
           title="SHA256.US — Lab. Informática Forense"
           aria-label="SHA256.US — Lab. Informática Forense"
-          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}
+          className="d-flex align-items-center gap-2 text-decoration-none text-white flex-grow-1"
         >
           <img
             src="/logo.png"
-            alt="SHA256.US — Lab. Informática Forense"
+            alt="SHA256.US"
             style={{
               width: '34px',
               height: '34px',
               borderRadius: '6px',
               objectFit: 'contain',
-              backgroundColor: 'rgba(254, 207, 6, 0.08)',
+              backgroundColor: '#FFFFFF',
               padding: '4px',
-              border: '1px solid rgba(254, 207, 6, 0.35)',
+              border: '1px solid var(--usa-gold)',
             }}
           />
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography component="span" sx={{ fontSize: '14px', fontWeight: 800, color: '#FECF06', letterSpacing: '0.02em', lineHeight: 1.1, fontFamily: 'monospace' }}>
+          <div className="d-flex flex-column">
+            <span className="fw-black text-white font-monospace" style={{ fontSize: '14px', letterSpacing: '0.04em', lineHeight: 1.1 }}>
               SHA256.US
-            </Typography>
-            <Typography component="span" sx={{ fontSize: '10px', color: '#00FF41', fontWeight: 700, letterSpacing: '0.02em', lineHeight: 1.2, mt: '2px' }}>
+            </span>
+            <span className="fw-bold" style={{ fontSize: '10px', color: 'var(--usa-gold)', letterSpacing: '0.02em', lineHeight: 1.2 }}>
               Lab. Informática Forense
-            </Typography>
-          </Box>
+            </span>
+          </div>
         </Link>
-        <Chip
-          label="v3"
-          size="small"
-          sx={{ fontSize: '9px', height: '18px', backgroundColor: 'rgba(254,207,6,0.1)', color: '#FECF06', border: '1px solid rgba(254,207,6,0.2)', fontWeight: 700 }}
-        />
-      </Box>
+        <span className="usa-tag usa-tag--info" style={{ fontSize: '9px', backgroundColor: 'rgba(217, 167, 0, 0.2)', color: 'var(--usa-gold)', borderColor: 'var(--usa-gold)' }}>
+          USWDS
+        </span>
+      </div>
 
       {/* Navigation Groups */}
-      <Box sx={{ flex: 1, overflowY: 'auto', p: '8px 10px' }}>
-        <Stack spacing={2}>
+      <div className="flex-grow-1 overflow-auto p-2">
+        <div className="d-flex flex-column gap-3">
           {menuGroups.map(grp => (
-            <Box key={grp.groupTitle}>
+            <div key={grp.groupTitle}>
               {/* Group Header */}
-              <Typography sx={{ px: '8px', py: '4px', mb: '4px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9.5px', fontWeight: 800, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <div className="px-2 py-1 mb-1 d-flex align-items-center gap-2 text-uppercase fw-bold" style={{ fontSize: '9.5px', color: '#94A3B8', letterSpacing: '0.08em' }}>
                 <span>{grp.emoji}</span>
                 <span>{grp.groupTitle}</span>
-              </Typography>
+              </div>
 
               {!grp.isCollapsible ? (
-                /* Simple Links */
-                <Stack spacing={0.25}>
+                <div className="d-flex flex-column gap-1">
                   {grp.items?.map(m => (
                     <SidebarLink key={m.path} item={m} onClick={onNav} />
                   ))}
-                </Stack>
+                </div>
               ) : (
-                /* Collapsible Planillas Group */
-                <Box sx={{ backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', p: '2px', border: '1px solid rgba(255,255,255,0.04)' }}>
-                  <Box
+                <div className="rounded-3 p-1" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div
                     onClick={() => setPlanillasExpanded(!planillasExpanded)}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justify: 'space-between',
-                      px: '10px',
-                      py: '6px',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      '&:hover': { backgroundColor: 'rgba(254,207,6,0.08)' },
-                    }}
+                    className="d-flex align-items-center justify-content-between px-2 py-2 rounded-2 cursor-pointer"
+                    style={{ cursor: 'pointer' }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <grp.mainIcon size={16} className={pathname.startsWith('/planillas') ? 'text-[#FECF06]' : 'text-[#86868B]'} />
-                      <Typography sx={{ fontSize: '13px', fontWeight: 700, color: pathname.startsWith('/planillas') ? '#FECF06' : '#FFFFFF' }}>
+                    <div className="d-flex align-items-center gap-2">
+                      <grp.mainIcon size={16} style={{ color: pathname.startsWith('/planillas') ? 'var(--usa-gold)' : '#94A3B8' }} />
+                      <span className="fw-bold text-white" style={{ fontSize: '13px', color: pathname.startsWith('/planillas') ? 'var(--usa-gold)' : '#FFFFFF' }}>
                         {grp.mainLabel}
-                      </Typography>
-                    </Box>
+                      </span>
+                    </div>
                     <ChevronRight
                       size={14}
-                      className="text-[#86868B]"
                       style={{
+                        color: '#94A3B8',
                         transform: planillasExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                         transition: 'transform 0.2s ease',
                       }}
                     />
-                  </Box>
+                  </div>
 
-                  {/* Sub-items agrupados por etapas cuando está expandido */}
                   {planillasExpanded && (
-                    <Stack spacing={1.5} sx={{ mt: '6px', pb: '6px' }}>
+                    <div className="d-flex flex-column gap-2 mt-1 pb-1">
                       {grp.etapas.map(etapa => (
-                        <Box key={etapa.etapaNombre}>
-                          <Typography sx={{ px: '14px', py: '2px', fontSize: '9px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        <div key={etapa.etapaNombre}>
+                          <div className="px-3 py-1 text-uppercase fw-bold" style={{ fontSize: '9px', color: 'var(--usa-gold)', letterSpacing: '0.04em' }}>
                             {etapa.etapaNombre}
-                          </Typography>
-                          <Stack spacing={0.25}>
+                          </div>
+                          <div className="d-flex flex-column gap-1">
                             {etapa.items.map(m => (
                               <SidebarLink key={m.path} item={m} onClick={onNav} isSubItem />
                             ))}
-                          </Stack>
-                        </Box>
+                          </div>
+                        </div>
                       ))}
-                    </Stack>
+                    </div>
                   )}
-                </Box>
+                </div>
               )}
-            </Box>
+            </div>
           ))}
-        </Stack>
-      </Box>
+        </div>
+      </div>
 
-      <Box sx={{ p: '10px', borderTop: '1px solid rgba(48,54,61,0.8)' }}>
-        {/* KPI mini bar */}
-        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', mb: '10px' }}>
-          <Box sx={{ px: '10px', py: '7px', borderRadius: '6px', backgroundColor: 'rgba(254, 207, 6, 0.06)', border: '1px solid rgba(254,207,6,0.12)' }}>
-            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Activos</Typography>
-            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#FECF06', lineHeight: 1.2 }}>{stats.casosActivos}</Typography>
-          </Box>
-          <Box sx={{ px: '10px', py: '7px', borderRadius: '6px', backgroundColor: 'rgba(0, 255, 65, 0.05)', border: '1px solid rgba(0,255,65,0.12)' }}>
-            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#8B949E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Cumpl.</Typography>
-            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#00FF41', lineHeight: 1.2 }}>{stats.cumplimientoGeneral}%</Typography>
-          </Box>
-        </Box>
+      {/* Footer Info */}
+      <div className="p-2 border-top border-white border-opacity-10">
+        <div className="row g-2 mb-2">
+          <div className="col-6">
+            <div className="px-2 py-1 rounded-2" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div className="text-uppercase fw-bold" style={{ fontSize: '9px', color: '#94A3B8' }}>Activos</div>
+              <div className="fw-bold font-monospace" style={{ fontSize: '18px', color: 'var(--usa-gold)' }}>{stats.casosActivos}</div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div className="px-2 py-1 rounded-2" style={{ backgroundColor: 'rgba(0,136,55,0.2)', border: '1px solid rgba(0,136,55,0.4)' }}>
+              <div className="text-uppercase fw-bold" style={{ fontSize: '9px', color: '#94A3B8' }}>Cumpl.</div>
+              <div className="fw-bold font-monospace" style={{ fontSize: '18px', color: '#86EFAC' }}>{stats.cumplimientoGeneral}%</div>
+            </div>
+          </div>
+        </div>
 
-        {/* User card */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', p: '8px', borderRadius: '6px', backgroundColor: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(48,54,61,0.6)' }}>
-          <Box sx={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'rgba(254,207,6,0.15)', border: '1px solid rgba(254,207,6,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <Typography sx={{ fontSize: '11px', fontWeight: 700, color: '#FECF06' }}>
-              {(user?.nombre || 'P').charAt(0).toUpperCase()}
-            </Typography>
-          </Box>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography sx={{ fontSize: '11px', fontWeight: 600, color: '#E6EDF3', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 }}>
+        <div className="d-flex align-items-center gap-2 p-2 rounded-2" style={{ backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="rounded-circle bg-warning text-dark fw-bold d-flex align-items-center justify-content-center flex-shrink-0" style={{ width: '28px', height: '28px', fontSize: '11px' }}>
+            {(user?.nombre || 'P').charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-grow-1 min-w-0">
+            <div className="fw-bold text-white text-truncate" style={{ fontSize: '11px', lineHeight: 1.2 }}>
               {user?.nombre || 'Perito Judicial'}
-            </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', mt: '2px' }}>
+            </div>
+            <div className="d-flex align-items-center gap-1 mt-1">
               <StatusDot status={sqliteOnline ? 'online' : sqliteOnline === false ? 'offline' : null} size={5} />
-              <Typography sx={{ fontSize: '9px', color: sqliteOnline ? '#00FF41' : '#FF3B30', fontFamily: 'monospace' }}>
+              <span className="font-monospace" style={{ fontSize: '9px', color: sqliteOnline ? '#86EFAC' : '#FCA5A5' }}>
                 {sqliteOnline ? 'SQLite OK' : 'Offline'}
-              </Typography>
-            </Box>
-          </Box>
-          <Tooltip title="Cerrar sesión" placement="top">
-            <IconButton
-              onClick={() => { logout(); router.replace('/login') }}
-              size="small"
-              sx={{ color: '#484F58', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.08)' } }}
-            >
-              <LogOut size={13} />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
-    </Box>
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => { logout(); router.replace('/login') }}
+            className="btn btn-sm btn-link text-white-50 p-1"
+            title="Cerrar sesión"
+            type="button"
+          >
+            <LogOut size={13} />
+          </button>
+        </div>
+      </div>
+    </div>
   )
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', backgroundColor: '#0D1117', color: '#E6EDF3', overflow: 'hidden' }}>
+    <div className="d-flex vh-100 overflow-hidden" style={{ backgroundColor: 'var(--usa-bg-main)', color: 'var(--usa-text)' }}>
       {/* Desktop Sidebar */}
-      <Box
-        component="aside"
-        sx={{
-          width: '256px',
-          flexShrink: 0,
-          display: { xs: 'none', sm: 'block' },
-          borderRight: '1px solid rgba(48,54,61,0.8)',
-          backgroundColor: '#0D1117',
-          '@media print': { display: 'none' },
-        }}
-      >
+      <aside className="d-none d-md-block flex-shrink-0" style={{ width: '256px' }}>
         <SidebarContent />
-      </Box>
+      </aside>
 
-      {/* Mobile Drawer */}
-      <Drawer
-        variant="temporary"
-        open={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        ModalProps={{ keepMounted: true }}
-        slotProps={{
-          paper: {
-            sx: {
-              width: '270px',
-              backgroundColor: '#0D1117',
-              borderRight: '1px solid rgba(48,54,61,0.8)',
-            },
-          },
-        }}
-        sx={{ display: { xs: 'block', sm: 'none' } }}
-      >
-        <Box sx={{ position: 'relative', height: '100%' }}>
-          <IconButton
-            onClick={() => setMobileOpen(false)}
-            sx={{ position: 'absolute', top: 12, right: 12, zIndex: 10, color: '#86868B' }}
-          >
-            <X size={16} />
-          </IconButton>
-          <SidebarContent onNav={() => setMobileOpen(false)} />
-        </Box>
-      </Drawer>
+      {/* Mobile Drawer (Offcanvas Bootstrap) */}
+      {mobileOpen && (
+        <div className="offcanvas offcanvas-start show d-md-none" style={{ visibility: 'visible', width: '270px', backgroundColor: '#112E51' }}>
+          <div className="offcanvas-header p-2 text-end">
+            <button type="button" className="btn-close btn-close-white" onClick={() => setMobileOpen(false)} aria-label="Close"></button>
+          </div>
+          <div className="offcanvas-body p-0">
+            <SidebarContent onNav={() => setMobileOpen(false)} />
+          </div>
+        </div>
+      )}
 
       {/* Main Container */}
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden', backgroundColor: '#0D1117' }}>
-        <Box
-          component="header"
-          sx={{
-            height: '46px',
-            borderBottom: '1px solid rgba(48,54,61,0.8)',
-            backgroundColor: 'rgba(13, 17, 23, 0.95)',
-            backdropFilter: 'blur(12px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            px: { xs: 2, sm: 3 },
-            zIndex: 10,
-            '@media print': { display: 'none' },
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton
+      <div className="flex-grow-1 d-flex flex-column min-w-0 overflow-hidden" style={{ backgroundColor: 'var(--usa-bg-main)' }}>
+        <USWDSGovBanner />
+        
+        {/* Header Superior Navbar */}
+        <header className="d-flex align-items-center justify-content-between px-3 border-bottom bg-white" style={{ height: '48px', borderColor: 'var(--usa-border)' }}>
+          <div className="d-flex align-items-center gap-2">
+            <button
               onClick={() => setMobileOpen(true)}
-              sx={{ display: { xs: 'flex', sm: 'none' }, color: '#86868B' }}
+              className="btn btn-sm btn-light d-md-none text-navy p-1"
+              type="button"
             >
               <Menu size={20} />
-            </IconButton>
+            </button>
 
-            <Breadcrumbs
-              separator={<ChevronRight size={11} style={{ color: '#86868B' }} />}
-              aria-label="breadcrumb"
-              sx={{ '& .MuiBreadcrumbs-separator': { color: '#86868B' } }}
-            >
-              <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-                <Typography sx={{ fontSize: '11px', fontWeight: 800, color: '#00FF41', fontFamily: 'monospace', letterSpacing: '0.04em' }}>
-                  SHA256.US
-                </Typography>
-              </Link>
-              {pathname !== '/dashboard' && (
-                <Typography sx={{ fontSize: '11px', fontWeight: 500, color: '#8B949E' }}>
-                  {getBreadcrumb()}
-                </Typography>
-              )}
-            </Breadcrumbs>
-          </Box>
+            <nav aria-label="breadcrumb">
+              <ol className="breadcrumb mb-0 align-items-center" style={{ fontSize: '12px' }}>
+                <li className="breadcrumb-item">
+                  <Link href="/dashboard" className="text-decoration-none fw-black font-monospace" style={{ color: 'var(--usa-navy)' }}>
+                    SHA256.US
+                  </Link>
+                </li>
+                {pathname !== '/dashboard' && (
+                  <li className="breadcrumb-item active fw-semibold" style={{ color: 'var(--usa-text-muted)' }}>
+                    {getBreadcrumb()}
+                  </li>
+                )}
+              </ol>
+            </nav>
+          </div>
 
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <IconButton
+          <div className="d-flex align-items-center gap-2">
+            <button
               onClick={() => setCommandPaletteOpen(true)}
+              className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 border-0"
               title="Buscador Spotlight (⌘K)"
-              sx={{ color: '#86868B', '&:hover': { color: '#FECF06', backgroundColor: 'rgba(254, 207, 6, 0.08)' } }}
+              type="button"
             >
-              <Search size={15} />
-            </IconButton>
+              <Search size={16} />
+            </button>
 
-            <Tooltip title={sqliteOnline ? 'BD Local activa — click para verificar' : 'Sin conexión local'} placement="bottom">
-              <Box
-                onClick={verificarSQLite}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  px: '8px',
-                  py: '3px',
-                  borderRadius: '4px',
-                  backgroundColor: 'rgba(13,17,23,0.8)',
-                  border: `1px solid ${sqliteOnline ? 'rgba(0,255,65,0.2)' : 'rgba(255,59,48,0.2)'}`,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  '&:hover': { borderColor: sqliteOnline ? 'rgba(0,255,65,0.5)' : 'rgba(255,59,48,0.5)' },
-                }}
-              >
-                <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: sqliteOnline ? '#00FF41' : '#FF3B30', boxShadow: sqliteOnline ? '0 0 4px #00FF41' : 'none' }} />
-                <Typography sx={{ fontSize: '10px', fontFamily: 'monospace', fontWeight: 700, color: sqliteOnline ? '#00FF41' : '#FF3B30', display: { xs: 'none', md: 'block' } }}>
-                  {sqliteOnline ? 'SQLite OK' : 'Offline'}
-                </Typography>
-              </Box>
-            </Tooltip>
+            <div
+              onClick={verificarSQLite}
+              className={`d-flex align-items-center gap-1 px-2 py-1 rounded border cursor-pointer ${
+                sqliteOnline ? 'bg-success-subtle border-success-subtle text-success' : 'bg-danger-subtle border-danger-subtle text-danger'
+              }`}
+              style={{ cursor: 'pointer', fontSize: '10px' }}
+              title={sqliteOnline ? 'BD Local activa — click para verificar' : 'Sin conexión local'}
+            >
+              <div className={`rounded-circle ${sqliteOnline ? 'bg-success' : 'bg-danger'}`} style={{ width: 6, height: 6 }} />
+              <span className="font-monospace fw-bold d-none d-md-inline">
+                {sqliteOnline ? 'SQLite OK' : 'Offline'}
+              </span>
+            </div>
 
-            <IconButton
+            <button
               onClick={limpiarDatos}
+              className="btn btn-sm btn-outline-danger border-0 p-1"
               title="Limpiar datos temporales"
-              sx={{ color: '#86868B', '&:hover': { color: '#FF3B30', backgroundColor: 'rgba(255, 59, 48, 0.1)' } }}
+              type="button"
             >
               <Trash2 size={14} />
-            </IconButton>
-          </Stack>
-        </Box>
+            </button>
+          </div>
+        </header>
 
-        <Box component="main" sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 2.5, md: 3 }, backgroundColor: '#0D1117' }}>
-          <Box sx={{ maxWidth: '1280px', mx: 'auto' }}>
+        {/* Dynamic Page Content Area */}
+        <main className="flex-grow-1 overflow-auto p-3 p-md-4" style={{ backgroundColor: 'var(--usa-bg-main)' }}>
+          <div className="container-fluid max-w-1280 px-0">
             {children}
-          </Box>
-        </Box>
-      </Box>
+          </div>
+        </main>
+      </div>
 
       <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
-    </Box>
+    </div>
   )
 }

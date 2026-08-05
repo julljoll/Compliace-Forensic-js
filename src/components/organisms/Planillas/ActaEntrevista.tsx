@@ -59,44 +59,53 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
       watermarkText="ENTREVISTA"
       onClick={handleCheckboxClick}
     >
+      {/* HEADER PRINCIPAL ESMERALDA */}
+      <div className="uswds-top-header">
+        ACTA DE ENTREVISTA TÉCNICO-PERICIAL — MUCC-2017 & ISO/IEC 27042
+      </div>
+
       {/* 1.0 DATOS DE LA ACTUACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-1.0">1.0 DATOS GENERALES Y LUGAR DE LA ENTREVISTA</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Lara, Venezuela — Laboratorio Forense SHA256.US]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Fecha y Hora de la Entrevista</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Fecha y Hora (ej: DD/MM/AAAA - HH:MM)]" />
+        <div className="uswds-banner-title">1.0 DATOS GENERALES Y LUGAR DE LA ENTREVISTA</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Lara, Venezuela — Laboratorio Forense SHA256.US]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Fecha y Hora de la Entrevista</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[DD/MM/AAAA - HH:MM]" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* 2.0 DATOS DEL ENTREVISTADO */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-2.0">2.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres del Entrevistado]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Teléfono de Contacto Principal</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[Teléfono de Contacto]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Correo Electrónico</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.correo_investigar} placeholder="[Correo Electrónico]" style={{ fontSize: '9.5pt' }} />
-          </div>
-          <div className="form-group" style={{ gridColumn: 'span 2' }}>
-            <PlanillaFieldLabel>Dirección de Habitación Habitual</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Dirección de Habitación]" style={{ fontSize: '9.5pt' }} />
+        <div className="uswds-banner-title">2.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres del Entrevistado]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Teléfono de Contacto Principal</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[Teléfono de Contacto]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Correo Electrónico</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.correo_investigar} placeholder="[Correo Electrónico]" style={{ fontSize: '9.5pt' }} />
+            </div>
+            <div className="form-group uswds-slot-input" style={{ gridColumn: 'span 2' }}>
+              <PlanillaFieldLabel>Dirección de Habitación Habitual</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Dirección de Habitación]" style={{ fontSize: '9.5pt' }} />
+            </div>
           </div>
         </div>
         <div className="form-group" style={{ marginTop: '5px', padding: '4px 8px' }}>
@@ -162,24 +171,29 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
       <div className="signature-section" style={{ gap: '14mm' }}>
         <div className="sig-detail-card">
           <div className="sig-detail-label">EL ENTREVISTADO</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Entrevistado]</span>}</span>
+          </div>
+          <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Entrevistado]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Número Telefónico]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Dirección: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Dirección de Habitación]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma del Entrevistado</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
             <PlanillaThumbBox label="PULGAR DER." />
             <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Entrevistado</div>
-          <div className="sig-field" style={{ marginTop: '8px' }}>
-            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula del Entrevistado]</span>}</span>
           </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO ENTREVISTADOR</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <PlanillaThumbBox label="PULGAR DER." />
-            <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Perito Entrevistador</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre y Apellido del Perito]</span>}</span>
           </div>
@@ -194,6 +208,18 @@ export default function ActaEntrevista({ caso, tipoEvidencia: externalTipoEviden
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma del Perito Entrevistador</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
+          </div>
+
+          <div style={{ fontSize: '8px', textAlign: 'center', marginTop: '6px', color: '#0F172A', fontWeight: 'bold' }}>
+            Rol ISO/IEC 27037: [ &nbsp;X&nbsp; ] DEFR (Adquisición & Imagen Forense) &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] DES
           </div>
         </div>
       </div>

@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import { Copy, Check } from './AppleIcon';
 
 export interface HashDisplayProps {
@@ -26,40 +22,19 @@ export const HashDisplay: React.FC<HashDisplayProps> = ({ hash }) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        px: '10px',
-        py: '4px',
-        borderRadius: '6px',
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        border: '1px solid rgba(254, 207, 6, 0.25)',
-      }}
-    >
-      <Typography
-        sx={{
-          fontFamily: 'monospace',
-          fontSize: '11px',
-          color: '#00FF41',
-          userSelect: 'all',
-          wordBreak: 'break-all',
-        }}
-      >
+    <div className="d-inline-flex align-items-center gap-2 px-2 py-1 rounded bg-light border">
+      <span className="font-monospace text-success fw-bold select-all" style={{ fontSize: '11px' }}>
         {hash}
-      </Typography>
-
-      <Tooltip title={copied ? '¡Copiado!' : 'Copiar SHA-256'}>
-        <IconButton
-          onClick={handleCopy}
-          size="small"
-          sx={{ color: '#AEAEB2', p: '2px', '&:hover': { color: '#FECF06' } }}
-        >
-          {copied ? <Check size={12} style={{ color: '#00FF41' }} /> : <Copy size={12} />}
-        </IconButton>
-      </Tooltip>
-    </Box>
+      </span>
+      <button
+        type="button"
+        onClick={handleCopy}
+        className="btn btn-sm btn-link p-0 text-muted"
+        title={copied ? '¡Copiado!' : 'Copiar Hash SHA-256'}
+      >
+        {copied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
+      </button>
+    </div>
   );
 };
 

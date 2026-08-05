@@ -9,6 +9,7 @@ import { PlanillaThumbBox } from '../../atoms/Planillas/PlanillaThumbBox';
 interface ActaDictamenProps {
   caso?: CasoCMS;
   tipoEvidencia?: 'movil' | 'computadora';
+  dictamenMode?: 'imagenes' | 'audios';
 }
 
 export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidencia }: ActaDictamenProps) {
@@ -56,17 +57,24 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
       watermarkText="DICTAMEN PERICIAL"
       onClick={handleCheckboxClick}
     >
+      {/* HEADER PRINCIPAL ESMERALDA */}
+      <div className="uswds-top-header">
+        DICTAMEN PERICIAL INFORMÁTICO FORENSE — MUCC-2017 & COPP ART. 187
+      </div>
+
       {/* 1.0 MARCO NORMATIVO Y REQUISITOS */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-1.0">1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Perito Informático Forense Responsable</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre y Apellido del Perito]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Acreditación / Colegiatura CIV / TSJ</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[ej: Perito Judicial Acreditado N° 5192-TSJ]" />
+        <div className="uswds-banner-title">1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Perito Informático Forense Responsable</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre y Apellido del Perito]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Acreditación / Colegiatura CIV / TSJ</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[ej: Perito Judicial Acreditado N° 5192-TSJ]" />
+            </div>
           </div>
         </div>
       </div>
@@ -221,38 +229,63 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
       <div className="signature-section" style={{ marginTop: '20px', gap: '10mm' }}>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 1</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0', justifyContent: 'center' }}>
+          <div className="sig-field" style={{ marginTop: '6px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Responsable]</span>}</span>
+          </div>
+          <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito 1]</span></span>
+          </div>
+          <div className="sig-field">
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV 1]</span></span>
+          </div>
+          <div className="sig-field">
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE 1]</span></span>
+          </div>
+          <div className="sig-field">
+            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Perito Especialista Forense]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '14px' }} />
+          <div className="sig-line-label">Firma y Sello del Perito Acreditado</div>
+
+          <div className="fingerprint-row" style={{ margin: '10px 0 6px 0', justifyContent: 'center' }}>
             <PlanillaThumbBox label="PULGAR DER." />
             <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma y Sello del Perito Acreditado</div>
-          <div className="sig-field" style={{ marginTop: '6px', textAlign: 'center' }}>
-            <strong>{c.peritoLider || '[Nombre del Perito Responsable]'}</strong>
-          </div>
-          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
-            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV]</span></span>
-          </div>
-          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
-            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE]</span></span>
+
+          <div style={{ fontSize: '8px', textAlign: 'center', marginTop: '4px', color: '#0F172A', fontWeight: 'bold' }}>
+            Rol ISO/IEC 27037: [ &nbsp;X&nbsp; ] DES (Especialista / Dictamen) &nbsp;&nbsp; [ &nbsp; ] DEFR
           </div>
         </div>
+
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 2 (COPP Art. 223)</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0', justifyContent: 'center' }}>
+          <div className="sig-field" style={{ marginTop: '6px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Nombre del Co-Perito 2]</span></span>
+          </div>
+          <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito 2]</span></span>
+          </div>
+          <div className="sig-field">
+            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV 2]</span></span>
+          </div>
+          <div className="sig-field">
+            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE 2]</span></span>
+          </div>
+          <div className="sig-field">
+            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Co-Perito Informático Forense]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '14px' }} />
+          <div className="sig-line-label">Firma y Sello del Co-Perito Acreditado</div>
+
+          <div className="fingerprint-row" style={{ margin: '10px 0 6px 0', justifyContent: 'center' }}>
             <PlanillaThumbBox label="PULGAR DER." />
             <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma y Sello del Co-Perito Acreditado</div>
-          <div className="sig-field" style={{ marginTop: '6px', textAlign: 'center' }}>
-            <strong><span className="placeholder-field">[Nombre del Co-Perito]</span></strong>
-          </div>
-          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
-            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV]</span></span>
-          </div>
-          <div className="sig-field" style={{ textAlign: 'center', fontSize: '9pt' }}>
-            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE]</span></span>
+
+          <div style={{ fontSize: '8px', textAlign: 'center', marginTop: '4px', color: '#0F172A', fontWeight: 'bold' }}>
+            Rol ISO/IEC 27037: [ &nbsp;X&nbsp; ] DES (Especialista / Dictamen) &nbsp;&nbsp; [ &nbsp; ] DEFR
           </div>
         </div>
       </div>

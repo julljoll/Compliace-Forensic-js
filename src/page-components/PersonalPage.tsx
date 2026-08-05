@@ -1,26 +1,10 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Rating from '@mui/material/Rating';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
-import Alert from '@mui/material/Alert';
-import LinearProgress from '@mui/material/LinearProgress';
-import IconButton from '@mui/material/IconButton';
 
 import { useAuthStore } from '../store/authStore';
 import { useCMSStore } from '../store/cmsStore';
 import { platformAPI } from '../db/platformAPI';
-import { getPasosPorTipo } from '../data/tiposProyecto';
 import {
   Key, User, Camera, Star, UserPlus, Shield, Award,
   Trophy, Mail, Phone, Briefcase, Check, AlertCircle, Edit, ShieldOff,
@@ -43,7 +27,7 @@ export default function PersonalPage() {
   const isAdmin = user?.rol === 'admin' || user?.email === 'julljoll@gmail.com' || user?.email === 'admin@sha256.us';
   const [personal, setPersonal] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'projects' | 'admin'>(isAdmin ? 'admin' : 'profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'collaborators' | 'admin'>(isAdmin ? 'admin' : 'profile');
   const { casos, deleteCaso, personal: cmsPersonal, addPersonal, updatePersonal } = useCMSStore();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -175,201 +159,235 @@ export default function PersonalPage() {
     }
   };
 
-  const handleSetRanking = async (id: number | string, stars: number) => {
-    if (platformAPI.db?.updateUser && user?.id) {
-      await platformAPI.db.updateUser(user.id, Number(id), { ranking: stars });
-      updatePersonal(id.toString(), { ranking: stars });
-      await loadUsers();
-    } else {
-      updatePersonal(id.toString(), { ranking: stars });
-    }
-  };
-
-  const topCollaborator = personal.length > 0
-    ? [...personal].sort((a, b) => (b.ranking || 0) - (a.ranking || 0))[0]
-    : null;
-
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 4 }}>
+    <div className="container-fluid max-w-1280 px-0 pb-5">
       {/* Header */}
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { md: 'center' }, gap: 2, pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
-        <Box>
-          <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41' }}>
-            Panel de Personal
-          </Typography>
-          <Typography sx={{ fontSize: '14px', color: '#AEAEB2', mt: 0.5 }}>
-            Seguridad de tu perfil, gestión de colaboradores y métricas de desempeño del equipo.
-          </Typography>
-        </Box>
-        <Tabs
-          value={activeTab}
-          onChange={(_, val) => setActiveTab(val)}
-          sx={{
-            backgroundColor: 'rgba(0, 0, 0, 0.35)',
-            borderRadius: '8px',
-            p: '4px',
-            '& .MuiTabs-indicator': { backgroundColor: '#FECF06' },
-          }}
-        >
-          <Tab value="profile" label="Mi Perfil" sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
-          <Tab value="collaborators" label={`Colaboradores (${personal.length})`} sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
-          <Tab value="projects" label={`Mis Proyectos (${casos.length})`} sx={{ color: '#AEAEB2', '&.Mui-selected': { color: '#FECF06', fontWeight: 700 } }} />
-          {isAdmin && (
-            <Tab 
-              value="admin" 
-              label="Control Admin Global" 
-              sx={{ color: '#FF3B30', '&.Mui-selected': { color: '#FF3B30', fontWeight: 800 } }} 
-            />
-          )}
-        </Tabs>
-      </Box>
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-4 border-bottom border-2" style={{ borderColor: '#CBD5E1' }}>
+        <div>
+          <h1 className="h3 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>
+            Panel de Personal &amp; Peritos Judiciales
+          </h1>
+          <p className="text-muted small mb-0">
+            Gestión pericial, credenciales de acceso, equipo técnico e indicadores de cumplimiento.
+          </p>
+        </div>
+        {isAdmin && (
+          <button
+            type="button"
+            className="btn btn-warning btn-sm fw-bold text-navy"
+            onClick={() => { setShowAddForm(!showAddForm); if (showAddForm) resetForm(); }}
+          >
+            <UserPlus size={16} /> {showAddForm ? 'Cerrar Formulario' : 'Nuevo Colaborador'}
+          </button>
+        )}
+      </div>
 
+      {/* Navegación por Tabs Bootstrap */}
+      <ul className="nav nav-tabs mb-4 border-bottom border-2" style={{ borderColor: '#CBD5E1' }}>
+        {isAdmin && (
+          <li className="nav-item">
+            <button
+              className={`nav-link fw-bold ${activeTab === 'admin' ? 'active text-navy border-bottom border-3 border-primary' : 'text-muted'}`}
+              onClick={() => setActiveTab('admin')}
+            >
+              🛡️ Administración &amp; Compliance General
+            </button>
+          </li>
+        )}
+        <li className="nav-item">
+          <button
+            className={`nav-link fw-bold ${activeTab === 'profile' ? 'active text-navy border-bottom border-3 border-primary' : 'text-muted'}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            👤 Mi Perfil Pericial
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link fw-bold ${activeTab === 'collaborators' ? 'active text-navy border-bottom border-3 border-primary' : 'text-muted'}`}
+            onClick={() => setActiveTab('collaborators')}
+          >
+            👥 Peritos &amp; Colaboradores ({personal.length})
+          </button>
+        </li>
+      </ul>
+
+      {/* Tab: Admin */}
+      {activeTab === 'admin' && isAdmin && (
+        <AdminCompliancePanel />
+      )}
 
       {/* Tab: Profile */}
       {activeTab === 'profile' && (
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Card sx={{ p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', position: 'relative' }}>
-              <Chip label={user?.rol || 'Usuario'} size="small" sx={{ position: 'absolute', top: 16, right: 16, backgroundColor: 'rgba(254, 207, 6, 0.1)', color: '#FECF06', fontWeight: 700 }} />
-              <Box sx={{ position: 'relative', width: 120, height: 120, mb: 2 }}>
-                <Avatar src={user?.profileImage || '/favicon.png'} sx={{ width: 120, height: 120, border: '3px solid #FECF06' }} />
-                <IconButton onClick={() => fileInputRef.current?.click()} sx={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: '#FECF06', color: '#000', '&:hover': { backgroundColor: '#FFE052' } }}>
-                  <Camera size={18} />
-                </IconButton>
-                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
-              </Box>
-              <Typography sx={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF' }}>{user?.nombre || 'Usuario'}</Typography>
-              <Typography sx={{ fontSize: '13px', color: '#AEAEB2', fontFamily: 'monospace', mb: 2 }}>{user?.email || 'admin@sha256.us'}</Typography>
-            </Card>
-          </Grid>
+        <div className="row g-4">
+          <div className="col-12 col-md-4">
+            <div className="card p-4 text-center border shadow-sm bg-white rounded-3">
+              <div className="position-relative d-inline-block mx-auto mb-3">
+                {(user as any)?.profileImage || (user as any)?.profile_image ? (
+                  <img
+                    src={(user as any)?.profileImage || (user as any)?.profile_image}
+                    alt={user?.nombre || 'Perfil'}
+                    className="rounded-circle border border-2 border-primary object-fit-cover"
+                    style={{ width: '96px', height: '96px' }}
+                  />
+                ) : (
+                  <div className="rounded-circle bg-navy text-white fw-bold d-flex align-items-center justify-content-center mx-auto" style={{ width: '96px', height: '96px', fontSize: '36px', backgroundColor: '#112E51' }}>
+                    {(user?.nombre || 'P').charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0 p-1"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Cambiar Foto"
+                >
+                  <Camera size={14} />
+                </button>
+                <input ref={fileInputRef} type="file" accept="image/*" className="d-none" onChange={handleImageChange} />
+              </div>
+              <h2 className="h5 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>{user?.nombre} {(user as any)?.apellido || ''}</h2>
+              <div className="usa-tag usa-tag--info mx-auto mb-3">{user?.rol || 'Perito Judicial'}</div>
+              <div className="text-muted small">C.I.: <span className="fw-bold font-monospace">{(user as any)?.ci || 'V-00.000.000'}</span></div>
+              <div className="text-muted small">Email: <span className="fw-bold">{user?.email}</span></div>
+            </div>
+          </div>
 
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card sx={{ p: 3 }}>
-              <Typography component="h3" sx={{ fontSize: '18px', fontWeight: 700, color: '#FECF06', mb: 2 }}>
-                Cambiar Clave de Acceso
-              </Typography>
-              {passError && <Alert severity="error" sx={{ mb: 2 }}>{passError}</Alert>}
-              {passSuccess && <Alert severity="success" sx={{ mb: 2 }}>{passSuccess}</Alert>}
+          <div className="col-12 col-md-8">
+            <div className="card p-4 border shadow-sm bg-white rounded-3">
+              <h3 className="h6 fw-bold text-navy text-uppercase mb-3 d-flex align-items-center gap-2">
+                <Key size={18} className="text-primary" /> Cambiar Contraseña de Acceso
+              </h3>
 
-              <Box component="form" onSubmit={handlePasswordSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <TextField label="Nueva Contraseña" type="password" fullWidth value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                  </Grid>
-                  <Grid size={{ xs: 12, sm: 6 }}>
-                    <TextField label="Confirmar Contraseña" type="password" fullWidth value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                  </Grid>
-                </Grid>
-                <Button type="submit" variant="primary" size="md" disabled={changingPass} style={{ alignSelf: 'flex-end' }}>
-                  {changingPass ? 'Actualizando...' : 'Guardar Cambios'}
-                </Button>
-              </Box>
-            </Card>
-          </Grid>
-        </Grid>
+              {passError && <div className="alert alert-danger py-2 small mb-3">{passError}</div>}
+              {passSuccess && <div className="alert alert-success py-2 small mb-3">{passSuccess}</div>}
+
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="mb-3">
+                  <label className="form-label small fw-bold text-uppercase">Nueva Contraseña</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label small fw-bold text-uppercase">Confirmar Nueva Contraseña</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary fw-bold" disabled={changingPass}>
+                  {changingPass ? 'Actualizando...' : 'Actualizar Contraseña'}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Tab: Collaborators */}
       {activeTab === 'collaborators' && (
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 4 }}>
-            {topCollaborator && (
-              <Card sx={{ p: 3, mb: 3, border: '1px solid #FECF06' }}>
-                <Typography sx={{ fontSize: '11px', fontWeight: 700, color: '#FECF06', textTransform: 'uppercase', mb: 2 }}>
-                  Colaborador Destacado
-                </Typography>
-                <Stack direction="row" spacing={2} sx={{ alignItems: 'center', mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'rgba(254, 207, 6, 0.2)', color: '#FECF06', fontWeight: 700 }}>
-                    {topCollaborator.nombre?.charAt(0)}
-                  </Avatar>
-                  <Box>
-                    <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF' }}>
-                      {topCollaborator.nombre} {topCollaborator.apellido}
-                    </Typography>
-                    <Typography sx={{ fontSize: '12px', color: '#AEAEB2' }}>{topCollaborator.cargo}</Typography>
-                  </Box>
-                </Stack>
-                <Rating value={topCollaborator.ranking || 0} readOnly precision={0.5} />
-              </Card>
-            )}
+        <div>
+          {/* Formulario Agregar/Editar Colaborador */}
+          {showAddForm && (
+            <div className="card p-4 border mb-4 bg-white rounded-3 shadow-sm">
+              <h3 className="h6 fw-bold text-navy text-uppercase mb-3">
+                {isEditing ? 'Editar Perito / Colaborador' : 'Registrar Nuevo Perito / Colaborador'}
+              </h3>
+              <form onSubmit={handleAddCollaborator}>
+                <div className="row g-3">
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">Nombre *</label>
+                    <input type="text" className="form-control" value={nombre} onChange={e => setNombre(e.target.value)} required />
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">Apellido *</label>
+                    <input type="text" className="form-control" value={apellido} onChange={e => setApellido(e.target.value)} required />
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">C.I. *</label>
+                    <input type="text" className="form-control" value={ci} onChange={e => setCi(e.target.value)} required />
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">Cargo *</label>
+                    <input type="text" className="form-control" value={cargo} onChange={e => setCargo(e.target.value)} required />
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">Rol *</label>
+                    <select className="form-select" value={rol} onChange={e => setRol(e.target.value)}>
+                      {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                    </select>
+                  </div>
+                  <div className="col-12 col-md-4">
+                    <label className="form-label small fw-bold">Email *</label>
+                    <input type="email" className="form-control" value={email} onChange={e => setEmail(e.target.value)} required />
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <label className="form-label small fw-bold">Usuario *</label>
+                    <input type="text" className="form-control" value={username} onChange={e => setUsername(e.target.value)} required disabled={!!isEditing} />
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <label className="form-label small fw-bold">{isEditing ? 'Nueva Contraseña (Opcional)' : 'Contraseña *'}</label>
+                    <input type="password" className="form-control" value={passwordColab} onChange={e => setPasswordColab(e.target.value)} required={!isEditing} />
+                  </div>
+                </div>
+                <div className="d-flex gap-2 justify-content-end mt-3">
+                  <button type="button" className="btn btn-outline-secondary btn-sm" onClick={resetForm}>Cancelar</button>
+                  <button type="submit" className="btn btn-primary btn-sm fw-bold">Guardar Colaborador</button>
+                </div>
+              </form>
+            </div>
+          )}
 
-            {!showAddForm ? (
-              <Button onClick={() => setShowAddForm(true)} variant="primary" size="md" style={{ width: '100%' }}>
-                <UserPlus size={16} /> Crear Colaborador
-              </Button>
-            ) : (
-              <Card sx={{ p: 3 }}>
-                <Typography component="h4" sx={{ fontSize: '16px', fontWeight: 700, color: '#FECF06', mb: 2 }}>
-                  {isEditing ? 'Editar Colaborador' : 'Nuevo Colaborador'}
-                </Typography>
-                <Box component="form" onSubmit={handleAddCollaborator} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <TextField label="Nombre *" fullWidth value={nombre} onChange={(e) => setNombre(e.target.value)} />
-                  <TextField label="Apellido *" fullWidth value={apellido} onChange={(e) => setApellido(e.target.value)} />
-                  <TextField label="Cédula *" fullWidth value={ci} onChange={(e) => setCi(e.target.value)} />
-                  <TextField label="Cargo *" fullWidth value={cargo} onChange={(e) => setCargo(e.target.value)} />
-                  <TextField label="Email *" type="email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
-                  <TextField select label="Rol *" fullWidth value={rol} onChange={(e) => setRol(e.target.value)}>
-                    {ROLES.map(r => <MenuItem key={r.value} value={r.value}>{r.label}</MenuItem>)}
-                  </TextField>
-                  <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end' }}>
-                    <Button onClick={resetForm} variant="ghost" size="sm">Cancelar</Button>
-                    <Button type="submit" variant="primary" size="sm">Guardar</Button>
-                  </Stack>
-                </Box>
-              </Card>
-            )}
-          </Grid>
+          {/* Grid de Tarjetas de Colaboradores */}
+          <div className="row g-3">
+            {personal.map(colab => (
+              <div className="col-12 col-md-6 col-lg-4" key={colab.id}>
+                <div className="card p-3 border shadow-sm bg-white rounded-3 h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <div className="d-flex align-items-center gap-2">
+                        <div className="rounded-circle bg-navy text-white fw-bold d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: '#112E51' }}>
+                          {(colab.nombre || 'P').charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="fw-bold text-navy" style={{ fontSize: '14px' }}>{colab.nombre} {colab.apellido}</div>
+                          <div className="text-muted font-monospace" style={{ fontSize: '10.5px' }}>{colab.ci}</div>
+                        </div>
+                      </div>
+                      <span className={`usa-tag ${colab.activo ? 'usa-tag--success' : 'usa-tag--error'}`}>
+                        {colab.activo ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </div>
 
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card sx={{ p: 3 }}>
-              <Typography component="h3" sx={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', mb: 3 }}>
-                Directorio de Colaboradores
-              </Typography>
-              <Grid container spacing={2}>
-                {personal.map((p) => (
-                  <Grid key={p.id} size={{ xs: 12, sm: 6 }}>
-                    <Card sx={{ p: 2 }}>
-                      <Stack direction="row" spacing={2} sx={{ alignItems: 'center', mb: 2 }}>
-                        <Avatar src={p.profile_image} sx={{ bgcolor: 'rgba(254, 207, 6, 0.1)', color: '#FECF06' }}>
-                          {p.nombre?.charAt(0)}
-                        </Avatar>
-                        <Box sx={{ flex: 1, minWidth: 0 }}>
-                          <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>{p.nombre} {p.apellido}</Typography>
-                          <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>@{p.username}</Typography>
-                        </Box>
-                      </Stack>
-                      <Chip label={ROLES.find(r => r.value === p.rol)?.label || p.rol} size="small" sx={{ mb: 1.5, backgroundColor: 'rgba(254, 207, 6, 0.1)', color: '#FECF06' }} />
-                      <Rating value={p.ranking || 0} onChange={(_, val) => handleSetRanking(p.id, val || 0)} size="small" />
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </Card>
-          </Grid>
-        </Grid>
+                    <div className="text-dark small mb-2">{colab.cargo || 'Perito Forense'}</div>
+                    <div className="text-muted small font-monospace">{colab.email}</div>
+                  </div>
+
+                  {isAdmin && (
+                    <div className="d-flex justify-content-end gap-2 mt-3 pt-2 border-top">
+                      <button type="button" className="btn btn-sm btn-outline-primary p-1" onClick={() => handleEditClick(colab)}>
+                        <Edit size={14} />
+                      </button>
+                      <button type="button" className={`btn btn-sm ${colab.activo ? 'btn-outline-danger' : 'btn-outline-success'} p-1`} onClick={() => handleToggleActive(colab.id, colab.activo)}>
+                        {colab.activo ? <ShieldOff size={14} /> : <ShieldCheck size={14} />}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
-
-      {/* Tab: Projects */}
-      {activeTab === 'projects' && (
-        <Grid container spacing={3}>
-          {casos.map((caso) => (
-            <Grid key={caso.id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Card sx={{ p: 2.5 }}>
-                <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#FECF06' }}>{caso.numeroCaso}</Typography>
-                <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', mb: 1 }}>{caso.titulo}</Typography>
-                <Typography sx={{ fontSize: '12px', color: '#AEAEB2', mb: 2 }}>Perito: {caso.peritoLider || 'Sin asignar'}</Typography>
-                <LinearProgress variant="determinate" value={caso.porcentajeCompletado || 0} sx={{ height: 6, borderRadius: 3, backgroundColor: 'rgba(255, 255, 255, 0.1)', '& .MuiLinearProgress-bar': { backgroundColor: '#00FF41' } }} />
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
-      {/* Tab: Admin Compliance Panel */}
-      {activeTab === 'admin' && isAdmin && (
-        <AdminCompliancePanel />
-      )}
-    </Box>
-
+    </div>
   );
 }

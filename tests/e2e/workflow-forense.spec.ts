@@ -14,7 +14,7 @@ test.describe('CMS Compliance Forense SHA256.US — Flujo Pericial E2E', () => {
     }
 
     // 2. Verificar títulos y marca del CMS
-    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(13, 17, 23)') // #0D1117
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(240, 244, 248)') // #F0F4F8 (USWDS Canvas)
     await expect(page).toHaveTitle(/SHA256/)
 
     // 3. Verificar navegación a casos

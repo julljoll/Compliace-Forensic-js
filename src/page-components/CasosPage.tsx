@@ -1,24 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Chip from '@mui/material/Chip';
-import LinearProgress from '@mui/material/LinearProgress';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
 
-import { useCMSStore, EstadoCaso, PrioridadCaso, TipoProyecto, CasoCMS } from '../store/cmsStore';
+import { useCMSStore, EstadoCaso, PrioridadCaso, TipoProyecto } from '../store/cmsStore';
 import {
   FolderOpen, Smartphone, Mail, HardDrive, BookOpen,
   ChevronRight, Trash2, Search, ArrowLeft, User, Plus, X
@@ -36,13 +21,13 @@ const ESTADOS: { value: EstadoCaso | 'todos'; label: string }[] = [
   { value: 'archivado', label: 'Archivado' },
 ];
 
-const ESTADO_LABEL: Record<EstadoCaso, { label: string; color: string; bg: string }> = {
-  iniciado:    { label: 'Iniciado',    color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  en_proceso:  { label: 'En Proceso',  color: '#FF9500', bg: 'rgba(255, 149, 0, 0.1)' },
-  analisis:    { label: 'Análisis',    color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
-  informe:     { label: 'Informe',     color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  cerrado:     { label: 'Cerrado',     color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
-  archivado:   { label: 'Archivado',   color: '#AEAEB2', bg: 'rgba(255, 255, 255, 0.06)' },
+const ESTADO_LABEL: Record<EstadoCaso, { label: string; tagClass: string }> = {
+  iniciado:    { label: 'Iniciado',    tagClass: 'usa-tag--info' },
+  en_proceso:  { label: 'En Proceso',  tagClass: 'usa-tag--info' },
+  analisis:    { label: 'Análisis',    tagClass: 'usa-tag--info' },
+  informe:     { label: 'Informe',     tagClass: 'usa-tag--info' },
+  cerrado:     { label: 'Cerrado',     tagClass: 'usa-tag--success' },
+  archivado:   { label: 'Archivado',   tagClass: 'usa-tag--muted' },
 };
 
 export default function CasosPage() {
@@ -107,128 +92,174 @@ export default function CasosPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 6 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pb: 2, borderBottom: '1px solid rgba(254, 207, 6, 0.2)' }}>
-        <Box>
-          <Typography component="h1" sx={{ fontSize: '24px', fontWeight: 700, color: '#00FF41' }}>
+    <div className="container-fluid max-w-1280 px-0 pb-5">
+      {/* Header Institucional */}
+      <div className="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom border-2" style={{ borderColor: '#CBD5E1' }}>
+        <div>
+          <h1 className="h3 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>
             Directorio de Casos Forenses
-          </Typography>
-          <Typography sx={{ fontSize: '14px', color: '#AEAEB2', mt: 0.5 }}>
+          </h1>
+          <p className="text-muted small mb-0">
             Gestión integral de expedientes periciales y trazabilidad inmutable de cadena de custodia.
-          </Typography>
-        </Box>
-        <Button onClick={() => setIsModalOpen(true)} variant="primary" size="md">
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="btn btn-primary btn-sm fw-bold d-flex align-items-center gap-1"
+        >
           <Plus size={16} /> Crear Expediente
-        </Button>
-      </Box>
+        </button>
+      </div>
 
       {/* Toolbar & Filters */}
-      <Card sx={{ p: 2.5 }}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <TextField
-            size="small"
-            placeholder="Buscar por expediente, título o perito..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-          />
-          <TextField
-            select
-            size="small"
-            value={filterEstado}
-            onChange={(e) => setFilterEstado(e.target.value)}
-            sx={{ minWidth: 160 }}
-          >
-            {ESTADOS.map((e) => (
-              <MenuItem key={e.value} value={e.value}>{e.label}</MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            size="small"
-            value={filterTipo}
-            onChange={(e) => setFilterTipo(e.target.value)}
-            sx={{ minWidth: 180 }}
-          >
-            <MenuItem value="todos">Todas las Tipologías</MenuItem>
-            <MenuItem value="forense_whatsapp">Forense WhatsApp</MenuItem>
-            <MenuItem value="forense_email">Forense Email</MenuItem>
-            <MenuItem value="forense_discoduro">Forense Disco Duro</MenuItem>
-          </TextField>
-        </Stack>
-      </Card>
+      <div className="card p-3 border bg-white rounded-3 shadow-sm mb-4">
+        <div className="row g-2">
+          <div className="col-12 col-md-6">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por expediente, título o perito..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="col-6 col-md-3">
+            <select
+              className="form-select"
+              value={filterEstado}
+              onChange={(e) => setFilterEstado(e.target.value)}
+            >
+              {ESTADOS.map((e) => (
+                <option key={e.value} value={e.value}>{e.label}</option>
+              ))}
+            </select>
+          </div>
+          <div className="col-6 col-md-3">
+            <select
+              className="form-select"
+              value={filterTipo}
+              onChange={(e) => setFilterTipo(e.target.value)}
+            >
+              <option value="todos">Todas las Tipologías</option>
+              <option value="forense_whatsapp">Forense WhatsApp</option>
+              <option value="forense_email">Forense Email</option>
+              <option value="forense_discoduro">Forense Disco Duro</option>
+              <option value="forense_imagen">Imagen Forense</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-      {/* Grid of Cases */}
-      <Grid container spacing={2.5}>
+      {/* Grid de Casos */}
+      <div className="row g-3">
         {casosFiltrados.map((caso) => {
           const meta = ESTADO_LABEL[caso.estado] || ESTADO_LABEL.iniciado;
           return (
-            <Grid key={caso.id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Card
+            <div key={caso.id} className="col-12 col-sm-6 col-md-4">
+              <div
                 onClick={() => router.push(`/control/seguimiento-compliance?casoId=${caso.id}`)}
-
-                sx={{
-                  p: 3,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justify: 'space-between',
-                  height: '100%',
-                  transition: 'all 0.2s ease',
-                  '&:hover': { borderColor: '#FECF06', transform: 'translateY(-2px)' },
-                }}
+                className="card p-3 border rounded-3 bg-white hover-border-primary cursor-pointer transition-all h-100 d-flex flex-column justify-content-between"
+                style={{ cursor: 'pointer' }}
               >
-                <Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
-                    <Chip label={meta.label} size="small" sx={{ backgroundColor: meta.bg, color: meta.color, fontWeight: 700 }} />
-                    <Typography sx={{ fontSize: '11px', fontFamily: 'monospace', color: '#FECF06', fontWeight: 700 }}>
+                <div>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className={`usa-tag ${meta.tagClass}`}>{meta.label}</span>
+                    <span className="font-monospace fw-bold text-primary" style={{ fontSize: '11px' }}>
                       {caso.numeroCaso}
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', mb: 1 }}>
+                    </span>
+                  </div>
+                  <h3 className="h6 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>
                     {caso.titulo}
-                  </Typography>
-                  <Typography sx={{ fontSize: '12px', color: '#AEAEB2', mb: 2, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  </h3>
+                  <p className="text-muted small mb-3 text-truncate">
                     {caso.descripcion}
-                  </Typography>
-                </Box>
+                  </p>
+                </div>
 
-                <Box sx={{ pt: 2, borderTop: '1px solid rgba(254, 207, 6, 0.15)' }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>Progreso Forense</Typography>
-                    <Typography sx={{ fontSize: '11px', color: '#00FF41', fontWeight: 700 }}>{caso.porcentajeCompletado || 0}%</Typography>
-                  </Box>
-                  <LinearProgress variant="determinate" value={caso.porcentajeCompletado || 0} sx={{ height: 6, borderRadius: 3, backgroundColor: 'rgba(0, 255, 65, 0.1)', '& .MuiLinearProgress-bar': { backgroundColor: '#00FF41' } }} />
-                </Box>
-              </Card>
-            </Grid>
+                <div className="pt-2 border-top">
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <span className="small text-muted" style={{ fontSize: '11px' }}>Progreso Forense</span>
+                    <span className="fw-bold text-success font-monospace" style={{ fontSize: '11px' }}>
+                      {caso.porcentajeCompletado || 0}%
+                    </span>
+                  </div>
+                  <div className="progress" style={{ height: '6px' }}>
+                    <div className="progress-bar bg-success" style={{ width: `${caso.porcentajeCompletado || 0}%` }}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           );
         })}
-      </Grid>
+      </div>
 
-      {/* Modal Modal Nuevo Caso */}
-      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} fullWidth maxWidth="sm" slotProps={{ paper: { sx: { backgroundColor: '#121412', border: '1px solid rgba(254, 207, 6, 0.35)', p: 2 } } }}>
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#FECF06', fontWeight: 700 }}>
-          Nuevo Expediente Pericial Forense
-          <IconButton onClick={() => setIsModalOpen(false)} sx={{ color: '#AEAEB2' }}><X size={16} /></IconButton>
-        </DialogTitle>
-        <Box component="form" onSubmit={handleCreateCaso}>
-          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <TextField label="Título del Expediente *" fullWidth value={newTitulo} onChange={(e) => setNewTitulo(e.target.value)} required />
-            <TextField select label="Tipo de Investigación" fullWidth value={newTipo} onChange={(e) => setNewTipo(e.target.value as TipoProyecto)}>
-              <MenuItem value="forense_whatsapp">Forense WhatsApp (Móvil Android)</MenuItem>
-              <MenuItem value="forense_email">Forense Email (Cabeceras SMTP)</MenuItem>
-              <MenuItem value="forense_discoduro">Forense Disco Duro (Clonado Bit-a-Bit)</MenuItem>
-            </TextField>
-            <TextField label="Dispositivo / Evidencia Primaria" fullWidth value={newDispositivo} onChange={(e) => setNewDispositivo(e.target.value)} />
-            <TextField label="Perito Asignado" fullWidth value={newPerito} onChange={(e) => setNewPerito(e.target.value)} />
-          </DialogContent>
-          <DialogActions sx={{ pt: 2 }}>
-            <Button onClick={() => setIsModalOpen(false)} variant="ghost" size="sm">Cancelar</Button>
-            <Button type="submit" variant="primary" size="sm">Crear Expediente</Button>
-          </DialogActions>
-        </Box>
-      </Dialog>
-    </Box>
+      {/* Modal Nuevo Caso Bootstrap */}
+      {isModalOpen && (
+        <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content border-primary">
+              <div className="modal-header bg-navy text-white" style={{ backgroundColor: '#112E51' }}>
+                <h5 className="modal-title fw-bold">Nuevo Expediente Pericial Forense</h5>
+                <button type="button" className="btn-close btn-close-white" onClick={() => setIsModalOpen(false)}></button>
+              </div>
+              <form onSubmit={handleCreateCaso}>
+                <div className="modal-body d-flex flex-column gap-3">
+                  <div>
+                    <label className="form-label small fw-bold">Título del Expediente *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newTitulo}
+                      onChange={(e) => setNewTitulo(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label small fw-bold">Tipo de Investigación</label>
+                    <select
+                      className="form-select"
+                      value={newTipo}
+                      onChange={(e) => setNewTipo(e.target.value as TipoProyecto)}
+                    >
+                      <option value="forense_whatsapp">Forense WhatsApp (Móvil Android)</option>
+                      <option value="forense_email">Forense Email (Cabeceras SMTP)</option>
+                      <option value="forense_discoduro">Forense Disco Duro (Clonado Bit-a-Bit)</option>
+                      <option value="forense_imagen">Adquisición de Imagen Forense (ISO 27037)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="form-label small fw-bold">Dispositivo / Evidencia Primaria</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newDispositivo}
+                      onChange={(e) => setNewDispositivo(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label small fw-bold">Perito Asignado</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newPerito}
+                      onChange={(e) => setNewPerito(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => setIsModalOpen(false)}>
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn btn-primary btn-sm fw-bold">
+                    Crear Expediente
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

@@ -2,8 +2,6 @@
 
 import React, { useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import { useCMSStore } from '../../store/cmsStore';
 import { useAuditStore } from '../../store/auditStore';
 import PlanillaPdfViewer from '../../components/organisms/Planillas/PlanillaPdfViewer';
@@ -40,30 +38,25 @@ const ActaAuditoriaTimelinePage = () => {
       title={`Acta de Auditoría y Hash Chain — Caso #${caso?.numeroCaso || 'GLOBAL'}`}
       document={<ActaAuditoriaTimelinePdf caso={caso} logs={logsDelCaso} />}
       actions={
-        <TextField
-          select
-          size="small"
-          value={casoId}
-          onChange={(e) => router.push(e.target.value ? `/planillas/acta-auditoria-timeline?casoId=${e.target.value}` : '/planillas/acta-auditoria-timeline')}
-          sx={{
-            minWidth: 220,
-            backgroundColor: '#2A2100',
-            borderRadius: '6px',
-            '& .MuiOutlinedInput-root': {
-              color: '#FECF06',
-              fontSize: '12px',
-              fontWeight: 700,
-              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.4)' },
-            },
-          }}
-        >
-          <MenuItem value="">-- Registros Globales --</MenuItem>
-          {casos.map((el) => (
-            <MenuItem key={el.id} value={el.id}>
-              {el.numeroCaso} - {el.titulo}
-            </MenuItem>
-          ))}
-        </TextField>
+        <div className="d-flex align-items-center gap-2">
+          <label htmlFor="select-caso-auditoria" className="small fw-bold text-uppercase text-muted mb-0 d-none d-sm-inline" style={{ fontSize: '10px' }}>
+            REGISTRO:
+          </label>
+          <select
+            id="select-caso-auditoria"
+            className="form-select form-select-sm font-monospace fw-bold border-secondary"
+            value={casoId}
+            onChange={(e) => router.push(e.target.value ? `/planillas/acta-auditoria-timeline?casoId=${e.target.value}` : '/planillas/acta-auditoria-timeline')}
+            style={{ minWidth: '220px', fontSize: '12px', color: '#112E51', backgroundColor: '#FFFFFF' }}
+          >
+            <option value="">-- Registros Globales --</option>
+            {casos.map((el) => (
+              <option key={el.id} value={el.id}>
+                {el.numeroCaso} - {el.titulo}
+              </option>
+            ))}
+          </select>
+        </div>
       }
     />
   );

@@ -1,15 +1,5 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Chip from '@mui/material/Chip';
-import Checkbox from '@mui/material/Checkbox';
-import LinearProgress from '@mui/material/LinearProgress';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckIcon from '@mui/icons-material/Check';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Normativa } from '../../store/cmsStore';
+import { BookOpen, CheckCircle2, ChevronRight } from '../atoms/AppleIcon';
 
 interface NormativaAccordionProps {
   norm: Normativa;
@@ -33,104 +23,98 @@ export default function NormativaAccordion({
   toggleCheck,
 }: NormativaAccordionProps) {
   return (
-    <Accordion
-      expanded={isExpanded}
-      onChange={() => onToggle(isExpanded ? null : norm.id)}
-      sx={{
-        backgroundColor: '#1E1800',
-        color: '#FFFFFF',
-        border: '1px solid rgba(254, 207, 6, 0.25)',
-        borderRadius: '8px !important',
-        mb: 2,
-        '&:before': { display: 'none' },
-      }}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreIcon sx={{ color: '#FECF06' }} />}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', pr: 1 }}>
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-              <Typography sx={{ fontFamily: 'monospace', fontWeight: 800, fontSize: '12px', color: '#FECF06' }}>
-                {norm.codigo}
-              </Typography>
-              <Chip label={norm.tipo} size="small" sx={{ height: 18, fontSize: '9px', backgroundColor: 'rgba(254, 207, 6, 0.1)', color: '#FECF06', fontWeight: 700 }} />
-              {progress.pct === 100 && (
-                <Chip icon={<CheckIcon sx={{ fontSize: 12, color: '#00FF41 !important' }} />} label="Completo" size="small" sx={{ height: 18, fontSize: '9px', backgroundColor: 'rgba(0, 255, 65, 0.1)', color: '#00FF41', fontWeight: 700 }} />
-              )}
-            </Box>
-            <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#FFFFFF' }}>
-              {norm.nombre}
-            </Typography>
-          </Box>
+    <div className="card p-0 border shadow-sm bg-white rounded-3 mb-3 overflow-hidden">
+      <div
+        className="p-3 cursor-pointer d-flex align-items-center justify-content-between hover-bg-light"
+        onClick={() => onToggle(isExpanded ? null : norm.id)}
+        style={{ cursor: 'pointer' }}
+      >
+        <div className="flex-grow-1 min-w-0">
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <span className="font-monospace fw-bold small text-warning">{norm.codigo}</span>
+            <span className="usa-tag usa-tag--info" style={{ fontSize: '9px' }}>{norm.tipo}</span>
+            {progress.pct === 100 && (
+              <span className="usa-tag usa-tag--success" style={{ fontSize: '9px' }}>✓ Completo</span>
+            )}
+          </div>
+          <h3 className="h6 fw-bold text-navy mb-0" style={{ color: '#112E51' }}>
+            {norm.nombre}
+          </h3>
+        </div>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 2 }}>
-            <Box sx={{ width: 80, display: { xs: 'none', sm: 'block' } }}>
-              <LinearProgress variant="determinate" value={progress.pct} sx={{ height: 6, borderRadius: 3, backgroundColor: 'rgba(254, 207, 6, 0.15)', '& .MuiLinearProgress-bar': { backgroundColor: '#FECF06' } }} />
-            </Box>
-            <Typography sx={{ fontSize: '12px', fontWeight: 700, color: progress.pct === 100 ? '#00FF41' : '#FECF06' }}>
-              {progress.checked}/{progress.total}
-            </Typography>
-          </Box>
-        </Box>
-      </AccordionSummary>
+        <div className="d-flex align-items-center gap-3 ms-2">
+          <div className="d-none d-sm-block min-w-80">
+            <div className="progress" style={{ height: '6px' }}>
+              <div className="progress-bar bg-warning" style={{ width: `${progress.pct}%` }}></div>
+            </div>
+          </div>
+          <span className={`fw-bold small ${progress.pct === 100 ? 'text-success' : 'text-warning'}`}>
+            {progress.checked}/{progress.total}
+          </span>
+          <ChevronRight
+            size={18}
+            className="text-muted"
+            style={{
+              transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s ease',
+            }}
+          />
+        </div>
+      </div>
 
-      {ne && (
-        <AccordionDetails sx={{ p: 0, borderTop: '1px solid rgba(254, 207, 6, 0.15)' }}>
+      {isExpanded && ne && (
+        <div className="border-top p-3 bg-light">
           {ne.etapas.map((etapa: any) => (
-            <Box key={etapa.id} sx={{ p: 2, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            <div key={etapa.id} className="p-2 mb-2 bg-white rounded border">
               {etapa.subetapas ? (
-                <Box sx={{ mb: 1 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                    <MenuBookIcon sx={{ fontSize: 16, color: '#FECF06' }} />
-                    <Typography sx={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>{etapa.nombre}</Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: '12px', color: '#AEAEB2', ml: 3 }}>{etapa.descripcion}</Typography>
-                </Box>
+                <div className="mb-2">
+                  <div className="fw-bold text-navy d-flex align-items-center gap-1" style={{ fontSize: '13px', color: '#112E51' }}>
+                    <BookOpen size={14} className="text-warning" />
+                    {etapa.nombre}
+                  </div>
+                  <div className="text-muted small ms-4">{etapa.descripcion}</div>
+                </div>
               ) : (
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                  <Checkbox
+                <div className="form-check d-flex align-items-start gap-2">
+                  <input
+                    type="checkbox"
+                    className="form-check-input mt-1"
                     checked={isChecked(etapa.id)}
                     onChange={() => toggleCheck(etapa.id, norm.id)}
-                    size="small"
-                    sx={{ color: '#FECF06', '&.Mui-checked': { color: '#00FF41' } }}
                   />
-                  <Box>
-                    <Typography sx={{ fontSize: '13px', fontWeight: 600, color: isChecked(etapa.id) ? '#AEAEB2' : '#FFFFFF', textDecoration: isChecked(etapa.id) ? 'line-through' : 'none' }}>
+                  <div>
+                    <div className={`fw-semibold style-none ${isChecked(etapa.id) ? 'text-decoration-line-through text-muted' : 'text-navy'}`} style={{ fontSize: '13px' }}>
                       {etapa.nombre}
-                    </Typography>
-                    <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>{etapa.descripcion}</Typography>
-                    {isChecked(etapa.id) && getCheckDate(etapa.id) && (
-                      <Typography sx={{ fontSize: '10px', color: '#00FF41', mt: 0.5, fontWeight: 700 }}>
-                        ✓ {new Date(getCheckDate(etapa.id)!).toLocaleDateString('es-VE')}
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
+                    </div>
+                    <div className="text-muted small">{etapa.descripcion}</div>
+                  </div>
+                </div>
               )}
 
               {etapa.subetapas && (
-                <Box sx={{ ml: 4, borderLeft: '2px solid rgba(254, 207, 6, 0.2)', pl: 2, mt: 1 }}>
+                <div className="ms-4 border-start border-2 ps-3 mt-2" style={{ borderColor: '#CBD5E1' }}>
                   {etapa.subetapas.map((sub: any) => (
-                    <Box key={sub.id} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, py: 0.5 }}>
-                      <Checkbox
+                    <div key={sub.id} className="form-check d-flex align-items-start gap-2 py-1">
+                      <input
+                        type="checkbox"
+                        className="form-check-input mt-1"
                         checked={isChecked(sub.id)}
                         onChange={() => toggleCheck(sub.id, norm.id)}
-                        size="small"
-                        sx={{ color: '#FECF06', '&.Mui-checked': { color: '#00FF41' } }}
                       />
-                      <Box>
-                        <Typography sx={{ fontSize: '12px', fontWeight: 600, color: isChecked(sub.id) ? '#AEAEB2' : '#FFFFFF', textDecoration: isChecked(sub.id) ? 'line-through' : 'none' }}>
+                      <div>
+                        <div className={`fw-semibold style-none ${isChecked(sub.id) ? 'text-decoration-line-through text-muted' : 'text-navy'}`} style={{ fontSize: '12px' }}>
                           {sub.nombre}
-                        </Typography>
-                        <Typography sx={{ fontSize: '11px', color: '#AEAEB2' }}>{sub.descripcion}</Typography>
-                      </Box>
-                    </Box>
+                        </div>
+                        <div className="text-muted small" style={{ fontSize: '11px' }}>{sub.descripcion}</div>
+                      </div>
+                    </div>
                   ))}
-                </Box>
+                </div>
               )}
-            </Box>
+            </div>
           ))}
-        </AccordionDetails>
+        </div>
       )}
-    </Accordion>
+    </div>
   );
 }

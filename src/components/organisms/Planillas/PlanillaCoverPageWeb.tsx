@@ -1,20 +1,8 @@
 'use client';
 
 import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Chip from '@mui/material/Chip';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import ShieldIcon from '@mui/icons-material/Shield';
-import GavelIcon from '@mui/icons-material/Gavel';
-import DescriptionIcon from '@mui/icons-material/Description';
 import { getPlanillaRegistry } from '@/data/planillasRegistry';
+import { Shield, FileText, CheckCircle2 } from '@/components/atoms/AppleIcon';
 
 interface PlanillaCoverPageWebProps {
   planillaId: string;
@@ -32,194 +20,112 @@ export function PlanillaCoverPageWeb({ planillaId, caso, peritoNombre }: Planill
   const perito = peritoNombre || c.peritoAsignado || 'Ing. Christopher V. Vance (Perito Informático Forense CIV N° 284.912)';
 
   return (
-    <Paper
-      elevation={4}
-      sx={{
-        backgroundColor: '#161B22',
-        color: '#E6EDF3',
-        border: '1.5px solid rgba(254, 207, 6, 0.4)',
-        borderRadius: '12px',
-        p: { xs: 2.5, md: 4 },
-        mb: 4,
-        position: 'relative',
-        overflow: 'hidden',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-      }}
-    >
+    <div className="card p-4 bg-white border rounded-3 shadow-sm mb-4">
       {/* Listón de Clasificación Legal */}
-      <Box
-        sx={{
-          backgroundColor: '#0D1117',
-          border: '1px solid rgba(254, 207, 6, 0.5)',
-          borderRadius: '6px',
-          px: 2,
-          py: 1,
-          mb: 3,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: 1,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <ShieldIcon sx={{ color: '#FECF06', fontSize: 18 }} />
-          <Typography sx={{ fontSize: '11px', fontWeight: 800, color: '#FECF06', letterSpacing: '0.8px', fontFamily: 'monospace' }}>
-            DOSSIER FORENSE OFICIAL — FOLIO 01 (PORTADA RECEPTORA)
-          </Typography>
-        </Box>
-      </Box>
+      <div className="usa-alert usa-alert--info mb-3 py-2">
+        <div className="d-flex align-items-center gap-2 font-monospace fw-bold small text-navy" style={{ color: '#112E51' }}>
+          <Shield size={18} className="text-warning" />
+          DOSSIER FORENSE OFICIAL — FOLIO 01 (PORTADA RECEPTORA)
+        </div>
+      </div>
 
-      {/* Bloque Central con Título y Subtítulo */}
-      <Box
-        sx={{
-          textAlign: 'center',
-          py: 3,
-          px: 2,
-          backgroundColor: 'rgba(13, 17, 23, 0.6)',
-          borderRadius: '8px',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          mb: 3,
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 900,
-            color: '#FECF06',
-            fontSize: { xs: '18px', md: '22px' },
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            mb: 1.5,
-          }}
-        >
+      {/* Bloque Central con Título */}
+      <div className="bg-light p-4 rounded-3 border text-center mb-4">
+        <h2 className="h4 fw-bold text-navy mb-2" style={{ color: '#112E51' }}>
           {registry.nombreOficial}
-        </Typography>
-
-        <Typography
-          variant="subtitle2"
-          sx={{
-            color: '#94A3B8',
-            fontSize: '13px',
-            maxWidth: '750px',
-            mx: 'auto',
-            mb: 2.5,
-          }}
-        >
+        </h2>
+        <p className="text-muted small mx-auto max-w-750 mb-3">
           {registry.subtitulo}
-        </Typography>
+        </p>
 
         {/* Tarjetas de Metadatos del Expediente */}
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' }, gap: 2 }}>
-          <Box sx={{ backgroundColor: '#0D1117', p: 1.5, borderRadius: '6px', border: '1px solid rgba(254, 207, 6, 0.2)' }}>
-            <Typography sx={{ fontSize: '10px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>
-              EXPEDIENTE N°
-            </Typography>
-            <Typography sx={{ fontSize: '13px', color: '#FFFFFF', fontWeight: 800, fontFamily: 'monospace' }}>
-              {expNumero}
-            </Typography>
-          </Box>
-          <Box sx={{ backgroundColor: '#0D1117', p: 1.5, borderRadius: '6px', border: '1px solid rgba(0, 255, 65, 0.2)' }}>
-            <Typography sx={{ fontSize: '10px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>
-              PRCC CORRELATIVO
-            </Typography>
-            <Typography sx={{ fontSize: '13px', color: '#00FF41', fontWeight: 800, fontFamily: 'monospace' }}>
-              {prccNumero}
-            </Typography>
-          </Box>
-          <Box sx={{ backgroundColor: '#0D1117', p: 1.5, borderRadius: '6px', border: '1px solid rgba(157, 255, 0, 0.2)' }}>
-            <Typography sx={{ fontSize: '10px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>
-              FECHA / HORA EMISIÓN
-            </Typography>
-            <Typography sx={{ fontSize: '13px', color: '#9DFF00', fontWeight: 800, fontFamily: 'monospace' }}>
-              {fechaEmision}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+        <div className="row g-2">
+          <div className="col-12 col-sm-4">
+            <div className="bg-white p-2 rounded border">
+              <div className="text-uppercase fw-bold text-muted" style={{ fontSize: '10px' }}>EXPEDIENTE N°</div>
+              <div className="fw-bold font-monospace text-navy" style={{ fontSize: '13px' }}>{expNumero}</div>
+            </div>
+          </div>
+          <div className="col-12 col-sm-4">
+            <div className="bg-white p-2 rounded border">
+              <div className="text-uppercase fw-bold text-muted" style={{ fontSize: '10px' }}>PRCC CORRELATIVO</div>
+              <div className="fw-bold font-monospace text-success" style={{ fontSize: '13px' }}>{prccNumero}</div>
+            </div>
+          </div>
+          <div className="col-12 col-sm-4">
+            <div className="bg-white p-2 rounded border">
+              <div className="text-uppercase fw-bold text-muted" style={{ fontSize: '10px' }}>FECHA EMISIÓN</div>
+              <div className="fw-bold font-monospace text-primary" style={{ fontSize: '13px' }}>{fechaEmision}</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Leyenda Dinámica de Secciones Enumeradas */}
-      <Box sx={{ mb: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <DescriptionIcon sx={{ color: '#FECF06', fontSize: 20 }} />
-            <Typography sx={{ fontSize: '14px', fontWeight: 800, color: '#FECF06' }}>
-              LEYENDA DE CONTENIDO ENUMERADO SECCIÓN POR SECCIÓN
-            </Typography>
-          </Box>
-          <Chip
-            label={`${registry.sections.length} Secciones`}
-            size="small"
-            sx={{ backgroundColor: '#21262D', color: '#94A3B8', fontSize: '11px', fontWeight: 700 }}
-          />
-        </Box>
+      <div className="mb-4">
+        <div className="d-flex align-items-center justify-content-between mb-2">
+          <div className="fw-bold text-navy d-flex align-items-center gap-1" style={{ fontSize: '14px', color: '#112E51' }}>
+            <FileText size={18} className="text-warning" />
+            LEYENDA DE CONTENIDO ENUMERADO SECCIÓN POR SECCIÓN
+          </div>
+          <span className="usa-tag usa-tag--info">
+            {registry.sections.length} Secciones
+          </span>
+        </div>
 
-        <TableContainer component={Paper} sx={{ backgroundColor: '#0D1117', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-          <Table size="small">
-            <TableHead>
-              <TableRow sx={{ backgroundColor: '#21262D' }}>
-                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '9%' }}>N° SECC.</TableCell>
-                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '53%' }}>DENOMINACIÓN DE LA SECCIÓN</TableCell>
-                <TableCell sx={{ color: '#FECF06', fontWeight: 800, fontSize: '11px', width: '38%' }}>RESUMEN DE CONTENIDO</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+        <div className="table-responsive rounded border bg-white">
+          <table className="usa-table table table-hover mb-0 align-middle">
+            <thead>
+              <tr>
+                <th scope="col" style={{ width: '10%' }}>N° SECC.</th>
+                <th scope="col" style={{ width: '50%' }}>DENOMINACIÓN DE LA SECCIÓN</th>
+                <th scope="col" style={{ width: '40%' }}>RESUMEN DE CONTENIDO</th>
+              </tr>
+            </thead>
+            <tbody>
               {registry.sections.map((sec) => (
-                <TableRow
+                <tr
                   key={sec.numero}
+                  className="cursor-pointer"
                   onClick={() => {
                     const el = document.getElementById(`seccion-${sec.numero}`);
                     if (el) {
                       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                   }}
-                  sx={{
-                    cursor: 'pointer',
-                    '&:hover': { backgroundColor: 'rgba(254, 207, 6, 0.12)' },
-                  }}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <TableCell sx={{ color: '#00FF41', fontWeight: 800, fontFamily: 'monospace', fontSize: '12px' }}>
-                    <a href={`#seccion-${sec.numero}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <td className="font-monospace fw-bold text-success" style={{ fontSize: '12px' }}>
+                    <a href={`#seccion-${sec.numero}`} className="text-decoration-none text-success">
                       {sec.numero}
                     </a>
-                  </TableCell>
-                  <TableCell sx={{ color: '#FFFFFF', fontWeight: 700, fontSize: '12px' }}>
-                    <a href={`#seccion-${sec.numero}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  </td>
+                  <td className="fw-bold text-navy" style={{ fontSize: '12px', color: '#112E51' }}>
+                    <a href={`#seccion-${sec.numero}`} className="text-decoration-none text-navy">
                       {sec.titulo}
                     </a>
-                  </TableCell>
-                  <TableCell sx={{ color: '#94A3B8', fontSize: '11px' }}>
+                  </td>
+                  <td className="text-muted small">
                     {sec.descripcion} {sec.camposCount ? `(${sec.camposCount} ítems)` : ''}
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Normativas Ancladas */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', mb: 2 }}>
-        <GavelIcon sx={{ color: '#9DFF00', fontSize: 16 }} />
-        <Typography sx={{ fontSize: '11px', fontWeight: 800, color: '#9DFF00', mr: 1 }}>
+      <div className="d-flex align-items-center gap-2 flex-wrap">
+        <span className="fw-bold small text-navy text-uppercase" style={{ fontSize: '11px', color: '#112E51' }}>
           MARCO NORMATIVO APLICABLE:
-        </Typography>
+        </span>
         {registry.normativas.map((norm, idx) => (
-          <Chip
-            key={idx}
-            label={norm}
-            size="small"
-            sx={{
-              backgroundColor: '#21262D',
-              color: '#C9D1D9',
-              fontSize: '10px',
-              fontWeight: 700,
-              border: '1px solid rgba(255,255,255,0.1)',
-            }}
-          />
+          <span key={idx} className="usa-tag usa-tag--info" style={{ fontSize: '10px' }}>
+            {norm}
+          </span>
         ))}
-      </Box>
-
-    </Paper>
+      </div>
+    </div>
   );
 }

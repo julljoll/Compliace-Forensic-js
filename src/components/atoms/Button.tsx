@@ -1,5 +1,4 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import MuiButton from '@mui/material/Button';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'destructive' | 'ghost' | 'contained' | 'outlined';
@@ -19,62 +18,35 @@ export const Button: React.FC<ButtonProps> = ({
   iconOnly = false,
   disabled,
   onClick,
-  type,
+  type = 'button',
   startIcon,
   endIcon,
+  style,
   ...props
 }) => {
-  let muiVariant: 'contained' | 'outlined' | 'text' = 'contained';
-  let muiColor: 'primary' | 'secondary' | 'error' | 'inherit' = 'primary';
+  let btnVariantClass = 'btn-primary';
+  if (variant === 'secondary') btnVariantClass = 'btn-secondary';
+  else if (variant === 'destructive') btnVariantClass = 'btn-danger';
+  else if (variant === 'ghost') btnVariantClass = 'btn-link text-decoration-none';
+  else if (variant === 'outlined') btnVariantClass = 'btn-outline-primary';
 
-  if (variant === 'primary' || variant === 'contained') {
-    muiVariant = 'contained';
-    muiColor = (color as any) || 'primary';
-  } else if (variant === 'secondary') {
-    muiVariant = 'contained';
-    muiColor = 'secondary';
-  } else if (variant === 'destructive') {
-    muiVariant = 'contained';
-    muiColor = 'error';
-  } else if (variant === 'ghost' || variant === 'outlined') {
-    muiVariant = variant === 'outlined' ? 'outlined' : 'text';
-    muiColor = (color as any) || 'primary';
-  }
-
-  const normalizedSize = size === 'small' ? 'sm' : size === 'large' ? 'lg' : size === 'medium' ? 'md' : size;
-  const paddingY = normalizedSize === 'sm' ? '4px' : normalizedSize === 'lg' ? '12px' : '8px';
-  const paddingX = iconOnly ? (normalizedSize === 'sm' ? '8px' : normalizedSize === 'lg' ? '16px' : '12px') : (normalizedSize === 'sm' ? '14px' : normalizedSize === 'lg' ? '22px' : '18px');
-  const minWidth = iconOnly ? (normalizedSize === 'sm' ? '32px' : normalizedSize === 'lg' ? '48px' : '40px') : 'auto';
+  let btnSizeClass = '';
+  if (size === 'sm' || size === 'small') btnSizeClass = 'btn-sm';
+  else if (size === 'lg' || size === 'large') btnSizeClass = 'btn-lg';
 
   return (
-    <MuiButton
-      variant={muiVariant}
-      color={muiColor}
+    <button
+      type={type}
       disabled={disabled}
       onClick={onClick}
-      type={type}
-      className={className}
-      startIcon={startIcon}
-      endIcon={endIcon}
-      sx={{
-        py: paddingY,
-        px: paddingX,
-        minWidth: minWidth,
-        borderRadius: normalizedSize === 'sm' ? '8px' : normalizedSize === 'lg' ? '12px' : '10px',
-        fontSize: normalizedSize === 'sm' ? '13px' : normalizedSize === 'lg' ? '17px' : '15px',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '8px',
-        transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-        '&:active': {
-          transform: 'scale(0.97)',
-        },
-      }}
-      {...(props as Record<string, unknown>)}
+      className={`btn ${btnVariantClass} ${btnSizeClass} fw-semibold d-inline-flex align-items-center justify-content-center gap-2 ${className}`}
+      style={style}
+      {...props}
     >
+      {startIcon}
       {children}
-    </MuiButton>
+      {endIcon}
+    </button>
   );
 };
 

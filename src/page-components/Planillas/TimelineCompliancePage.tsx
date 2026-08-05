@@ -2,8 +2,6 @@
 
 import React, { useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useCMSStore } from '../../store/cmsStore';
 import type { CasoCMS } from '../../store/cmsStore';
 import PlanillaPdfViewer from '../../components/organisms/Planillas/PlanillaPdfViewer';
@@ -25,14 +23,18 @@ export default function TimelineCompliancePage() {
 
   if (!caso) {
     return (
-      <Box sx={{ p: 5, textAlign: 'center' }}>
-        <Typography variant="h6" sx={{ color: '#FECF06', fontWeight: 800 }}>
-          Expediente no encontrado
-        </Typography>
-        <Typography sx={{ color: '#AEAEB2', mt: 1 }}>
-          Seleccione un expediente válido en la sección de casos.
-        </Typography>
-      </Box>
+      <div className="container p-5 text-center">
+        <div className="usa-alert usa-alert--warning max-w-600 mx-auto text-start">
+          <div className="usa-alert__body">
+            <h3 className="usa-alert__heading fw-bold" style={{ color: '#D9A700' }}>
+              Expediente no encontrado
+            </h3>
+            <p className="usa-alert__text text-muted mb-0">
+              Seleccione un expediente válido en la sección de casos.
+            </p>
+          </div>
+        </div>
+      </div>
     );
   }
 

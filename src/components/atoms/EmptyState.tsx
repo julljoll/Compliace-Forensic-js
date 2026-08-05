@@ -1,6 +1,4 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 export interface EmptyStateProps {
   icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
@@ -16,30 +14,18 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   action,
 }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        p: 4,
-        border: '1px dashed rgba(254, 207, 6, 0.3)',
-        borderRadius: '16px',
-        backgroundColor: '#1E1800',
-      }}
-    >
-      <Box sx={{ p: 2, borderRadius: '50%', backgroundColor: 'rgba(254, 207, 6, 0.1)', mb: 2 }}>
-        <Icon size={36} style={{ color: '#FECF06' }} />
-      </Box>
-      <Typography variant="h6" sx={{ color: '#FFFFFF', fontWeight: 700 }}>
+    <div className="d-flex flex-column align-items-center justify-content-center text-center p-4 border border-dashed rounded-3 bg-white">
+      <div className="p-3 rounded-circle bg-light mb-3">
+        <Icon size={36} style={{ color: '#D9A700' }} />
+      </div>
+      <h3 className="h6 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>
         {title}
-      </Typography>
-      <Typography sx={{ fontSize: '14px', color: '#AEAEB2', mt: 1, maxWidth: '360px' }}>
+      </h3>
+      <p className="text-muted small mb-0 max-w-360">
         {description}
-      </Typography>
-      {action && <Box sx={{ mt: 3 }}>{action}</Box>}
-    </Box>
+      </p>
+      {action && <div className="mt-3">{action}</div>}
+    </div>
   );
 };
 

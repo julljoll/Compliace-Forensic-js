@@ -1,6 +1,6 @@
 import { Smartphone, Mail, HardDrive } from '../components/atoms/AppleIcon';
 
-export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro';
+export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro' | 'forense_imagen';
 
 export interface ProyectoPaso {
   id: string;
@@ -633,11 +633,56 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
       },
     ],
   },
+  // ─── Forense Imagen Forense ────────────────────────────────────────────────
+  forense_imagen: {
+    id: 'forense_imagen',
+    label: 'Imagen Forense',
+    descripcion: 'Adquisición y verificación de imagen forense bit a bit de dispositivo de almacenamiento (HDD/SSD/USB). Incluye generación de hash SHA-256, preservación de integridad criptográfica y cadena de custodia MUCC-2017 e ISO/IEC 27037:2012.',
+    icon: HardDrive,
+    iconoName: 'HardDrive',
+    color: 'lime',
+    normativasPorDefecto: ['n1', 'n3', 'n5', 'n7', 'n12'],
+    requerimientosTecnicos: [
+      'FTK Imager v4.7 (AccessData) o Guymager / dd para adquisición bit a bit',
+      'Write-blocker hardware (Tableau T8-R2 o VOOM HardCopy 3P)',
+      'Disco duro destino de capacidad ≥ 2× la capacidad del dispositivo origen',
+      'IPED Forensics v4.1 para indexación y análisis de la imagen',
+      'Autopsy 4.x o The Sleuth Kit para análisis de artefactos',
+      'Bolsa antiestática y precintos de seguridad (MUCC-2017)',
+      'Medios de sellado y etiquetado forense (barcode + QR)',
+    ],
+    requerimientosLegales: [
+      'MUCC-2017: Manual Único de Cadena de Custodia de Evidencias',
+      'ISO/IEC 27037:2012: Directrices para identificación, recolección y preservación de evidencia digital',
+      'ISO/IEC 27042:2015: Guía para análisis e interpretación de evidencia digital',
+      'COPP Art. 187: Cadena de custodia de evidencias físicas',
+      'COPP Art. 223: Experticia y Dictamen Pericial',
+      'Ley de Mensajes de Datos y Firmas Electrónicas (Venezuela)',
+    ],
+    pasos: [
+      { id: 'img_paso_1', num: 1, fase: 'Recepción', titulo: 'Recepción e Identificación del Dispositivo', action: 'Recibir, inspeccionar y registrar el dispositivo en el Acta de Obtención (MUCC-2017 § 4). Documentar estado físico, marca, modelo y serial.', docs: ['Acta de Obtención', 'Planilla PRCC', 'Acta de Consentimiento'], guide: 'El dispositivo debe llegar sin encender. Verificar precintos de fábrica.', tareas: ['Inspección visual completa del dispositivo (estado físico, daños)', 'Documentación fotográfica del estado inicial (360°)', 'Verificación de precintos de seguridad originales', 'Generación del Acta de Obtención con firma del consignante', 'Registro de hash SHA-256 inicial en Planilla PRCC'], complianceIds: ['n1__obtencion', 'n3__recepcion'], iconoName: 'FileText', normativas: [{ label: 'MUCC-2017 § 4', color: 'warning' }, { label: 'ISO 27037 § 5.2', color: 'info' }], advertencias: [{ titulo: 'Manipulación mínima', cuerpo: 'NO encender el dispositivo. Utilizar guantes antiestáticos.', nivel: 'error' }] },
+      { id: 'img_paso_2', num: 2, fase: 'Aislamiento', titulo: 'Aislamiento y Embalaje Antiestático', action: 'Colocar el dispositivo en bolsa antiestática sellada y precintada. Etiquetar con número de expediente, hash SHA-256 y fecha.', docs: ['Planilla PRCC § 5', 'Acta de Consentimiento'], guide: 'Usar bolsa antiestática nueva. El precinto debe ser inviolable y con número único.', tareas: ['Embalaje en bolsa antiestática nueva', 'Sellado con precinto numerado (registrar número en PRCC)', 'Etiquetado con: expediente, hash, fecha, responsable', 'Fotografía del embalaje sellado'], complianceIds: ['n1__embalaje', 'n3__preservacion'], iconoName: 'Shield', normativas: [{ label: 'MUCC-2017 § 5', color: 'warning' }, { label: 'ISO 27037 § 5.3', color: 'info' }] },
+      { id: 'img_paso_3', num: 3, fase: 'Adquisición', titulo: 'Conexión al Write-Blocker', action: 'Conectar el dispositivo al write-blocker hardware certificado. Verificar modo solo-lectura activo.', docs: ['PRCC § 6', 'Acta de Desprecintado'], guide: 'NUNCA conectar el dispositivo directamente al equipo forense.', tareas: ['Apertura del Acta de Desprecintado', 'Conexión del write-blocker certificado', 'Verificación de modo solo-lectura (write-protect)', 'Registro de parámetros del dispositivo: sector size, total sectors, capacidad'], complianceIds: ['n3__adquisicion'], iconoName: 'Lock', normativas: [{ label: 'ISO 27037 § 5.4', color: 'info' }, { label: 'NIST SP 800-86', color: 'secondary' }], advertencias: [{ titulo: 'Write-Blocker obligatorio', cuerpo: 'La falta de write-blocker genera NULIDAD PROBATORIA.', nivel: 'error' }] },
+      { id: 'img_paso_4', num: 4, fase: 'Adquisición', titulo: 'Adquisición de Imagen Forense (FTK Imager)', action: 'Ejecutar FTK Imager v4.7 o Guymager para crear la imagen bit-a-bit en formato E01 o RAW/dd con verificación automática de hash.', docs: ['PRCC § 6.2', 'Log de adquisición FTK'], guide: 'Seleccionar formato E01 para máxima compatibilidad judicial. Activar hash SHA-256 integrado.', tareas: ['Configuración de FTK Imager (formato, segmentación, compresión)', 'Inicio de adquisición bit-a-bit', 'Monitoreo del progreso y temperatura', 'Verificación automática de hash post-adquisición (SHA-256 + MD5)', 'Exportación del log de adquisición completo'], complianceIds: ['n3__adquisicion', 'n5__integridad'], iconoName: 'Database', normativas: [{ label: 'ISO 27037 § 5.4.2', color: 'info' }, { label: 'MUCC-2017 § 6', color: 'warning' }], codigo: [{ lang: 'bash', contenido: 'dd if=/dev/sdX of=/mnt/destino/imagen.dd bs=4096 conv=noerror,sync status=progress\nsha256sum /mnt/destino/imagen.dd > /mnt/destino/imagen.dd.sha256' }] },
+      { id: 'img_paso_5', num: 5, fase: 'Verificación', titulo: 'Verificación de Integridad y Hash MATCH', action: 'Calcular y verificar hash SHA-256 de la imagen contra el hash del dispositivo original. Documentar MATCH/MISMATCH en PRCC.', docs: ['PRCC § 6.3', 'Certificado de Integridad'], guide: 'El hash SHA-256 de la imagen DEBE coincidir exactamente (MATCH) con el hash del dispositivo original.', tareas: ['Cálculo de hash SHA-256 de la imagen adquirida', 'Cálculo de hash SHA-256 del dispositivo original (via write-blocker)', 'Comparación y verificación MATCH', 'Registro del resultado en PRCC § 6.3', 'Generación del certificado de integridad'], complianceIds: ['n5__hash_verificacion'], iconoName: 'CheckCircle2', normativas: [{ label: 'ISO 27037 § 5.4.3', color: 'info' }, { label: 'ISO 27042 § 6', color: 'secondary' }], advertencias: [{ titulo: 'HASH MISMATCH = Nulidad', cuerpo: 'Si los hashes no coinciden, la imagen es inválida. Repetir la adquisición.', nivel: 'error' }] },
+      { id: 'img_paso_6', num: 6, fase: 'Análisis', titulo: 'Análisis Forense (IPED / Autopsy)', action: 'Montar imagen en solo-lectura y ejecutar IPED Forensics v4.1 para indexación, búsqueda de artefactos y recuperación de archivos eliminados.', docs: ['Acta Dictamen § 4', 'Informe técnico IPED'], guide: 'Nunca analizar sobre el dispositivo original. Documentar hallazgos con capturas y timestamps.', tareas: ['Montaje de imagen en modo solo-lectura', 'Indexación completa con IPED Forensics v4.1', 'Búsqueda de artefactos relevantes', 'Recuperación de archivos eliminados', 'Análisis de línea temporal (timeline)', 'Documentación de hallazgos con capturas'], complianceIds: ['n5__analisis'], iconoName: 'Search', normativas: [{ label: 'ISO 27042 § 7', color: 'secondary' }, { label: 'MUCC-2017 § 7', color: 'warning' }] },
+      { id: 'img_paso_7', num: 7, fase: 'Dictamen', titulo: 'Emisión del Dictamen Pericial', action: 'Redactar y firmar el Dictamen Pericial conforme al COPP Art. 225 con las conclusiones técnicas. Incluir hash SHA-256, metodología y herramientas.', docs: ['Acta Dictamen', 'DictamenImagenesPdf'], guide: 'El dictamen debe ser firmado por mínimo 2 peritos. Incluir: objeto, metodología, herramientas, hallazgos y conclusiones.', tareas: ['Redacción del dictamen pericial', 'Revisión jurídica y técnica', 'Firma bilateral (mínimo 2 peritos, COPP Art. 223)', 'Registro en sistema de auditoría SHA-256'], complianceIds: ['n7__dictamen'], iconoName: 'FileText', normativas: [{ label: 'COPP Art. 225', color: 'danger' }, { label: 'ISO 27042 § 8', color: 'secondary' }] },
+      { id: 'img_paso_8', num: 8, fase: 'Cierre', titulo: 'Entrega de Resultados & Sanitización Final', action: 'Entregar dictamen y copias de imagen forense al solicitante mediante Acta de Entrega. Sanitizar equipos del laboratorio.', docs: ['Acta Entrega de Resultados', 'Acta de Sanitización'], guide: 'La entrega debe quedar documentada con N° PRCC. La sanitización certifica que no quedan datos del caso.', tareas: ['Generación del Acta de Entrega de Resultados', 'Verificación del N° PRCC en el Acta', 'Firma del receptor', 'Sanitización forense de equipos del laboratorio', 'Cierre del expediente en CMS'], complianceIds: ['n1__entrega', 'n12__sanitizacion'], iconoName: 'CheckCircle2', normativas: [{ label: 'MUCC-2017 § 9', color: 'warning' }, { label: 'ISO 27037 § 5.6', color: 'info' }] },
+    ],
+    fases: [
+      { nombre: 'Recepción & Embalaje', orden: 1, pasoIds: ['img_paso_1', 'img_paso_2'] },
+      { nombre: 'Adquisición Forense', orden: 2, pasoIds: ['img_paso_3', 'img_paso_4', 'img_paso_5'] },
+      { nombre: 'Análisis & Dictamen', orden: 3, pasoIds: ['img_paso_6', 'img_paso_7'] },
+      { nombre: 'Entrega & Cierre', orden: 4, pasoIds: ['img_paso_8'] },
+    ],
+  },
 };
 
 export function getTipoProyectoConfig(tipo: TipoProyecto): ProyectoTipoConfig {
   return TIPOS_PROYECTO[tipo];
 }
+
+
 
 export function getTiposProyecto(): { id: TipoProyecto; label: string; descripcion: string; icon: any; color: string }[] {
   return Object.values(TIPOS_PROYECTO).map(t => ({

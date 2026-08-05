@@ -1,34 +1,28 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: '#524000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+    <div
+      className="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: 'var(--usa-navy)' }}
     >
-      <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="h1" sx={{ color: '#00FF41', fontWeight: 800, mb: 2 }}>
+      <div className="text-center p-4 bg-white rounded-3 shadow-lg border border-2" style={{ maxWidth: '400px', borderColor: 'var(--usa-border)' }}>
+        <h1 className="display-1 fw-bold text-success font-monospace mb-2">
           404
-        </Typography>
-        <Typography sx={{ color: '#AEAEB2', fontSize: '18px', mb: 3 }}>
+        </h1>
+        <h2 className="h5 fw-bold text-navy mb-3" style={{ color: 'var(--usa-navy)' }}>
           Página no encontrada
-        </Typography>
-        <Button
+        </h2>
+        <p className="small text-muted mb-4">
+          La ruta especificada no existe o no tiene los permisos suficientes en el sistema.
+        </p>
+        <Link
           href="/"
-          variant="contained"
-          sx={{ backgroundColor: '#FECF06', color: '#000000', fontWeight: 700, '&:hover': { backgroundColor: '#e0b700' } }}
+          className="btn btn-warning fw-bold px-4 py-2 text-navy"
         >
           Volver al Panel
-        </Button>
-      </Box>
-    </Box>
+        </Link>
+      </div>
+    </div>
   );
 }

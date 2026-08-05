@@ -63,40 +63,49 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
       watermarkText="CONSIGNACIÓN"
       onClick={handleCheckboxClick}
     >
+      {/* HEADER PRINCIPAL ESMERALDA */}
+      <div className="uswds-top-header">
+        ACTA DE OBTENCIÓN POR CONSIGNACIÓN DIRECTA — MUCC-2017 & ISO/IEC 27037
+      </div>
+
       {/* 1.0 DATOS DE LA ACTUACIÓN */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-1.0">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Lara, Venezuela — Laboratorio Forense SHA256.US]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Fecha y Hora de la Consignación</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Fecha y Hora (ej: DD/MM/AAAA - HH:MM)]" />
+        <div className="uswds-banner-title">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Lugar de Actuación / Sede</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Lara, Venezuela — Laboratorio Forense SHA256.US]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Fecha y Hora de la Consignación</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[DD/MM/AAAA - HH:MM]" />
+            </div>
           </div>
         </div>
       </div>
 
       {/* 2.0 DATOS DEL CONSIGNANTE */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-2.0">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres del Consignante]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Teléfono de Contacto</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[Teléfono de Contacto]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Dirección de Habitación / Sede</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Dirección del Consignante]" />
+        <div className="uswds-banner-title">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Apellidos y Nombres</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres del Consignante]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Teléfono de Contacto</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[Teléfono de Contacto]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Dirección de Habitación / Sede</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Dirección del Consignante]" />
+            </div>
           </div>
         </div>
         <div className="form-group" style={{ marginTop: '5px' }}>
@@ -277,19 +286,32 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
 
       {/* 4.0 ESTADO FÍSICO */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-4.0">4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</PlanillaSectionTitle>
+        <PlanillaSectionTitle id="seccion-4.0">4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y FIJACIÓN FOTOGRÁFICA DE RECEPCIÓN</PlanillaSectionTitle>
         
         <div style={{ marginTop: '8px', marginBottom: '10px', padding: '10px', border: '1px dashed #0F172A', backgroundColor: '#F8FAFC', borderRadius: '4px' }}>
           <PlanillaFieldLabel style={{ fontSize: '8.5pt', color: '#0F172A', fontWeight: 'bold' }}>
             ESTADO FÍSICO, OBSERVACIONES DE RECEPCIÓN Y ACCESORIOS (Escriba a lápiz o digite en 5 líneas):
           </PlanillaFieldLabel>
-          <div contentEditable suppressContentEditableWarning style={{ minHeight: '95px', padding: '6px', fontSize: '9.5pt', lineHeight: '22px' }}>
+          <div contentEditable suppressContentEditableWarning style={{ minHeight: '120px', padding: '6px', fontSize: '9.5pt', lineHeight: '24px' }}>
             <span className="placeholder-field">{c.dispositivo_estado_fisico ? c.dispositivo_estado_fisico : '[Describa detalladamente el estado de la pantalla, bordes, cámara, puerto de carga, batería, estuche y protector]'}</span>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
+          </div>
+        </div>
+
+        {/* FIJACIÓN FOTOGRÁFICA DE RECEPCIÓN (MUCC-2017 p. 47) */}
+        <div style={{ padding: '8px 10px', border: '1px solid #CBD5E1', backgroundColor: '#FFFFFF', borderRadius: '4px', marginTop: '6px' }}>
+          <PlanillaFieldLabel style={{ fontSize: '8.5pt', color: '#0F172A', fontWeight: 'bold', marginBottom: '6px', display: 'block' }}>
+            REGISTRO DE FIJACIÓN FOTOGRÁFICA EN EL ACTO DE RECEPCIÓN (MUCC-2017 p. 47):
+          </PlanillaFieldLabel>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '8px', fontSize: '8.5pt' }}>
+            <div>[ &nbsp;&nbsp;&nbsp; ] <strong>Fotografías Generales:</strong> Dispositivo en mesa de recepción</div>
+            <div>[ &nbsp;&nbsp;&nbsp; ] <strong>Fotografías Particulares:</strong> Frontal, posterior y laterales</div>
+            <div>[ &nbsp;&nbsp;&nbsp; ] <strong>Fotografías de Detalle:</strong> Seriales, IMEIs, puertos y daños</div>
+            <div>[ &nbsp;&nbsp;&nbsp; ] <strong>Tomas Archivadas:</strong> N° de fotografías: <span contentEditable suppressContentEditableWarning className="placeholder-field" style={{ border: 'none', display: 'inline-block', minWidth: '50px' }}>[N°]</span></div>
           </div>
         </div>
       </div>
@@ -336,37 +358,37 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
               <td style={{ width: '35%', fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Hash SHA-256 Inicial (Embalaje — MUCC-2017 p. 37)
               </td>
-              <td style={{ padding: '6px 8px' }}>
-                <PlanillaEditableValue placeholder="[____________________________________________________________________]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
+              <td style={{ padding: '8px', minHeight: '26px' }}>
+                <PlanillaEditableValue placeholder="[Ingrese o escriba a mano el Hash SHA-256 de 64 caracteres hex]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
               </td>
             </tr>
             <tr>
               <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Algoritmo Auxiliar MD5 (Verificación cruzada)
               </td>
-              <td style={{ padding: '6px 8px' }}>
-                <PlanillaEditableValue placeholder="[________________________________________]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
+              <td style={{ padding: '8px', minHeight: '26px' }}>
+                <PlanillaEditableValue placeholder="[Ingrese o escriba a mano el Hash MD5 de 32 caracteres hex]" style={{ fontSize: '9px', fontFamily: 'monospace', width: '100%', minWidth: '220px' }} />
               </td>
             </tr>
             <tr>
               <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Herramienta / Software de Cálculo
               </td>
-              <td style={{ padding: '6px 8px' }}>
-                <PlanillaEditableValue placeholder="[________________________________________]" style={{ fontSize: '9pt', width: '100%', minWidth: '220px' }} />
+              <td style={{ padding: '8px', minHeight: '26px' }}>
+                <PlanillaEditableValue placeholder="[Ingrese o escriba a mano la herramienta de cálculo]" style={{ fontSize: '9pt', width: '100%', minWidth: '220px' }} />
               </td>
             </tr>
             <tr>
               <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Bolsa Faraday / Apantallamiento RF
               </td>
-              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+              <td style={{ padding: '8px', fontSize: '9pt' }}>
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span>[ &nbsp;&nbsp;&nbsp; ] Bolsa de Aislamiento Electromagnético RF</span>
                   <span>[ &nbsp;&nbsp;&nbsp; ] Caja Rígida Anti-Impactos</span>
                 </div>
-                <div style={{ marginTop: '5px', fontSize: '8.5pt', color: '#334155' }}>
-                  N° Bolsa Faraday: <span style={{ borderBottom: '1.5px solid #000', display: 'inline-block', minWidth: '200px' }}>&nbsp;</span>
+                <div style={{ marginTop: '6px', fontSize: '8.5pt', color: '#334155' }}>
+                  N° Bolsa Faraday: <span className="placeholder-field" contentEditable suppressContentEditableWarning style={{ border: 'none', display: 'inline-block', minWidth: '150px' }}>[N° Bolsa Faraday]</span>
                 </div>
               </td>
             </tr>
@@ -374,10 +396,10 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
               <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Precinto de Seguridad Plástico
               </td>
-              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+              <td style={{ padding: '8px', fontSize: '9pt' }}>
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <div>
-                    N° Precinto: <span style={{ borderBottom: '1.5px solid #000', display: 'inline-block', minWidth: '200px' }}>&nbsp;</span>
+                    N° Precinto: <span className="placeholder-field" contentEditable suppressContentEditableWarning style={{ border: 'none', display: 'inline-block', minWidth: '150px' }}>[N° Precinto]</span>
                   </div>
                   <div>
                     Estado: [ &nbsp;&nbsp;&nbsp; ] Intacto / Sin alteración &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp;&nbsp;&nbsp; ] Violado / Alterado
@@ -389,7 +411,7 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
               <td style={{ fontWeight: 'bold', fontSize: '9pt', backgroundColor: '#F8FAFC', color: '#0F172A' }}>
                 Estado de Aislamiento de Red
               </td>
-              <td style={{ padding: '6px 8px', fontSize: '9pt' }}>
+              <td style={{ padding: '8px', fontSize: '9pt' }}>
                 <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span>[ &nbsp;&nbsp;&nbsp; ] Modo Avión Activado</span>
                   <span>[ &nbsp;&nbsp;&nbsp; ] Tarjeta SIM Retirada</span>
@@ -426,28 +448,30 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
       {/*  VII. FIRMAS  */}
       <div className="signature-section" style={{ gap: '14mm' }}>
         <div className="sig-detail-card">
-          <div className="sig-detail-label">EL CONSIGNANTE</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <PlanillaThumbBox label="PULGAR DER." />
-            <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Consignante</div>
+          <div className="sig-detail-label">EL CONSIGNANTE PRIVADO</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
-            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad del Consignante]</span>}</span>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre del Consignante]</span>}</span>
           </div>
           <div className="sig-field">
-            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Número de Teléfono]</span>}</span>
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Número Telefónico]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Dirección: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Dirección de Habitación]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma del Consignante Privado</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
           </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO RECEPTOR</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <PlanillaThumbBox label="PULGAR DER." />
-            <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Perito Receptor</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre y Apellido del Perito]</span>}</span>
           </div>
@@ -463,14 +487,18 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
           </div>
-          <PlanillaCheckboxGroup
-            fontSize="8px"
-            style={{ gap: '8px', justifyContent: 'center', marginTop: '6px' }}
-            options={[
-              { id: 'iso1', label: 'DEFR' },
-              { id: 'iso2', label: 'DES' },
-            ]}
-          />
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma del Perito Receptor</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
+          </div>
+
+          <div style={{ fontSize: '8px', textAlign: 'center', marginTop: '6px', color: '#0F172A', fontWeight: 'bold' }}>
+            Rol ISO/IEC 27037: [ &nbsp;X&nbsp; ] DEFR (Adquisición & Imagen Forense) &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] DES
+          </div>
         </div>
       </div>
     </PlanillaFolioTemplate>

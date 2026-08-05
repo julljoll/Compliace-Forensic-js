@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from '@/lib/theme'
 
 interface ProvidersProps {
   children: ReactNode
@@ -9,9 +7,9 @@ interface ProvidersProps {
 
 const AllTheProviders = ({ children }: ProvidersProps) => {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       {children}
-    </ThemeProvider>
+    </>
   )
 }
 

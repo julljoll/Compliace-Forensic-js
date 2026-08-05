@@ -17,8 +17,13 @@ export default function Home() {
   }, [isAuthenticated, router])
 
   return (
-    <div className="h-screen w-screen bg-[var(--apple-bg)] flex items-center justify-center">
-      <div className="w-8 h-8 border-4 border-cms-accent/30 border-t-cms-accent rounded-full animate-spin" />
+    <div className="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: '#F0F4F8' }}>
+      <div className="d-flex flex-column align-items-center gap-3">
+        <div className="spinner-border text-primary" role="status" style={{ width: '2rem', height: '2rem' }}>
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+        <span className="text-muted small fw-bold">SHA256.US — Cargando sistema...</span>
+      </div>
     </div>
   )
 }

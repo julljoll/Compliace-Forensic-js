@@ -1,7 +1,4 @@
 import { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import { CheckCircle2, AlertTriangle, X, Info, XCircle } from './AppleIcon';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
@@ -36,10 +33,10 @@ const ICONS: Record<ToastType, any> = {
 };
 
 const ICON_COLORS: Record<ToastType, string> = {
-  success: '#00FF41',
-  error: '#FF3B30',
-  warning: '#FF9500',
-  info: '#FECF06',
+  success: '#008837',
+  error: '#D9381E',
+  warning: '#C05621',
+  info: '#005EA2',
 };
 
 function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
@@ -53,30 +50,14 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   }, [toast.duration, onClose]);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '12px',
-        p: '14px',
-        borderRadius: '12px',
-        backgroundColor: '#1E1800',
-        border: '1px solid rgba(254, 207, 6, 0.3)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-        maxWidth: '380px',
-        width: '100%',
-        userSelect: 'none',
-      }}
-    >
-      <Icon size={18} style={{ color: ICON_COLORS[toast.type], flexShrink: 0, marginTop: '2px' }} />
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography sx={{ fontSize: '13px', fontWeight: 600, color: '#FFFFFF' }}>{toast.title}</Typography>
-        {toast.message && <Typography sx={{ fontSize: '11px', color: '#AEAEB2', mt: '2px', lineHeight: 1.4 }}>{toast.message}</Typography>}
-      </Box>
-      <IconButton onClick={onClose} size="small" sx={{ color: '#AEAEB2', p: '2px', '&:hover': { color: '#FFFFFF' } }}>
-        <X size={12} />
-      </IconButton>
-    </Box>
+    <div className="toast show p-2 bg-white border rounded-3 shadow-lg d-flex align-items-start gap-2 mb-2" role="alert">
+      <Icon size={18} style={{ color: ICON_COLORS[toast.type], marginTop: '2px' }} />
+      <div className="flex-grow-1 min-w-0">
+        <div className="fw-bold text-navy small">{toast.title}</div>
+        {toast.message && <div className="text-muted small" style={{ fontSize: '11px' }}>{toast.message}</div>}
+      </div>
+      <button type="button" className="btn-close btn-sm p-1" onClick={onClose} aria-label="Close"></button>
+    </div>
   );
 }
 
@@ -101,13 +82,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
-      <Box sx={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, display: 'flex', flexDirection: 'column', gap: 1, pointerEvents: 'none' }}>
+      <div className="toast-container position-fixed bottom-0 end-0 p-3" style={{ zIndex: 9999 }}>
         {toasts.map(toast => (
-          <Box key={toast.id} sx={{ pointerEvents: 'auto', width: '100%', maxWidth: '380px' }}>
-            <ToastItem toast={toast} onClose={() => removeToast(toast.id)} />
-          </Box>
+          <ToastItem key={toast.id} toast={toast} onClose={() => removeToast(toast.id)} />
         ))}
-      </Box>
+      </div>
     </ToastContext.Provider>
   );
 }

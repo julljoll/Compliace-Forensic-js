@@ -60,33 +60,40 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
       watermarkText="ENTREGA Y DEVOLUCIÓN"
       onClick={handleCheckboxClick}
     >
+      {/* HEADER PRINCIPAL ESMERALDA */}
+      <div className="uswds-top-header">
+        ACTA DE ENTREGA DE RESULTADOS Y DEVOLUCIÓN DE EVIDENCIA — MUCC-2017
+      </div>
+
       {/* 1.0 IDENTIFICACIÓN DE LA ENTREGA */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-1.0">1.0 IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>N° de Expediente / Caso</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° Expediente — ej: EXP-2026-SHA-XXXX]" style={{ fontFamily: 'monospace', fontWeight: 700 }} />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>N° PRCC Correlativo (Cierre de Cadena de Custodia — MUCC-2017)</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.numeroPRCC} placeholder="[N° PRCC — ej: PRCC-2026-XXXX]" style={{ fontFamily: 'monospace', fontWeight: 700 }} />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Apellidos y Nombres de quien Recibe</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Fecha y Hora de la Entrega</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[DD/MM/AAAA — HH:MM]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Lugar de la Entrega / Sede</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Laboratorio Forense SHA256.US — Lara, Venezuela]" />
+        <div className="uswds-banner-title">1.0 IDENTIFICACIÓN DE LA ENTREGA Y RECEPCIÓN DE INFORMES</div>
+        <div className="uswds-card">
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>N° de Expediente / Caso</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° Expediente — ej: EXP-2026-SHA-XXXX]" style={{ fontFamily: 'monospace', fontWeight: 700 }} />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>N° PRCC Correlativo (Cierre de Cadena de Custodia — MUCC-2017)</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroPRCC} placeholder="[N° PRCC — ej: PRCC-2026-XXXX]" style={{ fontFamily: 'monospace', fontWeight: 700 }} />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Apellidos y Nombres de quien Recibe</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Fecha y Hora de la Entrega</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[DD/MM/AAAA — HH:MM]" />
+            </div>
+            <div className="form-group uswds-slot-input">
+              <PlanillaFieldLabel>Lugar de la Entrega / Sede</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Laboratorio Forense SHA256.US — Lara, Venezuela]" />
+            </div>
           </div>
         </div>
       </div>
@@ -166,24 +173,29 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
         <PlanillaSectionTitle id="seccion-5.0">5.0 FIRMAS Y REGISTRO DACTILAR DE RECEPCIÓN</PlanillaSectionTitle>
         <div className="sig-detail-card">
           <div className="sig-detail-label">QUIEN RECIBE LOS RESULTADOS</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
+          <div className="sig-field" style={{ marginTop: '8px' }}>
+            Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_nombre ? c.solicitante_nombre : <span className="placeholder-field">[Nombre de Quien Recibe]</span>}</span>
+          </div>
+          <div className="sig-field">
+            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Teléfono: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.dispositivo_numero_tel ? c.dispositivo_numero_tel : <span className="placeholder-field">[Número Telefónico]</span>}</span>
+          </div>
+          <div className="sig-field">
+            Dirección: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Dirección de Habitación]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma de Conformidad de Recepción</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
             <PlanillaThumbBox label="PULGAR DER." />
             <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma de Conformidad de Recepción</div>
-          <div className="sig-field" style={{ marginTop: '8px' }}>
-            C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.solicitante_cedula ? c.solicitante_cedula : <span className="placeholder-field">[Cédula de Identidad]</span>}</span>
           </div>
         </div>
         <div className="sig-detail-card">
           <div className="sig-detail-label">PERITO ENTREGADOR</div>
-          <div className="fingerprint-row" style={{ margin: '6px 0 10px 0' }}>
-            <PlanillaThumbBox label="PULGAR DER." />
-            <PlanillaThumbBox label="PULGAR IZQ." />
-          </div>
-          <div className="sig-line" />
-          <div className="sig-line-label">Firma del Perito Entregador</div>
           <div className="sig-field" style={{ marginTop: '8px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre y Apellido del Perito]</span>}</span>
           </div>
@@ -198,6 +210,18 @@ export default function ActaEntregaResultados({ caso, tipoEvidencia: externalTip
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Experto Informático Forense]</span></span>
+          </div>
+
+          <div className="sig-line" style={{ marginTop: '16px' }} />
+          <div className="sig-line-label">Firma del Perito Entregador</div>
+
+          <div className="fingerprint-row" style={{ margin: '12px 0 8px 0' }}>
+            <PlanillaThumbBox label="PULGAR DER." />
+            <PlanillaThumbBox label="PULGAR IZQ." />
+          </div>
+
+          <div style={{ fontSize: '8px', textAlign: 'center', marginTop: '6px', color: '#0F172A', fontWeight: 'bold' }}>
+            Rol ISO/IEC 27037: [ &nbsp;X&nbsp; ] DEFR (Adquisición & Imagen Forense) &nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp; ] DES
           </div>
         </div>
       </div>

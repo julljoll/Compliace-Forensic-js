@@ -2,34 +2,13 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
-import Chip from '@mui/material/Chip';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Button from '@mui/material/Button';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import PrintIcon from '@mui/icons-material/Print';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import WarningIcon from '@mui/icons-material/Warning';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import CloseIcon from '@mui/icons-material/Close';
-import NumbersIcon from '@mui/icons-material/Numbers';
-import PersonIcon from '@mui/icons-material/Person';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { useCMSStore } from '../store/cmsStore';
 import { useAuditStore } from '../store/auditStore';
+import {
+  Activity, Printer, Clock, ShieldCheck, AlertTriangle,
+  FolderOpen, ChevronRight, X, User, Search, Filter, ArrowLeft
+} from '../components/atoms/AppleIcon';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -51,13 +30,13 @@ function getRelativeTime(dateString: string) {
   }
 }
 
-const ACTION_META: Record<string, { label: string; color: string; bg: string }> = {
-  crear:     { label: 'CREAR',     color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
-  eliminar:  { label: 'ELIMINAR',  color: '#FF3B30', bg: 'rgba(255, 59, 48, 0.1)' },
-  modificar: { label: 'MODIFICAR', color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  verificar: { label: 'VERIFICAR', color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
-  imprimir:  { label: 'IMPRIMIR',  color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  default:   { label: 'SISTEMA',   color: '#AEAEB2', bg: 'rgba(255, 255, 255, 0.06)' },
+const ACTION_META: Record<string, { label: string; class: string }> = {
+  crear:     { label: 'CREAR',     class: 'usa-tag--success' },
+  eliminar:  { label: 'ELIMINAR',  class: 'usa-tag--error' },
+  modificar: { label: 'MODIFICAR', class: 'usa-tag--info' },
+  verificar: { label: 'VERIFICAR', class: 'usa-tag--info' },
+  imprimir:  { label: 'IMPRIMIR',  class: 'usa-tag--muted' },
+  default:   { label: 'SISTEMA',   class: 'usa-tag--muted' },
 };
 
 function getActionMeta(accion: string) {
@@ -69,15 +48,6 @@ function getActionMeta(accion: string) {
   if (u.includes('IMPRIM') || u.includes('PLANILLA')) return ACTION_META.imprimir;
   return ACTION_META.default;
 }
-
-const ESTADO_META: Record<string, { label: string; color: string; bg: string }> = {
-  iniciado:   { label: 'Iniciado',   color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  en_proceso: { label: 'En Proceso', color: '#FF9500', bg: 'rgba(255, 149, 0, 0.1)' },
-  analisis:   { label: 'Análisis',   color: '#9DFF00', bg: 'rgba(157, 255, 0, 0.1)' },
-  informe:    { label: 'Informe',    color: '#FECF06', bg: 'rgba(254, 207, 6, 0.1)' },
-  cerrado:    { label: 'Cerrado',    color: '#00FF41', bg: 'rgba(0, 255, 65, 0.1)' },
-  archivado:  { label: 'Archivado',  color: '#AEAEB2', bg: 'rgba(255, 255, 255, 0.06)' },
-};
 
 const SESSION_ACTIONS = new Set(['INICIO_SESION', 'SISTEMA_INICIADO', 'SESION_CERRADA']);
 
@@ -91,13 +61,16 @@ export default function AuditoriaPage() {
   const verifyChain = useAuditStore(s => s.verifyChain);
   const clearLogs   = useAuditStore(s => s.clearLogs);
 
-  const [vista, setVista]             = useState<'casos' | 'logs'>('casos');
   const [casoId, setCasoId]           = useState<string | null>(null);
   const [actionFilter, setActionFilter] = useState('todos');
   const [busqueda, setBusqueda]       = useState('');
   const [loading, setLoading]         = useState(true);
   const [verificando, setVerificando] = useState(false);
   const [integridad, setIntegridad]   = useState<{ valid: boolean; message: string } | null>(null);
+
+  // Pagination State
+  const [page, setPage] = useState(1);
+  const pageSize = 15;
 
   useEffect(() => {
     loadLogs().finally(() => setLoading(false));
@@ -114,12 +87,6 @@ export default function AuditoriaPage() {
       .filter(l => !SESSION_ACTIONS.has(l.accion))
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }, [storeLogs, cmsLogs]);
-
-  const countByCaso = useMemo(() => {
-    const acc: Record<string, number> = {};
-    allLogs.forEach(l => { if (l.casoId) acc[l.casoId] = (acc[l.casoId] || 0) + 1; });
-    return acc;
-  }, [allLogs]);
 
   const logsFiltrados = useMemo(() => {
     return allLogs.filter(log => {
@@ -139,6 +106,12 @@ export default function AuditoriaPage() {
       return matchCaso && matchAction && matchSearch;
     });
   }, [allLogs, casoId, actionFilter, busqueda]);
+
+  const totalPages = Math.ceil(logsFiltrados.length / pageSize) || 1;
+  const paginatedLogs = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return logsFiltrados.slice(start, start + pageSize);
+  }, [logsFiltrados, page]);
 
   const kpis = useMemo(() => ({
     totalEvents:    allLogs.length,
@@ -163,310 +136,208 @@ export default function AuditoriaPage() {
     }
   };
 
-  const handleClearLogs = async () => {
-    if (!confirm('¿Vaciar historial de auditoría? Esta acción es irreversible.')) return;
-    setLoading(true);
-    await clearLogs();
-    await loadLogs();
-    setIntegridad(null);
-    setLoading(false);
-  };
-
-  const handleSelectCaso = (id: string) => {
-    setCasoId(id);
-    setVista('logs');
-    setBusqueda('');
-    setActionFilter('todos');
-  };
-
-  const handleBack = () => {
-    setVista('casos');
-    setCasoId(null);
-    setIntegridad(null);
-  };
-
-  const casoCurrent = casoId ? casos.find(c => c.id === casoId) : null;
-  const estadoMeta  = casoCurrent ? (ESTADO_META[casoCurrent.estado] || ESTADO_META.iniciado) : null;
-
-  // DataGrid Columns definition
-  const columns: GridColDef[] = [
-    {
-      field: 'accion',
-      headerName: 'Acción',
-      width: 130,
-      renderCell: (params) => {
-        const meta = getActionMeta(params.value);
-        return (
-          <Chip
-            label={meta.label}
-            size="small"
-            sx={{
-              backgroundColor: meta.bg,
-              color: meta.color,
-              border: `1px solid ${meta.color}`,
-              fontWeight: 700,
-              fontSize: '10px',
-            }}
-          />
-        );
-      },
-    },
-    {
-      field: 'detalle',
-      headerName: 'Detalle de la Operación',
-      flex: 1,
-      minWidth: 200,
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ color: '#FFFFFF', fontSize: '13px', lineHeight: 1.4 }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: 'usuario',
-      headerName: 'Usuario / Responsable',
-      width: 160,
-      renderCell: (params) => (
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          <PersonIcon sx={{ fontSize: 16, color: '#FECF06' }} />
-          <Typography variant="body2" sx={{ color: '#E5E5EA', fontSize: '12px' }}>
-            {params.value || 'Sistema'}
-          </Typography>
-        </Stack>
-      ),
-    },
-    {
-      field: 'timestamp',
-      headerName: 'Fecha / Hora',
-      width: 180,
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ color: '#AEAEB2', fontFamily: 'monospace', fontSize: '11px' }}>
-          {new Date(params.value).toLocaleString('es-VE')}
-        </Typography>
-      ),
-    },
-    {
-      field: 'hashActual',
-      headerName: 'Hash SHA-256 (Hash Chain Inmutable)',
-      width: 340,
-      renderCell: (params) => (
-        <Typography variant="body2" sx={{ color: '#00FF41', fontFamily: 'Fira Code, monospace', fontSize: '10.5px' }}>
-          {params.value || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}
-        </Typography>
-      ),
-    },
-  ];
-
-  const rows = logsFiltrados.map((log, idx) => ({
-    id: log.id || idx,
-    accion: log.accion,
-    detalle: log.detalle,
-    usuario: log.usuario,
-    timestamp: log.timestamp,
-    hashActual: (log as any).hashActual || (log as any).hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
-  }));
-
   return (
-    <Box sx={{ p: 3, maxWidth: 1400, mx: 'auto' }}>
-      {/* Encabezado */}
-      <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" sx={{ color: '#FECF06', fontWeight: 800, fontFamily: 'Ubuntu, sans-serif' }}>
-            Módulo de Auditoría Local
-          </Typography>
+    <div className="container-fluid max-w-1280 px-0 pb-5">
+      {/* Encabezado Institucional USWDS */}
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 mb-4 border-bottom border-2" style={{ borderColor: 'var(--usa-border)' }}>
+        <div>
+          <h1 className="h3 fw-bold text-navy mb-1" style={{ color: 'var(--usa-navy)' }}>
+            Módulo de Auditoría Forense Local
+          </h1>
+          <p className="text-muted small mb-0">
+            Trazabilidad inmutable SHA-256 de eventos, operaciones y cadena de custodia digital.
+          </p>
+        </div>
 
-        </Box>
-        <Stack direction="row" spacing={1.5}>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<VerifiedUserIcon />}
+        <div className="d-flex gap-2">
+          <button
+            type="button"
+            className="btn btn-outline-success btn-sm fw-bold d-flex align-items-center gap-1"
             onClick={handleVerify}
             disabled={verificando}
-            sx={{
-              color: '#00FF41',
-              borderColor: 'rgba(0, 255, 65, 0.4)',
-              fontWeight: 700,
-              '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.1)' },
-            }}
           >
+            <ShieldCheck size={16} />
             {verificando ? 'Verificando...' : 'VERIFICAR AUDITORÍA'}
-          </Button>
+          </button>
 
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<PrintIcon />}
+          <button
+            type="button"
+            className="btn btn-warning btn-sm fw-bold d-flex align-items-center gap-1 text-navy"
             onClick={() => router.push(casoId ? `/planillas/acta-auditoria-timeline?casoId=${casoId}` : '/planillas/acta-auditoria-timeline')}
-            sx={{
-              backgroundColor: '#FECF06',
-              color: '#000000',
-              fontWeight: 700,
-              '&:hover': { backgroundColor: '#e0b700' },
-            }}
           >
+            <Printer size={16} />
             IMPRIMIR ACTA DE AUDITORÍA
-          </Button>
-        </Stack>
-      </Stack>
+          </button>
+        </div>
+      </div>
 
-      {/* Alerta de Integridad */}
+      {/* Alerta de Integridad USWDS */}
       {integridad && (
-        <Alert
-          severity={integridad.valid ? 'success' : 'error'}
-          sx={{ mb: 3, backgroundColor: integridad.valid ? 'rgba(0, 255, 65, 0.1)' : 'rgba(255, 59, 48, 0.1)', border: `1px solid ${integridad.valid ? '#00FF41' : '#FF3B30'}` }}
-        >
-          <AlertTitle sx={{ fontWeight: 700, color: integridad.valid ? '#00FF41' : '#FF3B30' }}>
-            {integridad.valid ? 'Integridad Verificada' : 'Alerta de Auditoría'}
-          </AlertTitle>
-          {integridad.message}
-        </Alert>
+        <div className={`usa-alert ${integridad.valid ? 'usa-alert--success' : 'usa-alert--error'} mb-4`}>
+          <div className="usa-alert__heading">
+            {integridad.valid ? '✓ Integridad Verificada' : '⚠ Alerta de Auditoría'}
+          </div>
+          <div className="small">{integridad.message}</div>
+        </div>
       )}
 
-      {/* KPIs */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-              <TimelineIcon sx={{ color: '#FECF06', fontSize: 28 }} />
-              <Box>
-                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
-                  Total de Eventos
-                </Typography>
-                <Typography variant="h5" sx={{ color: '#FFFFFF', fontWeight: 800 }}>
-                  {kpis.totalEvents}
-                </Typography>
-              </Box>
-            </Stack>
-          </Card>
-        </Grid>
+      {/* Cards de KPIs USWDS */}
+      <div className="row g-3 mb-4">
+        <div className="col-12 col-sm-6 col-md-3">
+          <div className="usa-card usa-card--gold">
+            <div className="usa-card__label">Total de Eventos</div>
+            <div className="usa-card__stat mt-1">{kpis.totalEvents}</div>
+          </div>
+        </div>
+        <div className="col-12 col-sm-6 col-md-3">
+          <div className="usa-card usa-card--green">
+            <div className="usa-card__label">Casos Auditados</div>
+            <div className="usa-card__stat mt-1">{kpis.casosAuditados}</div>
+          </div>
+        </div>
+        <div className="col-12 col-sm-6 col-md-3">
+          <div className="usa-card usa-card--lime">
+            <div className="usa-card__label">Último Registro</div>
+            <div className="fw-bold text-navy mt-2" style={{ fontSize: '14px' }}>
+              {kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : 'Sin eventos'}
+            </div>
+          </div>
+        </div>
+        <div className="col-12 col-sm-6 col-md-3">
+          <div className="usa-card usa-card--green">
+            <div className="usa-card__label">Almacenamiento Local</div>
+            <div className="fw-bold text-success mt-2" style={{ fontSize: '14px' }}>
+              IndexedDB 100% Offline
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-              <FolderOpenIcon sx={{ color: '#00FF41', fontSize: 28 }} />
-              <Box>
-                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
-                  Casos Auditados
-                </Typography>
-                <Typography variant="h5" sx={{ color: '#FFFFFF', fontWeight: 800 }}>
-                  {kpis.casosAuditados}
-                </Typography>
-              </Box>
-            </Stack>
-          </Card>
-        </Grid>
+      {/* Controles de Filtros */}
+      <div className="card p-3 mb-4 border shadow-sm bg-white">
+        <div className="row g-2">
+          <div className="col-12 col-md-8">
+            <div className="input-group">
+              <span className="input-group-text bg-light text-muted border-end-0">
+                <Search size={16} />
+              </span>
+              <input
+                type="text"
+                className="form-control border-start-0"
+                placeholder="Buscar en el registro de auditoría por detalle, usuario o acción..."
+                value={busqueda}
+                onChange={(e) => { setBusqueda(e.target.value); setPage(1); }}
+              />
+            </div>
+          </div>
+          <div className="col-12 col-md-4">
+            <select
+              className="form-select"
+              value={actionFilter}
+              onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
+            >
+              <option value="todos">Todas las Acciones</option>
+              <option value="crear">Creación</option>
+              <option value="modificar">Modificación</option>
+              <option value="eliminar">Eliminación</option>
+              <option value="imprimir">Impresión</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-              <AccessTimeIcon sx={{ color: '#9DFF00', fontSize: 28 }} />
-              <Box>
-                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
-                  Último Registro
-                </Typography>
-                <Typography variant="subtitle2" sx={{ color: '#FFFFFF', fontWeight: 700 }}>
-                  {kpis.ultimoEvento ? getRelativeTime(kpis.ultimoEvento) : 'Sin eventos'}
-                </Typography>
-              </Box>
-            </Stack>
-          </Card>
-        </Grid>
+      {/* Tabla Oficial USWDS (.usa-table) */}
+      <div className="table-responsive rounded-3 border bg-white shadow-sm mb-3">
+        <table className="usa-table table table-hover mb-0 align-middle">
+          <thead>
+            <tr>
+              <th scope="col" style={{ width: '120px' }}>Acción</th>
+              <th scope="col">Detalle de la Operación</th>
+              <th scope="col" style={{ width: '180px' }}>Usuario</th>
+              <th scope="col" style={{ width: '180px' }}>Fecha / Hora</th>
+              <th scope="col" style={{ width: '320px' }}>Hash SHA-256 (Inmutable)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="text-center py-4 text-muted">
+                  Cargando registros de auditoría...
+                </td>
+              </tr>
+            ) : paginatedLogs.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-4 text-muted">
+                  No se encontraron eventos de auditoría con los criterios seleccionados.
+                </td>
+              </tr>
+            ) : (
+              paginatedLogs.map((log, idx) => {
+                const meta = getActionMeta(log.accion);
+                const hash = (log as any).hashActual || (log as any).hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+                return (
+                  <tr key={log.id || idx}>
+                    <td>
+                      <span className={`usa-tag ${meta.class}`}>
+                        {meta.label}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="fw-semibold text-navy" style={{ fontSize: '13px', lineHeight: 1.4 }}>
+                        {log.detalle}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="d-flex align-items-center gap-1 text-muted" style={{ fontSize: '12px' }}>
+                        <User size={14} className="text-warning" />
+                        <span>{log.usuario || 'Sistema'}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="font-monospace text-muted" style={{ fontSize: '11px' }}>
+                        {new Date(log.timestamp).toLocaleString('es-VE')}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="font-monospace text-success fw-bold" style={{ fontSize: '10.5px' }}>
+                        {hash}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card sx={{ p: 2, backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-              <VerifiedUserIcon sx={{ color: '#00FF41', fontSize: 28 }} />
-              <Box>
-                <Typography variant="caption" sx={{ color: '#AEAEB2', textTransform: 'uppercase' }}>
-                  Almacenamiento Local
-                </Typography>
-                <Typography variant="subtitle2" sx={{ color: '#00FF41', fontWeight: 700 }}>
-                  IndexedDB 100% Offline
-                </Typography>
-              </Box>
-            </Stack>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Controles de Filtro */}
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
-        <TextField
-          size="small"
-          placeholder="Buscar en el registro de auditoría..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          sx={{
-            flex: 1,
-            backgroundColor: '#1E1800',
-            borderRadius: '6px',
-            '& .MuiOutlinedInput-root': {
-              color: '#FFFFFF',
-              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.3)' },
-              '&:hover fieldset': { borderColor: '#FECF06' },
-            },
-          }}
-        />
-
-        <TextField
-          select
-          size="small"
-          value={actionFilter}
-          onChange={(e) => setActionFilter(e.target.value)}
-          sx={{
-            minWidth: 160,
-            backgroundColor: '#1E1800',
-            borderRadius: '6px',
-            '& .MuiOutlinedInput-root': {
-              color: '#FFFFFF',
-              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.3)' },
-            },
-          }}
-        >
-          <MenuItem value="todos">Todas las Acciones</MenuItem>
-          <MenuItem value="crear">Creación</MenuItem>
-          <MenuItem value="modificar">Modificación</MenuItem>
-          <MenuItem value="eliminar">Eliminación</MenuItem>
-          <MenuItem value="imprimir">Impresión</MenuItem>
-        </TextField>
-      </Stack>
-
-      {/* Tabla MUI X DataGrid */}
-      <Card sx={{ backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)', borderRadius: '8px', overflow: 'hidden' }}>
-        <Box sx={{ height: 600, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            loading={loading}
-            pageSizeOptions={[10, 25, 50, 100]}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 25 } },
-            }}
-            sx={{
-              border: 'none',
-              color: '#FFFFFF',
-              fontFamily: 'Ubuntu, sans-serif',
-              '& .MuiDataGrid-cell': {
-                borderBottom: '1px solid rgba(254, 207, 6, 0.1)',
-              },
-              '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                borderBottom: '2px solid rgba(254, 207, 6, 0.3)',
-                color: '#FECF06',
-                fontWeight: 700,
-              },
-              '& .MuiDataGrid-footerContainer': {
-                borderTop: '1px solid rgba(254, 207, 6, 0.2)',
-                color: '#AEAEB2',
-              },
-              '& .MuiTablePagination-root': {
-                color: '#AEAEB2',
-              },
-            }}
-          />
-        </Box>
-      </Card>
-    </Box>
+      {/* Paginación HTML/Bootstrap */}
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-between align-items-center bg-white p-3 rounded-3 border">
+          <span className="small text-muted">
+            Mostrando {((page - 1) * pageSize) + 1} - {Math.min(page * pageSize, logsFiltrados.length)} de {logsFiltrados.length} eventos
+          </span>
+          <div className="btn-group btn-group-sm">
+            <button
+              className="btn btn-outline-secondary"
+              disabled={page === 1}
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+            >
+              Anterior
+            </button>
+            <span className="btn btn-outline-secondary disabled text-navy fw-bold px-3">
+              Página {page} de {totalPages}
+            </span>
+            <button
+              className="btn btn-outline-secondary"
+              disabled={page === totalPages}
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

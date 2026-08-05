@@ -1,18 +1,9 @@
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import PrintIcon from '@mui/icons-material/Print';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { ArrowLeft, Printer, AlertTriangle, CheckCircle2 } from '../atoms/AppleIcon';
 
 interface CampoRequerido {
   valor: string | undefined;
@@ -29,7 +20,6 @@ interface PlanillaToolbarProps {
 
 export default function PlanillaToolbar({
   onPrint,
-  onDownloadZip,
   tituloDocumento,
   camposRequeridos = [],
   casoId,
@@ -83,135 +73,74 @@ export default function PlanillaToolbar({
   if (!mounted) return null;
 
   return createPortal(
-    <Box
-      className="no-print"
-      sx={{
-        position: 'fixed',
-        bottom: 20,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 1300,
-        maxWidth: '95vw',
-      }}
+    <div
+      className="no-print position-fixed bottom-0 start-50 translate-middle-x mb-3 z-3 max-w-95vw"
     >
-      <Paper
-        elevation={8}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 2,
-          p: '10px 18px',
-          backgroundColor: 'rgba(18, 20, 18, 0.92)',
-          border: '1px solid rgba(254, 207, 6, 0.3)',
-          backdropFilter: 'blur(12px)',
-          borderRadius: '10px',
-        }}
+      <div
+        className="card p-2 bg-dark bg-opacity-90 border border-primary text-white shadow-lg rounded-3 d-flex flex-row align-items-center gap-3 backdrop-blur"
       >
         {/* Botón Volver */}
-        <IconButton
+        <button
+          type="button"
           onClick={handleBack}
+          className="btn btn-sm btn-link text-white-50 p-1"
           title="Volver al Expediente"
-          size="small"
-          sx={{ color: '#AEAEB2', '&:hover': { color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.08)' } }}
         >
-          <ArrowBackIcon fontSize="small" />
-        </IconButton>
+          <ArrowLeft size={18} />
+        </button>
 
-        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
+        <div className="vr bg-secondary" />
 
         {/* Título & Selector Edición / Vista Previa */}
-        <Box sx={{ minWidth: 0 }}>
-          <Typography sx={{ fontSize: '12px', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.2 }}>
+        <div className="min-w-0">
+          <div className="small fw-bold text-white text-truncate" style={{ fontSize: '12px' }}>
             {tituloDocumento}
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 0.5 }}>
-            <Typography sx={{ fontSize: '9px', fontWeight: 700, color: '#AEAEB2', textTransform: 'uppercase' }}>
-              Modo:
-            </Typography>
-            <Stack direction="row" sx={{ background: '#000000', p: '2px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <Button
-                size="small"
+          </div>
+          <div className="d-flex align-items-center gap-1 mt-1">
+            <span className="small text-muted text-uppercase fw-bold" style={{ fontSize: '9px' }}>Modo:</span>
+            <div className="btn-group btn-group-sm">
+              <button
+                type="button"
+                className={`btn py-0 px-2 fw-bold ${!isPreview ? 'btn-warning text-dark' : 'btn-outline-secondary text-white'}`}
+                style={{ fontSize: '8px' }}
                 onClick={() => handleSetPreview(false)}
-                sx={{
-                  px: 1,
-                  py: 0.2,
-                  minWidth: 0,
-                  fontSize: '8px',
-                  fontWeight: 700,
-                  borderRadius: '3px',
-                  color: !isPreview ? '#000000' : '#AEAEB2',
-                  backgroundColor: !isPreview ? '#FECF06' : 'transparent',
-                  '&:hover': { backgroundColor: !isPreview ? '#e0b700' : 'rgba(255,255,255,0.08)' },
-                }}
               >
                 EDICIÓN
-              </Button>
-              <Button
-                size="small"
+              </button>
+              <button
+                type="button"
+                className={`btn py-0 px-2 fw-bold ${isPreview ? 'btn-warning text-dark' : 'btn-outline-secondary text-white'}`}
+                style={{ fontSize: '8px' }}
                 onClick={() => handleSetPreview(true)}
-                sx={{
-                  px: 1,
-                  py: 0.2,
-                  minWidth: 0,
-                  fontSize: '8px',
-                  fontWeight: 700,
-                  borderRadius: '3px',
-                  color: isPreview ? '#000000' : '#AEAEB2',
-                  backgroundColor: isPreview ? '#FECF06' : 'transparent',
-                  '&:hover': { backgroundColor: isPreview ? '#e0b700' : 'rgba(255,255,255,0.08)' },
-                }}
               >
                 VISTA PREVIA
-              </Button>
-            </Stack>
-          </Stack>
-        </Box>
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Badge de validación */}
         {camposRequeridos.length > 0 && (
           <>
-            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
-            <Chip
-              icon={faltantes.length > 0 ? <WarningAmberIcon sx={{ fontSize: '14px !important' }} /> : <CheckCircleIcon sx={{ fontSize: '14px !important' }} />}
-              label={faltantes.length > 0 ? `${faltantes.length} vacíos` : 'Listo'}
-              size="small"
-              sx={{
-                fontSize: '10px',
-                fontWeight: 700,
-                backgroundColor: faltantes.length > 0 ? 'rgba(255, 149, 0, 0.15)' : 'rgba(0, 255, 65, 0.15)',
-                color: faltantes.length > 0 ? '#FF9500' : '#00FF41',
-                border: faltantes.length > 0 ? '1px solid rgba(255, 149, 0, 0.3)' : '1px solid rgba(0, 255, 65, 0.3)',
-              }}
-            />
+            <div className="vr bg-secondary" />
+            <span className={`usa-tag ${faltantes.length > 0 ? 'usa-tag--error' : 'usa-tag--success'}`}>
+              {faltantes.length > 0 ? `⚠ ${faltantes.length} vacíos` : '✓ Listo'}
+            </span>
           </>
         )}
 
-        <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(254, 207, 6, 0.2)' }} />
+        <div className="vr bg-secondary" />
 
         {/* Botón Imprimir */}
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<PrintIcon />}
+        <button
+          type="button"
+          className="btn btn-warning btn-sm fw-bold text-dark d-flex align-items-center gap-1"
           onClick={handlePrint}
-          sx={{
-            backgroundColor: '#FECF06',
-            color: '#000000',
-            fontWeight: 700,
-            fontSize: '11px',
-            px: 2,
-            py: 0.8,
-            boxShadow: '0 4px 12px rgba(254, 207, 6, 0.3)',
-            '&:hover': {
-              backgroundColor: '#e0b700',
-              boxShadow: '0 6px 16px rgba(254, 207, 6, 0.5)',
-            },
-          }}
         >
-          Imprimir
-        </Button>
-      </Paper>
-    </Box>,
+          <Printer size={15} /> Imprimir
+        </button>
+      </div>
+    </div>,
     document.body
   );
 }

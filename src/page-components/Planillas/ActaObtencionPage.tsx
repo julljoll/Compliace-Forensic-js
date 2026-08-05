@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 import { useCMSStore } from '../../store/cmsStore';
 import PlanillaPdfViewer from '../../components/organisms/Planillas/PlanillaPdfViewer';
 import ActaObtencionPdf from '../../lib/pdf/documents/ActaObtencionPdf';
@@ -28,30 +26,24 @@ const ActaObtencionPage = () => {
       caso={caso}
       document={<ActaObtencionPdf caso={caso} tipoEvidencia={tipoEvidencia} />}
       actions={
-        <TextField
-          select
-          size="small"
-          value={tipoEvidencia}
-          onChange={(e) => setTipoEvidencia(e.target.value as any)}
-          sx={{
-            minWidth: 170,
-            backgroundColor: '#2A2100',
-            borderRadius: '6px',
-            '& .MuiOutlinedInput-root': {
-              color: '#FECF06',
-              fontSize: '12px',
-              fontWeight: 700,
-              '& fieldset': { borderColor: 'rgba(254, 207, 6, 0.4)' },
-            },
-          }}
-        >
-          <MenuItem value="dispositivo_movil">📱 Dispositivo Móvil</MenuItem>
-          <MenuItem value="equipo_computo">💻 Equipo de Cómputo</MenuItem>
-        </TextField>
+        <div className="d-flex align-items-center gap-2">
+          <label htmlFor="select-tipo-evidencia" className="small fw-bold text-uppercase text-muted mb-0 d-none d-sm-inline" style={{ fontSize: '10px' }}>
+            FORMATO:
+          </label>
+          <select
+            id="select-tipo-evidencia"
+            className="form-select form-select-sm fw-bold border-secondary"
+            value={tipoEvidencia}
+            onChange={(e) => setTipoEvidencia(e.target.value as any)}
+            style={{ minWidth: '170px', fontSize: '12px', color: '#112E51', backgroundColor: '#FFFFFF' }}
+          >
+            <option value="dispositivo_movil">📱 Dispositivo Móvil</option>
+            <option value="equipo_computo">💻 Equipo de Cómputo</option>
+          </select>
+        </div>
       }
     />
   );
 };
 
 export default ActaObtencionPage;
-

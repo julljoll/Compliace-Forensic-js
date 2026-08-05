@@ -15,7 +15,7 @@ export type TipoNormativa = 'ISO' | 'NIST' | 'LEY' | 'MANUAL' | 'REGLAMENTO';
 export type NivelCumplimiento = 'conforme' | 'parcial' | 'no_conforme' | 'no_aplica';
 export type TipoEvidencia = 'dispositivo_movil' | 'computador' | 'memoria' | 'imagen_forense' | 'documento' | 'otro';
 export type RolPersonal = 'perito_lider' | 'perito_asistente' | 'fiscal' | 'compliance_officer' | 'coordinador' | 'admin';
-export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro';
+export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro' | 'forense_imagen';
 export type EstadoPaso = 'bloqueado' | 'disponible' | 'en_progreso' | 'completado';
 
 export interface StepState {
@@ -202,6 +202,57 @@ export interface CasoCMS {
   discoduro_capacidad?: string;
   discoduro_marca?: string;
   discoduro_modelo?: string;
+
+  // Datos del Perito Acreditado (Wizard de creación)
+  perito_cedula?: string;
+  perito_civ?: string;
+  perito_inpre?: string;
+  perito_cargo?: string;
+
+  // Datos del Consignante (Wizard de creación)
+  solicitante_telefono?: string;
+  solicitante_email?: string;
+  solicitante_direccion?: string;
+
+  // Dispositivo extra
+  dispositivo_color?: string;
+  dispositivo_accesorios?: string;
+  dispositivo_bateria?: string;
+
+  // Imagen Forense (tipo forense_imagen)
+  imagen_herramienta?: string;     // FTK Imager / dd / Guymager
+  imagen_tipo?: string;            // RAW/dd | E01 | AFF4
+  imagen_hash_sha256?: string;
+  imagen_hash_md5?: string;
+  imagen_tamano_gb?: string;
+  imagen_ruta_destino?: string;
+  imagen_write_blocker?: string;   // Modelo del write-blocker usado
+  imagen_match_hash?: boolean;     // true = MATCH, false = MISMATCH
+
+  // Cadena de Custodia MUCC-2017 & Planillas
+  hashSHA256?: string;
+  hashMD5?: string;
+  bolsa_faraday_numero?: string;
+  precinto_numero?: string;
+  numero_prcc?: string;
+
+  // Funcionarios del Procedimiento
+  perito_coadyuvante?: string;
+  perito_coadyuvante_cedula?: string;
+  fiscal_nombre?: string;
+  fiscal_cedula?: string;
+  despacho_custodia?: string;
+  organismo_custodia?: string;
+
+  // Acta de Entrevista
+  condicion_juridica?: string;
+
+  // Transferencia PRCC Sección V
+  motivo_transferencia?: string;
+  fecha_transferencia?: string;
+  numero_comunicacion?: string;
+  receptor_nombre?: string;
+  receptor_cedula?: string;
 }
 
 // ─── Compliance Checklist por Normativa ────────────────────────────────────────
@@ -237,6 +288,7 @@ interface CMSState {
   fetchCasos: () => Promise<void>;
   addCaso: (caso: Omit<CasoCMS, 'id' | 'fechaCreacion' | 'fechaUltimaActualizacion'>) => Promise<string | null>;
   updateCaso: (id: string, datos: Partial<CasoCMS>) => Promise<void>;
+  updateCasoFormData: (casoId: string, overrides: Partial<CasoCMS>) => void;
   deleteCaso: (id: string) => Promise<void>;
   seleccionarCaso: (id: string | null) => void;
   setStepCompleted: (stepId: string, completed: boolean) => void;
@@ -1052,6 +1104,9 @@ export const useCMSStore = create<CMSState>()(
           console.error('Error al actualizar caso en DB:', e);
         }
         get().addAuditLog({ accion: 'CASO_ACTUALIZADO', detalle: `Caso ${id} actualizado`, nivel: 'info', casoId: id, usuario: 'sistema' });
+      },
+      updateCasoFormData: (casoId, overrides) => {
+        get().updateCaso(casoId, overrides);
       },
       deleteCaso: async (id) => {
         const casoAEliminar = get().casos.find(c => c.id === id);

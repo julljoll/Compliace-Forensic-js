@@ -30,6 +30,11 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
     discoduro_capacidad: '',
     discoduro_marca: '',
     discoduro_modelo: '',
+    despachoFiscal: '',
+    organismoOrdenante: '',
+    solicitante_direccion: '',
+    fechaCreacion: '',
+    perito_cedula: '',
   };
 
   const c = caso || fallbackCaso;
@@ -55,201 +60,364 @@ export default function PlanillaPRCC({ caso, tipoEvidencia: externalTipoEvidenci
 
   return (
     <PlanillaFolioTemplate
-      title="Planilla de Registro de Cadena de Custodia (PRCC)"
+      title="PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)"
       nroLabel="N° PRCC:"
       nroValue={c.numeroPRCC ? c.numeroPRCC : <span className="placeholder-field">[PRCC]</span>}
       watermarkText="CADENA CUSTODIA"
       onClick={handleCheckboxClick}
     >
-      {/* SECCIÓN 1.0 */}
+      {/* HEADER PRINCIPAL ESMERALDA */}
+      <div className="prcc-top-header">
+        PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC) — MUCC-2017
+      </div>
+
+      {/* I. DATOS GENERALES */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-1.0">1.0 REGISTRO GENERAL DE EVIDENCIA DIGITAL (PRCC-COPP)</PlanillaSectionTitle>
-        <div className="grid-container">
-          <div className="form-group">
-            <PlanillaFieldLabel>Apellidos y Nombres del Consignante</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Apellidos y Nombres del Consignante]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Cédula de Identidad / Pasaporte</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[Cédula de Identidad]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>N° de Expediente / Caso</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° Expediente]" />
-          </div>
-          <div className="form-group">
-            <PlanillaFieldLabel>Lugar de Resguardo / Sede</PlanillaFieldLabel>
-            <PlanillaEditableValue placeholder="[Laboratorio Forense SHA256.US — Lara]" />
+        <div className="prcc-banner-title">I. DATOS GENERALES</div>
+        <div className="prcc-card">
+          <div className="grid-container" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>N° Expediente / Causa</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° de Expediente / Causa]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>N° PRCC</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroPRCC} placeholder="[N° PRCC]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>Despacho que instruye</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.despachoFiscal} placeholder="[Despacho que instruye]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>Organismo que instruye</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.organismoOrdenante} placeholder="[Organismo que instruye]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>Despacho que inicia la custodia</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Laboratorio Forense Digital SHA256.US]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>Organismo que inicia la custodia</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Servicio de Consultoría Pericial SHA256.US]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ gridColumn: 'span 2' }}>
+              <PlanillaFieldLabel>Dirección de Obtención</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_direccion} placeholder="[Dirección exacta de obtención]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ gridColumn: 'span 2' }}>
+              <PlanillaFieldLabel>Fecha y Hora</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.fechaCreacion} placeholder="[DD/MM/AAAA - HH:MM]" />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* SECCIÓN 2.0 */}
+      {/* II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-2.0">2.0 MODALIDAD DE OBTENCIÓN Y CARACTERÍSTICAS TÉCNICAS DE LA EVIDENCIA</PlanillaSectionTitle>
-        <div className="form-group">
+        <div className="prcc-banner-title">II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA</div>
+        <div className="prcc-card" style={{ padding: '8px 12px' }}>
           <PlanillaCheckboxGroup
-            style={{ flexDirection: 'row', gap: '15px' }}
+            style={{ flexDirection: 'row', justifyContent: 'space-around' }}
             options={[
-              { id: 'ob1', label: 'CONSIGNACIÓN DIRECTA (ENTREGA VOLUNTARIA)', checked: true },
-              { id: 'ob2', label: 'TÉCNICA (Análisis Pericial Interno)' },
-              { id: 'ob3', label: 'DERIVACIÓN CORPORATIVA' },
+              { id: 'ob1', label: '1. Técnica' },
+              { id: 'ob2', label: '2. Aseguramiento' },
+              { id: 'ob3', label: '3. Consignación', checked: true },
+              { id: 'ob4', label: '4. Derivación' },
             ]}
           />
-          <div style={{ fontSize: '7.5pt', color: '#666', fontStyle: 'italic', marginTop: '3px' }}>
-            *Nota: Modalidad de Obtención conforme al MUCC-2017 Fase 1. Como laboratorio privado SHA256.US la obtención se realiza principalmente por Consignación Directa (Art. 45 MUCC-2017).
+        </div>
+      </div>
+
+      {/* III. FUNCIONARIOS QUE OBTIENEN LA EVIDENCIA */}
+      <div className="section">
+        <div className="prcc-banner-title">III. FUNCIONARIOS QUE OBTIENEN LA EVIDENCIA</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* Tarjeta A. FIJACIÓN */}
+          <div className="prcc-card">
+            <div style={{ fontWeight: 'bold', fontSize: '10px', color: '#0F172A', marginBottom: '6px', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px' }}>
+              A. FIJACIÓN
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Nombres y Apellidos</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.peritoLider} placeholder="[Operario que Fija]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '8px' }}>
+              <PlanillaFieldLabel>C.I. o Credencial</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.perito_cedula} placeholder="[C.I. / Credencial]" />
+            </div>
+            <div className="prcc-triple-box-container">
+              <div className="prcc-sig-box">
+                <span style={{ fontSize: '8px', fontWeight: 'bold', color: '#0F172A' }}>FIRMA</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR IZQ.</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR DER.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Tarjeta B. COLECCIÓN */}
+          <div className="prcc-card">
+            <div style={{ fontWeight: 'bold', fontSize: '10px', color: '#0F172A', marginBottom: '6px', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px' }}>
+              B. COLECCIÓN
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Nombres y Apellidos</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.peritoLider} placeholder="[Operario que Colecta]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '8px' }}>
+              <PlanillaFieldLabel>C.I. o Credencial</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.perito_cedula} placeholder="[C.I. / Credencial]" />
+            </div>
+            <div className="prcc-triple-box-container">
+              <div className="prcc-sig-box">
+                <span style={{ fontSize: '8px', fontWeight: 'bold', color: '#0F172A' }}>FIRMA</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR IZQ.</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR DER.</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* SECCIÓN 3.0 */}
+      {/* IV. DESCRIPCIÓN DE LA EVIDENCIA */}
       <div className="section">
-        <PlanillaSectionTitle id="seccion-3.0">3.0 REGISTRO DE CUSTODIOS ACTUANTES Y RESPONSABILIDAD PERICIAL</PlanillaSectionTitle>
-        <div className="signature-grid">
-          <div className="sig-card">
-            <PlanillaFieldLabel>A. Custodio Receptor / Fijación (Nombre y Credencial)</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito Receptor]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
-            <div className="sig-row">
-              <div className="sig-firma-col">
-                <div className="sig-box" />
-                <span className="sig-label">FIRMA</span>
-              </div>
-              <PlanillaThumbBox label="PULGAR DER." />
-            </div>
+        <div className="prcc-banner-title">IV. DESCRIPCIÓN DE LA EVIDENCIA</div>
+        <div className="prcc-ruled-lines">
+          <div>
+            {c.dispositivo_marca ? `Dispositivo: ${c.dispositivo_marca} ${c.dispositivo_modelo || ''}` : 'Dispositivo objeto de peritaje:'}
           </div>
-          <div className="sig-card">
-            <PlanillaFieldLabel>B. Custodio de Traslado / Colección (Nombre y Credencial)</PlanillaFieldLabel>
-            <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre del Perito de Traslado]" style={{ minHeight: '18px', fontWeight: 'bold', padding: '2px 5px' }} />
-            <div className="sig-row">
-              <div className="sig-firma-col">
-                <div className="sig-box" />
-                <span className="sig-label">FIRMA</span>
-              </div>
-              <PlanillaThumbBox label="PULGAR DER." />
-            </div>
+          <div>
+            {c.dispositivo_imei ? `Serial / IMEI: ${c.dispositivo_imei}` : 'Serial / IMEI:'}
           </div>
+          <div>
+            Embalaje y Precinto de Seguridad: Tamper-Evident Seal con Hash génesis SHA-256 verificado.
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '6px', fontSize: '8pt', gap: '10px' }}>
+          <span style={{ fontWeight: 'bold' }}>Continuación:</span>
+          <PlanillaCheckboxGroup
+            fontSize="8.5px"
+            style={{ flexDirection: 'row', gap: '10px' }}
+            options={[
+              { id: 'cont_si', label: 'SÍ' },
+              { id: 'cont_no', label: 'NO', checked: true },
+              { id: 'cont_anexoa', label: '(Anexo A)' },
+            ]}
+          />
         </div>
       </div>
 
-      {/* SECCIÓN 4.0 */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-4.0">4.0 ALMACENAMIENTO EN BÓVEDA PRIVADA DE EVIDENCIAS</PlanillaSectionTitle>
-        {tipoEvidencia === 'movil' ? (
-          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
-            <tbody>
-              <tr>
-                <td>Tipo de Dispositivo</td>
-                <td>
-                  <PlanillaCheckboxGroup
-                    fontSize="9px"
-                    style={{ flexDirection: 'row', gap: '15px' }}
-                    options={[
-                      { id: 'td1', label: 'Teléfono Móvil Android' },
-                      { id: 'td2', label: 'Tableta' },
-                      { id: 'td3', label: 'Otro' },
-                    ]}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Marca / Modelo</td>
-                <td>
-                  <PlanillaEditableValue
-                    value={c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : undefined}
-                    placeholder="[Marca / Modelo del Dispositivo]"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>IMEI 1</td>
-                <td><PlanillaEditableValue value={c.dispositivo_imei} placeholder="[IMEI 1 / Serial]" /></td>
-              </tr>
-              <tr>
-                <td>IMEI 2</td>
-                <td><PlanillaEditableValue value={c.dispositivo_imei2} placeholder="[IMEI 2]" /></td>
-              </tr>
-              <tr>
-                <td>N° de Serie / Serial</td>
-                <td><PlanillaEditableValue value={c.dispositivo_imei} placeholder="[Serial / IMEI]" /></td>
-              </tr>
-              <tr>
-                <td>N° de Línea / Teléfono</td>
-                <td><PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[Teléfono de Contacto]" /></td>
-              </tr>
-            </tbody>
-          </table>
-        ) : (
-          <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
-            <tbody>
-              <tr>
-                <td>Tipo de Computadora</td>
-                <td>
-                  <PlanillaCheckboxGroup
-                    fontSize="9px"
-                    style={{ flexDirection: 'row', gap: '15px' }}
-                    options={[
-                      { id: 'tc1', label: 'Laptop / Portátil' },
-                      { id: 'tc2', label: 'Escritorio / PC' },
-                      { id: 'tc3', label: 'Servidor / Disco Externo' },
-                    ]}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Marca / Modelo</td>
-                <td>
-                  <PlanillaEditableValue
-                    value={c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : undefined}
-                    placeholder="[Marca / Modelo del Equipo]"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Serial del Equipo</td>
-                <td><PlanillaEditableValue value={c.dispositivo_imei} placeholder="[Serial del Equipo]" /></td>
-              </tr>
-              <tr>
-                <td>Disco Duro (Marca / Capacidad / Serial)</td>
-                <td>
-                  <PlanillaEditableValue
-                    value={c.discoduro_serial || c.discoduro_capacidad ? `${c.discoduro_marca || ''} ${c.discoduro_capacidad || ''} S/N: ${c.discoduro_serial || ''}`.trim() : undefined}
-                    placeholder="[Detalle del Disco Duro (Marca, Capacidad, Serial)]"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      {/* SECCIÓN 5.0 */}
+      {/* V. TRANSFERENCIA DE LA EVIDENCIA */}
       <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle id="seccion-5.0">5.0 CERTIFICACIÓN DE INTEGRIDAD Y VERIFICACIÓN SHA-256</PlanillaSectionTitle>
-        <table border={1} cellSpacing={0} cellPadding={6} className="tabla-datos">
+        <div className="prcc-banner-title">V. TRANSFERENCIA DE LA EVIDENCIA</div>
+        
+        {/* a. MOTIVO */}
+        <div className="prcc-card" style={{ marginBottom: '10px' }}>
+          <div style={{ fontWeight: 'bold', fontSize: '10px', marginBottom: '6px', color: '#0F172A' }}>a. MOTIVO</div>
+          <PlanillaCheckboxGroup
+            fontSize="8.5px"
+            style={{ flexDirection: 'row', gap: '12px', marginBottom: '8px' }}
+            options={[
+              { id: 'm1', label: '1. Traslado' },
+              { id: 'm2', label: '2. Peritaje' },
+              { id: 'm3', label: '3. Resguardo', checked: true },
+              { id: 'm4', label: '4. Disposición Judicial' },
+              { id: 'm5', label: '5. Disposición Final' },
+            ]}
+          />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>Fecha y Hora</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.fechaCreacion} placeholder="[DD/MM/AAAA - HH:MM]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>N° de Comunicación</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[N° Oficio / Memo]" />
+            </div>
+          </div>
+        </div>
+
+        {/* b. ENTREGA & c. RECIBE */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {/* b. ENTREGA */}
+          <div className="prcc-card">
+            <div style={{ fontWeight: 'bold', fontSize: '10px', marginBottom: '6px', color: '#0F172A', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px' }}>b. ENTREGA</div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Nombres y Apellidos</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Consignante / Entregante]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>C.I. o Credencial</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.solicitante_cedula} placeholder="[C.I.]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Organismo</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Particular / Institución]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '8px' }}>
+              <PlanillaFieldLabel>Despacho</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="[Despacho / Residencia]" />
+            </div>
+            <div className="prcc-triple-box-container">
+              <div className="prcc-sig-box">
+                <span style={{ fontSize: '8px', fontWeight: 'bold', color: '#0F172A' }}>FIRMA</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR IZQ.</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR DER.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* c. RECIBE */}
+          <div className="prcc-card">
+            <div style={{ fontWeight: 'bold', fontSize: '10px', marginBottom: '6px', color: '#0F172A', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px' }}>c. RECIBE</div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Nombres y Apellidos</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.peritoLider} placeholder="[Perito Receptor]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>C.I. o Credencial</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.perito_cedula} placeholder="[C.I. Perito]" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '6px' }}>
+              <PlanillaFieldLabel>Organismo</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="SHA256.US" />
+            </div>
+            <div className="form-group prcc-slot-input" style={{ marginBottom: '8px' }}>
+              <PlanillaFieldLabel>Despacho</PlanillaFieldLabel>
+              <PlanillaEditableValue placeholder="Laboratorio Forense" />
+            </div>
+            <div className="prcc-triple-box-container">
+              <div className="prcc-sig-box">
+                <span style={{ fontSize: '8px', fontWeight: 'bold', color: '#0F172A' }}>FIRMA</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR IZQ.</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR DER.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* d. OBSERVACIONES */}
+        <div style={{ marginTop: '10px' }}>
+          <div style={{ fontWeight: 'bold', fontSize: '10px', marginBottom: '4px', color: '#0F172A' }}>d. OBSERVACIONES</div>
+          <div className="prcc-ruled-lines" style={{ minHeight: '60px', lineHeight: '20px' }}>
+            <div>Recepción inicial para resguardo inmutable y peritaje informático forense.</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ANEXO A — REGISTRO DE CONTINUIDAD */}
+      <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
+        <div className="prcc-banner-title" style={{ textAlign: 'center', fontSize: '11px' }}>ANEXO A - REGISTRO DE CONTINUIDAD</div>
+        
+        <div className="section" style={{ marginTop: '6px' }}>
+          <div className="prcc-banner-title">I. DATOS DE CONTINUIDAD DEL REGISTRO DE LA CADENA DE CUSTODIA</div>
+          <div className="prcc-card">
+            <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="form-group prcc-slot-input">
+                <PlanillaFieldLabel>N° de Expediente / Causa</PlanillaFieldLabel>
+                <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° Expediente]" />
+              </div>
+              <div className="form-group prcc-slot-input">
+                <PlanillaFieldLabel>N° PRCC</PlanillaFieldLabel>
+                <PlanillaEditableValue value={c.numeroPRCC} placeholder="[N° PRCC]" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="prcc-banner-title">II. CONTINUIDAD DE RESPONSABILIDAD: COLECCIÓN</div>
+          <div className="prcc-card">
+            <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+              <div className="form-group prcc-slot-input">
+                <PlanillaFieldLabel>Nombres y Apellidos</PlanillaFieldLabel>
+                <PlanillaEditableValue value={c.peritoLider} placeholder="[Operario]" />
+              </div>
+              <div className="form-group prcc-slot-input">
+                <PlanillaFieldLabel>C.I. o Credencial</PlanillaFieldLabel>
+                <PlanillaEditableValue value={c.perito_cedula} placeholder="[C.I.]" />
+              </div>
+            </div>
+            <div className="prcc-triple-box-container">
+              <div className="prcc-sig-box">
+                <span style={{ fontSize: '8px', fontWeight: 'bold', color: '#0F172A' }}>FIRMA</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR IZQ.</span>
+              </div>
+              <div className="prcc-thumb-box">
+                <span>PULGAR DER.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="prcc-banner-title">III. DESCRIPCIÓN DE LA EVIDENCIA</div>
+          <div className="prcc-ruled-lines" style={{ minHeight: '220px' }}>
+            <div style={{ color: '#94a3b8', fontStyle: 'italic' }}>[Espacio destinado a la continuación de la descripción de evidencias]</div>
+          </div>
+        </div>
+
+        <div className="section">
+          <div className="prcc-banner-title">IV. OBSERVACIONES</div>
+          <div className="prcc-ruled-lines" style={{ minHeight: '60px', lineHeight: '20px' }}>
+            <div style={{ color: '#94a3b8', fontStyle: 'italic' }}>[Sin observaciones adicionales]</div>
+          </div>
+        </div>
+      </div>
+
+      {/* ANEXO B — REGISTRO DE DERIVACIÓN */}
+      <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
+        <div className="prcc-banner-title" style={{ textAlign: 'center', fontSize: '11px' }}>ANEXO B - REGISTRO DE DERIVACIÓN</div>
+        <div className="prcc-card" style={{ marginBottom: '10px' }}>
+          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>N° de Expediente / Causa</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroCaso} placeholder="[N° Expediente]" />
+            </div>
+            <div className="form-group prcc-slot-input">
+              <PlanillaFieldLabel>N° PRCC</PlanillaFieldLabel>
+              <PlanillaEditableValue value={c.numeroPRCC} placeholder="[N° PRCC]" />
+            </div>
+          </div>
+        </div>
+
+        <table border={1} cellSpacing={0} cellPadding={6} className="tabla-datos" style={{ borderRadius: '6px', overflow: 'hidden' }}>
           <thead>
-            <tr style={{ background: '#f2f2f7', textAlign: 'center', fontSize: '9px' }}>
-              <th style={{ width: '12%' }}>Fecha / Hora</th>
-              <th style={{ width: '22%' }}>Entrega (Nombre / C.I.)</th>
-              <th style={{ width: '22%' }}>Recibe (Nombre / C.I.)</th>
-              <th>Propósito / Observaciones</th>
-              <th style={{ width: '14%' }}>Firma / Huella</th>
+            <tr style={{ background: '#0F172A', color: '#fff', textAlign: 'center', fontSize: '8.5px' }}>
+              <th style={{ width: '12%' }}>Fecha</th>
+              <th style={{ width: '22%' }}>Despacho que deriva</th>
+              <th style={{ width: '22%' }}>Persona que deriva</th>
+              <th style={{ width: '18%' }}>N° Experticia</th>
+              <th>Evidencia que se deriva</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><PlanillaEditableValue placeholder="[Fecha]" /></td>
-              <td><PlanillaEditableValue value={c.solicitante_nombre} placeholder="[Consignante]" /></td>
-              <td><PlanillaEditableValue value={c.peritoLider} placeholder="[Perito Receptor]" /></td>
-              <td>Recepción Inicial en Laboratorio Forense para Resguardo y Adquisición</td>
-              <td style={{ textAlign: 'center' }}>________________</td>
-            </tr>
-            <tr>
-              <td><PlanillaEditableValue placeholder="[Fecha]" /></td>
-              <td><PlanillaEditableValue placeholder="[Entregado Por]" /></td>
-              <td><PlanillaEditableValue placeholder="[Recibido Por]" /></td>
-              <td><PlanillaEditableValue placeholder="[Propósito del Traslado / Análisis]" /></td>
-              <td style={{ textAlign: 'center' }}>________________</td>
-            </tr>
+            {[1, 2, 3, 4].map((i) => (
+              <tr key={i} style={{ background: i % 2 === 0 ? '#F3F3F3' : '#FFFFFF' }}>
+                <td><PlanillaEditableValue placeholder="[DD/MM/AA]" /></td>
+                <td><PlanillaEditableValue placeholder="[Despacho]" /></td>
+                <td><PlanillaEditableValue placeholder="[Nombre]" /></td>
+                <td><PlanillaEditableValue placeholder="[N° Experticia]" /></td>
+                <td><PlanillaEditableValue placeholder="[Descripción de la evidencia derivada]" /></td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

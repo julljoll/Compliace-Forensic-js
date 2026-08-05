@@ -1,14 +1,8 @@
 'use client';
 
 import React from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import PlanillaPdfViewer from '@/components/organisms/Planillas/PlanillaPdfViewer';
+import { X, FileText } from '@/components/atoms/AppleIcon';
 
 interface PdfPreviewModalProps {
   open: boolean;
@@ -25,48 +19,35 @@ export default function PdfPreviewModal({
   title = 'Vista Previa PDF',
   isGenerating = false,
 }: PdfPreviewModalProps) {
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="lg"
-      fullWidth
-      slotProps={{
-        paper: {
-          sx: {
-            backgroundColor: '#1E1800',
-            border: '1px solid rgba(254, 207, 6, 0.4)',
-            borderRadius: '12px',
-            color: '#FFFFFF',
-            minHeight: '85vh',
-          },
-        },
-      }}
-    >
-      <DialogTitle
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '1px solid rgba(254, 207, 6, 0.25)',
-          py: 1.5,
-          px: 2.5,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <PictureAsPdfIcon sx={{ color: '#FECF06' }} />
-          <Typography variant="h6" sx={{ color: '#FECF06', fontWeight: 700, fontSize: '1.1rem' }}>
-            {title}
-          </Typography>
-        </div>
-        <IconButton onClick={onClose} sx={{ color: '#AEAEB2', '&:hover': { color: '#FFFFFF' } }}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+  if (!open) return null;
 
-      <DialogContent sx={{ p: 2, display: 'flex', justifyContent: 'center', backgroundColor: '#141000' }}>
-        <PlanillaPdfViewer pdfBlob={pdfBlob} title={title} isGenerating={isGenerating} />
-      </DialogContent>
-    </Dialog>
+  return (
+    <div className="modal show d-block" tabIndex={-1} style={{ backgroundColor: 'rgba(17, 46, 81, 0.75)', zIndex: 1055 }}>
+      <div className="modal-dialog modal-dialog-centered modal-xl" style={{ maxWidth: '1200px' }}>
+        <div className="modal-content border shadow-lg rounded-3" style={{ backgroundColor: '#112E51', borderColor: '#CBD5E1' }}>
+          <div className="modal-header border-bottom py-2 px-3" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
+            <div className="d-flex align-items-center gap-2">
+              <FileText size={20} className="text-warning" />
+              <h5 className="modal-title fw-bold mb-0 text-white" style={{ fontSize: '1.1rem' }}>
+                {title}
+              </h5>
+            </div>
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-light d-flex align-items-center justify-content-center p-1 rounded-circle"
+              onClick={onClose}
+              aria-label="Cerrar"
+              style={{ width: '30px', height: '30px' }}
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          <div className="modal-body p-2 p-md-3" style={{ backgroundColor: '#F0F4F8' }}>
+            <PlanillaPdfViewer pdfBlob={pdfBlob} title={title} isGenerating={isGenerating} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,8 +1,4 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import { AlertTriangle, RefreshCw, Home } from './AppleIcon';
 
 interface Props {
@@ -60,36 +56,42 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', p: 4 }}>
-          <Card sx={{ p: 4, maxWidth: '440px', width: '100%', textAlign: 'center', backgroundColor: '#1E1800', border: '1px solid rgba(254, 207, 6, 0.3)' }}>
-            <Box sx={{ width: 64, height: 64, borderRadius: '50%', backgroundColor: 'rgba(255, 59, 48, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
-              <AlertTriangle size={28} style={{ color: '#FF3B30' }} />
-            </Box>
-            <Typography variant="h6" sx={{ color: '#FECF06', fontWeight: 800, mb: 1 }}>
+        <div className="d-flex align-items-center justify-content-center min-vh-50 p-4">
+          <div className="card p-4 max-w-440 w-100 text-center bg-white border shadow-sm rounded-3">
+            <div className="p-3 rounded-circle bg-danger-subtle mx-auto mb-3" style={{ width: '64px', height: '64px' }}>
+              <AlertTriangle size={28} className="text-danger" />
+            </div>
+            <h2 className="h5 fw-bold text-navy mb-1" style={{ color: '#112E51' }}>
               Error en la aplicación
-            </Typography>
-            <Typography sx={{ fontSize: '13px', color: '#AEAEB2', mb: 2 }}>
+            </h2>
+            <p className="small text-muted mb-3">
               Ocurrió un error inesperado. El sistema ha registrado el incidente.
-            </Typography>
+            </p>
 
             {this.state.error && (
-              <Box sx={{ textAlign: 'left', mb: 3 }}>
-                <Typography component="pre" sx={{ p: 2, borderRadius: '8px', backgroundColor: 'rgba(0,0,0,0.4)', fontSize: '11px', color: '#FF3B30', overflowX: 'auto', fontFamily: 'monospace' }}>
-                  {this.state.error.message}
-                </Typography>
-              </Box>
+              <pre className="p-3 rounded bg-light text-danger text-start small font-monospace overflow-auto mb-3">
+                {this.state.error.message}
+              </pre>
             )}
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-              <Button onClick={this.handleReset} variant="contained" startIcon={<RefreshCw size={14} />} sx={{ backgroundColor: '#FECF06', color: '#000000', fontWeight: 700 }}>
-                Reintentar
-              </Button>
-              <Button onClick={() => window.location.href = '/'} variant="outlined" startIcon={<Home size={14} />} sx={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.3)' }}>
-                Ir al inicio
-              </Button>
-            </Box>
-          </Card>
-        </Box>
+            <div className="d-flex justify-content-center gap-2">
+              <button
+                type="button"
+                className="btn btn-warning btn-sm fw-bold text-navy d-flex align-items-center gap-1"
+                onClick={this.handleReset}
+              >
+                <RefreshCw size={14} /> Reintentar
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm fw-bold d-flex align-items-center gap-1"
+                onClick={() => window.location.href = '/'}
+              >
+                <Home size={14} /> Ir al inicio
+              </button>
+            </div>
+          </div>
+        </div>
       );
     }
 

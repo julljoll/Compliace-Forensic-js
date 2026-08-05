@@ -7,7 +7,7 @@ describe('StatusDot Component (MUI v6 Atom)', () => {
   it('debe renderizar el punto de estado online con color verde (#00FF41)', () => {
     const { container } = renderWithTheme(<StatusDot status="online" size={10} />)
     expect(container).toBeDefined()
-    const dots = container.querySelectorAll('div')
+    const dots = container.querySelectorAll('span')
     expect(dots.length).toBeGreaterThan(0)
   })
 

@@ -2,31 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import ToggleButton from '@mui/material/ToggleButton';
-import DescriptionIcon from '@mui/icons-material/Description';
-import PrintIcon from '@mui/icons-material/Print';
-import EditNoteIcon from '@mui/icons-material/EditNote';
 import { exportPlanillaToWordDocx } from '@/lib/export/exportWordDocx';
 import { printPdfBlob } from '@/lib/pdf/planillaPdfEngine';
+import { FileText, Printer, Edit } from '../../atoms/AppleIcon';
 
 const PDFViewerNative = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFViewer),
   {
     ssr: false,
     loading: () => (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '600px', backgroundColor: '#0D1117', color: '#FECF06', gap: 2 }}>
-        <CircularProgress sx={{ color: '#FECF06' }} size={40} />
-        <Typography sx={{ fontSize: '13px', fontWeight: 700, fontFamily: 'monospace' }}>
+      <div className="d-flex flex-column align-items-center justify-content-center w-100 h-100 min-vh-50 text-warning gap-2" style={{ backgroundColor: '#112E51' }}>
+        <div className="spinner-border text-warning" role="status" style={{ width: '3rem', height: '3rem' }}>
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+        <p className="small fw-bold font-monospace mb-0" style={{ fontSize: '13px', color: '#D9A700' }}>
           Generando vista previa vectorial PDF (Papel Folio 216mm x 330mm)...
-        </Typography>
-      </Box>
+        </p>
+      </div>
     ),
   }
 );
@@ -41,10 +33,10 @@ export interface PlanillaPdfViewerProps {
 }
 
 const NORMATIVAS_PLANILLA = [
-  { label: 'MUCC-2017 § 4', color: '#FECF06' },
-  { label: 'ISO 27037:2012', color: '#00FF41' },
-  { label: 'COPP Art. 187', color: '#FECF06' },
-  { label: 'Ley Mensajes Datos', color: '#9DFF00' },
+  { label: 'MUCC-2017 § 4', color: '#D9A700' },
+  { label: 'ISO 27037:2012', color: '#008837' },
+  { label: 'COPP Art. 187', color: '#D9A700' },
+  { label: 'Ley Mensajes Datos', color: '#005EA2' },
 ];
 
 export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Previa PDF', isGenerating = false, actions, caso }: PlanillaPdfViewerProps) {
@@ -95,140 +87,99 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
   const activeDocument = document ? React.cloneElement(document, { isBlankMode }) : null;
 
   return (
-    <Box sx={{ width: '100%', maxWidth: '1100px', mx: 'auto', my: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {/* Control Bar (Cyber-Legal Blueprint Style) */}
-      <Box
-        sx={{
-          p: 2,
-          backgroundColor: '#161B22',
-          border: '1px solid rgba(48, 54, 61, 0.8)',
-          borderRadius: '8px',
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { md: 'center' },
-          justifyContent: 'space-between',
-          gap: 2,
-        }}
-      >
-        <Box>
-          <Typography variant="h6" sx={{ fontSize: '15px', fontWeight: 800, color: '#FECF06', display: 'flex', alignItems: 'center', gap: 1 }}>
-            📄 {title}
-          </Typography>
-          <Stack direction="row" spacing={0.5} sx={{ mt: 0.75, flexWrap: 'wrap', gap: 0.5 }}>
+    <div className="container-fluid max-w-1150 my-3 px-0 d-flex flex-column gap-3">
+      {/* Control Bar (USWDS / Bootstrap Dual Blueprint Style) */}
+      <div className="card p-3 bg-white border rounded-3 shadow-sm d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+          <h2 className="h6 fw-bold mb-1 d-flex align-items-center gap-2" style={{ color: '#112E51' }}>
+            <FileText size={18} className="text-warning" />
+            {title}
+          </h2>
+          <div className="d-flex flex-wrap gap-1 mt-1">
             {NORMATIVAS_PLANILLA.map(n => (
-              <Chip
-                key={n.label}
-                label={n.label}
-                size="small"
-                sx={{
-                  fontSize: '9px', height: '16px', fontFamily: 'monospace', fontWeight: 700,
-                  backgroundColor: `${n.color}12`, color: n.color, border: `1px solid ${n.color}30`,
-                }}
-              />
+              <span key={n.label} className="usa-tag usa-tag--info" style={{ fontSize: '9px' }}>
+                {n.label}
+              </span>
             ))}
-          </Stack>
-        </Box>
+          </div>
+        </div>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+        <div className="d-flex align-items-center gap-2 flex-wrap">
           {/* Selector Modo en Blanco vs Con Datos del Caso */}
-          <ToggleButtonGroup
-            value={isBlankMode ? 'blank' : 'filled'}
-            exclusive
-            onChange={(_, val) => {
-              if (val !== null) setIsBlankMode(val === 'blank');
-            }}
-            size="small"
-            sx={{
-              backgroundColor: '#0D1117',
-              border: '1px solid rgba(254, 207, 6, 0.4)',
-              borderRadius: '6px',
-              '& .MuiToggleButton-root': {
-                color: '#8B949E',
-                fontSize: '11px',
-                fontWeight: 700,
-                px: 1.5,
-                py: 0.5,
-                textTransform: 'none',
-                border: 'none',
-                '&.Mui-selected': {
-                  backgroundColor: isBlankMode ? '#FECF06' : '#00FF41',
-                  color: '#000000',
-                  fontWeight: 800,
-                  '&:hover': { backgroundColor: isBlankMode ? '#E5B800' : '#00CC33' },
-                },
-              },
-            }}
-          >
-            <ToggleButton value="blank">
-              <EditNoteIcon sx={{ fontSize: 15, mr: 0.5 }} /> ✏️ PLANILLA EN BLANCO
-            </ToggleButton>
-            <ToggleButton value="filled">
+          <div className="btn-group btn-group-sm" role="group" aria-label="Modo de Planilla">
+            <button
+              type="button"
+              className={`btn fw-bold ${isBlankMode ? 'btn-warning text-dark' : 'btn-outline-secondary'}`}
+              onClick={() => setIsBlankMode(true)}
+              style={{ fontSize: '11px' }}
+            >
+              ✏️ PLANILLA EN BLANCO
+            </button>
+            <button
+              type="button"
+              className={`btn fw-bold ${!isBlankMode ? 'btn-success text-white' : 'btn-outline-secondary'}`}
+              onClick={() => setIsBlankMode(false)}
+              style={{ fontSize: '11px' }}
+            >
               📋 CON DATOS
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </button>
+          </div>
 
           {/* Selección de dispositivo / acciones adicionales */}
           {actions}
 
           {/* Botón Principal: IMPRIMIR PLANILLA EN BLANCO */}
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={isPrinting ? <CircularProgress size={14} sx={{ color: '#000000' }} /> : <PrintIcon />}
+          <button
+            type="button"
+            className="btn btn-warning btn-sm fw-bold text-dark d-flex align-items-center gap-1"
             onClick={handlePrintBlank}
             disabled={isPrinting || !document}
-            sx={{
-              backgroundColor: '#FECF06',
-              color: '#000000',
-              fontWeight: 800,
-              fontSize: '11px',
-              px: 2,
-              '&:hover': { backgroundColor: '#E5B800' },
-            }}
+            style={{ fontSize: '11px' }}
           >
+            {isPrinting ? (
+              <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
+            ) : (
+              <Printer size={14} />
+            )}
             🖨️ IMPRIMIR EN BLANCO
-          </Button>
+          </button>
 
           {/* Exportar a Word (.DOCX) */}
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={isExportingWord ? <CircularProgress size={14} sx={{ color: '#00FF41' }} /> : <DescriptionIcon />}
+          <button
+            type="button"
+            className="btn btn-outline-success btn-sm fw-bold d-flex align-items-center gap-1"
             onClick={handleExportWordDocx}
             disabled={isExportingWord}
-            sx={{
-              borderColor: 'rgba(0, 255, 65, 0.4)',
-              color: '#00FF41',
-              fontWeight: 700,
-              fontSize: '11px',
-              '&:hover': { borderColor: '#00FF41', backgroundColor: 'rgba(0, 255, 65, 0.08)' },
-            }}
+            style={{ fontSize: '11px' }}
           >
+            {isExportingWord ? (
+              <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
+            ) : (
+              <FileText size={14} />
+            )}
             WORD (.DOCX)
-          </Button>
-        </Box>
-      </Box>
+          </button>
+        </div>
+      </div>
 
       {/* PDF Container */}
-      <Box
-        sx={{
-          width: '100%',
+      <div
+        className="w-100 rounded-3 overflow-hidden border shadow-lg d-flex align-items-center justify-content-center"
+        style={{
           height: '820px',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          border: '1px solid rgba(48, 54, 61, 0.8)',
-          boxShadow: '0 12px 32px rgba(0,0,0,0.6)',
-          backgroundColor: '#0D1117',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          borderColor: '#CBD5E1',
+          backgroundColor: '#112E51',
         }}
       >
         {isGenerating ? (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, color: '#FECF06' }}>
-            <CircularProgress sx={{ color: '#FECF06' }} size={40} />
-            <Typography sx={{ fontSize: '14px', fontWeight: 700, fontFamily: 'monospace' }}>Procesando documento PDF...</Typography>
-          </Box>
+          <div className="d-flex flex-column align-items-center gap-2 text-warning">
+            <div className="spinner-border text-warning" role="status" style={{ width: '3rem', height: '3rem' }}>
+              <span className="visually-hidden">Procesando...</span>
+            </div>
+            <p className="fw-bold font-monospace small mb-0" style={{ color: '#D9A700' }}>
+              Procesando documento PDF...
+            </p>
+          </div>
         ) : activeDocument ? (
           <PDFViewerNative style={{ width: '100%', height: '100%', border: 'none' }}>
             {activeDocument as any}
@@ -236,9 +187,9 @@ export default function PlanillaPdfViewer({ document, pdfBlob, title = 'Vista Pr
         ) : blobUrl ? (
           <iframe src={blobUrl} style={{ width: '100%', height: '100%', border: 'none' }} title={title} />
         ) : (
-          <Typography sx={{ color: '#8B949E', fontSize: '14px' }}>No hay documento PDF cargado.</Typography>
+          <p className="text-light small mb-0">No hay documento PDF cargado.</p>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }
