@@ -435,3 +435,15 @@ input, select, textarea { font-size: max(16px, 1em) !important; }
   border-color: var(--usa-border) !important;
 }
 
+/* ── Pauta Pericial y Líneas de Cuaderno ── */
+.dotted-line, .linea-cuaderno {
+  display: block;
+  width: 100%;
+  height: 24px;
+  border-bottom: 1px dotted #94A3B8;
+  background: transparent;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
