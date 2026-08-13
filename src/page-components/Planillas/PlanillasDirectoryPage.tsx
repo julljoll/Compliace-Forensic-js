@@ -147,6 +147,15 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
         ruta: '/planillas/entrega-resultados',
         normativas: ['MUCC-2017 Cierre', 'ISO/IEC 27037 Sec. 8', 'COPP Art. 187'],
       },
+      {
+        id: 'planilla-evaluacion-ux',
+        paso: '4.3',
+        nombre: 'Planilla de Evaluación y Auditoría UX/UI Forense',
+        descripcion: 'Instrumento pericial de autoevaluación Likert (1-5) para validar la usabilidad, amigabilidad y velocidad de llenado de planillas locales en Peritos, Abogados y Jueces.',
+        ruta: '/planillas/evaluacion-ux',
+        normativas: ['USWDS 3.0', 'DC3 Cyber Forensics', 'ISO/IEC 27037', 'NIST SP 800-86'],
+        isNew: true,
+      },
     ],
   },
 ];

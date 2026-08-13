@@ -66,6 +66,21 @@ La interfaz gráfica sigue el modelo de diseño oficial del **Defense Cyber Crim
 - `.usa-step-indicator`: Barra de progreso por pasos del expediente.
 - `.usa-summary-box`: Recuadros resumen con borde lateral institucional.
 
+### 2.3 Estándar de Activos Vectoriales SVG (Planillas, Pipelines y Diagramas de Flujo)
+
+Todo gráfico o recurso en formato `.svg` (planillas, actas, diagramas de flujo, pipelines forenses o arquitecturas de sistema) generado o requerido por el proyecto debe cumplir obligatoriamente con los siguientes principios:
+
+1. **Orientación y Proporción Canónica (Hoja Folio Vertical):**
+   - Todos los activos SVG deben diseñarse en **orientación vertical**, adoptando las proporciones físicas y la relación de aspecto estandarizada de **Hoja Folio / Oficio (216mm × 330mm)** (relación de aspecto `1 : 1.528`, ej. `viewBox="0 0 612 935"` o `viewBox="0 0 800 1222"`).
+
+2. **Paridad y Fidelidad Absoluta (Copia Fiel 1:1 para Planillas Existentes):**
+   - Cuando el recurso SVG sea una representación o visualización de una planilla o acta ya existente en el sistema, debe constituir una **copia fiel 1:1**.
+   - Debe replicar con exactitud milimétrica la tipografía (`Public Sans` / `Fira Code`), membretes institucionales, grillas de campos, tablas, pautas de cuaderno, recuadros dactiloscópicos y bloques de firmas bilaterales del componente original.
+
+3. **Ingeniería de UI/UX, SEO Gráfico y Estilos Institucionales (Nuevos Diagramas / Pipelines):**
+   - **Estilos Institucionales & UI/UX:** Aplicar de forma estricta los tokens de color oficiales del laboratorio forense (Canvas `#F0F4F8`, Tarjetas `#FFFFFF`, Azul Marino `#112E51`, Azul Interactivo `#005EA2`, Dorado `#D9A700`, Texto `#1B2A4A`), manteniendo jerarquía visual limpia y alto contraste (WCAG 2.1 AA).
+   - **SEO Gráfico & Semántica SVG:** Incluir etiquetas semánticas dentro del código del SVG (`<title>`, `<desc>`, atributos `role="img"` y `aria-labelledby`), optimización vectorial sin nodos o estilos redundantes inline, garantizando rendimiento, accesibilidad e indexación web.
+
 ---
 
 ## 3. Marco Regulatorio y Estándares Forenses Obligatorios
@@ -234,3 +249,4 @@ src/
 2. **Sin librerías UI no autorizadas:** No instalar ni utilizar MUI, Tailwind, Ant Design o similares. Bootstrap 5.3 + USWDS 3.0 son los únicos marcos visuales permitidos.
 3. **Verificación TypeScript Obligatoria:** Ningún cambio se da por concluido sin haber verificado la compilación estática ejecutando `npx tsc --noEmit`.
 4. **Preservación de Márgenes de Folio:** La previsualización web y la impresión física deben conservar los márgenes normativos de hoja Folio (216mm × 330mm).
+5. **Cumplimiento Estricto de SVG Folio Vertical:** Todo activo SVG de planillas, diagramas de flujo o pipelines debe crearse en orientación Folio vertical (`1:1.528`), ser copia fiel 1:1 si corresponde a una planilla existente, e integrar optimización UX/SEO con los estilos institucionales (DC3 Cyber Forensics).

@@ -482,6 +482,40 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
     ],
   },
+  'planilla-evaluacion-ux': {
+    id: 'planilla-evaluacion-ux',
+    codigo: 'FO-SHA256-EVA-001',
+    nombreOficial: 'PLANILLA DE EVALUACIÓN Y AUDITORÍA DE EXPERIENCIA DE USUARIO (UX/UI FORENSE)',
+    subtitulo: 'INSTRUMENTO PERICIAL DE COMPROBACIÓN DE USABILIDAD (1-5) DE PLANILLAS LOCALES PARA PERITOS, ABOGADOS LITIGANTES Y JUECES',
+    etapaLegal: 'ETAPA 4: Auditoría & Evaluación UX/UI',
+    normativas: ['ISO/IEC 27037', 'USWDS 3.0', 'DC3 Cyber Forensics', 'NIST SP 800-86'],
+    sections: [
+      {
+        numero: '1.0',
+        titulo: 'OBJETIVO Y COBERTURA DE EVALUACIÓN DE PLANILLAS LOCALES',
+        descripcion: 'Definición del ámbito de comprobación de usabilidad (Likert 1-5) en Peritos, Abogados y Jueces.',
+        camposCount: 4,
+      },
+      {
+        numero: '2.0',
+        titulo: 'MATRIZ DE CUESTIONARIO Y VALORACIÓN UX/UI DE PLANILLAS LOCALES',
+        descripcion: '7 Criterios probatorios de amigabilidad, legibilidad, velocidad de llenado y admisibilidad en juicio.',
+        camposCount: 7,
+      },
+      {
+        numero: '3.0',
+        titulo: 'CUESTIONARIO DIAGNÓSTICO CUALITATIVO DE EXPERIENCIA EN TRIBUNALES',
+        descripcion: 'Preguntas diagnósticas escritas sobre novedad procesal, amigabilidad UI y celeridad procesal.',
+        camposCount: 3,
+      },
+      {
+        numero: '4.0',
+        titulo: 'CERTIFICACIÓN DE EVALUACIÓN UX, DACTILOSCOPÍA Y FIRMAS',
+        descripcion: 'Firmas bilaterales, recuadros dactiloscópicos (pulgares) y sello inmutable SHA-256.',
+        camposCount: 4,
+      },
+    ],
+  },
 };
 
 /**
@@ -491,6 +525,10 @@ export function getPlanillaRegistry(id: string): PlanillaRegistryDef {
   const normalizedId = id.toLowerCase().trim();
   if (PLANILLAS_REGISTRY[normalizedId]) {
     return PLANILLAS_REGISTRY[normalizedId];
+  }
+
+  if (normalizedId.includes('evaluacion') || normalizedId.includes('ux')) {
+    return PLANILLAS_REGISTRY['planilla-evaluacion-ux'];
   }
 
   // Búsqueda aproximada si el id viene con variaciones (ej. 'dictamen-imagenes' vs 'dictamen')

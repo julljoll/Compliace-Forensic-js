@@ -14,6 +14,7 @@ describe('planillasRegistry — Registro Unificado de Planillas Forenses', () =>
     expect(keys).toContain('acta-sanitizacion')
     expect(keys).toContain('entrega-resultados')
     expect(keys).toContain('acta-auditoria-timeline')
+    expect(keys).toContain('planilla-evaluacion-ux')
   })
 
   it('debe mapear correctamente la busqueda con getPlanillaRegistry', () => {

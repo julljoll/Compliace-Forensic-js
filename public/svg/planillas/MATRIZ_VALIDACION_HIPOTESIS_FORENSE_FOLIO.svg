@@ -1,0 +1,459 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2160" height="3300" viewBox="0 0 2160 3300" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">Matriz Forense de Validación de Hipótesis y Control de Evidencia Digital | SHA256.US</title>
+  <desc id="svg-desc">Instrumento canónico técnico-legal para peritaje e impugnación de evidencia digital conforme a COPP Art. 187, LMDFE, CPC, ISO/IEC 27037 y NIST SP 800-86.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&amp;family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap');
+
+      .bg-canvas { fill: #F0F4F8; }
+      .bg-sheet { fill: #FFFFFF; stroke: #CBD5E1; stroke-width: 4; }
+      .bg-navy { fill: #112E51; }
+      .bg-dark-banner { fill: #1A2536; }
+      .bg-gold { fill: #D9A700; }
+      .bg-card { fill: #F8FAFC; stroke: #CBD5E1; stroke-width: 3; }
+      .bg-row-alt { fill: #F1F5F9; }
+      .bg-highlight { fill: #EFF6FF; stroke: #3B82F6; stroke-width: 1.5; }
+      .bg-warning-box { fill: #FFFBEB; stroke: #F59E0B; stroke-width: 1.5; }
+      .bg-danger-box { fill: #FEF2F2; stroke: #EF4444; stroke-width: 1.5; }
+      .bg-success-box { fill: #F0FDF4; stroke: #22C55E; stroke-width: 1.5; }
+
+      .font-sans { font-family: 'Public Sans', system-ui, -apple-system, sans-serif; }
+      .font-mono { font-family: 'Fira Code', monospace; }
+
+      .text-white { fill: #FFFFFF; }
+      .text-gold { fill: #D9A700; }
+      .text-navy { fill: #112E51; }
+      .text-dark { fill: #1B2A4A; }
+      .text-slate { fill: #94A3B8; }
+      .text-muted { fill: #64748B; }
+      .text-emerald { fill: #10B981; }
+
+      .header-title { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
+      .header-subtitle { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+      .badge-text { font-size: 12px; font-weight: 700; }
+      .title-banner { font-size: 26px; font-weight: 800; letter-spacing: 0.5px; }
+      .subtitle-banner { font-size: 16.5px; font-weight: 600; letter-spacing: 0.5px; opacity: 0.95; }
+      .norm-tag { font-size: 13.5px; font-weight: 600; letter-spacing: 0.5px; }
+
+      .section-header { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+      .label-title { font-size: 16.5px; font-weight: 700; fill: #1B2A4A; }
+      .label-text { font-size: 14.5px; font-weight: 500; fill: #334155; }
+      .help-text { font-size: 13px; font-weight: 400; fill: #64748B; font-style: italic; }
+      .q-text { font-size: 14px; font-weight: 600; fill: #0F172A; }
+
+      .box-input { fill: #FFFFFF; stroke: #CBD5E1; stroke-width: 2; rx: 6px; }
+      .box-input-dashed { fill: #FFFFFF; stroke: #94A3B8; stroke-width: 2; stroke-dasharray: 6 4; rx: 6px; }
+      .box-prompt { fill: #F8FAFC; stroke: #93C5FD; stroke-width: 2; rx: 8px; }
+      
+      .radio-outer { fill: #FFFFFF; stroke: #005EA2; stroke-width: 2.5; }
+      .radio-text { font-size: 14px; font-weight: 700; fill: #005EA2; text-anchor: middle; }
+
+      .table-header { fill: #112E51; font-size: 14.5px; font-weight: 700; }
+      .table-cell { font-size: 13.5px; font-weight: 600; fill: #1E293B; }
+      .table-subcell { font-size: 12px; font-weight: 500; fill: #64748B; }
+
+      .sig-line { stroke: #1E293B; stroke-width: 2.5; stroke-dasharray: 8 4; }
+      .thumb-box { fill: #FFFFFF; stroke: #94A3B8; stroke-width: 2; stroke-dasharray: 4 4; rx: 8px; }
+    </style>
+
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#D9A700" />
+      <stop offset="100%" stop-color="#B45309" />
+    </linearGradient>
+
+    <filter id="shadow" x="-5%" y="-2%" width="110%" height="104%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#0F172A" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <rect width="2160" height="3300" class="bg-canvas" />
+  <rect x="40" y="40" width="2080" height="3220" rx="16" class="bg-sheet" filter="url(#shadow)" />
+
+  <g id="header-section">
+    <!-- Outer Navy Container -->
+    <rect x="70" y="70" width="2020" height="230" rx="12" class="bg-navy" />
+    <!-- Top Federal Sub-Banner -->
+    <path d="M70 82C70 75.3726 75.3726 70 82 70H2078C2084.63 70 2090 75.3726 2090 82V120H70V82Z" class="bg-dark-banner" />
+
+    <!-- Top Banner Badge Text -->
+    <text x="100" y="102" class="font-sans norm-tag text-gold">🏛️ REPÚBLICA BOLIVARIANA DE VENEZUELA · SISTEMA CANÓNICO DE AUDITORÍA FORENSE &amp; CADENA DE CUSTODIA</text>
+    <text x="2060" y="102" class="font-mono norm-tag text-white" text-anchor="end">DERECHO PENAL &amp; CIVIL · COPP ART. 187 · LMDFE ARTS. 4, 6, 12 · ISO/IEC 27037 · NIST SP 800-86</text>
+
+    <!-- Official Planilla Brand Logo Group (SHA256.US - Lab. Informática Forense) -->
+    <g transform="translate(100, 140)">
+      <rect x="0" y="0" width="75" height="75" rx="12" fill="#FFFFFF" stroke="#D9A700" stroke-width="2" />
+    </g>
+
+    <!-- Header Text Block -->
+    <text x="200" y="158" class="font-sans header-title text-white">SHA256.US · LABORATORIO CANÓNICO DE COMPLIANCE &amp; PERITAJE FORENSE DIGITAL</text>
+    <text x="200" y="188" class="font-sans header-subtitle text-gold">MATRIZ DE VALIDACIÓN DE HIPÓTESIS Y CONTROL DE EVIDENCIA DIGITAL (FOLIO OFICIAL)</text>
+    <text x="200" y="214" class="font-sans norm-tag text-slate">Instrumento pericial de ponderación Likert (1-5) para juzgamiento y admisibilidad probatoria de evidencia electrónica</text>
+
+    <!-- Right Header Badges -->
+    <g transform="translate(1600, 138)">
+      <rect x="0" y="0" width="460" height="38" rx="6" fill="#1A2536" stroke="#D9A700" stroke-width="1" />
+      <text x="230" y="24" class="font-mono badge-text text-gold" text-anchor="middle">GOBERNANZA CANÓNICA v3.5.0-CANONICAL</text>
+
+      <rect x="0" y="48" width="460" height="38" rx="6" fill="#1A2536" stroke="#334155" stroke-width="1" />
+      <text x="230" y="72" class="font-mono badge-text text-emerald" text-anchor="middle">CADENA INMUTABLE · HASH VERIFICADO SHA-256</text>
+    </g>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 0: METADATA DEL ABOGADO EVALUADO                          -->
+  <!-- ================================================================= -->
+  <g id="metadata-section">
+    <rect x="70" y="320" width="2020" height="230" class="bg-card" rx="12" />
+    
+    <!-- Title Metadata Bar -->
+    <rect x="90" y="340" width="1980" height="40" fill="#E2E8F0" rx="6" />
+    <text x="110" y="366" class="font-sans label-title">0. METADATA DEL PROFESIONAL DEL DERECHO EVALUADO (MUESTRA DE INVESTIGACIÓN)</text>
+
+    <!-- Field 1: Nombre del Abogado (Casilla vacía para lápiz) -->
+    <text x="110" y="420" class="font-sans label-text">NOMBRE Y APELLIDO DEL ABOGADO:</text>
+    <rect x="420" y="395" width="800" height="38" class="box-input" />
+
+    <!-- Field 2: C.I. & Inpreabogado (Casilla vacía para lápiz) -->
+    <text x="1260" y="420" class="font-sans label-text">C.I. / INPREABOGADO N°:</text>
+    <rect x="1500" y="395" width="560" height="38" class="box-input" />
+
+    <!-- Field 3: Especialidad del Abogado (Penal / Civil / Otro) -->
+    <text x="110" y="475" class="font-sans label-text">ÁREA DE LITIGIO PRINCIPAL:</text>
+
+    <rect x="360" y="458" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="395" y="475" class="font-sans label-text" font-weight="700">ABOGADO PENALISTA (Litigante / Defensor / Fiscal)</text>
+
+    <rect x="880" y="458" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="915" y="475" class="font-sans label-text" font-weight="700">ABOGADO CIVIL / MERCANTIL / TRIBUTARIO</text>
+
+    <rect x="1400" y="458" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="1435" y="475" class="font-sans label-text" font-weight="700">OTRA ESPECIALIDAD</text>
+
+    <!-- Field 4: Años de Ejercicio (Casillas cuadradas vacías para lápiz) -->
+    <text x="110" y="525" class="font-sans label-text">AÑOS DE EJERCICIO:</text>
+    
+    <rect x="290" y="508" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="325" y="525" class="font-sans label-text" font-weight="700">1 - 5 años</text>
+
+    <rect x="440" y="508" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="475" y="525" class="font-sans label-text" font-weight="700">6 - 15 años</text>
+
+    <rect x="600" y="508" width="24" height="24" rx="4" stroke="#005EA2" stroke-width="2.5" fill="#FFFFFF" />
+    <text x="635" y="525" class="font-sans label-text" font-weight="700">+15 años</text>
+
+    <!-- Field 5: Circunscripción Judicial / Tribunales (Casilla vacía para lápiz) -->
+    <text x="740" y="525" class="font-sans label-text">CIRCUNSCRIPCIÓN JUDICIAL / TRIBUNALES:</text>
+    <rect x="1120" y="500" width="940" height="38" class="box-input" />
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 1: DEFINICIÓN DE HIPÓTESIS Y ESCALA DE VALORACIÓN         -->
+  <!-- ================================================================= -->
+  <g id="hypothesis-formulation-section">
+    <!-- Header bar -->
+    <rect x="70" y="570" width="2020" height="55" class="bg-navy" rx="8" />
+    <text x="100" y="605" class="font-sans section-header text-white">1. FORMULACIÓN DE LA HIPÓTESIS GENERAL (H1) E INSTRUCCIONES DE EVALUACIÓN</text>
+    <text x="2060" y="605" class="font-sans help-text text-gold" text-anchor="end">Escala Likert de Autoevaluación y Evaluación Pericial de Campo (1 a 5)</text>
+
+    <!-- Card Body -->
+    <rect x="70" y="635" width="2020" height="490" class="bg-card" rx="12" />
+
+    <!-- Main Hypothesis Box H1 -->
+    <rect x="90" y="655" width="1980" height="120" class="bg-highlight" rx="8" />
+    <text x="110" y="682" class="font-sans label-title" fill="#005EA2" font-size="16.5">📌 HIPÓTESIS CENTRAL DE INVESTIGACIÓN PROCESAL (H1):</text>
+    <text x="110" y="708" class="font-sans label-text" font-size="15" font-weight="600" fill="#0F172A">
+      "Se hipotetiza que existe un nivel significativo de desconocimiento en los abogados litigantes (penalistas y civiles) respecto a los requisitos técnicos
+    </text>
+    <text x="110" y="732" class="font-sans label-text" font-size="15" font-weight="600" fill="#0F172A">
+      (hashes SHA-256, clonado bit-a-bit, metadatos, preservación de evidencia volátil) y legales (cadena de custodia Art. 187 COPP, LMDFE Art. 4, ISO 27037)
+    </text>
+    <text x="110" y="756" class="font-sans label-text" font-size="15" font-weight="600" fill="#0F172A">
+      requeridos para promover, validar o impugnar una prueba jurídica digital con plena eficacia inmutable y sin vicios de nulidad en el juicio."
+    </text>
+
+    <!-- Guide Box for Paper Response -->
+    <rect x="90" y="790" width="1980" height="85" class="bg-warning-box" rx="8" />
+    <text x="110" y="815" class="font-sans label-title" fill="#B45309" font-size="15">📋 INSTRUCCIONES DE APLICACIÓN EN FÍSICO / IMPRESO:</text>
+    <text x="110" y="838" class="font-sans label-text" font-size="14" fill="#78350F">
+      Estimado Abogado(a): Para cada reactivo técnico-legal de la Sección 2, marque con una equis (X) la opción del 1 al 5 que represente su grado de conocimiento o práctica.
+    </text>
+    <text x="110" y="860" class="font-sans help-text" font-size="13" fill="#92400E" font-style="normal">
+      Leyenda:  [ 1 = Desconocimiento Total ]   [ 2 = Conocimiento Nulo / Bajo ]   [ 3 = Conocimiento Teórico Medio ]   [ 4 = Conocimiento Práctico Bueno ]   [ 5 = Dominio Experto ]
+    </text>
+
+    <!-- Sub-variables Table -->
+    <rect x="90" y="890" width="1980" height="215" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" rx="8" />
+    <rect x="90" y="890" width="1980" height="35" fill="#1E293B" rx="6" />
+    <text x="110" y="913" class="font-sans table-header text-white" font-size="14">DESGLOSE DE MATERIAS PROCESALES AUDITADAS (PENAL VS CIVIL)</text>
+
+    <!-- Variable 1 -->
+    <text x="110" y="948" class="font-sans label-title" font-size="14">A. Materia Penal (COPP / CICPC):</text>
+    <text x="420" y="948" class="font-sans text-dark" font-size="14">Cadena de Custodia (Art. 187 COPP), Peritaje Informático (Art. 223 COPP), Inspecciones Técnicas (Art. 186), Delitos Informáticos (LCDI).</text>
+    
+    <!-- Variable 2 -->
+    <text x="110" y="983" class="font-sans label-title" font-size="14">B. Materia Civil y Mercantil (CPC / LMDFE):</text>
+    <text x="420" y="983" class="font-sans text-dark" font-size="14">Eficacia Probatoria del Mensaje de Datos (LMDFE Arts. 4/6/8), Tacha e Impugnación de Documentos Digitales (CPC 438), Inspección Judicial.</text>
+
+    <!-- Variable 3 -->
+    <text x="110" y="1018" class="font-sans label-title" font-size="14">C. Estándares Técnicos Forenses:</text>
+    <text x="420" y="1018" class="font-sans text-dark" font-size="14">Hashes Criptográficos SHA-256/MD5, ISO/IEC 27037 (Incautación Digital), NIST SP 800-88 (Sanitización) y Preservación RFC 3227.</text>
+
+    <!-- Indicator -->
+    <text x="110" y="1053" class="font-sans label-title" font-size="14">D. Criterio de Verificación H1:</text>
+    <text x="420" y="1053" class="font-mono text-navy" font-weight="700" font-size="14">Si el promedio de las 7 áreas es menor a 4.0 puntos (&lt;80%), la Hipótesis H1 queda empíricamente CONFIRMADA.</text>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 2: MATRIZ DE CUESTIONARIO Y VALORACIÓN TÉCNICO-LEGAL   -->
+  <!-- ================================================================= -->
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 2: MATRIZ DE CUESTIONARIO Y VALORACIÓN TÉCNICO-LEGAL      -->
+  <!-- ================================================================= -->
+  <g id="validation-matrix-section">
+    <!-- Header bar -->
+    <rect x="70" y="1145" width="2020" height="55" class="bg-navy" rx="8" />
+    <text x="100" y="1180" class="font-sans section-header text-white">2. MATRIZ DE CUESTIONARIO Y VALORACIÓN TÉCNICO-LEGAL</text>
+    <text x="2060" y="1180" class="font-sans help-text text-gold" text-anchor="end">Lectura en voz alta del extracto legal y marcado Likert del 1 al 5</text>
+
+    <!-- Card Body (Ampliado a 980px para Transcripción Completa de Artículos) -->
+    <rect x="70" y="1210" width="2020" height="980" class="bg-card" rx="12" />
+
+    <!-- Table Header Row -->
+    <rect x="90" y="1225" width="1980" height="40" fill="#1E293B" rx="6" />
+    <text x="110" y="1250" class="font-sans table-header text-white">1. REACTIVO Y EXTRACTO LEGAL COMPLETO (LECTURA EN VOZ ALTA)</text>
+    <text x="1120" y="1250" class="font-sans table-header text-gold">2. BASE LEGAL Y NORMA</text>
+    <text x="1760" y="1250" class="font-sans table-header text-white" text-anchor="middle">3. VALORACIÓN (MARQUE 1 A 5 CON X)</text>
+
+    <!-- Row 1: SHA-256 vs Screenshot (LMDFE Art. 4 / ISO 27037) -->
+    <rect x="90" y="1270" width="1980" height="104" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1294" class="font-sans table-cell font-weight-700">1. Hash SHA-256 vs Captura Impresa [LMDFE Art. 4 / ISO 27037]:</text>
+    <text x="110" y="1318" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 4 LMDFE: Los Mensajes de Datos tendrán la misma eficacia probatoria que la ley otorga a los documentos escritos... Su promoción, control,"</text>
+    <text x="110" y="1336" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"contradicción y evacuación como medio de prueba, se realizará conforme a lo previsto para las pruebas libres en el Código de Procedimiento Civil."</text>
+    <text x="1120" y="1320" class="font-mono text-navy" font-size="12.5" font-weight="700">LMDFE Art. 4 · ISO 27037</text>
+    <g transform="translate(1560, 1307)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 2: Cadena de Custodia (COPP Art. 187) -->
+    <rect x="90" y="1379" width="1980" height="94" class="bg-row-alt" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1403" class="font-sans table-cell font-weight-700">2. Cadena de Custodia de Evidencias Digitales [COPP Art. 187]:</text>
+    <text x="110" y="1427" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 187 COPP: Todo funcionario o funcionaria que colecte evidencias físicas debe cumplir con la cadena de custodia, entendiéndose por ésta la garantía legal"</text>
+    <text x="110" y="1445" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"que corrobora la inalterabilidad de los elementos de convicción probatorios, resguardando su origen, obtención, depósito y trazabilidad."</text>
+    <text x="1120" y="1425" class="font-mono text-navy" font-size="12.5" font-weight="700">COPP Art. 187 · MUCC-2017</text>
+    <g transform="translate(1560, 1412)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 3: Eficacia Probatoria del Mensaje de Datos (LMDFE Art. 6 & 8) -->
+    <rect x="90" y="1478" width="1980" height="94" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1502" class="font-sans table-cell font-weight-700">3. Eficacia Probatoria y Firma Electrónica [LMDFE Art. 6 &amp; 8]:</text>
+    <text x="110" y="1526" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 6 LMDFE: Cuando para determinados actos o negocios jurídicos la ley exija la firma autógrafa, ese requisito quedará satisfecho en relación con un"</text>
+    <text x="110" y="1544" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Mensaje de Datos al tener asociado una Firma Electrónica. / Art. 8: Información accesible para su ulterior consulta."</text>
+    <text x="1120" y="1524" class="font-mono text-navy" font-size="12.5" font-weight="700">LMDFE Arts. 4, 6, 8, 16</text>
+    <g transform="translate(1560, 1511)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 4: Impugnación y Pruebas Libres en Juicio (CPC Art. 395 & Art. 438) -->
+    <rect x="90" y="1577" width="1980" height="94" class="bg-row-alt" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1601" class="font-sans table-cell font-weight-700">4. Admisión de Pruebas Libres e Impugnación [CPC Art. 395 &amp; 438]:</text>
+    <text x="110" y="1625" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 395 CPC: Son medios de prueba admisibles en juicio los que determina el Código Civil, este Código y otras leyes de la República."</text>
+    <text x="110" y="1643" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Las partes pueden también valerse de cualquier otro medio de prueba no prohibido expresamente por la ley que consideren conducente."</text>
+    <text x="1120" y="1623" class="font-mono text-navy" font-size="12.5" font-weight="700">CPC Art. 395 · COPP 237</text>
+    <g transform="translate(1560, 1610)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 5: Delitos Informáticos y Acceso Indebido (LECDI Art. 6) -->
+    <rect x="90" y="1676" width="1980" height="94" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1700" class="font-sans table-cell font-weight-700">5. Acceso Indebido a Sistemas [LECDI Art. 6]:</text>
+    <text x="110" y="1724" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 6 LECDI: Toda persona que sin la debida autorización o excediendo la que hubiere obtenido, acceda, intercepte, interfiera o use un sistema"</text>
+    <text x="110" y="1742" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"que utilice tecnologías de información, será penado con prisión de uno a cinco años y multa de diez a cincuenta unidades tributarias."</text>
+    <text x="1120" y="1722" class="font-mono text-navy" font-size="12.5" font-weight="700">LECDI Art. 6 · NIST SP 800-86</text>
+    <g transform="translate(1560, 1709)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 6: Hábeas Data y Privacidad (CRBV Art. 28 & 60) -->
+    <rect x="90" y="1775" width="1980" height="94" class="bg-row-alt" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1799" class="font-sans table-cell font-weight-700">6. Hábeas Data y Protección de la Intimidad [CRBV Art. 28 &amp; 60]:</text>
+    <text x="110" y="1823" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 28 CRBV: Toda persona tiene el derecho de acceder a la información y a los datos que sobre sí misma o sobre sus bienes consten en registros..."</text>
+    <text x="110" y="1841" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 60 CRBV: La ley limitará el uso de la informática para garantizar el honor y la intimidad personal y familiar de los ciudadanos y ciudadanas."</text>
+    <text x="1120" y="1821" class="font-mono text-navy" font-size="12.5" font-weight="700">CRBV Arts. 28, 48, 49, 60</text>
+    <g transform="translate(1560, 1808)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 7: Peritaje Formal y Ordenación de Experticias (COPP Art. 237) -->
+    <rect x="90" y="1874" width="1980" height="94" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1898" class="font-sans table-cell font-weight-700">7. Ordenación de Experticias e Informe Pericial [COPP Art. 237]:</text>
+    <text x="110" y="1922" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 237 COPP: El Ministerio Público ordenará la práctica de experticias cuando para el examen de una persona u objeto, o para descubrir o valorar"</text>
+    <text x="110" y="1940" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"un elemento de convicción, se requieran conocimiento o habilidades especiales en alguna ciencia, arte u oficio."</text>
+    <text x="1120" y="1920" class="font-mono text-navy" font-size="12.5" font-weight="700">COPP Art. 237 · ISO 27042</text>
+    <g transform="translate(1560, 1907)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 8: Emisión y Recepción del Mensaje de Datos (LMDFE Art. 12 & NIST 800-88) -->
+    <rect x="90" y="1973" width="1980" height="94" class="bg-row-alt" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="1997" class="font-sans table-cell font-weight-700">8. Lugar de Emisión y Recepción del Mensaje [LMDFE Art. 12]:</text>
+    <text x="110" y="2021" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 12 LMDFE: Salvo prueba en contrario, el Mensaje de Datos se tendrá por emitido en el lugar donde el Emisor tenga su domicilio y por recibido"</text>
+    <text x="110" y="2039" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"en el lugar donde el Destinatario tenga el suyo."</text>
+    <text x="1120" y="2019" class="font-mono text-navy" font-size="12.5" font-weight="700">LMDFE Art. 12 · NIST 800-88</text>
+    <g transform="translate(1560, 2006)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+
+    <!-- Row 9: Requisitos y Cualidad para Ejercer como Perito (COPP Art. 238 & LMDFE Art. 16) -->
+    <rect x="90" y="2072" width="1980" height="94" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />
+    <text x="110" y="2096" class="font-sans table-cell font-weight-700">9. Requisitos de Cualidad para Peritos [COPP Art. 238 &amp; LMDFE Art. 16]:</text>
+    <text x="110" y="2120" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"Art. 238 COPP: Los peritos deberán poseer título en la materia relativa al asunto sobre el cual dictaminarán, siempre que la ciencia, el arte u oficio"</text>
+    <text x="110" y="2138" class="font-sans" font-size="11.5" font-style="italic" fill="#0F172A">"estén reglamentados. En caso contrario, deberán designarse a personas de reconocida experiencia en la materia."</text>
+    <text x="1120" y="2118" class="font-mono text-navy" font-size="12.5" font-weight="700">COPP Art. 238 · LMDFE 16</text>
+    <g transform="translate(1560, 2105)">
+      <circle cx="30" cy="14" r="15" class="radio-outer" /><text x="30" y="19" class="radio-text">1</text>
+      <circle cx="100" cy="14" r="15" class="radio-outer" /><text x="100" y="19" class="radio-text">2</text>
+      <circle cx="170" cy="14" r="15" class="radio-outer" /><text x="170" y="19" class="radio-text">3</text>
+      <circle cx="240" cy="14" r="15" class="radio-outer" /><text x="240" y="19" class="radio-text">4</text>
+      <circle cx="310" cy="14" r="15" class="radio-outer" /><text x="310" y="19" class="radio-text">5</text>
+    </g>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 3: SONDEO CUALITATIVO CON ESPACIOS DE RESPUESTA IMPRESA   -->
+  <!-- ================================================================= -->
+  <g id="qualitative-analysis-section">
+    <!-- Header bar -->
+    <rect x="70" y="2210" width="2020" height="55" class="bg-navy" rx="8" />
+    <text x="100" y="2245" class="font-sans section-header text-white">3. PREGUNTAS DIAGNÓSTICAS DE EXPERIENCIA EN TRIBUNALES</text>
+    <text x="2060" y="2245" class="font-sans help-text text-gold" text-anchor="end">Espacios optimizados para la escritura con bolígrafo del Abogado</text>
+
+    <!-- Card Body -->
+    <rect x="70" y="2280" width="2020" height="460" class="bg-card" rx="12" />
+
+    <!-- Prompt 3.1: Capturas de Pantalla en Juicio -->
+    <g transform="translate(90, 2295)">
+      <rect x="0" y="0" width="1980" height="205" class="bg-highlight" />
+      <text x="20" y="30" class="font-sans q-text" font-size="15">3.1 ¿HA ENFRENTADO CASOS DONDE LA CONTRAPARTE PRESENTÓ IMPRESIONES DE WHATSAPP O CORREOS SIN PERITAJE NI HASH?</text>
+      <text x="20" y="53" class="font-sans help-text" font-size="13">
+        Describa brevemente cómo reaccionó el tribunal y cuál fue su argumento de impugnación o defensa:
+      </text>
+
+      <rect x="20" y="70" width="1940" height="120" class="box-input" fill="#FFFFFF" />
+      <line x1="35" y1="105" x2="1945" y2="105" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4" />
+      <line x1="35" y1="140" x2="1945" y2="140" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4" />
+      <text x="45" y="95" class="font-sans text-muted" font-size="13">Respuesta Manuscrita del Abogado Evaluado:</text>
+    </g>
+
+    <!-- Prompt 3.2: Conocimiento de Experticias y Planillas Forenses Impresas -->
+    <g transform="translate(90, 2515)">
+      <rect x="0" y="0" width="1980" height="205" class="bg-highlight" />
+      <text x="20" y="30" class="font-sans q-text" font-size="15">3.2 ¿CONOCE O HA VISTO CÓMO LUCE UNA EXPERTICIA INFORMÁTICA FORENSE Y TODAS LAS PLANILLAS REQUERIDAS PARA SU VALIDEZ LEGAL?</text>
+      <text x="20" y="53" class="font-sans help-text" font-size="13">
+        (Se le mostrará un juego de planillas impresas de un caso de ejemplo). Indique si ha examinado previamente actas de cadena de custodia, planillas de extracción y dictámenes:
+      </text>
+
+      <rect x="20" y="70" width="1940" height="120" class="box-input" fill="#FFFFFF" />
+      <line x1="35" y1="105" x2="1945" y2="105" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4" />
+      <line x1="35" y1="140" x2="1945" y2="140" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="4 4" />
+      <text x="45" y="95" class="font-sans text-muted" font-size="13">Respuesta Manuscrita del Abogado Evaluado:</text>
+    </g>
+  </g>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 4: FIRMAS Y REGISTRO BILATERAL (ENCUESTADO Y ENCUESTADOR) -->
+  <!-- ================================================================= -->
+  <g id="signatures-section">
+    <!-- Header bar -->
+    <rect x="70" y="2760" width="2020" height="45" class="bg-navy" rx="8" />
+    <text x="100" y="2789" class="font-sans section-header text-white" font-size="16">4. CERTIFICACIÓN BILATERAL Y REGISTRO DE FIRMAS</text>
+    <text x="2060" y="2789" class="font-sans help-text text-gold" font-size="13" text-anchor="end">Conformidad de Aplicación del Cuestionario (Encuestado y Encuestador)</text>
+
+    <!-- Card Body -->
+    <rect x="70" y="2815" width="2020" height="155" class="bg-card" rx="12" />
+
+    <!-- Left Signatory: Abogado Encuestado -->
+    <g transform="translate(100, 2827)">
+      <rect x="0" y="0" width="960" height="130" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" rx="8" />
+      <text x="20" y="26" class="font-sans label-title" font-size="13.5">ABOGADO ENCUESTADO (EVALUADO):</text>
+
+      <text x="20" y="56" class="font-sans label-text">Nombre y Apellido:</text>
+      <text x="170" y="56" class="font-mono text-dark font-weight-600">Dr.(a) _________________________________________</text>
+
+      <text x="20" y="88" class="font-sans label-text">C.I. / INPREABOGADO:</text>
+      <text x="170" y="88" class="font-mono text-dark">V-__________________ / INPRE: __________________</text>
+
+      <line x1="580" y1="90" x2="930" y2="90" class="sig-line" />
+      <text x="755" y="110" class="font-sans help-text" text-anchor="middle">Firma del Abogado Encuestado</text>
+    </g>
+
+    <!-- Right Signatory: Perito Encuestador -->
+    <g transform="translate(1100, 2827)">
+      <rect x="0" y="0" width="950" height="130" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" rx="8" />
+      <text x="20" y="26" class="font-sans label-title" font-size="13.5">PERITO FORENSE (ENCUESTADOR):</text>
+
+      <text x="20" y="56" class="font-sans label-text">Nombre y Apellido:</text>
+      <text x="170" y="56" class="font-mono text-dark font-weight-600">Ing. _________________________________________</text>
+
+      <text x="20" y="88" class="font-sans label-text">C.I. / Credencial:</text>
+      <text x="170" y="88" class="font-mono text-dark">V-__________________ / CIV: __________________</text>
+
+      <line x1="570" y1="90" x2="920" y2="90" class="sig-line" />
+      <text x="745" y="110" class="font-sans help-text" text-anchor="middle">Firma del Perito Encuestador</text>
+    </g>
+
+    <!-- ================================================================= -->
+    <!-- FOOTER INSTITUCIONAL LEGAL Y SELLO SHA-256 INMUTABLE             -->
+    <!-- ================================================================= -->
+    <g id="footer-section" transform="translate(70, 2990)">
+      <!-- Line 1: Navy Stamp Container for SHA-256 Hash Genesis -->
+      <rect x="0" y="0" width="2020" height="46" rx="8" fill="#112E51" stroke="#D9A700" stroke-width="1.5" />
+      <text x="24" y="29" class="font-mono text-gold" font-size="14" font-weight="700">🔐 SELLO INMUTABLE SHA-256 CADENA DE CUSTODIA · HASH GÉNESIS:</text>
+      <text x="590" y="29" class="font-mono text-white" font-size="14" font-weight="600">f8e102d349c25b01a206e98ca3538bf52f5749c945db596002c8963c966f093a</text>
+      <text x="1996" y="29" class="font-mono text-gold" font-size="13" font-weight="700" text-anchor="end">REGISTRO OFICIAL SHA256.US</text>
+
+      <!-- Line 2: Legal & Normative Framework -->
+      <text x="1010" y="68" class="font-sans" font-size="13.5" font-weight="700" fill="#1E293B" text-anchor="middle">
+        SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo (COPP Art. 187 · MUCC-2017 · ISO/IEC 27037 · LMDFE)
+      </text>
+
+      <!-- Line 3: Official Sede & Fiscal Address -->
+      <text x="1010" y="88" class="font-sans" font-size="12" font-weight="500" fill="#475569" text-anchor="middle">
+        Sede Principal: Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez, Estado Lara, República Bolivariana de Venezuela.
+      </text>
+    </g>
+  </g>
+</svg>
