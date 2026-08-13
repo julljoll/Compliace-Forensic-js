@@ -54,7 +54,10 @@ const PLANILLA_LABELS: Record<PlanillaId, { emoji: string; subtitle: string }> =
   acta_desprecintado:      { emoji: '🔓', subtitle: 'MUCC-2017 Fase 2 · ISO/IEC 27037 Sec. 7.2 · COPP Art. 187' },
   acta_sanitizacion:       { emoji: '🗑️', subtitle: 'NIST SP 800-88 Rev. 1 · ISO/IEC 27001 · Crypto-Erase' },
   acta_auditoria_timeline: { emoji: '📊', subtitle: 'ISO/IEC 27037:2012 · MUCC-2017 · SHA-256 Inmutable' },
+<<<<<<< HEAD
   planilla_evaluacion_ux:  { emoji: '🎯', subtitle: 'USWDS/DC3 · Evaluacion UX/UI Planillas Locales · Peritos, Abogados, Jueces' },
+=======
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 };
 
 export default function PlanillaDigitalFormModal({

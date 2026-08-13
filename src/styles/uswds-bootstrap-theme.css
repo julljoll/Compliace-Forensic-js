@@ -435,6 +435,7 @@ input, select, textarea { font-size: max(16px, 1em) !important; }
   border-color: var(--usa-border) !important;
 }
 
+<<<<<<< HEAD
 /* ── Pauta Pericial y Líneas de Cuaderno ── */
 .dotted-line, .linea-cuaderno {
   display: block;
@@ -447,3 +448,5 @@ input, select, textarea { font-size: max(16px, 1em) !important; }
 }
 
 
+=======
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862

@@ -482,6 +482,7 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
     ],
   },
+<<<<<<< HEAD
   'planilla-evaluacion-ux': {
     id: 'planilla-evaluacion-ux',
     codigo: 'FO-SHA256-EVA-001',
@@ -516,6 +517,8 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
     ],
   },
+=======
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 };
 
 /**
@@ -527,10 +530,13 @@ export function getPlanillaRegistry(id: string): PlanillaRegistryDef {
     return PLANILLAS_REGISTRY[normalizedId];
   }
 
+<<<<<<< HEAD
   if (normalizedId.includes('evaluacion') || normalizedId.includes('ux')) {
     return PLANILLAS_REGISTRY['planilla-evaluacion-ux'];
   }
 
+=======
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
   // Búsqueda aproximada si el id viene con variaciones (ej. 'dictamen-imagenes' vs 'dictamen')
   if (normalizedId.includes('dictamen') && normalizedId.includes('audio')) {
     return PLANILLAS_REGISTRY['dictamen-audios'];

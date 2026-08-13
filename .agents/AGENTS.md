@@ -81,6 +81,10 @@ Todo gráfico o recurso en formato `.svg` (planillas, actas, diagramas de flujo,
    - **Estilos Institucionales & UI/UX:** Aplicar de forma estricta los tokens de color oficiales del laboratorio forense (Canvas `#F0F4F8`, Tarjetas `#FFFFFF`, Azul Marino `#112E51`, Azul Interactivo `#005EA2`, Dorado `#D9A700`, Texto `#1B2A4A`), manteniendo jerarquía visual limpia y alto contraste (WCAG 2.1 AA).
    - **SEO Gráfico & Semántica SVG:** Incluir etiquetas semánticas dentro del código del SVG (`<title>`, `<desc>`, atributos `role="img"` y `aria-labelledby`), optimización vectorial sin nodos o estilos redundantes inline, garantizando rendimiento, accesibilidad e indexación web.
 
+4. **Generación Simultánea Paritaria de Archivos HTML con CSS Inline (`public/html/planillas/`):**
+   - Cada vez que se cree o modifique una planilla en formato `.svg` vertical Folio (en `public/svg/planillas/`), se debe **crear simultáneamente el correspondiente archivo `.html` con CSS en línea / embebido** dentro de la carpeta `public/html/planillas/` (ubicada al mismo nivel que la carpeta `public/svg/`).
+   - El archivo HTML debe ser 100% independiente (standalone), replicando con paridad 1:1 la estructura, campos, membretes, firmas bilaterales, dactiloscopía y estilos institucionales en hoja Folio (216mm × 330mm) para previsualización e impresión web directa.
+
 ---
 
 ## 3. Marco Regulatorio y Estándares Forenses Obligatorios

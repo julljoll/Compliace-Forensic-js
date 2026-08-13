@@ -13,7 +13,11 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
   const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
   const fecha = fmt(c.fecha, '23/07/2026 - 11:45 AM');
+<<<<<<< HEAD
   const numeroDictamen = isBlankMode ? '' : (c.numeroCaso ? (c.numeroCaso.startsWith('DICT-') ? c.numeroCaso : `DICT-FORENSE-${c.numeroCaso}`) : 'DICT-FORENSE-2026-0091');
+=======
+  const numeroDictamen = `DICT-SHA256-2026-${numeroExpediente || '0091'}`;
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 
   return (
     <Document title={`Dictamen_Pericial_${c.numeroCaso || 'EXP'}`}>
@@ -156,6 +160,7 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
         </Text>
         <View style={{ paddingLeft: 6, marginVertical: 3 }}>
           <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
+<<<<<<< HEAD
             1. <Text style={{ fontFamily: 'Helvetica-Bold' }}>FTK Imager v4.7+:</Text> Adquisición e imagen forense bit-a-bit (RAW/DD, E01) en entorno apantallado electromagnéticamente, con verificación automática de Hash SHA-256 / MD5 génesis.
           </Text>
           <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
@@ -169,6 +174,21 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
           </Text>
           <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
             5. <Text style={{ fontFamily: 'Helvetica-Bold' }}>Sonic Visualiser v4.5+ Audio Forensic Engine:</Text> Espectrometría acústica para audios Opus/AAC de WhatsApp, espectrograma frecuencial (48 kHz), análisis de armónicos formantes de voz humana y verificación de cortes/edición.
+=======
+            1. <Text style={{ fontFamily: 'Helvetica-Bold' }}>IPED Digital Forensics v4.1:</Text> Desarrollado por la Policía Federal de Brasil y utilizado por INTERPOL para análisis masivo de artefactos WhatsApp.
+          </Text>
+          <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
+            2. <Text style={{ fontFamily: 'Helvetica-Bold' }}>AviallaForensics Engine:</Text> Decodificación avanzada de bases de datos SQLite (`msgstore.db`) y registros de eventos.
+          </Text>
+          <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
+            3. <Text style={{ fontFamily: 'Helvetica-Bold' }}>PhotoHolmes Python Forensic Engine:</Text> Algoritmos ELA (Error Level Analysis) para validación de autenticidad fotográfica y mapas de compresión.
+          </Text>
+          <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
+            4. <Text style={{ fontFamily: 'Helvetica-Bold' }}>PyOgg Python Audio Engine:</Text> Decodificación de audio nativo Ogg/Opus y análisis de espectro armónico (48 kHz).
+          </Text>
+          <Text style={{ fontSize: 7.5, color: '#1E293B', marginBottom: 2 }}>
+            5. <Text style={{ fontFamily: 'Helvetica-Bold' }}>FTK Imager v4.7:</Text> Adquisición y verificación criptográfica de imágenes forenses RAW/DD y E01.
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           </Text>
         </View>
 
@@ -187,7 +207,11 @@ export const ActaDictamenPdf: React.FC<Props> = ({ caso, isBlankMode = false }) 
       <Page size={[612, 936]} style={pdfStyles.pageSecond}>
         <Text style={pdfStyles.sectionTitle}>VIII. CONCLUSIONES PERICIALES Y DICTAMEN FINAL (COPP ART. 225)</Text>
         <Text style={pdfStyles.paragraph}>
+<<<<<<< HEAD
           Con base en los análisis técnico-científicos ejecutados en el Laboratorio SHA256.US utilizando las herramientas FTK Imager v4.7+, Avilla Forensics, IPED Forensics (Policía Federal de Brasil / INTERPOL), PhotoHolmes Forensic Engine y Sonic Visualiser, y habiéndose auditado la inalterabilidad de la muestra mediante la función de dispersión Hash SHA-256, los suscritos Peritos Informáticos Forenses dictaminan formalmente la absoluta validez, certeza técnica y autenticidad probatoria de las evidencias digitales del expediente N° {numeroExpediente}.
+=======
+          Con base en los análisis técnico-científicos ejecutados en el Laboratorio SHA256.US utilizando las herramientas IPED Digital Forensics, AviallaForensics, PhotoHolmes Forensic Engine y PyOgg Audio Engine, y habiéndose auditado la inalterabilidad de la muestra mediante la función de dispersión Hash SHA-256, el suscrito Perito dictamina formalmente la absoluta validez, certeza técnica y autenticidad probatoria de las evidencias digitales del expediente N° {numeroExpediente}.
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         </Text>
 
         <Text style={pdfStyles.sectionTitle}>IX. LIMITACIONES TÉCNICAS DEL ANÁLISIS PERICIAL</Text>

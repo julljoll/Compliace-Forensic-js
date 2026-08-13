@@ -1002,6 +1002,7 @@
     table-layout: fixed !important;
   }
 }
+<<<<<<< HEAD
 
 /* ── Pauta Pericial y Líneas de Cuaderno ── */
 .dotted-line, .linea-cuaderno {
@@ -1014,3 +1015,5 @@
   box-sizing: border-box;
 }
 
+=======
+>>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862

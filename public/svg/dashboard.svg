@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117"/>
+      <stop offset="50%" stop-color="#161B22"/>
+      <stop offset="100%" stop-color="#0D1117"/>
+    </linearGradient>
+    
+    <!-- Accent Yellow Glow -->
+    <filter id="yellow-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Matrix Green Glow -->
+    <filter id="green-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#21262D" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="1200" height="750" fill="url(#bg-grad)"/>
+  <rect width="1200" height="750" fill="url(#grid)"/>
+
+  <!-- Top Navigation Header Wireframe -->
+  <rect x="30" y="30" width="1140" height="65" rx="8" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="60" y="70" fill="#FECF06" font-family="Ubuntu, sans-serif" font-weight="700" font-size="20" letter-spacing="1">SHA256.US</text>
+  <text x="180" y="70" fill="#8B949E" font-family="Ubuntu, sans-serif" font-weight="400" font-size="16">|</text>
+  <text x="200" y="70" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-weight="600" font-size="16">DASHBOARD &amp; CENTRO DE CONTROL FORENSE</text>
+  
+  <!-- Status Badge -->
+  <rect x="980" y="48" width="160" height="30" rx="15" fill="rgba(0, 255, 65, 0.1)" stroke="#00FF41" stroke-width="1"/>
+  <circle cx="1000" cy="63" r="4" fill="#00FF41"/>
+  <text x="1012" y="68" fill="#00FF41" font-family="Fira Code, monospace" font-size="12" font-weight="600">SISTEMA ONLINE</text>
+
+  <!-- KPI CARDS GRID -->
+  <!-- Card 1: Casos Activos -->
+  <rect x="30" y="120" width="265" height="130" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="30" y="120" width="6" height="130" rx="3" fill="#FECF06"/>
+  <text x="55" y="155" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13" font-weight="500">CASOS BAJO INVESTIGACIÓN</text>
+  <text x="55" y="198" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="36" font-weight="700">24</text>
+  <text x="115" y="195" fill="#00FF41" font-family="Fira Code, monospace" font-size="12">+3 esta semana</text>
+  <path d="M 230 150 Q 250 170 270 140" fill="none" stroke="#FECF06" stroke-width="2"/>
+
+  <!-- Card 2: Dictámenes Emitidos -->
+  <rect x="320" y="120" width="265" height="130" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="320" y="120" width="6" height="130" rx="3" fill="#00FF41"/>
+  <text x="345" y="155" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13" font-weight="500">DICTÁMENES VALIDADOS</text>
+  <text x="345" y="198" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="36" font-weight="700">142</text>
+  <text x="430" y="195" fill="#00FF41" font-family="Fira Code, monospace" font-size="12">100% Válidos</text>
+
+  <!-- Card 3: Hashes Inmutables -->
+  <rect x="610" y="120" width="265" height="130" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="610" y="120" width="6" height="130" rx="3" fill="#9DFF00"/>
+  <text x="635" y="155" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13" font-weight="500">HASHES SHA-256 REGISTRADOS</text>
+  <text x="635" y="198" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="36" font-weight="700">8,491</text>
+  <text x="750" y="195" fill="#9DFF00" font-family="Fira Code, monospace" font-size="12">Inmutable</text>
+
+  <!-- Card 4: Normativas RAG -->
+  <rect x="900" y="120" width="270" height="130" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <rect x="900" y="120" width="6" height="130" rx="3" fill="#FECF06"/>
+  <text x="925" y="155" fill="#8B949E" font-family="Ubuntu, sans-serif" font-size="13" font-weight="500">NORMATIVAS VECTORIALES</text>
+  <text x="925" y="198" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="36" font-weight="700">77</text>
+  <text x="985" y="195" fill="#FECF06" font-family="Fira Code, monospace" font-size="12">RAG Activo</text>
+
+  <!-- MAIN GRAPH & ANALYTICS SECTION -->
+  <rect x="30" y="275" width="700" height="440" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="55" y="315" fill="#FECF06" font-family="Ubuntu, sans-serif" font-size="18" font-weight="700">MONITOREO Y RENDIMIENTO FORENSE EN TIEMPO REAL</text>
+  <text x="55" y="338" fill="#8B949E" font-family="Fira Code, monospace" font-size="12">Integridad Cadena Custodia MUCC-2017 &amp; ISO 27037</text>
+
+  <!-- Chart Axis & Grid lines -->
+  <line x1="70" y1="670" x2="680" y2="670" stroke="#30363D" stroke-width="1.5"/>
+  <line x1="70" y1="380" x2="70" y2="670" stroke="#30363D" stroke-width="1.5"/>
+  
+  <line x1="70" y1="610" x2="680" y2="610" stroke="#21262D" stroke-dasharray="4 4"/>
+  <line x1="70" y1="550" x2="680" y2="550" stroke="#21262D" stroke-dasharray="4 4"/>
+  <line x1="70" y1="490" x2="680" y2="490" stroke="#21262D" stroke-dasharray="4 4"/>
+  <line x1="70" y1="430" x2="680" y2="430" stroke="#21262D" stroke-dasharray="4 4"/>
+
+  <!-- Glowing Area Under Chart -->
+  <polygon points="70,670 140,580 230,610 320,460 410,500 500,410 590,430 680,380 680,670" fill="rgba(254, 207, 6, 0.08)"/>
+  
+  <!-- Line Chart Path -->
+  <path d="M 70 670 L 140 580 L 230 610 L 320 460 L 410 500 L 500 410 L 590 430 L 680 380" fill="none" stroke="#FECF06" stroke-width="3" filter="url(#yellow-glow)"/>
+  
+  <!-- Secondary Green Matrix Line -->
+  <path d="M 70 650 L 140 620 L 230 550 L 320 520 L 410 440 L 500 460 L 590 390 L 680 410" fill="none" stroke="#00FF41" stroke-width="2" stroke-dasharray="6 4" filter="url(#green-glow)"/>
+
+  <!-- Chart Nodes -->
+  <circle cx="320" cy="460" r="5" fill="#FECF06"/>
+  <circle cx="500" cy="410" r="5" fill="#FECF06"/>
+  <circle cx="680" cy="380" r="6" fill="#FECF06" filter="url(#yellow-glow)"/>
+
+  <!-- SIDEBAR RIGHT PANEL: RECENT AUDIT LOGS -->
+  <rect x="750" y="275" width="420" height="440" rx="10" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="775" y="315" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="16" font-weight="700">LOG DE ACTIVIDAD INMUTABLE</text>
+
+  <!-- Activity Row 1 -->
+  <rect x="770" y="340" width="380" height="75" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <circle cx="795" cy="378" r="6" fill="#00FF41"/>
+  <text x="815" y="368" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="14" font-weight="600">Evidencia N° EVID-0891 Sellada</text>
+  <text x="815" y="390" fill="#00FF41" font-family="Fira Code, monospace" font-size="11">Hash: a8f9e...b4c20 (SHA-256 OK)</text>
+
+  <!-- Activity Row 2 -->
+  <rect x="770" y="425" width="380" height="75" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <circle cx="795" cy="463" r="6" fill="#FECF06"/>
+  <text x="815" y="453" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="14" font-weight="600">Dictamen Pericial de Audios Generado</text>
+  <text x="815" y="475" fill="#8B949E" font-family="Fira Code, monospace" font-size="11">Perito: Ing. J. Pérez (CIV #284.102)</text>
+
+  <!-- Activity Row 3 -->
+  <rect x="770" y="510" width="380" height="75" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <circle cx="795" cy="548" r="6" fill="#9DFF00"/>
+  <text x="815" y="538" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="14" font-weight="600">Verificación RAG Normativa ISO 27037</text>
+  <text x="815" y="560" fill="#9DFF00" font-family="Fira Code, monospace" font-size="11">Coincidencia 99.2% Cumplimiento</text>
+
+  <!-- Activity Row 4 -->
+  <rect x="770" y="595" width="380" height="75" rx="6" fill="#0D1117" stroke="#21262D"/>
+  <circle cx="795" cy="633" r="6" fill="#00FF41"/>
+  <text x="815" y="623" fill="#FFFFFF" font-family="Ubuntu, sans-serif" font-size="14" font-weight="600">Acta PRCC N° 1092 Firma Bilateral</text>
+  <text x="815" y="645" fill="#8B949E" font-family="Fira Code, monospace" font-size="11">Custodia Transferida a Fiscalía</text>
+
+</svg>

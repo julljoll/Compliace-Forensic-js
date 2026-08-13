@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planilla de Registro de Cadena de Custodia (PRCC) — SHA256.US</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #F0F4F8;
+      font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+      color: #1B2A4A;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .folio-sheet {
+      width: 216mm;
+      min-height: 330mm;
+      background-color: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+      padding: 12mm 10mm 10mm 15mm;
+      position: relative;
+    }
+
+    .header-navy {
+      background-color: #112E51;
+      border-radius: 8px;
+      color: #FFFFFF;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid #1A2536;
+    }
+    .top-sub-banner {
+      background-color: #1A2536;
+      padding: 6px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      font-weight: 600;
+      border-bottom: 1px solid #D9A700;
+    }
+    .top-sub-banner .gold { color: #D9A700; }
+    .top-sub-banner .mono { font-family: 'Fira Code', monospace; }
+
+    .header-main-body {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand-logo-box {
+      width: 60px;
+      height: 60px;
+      background-color: #FFFFFF;
+      border: 2px solid #D9A700;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-logo-box img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    .header-titles { flex-grow: 1; }
+    .header-title-main { font-size: 15px; font-weight: 800; color: #FFFFFF; letter-spacing: 0.5px; }
+    .header-subtitle-gold { font-size: 12.5px; font-weight: 700; color: #D9A700; margin-top: 2px; }
+    .header-desc-slate { font-size: 10px; font-weight: 500; color: #94A3B8; margin-top: 2px; }
+
+    .header-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .badge-box {
+      background-color: #1A2536;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+      font-size: 8.5px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .badge-gold { border: 1px solid #D9A700; color: #D9A700; }
+    .badge-emerald { border: 1px solid #334155; color: #10B981; }
+
+    .card-section {
+      background-color: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+    .section-bar-navy {
+      background-color: #112E51;
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      align-items: center;
+      font-size: 10.5px;
+    }
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+
+    .input-box {
+      background-color: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 4px;
+      padding: 5px 8px;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #0F172A;
+    }
+    .input-mono { font-family: 'Fira Code', monospace; }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5px;
+      margin-top: 4px;
+      background-color: #FFFFFF;
+    }
+    table.data-table th {
+      background-color: #1E293B;
+      color: #FFFFFF;
+      padding: 6px 8px;
+      text-align: left;
+      font-weight: 700;
+      border: 1px solid #334155;
+    }
+    table.data-table td {
+      padding: 5px 8px;
+      border: 1px solid #CBD5E1;
+      color: #1E293B;
+    }
+    table.data-table tr:nth-child(even) { background-color: #F1F5F9; }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .sig-card {
+      background-color: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 9.5px;
+    }
+    .sig-line {
+      border-bottom: 2px dashed #1E293B;
+      margin: 30px 20px 6px 20px;
+    }
+    .thumb-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .thumb-box {
+      width: 65px;
+      height: 75px;
+      border: 1.5px dashed #94A3B8;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.5px;
+      color: #64748B;
+      text-align: center;
+      background-color: #FAFAFA;
+    }
+
+    .footer-navy {
+      background-color: #112E51;
+      border: 1px solid #D9A700;
+      border-radius: 6px;
+      color: #FFFFFF;
+      padding: 6px 10px;
+      font-family: 'Fira Code', monospace;
+      font-size: 8.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .legal-footer-text {
+      text-align: center;
+      font-size: 8px;
+      color: #475569;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .folio-sheet { border: none; box-shadow: none; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="folio-sheet">
+    
+    <!-- HEADER GUBERNAMENTAL PLANILLA REGISTRO CADENA DE CUSTODIA (PRCC) -->
+    <div class="header-navy">
+      <div class="top-sub-banner">
+        <span class="gold">🏛️ REPÚBLICA BOLIVARIANA DE VENEZUELA · MANUAL ÚNICO DE CADENA DE CUSTODIA DE EVIDENCIAS</span>
+        <span class="mono">MUCC-2017 § 4 · COPP ART. 187 · ISO/IEC 27037:2012 · RFC 3161</span>
+      </div>
+      <div class="header-main-body">
+        <div class="brand-logo-box">
+          <img src="/logo.png" alt="SHA256.US Logo" />
+        </div>
+        <div class="header-titles">
+          <div class="header-title-main">SHA256.US · LABORATORIO CANÓNICO DE COMPLIANCE & PERITAJE FORENSE DIGITAL</div>
+          <div class="header-subtitle-gold">PLANILLA DE REGISTRO DE CADENA DE CUSTODIA DE EVIDENCIAS DIGITALES (PRCC)</div>
+          <div class="header-desc-slate">Registro inmutable de trazabilidad, resguardo en bolsa Faraday, traslados y verificación de Hash SHA-256</div>
+        </div>
+        <div class="header-badges">
+          <div class="badge-box badge-gold">FORMATO REGULATORIO FO-SHA256-PRCC-001</div>
+          <div class="badge-box badge-emerald">PRECINTO HOLOGRÁFICO VERIFICADO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1: DATOS DE LA EVIDENCIA DIGITAL -->
+    <div class="card-section">
+      <div class="section-bar-navy">
+        <span>1.0 ESPECIFICACIÓN RIGUROSA DE EVIDENCIA Y DISPOSITIVO ADQUIRIDO</span>
+      </div>
+      <div class="form-grid">
+        <div class="col-6">
+          <label><strong>EXPEDIENTE N°:</strong></label>
+          <div class="input-box input-mono">[ EXP-2026-SHA-XXXX ]</div>
+        </div>
+        <div class="col-6">
+          <label><strong>PRCC PLANILLA N°:</strong></label>
+          <div class="input-box input-mono">[ PRCC-2026-0042 ]</div>
+        </div>
+        <div class="col-4" style="margin-top:4px;">
+          <label><strong>MARCA:</strong></label>
+          <div class="input-box">[ Samsung / Apple / WD ]</div>
+        </div>
+        <div class="col-4" style="margin-top:4px;">
+          <label><strong>MODELO:</strong></label>
+          <div class="input-box">[ Galaxy S22 / SSD NVMe ]</div>
+        </div>
+        <div class="col-4" style="margin-top:4px;">
+          <label><strong>SERIAL / IMEI:</strong></label>
+          <div class="input-box input-mono">[ 358921094812049 ]</div>
+        </div>
+        <div class="col-6" style="margin-top:4px;">
+          <label><strong>BOLSA FARADAY N°:</strong></label>
+          <div class="input-box input-mono">[ FARADAY-RF-9041 ]</div>
+        </div>
+        <div class="col-6" style="margin-top:4px;">
+          <label><strong>PRECINTO HOLOGRÁFICO N°:</strong></label>
+          <div class="input-box input-mono">[ PREC-SHA256-8841 ]</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: AUDITORÍA DE HASH GÉNESIS SHA-256 Y MD5 -->
+    <div class="card-section">
+      <div class="section-bar-navy">
+        <span>2.0 AUDITORÍA DE HASH GÉNESIS E INTEGRIDAD CRIPTOGRÁFICA</span>
+      </div>
+      <div class="form-grid">
+        <div class="col-12">
+          <label><strong>VALOR HASH GÉNESIS SHA-256 (BIT A BIT):</strong></label>
+          <div class="input-box input-mono" style="color:#008837; font-weight:700;">
+            e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+          </div>
+        </div>
+        <div class="col-12" style="margin-top:4px;">
+          <label><strong>ALGORITMO AUXILIAR MD5 (VERIFICACIÓN CRUZADA):</strong></label>
+          <div class="input-box input-mono">
+            9e107d9d372bb6826bd81d3542a419d6
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: BITÁCORA DE TRASPASOS Y CUSTODIA -->
+    <div class="card-section">
+      <div class="section-bar-navy">
+        <span>3.0 BITÁCORA DE TRASPASO Y CADENA DE CUSTODIA DE EVIDENCIAS</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:12%;">Fecha / Hora</th>
+            <th style="width:28%;">Custodio Entregante (Consignante / Perito)</th>
+            <th style="width:28%;">Custodio Receptor (Perito Analista / Bóveda)</th>
+            <th style="width:20%;">Propósito del Traspaso</th>
+            <th style="width:12%; text-align:center;">Firma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="input-mono">19/07/2026 08:30</td>
+            <td>Consignante Privado (C.I. V-15.892.104)</td>
+            <td>Perito Receptor SHA256.US (CIV 284.910)</td>
+            <td>Consignación inicial y resguardo Faraday</td>
+            <td style="text-align:center; font-weight:700;">[ FIRMA ]</td>
+          </tr>
+          <tr>
+            <td class="input-mono">19/07/2026 10:15</td>
+            <td>Perito Receptor SHA256.US</td>
+            <td>Bóveda de Evidencias N° 04 (Locker RF)</td>
+            <td>Almacenamiento seguro previo a duplicación</td>
+            <td style="text-align:center; font-weight:700;">[ FIRMA ]</td>
+          </tr>
+          <tr>
+            <td class="input-mono">20/07/2026 09:00</td>
+            <td>Bóveda de Evidencias N° 04</td>
+            <td>Perito Analista de Imagen (Write-Blocker)</td>
+            <td>Extracción E01 y duplicado bit a bit</td>
+            <td style="text-align:center; font-weight:700;">[ FIRMA ]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECCIÓN 4: CERTIFICACIÓN DACTILOSCÓPICA Y FIRMAS BILATERALES -->
+    <div class="card-section">
+      <div class="section-bar-navy">
+        <span>4.0 CERTIFICACIÓN DE CUSTODIA, DACTILOSCOPÍA BILATERAL Y FIRMAS</span>
+      </div>
+
+      <div class="sig-grid">
+        <div class="sig-card">
+          <strong style="color:#112E51;">PERITO CUSTODIO RESPONSABLE:</strong>
+          <div class="sig-line"></div>
+          <div style="text-align:center; font-size:8px; color:#64748B;">Firma Perito Custodio SHA256.US</div>
+          <div style="margin-top:6px;"><strong>Nombre:</strong> Ing. Perito Custodio</div>
+          <div><strong>C.I. / CIV:</strong> V-18.492.012 / CIV N° 284.910</div>
+
+          <div class="thumb-group">
+            <div class="thumb-box">HUELLA<br /><strong>PULGAR IZQ.</strong></div>
+            <div class="thumb-box">HUELLA<br /><strong>PULGAR DER.</strong></div>
+          </div>
+        </div>
+
+        <div class="sig-card">
+          <strong style="color:#112E51;">CONSIGNANTE / OFICIAL ENTREGANTE:</strong>
+          <div class="sig-line"></div>
+          <div style="text-align:center; font-size:8px; color:#64748B;">Firma del Consignante</div>
+          <div style="margin-top:6px;"><strong>Nombre:</strong> ___________________________________</div>
+          <div><strong>C.I.:</strong> V-___________</div>
+
+          <div class="thumb-group">
+            <div class="thumb-box">HUELLA<br /><strong>PULGAR IZQ.</strong></div>
+            <div class="thumb-box">HUELLA<br /><strong>PULGAR DER.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER SELLO INMUTABLE -->
+    <div class="footer-navy">
+      <span>🔐 SELLO INMUTABLE SHA-256 CADENA DE CUSTODIA · HASH GÉNESIS: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+      <span style="color:#D9A700; font-weight:700;">REGISTRO OFICIAL SHA256.US</span>
+    </div>
+
+    <div class="legal-footer-text">
+      SHA256.US — Laboratorio de Informática Forense y Ciberseguridad | Consignación Privada y Cumplimiento Normativo (COPP Art. 187 · MUCC-2017 · ISO/IEC 27037)<br />
+      Sede Principal: Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Estado Lara, República Bolivariana de Venezuela.
+    </div>
+
+  </div>
+</body>
+</html>
