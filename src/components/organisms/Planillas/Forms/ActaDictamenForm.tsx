@@ -20,14 +20,10 @@ export default function ActaDictamenForm({ caso, onSave }: PlanillaFormProps) {
     peritoLider: caso?.peritoLider || 'Ing. Christopher V. Vance',
     perito_cedula: caso?.perito_cedula || 'V-19.823.104',
     perito_civ: caso?.perito_civ || 'CIV N° 284.912',
-<<<<<<< HEAD
     perito_cargo: caso?.perito_cargo || 'Perito Informático Forense Principal',
     perito2_nombre: (caso as any)?.perito2_nombre || '',
     perito2_cedula: (caso as any)?.perito2_cedula || '',
     perito2_civ: (caso as any)?.perito2_civ || '',
-=======
-    perito_cargo: caso?.perito_cargo || 'Perito Informático Forense Acreditado TSJ',
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
     dispositivo_marca: caso?.dispositivo_marca || '',
     dispositivo_modelo: caso?.dispositivo_modelo || '',
     dispositivo_imei: caso?.dispositivo_imei || '',
@@ -49,7 +45,6 @@ export default function ActaDictamenForm({ caso, onSave }: PlanillaFormProps) {
   return (
     <form onSubmit={handleSubmit} className="d-flex flex-column gap-2">
 
-<<<<<<< HEAD
       {/* 1. ACREDITACIÓN PERICIAL BILATERAL (COPP ART. 223) */}
       <div className="uswds-card">
         <div className="uswds-banner-title">🏛️ 1. ACREDITACIÓN DE PERITOS INFORMÁTICOS FORENSES (COPP ART. 223)</div>
@@ -80,27 +75,6 @@ export default function ActaDictamenForm({ caso, onSave }: PlanillaFormProps) {
           <div className="col-md-3">
             <label className="form-label" style={S.label}>CIV N° Perito 2</label>
             <input type="text" className="form-control form-control-sm" style={S.inputMono} value={formData.perito2_civ} onChange={handleChange('perito2_civ')} placeholder="[CIV Perito 2]" />
-=======
-      {/* 1. ACREDITACIÓN PERICIAL */}
-      <div className="uswds-card">
-        <div className="uswds-banner-title">🏛️ 1. ACREDITACIÓN PERICIAL (ISO/IEC 27042 & COPP ART. 187)</div>
-        <div className="row g-2">
-          <div className="col-md-6">
-            <label className="form-label" style={S.label}>Perito Responsable</label>
-            <input type="text" className="form-control form-control-sm" style={S.input} value={formData.peritoLider} onChange={handleChange('peritoLider')} />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label" style={S.label}>Cédula de Identidad</label>
-            <input type="text" className="form-control form-control-sm" style={S.inputMono} value={formData.perito_cedula} onChange={handleChange('perito_cedula')} />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label" style={S.label}>N° Colegiatura CIV / TSJ</label>
-            <input type="text" className="form-control form-control-sm" style={S.inputMono} value={formData.perito_civ} onChange={handleChange('perito_civ')} />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label" style={S.label}>Cargo / Calificación</label>
-            <input type="text" className="form-control form-control-sm" style={S.input} value={formData.perito_cargo} onChange={handleChange('perito_cargo')} />
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           </div>
         </div>
       </div>
@@ -133,19 +107,11 @@ export default function ActaDictamenForm({ caso, onSave }: PlanillaFormProps) {
         <div className="uswds-banner-title">📊 3. HALLAZGOS Y CONCLUSIONES TÉCNICO-CIENTÍFICAS</div>
         <div className="mb-2">
           <label className="form-label" style={S.label}>Procedimientos y Metodología Aplicada</label>
-<<<<<<< HEAD
           <textarea className="form-control form-control-sm" rows={3} style={S.input} value={formData.descripcion} onChange={handleChange('descripcion')} placeholder="Herramientas (FTK Imager, Avilla Forensics, IPED Forensics - Polícia Federal do Brasil/INTERPOL, PhotoHolmes ELA, Sonic Visualiser 48kHz)..." />
         </div>
         <div>
           <label className="form-label" style={S.label}>Conclusiones Periciales</label>
           <textarea className="form-control form-control-sm" rows={3} style={S.input} value={formData.notas} onChange={handleChange('notas')} placeholder="Síntesis de las conclusiones categóricas del dictamen pericial..." />
-=======
-          <textarea className="form-control form-control-sm" rows={3} style={S.input} value={formData.descripcion} onChange={handleChange('descripcion')} placeholder="Herramientas (UFED/Cellebrite/FTK), procedimientos de extracción y validación de hash..." />
-        </div>
-        <div>
-          <label className="form-label" style={S.label}>Conclusiones Periciales</label>
-          <textarea className="form-control form-control-sm" rows={3} style={S.input} value={formData.notas} onChange={handleChange('notas')} placeholder="Síntesis de las conclusiones categóricas del dictamen..." />
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         </div>
       </div>
 

@@ -120,33 +120,22 @@ export const pdfStyles = StyleSheet.create({
   /* CASILLA DE EXPEDIENTE Y PRCC ALARGADA AL 100% DE ANCHO */
   expedienteBox: {
     marginTop: 6,
-<<<<<<< HEAD
     marginBottom: 4,
     width: '100%',
     paddingHorizontal: 8,
     paddingVertical: 4,
-=======
-    marginBottom: 2,
-    width: '100%',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#0F172A',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-<<<<<<< HEAD
     flexWrap: 'wrap',
     gap: 4,
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
   },
   expedienteSlot: {
     flexDirection: 'row',
     alignItems: 'center',
-<<<<<<< HEAD
     flexShrink: 1,
   },
   expedienteText: {
@@ -163,25 +152,6 @@ export const pdfStyles = StyleSheet.create({
     paddingHorizontal: 2,
     justifyContent: 'center',
     flexShrink: 1,
-=======
-    minWidth: 140,
-    flex: 1,
-  },
-  expedienteText: {
-    fontSize: 8.5,
-    fontFamily: 'Helvetica-Bold',
-    color: '#0F172A',
-    marginRight: 4,
-  },
-  expedienteLine: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: '#0F172A',
-    minHeight: 14,
-    minWidth: 120,
-    marginLeft: 4,
-    justifyContent: 'center',
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
   },
   sectionTitle: {
     fontSize: 9,

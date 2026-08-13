@@ -254,3 +254,4 @@ src/
 3. **Verificación TypeScript Obligatoria:** Ningún cambio se da por concluido sin haber verificado la compilación estática ejecutando `npx tsc --noEmit`.
 4. **Preservación de Márgenes de Folio:** La previsualización web y la impresión física deben conservar los márgenes normativos de hoja Folio (216mm × 330mm).
 5. **Cumplimiento Estricto de SVG Folio Vertical:** Todo activo SVG de planillas, diagramas de flujo o pipelines debe crearse en orientación Folio vertical (`1:1.528`), ser copia fiel 1:1 si corresponde a una planilla existente, e integrar optimización UX/SEO con los estilos institucionales (DC3 Cyber Forensics).
+6. **Sincronización Automática Obligatoria con GitHub:** Cada actualización, ajuste o creación de archivo que se complete exitosamente en el proyecto debe subirse inmediatamente a GitHub ejecutando `node scripts/sync-github.js` (o `npm run sync`).

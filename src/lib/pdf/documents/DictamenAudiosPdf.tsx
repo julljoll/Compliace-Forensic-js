@@ -38,13 +38,8 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
   const fmt = (val?: string, placeholder: string = '') => formatValue(val, isBlankMode, placeholder);
   const numeroExpediente = fmt(c.numeroCaso, 'EXP-2026-SHA-0091');
   const fecha = fmt(c.fecha, '23/07/2026 — 11:45 AM');
-<<<<<<< HEAD
   const isBlank = isBlankMode;
   const numeroDictamen = isBlank ? '' : (c.numeroCaso ? (c.numeroCaso.startsWith('DICT-') ? c.numeroCaso : `DICT-AUD-${c.numeroCaso}`) : 'DICT-AUD-SHA256-2026-0091');
-=======
-  const numeroDictamen = `DICT-AUD-SHA256-2026-${numeroExpediente || '0091'}`;
-  const isBlank = isBlankMode;
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 
   return (
     <Document title={`Dictamen_Pericial_Audios_WhatsApp_${c.numeroCaso || 'EXP'}`}>
@@ -75,11 +70,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
             <View style={pdfStyles.expedienteSlot}>
               <Text style={pdfStyles.expedienteText}>EXPEDIENTE N°:</Text>
               <View style={pdfStyles.expedienteLine}>
-<<<<<<< HEAD
                 <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{numeroExpediente}</Text>
-=======
-                <Text style={{ fontSize: 8, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{numeroExpediente}</Text>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
               </View>
             </View>
             <View style={pdfStyles.expedienteSlot}>
@@ -89,23 +80,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
               </View>
             </View>
             <View style={pdfStyles.expedienteSlot}>
-<<<<<<< HEAD
               <Text style={pdfStyles.expedienteText}>FECHA:</Text>
               <View style={pdfStyles.expedienteLine}>
                 <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>{fecha}</Text>
-=======
-              <Text style={pdfStyles.expedienteText}>TIPO DE ANÁLISIS:</Text>
-              <View style={pdfStyles.expedienteLine}>
-                <Text style={{ fontSize: 7.5, paddingLeft: 4, fontFamily: 'Helvetica-Bold' }}>
-                  AUDIOS WHATSAPP — OPUS/OGG | ESPECTROGRAMA | FORMANTES | SNR
-                </Text>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
               </View>
             </View>
           </View>
         </View>
 
-<<<<<<< HEAD
         {/* Sub-banner Tipo de Análisis */}
         <View style={{ backgroundColor: '#F1F5F9', borderLeftWidth: 3, borderLeftColor: '#005EA2', paddingHorizontal: 6, paddingVertical: 3, marginTop: 4, marginBottom: 6 }}>
           <Text style={{ fontSize: 7.5, fontFamily: 'Helvetica-Bold', color: '#112E51' }}>
@@ -113,8 +95,6 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
           </Text>
         </View>
 
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         {/* 1.0 MARCO NORMATIVO */}
         <Text id="seccion-1.0" style={pdfStyles.sectionTitle}>1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</Text>
         <View style={pdfStyles.fieldRow}>

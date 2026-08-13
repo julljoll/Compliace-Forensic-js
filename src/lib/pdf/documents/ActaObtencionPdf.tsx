@@ -135,7 +135,6 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
 
         {/* 4.0 ESTADO FÍSICO */}
         <Text id="seccion-4.0" style={pdfStyles.sectionTitle}>4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y ACCESORIOS</Text>
-<<<<<<< HEAD
         <View style={{ marginTop: 3, marginBottom: 5, borderWidth: 1, borderColor: '#CBD5E1', borderRadius: 3, padding: 6, backgroundColor: '#F8FAFC' }}>
           <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 4 }}>
             ESTADO FÍSICO Y OBSERVACIONES VISUALES DE RECEPCIÓN (6 líneas de pauta pericial):
@@ -154,15 +153,6 @@ export const ActaObtencionPdf: React.FC<Props> = ({ caso, isBlankMode = false })
               <View style={{ borderBottomWidth: 0.8, borderBottomColor: '#94A3B8', borderStyle: 'dashed', height: 15, width: '100%' }} />
             </View>
           )}
-=======
-        <View style={{ marginTop: 3, marginBottom: 5, borderWidth: 1, borderColor: '#CBD5E1', borderRadius: 3, padding: 5, backgroundColor: '#F8FAFC' }}>
-          <Text style={{ fontSize: 7, fontFamily: 'Helvetica-Bold', color: '#0F172A', marginBottom: 2 }}>
-            ESTADO FÍSICO Y OBSERVACIONES VISUALES DE RECEPCIÓN (5 líneas de pauta pericial):
-          </Text>
-          <Text style={{ fontSize: 6.5, color: '#1E293B', lineHeight: 1.35 }}>
-            {fmt(c.dispositivo_estado_fisico, '1. _____________________________________________________________________\n2. _____________________________________________________________________\n3. _____________________________________________________________________\n4. _____________________________________________________________________\n5. _____________________________________________________________________')}
-          </Text>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         </View>
 
         {/* 5.0 ALCANCE Y AUTORIZACIÓN */}

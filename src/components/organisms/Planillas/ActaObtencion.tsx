@@ -290,25 +290,16 @@ export default function ActaObtencion({ caso, tipoEvidencia: externalTipoEvidenc
         
         <div style={{ marginTop: '8px', marginBottom: '10px', padding: '10px', border: '1px dashed #0F172A', backgroundColor: '#F8FAFC', borderRadius: '4px' }}>
           <PlanillaFieldLabel style={{ fontSize: '8.5pt', color: '#0F172A', fontWeight: 'bold' }}>
-<<<<<<< HEAD
             ESTADO FÍSICO Y OBSERVACIONES VISUALES DE RECEPCIÓN (6 líneas de pauta pericial):
           </PlanillaFieldLabel>
           <div contentEditable suppressContentEditableWarning style={{ minHeight: '144px', padding: '6px', fontSize: '9.5pt', lineHeight: '24px' }}>
-=======
-            ESTADO FÍSICO, OBSERVACIONES DE RECEPCIÓN Y ACCESORIOS (Escriba a lápiz o digite en 5 líneas):
-          </PlanillaFieldLabel>
-          <div contentEditable suppressContentEditableWarning style={{ minHeight: '120px', padding: '6px', fontSize: '9.5pt', lineHeight: '24px' }}>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
             <span className="placeholder-field">{c.dispositivo_estado_fisico ? c.dispositivo_estado_fisico : '[Describa detalladamente el estado de la pantalla, bordes, cámara, puerto de carga, batería, estuche y protector]'}</span>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
             <div className="dotted-line"></div>
-<<<<<<< HEAD
             <div className="dotted-line"></div>
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           </div>
         </div>
 

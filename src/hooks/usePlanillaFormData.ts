@@ -11,12 +11,8 @@ export type PlanillaId =
   | 'acta_consentimiento'
   | 'acta_desprecintado'
   | 'acta_sanitizacion'
-<<<<<<< HEAD
   | 'acta_auditoria_timeline'
   | 'planilla_evaluacion_ux';
-=======
-  | 'acta_auditoria_timeline';
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 
 export function usePlanillaFormData(casoId: string, _planillaId?: PlanillaId) {
   const { casos, updateCasoFormData, updateCaso } = useCMSStore();

@@ -147,7 +147,6 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
         ruta: '/planillas/entrega-resultados',
         normativas: ['MUCC-2017 Cierre', 'ISO/IEC 27037 Sec. 8', 'COPP Art. 187'],
       },
-<<<<<<< HEAD
       {
         id: 'planilla-evaluacion-ux',
         paso: '4.3',
@@ -157,8 +156,6 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
         normativas: ['USWDS 3.0', 'DC3 Cyber Forensics', 'ISO/IEC 27037', 'NIST SP 800-86'],
         isNew: true,
       },
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
     ],
   },
 ];

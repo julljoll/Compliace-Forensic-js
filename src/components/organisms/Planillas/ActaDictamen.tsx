@@ -20,10 +20,7 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
     dispositivo_imei: '',
     dispositivo_numero_tel: '',
     dispositivo_sim_card: '',
-<<<<<<< HEAD
     descripcion: '',
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
     peritoLider: '',
     tipoProyecto: '',
     discoduro_serial: '',
@@ -63,7 +60,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
     >
       {/* HEADER PRINCIPAL ESMERALDA */}
       <div className="uswds-top-header">
-<<<<<<< HEAD
         DICTAMEN PERICIAL INFORMÁTICO FORENSE — MUCC-2017, ISO/IEC 27042 & COPP ARTS. 187, 223, 225
       </div>
 
@@ -89,42 +85,18 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
             <div className="form-group uswds-slot-input">
               <PlanillaFieldLabel>Co-Perito Informático Forense (N° 2 — COPP Art. 223)</PlanillaFieldLabel>
               <PlanillaEditableValue placeholder="[Nombre y Apellido del Perito 2]" />
-=======
-        DICTAMEN PERICIAL INFORMÁTICO FORENSE — MUCC-2017 & COPP ART. 187
-      </div>
-
-      {/* 1.0 MARCO NORMATIVO Y REQUISITOS */}
-      <div className="section">
-        <div className="uswds-banner-title">1.0 MARCO NORMATIVO Y REQUISITOS PROBATORIOS</div>
-        <div className="uswds-card">
-          <div className="grid-container" style={{ gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            <div className="form-group uswds-slot-input">
-              <PlanillaFieldLabel>Perito Informático Forense Responsable</PlanillaFieldLabel>
-              <PlanillaEditableValue value={c.peritoLider} placeholder="[Nombre y Apellido del Perito]" />
-            </div>
-            <div className="form-group uswds-slot-input">
-              <PlanillaFieldLabel>Acreditación / Colegiatura CIV / TSJ</PlanillaFieldLabel>
-              <PlanillaEditableValue placeholder="[ej: Perito Judicial Acreditado N° 5192-TSJ]" />
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
             </div>
           </div>
         </div>
       </div>
 
-<<<<<<< HEAD
       {/* 2.0 ACREDITACIÓN PERICIAL E IDENTIFICACIÓN DE LA EVIDENCIA */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-2.0">2.0 ACREDITACIÓN PERICIAL E IDENTIFICACIÓN DE LA EVIDENCIA DIGITAL</PlanillaSectionTitle>
-=======
-      {/* 2.0 ACREDITACIÓN PERICIAL */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-2.0">2.0 ACREDITACIÓN PERICIAL E IDENTIFICACIÓN DE IMÁGENES</PlanillaSectionTitle>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         {tipoEvidencia === 'movil' ? (
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-<<<<<<< HEAD
                 <td style={{ width: '35%', fontWeight: 'bold' }}>Evidencia Digital Objeto de Peritaje</td>
                 <td>
                   Teléfono Móvil Smart: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo del Dispositivo]'}</strong>
@@ -137,20 +109,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
               <tr>
                 <td style={{ fontWeight: 'bold' }}>Línea Telefónica / SIM Card ICCID</td>
                 <td><PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[N° de Línea / Operadora / SIM Card]" /></td>
-=======
-                <td>Evidencia Digital</td>
-                <td>
-                  Teléfono Móvil: <strong className="placeholder-field">{c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo]'}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td>Serial / IMEI 1</td>
-                <td><PlanillaEditableValue value={c.dispositivo_imei} placeholder="[IMEI / S/N]" /></td>
-              </tr>
-              <tr>
-                <td>Línea / SIM Card</td>
-                <td><PlanillaEditableValue value={c.dispositivo_numero_tel} placeholder="[N° de Línea]" /></td>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
               </tr>
             </tbody>
           </table>
@@ -158,11 +116,7 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
           <table border={1} cellSpacing={0} cellPadding={8} className="evidence-table">
             <tbody>
               <tr>
-<<<<<<< HEAD
                 <td style={{ width: '35%', fontWeight: 'bold' }}>Equipo Computador Examinado</td>
-=======
-                <td>Equipo Computador</td>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
                 <td>
                   <PlanillaEditableValue
                     value={c.dispositivo_marca || c.dispositivo_modelo ? `${c.dispositivo_marca || ''} ${c.dispositivo_modelo || ''}`.trim() : undefined}
@@ -171,19 +125,11 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
                 </td>
               </tr>
               <tr>
-<<<<<<< HEAD
                 <td style={{ fontWeight: 'bold' }}>Unidad de Disco Duro Examinada</td>
                 <td>
                   <PlanillaEditableValue
                     value={c.discoduro_serial || c.discoduro_capacidad ? `${c.discoduro_marca || ''} ${c.discoduro_capacidad || ''} S/N: ${c.discoduro_serial || ''}`.trim() : undefined}
                     placeholder="[Serial, Capacidad y Modelo del Disco Duro]"
-=======
-                <td>Unidad de Disco Duro Examinada</td>
-                <td>
-                  <PlanillaEditableValue
-                    value={c.discoduro_serial || c.discoduro_capacidad ? `${c.discoduro_marca || ''} ${c.discoduro_capacidad || ''} S/N: ${c.discoduro_serial || ''}`.trim() : undefined}
-                    placeholder="[Serial y Capacidad del Disco Duro]"
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
                   />
                 </td>
               </tr>
@@ -192,7 +138,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         )}
       </div>
 
-<<<<<<< HEAD
       {/* 3.0 METODOLOGÍA CIENTÍFICA Y HERRAMIENTAS FORENSES CERTIFICADAS */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-3.0">3.0 METODOLOGÍA CIENTÍFICA Y SUITE DE HERRAMIENTAS FORENSES CERTIFICADAS</PlanillaSectionTitle>
@@ -226,34 +171,11 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
             <tr>
               <td style={{ fontWeight: 'bold' }}>Consistencia de Timestamps / Cámara</td>
               <td><PlanillaEditableValue placeholder="[Coincidencia total entre fecha EXIF de captura, timestamp de sistema de archivos y registro IPED]" /></td>
-=======
-      {/* 3.0 METODOLOGÍA CIENTÍFICA */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-3.0">3.0 METODOLOGÍA CIENTÍFICA FORENSE (ISO/IEC 27042:2015 &amp; DAUBERT STANDARD)</PlanillaSectionTitle>
-        <div className="form-group" style={{ fontSize: '8.5pt', color: '#1d1d1f', backgroundColor: '#fafafa', padding: '8px', border: '1px solid #e0e0e0', borderRadius: '4px' }}>
-          Procesamiento mediante herramientas científicas de inspección pericial (IPED Forensics v4.1, PhotoHolmes Python Engine ELA y PyOgg Audio Engine). Preservación estricta de la estructura de contenedores nativos y trazabilidad criptográfica.
-        </div>
-      </div>
-
-      {/* 4.0 ANÁLISIS ELA / ESPECTROGRAMA */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-4.0">4.0 ANÁLISIS ELA (ERROR LEVEL ANALYSIS) / ESPECTROGRAMA ACÚSTICO</PlanillaSectionTitle>
-        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
-          <tbody>
-            <tr>
-              <td style={{ width: '35%', fontWeight: 'bold' }}>Técnica de Análisis Aplicada</td>
-              <td>[X] Error Level Analysis (ELA) &nbsp;&nbsp;&nbsp;&nbsp; [X] Espectrograma de Frecuencia (48 kHz)</td>
-            </tr>
-            <tr>
-              <td style={{ fontWeight: 'bold' }}>Respuesta de Frecuencia / Matriz ELA</td>
-              <td><PlanillaEditableValue placeholder="[Respuesta frecuencial continua e ininterrumpida / Niveles de compresión uniformes]" /></td>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
             </tr>
           </tbody>
         </table>
       </div>
 
-<<<<<<< HEAD
       {/* 5.0 ANÁLISIS ESPECTROGRÁFICO DE AUDIOS DE WHATSAPP (SONIC VISUALISER) */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-5.0">5.0 ANÁLISIS ESPECTROGRÁFICO DE AUDIOS Y NOTAS DE VOZ OPUS (SONIC VISUALISER)</PlanillaSectionTitle>
@@ -270,22 +192,11 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
             <tr>
               <td style={{ fontWeight: 'bold' }}>Frecuencia de Muestreo / Cuantización</td>
               <td><PlanillaEditableValue placeholder="[Frecuencia nativa 48,000 Hz / Bitrate dinámico Opus característico de grabación directa WhatsApp]" /></td>
-=======
-      {/* 5.0 DETECCIÓN COPY-MOVE Y METADATOS */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-5.0">5.0 DETECCIÓN COPY-MOVE, EXIF Y ESTRUCTURA DE CONTENEDOR</PlanillaSectionTitle>
-        <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
-          <tbody>
-            <tr>
-              <td style={{ width: '35%', fontWeight: 'bold' }}>Verificación EXIF / OggOpus</td>
-              <td><PlanillaEditableValue placeholder="[Encabezados intactos / Coincidencia de timestamp / Bit-rate VBR continuo]" /></td>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
             </tr>
           </tbody>
         </table>
       </div>
 
-<<<<<<< HEAD
       {/* 6.0 VERIFICACIÓN DE NO ALTERACIÓN Y CONTINUIDAD DIGITAL */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-6.0">6.0 VERIFICACIÓN DE NO ALTERACIÓN Y CONTINUIDAD DIGITAL (ISO/IEC 27042)</PlanillaSectionTitle>
@@ -300,22 +211,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
         <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '420px', padding: '12px', lineHeight: '24px' }}>
           <p style={{ margin: 0 }}>
             <span className="placeholder-field">{c.descripcion ? c.descripcion : '[Indique aquí las conclusiones técnico-periciales, hallazgos, hashes de verificación SHA-256 y dictamen final de autenticidad probatoria]'}</span>
-=======
-      {/* 6.0 VERIFICACIÓN DE NO ALTERACIÓN */}
-      <div className="section">
-        <PlanillaSectionTitle id="seccion-6.0">6.0 VERIFICACIÓN DE NO ALTERACIÓN Y CONTINUIDAD DIGITAL</PlanillaSectionTitle>
-        <div style={{ fontSize: '8.5pt', color: '#1E293B', padding: '6px 0' }}>
-          El análisis no evidencia manipulaciones, cortes, sobreposición de pistas ni re-salvados de terceros.
-        </div>
-      </div>
-
-      {/* 7.0 CONCLUSIONES PERICIALES */}
-      <div className="section" style={{ pageBreakBefore: 'always', breakBefore: 'page', paddingTop: '10px' }}>
-        <PlanillaSectionTitle id="seccion-7.0">7.0 CONCLUSIONES PERICIALES Y REGISTRO DE CADENA</PlanillaSectionTitle>
-        <div className="form-group motive-box" contentEditable suppressContentEditableWarning style={{ minHeight: '420px', padding: '12px', lineHeight: '24px' }}>
-          <p style={{ margin: 0 }}>
-            <span className="placeholder-field">[Indique aquí las conclusiones técnico-periciales, hallazgos, hashes de verificación SHA-256 y valoración legal del dictamen]</span>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           </p>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
@@ -334,10 +229,7 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
           <div className="dotted-line"></div>
-<<<<<<< HEAD
           <div className="dotted-line"></div>
-=======
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
         </div>
       </div>
 
@@ -359,13 +251,8 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
               <td><PlanillaEditableValue placeholder="[DD/MM/AAAA — HH:MM:SS — Zona horaria VET UTC-4]" /></td>
             </tr>
             <tr>
-<<<<<<< HEAD
               <td style={{ fontWeight: 'bold' }}>Herramientas de Verificación de Integridad</td>
               <td><PlanillaEditableValue placeholder="[FTK Imager v4.7 / IPED Forensics v4.1 / Avilla Forensics / sha256sum]" style={{ fontSize: '9px' }} /></td>
-=======
-              <td style={{ fontWeight: 'bold' }}>Herramienta de Verificación de Integridad</td>
-              <td><PlanillaEditableValue placeholder="[ej: HashMyFiles v2.43 / sha256sum / FTK Imager v4.7 / IPED Forensics v4.1]" /></td>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
             </tr>
           </tbody>
         </table>
@@ -374,11 +261,7 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
       {/* FIRMAS DEL PERITO — Mínimo 2 peritos según COPP Art. 223 */}
       <div className="signature-section" style={{ marginTop: '20px', gap: '10mm' }}>
         <div className="sig-detail-card">
-<<<<<<< HEAD
           <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 1 (PRINCIPAL)</div>
-=======
-          <div className="sig-detail-label">PERITO INFORMÁTICO FORENSE N° 1</div>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           <div className="sig-field" style={{ marginTop: '6px' }}>
             Nombre: <span className="sig-underline" contentEditable suppressContentEditableWarning>{c.peritoLider ? c.peritoLider : <span className="placeholder-field">[Nombre del Perito Responsable]</span>}</span>
           </div>
@@ -386,7 +269,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
             C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito 1]</span></span>
           </div>
           <div className="sig-field">
-<<<<<<< HEAD
             CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV Perito 1]</span></span>
           </div>
           <div className="sig-field">
@@ -398,19 +280,6 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
 
           <div className="sig-line" style={{ marginTop: '14px' }} />
           <div className="sig-line-label">Firma y Sello del Perito Principal</div>
-=======
-            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV 1]</span></span>
-          </div>
-          <div className="sig-field">
-            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE 1]</span></span>
-          </div>
-          <div className="sig-field">
-            Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Perito Especialista Forense]</span></span>
-          </div>
-
-          <div className="sig-line" style={{ marginTop: '14px' }} />
-          <div className="sig-line-label">Firma y Sello del Perito Acreditado</div>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
 
           <div className="fingerprint-row" style={{ margin: '10px 0 6px 0', justifyContent: 'center' }}>
             <PlanillaThumbBox label="PULGAR DER." />
@@ -431,17 +300,10 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
             C.I. N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Cédula del Perito 2]</span></span>
           </div>
           <div className="sig-field">
-<<<<<<< HEAD
             CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV Perito 2]</span></span>
           </div>
           <div className="sig-field">
             INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE Perito 2]</span></span>
-=======
-            CIV N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° CIV 2]</span></span>
-          </div>
-          <div className="sig-field">
-            INPREABOGADO N°: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[N° INPRE 2]</span></span>
->>>>>>> ed2e25ae2321632fd5a0e76f54f3878ba018c862
           </div>
           <div className="sig-field">
             Cargo: <span className="sig-underline" contentEditable suppressContentEditableWarning><span className="placeholder-field">[Co-Perito Informático Forense]</span></span>
