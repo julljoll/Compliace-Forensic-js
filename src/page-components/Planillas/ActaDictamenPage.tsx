@@ -73,7 +73,7 @@ const ActaDictamenPage = () => {
           >
             {isImageMode
               ? '8 págs. · ELA · Copy-Move · EXIF · Daubert/FRE 702'
-              : '8 págs. · Espectrograma · Formantes · SNR · Daubert/FRE 702'}
+              : '8 págs. · Sonic Visualiser v5 · Opus 48kHz · Pitch F₀ Yin · SWGDE · Daubert/FRE 702'}
           </span>
         </div>
       }
