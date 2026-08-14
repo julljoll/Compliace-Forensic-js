@@ -53,6 +53,7 @@ const menuGroups = [
         items: [
           { path: '/planillas/acta-auditoria-timeline', label: '3.1 Auditoría Hash SHA', icon: ClipboardList },
           { path: '/planillas/dictamen', label: '3.2 Dictámenes Periciales', icon: ClipboardList },
+          { path: '/planillas/informe-audio-sonic', label: '3.3 Informe Audio (Sonic)', icon: ClipboardList },
         ],
       },
       {
@@ -60,6 +61,7 @@ const menuGroups = [
         items: [
           { path: '/planillas/acta-sanitizacion', label: '4.1 Sanitización Wipe', icon: ClipboardList },
           { path: '/planillas/entrega-resultados', label: '4.2 Entrega Resultados', icon: ClipboardList },
+          { path: '/planillas/evaluacion-ux', label: '4.3 Evaluación UX/UI', icon: ClipboardList },
         ],
       },
     ],
