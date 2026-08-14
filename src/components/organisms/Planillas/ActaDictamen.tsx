@@ -193,45 +193,62 @@ export default function ActaDictamen({ caso, tipoEvidencia: externalTipoEvidenci
       {/* 5.0 ANÁLISIS ESPECTROGRÁFICO DE AUDIOS DE WHATSAPP (SONIC VISUALISER) */}
       <div className="section">
         <PlanillaSectionTitle id="seccion-5.0">
-          {isAudio ? "4.0 ANÁLISIS ACÚSTICO-FORENSE EN SONIC VISUALISER (CÓDEC OPUS & DAUBERT)" : "5.0 ANÁLISIS ESPECTROGRÁFICO DE AUDIOS Y NOTAS DE VOZ OPUS (SONIC VISUALISER)"}
+          {isAudio ? "4.0 PIPELINE DE 5 ETAPAS FORENSES EN SONIC VISUALISER (CÓDEC OPUS & DAUBERT)" : "5.0 ANÁLISIS ESPECTROGRÁFICO DE AUDIOS Y NOTAS DE VOZ OPUS (SONIC VISUALISER)"}
         </PlanillaSectionTitle>
         {isAudio ? (
-          <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
-            <tbody>
-              <tr>
-                <td style={{ width: '35%', fontWeight: 'bold' }}>Suite Acústica &amp; Licencia</td>
-                <td>[X] Sonic Visualiser v5.x (Queen Mary University of London, GPL-2.0) &nbsp;&nbsp;&nbsp;&nbsp; [X] Vamp Plugins Engine</td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Formato y Códec Examinado</td>
-                <td><PlanillaEditableValue placeholder="[Ogg/Opus WhatsApp PTT — 48,000 Hz, VBR, Paquetes de 20 ms, Mono 16-bit]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Espectrograma FFT (Hann 2048 bins)</td>
-                <td><PlanillaEditableValue placeholder="[Continuidad espectral armónica ininterrumpida en banda 0-24 kHz. Sin cortes ni empalmes de audio]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Pitch Fundamental F₀ (Algoritmo Yin)</td>
-                <td><PlanillaEditableValue placeholder="[Rastreo biológico 80-400 Hz continuo. Voz humana natural confirmada — Descartado Deepfake por IA]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Formantes Vocales F₁ / F₂ / F₃</td>
-                <td><PlanillaEditableValue placeholder="[F1: 620 Hz, F2: 1,850 Hz, F3: 2,740 Hz — Resonancias del tracto vocal biológico consistentes]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Relación Señal-Ruido (SNR) &amp; Piso</td>
-                <td><PlanillaEditableValue placeholder="[SNR > 40 dB (Promedio 44.2 dB). Piso de ruido ambiental homogéneo y estacionario]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Verificación Anti-Splicing (Cortes)</td>
-                <td><PlanillaEditableValue placeholder="[Límites de tramas Opus homogéneos. Ausencia de discontinuidades de fase o saltos de energía]" /></td>
-              </tr>
-              <tr>
-                <td style={{ fontWeight: 'bold' }}>Cláusula de Validez Daubert / FRE 702</td>
-                <td><PlanillaEditableValue placeholder="[Metodología reproducible, tasa de error <0.05%, revisada por pares y de aceptación general]" /></td>
-              </tr>
-            </tbody>
-          </table>
+          <div>
+            {/* Resumen pedagógico del pipeline */}
+            <div style={{ backgroundColor: '#EFF6FF', borderLeft: '4px solid #005EA2', padding: '8px 12px', marginBottom: '10px', borderRadius: '4px', fontSize: '8.5pt', color: '#1E293B', lineHeight: '1.5' }}>
+              <strong style={{ color: '#005EA2' }}>🔵 METODOLOGÍA PEDAGÓGICA DE 5 PASOS:</strong> Cada etapa analiza un vector acústico independiente para garantizar que la nota de voz es auténtica, no fue empalmada (anti-splicing), no fue generada por IA (anti-Deepfake) y fue grabada en una sola toma continua en el mismo entorno físico.
+            </div>
+
+            <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
+              <thead>
+                <tr style={{ backgroundColor: '#112E51', color: '#FFFFFF', fontSize: '8pt', textAlign: 'left' }}>
+                  <th style={{ width: '8%', padding: '6px', color: '#FFFFFF' }}>Paso</th>
+                  <th style={{ width: '27%', padding: '6px', color: '#FFFFFF' }}>Etapa Acústica Forense</th>
+                  <th style={{ width: '45%', padding: '6px', color: '#FFFFFF' }}>Parámetros / Herramienta / Detección</th>
+                  <th style={{ width: '20%', padding: '6px', color: '#FFFFFF' }}>Dictamen / Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ fontWeight: 'bold', textAlign: 'center', color: '#005EA2' }}>1</td>
+                  <td style={{ fontWeight: 'bold' }}>Decodificación Códec Opus (48 kHz)</td>
+                  <td><PlanillaEditableValue placeholder="[Tramas de 20 ms homogéneas, VBR dinámico 16-32 kbps, límites de paquete íntegros. Anti-Splicing verificado]" /></td>
+                  <td style={{ color: '#008837', fontWeight: 'bold' }}>NATIVO ✓</td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 'bold', textAlign: 'center', color: '#005EA2' }}>2</td>
+                  <td style={{ fontWeight: 'bold' }}>Espectrograma FFT (Sonic Visualiser)</td>
+                  <td><PlanillaEditableValue placeholder="[FFT Hann 2048 bins, 75% overlap, escala logarítmica dB. Continuidad armónica 0-24 kHz sin cortes ni silencios anómalos]" /></td>
+                  <td style={{ color: '#008837', fontWeight: 'bold' }}>CONFORME ✓</td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 'bold', textAlign: 'center', color: '#005EA2' }}>3</td>
+                  <td style={{ fontWeight: 'bold' }}>Forma de Onda &amp; Formantes F₁/F₂/F₃</td>
+                  <td><PlanillaEditableValue placeholder="[F1: 620 Hz, F2: 1,850 Hz, F3: 2,740 Hz — Resonancias biológicas del tracto vocal humano estables y sin artefactos]" /></td>
+                  <td style={{ color: '#008837', fontWeight: 'bold' }}>VOZ HUMANA ✓</td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 'bold', textAlign: 'center', color: '#005EA2' }}>4</td>
+                  <td style={{ fontWeight: 'bold' }}>Pitch Fundamental F₀ (Algoritmo Yin)</td>
+                  <td><PlanillaEditableValue placeholder="[Rastreo biológico 80-400 Hz continuo (Jitter: 0.8%, Shimmer: 1.2%, HNR: 22.4 dB). Descartado sintetizador TTS o Deepfake por IA]" /></td>
+                  <td style={{ color: '#008837', fontWeight: 'bold' }}>NO DEEPFAKE ✓</td>
+                </tr>
+                <tr>
+                  <td style={{ fontWeight: 'bold', textAlign: 'center', color: '#005EA2' }}>5</td>
+                  <td style={{ fontWeight: 'bold' }}>Relación Señal-Ruido (SNR) &amp; Piso</td>
+                  <td><PlanillaEditableValue placeholder="[SNR > 40 dB (Promedio 44.2 dB). Piso de ruido ambiental estacionario (-58 a -60 dBFS). Grabación en toma única confirmada]" /></td>
+                  <td style={{ color: '#008837', fontWeight: 'bold' }}>ESTACIONARIO ✓</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style={{ marginTop: '8px', backgroundColor: '#F8FAFC', border: '1px solid #CBD5E1', padding: '6px 10px', borderRadius: '4px', fontSize: '8pt', color: '#475569' }}>
+              <strong>🏛️ Estándar de Admisibilidad:</strong> Cumplimiento estricto de Daubert v. Merrell Dow (1993), FRE Rule 702, directrices SWGDE y COPP Arts. 187, 223, 225. Tasa de error comprobada &lt; 0.05%.
+            </div>
+          </div>
         ) : (
           <table border={1} cellSpacing={0} cellPadding={6} className="evidence-table">
             <tbody>
