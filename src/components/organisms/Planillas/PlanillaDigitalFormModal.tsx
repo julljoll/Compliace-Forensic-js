@@ -12,6 +12,7 @@ import ActaObtencionForm from './Forms/ActaObtencionForm';
 import ActaEntrevistaForm from './Forms/ActaEntrevistaForm';
 import ActaDictamenForm from './Forms/ActaDictamenForm';
 import ActaEntregaResultadosForm from './Forms/ActaEntregaResultadosForm';
+import PlanillaAudioSonicForm from './Forms/PlanillaAudioSonicForm';
 
 export interface DigitalFormData {
   solicitante_nombre: string;
@@ -55,6 +56,7 @@ const PLANILLA_LABELS: Record<PlanillaId, { emoji: string; subtitle: string }> =
   acta_sanitizacion:       { emoji: '🗑️', subtitle: 'NIST SP 800-88 Rev. 1 · ISO/IEC 27001 · Crypto-Erase' },
   acta_auditoria_timeline: { emoji: '📊', subtitle: 'ISO/IEC 27037:2012 · MUCC-2017 · SHA-256 Inmutable' },
   planilla_evaluacion_ux:  { emoji: '🎯', subtitle: 'USWDS/DC3 · Evaluacion UX/UI Planillas Locales · Peritos, Abogados, Jueces' },
+  informe_audio_sonic:     { emoji: '🎵', subtitle: 'FRE 702 / Daubert Standard · SWGDE · Sonic Visualiser (GPL-2.0)' },
 };
 
 export default function PlanillaDigitalFormModal({
@@ -76,6 +78,7 @@ export default function PlanillaDigitalFormModal({
       case 'acta_entrevista':         return <ActaEntrevistaForm caso={caso} onSave={onSave} />;
       case 'acta_dictamen':           return <ActaDictamenForm caso={caso} onSave={onSave} />;
       case 'acta_entrega_resultados': return <ActaEntregaResultadosForm caso={caso} onSave={onSave} />;
+      case 'informe_audio_sonic':     return <PlanillaAudioSonicForm caso={caso} onSave={onSave} />;
       default:                        return <ActaObtencionForm caso={caso} onSave={onSave} />;
     }
   };

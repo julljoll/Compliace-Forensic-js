@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planilla de Informe Forense de Audio (Sonic Visualiser) — SHA256.US</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #F0F4F8;
+      font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+      color: #1B2A4A;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Hoja Folio Vertical (216mm x 330mm) */
+    .folio-sheet {
+      width: 216mm;
+      min-height: 330mm;
+      background-color: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+      padding: 12mm 10mm 10mm 15mm;
+      position: relative;
+    }
+
+    .header-navy {
+      background-color: #112E51;
+      border-radius: 8px;
+      color: #FFFFFF;
+      overflow: hidden;
+      margin-bottom: 10px;
+      border: 1px solid #1A2536;
+    }
+    .top-sub-banner {
+      background-color: #1A2536;
+      padding: 5px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 600;
+      border-bottom: 1px solid #D9A700;
+    }
+    .top-sub-banner .gold { color: #D9A700; }
+    .top-sub-banner .mono { font-family: 'Fira Code', monospace; }
+
+    .header-main-body {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title-area h1 {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+    .title-area p {
+      font-size: 8.5px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+    .badge-code {
+      background-color: #D9A700;
+      color: #112E51;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* Banner Normativo */
+    .normative-bar {
+      background-color: #F1F5F9;
+      border-left: 4px solid #005EA2;
+      padding: 4px 8px;
+      font-size: 8px;
+      font-weight: 700;
+      color: #112E51;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .section-title {
+      background-color: #112E51;
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3.5px 8px;
+      border-radius: 4px;
+      margin-top: 8px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.3px;
+    }
+    .section-title .tag {
+      background-color: #005EA2;
+      color: #FFFFFF;
+      font-size: 7.5px;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .card-box {
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 7px;
+      margin-bottom: 6px;
+      background-color: #FFFFFF;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .field-group {
+      margin-bottom: 4px;
+    }
+    .field-label {
+      font-size: 7.5px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      margin-bottom: 1px;
+    }
+    .field-value {
+      font-size: 8.5px;
+      font-weight: 600;
+      color: #1B2A4A;
+      background-color: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+    .field-value.mono {
+      font-family: 'Fira Code', monospace;
+      font-size: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.8px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+    th {
+      background-color: #112E51;
+      color: #FFFFFF;
+      padding: 3.5px 5px;
+      text-align: left;
+      font-size: 7.5px;
+    }
+    td {
+      border: 1px solid #CBD5E1;
+      padding: 3.5px 5px;
+      vertical-align: top;
+    }
+    tr:nth-child(even) {
+      background-color: #F8FAFC;
+    }
+
+    .spec-diagram-box {
+      background-color: #0B132B;
+      border-radius: 4px;
+      padding: 4px;
+      margin-top: 4px;
+    }
+
+    .software-card {
+      background-color: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .software-badge {
+      background-color: #FFFFFF;
+      border: 1px solid #005EA2;
+      border-radius: 4px;
+      padding: 5px 8px;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .daubert-alert {
+      background-color: #FEF9C3;
+      border-left: 3px solid #CA8A04;
+      padding: 5px 8px;
+      font-size: 7.5px;
+      color: #713F12;
+      line-height: 1.35;
+      border-radius: 0 4px 4px 0;
+      margin-top: 4px;
+    }
+
+    .sworn-box {
+      background-color: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      border-radius: 4px;
+      padding: 5px 8px;
+      font-size: 7.5px;
+      line-height: 1.35;
+      margin-bottom: 6px;
+    }
+
+    .signatures-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 10px;
+      align-items: flex-end;
+      margin-top: 6px;
+    }
+    .sig-block {
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 6px;
+      background-color: #F8FAFC;
+      text-align: center;
+    }
+    .sig-line {
+      height: 25px;
+      border-bottom: 1px solid #112E51;
+      margin-bottom: 3px;
+      font-family: 'Brush Script MT', cursive;
+      font-size: 14px;
+      color: #112E51;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .thumb-pair {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+    .thumb-box {
+      width: 52px;
+      height: 60px;
+      border: 1px dashed #94A3B8;
+      border-radius: 4px;
+      background-color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6px;
+      color: #64748B;
+      text-align: center;
+    }
+
+    .hash-footer {
+      background-color: #112E51;
+      color: #94A3B8;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    @media print {
+      body { background-color: #FFFFFF; padding: 0; }
+      .folio-sheet { border: none; box-shadow: none; width: 100%; min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="folio-sheet">
+    <!-- HEADER INSTITUCIONAL -->
+    <div class="header-navy">
+      <div class="top-sub-banner">
+        <span>🏛️ <span class="gold">SHA256.US</span> — LABORATORIO DE INFORMÁTICA FORENSE &amp; ACÚSTICA DIGITAL</span>
+        <span class="mono">DAUBERT / FRE 702 / SWGDE</span>
+      </div>
+      <div class="header-main-body">
+        <div class="title-area">
+          <h1>Planilla de Informe Forense de Audio</h1>
+          <p>ANÁLISIS ESPECTROGRÁFICO FFT, FORMA DE ONDA, PITCH (F0) Y METODOLOGÍA REPRODUCIBLE (SONIC VISUALISER)</p>
+        </div>
+        <div class="badge-code">FO-SHA256-AUD-002</div>
+      </div>
+    </div>
+
+    <!-- BARRA NORMATIVA -->
+    <div class="normative-bar">
+      <span>⚖️ MARCO: FRE RULE 702 · DAUBERT STANDARD · SWGDE GUIDELINES · ISO/IEC 27037 / 27042 · MUCC-2017</span>
+      <span>ACÚSTICA FORENSE REPRODUCIBLE</span>
+    </div>
+
+    <!-- 1.0 ENCABEZADO Y CADENA DE CUSTODIA -->
+    <div class="section-title">
+      <span>1.0 ENCABEZADO DEL CASO &amp; CADENA DE CUSTODIA (SHA-256 GÉNESIS)</span>
+      <span class="tag">SECCIÓN 1/5</span>
+    </div>
+    <div class="card-box">
+      <div class="grid-3">
+        <div class="field-group">
+          <div class="field-label">N° Expediente / Causa</div>
+          <div class="field-value mono">EXP-2026-SHA-0091</div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Tribunal / Jurisdicción</div>
+          <div class="field-value">Tribunal 1° de Control / Circunscripción Federal</div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Fecha de Recepción</div>
+          <div class="field-value mono">23/07/2026 — 11:45 AM</div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 4px;">
+        <div class="field-group">
+          <div class="field-label">Perito Responsable &amp; Credenciales</div>
+          <div class="field-value">Ing. Perito Acústica Forense | C.I. V-18.420.912 | CIV 218.402 | SWGDE</div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Custodio Consignante de la Muestra</div>
+          <div class="field-value">Custodio Legal Consignante | C.I. V-15.892.104 | WhatsApp Backup</div>
+        </div>
+      </div>
+      <div class="field-group" style="margin-top: 4px;">
+        <div class="field-label">Hash Génesis SHA-256 Original de Cadena de Custodia</div>
+        <div class="field-value mono" style="font-size: 7.5px; color: #005EA2;">
+          e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (MATCH VERIFICADO)
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 REGISTRO TÉCNICO EN SONIC VISUALISER -->
+    <div class="section-title">
+      <span>2.0 REGISTRO TÉCNICO DE PROCESOS POR AUDIO (SONIC VISUALISER)</span>
+      <span class="tag">SECCIÓN 2/5</span>
+    </div>
+    <div class="card-box">
+      <div class="grid-3" style="background-color: #F8FAFC; padding: 4px; border-radius: 4px; margin-bottom: 4px;">
+        <div><strong>Archivo:</strong> AUDIO_PTT_20260723.opus</div>
+        <div><strong>Formato:</strong> Ogg/Opus 48kHz Mono</div>
+        <div><strong>Duración:</strong> 00:01:42.850 (102.85s)</div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%;">Proceso Aplicado</th>
+            <th style="width: 32%;">Parámetros Exactos (Sonic Visualiser)</th>
+            <th style="width: 46%;">Observación Técnica Objetiva</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Espectrograma FFT</strong><br/><span style="font-size: 7px; color: #005EA2;">0 - 24.000 Hz</span></td>
+            <td class="mono" style="font-size: 7px;">Window: Hann (2048 bins)<br/>Hop: 512 bins (75% overlap)<br/>Scale: dB (-90 a 0 dB)</td>
+            <td>Continuidad espectral íntegra en banda vocal (300Hz-3.400Hz). Sin cortes verticales bruscos ni empalmes de edición.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Forma de Onda (Waveform)</strong><br/><span style="font-size: 7px; color: #005EA2;">Capa Temporal</span></td>
+            <td class="mono" style="font-size: 7px;">Peak &amp; RMS overlay<br/>Res: 10 ms/div<br/>Amplitud: -1.0 a +1.0 V</td>
+            <td>Envolvente acústica continua con decaimiento reverberante natural. Ausencia de discontinuidades por cruce en cero.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Frecuencia Fundamental (F0)</strong><br/><span style="font-size: 7px; color: #005EA2;">Pitch Yin Algorithm</span></td>
+            <td class="mono" style="font-size: 7px;">Range: 80 - 400 Hz<br/>Threshold: 0.15<br/>Plugin: Yin Pitch Tracker</td>
+            <td>Línea melódica F0 continua con micro-modulación fonética humana real (F0 prom: 138.4 Hz). Sin indicios de clonación TTS.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Armónicos y Piso de Ruido</strong><br/><span style="font-size: 7px; color: #005EA2;">SNR &amp; Peaks</span></td>
+            <td class="mono" style="font-size: 7px;">Track: H1 a H6<br/>Noise Floor: -54.2 dBFS<br/>SNR: 22.4 dB</td>
+            <td>Ruido de fondo ambiental homogéneo y estacionario durante todo el track, acreditando unidad de toma y espacio.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- SVG Comparativo Antes/Después -->
+      <div class="grid-2" style="margin-top: 4px;">
+        <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 3px; text-align: center; background: #0B132B;">
+          <div style="color: #90E0EF; font-size: 7px; font-weight: 700; margin-bottom: 2px;">PANEL A: WAVEFORM TEMPORAL (ANTES)</div>
+          <svg viewBox="0 0 300 50" style="width: 100%; height: 40px;">
+            <line x1="0" y1="25" x2="300" y2="25" stroke="#1C2541" stroke-width="1" />
+            <path d="M 5,25 Q 15,10 25,25 T 45,5 T 65,40 T 85,15 T 105,25 T 125,5 T 145,45 T 165,12 T 185,35 T 205,25 T 225,8 T 245,42 T 265,18 T 285,25 T 295,25" fill="none" stroke="#48CAE4" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 3px; text-align: center; background: #000814;">
+          <div style="color: #FFD166; font-size: 7px; font-weight: 700; margin-bottom: 2px;">PANEL B: ESPECTROGRAMA FFT ANOTADO (DESPUÉS)</div>
+          <svg viewBox="0 0 300 50" style="width: 100%; height: 40px;">
+            <defs>
+              <linearGradient id="specG" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#03045E" />
+                <stop offset="50%" stop-color="#00B4D8" />
+                <stop offset="100%" stop-color="#FFB703" />
+              </linearGradient>
+            </defs>
+            <rect x="5" y="25" width="290" height="20" fill="url(#specG)" opacity="0.8" rx="2" />
+            <path d="M 10,38 Q 70,36 140,39 T 220,37 T 290,38" fill="none" stroke="#00FF66" stroke-width="1.8" stroke-dasharray="2 1" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.0 DICTAMEN INDIVIDUALIZADO -->
+    <div class="section-title">
+      <span>3.0 DICTAMEN INDIVIDUALIZADO &amp; CRITERIO DAUBERT</span>
+      <span class="tag">SECCIÓN 3/5</span>
+    </div>
+    <div class="card-box">
+      <div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; padding: 5px; border-radius: 4px; margin-bottom: 4px;">
+        <strong>Conclusión Pericial Específica:</strong>
+        <span style="background-color: #005EA2; color: #FFFFFF; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 4px; font-size: 8px;">
+          SIN EVIDENCIA DE ALTERACIÓN (CONTINUIDAD ESPECTRAL ÍNTEGRA)
+        </span>
+      </div>
+      <div class="grid-2">
+        <div><strong>Base Metodológica:</strong> SWGDE Guidelines for Forensic Audio Analysis Sec 4.2; Hollien, H. Forensic Voice Identification; ISO/IEC 27042.</div>
+        <div><strong>Limitaciones:</strong> Análisis circunscrito a la banda audible y compresión Opus/WhatsApp (48 kHz).</div>
+      </div>
+    </div>
+
+    <!-- 4.0 IDENTIFICACIÓN SOFTWARE SONIC VISUALISER -->
+    <div class="section-title">
+      <span>4.0 IDENTIFICACIÓN DEL SOFTWARE (SONIC VISUALISER &amp; DESCARGO DAUBERT)</span>
+      <span class="tag">SECCIÓN 4/5</span>
+    </div>
+    <div class="software-card">
+      <div class="software-badge">
+        <strong style="color: #112E51; font-size: 10px;">Sonic Visualiser</strong><br/>
+        <span style="font-size: 7.5px; color: #008837; font-weight: 700;">GPL-2.0-or-later</span><br/>
+        <span style="font-size: 7px; color: #64748B;">v5.0.2 / x86_64</span>
+      </div>
+      <div style="font-size: 7.8px; line-height: 1.35;">
+        <strong>Desarrollador:</strong> Centre for Digital Music (C4DM), Queen Mary University of London.<br/>
+        <strong>Licencia &amp; Auditoría:</strong> GNU GPL v2.0+ (Código abierto, peer-reviewed, auditable por contraparte pericial).<br/>
+        <strong>Motores de Cálculo:</strong> Vamp Audio Analysis Plugins, FFTW3 (Fastest Fourier Transform in the West).
+      </div>
+    </div>
+    <div class="daubert-alert">
+      <strong>⚖️ NOTA METODOLÓGICA Y DESCARGO DE RESPONSABILIDAD DAUBERT / FRE 702:</strong><br/>
+      Sonic Visualiser es una herramienta instrumental de análisis y visualización de espectrogramas y formas de onda utilizada como apoyo técnico de laboratorio. La validez probatoria del presente informe no emana de una supuesta «certificación oficial» del software por tribunal alguno, sino de la metodología científica aplicada por el perito, sustentada en principios de física acústica, revisión por pares y plena sujeción al estándar Daubert v. Merrell Dow Pharmaceuticals (1993) y FRE 702.
+    </div>
+
+    <!-- 5.0 DECLARACIÓN JURADA, TASA DE ERROR Y FIRMAS -->
+    <div class="section-title">
+      <span>5.0 DECLARACIÓN JURADA DEL PERITO, TASA DE ERROR Y CIERRE DACTILOSCÓPICO</span>
+      <span class="tag">SECCIÓN 5/5</span>
+    </div>
+    <div class="sworn-box">
+      «Declaro bajo juramento que este informe pericial fue ejecutado aplicando metodología científica validada por la comunidad internacional (SWGDE/ISO 27042), verificable y reproducible por terceros peritos independientes bajo el estándar Daubert/FRE 702. La tasa de error del método FFT bajo SNR &gt; 15 dB se encuentra documentada como inferior al 0.05%.»
+    </div>
+
+    <div class="signatures-row">
+      <div class="sig-block">
+        <div class="sig-line">Perito Acústico Forense</div>
+        <strong style="font-size: 8px; color: #112E51;">Ing. Perito Especialista Líder</strong><br/>
+        <span style="font-size: 7px; color: #64748B;">C.I. V-18.420.912 | CIV: 218.402 | SWGDE</span>
+      </div>
+      <div class="thumb-pair">
+        <div class="thumb-box">PULGAR<br/>IZQUIERDO</div>
+        <div class="thumb-box">PULGAR<br/>DERECHO</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line">Custodio Consignante</div>
+        <strong style="font-size: 8px; color: #112E51;">Consignante / Custodio Legal</strong><br/>
+        <span style="font-size: 7px; color: #64748B;">C.I. V-15.892.104 | Muestra Entregada Conforme</span>
+      </div>
+    </div>
+
+    <!-- FOOTER CRIPTOGRÁFICO -->
+    <div class="hash-footer">
+      <span>🏛️ SHA256.US CMS — INMUTABILIDAD CRIPTOGRÁFICA</span>
+      <span>HASH: SHA256(INF-AUD-SONIC-2026-0091:2026-07-23:e3b0c442)</span>
+      <span>FOLIO 01/01</span>
+    </div>
+  </div>
+
+</body>
+</html>

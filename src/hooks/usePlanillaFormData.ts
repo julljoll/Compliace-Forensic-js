@@ -12,7 +12,8 @@ export type PlanillaId =
   | 'acta_desprecintado'
   | 'acta_sanitizacion'
   | 'acta_auditoria_timeline'
-  | 'planilla_evaluacion_ux';
+  | 'planilla_evaluacion_ux'
+  | 'informe_audio_sonic';
 
 export function usePlanillaFormData(casoId: string, _planillaId?: PlanillaId) {
   const { casos, updateCasoFormData, updateCaso } = useCMSStore();

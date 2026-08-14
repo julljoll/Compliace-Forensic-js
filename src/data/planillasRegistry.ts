@@ -516,6 +516,86 @@ export const PLANILLAS_REGISTRY: Record<string, PlanillaRegistryDef> = {
       },
     ],
   },
+  'informe-audio-sonic': {
+    id: 'informe-audio-sonic',
+    codigo: 'FO-SHA256-AUD-002',
+    nombreOficial: 'PLANILLA DE INFORME FORENSE DE AUDIO (SONIC VISUALISER)',
+    subtitulo: 'ANÁLISIS ESPECTROGRÁFICO, FORMA DE ONDA, FRECUENCIA FUNDAMENTAL (F0) Y EVALUACIÓN DAUBERT / FRE 702 / SWGDE',
+    etapaLegal: 'ETAPA 3: Análisis Técnico & Certificación Pericial',
+    normativas: ['FRE 702 / Daubert Standard', 'SWGDE Audio Guidelines', 'MUCC-2017 § 6 / COPP Art. 187', 'ISO/IEC 27037 / 27042'],
+    sections: [
+      {
+        numero: '1.0',
+        titulo: 'ENCABEZADO DEL CASO & CADENA DE CUSTODIA (SHA-256 GÉNESIS)',
+        descripcion: 'Expediente, tribunal/jurisdicción, perito líder, custodios y hash de integridad original.',
+        camposCount: 6,
+      },
+      {
+        numero: '2.0',
+        titulo: 'METADATOS TÉCNICOS Y REGISTRO DE PROCESOS EN SONIC VISUALISER',
+        descripcion: 'Parámetros FFT, forma de onda, detección de picos, análisis F0, capturas comparativas antes/después y observaciones técnicas objetivas.',
+        camposCount: 8,
+      },
+      {
+        numero: '3.0',
+        titulo: 'DICTAMEN INDIVIDUALIZADO POR AUDIO Y FUNDAMENTO METODOLÓGICO',
+        descripcion: 'Conclusión pericial individualizada (Auténtico / Sin evidencia de alteración / Inconcluso / Indicios de manipulación), SWGDE y limitaciones.',
+        camposCount: 4,
+      },
+      {
+        numero: '4.0',
+        titulo: 'IDENTIFICACIÓN TÉCNICA DEL SOFTWARE INSTRUMENTAL (SONIC VISUALISER)',
+        descripcion: 'Centre for Digital Music QMUL, licencia GPL-2.0-or-later, versión auditable y descargo legal de metodología Daubert.',
+        camposCount: 4,
+      },
+      {
+        numero: '5.0',
+        titulo: 'DECLARACIÓN JURADA DEL PERITO, TASA DE ERROR Y CIERRE DACTILOSCÓPICO',
+        descripcion: 'Declaración jurada de reproducibilidad técnica, tasa de error conocida del método, firmas bilaterales y recuadros dactilares.',
+        camposCount: 4,
+      },
+    ],
+  },
+  'informe_audio_sonic': {
+    id: 'informe-audio-sonic',
+    codigo: 'FO-SHA256-AUD-002',
+    nombreOficial: 'PLANILLA DE INFORME FORENSE DE AUDIO (SONIC VISUALISER)',
+    subtitulo: 'ANÁLISIS ESPECTROGRÁFICO, FORMA DE ONDA, FRECUENCIA FUNDAMENTAL (F0) Y EVALUACIÓN DAUBERT / FRE 702 / SWGDE',
+    etapaLegal: 'ETAPA 3: Análisis Técnico & Certificación Pericial',
+    normativas: ['FRE 702 / Daubert Standard', 'SWGDE Audio Guidelines', 'MUCC-2017 § 6 / COPP Art. 187', 'ISO/IEC 27037 / 27042'],
+    sections: [
+      {
+        numero: '1.0',
+        titulo: 'ENCABEZADO DEL CASO & CADENA DE CUSTODIA (SHA-256 GÉNESIS)',
+        descripcion: 'Expediente, tribunal/jurisdicción, perito líder, custodios y hash de integridad original.',
+        camposCount: 6,
+      },
+      {
+        numero: '2.0',
+        titulo: 'METADATOS TÉCNICOS Y REGISTRO DE PROCESOS EN SONIC VISUALISER',
+        descripcion: 'Parámetros FFT, forma de onda, detección de picos, análisis F0, capturas comparativas antes/después y observaciones técnicas objetivas.',
+        camposCount: 8,
+      },
+      {
+        numero: '3.0',
+        titulo: 'DICTAMEN INDIVIDUALIZADO POR AUDIO Y FUNDAMENTO METODOLÓGICO',
+        descripcion: 'Conclusión pericial individualizada (Auténtico / Sin evidencia de alteración / Inconcluso / Indicios de manipulación), SWGDE y limitaciones.',
+        camposCount: 4,
+      },
+      {
+        numero: '4.0',
+        titulo: 'IDENTIFICACIÓN TÉCNICA DEL SOFTWARE INSTRUMENTAL (SONIC VISUALISER)',
+        descripcion: 'Centre for Digital Music QMUL, licencia GPL-2.0-or-later, versión auditable y descargo legal de metodología Daubert.',
+        camposCount: 4,
+      },
+      {
+        numero: '5.0',
+        titulo: 'DECLARACIÓN JURADA DEL PERITO, TASA DE ERROR Y CIERRE DACTILOSCÓPICO',
+        descripcion: 'Declaración jurada de reproducibilidad técnica, tasa de error conocida del método, firmas bilaterales y recuadros dactilares.',
+        camposCount: 4,
+      },
+    ],
+  },
 };
 
 /**
@@ -525,6 +605,10 @@ export function getPlanillaRegistry(id: string): PlanillaRegistryDef {
   const normalizedId = id.toLowerCase().trim();
   if (PLANILLAS_REGISTRY[normalizedId]) {
     return PLANILLAS_REGISTRY[normalizedId];
+  }
+
+  if (normalizedId.includes('sonic') || (normalizedId.includes('audio') && normalizedId.includes('informe'))) {
+    return PLANILLAS_REGISTRY['informe-audio-sonic'];
   }
 
   if (normalizedId.includes('evaluacion') || normalizedId.includes('ux')) {

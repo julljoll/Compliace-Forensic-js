@@ -115,6 +115,15 @@ const ETAPAS_LEGALES: EtapaLegal[] = [
         isNew: true,
       },
       {
+        id: 'informe-audio-sonic',
+        paso: '3.2 (c)',
+        nombre: 'Planilla de Informe Forense de Audio (Sonic Visualiser)',
+        descripcion: 'Informe instrumental estandarizado bajo FRE 702 y Daubert Standard con análisis espectrograma FFT, waveform, frecuencia fundamental F0 y software auditable GPL-2.0.',
+        ruta: '/planillas/informe-audio-sonic',
+        normativas: ['FRE 702 / Daubert', 'SWGDE Audio Guidelines', 'Sonic Visualiser GPL', 'ISO/IEC 27037'],
+        isNew: true,
+      },
+      {
         id: 'dictamen-general',
         paso: '3.3',
         nombre: 'Dictamen Pericial Informático Forense General',
