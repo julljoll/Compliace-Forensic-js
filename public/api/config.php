@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 return [
     'db' => [
-        'host'     => getenv('DB_HOST') ?: '127.0.0.1',
-        'port'     => (int)(getenv('DB_PORT') ?: 3306),
-        'database' => getenv('DB_NAME') ?: 'sha256_forensic',
-        'username' => getenv('DB_USER') ?: 'root',
-        'password' => getenv('DB_PASS') ?: '',
+        'host'     => $_SERVER['DB_HOST'] ?? $_ENV['DB_HOST'] ?? (getenv('DB_HOST') ?: 'localhost'),
+        'port'     => (int)($_SERVER['DB_PORT'] ?? $_ENV['DB_PORT'] ?? (getenv('DB_PORT') ?: 3306)),
+        'database' => $_SERVER['DB_NAME'] ?? $_ENV['DB_NAME'] ?? (getenv('DB_NAME') ?: 'sirixutr_Forensic_cco'),
+        'username' => $_SERVER['DB_USER'] ?? $_ENV['DB_USER'] ?? (getenv('DB_USER') ?: 'sirixutr_julljoll'),
+        'password' => $_SERVER['DB_PASS'] ?? $_ENV['DB_PASS'] ?? (getenv('DB_PASS') ?: 'Karupano15*'),
         'charset'  => 'utf8mb4',
     ],
     'session' => [
