@@ -189,13 +189,13 @@ export async function exportPlanillaToHtmlEmail(caso: any, title: string = 'Plan
     </div>
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
       <tr>
-        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">⚖️ MUCC-2017 § 4</td>
+        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">MUCC-2017 § 4</td>
         <td style="width: 1%;"></td>
-        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">⚖️ ISO/IEC 27037</td>
+        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">ISO/IEC 27037</td>
         <td style="width: 1%;"></td>
-        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">⚖️ COPP Art. 187</td>
+        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">COPP Art. 187</td>
         <td style="width: 1%;"></td>
-        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">⚖️ Ley Mensajes Datos</td>
+        <td style="padding: 5px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%;">Ley Mensajes Datos</td>
       </tr>
     </table>
 

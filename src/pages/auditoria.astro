@@ -13,7 +13,7 @@ import Alert from '../components/uswds/Alert.astro';
   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
     <div>
       <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
-        🛡️ Registro de Auditoría Inmutable (Cadena SHA-256)
+        Registro de Auditoría Inmutable (Cadena SHA-256)
       </h1>
       <p style="margin: 0; color: #475569; font-size: 15px;">
         Trazabilidad criptográfica sellada en tiempo real. Cada evento contiene el hash matemático del evento inmediatamente anterior.
@@ -26,7 +26,10 @@ import Alert from '../components/uswds/Alert.astro';
         class="usa-button"
         style="background-color: #008837; color: #FFFFFF; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px; border: none; cursor: pointer;"
       >
-        <span>🛡️</span> Verificar Integridad Criptográfica
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#verified_user"></use>
+        </svg>
+        <span>Verificar Integridad Criptográfica</span>
       </button>
     </div>
   </div>
@@ -56,7 +59,7 @@ import Alert from '../components/uswds/Alert.astro';
   <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
       <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0;">
-        ⛓️ Bloques Registrados en la Cadena
+        Bloques Registrados en la Cadena
       </h2>
       <div style="font-size: 12px; color: #64748B;">
         Total bloques: <strong id="total-bloques" style="color: #112E51;">Cargando...</strong>
@@ -208,7 +211,7 @@ import Alert from '../components/uswds/Alert.astro';
           contResultado.innerHTML = `
             <div class="usa-alert usa-alert--success" role="status">
               <div class="usa-alert__body">
-                <h4 class="usa-alert__heading">✅ Cadena 100% Íntegra y Verificada</h4>
+                <h4 class="usa-alert__heading">Cadena 100% Íntegra y Verificada</h4>
                 <div class="usa-alert__text">
                   Se verificaron matemáticamente los <strong>${res.totalEntradas} bloques</strong> de la cadena.
                   Todos los enlaces SHA-256 coinciden punto a punto sin roturas de trazabilidad ni adulteraciones.
@@ -220,7 +223,7 @@ import Alert from '../components/uswds/Alert.astro';
           contResultado.innerHTML = `
             <div class="usa-alert usa-alert--error" role="alert">
               <div class="usa-alert__body">
-                <h4 class="usa-alert__heading">❌ Rotura de Integridad Detectada</h4>
+                <h4 class="usa-alert__heading">Rotura de Integridad Detectada</h4>
                 <div class="usa-alert__text">
                   ${res.error || 'Inconsistencia en el hash de un bloque previo.'}
                 </div>
@@ -235,7 +238,7 @@ import Alert from '../components/uswds/Alert.astro';
           contResultado.innerHTML = `
             <div class="usa-alert usa-alert--success" role="status">
               <div class="usa-alert__body">
-                <h4 class="usa-alert__heading">✅ Cadena 100% Íntegra (Verificación Local WebCrypto)</h4>
+                <h4 class="usa-alert__heading">Cadena 100% Íntegra (Verificación Local WebCrypto)</h4>
                 <div class="usa-alert__text">
                   Los <strong>${resLocal.total} bloques</strong> verificados en cliente concuerdan con la regla de enlace SHA-256 inmutable.
                 </div>
@@ -246,7 +249,7 @@ import Alert from '../components/uswds/Alert.astro';
           contResultado.innerHTML = `
             <div class="usa-alert usa-alert--error" role="alert">
               <div class="usa-alert__body">
-                <h4 class="usa-alert__heading">❌ Rotura de Cadena Detectada</h4>
+                <h4 class="usa-alert__heading">Rotura de Cadena Detectada</h4>
                 <div class="usa-alert__text">
                   ${resLocal.error} en el bloque #${resLocal.indiceInvalido}.
                 </div>

@@ -152,7 +152,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
       <!-- Columna 1: Planillas Obligatorias de la Fase -->
       <div>
         <h3 style="font-size: 16px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
-          <span>📜</span> Planillas Oficiales Folio (216mm × 330mm)
+          Planillas Oficiales Folio (216mm × 330mm)
         </h3>
         <p style="font-size: 13px; color: #64748B; margin: 0 0 14px 0;">
           Documentos reglamentarios que deben completarse, rubricarse e imprimirse en esta etapa:
@@ -173,7 +173,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
                   data-base-slug={pInfo.slug}
                   style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2; white-space: nowrap;"
                 >
-                  Abrir Folio ↗
+                  Abrir Folio
                 </a>
               </div>
             );
@@ -184,7 +184,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
       <!-- Columna 2: Lista de Verificación de Controles ISO -->
       <div>
         <h3 style="font-size: 16px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
-          <span>✔️</span> Controles de Cumplimiento ISO Obligatorios
+          Controles de Cumplimiento ISO Obligatorios
         </h3>
         <p style="font-size: 13px; color: #64748B; margin: 0 0 14px 0;">
           Requisitos mandantes para habilitar el sellado criptográfico SHA-256 de la fase:
@@ -217,7 +217,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
       <div style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
         <div>
           <div style="font-size: 14px; font-weight: 800; color: #112E51;">
-            🔒 Encadenamiento y Sello Criptográfico SHA-256
+            Encadenamiento y Sello Criptográfico SHA-256
           </div>
           <div style="font-size: 12px; color: #475569; margin-top: 4px;">
             Al sellar la fase, se calculará el hash canónico del estado y se encadenará al bloque previo de auditoría.
@@ -231,9 +231,12 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
           <button
             id="btn-sellar-fase"
             class="usa-button"
-            style="background-color: #008837; color: #FFFFFF; font-weight: 800; padding: 12px 24px; border-radius: 4px; border: none; cursor: pointer; font-size: 14px;"
+            style="background-color: #008837; color: #FFFFFF; font-weight: 800; padding: 12px 24px; border-radius: 4px; border: none; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;"
           >
-            🔒 Sellar Fase con Hash SHA-256
+            <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+              <use xlink:href="/assets/uswds/img/sprite.svg#lock"></use>
+            </svg>
+            <span>Sellar Fase con Hash SHA-256</span>
           </button>
         </div>
       </div>
@@ -370,9 +373,10 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
           <a
             href="/planillas/${info.slug}?casoId=${casoActual?.id}"
             class="usa-button usa-button--outline"
-            style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2; white-space: nowrap;"
+            style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;"
           >
-            Abrir Folio ↗
+            Abrir Folio
+            <svg class="usa-icon" aria-hidden="true" focusable="false" role="img" style="width: 14px; height: 14px;"><use xlink:href="/assets/uswds/img/sprite.svg#launch"></use></svg>
           </a>
         `;
         listaPlanillas.appendChild(row);
@@ -420,7 +424,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
     if (ordenSeleccionado < ordenActual) {
       // Fase ya completada
       if (btnSellar) {
-        btnSellar.textContent = '✓ Fase Completada y Sellada';
+        btnSellar.textContent = 'Fase Completada y Sellada';
         btnSellar.disabled = true;
         btnSellar.style.backgroundColor = '#64748B';
       }
@@ -429,7 +433,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
     } else if (ordenSeleccionado === ordenActual) {
       // Fase activa actual
       if (btnSellar) {
-        btnSellar.textContent = '🔒 Sellar Fase con Hash SHA-256';
+        btnSellar.textContent = 'Sellar Fase con Hash SHA-256';
         btnSellar.disabled = false;
         btnSellar.style.backgroundColor = '#008837';
       }
@@ -437,7 +441,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
     } else {
       // Fase futura (bloqueada)
       if (btnSellar) {
-        btnSellar.textContent = '🔒 Bloqueada (Complete fases previas)';
+        btnSellar.textContent = 'Bloqueada (Complete fases previas)';
         btnSellar.disabled = true;
         btnSellar.style.backgroundColor = '#94A3B8';
       }

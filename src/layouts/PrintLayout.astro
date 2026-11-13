@@ -93,7 +93,9 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
     <!-- Barra de Control de Impresión (se oculta automáticamente al imprimir) -->
     <div class="no-print-bar">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 15px;">⚖️</span>
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 18px; height: 18px; fill: #D9A700;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#verified_user"></use>
+        </svg>
         <div>
           <strong style="color: #F8FAFC; font-size: 13px;">FORMATO FOLIO JUDICIAL:</strong>
           <span style="color: #94A3B8; font-size: 12px; margin-left: 4px;">216mm × 330mm (Oficio)</span>
@@ -108,7 +110,7 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
           id="btn-modo-blanco"
           title="Muestra el formulario completamente en blanco con líneas para llenado manual"
         >
-          📄 Plantilla en Blanco (Manual)
+          Plantilla en Blanco (Manual)
         </button>
         <button
           type="button"
@@ -116,7 +118,7 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
           id="btn-modo-datos"
           title="Rellena los campos con los datos del expediente seleccionado"
         >
-          📝 Con Datos de Caso
+          Con Datos de Caso
         </button>
       </div>
 
@@ -126,7 +128,7 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
           onclick="window.location.href='/planillas'"
           style="background: transparent; border: 1px solid #475569; color: #CBD5E1; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;"
         >
-          ✕ Catálogo
+          Catálogo
         </button>
         <button
           type="button"
@@ -134,7 +136,9 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
           style="background: #112E51; border: 1px solid #334155; color: #FFFFFF; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;"
           title="Descargar esta planilla oficial en formato editable Microsoft Word (.docx)"
         >
-          <span>📘</span>
+          <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+            <use xlink:href="/assets/uswds/img/sprite.svg#file_download"></use>
+          </svg>
           <span id="txt-btn-word">Word (.docx)</span>
         </button>
         <button
@@ -143,7 +147,9 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
           onclick="window.print()"
           style="background: #005EA2; border: 1px solid #005EA2; color: #FFFFFF; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;"
         >
-          <span>🖨️</span>
+          <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+            <use xlink:href="/assets/uswds/img/sprite.svg#print"></use>
+          </svg>
           <span>Imprimir / PDF</span>
         </button>
       </div>

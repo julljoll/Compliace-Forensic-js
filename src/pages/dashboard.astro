@@ -26,14 +26,20 @@ import { MOCK_CASOS } from '../lib/data/seed';
         class="usa-button"
         style="background-color: #005EA2; color: #FFFFFF; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px;"
       >
-        <span>➕</span> Aperturar Nuevo Expediente
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#add"></use>
+        </svg>
+        <span>Aperturar Nuevo Expediente</span>
       </a>
       <a
         href="/auditoria"
         class="usa-button usa-button--outline"
-        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; padding: 10px 16px; border-radius: 4px;"
+        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 4px;"
       >
-        🛡️ Verificar Cadena
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #112E51;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#verified_user"></use>
+        </svg>
+        <span>Verificar Cadena</span>
       </a>
     </div>
   </div>
@@ -124,7 +130,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
   <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
       <h2 style="font-size: 20px; font-weight: 800; color: #112E51; margin: 0;">
-        📁 Expedientes Periciales en Curso
+        Expedientes Periciales en Curso
       </h2>
       <a href="/casos" style="font-size: 13px; font-weight: 700; color: #005EA2; text-decoration: underline;">
         Ver todos los casos →
@@ -182,7 +188,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
                     class="usa-button usa-button--outline"
                     style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2;"
                   >
-                    🔒 Ciclo ISO
+                    Ciclo ISO
                   </a>
                   <a
                     href={`/planillas/planilla-prcc?casoId=${c.id}`}
@@ -190,7 +196,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
                     style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
                     title="Planilla de Registro de Cadena de Custodia"
                   >
-                    📜 PRCC
+                    PRCC
                   </a>
                 </div>
               </td>
@@ -206,7 +212,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <!-- Caja 1: Planillas Oficiales en Folio -->
     <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px;">
       <h3 style="font-size: 17px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
-        <span>📜</span> Planillas Oficiales en Folio (216mm × 330mm)
+        Planillas Oficiales en Folio (216mm × 330mm)
       </h3>
       <p style="font-size: 13px; color: #475569; margin: 0 0 14px 0;">
         Formatos reglamentarios con membrete oficial, dactiloscopía bilateral y márgenes de impresión exactos:
@@ -229,7 +235,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <!-- Caja 2: Garantías de Admisibilidad Probatoria -->
     <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px;">
       <h3 style="font-size: 17px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
-        <span>⚖️</span> Admisibilidad y Blindaje Procesal
+        Admisibilidad y Blindaje Procesal
       </h3>
       <p style="font-size: 13px; color: #475569; margin: 0 0 14px 0;">
         Garantías procesales activas para evitar la nulidad conforme al Art. 187 del COPP:

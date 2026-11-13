@@ -294,7 +294,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         {/* ¿QUÉ ES EL CÓDEC OPUS? */}
         <Text style={pdfStyles.sectionTitle}>3.1 DECODIFICACIÓN PEDAGÓGICA DEL CÓDEC OPUS (48 kHz)</Text>
         <View style={uxStyles.whatIsBox}>
-          <Text style={uxStyles.whatIsTitle}>🔵 ¿QUÉ ES EL CÓDEC OPUS Y POR QUÉ ES IMPORTANTE?</Text>
+          <Text style={uxStyles.whatIsTitle}>¿QUÉ ES EL CÓDEC OPUS Y POR QUÉ ES IMPORTANTE?</Text>
           <Text style={uxStyles.whatIsText}>
             WhatsApp graba las notas de voz usando un compresor de audio llamado <Text style={{ fontFamily: 'Helvetica-Bold' }}>Opus</Text> (RFC 6716). Este compresor divide la voz en paquetes de <Text style={{ fontFamily: 'Helvetica-Bold' }}>20 milisegundos</Text> cada uno, muestreados a <Text style={{ fontFamily: 'Helvetica-Bold' }}>48.000 veces por segundo</Text>. Si alguien pegó o empalmó un fragmento de otro audio, los paquetes presentan saltos o discontinuidades detectables. Verificar que todos los paquetes son homogéneos y consecutivos descarta manipulación.
           </Text>
@@ -302,7 +302,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
 
         {/* Proceso */}
         <View style={uxStyles.processBox}>
-          <Text style={uxStyles.processTitle}>⚙️ PROCESO APLICADO — Decodificación y verificación de tramas Opus:</Text>
+          <Text style={uxStyles.processTitle}>PROCESO APLICADO — Decodificación y verificación de tramas Opus:</Text>
           <Text style={{ fontSize: 6.3, color: '#1E293B', lineHeight: 1.3 }}>
             Se extrajo el archivo .opus de la base de datos WhatsApp (msgstore.db) mediante IPED Forensics v4.1 y se decodificó con PyOgg Engine v0.10.11. Se inspeccionaron los límites de trama, la tasa de bits variable (VBR) y los timestamps del contenedor Ogg para detectar empalmes.
           </Text>
@@ -334,7 +334,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
 
         {/* Resultado */}
         <View style={uxStyles.resultBox}>
-          <Text style={uxStyles.resultTitle}>✅ RESULTADO DEL PASO 1 — DECODIFICACIÓN OPUS:</Text>
+          <Text style={uxStyles.resultTitle}>RESULTADO DEL PASO 1 — DECODIFICACIÓN OPUS:</Text>
           <Text style={uxStyles.resultText}>
             {isBlank ? '' : 'El archivo Ogg/Opus presenta tramas homogéneas de 20 ms sin saltos de timestamp ni discontinuidades de cuantización. La tasa de bits variable (VBR) es consistente con una grabación directa WhatsApp. NO SE DETECTAN EMPALMES (ANTI-SPLICING VERIFICADO).'}
           </Text>
@@ -379,14 +379,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>4.0 ESPECTROGRAMA FFT — MAPA DE FRECUENCIAS (SONIC VISUALISER)</Text>
 
         <View style={uxStyles.whatIsBox}>
-          <Text style={uxStyles.whatIsTitle}>🔵 ¿QUÉ ES UN ESPECTROGRAMA Y QUÉ REVELA?</Text>
+          <Text style={uxStyles.whatIsTitle}>¿QUÉ ES UN ESPECTROGRAMA Y QUÉ REVELA?</Text>
           <Text style={uxStyles.whatIsText}>
             Un espectrograma es un "mapa de calor del sonido": muestra <Text style={{ fontFamily: 'Helvetica-Bold' }}>qué frecuencias</Text> (graves a agudos) están presentes en <Text style={{ fontFamily: 'Helvetica-Bold' }}>cada instante de tiempo</Text>, y con <Text style={{ fontFamily: 'Helvetica-Bold' }}>cuánta energía</Text> (intensidad en decibelios). Si alguien cortó o pegó un fragmento de audio, aparece una línea vertical abrupta o una franja de silencio anómala que rompe la continuidad natural del patrón vocal.
           </Text>
         </View>
 
         <View style={uxStyles.processBox}>
-          <Text style={uxStyles.processTitle}>⚙️ PROCESO — Espectrograma FFT en Sonic Visualiser v5.x:</Text>
+          <Text style={uxStyles.processTitle}>PROCESO — Espectrograma FFT en Sonic Visualiser v5.x:</Text>
           <Text style={{ fontSize: 6.3, color: '#1E293B', lineHeight: 1.3 }}>
             Se cargó la copia forense del archivo .opus en Sonic Visualiser (Queen Mary University of London, GPL-2.0). Se aplicó la Transformada Rápida de Fourier (FFT) con ventana Hann de 2048 bins, 75% de solapamiento y escala logarítmica en dB. El rango frecuencial analizado abarca de 0 a 24.000 Hz (límite de Nyquist a 48 kHz).
           </Text>
@@ -398,7 +398,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         </View>
 
         <View style={uxStyles.resultBox}>
-          <Text style={uxStyles.resultTitle}>✅ RESULTADO DEL PASO 2 — ESPECTROGRAMA:</Text>
+          <Text style={uxStyles.resultTitle}>RESULTADO DEL PASO 2 — ESPECTROGRAMA:</Text>
           <Text style={uxStyles.resultText}>
             {isBlank ? '' : 'La densidad espectral de potencia presenta continuidad armónica ininterrumpida en toda la línea temporal. No existen discontinuidades verticales (cortes), franjas de silenciamiento anómalo ni atenuaciones abruptas de banda. La energía se concentra en el rango vocal humano (300–3.400 Hz) con atenuación natural por encima de 8 kHz. CONCLUSIÓN: Espectro íntegro y auténtico.'}
           </Text>
@@ -441,14 +441,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>5.0 FORMA DE ONDA Y FORMANTES VOCALES F1/F2/F3 (SONIC VISUALISER)</Text>
 
         <View style={uxStyles.whatIsBox}>
-          <Text style={uxStyles.whatIsTitle}>🔵 ¿QUÉ SON LA FORMA DE ONDA Y LOS FORMANTES DE VOZ?</Text>
+          <Text style={uxStyles.whatIsTitle}>¿QUÉ SON LA FORMA DE ONDA Y LOS FORMANTES DE VOZ?</Text>
           <Text style={uxStyles.whatIsText}>
             La <Text style={{ fontFamily: 'Helvetica-Bold' }}>forma de onda</Text> es el dibujo de la vibración del sonido en el tiempo: muestra la amplitud (volumen) segundo a segundo. Los <Text style={{ fontFamily: 'Helvetica-Bold' }}>formantes</Text> son las frecuencias de resonancia del tracto vocal humano (garganta, boca, nariz). Cada persona tiene formantes únicos, como una "huella vocal". Verificar que los formantes son estables y naturales confirma que quien habla es un ser humano real y no una voz sintética.
           </Text>
         </View>
 
         <View style={uxStyles.processBox}>
-          <Text style={uxStyles.processTitle}>⚙️ PROCESO — Waveform y extracción de Formantes en Sonic Visualiser:</Text>
+          <Text style={uxStyles.processTitle}>PROCESO — Waveform y extracción de Formantes en Sonic Visualiser:</Text>
           <Text style={{ fontSize: 6.3, color: '#1E293B', lineHeight: 1.3 }}>
             Se renderizó la forma de onda en modo Peak + RMS overlay con resolución de 10 ms/div y normalización -1.0 a +1.0 V. Simultáneamente se aplicó el plugin de análisis de formantes para localizar las tres primeras resonancias vocales (F1, F2, F3) a lo largo de toda la duración del audio.
           </Text>
@@ -460,7 +460,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         </View>
 
         <View style={uxStyles.resultBox}>
-          <Text style={uxStyles.resultTitle}>✅ RESULTADO DEL PASO 3 — WAVEFORM Y FORMANTES:</Text>
+          <Text style={uxStyles.resultTitle}>RESULTADO DEL PASO 3 — WAVEFORM Y FORMANTES:</Text>
           <Text style={uxStyles.resultText}>
             {isBlank ? '' : 'La envolvente acústica muestra decaimiento exponencial natural conforme a reverberación física. No se observan silencios artificiales de amplitud 0.0V ni anomalías de cruce por cero. Los formantes F1 (620 Hz), F2 (1.850 Hz) y F3 (2.740 Hz) son fisiológicamente naturales y estables. CONCLUSIÓN: Voz emitida por tracto vocal humano auténtico.'}
           </Text>
@@ -504,14 +504,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>6.0 PITCH FUNDAMENTAL (F₀) — DETECCIÓN ANTI-DEEPFAKE (ALGORITMO YIN)</Text>
 
         <View style={uxStyles.whatIsBox}>
-          <Text style={uxStyles.whatIsTitle}>🔵 ¿QUÉ ES EL PITCH (F₀) Y POR QUÉ DESCARTA DEEPFAKES?</Text>
+          <Text style={uxStyles.whatIsTitle}>¿QUÉ ES EL PITCH (F₀) Y POR QUÉ DESCARTA DEEPFAKES?</Text>
           <Text style={uxStyles.whatIsText}>
             El <Text style={{ fontFamily: 'Helvetica-Bold' }}>Pitch</Text> (o frecuencia fundamental F₀) es el "tono base" de la voz, determinado por la velocidad de vibración de las cuerdas vocales. En una persona real, el pitch varía constantemente con <Text style={{ fontFamily: 'Helvetica-Bold' }}>micro-inflexiones biológicas</Text> (jitter, shimmer, vibrato laríngeo). Las voces generadas por <Text style={{ fontFamily: 'Helvetica-Bold' }}>Inteligencia Artificial (Deepfake / TTS)</Text> presentan trayectorias planas con saltos abruptos no biológicos. Si la curva de Pitch es fluida y continua, la voz es humana auténtica.
           </Text>
         </View>
 
         <View style={uxStyles.processBox}>
-          <Text style={uxStyles.processTitle}>⚙️ PROCESO — Pitch Tracking con Algoritmo Yin en Sonic Visualiser:</Text>
+          <Text style={uxStyles.processTitle}>PROCESO — Pitch Tracking con Algoritmo Yin en Sonic Visualiser:</Text>
           <Text style={{ fontSize: 6.3, color: '#1E293B', lineHeight: 1.3 }}>
             Se aplicó el algoritmo Yin (de Cheveigné & Kawahara, 2002) mediante el Vamp Plugin de Sonic Visualiser en el rango de 80 a 400 Hz. El resultado se contrastó con el patrón típico de un sintetizador TTS/Deepfake (línea de referencia roja punteada en la figura) para hacer evidente la diferencia al observador.
           </Text>
@@ -523,7 +523,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         </View>
 
         <View style={uxStyles.resultBox}>
-          <Text style={uxStyles.resultTitle}>✅ RESULTADO DEL PASO 4 — PITCH F₀ ANTI-DEEPFAKE:</Text>
+          <Text style={uxStyles.resultTitle}>RESULTADO DEL PASO 4 — PITCH F₀ ANTI-DEEPFAKE:</Text>
           <Text style={uxStyles.resultText}>
             {isBlank ? '' : 'La trayectoria de Pitch F₀ (línea verde) exhibe micro-modulaciones biológicas continuas características de las cuerdas vocales humanas: jitter del 0.8%, shimmer del 1.2% y relación armónico-ruido (HNR) de 22.4 dB. La curva se mantiene dentro de la banda de voz humana adulta (85–255 Hz). No presenta los saltos abruptos ni la planitud típica de sintetizadores TTS o clonaciones Deepfake por IA. CONCLUSIÓN: VOZ HUMANA NATURAL CONFIRMADA — DESCARTADO DEEPFAKE.'}
           </Text>
@@ -568,14 +568,14 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         <Text style={pdfStyles.sectionTitle}>7.0 RELACIÓN SEÑAL-RUIDO (SNR) Y PISO DE RUIDO AMBIENTAL</Text>
 
         <View style={uxStyles.whatIsBox}>
-          <Text style={uxStyles.whatIsTitle}>🔵 ¿QUÉ ES LA RELACIÓN SEÑAL-RUIDO (SNR)?</Text>
+          <Text style={uxStyles.whatIsTitle}>¿QUÉ ES LA RELACIÓN SEÑAL-RUIDO (SNR)?</Text>
           <Text style={uxStyles.whatIsText}>
             La <Text style={{ fontFamily: 'Helvetica-Bold' }}>SNR</Text> mide cuántas veces más fuerte es la voz del hablante respecto al ruido de fondo (aire acondicionado, tráfico, etc.). Se expresa en <Text style={{ fontFamily: 'Helvetica-Bold' }}>decibelios (dB)</Text>: a mayor número, más limpia la grabación. Si el "piso de ruido" cambia bruscamente entre segmentos, significa que se mezclaron fragmentos grabados en distintos lugares o momentos. Un piso estable certifica una grabación continua en el mismo entorno.
           </Text>
         </View>
 
         <View style={uxStyles.processBox}>
-          <Text style={uxStyles.processTitle}>⚙️ PROCESO — Medición de SNR por segmentos temporales:</Text>
+          <Text style={uxStyles.processTitle}>PROCESO — Medición de SNR por segmentos temporales:</Text>
           <Text style={{ fontSize: 6.3, color: '#1E293B', lineHeight: 1.3 }}>
             Se segmentó el audio en bloques de 4 segundos y se midió la relación señal-ruido (SNR) en cada segmento. Adicionalmente se analizó el piso de ruido en las pausas vocales (silencios) para verificar su homogeneidad espectral.
           </Text>
@@ -587,7 +587,7 @@ export const DictamenAudiosPdf: React.FC<Props> = ({ caso, isBlankMode = false }
         </View>
 
         <View style={uxStyles.resultBox}>
-          <Text style={uxStyles.resultTitle}>✅ RESULTADO DEL PASO 5 — SNR Y PISO DE RUIDO:</Text>
+          <Text style={uxStyles.resultTitle}>RESULTADO DEL PASO 5 — SNR Y PISO DE RUIDO:</Text>
           <Text style={uxStyles.resultText}>
             {isBlank ? '' : 'El SNR promedio es de 44.2 dB con desviación máxima de ±0.4 dB entre segmentos. El piso de ruido en las pausas vocales es estacionario (-58 a -60 dBFS), confirmando que la grabación se realizó en un solo entorno acústico sin edición de silencios ni ensamblaje de fragmentos. CONCLUSIÓN: Grabación en toma única confirmada.'}
           </Text>

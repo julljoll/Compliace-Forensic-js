@@ -352,7 +352,7 @@ export const PlanillaAudioSonicPdf: React.FC<Props> = ({ caso, isBlankMode = fal
 
           <View style={customStyles.daubertDisclaimer}>
             <Text style={[customStyles.daubertDisclaimerText, { fontFamily: 'Helvetica-Bold', marginBottom: 1 }]}>
-              ⚖️ NOTA METODOLÓGICA Y DESCARGO DE RESPONSABILIDAD DAUBERT / FRE 702:
+              NOTA METODOLÓGICA Y DESCARGO DE RESPONSABILIDAD DAUBERT / FRE 702:
             </Text>
             <Text style={customStyles.daubertDisclaimerText}>
               Sonic Visualiser es una herramienta instrumental de análisis y visualización de espectrogramas y formas de onda utilizada como apoyo técnico de laboratorio. La validez probatoria del presente informe emana de la metodología científica aplicada por el perito, sustentada en principios de acústica forense, revisión por pares y plena sujeción al estándar Daubert v. Merrell Dow Pharmaceuticals (1993) y FRE 702, y no de una supuesta certificación judicial previa del software por tribunal alguno.

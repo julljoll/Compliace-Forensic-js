@@ -3,6 +3,8 @@
  * SHA256.US — Layout Principal con USWDS (@uswds/uswds)
  * Incluye .usa-banner, .usa-header, .usa-sidenav y tokens de diseño DC3 Cyber Forensics.
  */
+import Icon from '../components/uswds/Icon.astro';
+
 interface Props {
   title?: string;
   activeNav?: string;
@@ -11,14 +13,14 @@ interface Props {
 const { title = 'Forensic Chief Compliance Officer — SHA256.US', activeNav = '' } = Astro.props;
 
 const navItems = [
-  { href: '/dashboard', label: '📊 Panel General', key: 'dashboard' },
-  { href: '/casos', label: '📁 Expedientes Periciales', key: 'casos' },
-  { href: '/flujo', label: '🔒 Ciclo Pericial ISO', key: 'flujo' },
-  { href: '/custodia', label: '⛓️ Cadena de Custodia (PRCC)', key: 'custodia' },
-  { href: '/planillas', label: '📜 Planillas Oficiales (Folio)', key: 'planillas' },
-  { href: '/normativa', label: '📚 Base Normativa RAG', key: 'normativa' },
-  { href: '/auditoria', label: '🛡️ Auditoría Inmutable (SHA-256)', key: 'auditoria' },
-  { href: '/exportar', label: '📦 Exportación de Caso', key: 'exportar' },
+  { href: '/dashboard', label: 'Panel General', key: 'dashboard', icon: 'assessment' },
+  { href: '/casos', label: 'Expedientes Periciales', key: 'casos', icon: 'folder' },
+  { href: '/flujo', label: 'Ciclo Pericial ISO', key: 'flujo', icon: 'security' },
+  { href: '/custodia', label: 'Cadena de Custodia (PRCC)', key: 'custodia', icon: 'link' },
+  { href: '/planillas', label: 'Planillas Oficiales (Folio)', key: 'planillas', icon: 'file_present' },
+  { href: '/normativa', label: 'Base Normativa RAG', key: 'normativa', icon: 'local_library' },
+  { href: '/auditoria', label: 'Auditoría Inmutable (SHA-256)', key: 'auditoria', icon: 'verified_user' },
+  { href: '/exportar', label: 'Exportación de Caso', key: 'exportar', icon: 'save_alt' },
 ];
 ---
 
@@ -132,9 +134,10 @@ const navItems = [
                 <a
                   href={item.href}
                   class={activeNav === item.key ? 'usa-current' : ''}
-                  style={activeNav === item.key ? 'border-left: 4px solid #005EA2; background-color: #E7F6F8; color: #005EA2; font-weight: 700;' : ''}
+                  style={activeNav === item.key ? 'border-left: 4px solid #005EA2; background-color: #E7F6F8; color: #005EA2; font-weight: 700; display: flex; align-items: center; gap: 8px;' : 'display: flex; align-items: center; gap: 8px;'}
                 >
-                  {item.label}
+                  <Icon name={item.icon} style="width: 18px; height: 18px; flex-shrink: 0;" />
+                  <span>{item.label}</span>
                 </a>
               </li>
             ))}

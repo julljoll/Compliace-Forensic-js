@@ -14,7 +14,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
     <div>
       <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
-        📦 Exportación y Empaquetado Oficial del Expediente
+        Exportación y Empaquetado Oficial del Expediente
       </h1>
       <p style="margin: 0; color: #475569; font-size: 15px;">
         Generación de entregables judiciales en formato comprimido (.ZIP) con sellos de verificación criptográfica.
@@ -63,7 +63,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
   <!-- Contenedor de Selección de Documentos para el Paquete -->
   <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
     <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0 0 16px 0;">
-      📋 Seleccione los Documentos y Entregables a Incluir
+      Seleccione los Documentos y Entregables a Incluir
     </h2>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 24px;">
@@ -139,7 +139,8 @@ import { MOCK_CASOS } from '../lib/data/seed';
         class="usa-button"
         style="background-color: #005EA2; color: #FFFFFF; font-weight: 800; font-size: 15px; padding: 12px 28px; border-radius: 4px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;"
       >
-        <span>📦</span> Generar y Descargar Paquete ZIP Forense
+        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img"><use xlink:href="/assets/uswds/img/sprite.svg#file_download"></use></svg>
+        <span>Generar y Descargar Paquete ZIP Forense</span>
       </button>
     </div>
   </div>
@@ -208,7 +209,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
 
       const btn = btnZip as HTMLButtonElement;
       btn.disabled = true;
-      btn.textContent = '⏳ Empaquetando y Calculando Hashes...';
+      btn.textContent = 'Empaquetando y Calculando Hashes...';
 
       try {
         const zip = new JSZip();
@@ -222,7 +223,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
         // 2. Reporte de Manifiesto Criptográfico
         const reporteManifest = [
           '========================================================================',
-          '               🏛️ SHA256.US — REPORTE DE INTEGRIDAD CRIPTOGRÁFICA 🏛️',
+          '               SHA256.US — REPORTE DE INTEGRIDAD CRIPTOGRÁFICA',
           '========================================================================',
           `N° EXPEDIENTE: ${casoSeleccionado.numeroCaso}`,
           `EXPEDIENTE JUDICIAL: ${casoSeleccionado.expediente}`,
@@ -274,7 +275,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
         alert('Error al generar el archivo comprimido.');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<span>📦</span> Generar y Descargar Paquete ZIP Forense';
+        btn.innerHTML = '<svg class="usa-icon" aria-hidden="true" focusable="false" role="img"><use xlink:href="/assets/uswds/img/sprite.svg#file_download"></use></svg> <span>Generar y Descargar Paquete ZIP Forense</span>';
       }
     });
   }

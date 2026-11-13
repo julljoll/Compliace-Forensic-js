@@ -1,0 +1,37 @@
+---
+/**
+ * SHA256.US — USWDS Official Icon Component (@uswds/uswds)
+ * Renderiza íconos oficiales SVG desde el sprite canónico de USWDS:
+ * /assets/uswds/img/sprite.svg#<name>
+ * Totalmente conforme con el estándar gubernamental DC3 Cyber Forensics.
+ */
+interface Props {
+  name: string;
+  size?: '3' | '4' | '5' | '6' | '7' | '8' | '9';
+  className?: string;
+  style?: string;
+  ariaLabel?: string;
+  ariaHidden?: boolean;
+}
+
+const {
+  name,
+  size,
+  className = '',
+  style = '',
+  ariaLabel,
+  ariaHidden = true,
+} = Astro.props;
+
+const sizeClass = size ? `usa-icon--size-${size}` : '';
+---
+
+<svg
+  class={`usa-icon ${sizeClass} ${className}`.trim()}
+  aria-hidden={ariaHidden ? 'true' : 'false'}
+  aria-label={ariaLabel}
+  role="img"
+  style={style}
+>
+  <use xlink:href={`/assets/uswds/img/sprite.svg#${name}`}></use>
+</svg>

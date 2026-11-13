@@ -311,7 +311,7 @@ export const PlanillaCoverPagePdf: React.FC<PlanillaCoverPagePdfProps> = ({
       <View style={styles.normativasContainer}>
         {registry.normativas.map((norm, i) => (
           <View key={i} style={styles.normChip}>
-            <Text style={styles.normChipText}>⚖️ {norm}</Text>
+            <Text style={styles.normChipText}>{norm}</Text>
           </View>
         ))}
       </View>

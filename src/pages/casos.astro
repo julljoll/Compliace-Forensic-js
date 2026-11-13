@@ -24,7 +24,10 @@ import { MOCK_CASOS } from '../lib/data/seed';
       class="usa-button"
       style="background-color: #005EA2; color: #FFFFFF; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px; border: none; cursor: pointer;"
     >
-      <span>➕</span> Aperturar Nuevo Expediente
+      <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #FFFFFF;">
+        <use xlink:href="/assets/uswds/img/sprite.svg#add"></use>
+      </svg>
+      <span>Aperturar Nuevo Expediente</span>
     </button>
   </div>
 
@@ -120,7 +123,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
                     style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; background-color: #005EA2; color: #FFF;"
                     title="Gestionar Fases ISO y Sellos SHA-256"
                   >
-                    🔒 Fases ISO
+                    Fases ISO
                   </a>
                   <a
                     href={`/planillas/planilla-prcc?casoId=${c.id}`}
@@ -128,15 +131,17 @@ import { MOCK_CASOS } from '../lib/data/seed';
                     style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
                     title="Planilla de Registro de Cadena de Custodia"
                   >
-                    ⛓️ PRCC
+                    PRCC
                   </a>
                   <a
                     href={`/planillas?casoId=${c.id}`}
                     class="usa-button usa-button--outline"
-                    style="padding: 4px 8px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #CBD5E1; color: #475569;"
+                    style="padding: 4px 8px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #CBD5E1; color: #475569; display: inline-flex; align-items: center;"
                     title="Ver Planillas en Folio"
                   >
-                    📜
+                    <svg class="usa-icon" aria-hidden="true" role="img" style="width: 14px; height: 14px; fill: #475569;">
+                      <use xlink:href="/assets/uswds/img/sprite.svg#file_present"></use>
+                    </svg>
                   </a>
                 </div>
               </td>
@@ -155,14 +160,15 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <div style="background: #FFFFFF; max-width: 800px; margin: 0 auto; border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-top: 6px solid #005EA2; overflow: hidden;">
       <div style="padding: 20px 24px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
         <h2 style="font-size: 20px; font-weight: 800; color: #112E51; margin: 0;">
-          🏛️ Apertura Oficial de Expediente Forense
+          Apertura Oficial de Expediente Forense
         </h2>
         <button
           id="btn-cerrar-modal"
           type="button"
-          style="background: none; border: none; font-size: 22px; cursor: pointer; color: #64748B;"
+          aria-label="Cerrar modal"
+          style="background: none; border: none; cursor: pointer; color: #64748B; display: inline-flex; align-items: center; justify-content: center; padding: 4px;"
         >
-          ✕
+          <svg class="usa-icon" aria-hidden="true" focusable="false" role="img" style="width: 20px; height: 20px;"><use xlink:href="/assets/uswds/img/sprite.svg#close"></use></svg>
         </button>
       </div>
 
@@ -304,7 +310,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
             class="usa-button"
             style="background-color: #005EA2; color: #FFFFFF; font-weight: 700;"
           >
-            🏛️ Registrar Expediente e Iniciar F0
+            Registrar Expediente e Iniciar F0
           </button>
         </div>
       </form>

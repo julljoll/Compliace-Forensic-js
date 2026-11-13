@@ -52,7 +52,7 @@ const BlankFigureBlock: React.FC<{ width: number; height: number; label: string 
         {label}
       </Text>
       <Text style={{ fontSize: 7, color: '#1E293B', fontFamily: 'Helvetica-Bold', textAlign: 'center', marginTop: 1 }}>
-        📐 TAMAÑO EXACTO PARA IMPRESIÓN Y PEGA MANUAL:
+        TAMAÑO EXACTO PARA IMPRESIÓN Y PEGA MANUAL:
       </Text>
       <Text style={{ fontSize: 8.5, color: '#006600', fontFamily: 'Helvetica-Bold', textAlign: 'center', marginTop: 2 }}>
         {widthCm} cm × {heightCm} cm  ({widthMm} mm × {heightMm} mm)

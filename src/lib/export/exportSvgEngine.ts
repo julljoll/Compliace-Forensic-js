@@ -166,10 +166,10 @@ export async function exportPlanillaToSvgZip(options: SvgExportOptions) {
         MARCO NORMATIVO APLICABLE:
       </div>
       <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">⚖️ MUCC-2017 § 4</span>
-        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">⚖️ ISO/IEC 27037:2012</span>
-        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">⚖️ COPP Art. 187</span>
-        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">⚖️ Ley de Mensajes de Datos</span>
+        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">MUCC-2017 § 4</span>
+        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">ISO/IEC 27037:2012</span>
+        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">COPP Art. 187</span>
+        <span style="background-color: #F1F5F9; border: 1px solid #CBD5E1; padding: 4px 8px; border-radius: 4px; font-size: 7.5pt; font-weight: bold;">Ley de Mensajes de Datos</span>
       </div>
 
       <footer role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="position: absolute; bottom: 25px; left: 25px; right: 25px; border-top: 1px solid #CBD5E1; padding-top: 6px; text-align: center;">

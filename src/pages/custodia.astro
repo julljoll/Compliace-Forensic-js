@@ -28,15 +28,21 @@ import { MOCK_CASOS } from '../lib/data/seed';
         class="usa-button"
         style="background-color: #D9A700; color: #112E51; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px;"
       >
-        <span>📜</span> Generar Planilla PRCC (Folio)
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #112E51;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#file_present"></use>
+        </svg>
+        <span>Generar Planilla PRCC (Folio)</span>
       </a>
       <a
         id="btn-ver-desprecintado"
         href={`/planillas/acta-desprecintado?casoId=${MOCK_CASOS[0].id}`}
         class="usa-button usa-button--outline"
-        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; padding: 10px 16px; border-radius: 4px;"
+        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 4px;"
       >
-        🔓 Acta de Desprecintado
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 16px; height: 16px; fill: #112E51;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#lock_open"></use>
+        </svg>
+        <span>Acta de Desprecintado</span>
       </a>
     </div>
   </div>
@@ -127,14 +133,17 @@ import { MOCK_CASOS } from '../lib/data/seed';
   <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
       <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0;">
-        ⛓️ Historial de Transferencias y Traspasos de Custodia
+        Historial de Transferencias y Traspasos de Custodia
       </h2>
       <button
         id="btn-nueva-transferencia"
         class="usa-button usa-button--outline"
-        style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-color: #005EA2; color: #005EA2;"
+        style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-color: #005EA2; color: #005EA2; display: inline-flex; align-items: center; gap: 6px;"
       >
-        ➕ Registrar Traspaso Formal
+        <svg class="usa-icon" aria-hidden="true" role="img" style="width: 14px; height: 14px; fill: #005EA2;">
+          <use xlink:href="/assets/uswds/img/sprite.svg#add"></use>
+        </svg>
+        <span>Registrar Traspaso Formal</span>
       </button>
     </div>
 
