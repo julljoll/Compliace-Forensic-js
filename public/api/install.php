@@ -91,41 +91,45 @@ try {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
     // 4. Tabla de Auditoría Inmutable
+    $pdo->exec("DROP TABLE IF EXISTS `auditoria`");
     $pdo->exec("CREATE TABLE IF NOT EXISTS `auditoria` (
-      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      `seq` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
       `caso_id` VARCHAR(64) DEFAULT NULL,
-      `perito_email` VARCHAR(191) NOT NULL,
+      `usuario` VARCHAR(150) NOT NULL,
       `accion` VARCHAR(100) NOT NULL,
-      `detalles_json` LONGTEXT NOT NULL,
-      `hash_anterior` CHAR(64) DEFAULT NULL,
+      `detalle` TEXT NOT NULL,
+      `nivel` ENUM('info', 'warning', 'error', 'success') NOT NULL DEFAULT 'info',
+      `ts_utc` VARCHAR(35) NOT NULL,
+      `hash_anterior` CHAR(64) NOT NULL,
       `hash_actual` CHAR(64) NOT NULL,
-      `timestamp_iso` VARCHAR(32) NOT NULL,
       `creado_en` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (`id`),
+      PRIMARY KEY (`seq`),
       KEY `idx_auditoria_caso` (`caso_id`),
-      KEY `idx_auditoria_perito` (`perito_email`),
-      KEY `idx_auditoria_hash` (`hash_actual`),
-      CONSTRAINT `fk_auditoria_caso_id` FOREIGN KEY (`caso_id`) REFERENCES `casos` (`id`) ON DELETE SET NULL
+      KEY `idx_auditoria_hash` (`hash_actual`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-    // 5. Tabla de Evidencias
+    // 5. Tabla de Evidencias Digitales
+    $pdo->exec("DROP TABLE IF EXISTS `evidencias`");
     $pdo->exec("CREATE TABLE IF NOT EXISTS `evidencias` (
       `id` VARCHAR(64) NOT NULL,
       `caso_id` VARCHAR(64) NOT NULL,
-      `fase_iso` VARCHAR(8) NOT NULL DEFAULT 'F1',
-      `tipo_evidencia` ENUM('fisica', 'forense_raw', 'forense_e01', 'audio_wav', 'documento_pdf', 'imagen_jpg', 'otro') NOT NULL,
-      `descripcion` VARCHAR(255) NOT NULL,
-      `marca_modelo` VARCHAR(150) DEFAULT NULL,
-      `numero_serie` VARCHAR(100) DEFAULT NULL,
-      `precinto_inicial` VARCHAR(64) DEFAULT NULL,
-      `hash_sha256` CHAR(64) NOT NULL,
-      `hash_verificado` TINYINT(1) NOT NULL DEFAULT 1,
-      `datos_adicionales_json` JSON DEFAULT NULL,
-      `creado_en` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      `numero_item` INT UNSIGNED NOT NULL DEFAULT 1,
+      `tipo` VARCHAR(64) NOT NULL,
+      `descripcion` TEXT NOT NULL,
+      `marca` VARCHAR(100) DEFAULT NULL,
+      `modelo` VARCHAR(100) DEFAULT NULL,
+      `serial` VARCHAR(100) DEFAULT NULL,
+      `imei` VARCHAR(64) DEFAULT NULL,
+      `estado_fisico` VARCHAR(255) DEFAULT NULL,
+      `hash_sha256` CHAR(64) DEFAULT NULL,
+      `hash_md5` CHAR(32) DEFAULT NULL,
+      `bolsa_faraday` VARCHAR(64) DEFAULT NULL,
+      `precinto_numero` VARCHAR(64) DEFAULT NULL,
+      `ubicacion_fisica` VARCHAR(150) DEFAULT NULL,
+      `fecha_recepcion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (`id`),
       KEY `idx_evidencias_caso` (`caso_id`),
-      KEY `idx_evidencias_hash` (`hash_sha256`),
-      CONSTRAINT `fk_evidencias_caso_id` FOREIGN KEY (`caso_id`) REFERENCES `casos` (`id`) ON DELETE CASCADE
+      KEY `idx_evidencias_hash` (`hash_sha256`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
     // 6. Triggers de Inmutabilidad
