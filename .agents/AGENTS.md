@@ -15,7 +15,7 @@
 |:---------------------------|:----------------------------------------|
 | **Documento Oficial**      | **Manual Canónico Profesional de Ingeniería & Estándares de Desarrollo** |
 | **Sistema Mandante**       | Forensic Chief Compliance Officer (FCCO) — SHA256.US |
-| **Versión Canónica**       | `v4.0.0-CANONICAL` |
+| **Versión Canónica**       | `v1.0.0` (SemVer 2.0.0) |
 | **Arquitectura de Despliegue** | **Astro Static (`output: 'static'`) + cPanel (Apache + PHP 8.2+ + MySQL PDO)** |
 | **Estado de Vigencia**     | 🟢 **OBLIGATORIO & ACTIVO (ENFORCED)** |
 | **Clasificación Legal**    | Estándar Forense ISO/IEC 27037 · ISO/IEC 27042 · ISO/IEC 27043 · ISO 37301 · ISO/IEC 27001 · NIST SP 800-86 · NIST SP 800-88 · MUCC-2017 · COPP Arts. 187, 223–225 |

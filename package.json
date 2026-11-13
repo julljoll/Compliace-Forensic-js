@@ -1,6 +1,6 @@
 {
   "name": "forensic-chief-compliance-officer",
-  "version": "4.0.0",
+  "version": "1.0.0",
   "description": "Forensic Chief Compliance Officer (FCCO) — SHA256.US. Sistema Canónico de Cadena de Custodia, Peritaje Informático y Compliance Legal.",
   "scripts": {
     "predev": "node scripts/build-uswds.mjs",

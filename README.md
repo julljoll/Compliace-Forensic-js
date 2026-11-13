@@ -4,6 +4,8 @@
 
 ### *Sistema Canónico de Cadena de Custodia, Peritaje Informático y Compliance Legal*
 
+[![Version](https://img.shields.io/badge/Version-v1.0.0-brightgreen?style=for-the-badge)](https://github.com/julljoll/forensic-chief-compliance-officer/releases)
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.0-informational?style=for-the-badge)](https://semver.org/)
 [![Astro](https://img.shields.io/badge/Astro-5.x-BC52EE?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
 [![USWDS](https://img.shields.io/badge/USWDS-3.14-005EA2?style=for-the-badge&logo=us-web-design-system&logoColor=white)](https://designsystem.digital.gov/)
 [![PHP](https://img.shields.io/badge/PHP_8.2+-PDO_MySQL-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net/)
