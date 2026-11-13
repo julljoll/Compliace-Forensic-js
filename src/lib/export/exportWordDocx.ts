@@ -1,241 +1,258 @@
 /**
- * SHA256.US — Exportador Oficial de Planillas Legal-Forenses a Microsoft Word (.docx)
- * Utiliza html-docx-js / html-docx-js-typescript y file-saver para descargar archivos .docx nativos.
- * Optimizado para garantizar la máxima fidelidad visual respecto a la vista previa (respetando la Portada Receptora Folio 01,
- * los márgenes Folio/Oficio de 216mm x 330mm, tipografías, tablas, recuadros dactilares y leyendas normativas),
- * utilizando estructuras HTML/CSS totalmente compatibles con el motor de renderizado de Microsoft Word.
+ * SHA256.US — Exportador Oficial Canónico de Planillas Forenses a Microsoft Word (.docx)
+ * Utiliza html-docx-js-typescript y file-saver para descargar archivos .docx nativos (OpenXML altChunk).
+ * Formato Folio (216mm x 330mm) con márgenes reglamentarios (25mm izquierdo de encuadernación).
+ * Pre-procesamiento DOM para compatibilidad absoluta con Microsoft Word:
+ * - Conversión de rejillas Flexbox y Grid a tablas <table> de 2 columnas (firmas, huellas, membrete).
+ * - Huelleros dactilares dobles bloqueados con medidas físicas (18mm × 24mm).
+ * - Embebe logotipo institucional oficial como data:image/png;base64 para visualización 100% offline.
+ * - Soporta tanto Modo Plantilla en Blanco (líneas de escritura manual) como Modo Con Datos de Caso.
+ * - Saltos de página duros (mso-break-type: page-break) para planillas de múltiples hojas.
  */
 
 import { saveAs } from 'file-saver';
+import { LOGO_PNG_BASE64 } from './logoBase64';
+import { phpApi } from '../data/phpApi';
+import { idbGetAll } from '../data/idb';
+import type { CasoCMS } from '../domain/types';
 
-export async function exportPlanillaToWordDocx(caso: any, title: string = 'Planilla_Forense', element?: HTMLElement | null) {
-  const c = caso || {};
-  const numeroCaso = c.numeroCaso || 'EXP-2026-SHA-0091';
-  const numeroPRCC = c.numeroPRCC || 'PRCC-2026-0042';
-  const fecha = c.fecha || new Date().toLocaleDateString('es-VE');
+/**
+ * Pre-procesa el árbol HTML de una planilla forense para compatibilidad total con Word
+ */
+export function transformPlanillaHtmlForWord(element: HTMLElement, docTitle: string = 'Planilla Forense'): string {
+  // 1. Clonar el elemento para no alterar la interfaz de usuario visible
+  const clone = element.cloneNode(true) as HTMLElement;
 
-  const isPRCC = title.toLowerCase().includes('prcc') || title.toLowerCase().includes('cadena de custodia');
+  // 2. Eliminar elementos no imprimibles, barras de navegación y controles
+  clone.querySelectorAll('.no-print, .no-print-bar, button, .MuiButton-root, .watermark, script, style').forEach((el) => el.remove());
 
-  // 1. Obtener o construir el cuerpo HTML del documento
-  let innerBodyHtml = '';
+  // 3. Transformar membrete institucional (.header-institution-row) a tabla de 2 columnas
+  clone.querySelectorAll('.header-institution-row').forEach((row) => {
+    const badge = row.querySelector('.header-badge-legal');
+    const badgeHtml = badge ? badge.innerHTML : 'CÓDIGO: FO-FOR<br>COPP ART. 187';
 
-  if (element) {
-    // Clonamos el elemento para limpiar elementos no imprimibles (botones, controles)
-    const clone = element.cloneNode(true) as HTMLElement;
-    clone.querySelectorAll('.no-print, button, .MuiButton-root, .MuiIconButton-root').forEach(el => el.remove());
-    innerBodyHtml = clone.innerHTML;
-  } else {
-    // Plantilla HTML legal-forense por defecto respaldada por el estándar MUCC-2017 & ISO 27037
-    innerBodyHtml = `
-      <!-- ENCABEZADO INSTITUCIONAL DE LA PLANILLA -->
-      <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #0F172A; margin-bottom: 14px;">
-        <tr>
-          <td style="text-align: center; padding-bottom: 8px;">
-            <div style="font-size: 16pt; font-weight: bold; color: #0F172A; letter-spacing: 1.5px; font-family: Arial, sans-serif;">SHA256.US</div>
-            <div style="font-size: 8.5pt; font-weight: bold; color: #1E293B; margin-top: 2px; font-family: Arial, sans-serif;">Lab. Informática Forense</div>
-          </td>
-        </tr>
-      </table>
-
-      <!-- TÍTULO Y CASILLA DE EXPEDIENTE / PRCC -->
-      <div style="text-align: center; margin-bottom: 12px;">
-        <div style="font-size: 12pt; font-weight: bold; text-transform: uppercase; color: #0F172A; font-family: Arial, sans-serif;">${title}</div>
-        <div style="font-size: 8.5pt; color: #334155; margin-top: 3px; font-family: Arial, sans-serif;">DOCUMENTO OFICIAL DE CUMPLIMIENTO Y PERITAJE FORENSE PRIVADO (MUCC-2017 &amp; ISO/IEC 27037)</div>
-        
-        <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #0F172A; background-color: #F8FAFC; margin-top: 8px; margin-bottom: 10px;">
-          <tr>
-            <td style="padding: 6px 10px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 50%; font-family: Arial, sans-serif;">
-              EXPEDIENTE N°: <span style="border-bottom: 1px solid #0F172A; font-family: 'Courier New', Courier, monospace;">${numeroCaso}</span>
-            </td>
-            <td style="padding: 6px 10px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 50%; font-family: Arial, sans-serif;">
-              PRCC N°: <span style="border-bottom: 1px solid #0F172A; font-family: 'Courier New', Courier, monospace;">${numeroPRCC}</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <!-- 1.0 DATOS DE LA ACTUACIÓN -->
-      <div id="seccion-1.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA Y DEL CONSIGNANTE</div>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 4px 0; font-family: Arial, sans-serif;">Apellidos y Nombres Consignante:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 4px 0; font-family: Arial, sans-serif;">${c.solicitante_nombre || 'Alexander R. Wright'}</td></tr>
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 4px 0; font-family: Arial, sans-serif;">Cédula de Identidad / RIF:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 4px 0; font-family: Arial, sans-serif;">${c.solicitante_cedula || 'V-18.492.019'}</td></tr>
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 4px 0; font-family: Arial, sans-serif;">Fecha y Hora de Actuación:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 4px 0; font-family: Arial, sans-serif;">${fecha}</td></tr>
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 4px 0; font-family: Arial, sans-serif;">Plataformas Forenses:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 4px 0; font-family: Arial, sans-serif;">IPED Forensics v4.1, PhotoHolmes Python Engine (ELA), PyOgg Audio Engine</td></tr>
-      </table>
-
-      <!-- 2.0 FORMA DE OBTENCIÓN -->
-      <div id="seccion-2.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">2.0 FORMA DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</div>
-      <p style="font-size: 8.5pt; margin: 4px 0; font-family: Arial, sans-serif;">[ X ] Consignación Directa Privada (Entrega Voluntaria) &#160;&#160;&#160;&#160; [ &#160; ] Adquisición Técnico-Pericial Interna</p>
-
-      <!-- LEYENDA PERICIAL DE AUTENTICIDAD -->
-      <div style="background-color: #F8FAFC; border: 1px solid #CBD5E1; padding: 8px; margin-top: 8px; margin-bottom: 10px;">
-        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A; margin-bottom: 4px; font-family: Arial, sans-serif;">LEYENDA TÉCNICO-PERICIAL DE AUTENTICIDAD Y FIDELIDAD ACÚSTICA (OPUS / PyOgg / ISO 27037):</div>
-        <div style="font-size: 8pt; color: #1E293B; text-align: justify; line-height: 1.35; font-family: Arial, sans-serif;">
-          El análisis espectrográfico procesado con la librería PyOgg (PyOgg Python Audio Engine) sobre el contenedor nativo Ogg/Opus extraído del directorio de notas de voz de WhatsApp confirma la respuesta frecuencial ininterrumpida (frecuencia de muestreo 48,000 Hz / 48 kHz). La preservación estricta de la estructura de paquetes OggS, el alineamiento constante de los marcos de bit-rate variable (VBR) y la continuidad armónica en los formantes de voz (3.4 kHz) certifican científicamente que el audio ES 100% FIEL, INTACTO Y AUTÉNTICO. NO PRESENTA EDICIONES, CORTES, EMPALMES, SOBREPOSICIÓN DE PISTAS NI RECOMPRESIÓN DE TERCEROS.
-        </div>
-      </div>
-
-      <!-- 3.0 OPERARIOS PERICIALES -->
-      <div id="seccion-3.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">3.0 OPERARIOS PERICIALES DE FIJACIÓN Y COLECCIÓN (MUCC-2017)</div>
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 6px;">
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">a. Nombres y Apellidos:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.peritoLider || 'Ing. Christopher V. Vance'}</td></tr>
-        <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">b. C.I:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.peritoCedula || 'V-19.823.104'}</td></tr>
-      </table>
-
-      <!-- RECUADROS DACTILARES Y FIRMA -->
-      <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin-top: 10px; margin-bottom: 14px;">
-        <tr>
-          <td style="width: 42%; border: 1.5px solid #0F172A; background-color: #F8FAFC; height: 75pt; vertical-align: bottom; padding: 4px;">
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; margin-top: 3px; font-family: Arial, sans-serif;">c. Firma del Perito Líder</div>
-          </td>
-          <td style="width: 27%; border: 1.5px solid #0F172A; background-color: #F8FAFC; height: 75pt; vertical-align: bottom; padding: 4px; text-align: center;">
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; margin-top: 3px; font-family: Arial, sans-serif;">Pulgar Izquierdo</div>
-          </td>
-          <td style="width: 27%; border: 1.5px solid #0F172A; background-color: #F8FAFC; height: 75pt; vertical-align: bottom; padding: 4px; text-align: center;">
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; margin-top: 3px; font-family: Arial, sans-serif;">Pulgar Derecho</div>
-          </td>
-        </tr>
-      </table>
-
-      <!-- 4.0 DESCRIPCIÓN DE EVIDENCIA DIGITAL -->
-      <div id="seccion-4.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">4.0 DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL CONSIGNADA</div>
-      <table style="width: 100%; border-collapse: collapse; margin-top: 6px; margin-bottom: 12px;">
-        <thead>
-          <tr>
-            <th style="width: 35%; background-color: #E2E8F0; border: 1px solid #94A3B8; font-size: 8pt; font-weight: bold; color: #0F172A; padding: 6px; text-align: left; font-family: Arial, sans-serif;">Evidencia / Dispositivo</th>
-            <th style="width: 65%; background-color: #E2E8F0; border: 1px solid #94A3B8; font-size: 8pt; font-weight: bold; color: #0F172A; padding: 6px; text-align: left; font-family: Arial, sans-serif;">Especificación Técnica / Serial / Hash SHA-256 Génesis</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td style="border: 1px solid #CBD5E1; font-size: 8pt; color: #1E293B; padding: 6px; font-family: Arial, sans-serif;"><b>Equipo Móvil / Computador</b></td><td style="border: 1px solid #CBD5E1; font-size: 8pt; color: #1E293B; padding: 6px; font-family: Arial, sans-serif;">${c.tipoEvidencia || 'Dispositivo de Almacenamiento Forense'}</td></tr>
-          <tr><td style="border: 1px solid #CBD5E1; font-size: 8pt; color: #1E293B; padding: 6px; font-family: Arial, sans-serif;"><b>Precinto de Seguridad</b></td><td style="border: 1px solid #CBD5E1; font-size: 8pt; color: #1E293B; padding: 6px; font-family: Arial, sans-serif;">Precinto Holofónico N° ${c.precintoNumero || 'SHA-2026-VNZ'}</td></tr>
-          <tr><td style="border: 1px solid #CBD5E1; font-size: 8pt; color: #1E293B; padding: 6px; font-family: Arial, sans-serif;"><b>Hash SHA-256 Génesis</b></td><td style="border: 1px solid #CBD5E1; font-size: 8pt; font-family: 'Courier New', Courier, monospace; color: #1E293B; padding: 6px;">${c.hashGenesis || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}</td></tr>
-        </tbody>
-      </table>
-
-      ${isPRCC ? `
-      <!-- 5.0 CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS -->
-      <div id="seccion-5.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">5.0 CONTINUIDAD Y REGISTRO SECUENCIAL DE TRASLADOS DE CADENA DE CUSTODIA (MUCC-2017)</div>
-      <div style="border: 1px solid #0F172A; padding: 8px; margin-top: 6px; margin-bottom: 12px;">
-        <div style="font-weight: bold; font-size: 8.5pt; color: #0F172A; font-family: Arial, sans-serif;">REGISTRO DE TRASLADO N° 01:</div>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 4px;">
-          <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">Fecha y Hora:</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${fecha}</td></tr>
-          <tr><td style="font-weight: bold; font-size: 8.5pt; color: #0F172A; width: 35%; padding: 3px 0; font-family: Arial, sans-serif;">A. ENTREGADO POR (CUSTODIO SALIENTE):</td><td style="border-bottom: 1px solid #64748B; font-size: 8.5pt; color: #0F172A; width: 65%; padding: 3px 0; font-family: Arial, sans-serif;">${c.solicitante_nombre || 'Alexander R. Wright'} (C.I.: ${c.solicitante_cedula || 'V-18.492.019'})</td></tr>
-        </table>
-
-        <!-- 3 Recuadros Dactilares Entregante -->
-        <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin-top: 8px;">
-          <tr>
-            <td style="width: 42%; border: 1px solid #334155; background-color: #F8FAFC; height: 65pt; vertical-align: bottom; padding: 4px;"><div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; font-family: Arial, sans-serif;">Firma Custodio Saliente</div></td>
-            <td style="width: 27%; border: 1px solid #334155; background-color: #F8FAFC; height: 65pt; vertical-align: bottom; padding: 4px; text-align: center;"><div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; font-family: Arial, sans-serif;">Pulgar Izquierdo</div></td>
-            <td style="width: 27%; border: 1px solid #334155; background-color: #F8FAFC; height: 65pt; vertical-align: bottom; padding: 4px; text-align: center;"><div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; font-family: Arial, sans-serif;">Pulgar Derecho</div></td>
-          </tr>
-        </table>
-      </div>
-      ` : ''}
-
-      <!-- 6.0 CERTIFICACIÓN FINAL -->
-      <div id="seccion-6.0" style="font-size: 9.5pt; font-weight: bold; color: #0F172A; background-color: #F1F5F9; border-left: 4px solid #0F172A; border-bottom: 1px solid #CBD5E1; padding: 4px 8px; margin-top: 14px; margin-bottom: 8px; text-transform: uppercase; font-family: Arial, sans-serif;">${isPRCC ? '6.0' : '5.0'}. CERTIFICACIÓN PERICIAL, FIRMAS Y RESPONSABILIDAD LEGAL</div>
-      <table style="width: 100%; border-collapse: separate; border-spacing: 10px 0; margin-top: 10px; margin-bottom: 14px;">
-        <tr>
-          <td style="width: 48%; border: 1.5px solid #0F172A; background-color: #F8FAFC; height: 75pt; vertical-align: bottom; padding: 6px;">
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; font-family: Arial, sans-serif;">FIRMA DEL CONSIGNANTE PRIVADO</div>
-          </td>
-          <td style="width: 48%; border: 1.5px solid #0F172A; background-color: #F8FAFC; height: 75pt; vertical-align: bottom; padding: 6px;">
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; text-align: center; text-transform: uppercase; font-family: Arial, sans-serif;">PERITO INFORMÁTICO FORENSE</div>
-            <div style="font-size: 7.5pt; font-weight: bold; color: #0F172A; text-align: center; margin-top: 35pt; font-family: Arial, sans-serif;">FIRMA DEL PERITO RECEPTOR ISO 27037</div>
-          </td>
-        </tr>
-      </table>
-
-      <footer role="contentinfo" aria-label="Pie de página legal SHA256.US" itemscope itemtype="https://schema.org/Organization" style="width: 100%; border-top: 1px solid #CBD5E1; margin-top: 25px; padding-top: 6px; font-family: Arial, sans-serif; text-align: center;">
-        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
-        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
-        <div style="font-size: 7.5pt; color: #334155; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
-        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #475569; margin-top: 3px;">
-          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
-        </address>
-      </footer>
+    const tableHeader = document.createElement('table');
+    tableHeader.setAttribute('style', 'width: 100%; border-collapse: collapse; border-bottom: 2px solid #000000; margin-bottom: 6px;');
+    tableHeader.innerHTML = `
+      <tr>
+        <td style="width: 72%; vertical-align: middle; border: none; padding: 2px 0;">
+          <table style="border-collapse: collapse; border: none; margin: 0; padding: 0;">
+            <tr>
+              <td style="border: none; padding: 0 8px 0 0; vertical-align: middle; width: 40px;">
+                <img src="data:image/png;base64,${LOGO_PNG_BASE64}" width="38" height="38" alt="SHA256.US" style="display: block;" />
+              </td>
+              <td style="border: none; padding: 0; vertical-align: middle;">
+                <div style="font-family: Arial, sans-serif; font-size: 7.5pt; font-weight: bold; text-transform: uppercase; line-height: 1.15; color: #000000;">REPÚBLICA BOLIVARIANA DE VENEZUELA</div>
+                <div style="font-family: Arial, sans-serif; font-size: 8.5pt; font-weight: bold; text-transform: uppercase; line-height: 1.15; color: #000000;">LABORATORIO DE INFORMÁTICA FORENSE SHA256.US</div>
+                <div style="font-family: Arial, sans-serif; font-size: 6.5pt; text-transform: uppercase; line-height: 1.15; color: #000000;">DIVISIÓN PERICIAL DE EVIDENCIA DIGITAL &amp; CUMPLIMIENTO LEGAL</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td style="width: 28%; vertical-align: middle; border: 1px solid #000000; background-color: #F0F0F0; padding: 3px 5px; text-align: center;">
+          <div style="font-family: Arial, sans-serif; font-size: 6.5pt; font-weight: bold; line-height: 1.25; color: #000000;">
+            ${badgeHtml}
+          </div>
+        </td>
+      </tr>
     `;
-  }
+    row.replaceWith(tableHeader);
+  });
 
-  // 2. Construir la PORTADA RECEPTORA (Folio 01) con salto de página compatible con Microsoft Word
-  const portadaHtml = `
-    <!-- HOJA 1: PORTADA RECEPTORA OFICIAL & COMPLIANCE (FOLIO 01) -->
-    <div style="padding: 10px; font-family: Arial, sans-serif;">
-      <div style="background-color: #0F172A; color: #FECF06; padding: 6px 12px; font-weight: bold; font-size: 10pt; letter-spacing: 1px; margin-bottom: 16px; text-align: center; border-radius: 4px;">
-        DOSSIER FORENSE OFICIAL — FOLIO 01 | PORTADA RECEPTORA &amp; COMPLIANCE
-      </div>
+  // Reemplazar cualquier imagen con referencia a /logo.png por el data:URI base64
+  clone.querySelectorAll('img').forEach((img) => {
+    const src = img.getAttribute('src') || '';
+    if (src.includes('logo') || src === '/logo.png') {
+      img.setAttribute('src', `data:image/png;base64,${LOGO_PNG_BASE64}`);
+      img.setAttribute('width', '38');
+      img.setAttribute('height', '38');
+    }
+  });
 
-      <div style="border: 2px solid #0F172A; background-color: #F8FAFC; padding: 18px; margin-bottom: 18px; text-align: center; border-radius: 6px;">
-        <div style="font-size: 15pt; font-weight: bold; color: #0F172A; text-transform: uppercase; margin-bottom: 6px; font-family: Arial, sans-serif;">${title}</div>
-        <div style="font-size: 9.5pt; color: #475569; margin-bottom: 12px; font-family: Arial, sans-serif;">DOCUMENTO PROBATORIO OFICIAL EN LABORATORIO PRIVADO SHA256.US</div>
-        
-        <table style="width: 100%; border-collapse: collapse; border-top: 1.5px solid #0F172A; margin-top: 10px; padding-top: 8px;">
-          <tr>
-            <td style="font-size: 9.5pt; font-weight: bold; color: #0F172A; width: 33%; padding: 6px 0; font-family: Arial, sans-serif;">EXPEDIENTE: <span style="background-color: #E2E8F0; padding: 3px 6px; font-family: 'Courier New', Courier, monospace;">${numeroCaso}</span></td>
-            <td style="font-size: 9.5pt; font-weight: bold; color: #0F172A; width: 33%; padding: 6px 0; font-family: Arial, sans-serif;">PRCC N°: <span style="background-color: #E2E8F0; padding: 3px 6px; font-family: 'Courier New', Courier, monospace;">${numeroPRCC}</span></td>
-            <td style="font-size: 9.5pt; font-weight: bold; color: #0F172A; width: 34%; padding: 6px 0; font-family: Arial, sans-serif;">FECHA: <span style="background-color: #E2E8F0; padding: 3px 6px; font-family: 'Courier New', Courier, monospace;">${fecha}</span></td>
-          </tr>
-        </table>
-      </div>
+  // 4. Estilizar el recuadro de título y norma (.header-title-box)
+  clone.querySelectorAll('.header-title-box').forEach((box) => {
+    const el = box as HTMLElement;
+    el.setAttribute('style', 'border: 1.5px solid #000000; background-color: #F0F0F0; padding: 4px 6px; text-align: center; margin-bottom: 5px;');
+    const titleEl = el.querySelector('.canonical-doc-title') as HTMLElement | null;
+    if (titleEl) {
+      titleEl.setAttribute('style', 'font-family: Arial, sans-serif; font-size: 9.5pt; font-weight: bold; text-transform: uppercase; margin: 0 0 2px 0; color: #000000;');
+    }
+    const normEl = el.querySelector('.canonical-doc-norm') as HTMLElement | null;
+    if (normEl) {
+      normEl.setAttribute('style', 'font-family: Arial, sans-serif; font-size: 6.5pt; font-weight: bold; color: #000000; margin: 0;');
+    }
+  });
 
-      <div style="background-color: #0F172A; color: #FECF06; font-size: 9.5pt; font-weight: bold; padding: 6px 10px; margin-bottom: 8px; text-align: left; font-family: Arial, sans-serif;">
-        LEYENDA DE CONTENIDO ENUMERADO SECCIÓN POR SECCIÓN
-      </div>
+  // 5. Encabezados de sección (.section-heading)
+  clone.querySelectorAll('.section-heading').forEach((sh) => {
+    const el = sh as HTMLElement;
+    el.setAttribute('style', 'font-family: Arial, sans-serif; font-size: 7.2pt; font-weight: bold; text-transform: uppercase; background-color: #F0F0F0; border: 1px solid #000000; padding: 2.5px 5px; margin-top: 4px; margin-bottom: 3px; color: #000000;');
+  });
 
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; margin-bottom: 18px; text-align: left;">
-        <thead>
-          <tr style="background-color: #E2E8F0;">
-            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 9%; font-family: Arial, sans-serif;">N° SECC.</th>
-            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 51%; font-family: Arial, sans-serif;">DENOMINACIÓN DE LA SECCIÓN</th>
-            <th style="padding: 6px; font-size: 9pt; font-weight: bold; color: #0F172A; width: 40%; font-family: Arial, sans-serif;">DESCRIPCIÓN Y CAMPOS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">1.0</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">DATOS GENERALES DE LA ACTUACIÓN FORENSE</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; color: #475569; font-family: Arial, sans-serif;">Identificación del expediente y consignante.</td></tr>
-          <tr><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">2.0</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">DESCRIPCIÓN Y RECEPCIÓN DE EVIDENCIA DIGITAL</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; color: #475569; font-family: Arial, sans-serif;">Propiedades del elemento bajo peritaje.</td></tr>
-          <tr><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">3.0</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; font-weight: bold; font-family: Arial, sans-serif;">FIRMAS DE RESPONSABILIDAD E INMUTABILIDAD</td><td style="padding: 6px; border-bottom: 1px solid #E2E8F0; font-size: 8.5pt; color: #475569; font-family: Arial, sans-serif;">Firmas periciales y hash de inmutabilidad.</td></tr>
-        </tbody>
-      </table>
+  // 6. Tablas: header-meta-table, forense-cell-table, forense-table
+  clone.querySelectorAll('table').forEach((tbl) => {
+    tbl.setAttribute('style', 'width: 100%; border-collapse: collapse; border: 1px solid #000000; margin-bottom: 4px;');
+    tbl.querySelectorAll('td, th').forEach((cell) => {
+      const c = cell as HTMLElement;
+      const isLabel = c.classList.contains('forense-cell-label') || c.classList.contains('header-meta-label') || c.tagName.toLowerCase() === 'th';
+      const isMono = c.classList.contains('font-mono');
+      const font = isMono ? "'Courier New', Courier, monospace" : 'Arial, sans-serif';
 
-      <div style="font-size: 9pt; font-weight: bold; color: #0F172A; margin-top: 14px; margin-bottom: 6px; text-align: left; font-family: Arial, sans-serif;">
-        MARCO NORMATIVO APLICABLE:
-      </div>
-      
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+      const existingStyle = c.getAttribute('style') || '';
+      const bg = isLabel ? 'background-color: #F0F0F0;' : 'background-color: #FFFFFF;';
+      const weight = isLabel ? 'font-weight: bold;' : 'font-weight: normal;';
+      const transform = isLabel ? 'text-transform: uppercase;' : '';
+
+      c.setAttribute('style', `border: 1px solid #000000; padding: 2.5px 4px; font-family: ${font}; font-size: 7pt; color: #000000; ${bg} ${weight} ${transform} ${existingStyle}`);
+    });
+  });
+
+  // 7. Líneas para escritura manual en modo blanco
+  clone.querySelectorAll('.linea-manual').forEach((lm) => {
+    const el = lm as HTMLElement;
+    const content = el.textContent?.trim() || '';
+    if (content) {
+      el.setAttribute('style', 'font-family: Arial, sans-serif; font-size: 7.5pt; color: #000000;');
+    } else {
+      el.setAttribute('style', 'border-bottom: 1px solid #000000; min-height: 16px; display: block; width: 100%;');
+      el.innerHTML = '&nbsp;';
+    }
+  });
+
+  clone.querySelectorAll('.lineas-pautadas-2, .lineas-pautadas-3').forEach((lp) => {
+    lp.querySelectorAll('.renglon-manual').forEach((rm) => {
+      const el = rm as HTMLElement;
+      el.setAttribute('style', 'border-bottom: 1px solid #000000; height: 18px; display: block; width: 100%; margin-bottom: 4px;');
+      el.innerHTML = '&nbsp;';
+    });
+  });
+
+  // 8. Transformar huelleros dactilares dobles (.fingerprint-container) a tabla
+  clone.querySelectorAll('.fingerprint-container').forEach((fc) => {
+    const tableFp = document.createElement('table');
+    tableFp.setAttribute('style', 'width: 100%; border-collapse: collapse; margin-top: 4px; border-top: 1px dashed #888888;');
+    tableFp.innerHTML = `
+      <tr>
+        <td style="width: 50%; text-align: center; vertical-align: top; border: none; padding-top: 4px;">
+          <table style="margin: 0 auto; width: 18mm; height: 24mm; border: 1.5px solid #000000; border-collapse: collapse; background-color: #FFFFFF;">
+            <tr><td style="width: 18mm; height: 24mm; border: 1.5px solid #000000; padding: 0;">&nbsp;</td></tr>
+          </table>
+          <div style="font-family: Arial, sans-serif; font-size: 6pt; font-weight: bold; text-transform: uppercase; margin-top: 2px; color: #000000;">PULGAR DER.</div>
+        </td>
+        <td style="width: 50%; text-align: center; vertical-align: top; border: none; padding-top: 4px;">
+          <table style="margin: 0 auto; width: 18mm; height: 24mm; border: 1.5px solid #000000; border-collapse: collapse; background-color: #FFFFFF;">
+            <tr><td style="width: 18mm; height: 24mm; border: 1.5px solid #000000; padding: 0;">&nbsp;</td></tr>
+          </table>
+          <div style="font-family: Arial, sans-serif; font-size: 6pt; font-weight: bold; text-transform: uppercase; margin-top: 2px; color: #000000;">PULGAR IZQ.</div>
+        </td>
+      </tr>
+    `;
+    fc.replaceWith(tableFp);
+  });
+
+  // 9. Transformar bloque de firmas bilaterales (.canonical-signatures) a tabla de 2 columnas
+  clone.querySelectorAll('.canonical-signatures').forEach((cs) => {
+    const sigBoxes = Array.from(cs.querySelectorAll('.sig-box'));
+    const tableSig = document.createElement('table');
+    tableSig.setAttribute('style', 'width: 100%; border-collapse: separate; border-spacing: 6px 0; margin-top: 6px; margin-bottom: 6px;');
+
+    if (sigBoxes.length === 2) {
+      tableSig.innerHTML = `
         <tr>
-          <td style="padding: 4px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%; font-family: Arial, sans-serif;">⚖️ MUCC-2017 § 4</td>
-          <td style="width: 1%;"></td>
-          <td style="padding: 4px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%; font-family: Arial, sans-serif;">⚖️ ISO/IEC 27037:2012</td>
-          <td style="width: 1%;"></td>
-          <td style="padding: 4px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%; font-family: Arial, sans-serif;">⚖️ COPP Art. 187</td>
-          <td style="width: 1%;"></td>
-          <td style="padding: 4px 8px; background-color: #F1F5F9; border: 1px solid #CBD5E1; font-size: 8pt; font-weight: bold; color: #0F172A; text-align: center; width: 24%; font-family: Arial, sans-serif;">⚖️ Ley Mensajes Datos</td>
+          <td style="width: 50%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">
+            ${sigBoxes[0].innerHTML}
+          </td>
+          <td style="width: 50%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">
+            ${sigBoxes[1].innerHTML}
+          </td>
         </tr>
-      </table>
+      `;
+    } else if (sigBoxes.length === 3) {
+      tableSig.innerHTML = `
+        <tr>
+          <td style="width: 33.3%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">
+            ${sigBoxes[0].innerHTML}
+          </td>
+          <td style="width: 33.3%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">
+            ${sigBoxes[1].innerHTML}
+          </td>
+          <td style="width: 33.3%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">
+            ${sigBoxes[2].innerHTML}
+          </td>
+        </tr>
+      `;
+    } else {
+      let trHtml = '';
+      const w = Math.floor(100 / (sigBoxes.length || 1));
+      sigBoxes.forEach((sb) => {
+        trHtml += `<td style="width: ${w}%; vertical-align: top; border: 1px solid #000000; padding: 4px 6px; background-color: #FFFFFF;">${sb.innerHTML}</td>`;
+      });
+      tableSig.innerHTML = `<tr>${trHtml}</tr>`;
+    }
 
-      <!-- FOOTER DE PORTADA -->
-      <footer role="contentinfo" aria-label="Pie de página de portada SHA256.US" itemscope itemtype="https://schema.org/Organization" style="width: 100%; border-top: 1px solid #CBD5E1; margin-top: 35px; padding-top: 6px; font-family: Arial, sans-serif; text-align: center;">
-        <meta itemprop="name" content="SHA256.US — Lab. Informática Forense" />
-        <div style="font-size: 8.5pt; font-weight: bold; color: #0F172A;">SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo</div>
-        <div style="font-size: 7.5pt; color: #475569; margin-top: 2px;">Documento Oficial generado bajo los estándares de la Ley sobre Mensajes de Datos, el MUCC-2017 y la norma ISO/IEC 27037:2012.</div>
-        <address itemprop="address" itemscope itemtype="https://schema.org/PostalAddress" style="font-style: normal; font-size: 7pt; color: #64748B; margin-top: 3px;">
-          <span itemprop="streetAddress">Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8</span>, <span itemprop="addressLocality">Quíbor</span>, <span itemprop="addressRegion">Estado Lara</span>, <span itemprop="addressCountry">Venezuela</span>.
-        </address>
-      </footer>
-    </div>
+    // Estilizar títulos, líneas y leyendas de firmas
+    tableSig.querySelectorAll('.sig-box-title').forEach((st) => {
+      (st as HTMLElement).setAttribute('style', 'font-family: Arial, sans-serif; font-size: 7.5pt; font-weight: bold; text-transform: uppercase; text-align: center; border-bottom: 1px solid #000000; padding-bottom: 2px; margin-bottom: 4px; background-color: #F0F0F0; color: #000000;');
+    });
+    tableSig.querySelectorAll('.sig-data-row').forEach((sr) => {
+      (sr as HTMLElement).setAttribute('style', 'font-family: Arial, sans-serif; font-size: 6.8pt; line-height: 1.35; margin-bottom: 2px; color: #000000;');
+    });
+    tableSig.querySelectorAll('.sig-line, .sig-line-solid').forEach((sl) => {
+      (sl as HTMLElement).setAttribute('style', 'border-bottom: 1.5px solid #000000; height: 26px; width: 100%; margin-top: 10px; margin-bottom: 2px;');
+      (sl as HTMLElement).innerHTML = '&nbsp;';
+    });
+    tableSig.querySelectorAll('.sig-legend').forEach((sg) => {
+      (sg as HTMLElement).setAttribute('style', 'font-family: Arial, sans-serif; font-size: 6.2pt; font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 4px; color: #000000;');
+    });
 
-    <!-- SALTO DE PÁGINA ESPECÍFICO DE WORD -->
-    <br style="page-break-before: always; mso-break-type: page-break;" />
-  `;
+    cs.replaceWith(tableSig);
+  });
 
-  if (!innerBodyHtml.includes('DOSSIER FORENSE OFICIAL') && !innerBodyHtml.includes('PORTADA RECEPTORA')) {
-    innerBodyHtml = portadaHtml + innerBodyHtml;
+  // 10. Pie de página institucional (.canonical-footer)
+  clone.querySelectorAll('.canonical-footer').forEach((ft) => {
+    const el = ft as HTMLElement;
+    const hashEl = el.querySelector('.footer-hash-box, .footer-hash-line');
+    const hashHtml = hashEl ? hashEl.innerHTML : '';
+
+    const tableFt = document.createElement('table');
+    tableFt.setAttribute('style', 'width: 100%; border-collapse: collapse; border-top: 1.5px solid #000000; margin-top: 8px; padding-top: 4px;');
+    tableFt.innerHTML = `
+      <tr>
+        <td style="border: none; text-align: center; vertical-align: middle; padding: 2px 0;">
+          <div style="font-family: Arial, sans-serif; font-size: 6.8pt; font-weight: bold; color: #000000; text-transform: uppercase;">
+            SHA256.US — LABORATORIO DE INFORMÁTICA FORENSE | CONSIGNACIÓN PRIVADA Y CUMPLIMIENTO NORMATIVO
+          </div>
+          <div style="font-family: Arial, sans-serif; font-size: 6pt; color: #333333; margin-top: 1px;">
+            Documento Oficial generado bajo los estándares del MUCC-2017 (G.O. 41.247), ISO/IEC 27037 y la Ley sobre Mensajes de Datos.
+          </div>
+          ${hashHtml ? `<div style="font-family: 'Courier New', monospace; font-size: 6pt; color: #000000; margin-top: 2px;">${hashHtml}</div>` : ''}
+        </td>
+      </tr>
+    `;
+    el.replaceWith(tableFt);
+  });
+
+  // 11. Multi-página: Si hay múltiples clases .page, intercalar saltos duros de página Word
+  const pages = Array.from(clone.querySelectorAll('.page'));
+  if (pages.length > 1) {
+    let combinedHtml = '';
+    pages.forEach((pg, idx) => {
+      if (idx > 0) {
+        combinedHtml += '<br clear="all" style="page-break-before: always; mso-break-type: page-break;" />';
+      }
+      combinedHtml += pg.innerHTML;
+    });
+    return combinedHtml;
   }
 
-  // 3. Documento completo HTML con cabeceras XMLOffice optimizadas para Microsoft Word
-  const htmlTemplate = `<!DOCTYPE html>
+  return clone.innerHTML;
+}
+
+/**
+ * Genera el documento HTML completo con cabeceras XMLOffice y estilos Folio
+ */
+export function buildWordDocxHtmlTemplate(innerHtml: string, title: string = 'Planilla Forense'): string {
+  return `<!DOCTYPE html>
 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
 <head>
   <meta charset='utf-8'>
@@ -251,56 +268,196 @@ export async function exportPlanillaToWordDocx(caso: any, title: string = 'Plani
   <![endif]-->
   <style>
     @page {
-      size: 216mm 330mm; /* Hoja Folio / Oficio */
-      margin: 3.5cm 1.5cm 1.5cm 2.5cm;
+      size: 216mm 330mm; /* Folio / Oficio Judicial */
+      margin: 15mm 12mm 15mm 25mm; /* Margen izquierdo de 25mm para encuadernación */
     }
     body {
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 9.5pt;
-      color: #1E293B;
-      line-height: 1.35;
-      background-color: #ffffff;
+      font-size: 7.5pt;
+      color: #000000;
+      line-height: 1.25;
+      background-color: #FFFFFF;
+      margin: 0;
+      padding: 0;
     }
     table {
       border-collapse: collapse;
       mso-table-lspace: 0pt;
       mso-table-rspace: 0pt;
+      width: 100%;
     }
     td, th {
       font-family: Arial, Helvetica, sans-serif;
+      font-size: 7.2pt;
+      color: #000000;
+      vertical-align: middle;
+    }
+    .font-mono {
+      font-family: 'Courier New', Courier, monospace !important;
     }
     .page-break {
       page-break-before: always;
       mso-break-type: page-break;
+      clear: both;
     }
   </style>
 </head>
 <body>
-  ${innerBodyHtml}
+  ${innerHtml}
 </body>
 </html>`;
+}
+
+/**
+ * Exporta un elemento HTML de planilla a archivo Microsoft Word (.docx) nativo
+ */
+export async function exportPlanillaElementToWordDocx(
+  element: HTMLElement,
+  fileName: string = 'Planilla_Forense.docx',
+  title: string = 'Planilla Forense'
+): Promise<Blob> {
+  const transformedInner = transformPlanillaHtmlForWord(element, title);
+  const fullHtml = buildWordDocxHtmlTemplate(transformedInner, title);
+
+  const { asBlob } = await import('html-docx-js-typescript');
+  const blobOrBuffer = await asBlob(fullHtml, {
+    orientation: 'portrait',
+    margins: {
+      top: 850,    // ~15mm
+      bottom: 850, // ~15mm
+      left: 1417,  // ~25mm encuadernación
+      right: 680,  // ~12mm
+    },
+  });
+
+  const finalBlob = blobOrBuffer instanceof Blob
+    ? blobOrBuffer
+    : new Blob([blobOrBuffer as any], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+
+  if (typeof window !== 'undefined') {
+    saveAs(finalBlob, fileName);
+  }
+
+  return finalBlob;
+}
+
+/**
+ * Exporta la planilla actualmente desplegada en la pantalla activa (/planillas/[slug])
+ */
+export async function exportCurrentPlanillaToWordDocx(titleOverride?: string): Promise<void> {
+  if (typeof window === 'undefined') return;
+
+  const container = document.getElementById('contenedor-planilla-activa') ||
+                    document.querySelector('.folio-forense-aislado');
+
+  if (!container) {
+    alert('No se encontró ninguna planilla activa en la pantalla.');
+    return;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const modo = urlParams.get('modo') || (urlParams.get('casoId') ? 'datos' : 'blanco');
+  const slug = container.getAttribute('data-slug') || window.location.pathname.split('/').pop() || 'planilla';
+
+  // Buscar título formal en la planilla
+  const titleEl = container.querySelector('.canonical-doc-title') || document.querySelector('h1');
+  const rawTitle = titleOverride || titleEl?.textContent?.trim() || slug;
+  const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_-]/g, '_');
+
+  const casoId = urlParams.get('casoId');
+  const sufijoModo = modo === 'blanco' ? 'blanco' : `Caso_${(casoId || 'datos').replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+  const fileName = `${cleanTitle}_${sufijoModo}.docx`;
+
+  await exportPlanillaElementToWordDocx(container as HTMLElement, fileName, rawTitle);
+}
+
+/**
+ * Descarga cualquier planilla por su slug directamente desde el catálogo /planillas,
+ * sin necesidad de navegar a la vista de detalle.
+ */
+export async function descargarPlanillaPorSlug(
+  slug: string,
+  modo: 'blanco' | 'datos' = 'blanco',
+  casoId?: string,
+  titulo?: string
+): Promise<void> {
+  if (typeof window === 'undefined') return;
 
   try {
-    const { asBlob } = await import('html-docx-js-typescript');
-    const docxBlob = await asBlob(htmlTemplate, {
-      orientation: 'portrait',
-      margins: { top: 1984, bottom: 850, left: 1417, right: 850 },
-    });
+    const url = `/planillas/${slug}`;
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`HTTP ${resp.status} al obtener la plantilla ${slug}`);
+    }
 
-    const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const cleanCaso = numeroCaso.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const fileName = `${cleanTitle}_Caso_${cleanCaso}.docx`;
+    const htmlText = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, 'text/html');
 
-    saveAs(docxBlob as Blob, fileName);
-  } catch (err) {
-    console.error('Error generando archivo Word .docx con html-docx-js:', err);
-    
-    // Fallback con Blob application/msword y file-saver
-    const fallbackBlob = new Blob(['\ufeff', htmlTemplate], {
-      type: 'application/msword;charset=utf-8',
-    });
-    const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const fileName = `${cleanTitle}_Caso_${numeroCaso}.doc`;
-    saveAs(fallbackBlob, fileName);
+    const container = doc.getElementById('contenedor-planilla-activa') ||
+                      doc.querySelector('.folio-forense-aislado');
+
+    if (!container) {
+      throw new Error(`No se encontró el contenedor de la planilla en ${url}`);
+    }
+
+    // Modo Blanco: limpiar placeholders [ ... ]
+    if (modo === 'blanco' || !casoId) {
+      container.querySelectorAll<HTMLElement>('[data-field]').forEach((el) => {
+        const txt = el.textContent?.trim() || '';
+        if (txt.startsWith('[') && txt.endsWith(']')) {
+          el.textContent = '';
+        }
+      });
+    } else {
+      // Modo Datos: inyectar los datos reales del caso seleccionado
+      let caso: CasoCMS | undefined;
+      try {
+        caso = await phpApi.obtenerCaso(casoId);
+      } catch {
+        const casos = await idbGetAll('casos');
+        caso = casos.find((c) => c.id === casoId);
+      }
+
+      if (caso) {
+        container.querySelectorAll<HTMLElement>('[data-field]').forEach((el) => {
+          const field = el.getAttribute('data-field') as keyof CasoCMS;
+          if (field && caso && (caso as any)[field] !== undefined && (caso as any)[field] !== null) {
+            el.textContent = String((caso as any)[field]);
+          }
+        });
+      }
+    }
+
+    const rawTitle = titulo || doc.querySelector('.canonical-doc-title')?.textContent?.trim() || slug;
+    const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_-]/g, '_');
+    const sufijoModo = modo === 'blanco' ? 'blanco' : `Caso_${(casoId || 'datos').replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+    const fileName = `${cleanTitle}_${sufijoModo}.docx`;
+
+    await exportPlanillaElementToWordDocx(container as HTMLElement, fileName, rawTitle);
+  } catch (err: any) {
+    console.error('Error al descargar planilla Word por slug:', err);
+    alert(`No se pudo generar el archivo Word: ${err.message || 'Error desconocido'}`);
   }
+}
+
+/**
+ * Función legacy mantenida para retrocompatibilidad total con llamadas anteriores
+ */
+export async function exportPlanillaToWordDocx(
+  caso: any,
+  title: string = 'Planilla_Forense',
+  element?: HTMLElement | null
+) {
+  if (element) {
+    const cleanTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const numCaso = (caso?.numeroCaso || 'EXP').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const fileName = `${cleanTitle}_Caso_${numCaso}.docx`;
+    return exportPlanillaElementToWordDocx(element, fileName, title);
+  }
+
+  // Si no se proporcionó elemento, delegamos en la planilla activa en pantalla
+  return exportCurrentPlanillaToWordDocx(title);
 }

@@ -181,24 +181,36 @@ const PLANILLAS = [
           </p>
         </div>
 
-        <div style="display: flex; gap: 8px; border-top: 1px solid #E2E8F0; padding-top: 14px;">
+        <div style="display: flex; gap: 6px; border-top: 1px solid #E2E8F0; padding-top: 14px; flex-wrap: wrap;">
           <a
             href={`/planillas/${p.slug}?modo=blanco`}
             class="usa-button usa-button--outline link-abrir-planilla"
             data-slug={p.slug}
-            style="flex: 1; text-align: center; font-size: 12px; font-weight: 700; padding: 8px; border-color: #005EA2; color: #005EA2; text-decoration: none;"
+            style="flex: 1; text-align: center; font-size: 11.5px; font-weight: 700; padding: 7px 8px; border-color: #005EA2; color: #005EA2; text-decoration: none; min-width: 100px;"
           >
             Ver Formato ↗
           </a>
+          <button
+            type="button"
+            class="usa-button btn-descargar-docx"
+            data-slug={p.slug}
+            data-titulo={p.titulo}
+            style="background-color: #112E51; color: #FFFFFF; font-size: 11.5px; font-weight: 700; padding: 7px 10px; border: none; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px;"
+            title="Descargar esta planilla en formato Microsoft Word (.docx)"
+          >
+            <span>📘</span>
+            <span class="txt-descargar-docx">Word (.docx)</span>
+          </button>
           <a
             href={`/planillas/${p.slug}?modo=blanco&imprimir=1`}
             target="_blank"
             class="usa-button link-imprimir-planilla"
             data-slug={p.slug}
-            style="background-color: #112E51; color: #FFFFFF; font-size: 12px; font-weight: 700; padding: 8px 14px; text-decoration: none; white-space: nowrap;"
+            style="background-color: #005EA2; color: #FFFFFF; font-size: 11.5px; font-weight: 700; padding: 7px 10px; text-decoration: none; white-space: nowrap; display: flex; align-items: center; gap: 4px;"
             title="Imprimir directamente en Folio en blanco"
           >
-            🖨️ Imprimir Folio
+            <span>🖨️</span>
+            <span>Imprimir</span>
           </a>
         </div>
       </div>
@@ -209,6 +221,7 @@ const PLANILLAS = [
 <script>
   import { idbGetAll } from '../../lib/data/idb';
   import { phpApi } from '../../lib/data/phpApi';
+  import { descargarPlanillaPorSlug } from '../../lib/export/exportWordDocx';
   import type { CasoCMS } from '../../lib/domain/types';
 
   const select = document.getElementById('select-caso-planillas') as HTMLSelectElement;
@@ -254,6 +267,37 @@ const PLANILLAS = [
         actualizarLinks(select.value);
       });
     }
+
+    // Configurar listeners de descarga directa Microsoft Word (.docx)
+    document.querySelectorAll('.btn-descargar-docx').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const button = btn as HTMLButtonElement;
+        const slug = button.getAttribute('data-slug') || '';
+        const titulo = button.getAttribute('data-titulo') || '';
+        const spanTxt = button.querySelector('.txt-descargar-docx');
+        const valorCaso = select?.value || 'blanco';
+        const isBlanco = valorCaso === 'blanco';
+
+        if (spanTxt) spanTxt.textContent = 'Generando...';
+        button.disabled = true;
+
+        try {
+          await descargarPlanillaPorSlug(
+            slug,
+            isBlanco ? 'blanco' : 'datos',
+            isBlanco ? undefined : valorCaso,
+            titulo
+          );
+        } catch (err) {
+          console.error('Error al descargar Word:', err);
+          alert('Hubo un inconveniente al generar la planilla en formato Word.');
+        } finally {
+          if (spanTxt) spanTxt.textContent = 'Word (.docx)';
+          button.disabled = false;
+        }
+      });
+    });
   }
 
   function actualizarLinks(valor: string) {
@@ -276,10 +320,10 @@ const PLANILLAS = [
       const anchor = a as HTMLAnchorElement;
       if (isBlanco) {
         anchor.href = `/planillas/${slug}?modo=blanco&imprimir=1`;
-        anchor.textContent = '🖨️ Imprimir en Blanco';
+        anchor.textContent = '🖨️ Imprimir';
       } else {
         anchor.href = `/planillas/${slug}?casoId=${valor}&modo=datos&imprimir=1`;
-        anchor.textContent = '🖨️ Imprimir con Datos';
+        anchor.textContent = '🖨️ Imprimir';
       }
     });
   }

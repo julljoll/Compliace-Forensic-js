@@ -130,12 +130,21 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
         </button>
         <button
           type="button"
+          id="btn-descargar-word"
+          style="background: #112E51; border: 1px solid #334155; color: #FFFFFF; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;"
+          title="Descargar esta planilla oficial en formato editable Microsoft Word (.docx)"
+        >
+          <span>📘</span>
+          <span id="txt-btn-word">Word (.docx)</span>
+        </button>
+        <button
+          type="button"
           id="btn-imprimir-folio"
           onclick="window.print()"
           style="background: #005EA2; border: 1px solid #005EA2; color: #FFFFFF; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;"
         >
           <span>🖨️</span>
-          <span>Imprimir / Guardar PDF</span>
+          <span>Imprimir / PDF</span>
         </button>
       </div>
     </div>
@@ -146,11 +155,15 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
     </div>
 
     <script>
+      import { exportCurrentPlanillaToWordDocx } from '../lib/export/exportWordDocx';
+
       // Sincronizar el estado del selector con la URL
       const urlParams = new URLSearchParams(window.location.search);
       const modoActual = urlParams.get('modo') || (urlParams.get('casoId') ? 'datos' : 'blanco');
       const btnBlanco = document.getElementById('btn-modo-blanco');
       const btnDatos = document.getElementById('btn-modo-datos');
+      const btnWord = document.getElementById('btn-descargar-word');
+      const txtWord = document.getElementById('txt-btn-word');
 
       function updateActiveBtn(modo: string) {
         if (modo === 'datos') {
@@ -175,6 +188,28 @@ const { title = 'Documento Pericial Oficial — SHA256.US', activeSlug = '' } = 
         u.searchParams.set('modo', 'datos');
         window.location.href = u.toString();
       });
+
+      // Manejador de descarga Microsoft Word (.docx)
+      btnWord?.addEventListener('click', async () => {
+        if (txtWord) txtWord.textContent = 'Generando...';
+        btnWord.setAttribute('disabled', 'true');
+        try {
+          await exportCurrentPlanillaToWordDocx();
+        } catch (err) {
+          console.error('Error al exportar Word:', err);
+          alert('Hubo un inconveniente al generar el documento Word. Revise la consola pericial.');
+        } finally {
+          if (txtWord) txtWord.textContent = 'Word (.docx)';
+          btnWord.removeAttribute('disabled');
+        }
+      });
+
+      // Descarga automática por parámetro URL ?descargar=docx
+      if (urlParams.get('descargar') === 'docx') {
+        setTimeout(async () => {
+          await exportCurrentPlanillaToWordDocx();
+        }, 700);
+      }
     </script>
   </body>
 </html>
