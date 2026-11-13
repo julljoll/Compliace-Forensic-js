@@ -22,11 +22,11 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🧪 Run Tests
-        run: npm test
-
       - name: 🔨 Build Astro Static Site
         run: npm run build
+
+      - name: 🧪 Run Tests
+        run: npm test
 
       - name: 📂 Deploy dist/ to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

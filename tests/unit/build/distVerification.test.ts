@@ -1,10 +1,17 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 
 describe('Verificación de Despliegue cPanel y Estructura en dist/', () => {
   const rootDir = path.resolve(__dirname, '../../..');
   const distDir = path.resolve(rootDir, 'dist');
+
+  beforeAll(() => {
+    if (!fs.existsSync(distDir) || !fs.existsSync(path.resolve(distDir, 'index.html'))) {
+      execSync('npm run build', { cwd: rootDir, stdio: 'inherit' });
+    }
+  });
 
   it('debe existir el archivo database.sql con esquema relacional e inmutabilidad', () => {
     const sqlPath = path.resolve(rootDir, 'database.sql');
