@@ -1,0 +1,87 @@
+---
+/**
+ * SHA256.US — PrintLayout para Planillas Oficiales en Folio (216mm x 330mm)
+ * Aislado 100% de estilos USWDS con soporte para impresión web limpia o exportación a PDF.
+ */
+import '../styles/folio-aislado.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Documento Pericial Oficial — SHA256.US' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- USWDS Compilado para fuentes únicamente -->
+    <link rel="stylesheet" href="/assets/uswds/css/uswds.min.css" />
+    <style is:inline>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #524000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      @media print {
+        body {
+          background-color: #FFFFFF !important;
+        }
+      }
+      .no-print-bar {
+        width: 100%;
+        max-width: 216mm;
+        margin: 16px auto 0 auto;
+        background: #112E51;
+        color: #FFFFFF;
+        padding: 8px 16px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: 'Public Sans Web', sans-serif;
+        font-size: 13px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+      @media print {
+        .no-print-bar {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Barra de Control de Impresión (oculta al imprimir) -->
+    <div class="no-print-bar">
+      <div>
+        <strong style="color: #D9A700;">DOCUMENTO OFICIAL FOLIO:</strong> 216mm × 330mm (Oficio)
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button
+          onclick="window.history.back()"
+          style="background: transparent; border: 1px solid #CBD5E1; color: #FFFFFF; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;"
+        >
+          ← Regresar
+        </button>
+        <button
+          onclick="window.print()"
+          style="background: #005EA2; border: none; color: #FFFFFF; font-weight: 700; padding: 4px 14px; border-radius: 4px; cursor: pointer; font-size: 12px;"
+        >
+          🖨️ Imprimir / Guardar PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenedor Raíz Aislado -->
+    <div class="folio-forense-aislado">
+      <slot />
+    </div>
+  </body>
+</html>

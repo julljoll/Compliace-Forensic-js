@@ -1,0 +1,109 @@
+---
+/**
+ * SHA256.US — Planilla de Evaluación y Auditoría de UX/UI Forense (ISO 9241)
+ * Escala Likert 1-5, evaluación pericial. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Evaluación de Experiencia de Usuario UX/UI Forense"
+    nroLabel="N° EXPEDIENTE:"
+    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
+    watermarkText="EVALUACIÓN UX/UI"
+  >
+    <div class="uswds-top-header">
+      SHA256.US · PLANILLA DE EVALUACIÓN Y AUDITORÍA DE EXPERIENCIA DE USUARIO (UX/UI FORENSE) — ISO 9241
+    </div>
+
+    <!-- EXPEDIENTE Y EVALUADOR -->
+    <div class="section">
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">N° Expediente de Referencia</div>
+            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[EXP-2026-SHA-XXXX]'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Evaluador</div>
+            <div class="value" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || 'Perito / Abogado Litigante'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.0 MATRIZ DE EVALUACIÓN LIKERT -->
+    <div class="section">
+      <div class="section-title">1.0 MATRIZ DE EVALUACIÓN HEURÍSTICA Y USABILIDAD (LIKERT 1-5)</div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8pt;">
+        <thead>
+          <tr style="background: #112E51; color: #FFFFFF;">
+            <th style="padding: 6px; text-align: left;">Criterio Heurístico (ISO 9241)</th>
+            <th style="padding: 6px; width: 12%; text-align: center;">1 (Deficiente)</th>
+            <th style="padding: 6px; width: 12%; text-align: center;">2 (Regular)</th>
+            <th style="padding: 6px; width: 12%; text-align: center;">3 (Aceptable)</th>
+            <th style="padding: 6px; width: 12%; text-align: center;">4 (Bueno)</th>
+            <th style="padding: 6px; width: 12%; text-align: center;">5 (Excelente)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px;">1. Claridad de la información y membrete institucional</td>
+            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px;">2. Facilidad de llenado y validación de campos requeridos</td>
+            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px;">3. Visibilidad inmediata del estado de hash SHA-256</td>
+            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px;">4. Fidelidad de impresión física en tamaño Folio (216mm x 330mm)</td>
+            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px;">5. Espacio reglamentario para firmas y huellas dactilares</td>
+            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FIRMAS -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">EVALUADOR TÉCNICO</div>
+        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Evaluador]'}</span></div>
+        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="solicitante_cedula">{caso.solicitante_cedula || '[C.I.]'}</span></div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Evaluador</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO LÍDER</div>
+        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span></div>
+        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span></div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma de Recepción de Auditoría</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>

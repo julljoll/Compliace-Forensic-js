@@ -1,0 +1,78 @@
+# ==============================================================================
+# 🏛️ SHA256.US — Apache Configuration (.htaccess) para cPanel / LiteSpeed
+# Optimizado para Astro Static Build + PHP REST API + Activos USWDS
+# ==============================================================================
+
+Options -Indexes +FollowSymLinks
+DirectoryIndex index.html
+
+# 1. Seguridad: Bloquear archivos sensibles y directorios ocultos
+<FilesMatch "(config\.php|\.sql|\.env|\.git|\.md|composer\.(json|lock)|package(-lock)?\.json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# 2. Cabeceras de Seguridad y Protección Judicial
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# 3. Tipos MIME Estándar para Fuentes y Activos Web
+<IfModule mod_mime.c>
+    AddType image/svg+xml .svg .svgz
+    AddType font/woff2 .woff2
+    AddType font/woff .woff
+    AddType font/ttf .ttf
+    AddType application/javascript .js .mjs
+    AddType text/css .css
+    AddType application/json .json
+</IfModule>
+
+# 4. Compresión Gzip / Deflate para Máximo Rendimiento
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json image/svg+xml font/ttf font/woff font/woff2
+</IfModule>
+
+# 5. Caché Eficiente de Activos Estáticos e Inmutables
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# 6. Reescritura de Rutas Limpias (Clean URLs)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Permitir acceso directo a endpoints de la API PHP sin alterar
+    RewriteRule ^api/ - [L]
+
+    # Permitir acceso directo a archivos y directorios físicos existentes
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Si existe una versión .html del archivo solicitado (ej. /casos -> /casos.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+    RewriteRule ^([^/]+)/?$ $1.html [L]
+
+    # Rutas anidadas (ej. /planillas/prcc -> /planillas/prcc.html)
+    RewriteCond %{DOCUMENT_ROOT}/$1/$2.html -f
+    RewriteRule ^([^/]+)/([^/]+)/?$ $1/$2.html [L]
+</IfModule>

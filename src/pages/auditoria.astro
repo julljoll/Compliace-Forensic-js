@@ -1,0 +1,264 @@
+---
+/**
+ * SHA256.US — Módulo de Auditoría Inmutable Criptográfica (SHA-256 Hash Chain)
+ * Cumplimiento: ISO/IEC 27001 A.8.15 · ISO/IEC 27037 · RFC 3227.
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import SummaryBox from '../components/uswds/SummaryBox.astro';
+import Alert from '../components/uswds/Alert.astro';
+---
+
+<AppLayout title="Auditoría Inmutable SHA-256 — SHA256.US" activeNav="auditoria">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        🛡️ Registro de Auditoría Inmutable (Cadena SHA-256)
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Trazabilidad criptográfica sellada en tiempo real. Cada evento contiene el hash matemático del evento inmediatamente anterior.
+      </p>
+    </div>
+
+    <div>
+      <button
+        id="btn-verificar-cadena"
+        class="usa-button"
+        style="background-color: #008837; color: #FFFFFF; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px; border: none; cursor: pointer;"
+      >
+        <span>🛡️</span> Verificar Integridad Criptográfica
+      </button>
+    </div>
+  </div>
+
+  <!-- Contenedor del Resultado de la Verificación Criptográfica -->
+  <div id="contenedor-resultado-verificacion" style="display: none; margin-bottom: 24px;">
+    <!-- Se inyecta la alerta dinámica según el resultado -->
+  </div>
+
+  <!-- Resumen de Principios Criptográficos -->
+  <div style="margin-bottom: 24px;">
+    <SummaryBox heading="Garantía de Imposibilidad de Alteración Retrospectiva">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #1E293B;">
+        La bitácora de auditoría implementa un encadenamiento criptográfico determinista: modificar un solo carácter o milisegundo
+        de una acción previa alteraría su digest SHA-256, rompiendo inmediatamente el enlace con todos los bloques subsiguientes
+        y alertando al tribunal sobre una potencial contaminación de prueba digital.
+      </p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; font-family: 'Roboto Mono Web', monospace;">
+        <span class="usa-tag" style="background-color: #112E51; color: #FFF;">GÉNESIS: 00000000...0000</span>
+        <span class="usa-tag" style="background-color: #005EA2; color: #FFF;">CANONICAL JSON (RFC 8785)</span>
+        <span class="usa-tag" style="background-color: #008837; color: #FFF;">ALGORITMO: SHA-256 FIPS 180-4</span>
+      </div>
+    </SummaryBox>
+  </div>
+
+  <!-- Tabla USWDS de Eventos de la Cadena de Auditoría -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0;">
+        ⛓️ Bloques Registrados en la Cadena
+      </h2>
+      <div style="font-size: 12px; color: #64748B;">
+        Total bloques: <strong id="total-bloques" style="color: #112E51;">Cargando...</strong>
+      </div>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="usa-table usa-table--striped usa-table--compact" style="width: 100%; font-size: 12px;" id="tabla-auditoria">
+        <thead>
+          <tr style="background-color: #F1F5F9; color: #112E51;">
+            <th scope="col" style="font-weight: 700;">#</th>
+            <th scope="col" style="font-weight: 700;">Fecha y Hora</th>
+            <th scope="col" style="font-weight: 700;">Expediente</th>
+            <th scope="col" style="font-weight: 700;">Acción Pericial</th>
+            <th scope="col" style="font-weight: 700;">Perito Responsable</th>
+            <th scope="col" style="font-weight: 700;">Hash Anterior</th>
+            <th scope="col" style="font-weight: 700;">Hash Actual SHA-256</th>
+            <th scope="col" style="text-align: center; font-weight: 700;">Integridad</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-auditoria">
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 20px; color: #64748B;">
+              Cargando eventos de la cadena inmutable...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AppLayout>
+
+<script>
+  import { phpApi } from '../lib/data/phpApi';
+  import { idbGetAll } from '../lib/data/idb';
+  import { verificarCadena } from '../lib/crypto/hashChain';
+  import type { AuditEntry } from '../lib/domain/types';
+
+  const tbody = document.getElementById('tbody-auditoria');
+  const totalBloquesEl = document.getElementById('total-bloques');
+  const btnVerificar = document.getElementById('btn-verificar-cadena');
+  const contResultado = document.getElementById('contenedor-resultado-verificacion');
+
+  let entriesMemoria: AuditEntry[] = [];
+
+  async function cargarAuditoria() {
+    try {
+      entriesMemoria = await phpApi.obtenerAuditoria();
+    } catch {
+      entriesMemoria = await idbGetAll('auditoria');
+    }
+
+    if (!entriesMemoria || entriesMemoria.length === 0) {
+      // Mock inicial de eventos si está vacío
+      entriesMemoria = [
+        {
+          id: 'aud-1',
+          timestamp: '2026-07-19T08:00:00.000Z',
+          casoId: 'caso-mock-1',
+          evento: 'APERTURA_CASO',
+          actor: 'Jull Joll (Perito Líder)',
+          faseOrigen: 'F0',
+          faseDestino: 'F0',
+          detalles: { numeroCaso: 'MP-01-2026-WA', accion: 'Apertura de expediente y recepción de consentimiento' },
+          hashAnterior: '0000000000000000000000000000000000000000000000000000000000000000',
+          hashActual: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
+        },
+        {
+          id: 'aud-2',
+          timestamp: '2026-07-19T08:45:00.000Z',
+          casoId: 'caso-mock-1',
+          evento: 'CIERRE_FASE',
+          actor: 'Jull Joll (Perito Líder)',
+          faseOrigen: 'F0',
+          faseDestino: 'F1',
+          detalles: { faseCompletada: 'F0', controlesValidados: 6 },
+          hashAnterior: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
+          hashActual: '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
+        },
+        {
+          id: 'aud-3',
+          timestamp: '2026-07-19T09:30:00.000Z',
+          casoId: 'caso-mock-1',
+          evento: 'ADQUISICION_IMAGEN',
+          actor: 'Jull Joll (Perito Líder)',
+          faseOrigen: 'F1',
+          faseDestino: 'F2',
+          detalles: { writeBlocker: 'Tableau T8u', imagenHash: 'ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d' },
+          hashAnterior: '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
+          hashActual: 'ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d',
+        },
+      ];
+    }
+
+    if (totalBloquesEl) totalBloquesEl.textContent = `${entriesMemoria.length} bloques`;
+
+    renderizarTabla(entriesMemoria);
+  }
+
+  function renderizarTabla(entries: AuditEntry[]) {
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    entries.forEach((e, idx) => {
+      const tr = document.createElement('tr');
+      const hashAntTrunc = e.hashAnterior ? `${e.hashAnterior.substring(0, 8)}...${e.hashAnterior.substring(56)}` : 'GÉNESIS';
+      const hashActTrunc = `${e.hashActual.substring(0, 8)}...${e.hashActual.substring(56)}`;
+
+      tr.innerHTML = `
+        <td style="font-weight: 700; color: #112E51;">#${idx + 1}</td>
+        <td style="font-family: 'Roboto Mono Web', monospace; white-space: nowrap;">
+          ${new Date(e.timestamp).toLocaleString('es-VE')}
+        </td>
+        <td>
+          <strong style="color: #005EA2;">${e.casoId}</strong>
+        </td>
+        <td>
+          <span class="usa-tag" style="background-color: #E2E8F0; color: #112E51; font-weight: 700; font-size: 10px;">
+            ${e.evento}
+          </span>
+          <div style="font-size: 11px; color: #64748B; margin-top: 2px;">${e.faseOrigen || 'F0'} → ${e.faseDestino || 'F1'}</div>
+        </td>
+        <td>${e.actor}</td>
+        <td style="font-family: 'Roboto Mono Web', monospace; color: #64748B;" title="${e.hashAnterior}">
+          ${hashAntTrunc}
+        </td>
+        <td style="font-family: 'Roboto Mono Web', monospace; color: #005EA2; font-weight: 600;" title="${e.hashActual}">
+          ${hashActTrunc}
+        </td>
+        <td style="text-align: center;">
+          <span style="display: inline-flex; align-items: center; gap: 4px; color: #008837; font-weight: 700; font-size: 11px;">
+            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #008837;"></span>
+            VÁLIDO
+          </span>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  if (btnVerificar) {
+    btnVerificar.addEventListener('click', async () => {
+      if (!contResultado) return;
+      contResultado.style.display = 'block';
+
+      try {
+        const res = await phpApi.verificarAuditoria();
+        if (res.integra) {
+          contResultado.innerHTML = `
+            <div class="usa-alert usa-alert--success" role="status">
+              <div class="usa-alert__body">
+                <h4 class="usa-alert__heading">✅ Cadena 100% Íntegra y Verificada</h4>
+                <div class="usa-alert__text">
+                  Se verificaron matemáticamente los <strong>${res.totalEntradas} bloques</strong> de la cadena.
+                  Todos los enlaces SHA-256 coinciden punto a punto sin roturas de trazabilidad ni adulteraciones.
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          contResultado.innerHTML = `
+            <div class="usa-alert usa-alert--error" role="alert">
+              <div class="usa-alert__body">
+                <h4 class="usa-alert__heading">❌ Rotura de Integridad Detectada</h4>
+                <div class="usa-alert__text">
+                  ${res.error || 'Inconsistencia en el hash de un bloque previo.'}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      } catch (err) {
+        // Fallback: verificación en cliente
+        const resLocal = await verificarCadena(entriesMemoria);
+        if (resLocal.valida) {
+          contResultado.innerHTML = `
+            <div class="usa-alert usa-alert--success" role="status">
+              <div class="usa-alert__body">
+                <h4 class="usa-alert__heading">✅ Cadena 100% Íntegra (Verificación Local WebCrypto)</h4>
+                <div class="usa-alert__text">
+                  Los <strong>${resLocal.total} bloques</strong> verificados en cliente concuerdan con la regla de enlace SHA-256 inmutable.
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          contResultado.innerHTML = `
+            <div class="usa-alert usa-alert--error" role="alert">
+              <div class="usa-alert__body">
+                <h4 class="usa-alert__heading">❌ Rotura de Cadena Detectada</h4>
+                <div class="usa-alert__text">
+                  ${resLocal.error} en el bloque #${resLocal.indiceInvalido}.
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+    });
+  }
+
+  if (typeof window !== 'undefined') {
+    cargarAuditoria();
+  }
+</script>

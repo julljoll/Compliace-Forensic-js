@@ -1,4 +1,4 @@
-import { Smartphone, Mail, HardDrive } from '../components/atoms/AppleIcon';
+// Íconos referenciados por nombre (USWDS sprite / Lucide) — sin dependencia de componentes React.
 
 export type TipoProyecto = 'forense_whatsapp' | 'forense_email' | 'forense_discoduro' | 'forense_imagen';
 
@@ -44,7 +44,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     id: 'forense_whatsapp',
     label: 'Forense WhatsApp',
     descripcion: 'Extracción y análisis forense de conversaciones de WhatsApp desde dispositivo móvil Android. Incluye adquisición lógica, parseo de msgstore.db, transcripción de audios .opus y dictamen pericial.',
-    icon: Smartphone,
+    icon: 'Smartphone',
     iconoName: 'Smartphone',
     color: 'green',
     normativasPorDefecto: ['n1', 'n4', 'n8', 'n7'],
@@ -267,7 +267,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     id: 'forense_email',
     label: 'Forense Email',
     descripcion: 'Análisis forense de correo electrónico: obtención de buzones (PST/OST), análisis de cabeceras, extracción de adjuntos, verificación de metadatos y cadena de custodia de comunicaciones electrónicas.',
-    icon: Mail,
+    icon: 'Mail',
     iconoName: 'Mail',
     color: 'blue',
     normativasPorDefecto: ['n1', 'n7', 'n8', 'n6'],
@@ -442,7 +442,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     id: 'forense_discoduro',
     label: 'Forense Disco Duro',
     descripcion: 'Adquisición forense de discos duros y unidades de almacenamiento. Incluye creación de imagen bit-a-bit, análisis de particiones, recuperación de archivos eliminados, y dictamen pericial.',
-    icon: HardDrive,
+    icon: 'HardDrive',
     iconoName: 'HardDrive',
     color: 'purple',
     normativasPorDefecto: ['n1', 'n3', 'n4', 'n8'],
@@ -638,7 +638,7 @@ const TIPOS_PROYECTO: Record<TipoProyecto, ProyectoTipoConfig> = {
     id: 'forense_imagen',
     label: 'Imagen Forense',
     descripcion: 'Adquisición y verificación de imagen forense bit a bit de dispositivo de almacenamiento (HDD/SSD/USB). Incluye generación de hash SHA-256, preservación de integridad criptográfica y cadena de custodia MUCC-2017 e ISO/IEC 27037:2012.',
-    icon: HardDrive,
+    icon: 'HardDrive',
     iconoName: 'HardDrive',
     color: 'lime',
     normativasPorDefecto: ['n1', 'n3', 'n5', 'n7', 'n12'],

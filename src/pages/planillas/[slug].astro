@@ -1,0 +1,99 @@
+---
+/**
+ * SHA256.US — Renderizador Dinámico de las 13 Planillas Oficiales en Folio (216mm x 330mm)
+ * Compilación estática garantizada con getStaticPaths() y data binding reactivo en cliente.
+ */
+import PrintLayout from '../../layouts/PrintLayout.astro';
+import ActaConsentimiento from '../../components/planillas/ActaConsentimiento.astro';
+import ActaEntrevista from '../../components/planillas/ActaEntrevista.astro';
+import ActaObtencion from '../../components/planillas/ActaObtencion.astro';
+import PlanillaPRCC from '../../components/planillas/PlanillaPRCC.astro';
+import ActaDesprecintado from '../../components/planillas/ActaDesprecintado.astro';
+import ActaDictamen from '../../components/planillas/ActaDictamen.astro';
+import ActaEntregaResultados from '../../components/planillas/ActaEntregaResultados.astro';
+import ActaSanitizacion from '../../components/planillas/ActaSanitizacion.astro';
+import ActaAuditoriaTimeline from '../../components/planillas/ActaAuditoriaTimeline.astro';
+import PlanillaEvaluacionUX from '../../components/planillas/PlanillaEvaluacionUX.astro';
+import PlanillaAudioSonic from '../../components/planillas/PlanillaAudioSonic.astro';
+import DictamenImagenes from '../../components/planillas/DictamenImagenes.astro';
+import DictamenAudios from '../../components/planillas/DictamenAudios.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'acta-consentimiento' } },
+    { params: { slug: 'acta-entrevista' } },
+    { params: { slug: 'acta-obtencion' } },
+    { params: { slug: 'planilla-prcc' } },
+    { params: { slug: 'acta-desprecintado' } },
+    { params: { slug: 'acta-dictamen' } },
+    { params: { slug: 'acta-entrega-resultados' } },
+    { params: { slug: 'acta-sanitizacion' } },
+    { params: { slug: 'acta-auditoria-timeline' } },
+    { params: { slug: 'planilla-evaluacion-ux' } },
+    { params: { slug: 'planilla-audio-sonic' } },
+    { params: { slug: 'dictamen-imagenes' } },
+    { params: { slug: 'dictamen-audios' } },
+  ];
+}
+
+const { slug } = Astro.params;
+
+const TITULOS: Record<string, string> = {
+  'acta-consentimiento': 'Acta de Consentimiento Informado',
+  'acta-entrevista': 'Acta de Entrevista Forense al Consignante',
+  'acta-obtencion': 'Acta de Obtención y Preservación Inicial',
+  'planilla-prcc': 'Planilla de Registro de Cadena de Custodia (PRCC)',
+  'acta-desprecintado': 'Acta de Desprecintado en Laboratorio',
+  'acta-dictamen': 'Dictamen Pericial Oficial de Informática Forense',
+  'acta-entrega-resultados': 'Acta de Entrega de Resultados y Evidencias',
+  'acta-sanitizacion': 'Acta de Sanitización de Medios del Laboratorio',
+  'acta-auditoria-timeline': 'Acta de Auditoría y Línea de Tiempo Inmutable',
+  'planilla-evaluacion-ux': 'Planilla de Evaluación de Calidad UX',
+  'planilla-audio-sonic': 'Planilla de Análisis Forense de Audio',
+  'dictamen-imagenes': 'Dictamen Especializado de Imágenes',
+  'dictamen-audios': 'Dictamen Especializado de Audios',
+};
+
+const tituloActual = TITULOS[slug || ''] || 'Documento Oficial — SHA256.US';
+---
+
+<PrintLayout title={`${tituloActual} — SHA256.US`}>
+  <div id="contenedor-planilla-activa" data-slug={slug}>
+    {slug === 'acta-consentimiento' && <ActaConsentimiento />}
+    {slug === 'acta-entrevista' && <ActaEntrevista />}
+    {slug === 'acta-obtencion' && <ActaObtencion />}
+    {slug === 'planilla-prcc' && <PlanillaPRCC />}
+    {slug === 'acta-desprecintado' && <ActaDesprecintado />}
+    {slug === 'acta-dictamen' && <ActaDictamen />}
+    {slug === 'acta-entrega-resultados' && <ActaEntregaResultados />}
+    {slug === 'acta-sanitizacion' && <ActaSanitizacion />}
+    {slug === 'acta-auditoria-timeline' && <ActaAuditoriaTimeline />}
+    {slug === 'planilla-evaluacion-ux' && <PlanillaEvaluacionUX />}
+    {slug === 'planilla-audio-sonic' && <PlanillaAudioSonic />}
+    {slug === 'dictamen-imagenes' && <DictamenImagenes />}
+    {slug === 'dictamen-audios' && <DictamenAudios />}
+  </div>
+</PrintLayout>
+
+<script>
+  import { bindPlanilla } from '../../lib/data/bindPlanilla';
+
+  async function init() {
+    const contenedor = document.getElementById('contenedor-planilla-activa');
+    const slug = contenedor?.getAttribute('data-slug') || '';
+    if (slug) {
+      await bindPlanilla(slug);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('imprimir') === '1') {
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    init();
+  }
+</script>

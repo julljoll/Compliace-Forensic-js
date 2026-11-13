@@ -1,37 +1,26 @@
 import React from 'react';
 
 export interface StatusDotProps {
-  status: 'online' | 'offline' | 'reconectando' | null;
-  className?: string;
+  status: 'online' | 'offline' | 'busy' | 'away' | null;
   size?: number;
 }
 
-export const StatusDot: React.FC<StatusDotProps> = ({
-  status,
-  className = '',
-  size = 8
-}) => {
-  const colors: Record<string, string> = {
-    online: '#008837',
-    offline: '#D9381E',
-    reconectando: '#D9A700',
-    null: '#475569',
-  };
-
-  const statusKey = status === null ? 'null' : status;
-  const color = colors[statusKey];
+export function StatusDot({ status, size = 8 }: StatusDotProps) {
+  const isOnline = status === 'online';
+  const color = isOnline ? '#008837' : status === 'offline' ? '#D9381E' : '#71767A';
 
   return (
     <span
-      className={`d-inline-block rounded-circle ${className}`}
+      className="usa-status-dot"
       style={{
+        display: 'inline-block',
         width: `${size}px`,
         height: `${size}px`,
+        borderRadius: '50%',
         backgroundColor: color,
-        boxShadow: status === 'online' ? `0 0 6px ${color}` : 'none',
       }}
-    />
+    >
+      <span style={{ display: 'none' }}>{status || 'unknown'}</span>
+    </span>
   );
-};
-
-export default StatusDot;
+}

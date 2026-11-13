@@ -1,0 +1,183 @@
+---
+/**
+ * SHA256.US — Acta de Entrevista Técnico-Pericial
+ * MUCC-2017 & ISO/IEC 27042. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Acta de Entrevista Técnico-Pericial"
+    nroLabel="N° EXPEDIENTE:"
+    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
+    watermarkText="ENTREVISTA"
+  >
+    <div class="uswds-top-header">
+      ACTA DE ENTREVISTA TÉCNICO-PERICIAL — MUCC-2017 &amp; ISO/IEC 27042
+    </div>
+
+    <!-- 1.0 DATOS GENERALES -->
+    <div class="section">
+      <div class="section-title">1.0 DATOS GENERALES Y LUGAR DE LA ENTREVISTA</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-group">
+            <div class="label">Lugar de Actuación / Sede</div>
+            <div class="value" contenteditable="true">
+              Lara, Venezuela — Laboratorio Forense Privado SHA256.US
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Fecha y Hora de la Entrevista</div>
+            <div class="value font-mono" contenteditable="true">
+              {new Date().toLocaleDateString('es-VE')} - {new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 IDENTIFICACIÓN DEL ENTREVISTADO -->
+    <div class="section">
+      <div class="section-title">2.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-group">
+            <div class="label">Apellidos y Nombres</div>
+            <div class="value" contenteditable="true" data-field="solicitante_nombre">
+              {caso.solicitante_nombre || '[Apellidos y Nombres del Entrevistado]'}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Cédula de Identidad / Pasaporte</div>
+            <div class="value" contenteditable="true" data-field="solicitante_cedula">
+              {caso.solicitante_cedula || '[Cédula de Identidad]'}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Teléfono de Contacto Principal</div>
+            <div class="value" contenteditable="true" data-field="dispositivo_numero_tel">
+              {caso.dispositivo_numero_tel || caso.solicitante_telefono || '[Teléfono de Contacto]'}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Correo Electrónico</div>
+            <div class="value" contenteditable="true" data-field="correo_investigar">
+              {caso.correo_investigar || caso.solicitante_email || '[Correo Electrónico]'}
+            </div>
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <div class="label">Dirección de Habitación Habitual</div>
+            <div class="value" contenteditable="true" data-field="solicitante_direccion">
+              {caso.solicitante_direccion || '[Dirección de Habitación Completa]'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.0 DECLARACIÓN TÉCNICO-PERICIAL -->
+    <div class="section">
+      <div class="section-title">3.0 DECLARACIÓN TÉCNICO-PERICIAL Y ANTECEDENTES</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-group">
+            <div class="label">Equipo / Evidencia Objeto de Examen</div>
+            <div class="value" contenteditable="true">
+              {caso.dispositivo_marca ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}` : (caso.discoduro_marca ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}` : '[Marca / Modelo del Equipo]')}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Serial / IMEI</div>
+            <div class="value font-mono" contenteditable="true" data-field="dispositivo_imei">
+              {caso.dispositivo_imei || caso.discoduro_serial || '[Serial / IMEI]'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.0 CONOCIMIENTO DE DERECHOS Y MOTIVO -->
+    <div class="section">
+      <div class="section-title">4.0 DECLARACIÓN MOTIVADA DEL ENTREVISTADO Y ANTECEDENTES DEL HECHO</div>
+      <div class="form-group" contenteditable="true" style="min-height: 120px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 10px 12px; font-size: 8.5pt; line-height: 20px; background-color: #FAFAFA;">
+        <p style="margin: 0; color: #1B2A4A;">
+          El entrevistado expone de forma voluntaria los antecedentes relacionados con los hechos investigados, manifestando libremente las circunstancias de tiempo, modo y lugar, facilitando los códigos de desbloqueo y credenciales requeridas para la adquisición pericial forense conforme al principio de cooperación y buena fe procesal.
+        </p>
+        <div style="border-bottom: 1px dotted #94A3B8; height: 22px;"></div>
+        <div style="border-bottom: 1px dotted #94A3B8; height: 22px;"></div>
+        <div style="border-bottom: 1px dotted #94A3B8; height: 22px;"></div>
+      </div>
+    </div>
+
+    <!-- CIERRE Y FIRMAS BILATERALES -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">EL ENTREVISTADO</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Nombre del Entrevistado]'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="solicitante_cedula">{caso.solicitante_cedula || '[Cédula del Entrevistado]'}</span>
+        </div>
+        <div class="sig-field">
+          Teléfono: <span class="sig-underline" contenteditable="true" data-field="dispositivo_numero_tel">{caso.dispositivo_numero_tel || caso.solicitante_telefono || '[Teléfono]'}</span>
+        </div>
+        <div class="sig-field">
+          Dirección: <span class="sig-underline" contenteditable="true" data-field="solicitante_direccion">{caso.solicitante_direccion || '[Dirección]'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Entrevistado</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper">
+            <div class="thumb-box"></div>
+            <span class="thumb-label">PULGAR DER.</span>
+          </div>
+          <div class="thumb-wrapper">
+            <div class="thumb-box"></div>
+            <span class="thumb-label">PULGAR IZQ.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO ENTREVISTADOR</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || '[Nombre del Perito]'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
+        </div>
+        <div class="sig-field">
+          CIV N°: <span class="sig-underline" contenteditable="true" data-field="perito_civ">{caso.perito_civ || 'CIV-299410'}</span>
+        </div>
+        <div class="sig-field">
+          Cargo: <span class="sig-underline" contenteditable="true" data-field="perito_cargo">{caso.perito_cargo || 'Perito Informático Forense'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Perito Entrevistador</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper">
+            <div class="thumb-box"></div>
+            <span class="thumb-label">PULGAR DER.</span>
+          </div>
+          <div class="thumb-wrapper">
+            <div class="thumb-box"></div>
+            <span class="thumb-label">PULGAR IZQ.</span>
+          </div>
+        </div>
+        <div style="font-size: 8px; text-align: center; margin-top: 6px; color: #0F172A; font-weight: bold;">
+          Rol ISO/IEC 27037: [&nbsp;X&nbsp;] DEFR (Adquisición &amp; Imagen Forense) &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] DES
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>

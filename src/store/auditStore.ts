@@ -1,21 +1,24 @@
-import { create } from 'zustand';
-import { indexedDBStorage } from '../db/indexedDB';
+/**
+ * SHA256.US — Store de Auditoría Criptográfica Inmutable (SHA-256 Hash Chain).
+ * Implementado con arquitectura pura y compatible con React / Vanilla TypeScript.
+ */
+
+import { crearEslabon, verificarCadena, type EntradaAuditoria, type NuevaEntrada } from '../lib/crypto/hashChain';
+import { GENESIS_HASH } from '../lib/crypto/canonical';
+import { idbGetAll, idbPut, idbClear } from '../lib/data/idb';
 
 export interface AuditEntry {
   id: string;
+  seq?: number;
   casoId?: string;
   usuario: string;
   accion: string;
   detalle: string;
   timestamp: string;
   nivel: 'info' | 'warning' | 'error' | 'success';
-  /** Hash SHA-256 del contenido de esta entrada */
   hashActual: string;
-  /** Hash SHA-256 de la entrada anterior (encadenamiento inmutable) */
   hashAnterior: string;
-  /** Perito que firma esta entrada */
   firmadoPor?: string;
-  /** Timestamp de firma */
   firmadoTimestamp?: string;
 }
 
@@ -23,113 +26,148 @@ interface AuditState {
   logs: AuditEntry[];
   isLoading: boolean;
   error: string | null;
-  /** Hash de la última entrada (para encadenamiento) */
   lastHash: string;
 
-  addEntry: (entry: Omit<AuditEntry, 'id' | 'timestamp' | 'hashActual' | 'hashAnterior'>) => Promise<void>;
+  addEntry: (entry: {
+    usuario: string;
+    accion: string;
+    detalle: string;
+    nivel?: 'info' | 'warning' | 'error' | 'success';
+    casoId?: string;
+  }) => Promise<void>;
   loadLogs: () => Promise<void>;
   getLogsByCaso: (casoId: string) => AuditEntry[];
   clearLogs: () => Promise<void>;
-  exportToJSON: () => Promise<string>;
   verifyChain: () => Promise<{ valid: boolean; brokenAt?: string }>;
 }
 
-async function sha256(data: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const buffer = encoder.encode(data);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-  return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-const STORE_NAME = 'audit_logs';
-
-export const useAuditStore = create<AuditState>()((set, get) => ({
+let state: AuditState = {
   logs: [],
   isLoading: false,
   error: null,
-  lastHash: '',
+  lastHash: GENESIS_HASH,
 
   addEntry: async (entry) => {
-    const { logs, lastHash } = get();
-    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-    const timestamp = new Date().toISOString();
+    const prev = state.logs[0];
+    const prevEslabon: EntradaAuditoria | undefined = prev
+      ? {
+          seq: prev.seq || state.logs.length,
+          casoId: prev.casoId || null,
+          usuario: prev.usuario,
+          accion: prev.accion,
+          detalle: prev.detalle,
+          nivel: prev.nivel,
+          ts: prev.timestamp,
+          hashAnterior: prev.hashAnterior,
+          hashActual: prev.hashActual,
+        }
+      : undefined;
 
-    const content = `${entry.accion}|${entry.detalle}|${entry.usuario}|${timestamp}|${lastHash}`;
-    const hashActual = await sha256(content);
-
-    const newEntry: AuditEntry = {
-      ...entry,
-      id,
-      timestamp,
-      hashActual,
-      hashAnterior: lastHash,
+    const nueva: NuevaEntrada = {
+      casoId: entry.casoId || null,
+      usuario: entry.usuario,
+      accion: entry.accion,
+      detalle: entry.detalle,
+      nivel: entry.nivel || 'info',
     };
 
-    try {
-      await indexedDBStorage.setItem(STORE_NAME, newEntry);
-      set({ logs: [newEntry, ...logs], lastHash: hashActual });
-    } catch (err) {
-      console.error('[AuditStore] Error guardando entrada:', err);
-      set({ error: 'Error al registrar entrada de auditoría' });
+    const eslabon = await crearEslabon(nueva, prevEslabon);
+
+    const auditEntry: AuditEntry = {
+      id: `audit-${eslabon.seq}-${Date.now()}`,
+      seq: eslabon.seq,
+      casoId: eslabon.casoId || undefined,
+      usuario: eslabon.usuario,
+      accion: eslabon.accion,
+      detalle: eslabon.detalle,
+      timestamp: eslabon.ts,
+      nivel: eslabon.nivel,
+      hashActual: eslabon.hashActual,
+      hashAnterior: prev ? prev.hashActual : '',
+    };
+
+    state.logs = [auditEntry, ...state.logs];
+    state.lastHash = auditEntry.hashActual;
+    listeners.forEach((l) => l());
+
+    if (typeof window !== 'undefined') {
+      await idbPut('auditoria', eslabon).catch(() => {});
     }
   },
 
   loadLogs: async () => {
-    set({ isLoading: true });
+    state.isLoading = true;
+    listeners.forEach((l) => l());
     try {
-      const logs = await indexedDBStorage.getAll<AuditEntry>(STORE_NAME);
-      logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-      const lastHash = logs.length > 0 ? logs[0].hashActual : '';
-      set({ logs, lastHash, isLoading: false });
-    } catch (err) {
-      console.error('[AuditStore] Error cargando logs:', err);
-      set({ error: 'Error al cargar registros de auditoría', isLoading: false });
+      if (typeof window !== 'undefined') {
+        const raw = await idbGetAll<EntradaAuditoria>('auditoria');
+        raw.sort((a, b) => b.seq - a.seq);
+        state.logs = raw.map((r) => ({
+          id: `audit-${r.seq}`,
+          seq: r.seq,
+          casoId: r.casoId || undefined,
+          usuario: r.usuario,
+          accion: r.accion,
+          detalle: r.detalle,
+          timestamp: r.ts,
+          nivel: r.nivel,
+          hashActual: r.hashActual,
+          hashAnterior: r.hashAnterior,
+        }));
+        state.lastHash = state.logs[0]?.hashActual || GENESIS_HASH;
+      }
+    } finally {
+      state.isLoading = false;
+      listeners.forEach((l) => l());
     }
   },
 
-  getLogsByCaso: (casoId) => {
-    return get().logs.filter((l) => l.casoId === casoId);
+  getLogsByCaso: (casoId: string) => {
+    return state.logs.filter((l) => l.casoId === casoId);
   },
 
   clearLogs: async () => {
-    try {
-      await indexedDBStorage.clear(STORE_NAME);
-      set({ logs: [], lastHash: '' });
-    } catch (err) {
-      console.error('[AuditStore] Error limpiando logs:', err);
+    state.logs = [];
+    state.lastHash = GENESIS_HASH;
+    listeners.forEach((l) => l());
+    if (typeof window !== 'undefined') {
+      await idbClear('auditoria').catch(() => {});
     }
-  },
-
-  exportToJSON: async () => {
-    return indexedDBStorage.exportToJSON(STORE_NAME);
   },
 
   verifyChain: async () => {
-    const logs = get().logs;
-    if (logs.length === 0) return { valid: true };
+    if (state.logs.length === 0) return { valid: true };
+    const entradas: EntradaAuditoria[] = state.logs.map((l) => ({
+      seq: l.seq || 1,
+      casoId: l.casoId || null,
+      usuario: l.usuario,
+      accion: l.accion,
+      detalle: l.detalle,
+      nivel: l.nivel,
+      ts: l.timestamp,
+      hashAnterior: l.hashAnterior || GENESIS_HASH,
+      hashActual: l.hashActual,
+    }));
 
-    const sorted = [...logs].sort((a, b) => {
-      const timeDiff = new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
-      if (timeDiff !== 0) return timeDiff;
-      return (a.hashAnterior || '').localeCompare(b.hashAnterior || '');
-    });
-
-    for (let i = 0; i < sorted.length; i++) {
-      const entry = sorted[i];
-      const prevHash = i === 0 ? '' : sorted[i - 1].hashActual;
-
-      const content = `${entry.accion}|${entry.detalle}|${entry.usuario}|${entry.timestamp}|${prevHash}`;
-      const expectedHash = await sha256(content);
-
-      if (entry.hashActual !== expectedHash) {
-        return { valid: false, brokenAt: entry.id };
-      }
-      if (entry.hashAnterior !== prevHash) {
-        return { valid: false, brokenAt: entry.id };
-      }
+    const res = await verificarCadena(entradas);
+    if (res.valida) {
+      return { valid: true };
     }
-    return { valid: true };
+    const roto = state.logs.find((l) => l.seq === res.rotoEn);
+    return { valid: false, brokenAt: roto?.id || String(res.rotoEn) };
   },
-}));
+};
+
+const listeners = new Set<() => void>();
+
+export const useAuditStore = {
+  getState: () => state,
+  setState: (partial: Partial<AuditState>) => {
+    state = { ...state, ...partial };
+    listeners.forEach((l) => l());
+  },
+  subscribe: (listener: () => void) => {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  },
+};

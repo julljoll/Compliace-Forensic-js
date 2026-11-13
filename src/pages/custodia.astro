@@ -1,0 +1,263 @@
+---
+/**
+ * SHA256.US — Módulo de Cadena de Custodia (PRCC)
+ * Cumplimiento estricto del MUCC-2017 (Gaceta Oficial N° 41.247) y COPP Art. 187.
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import Alert from '../components/uswds/Alert.astro';
+import SummaryBox from '../components/uswds/SummaryBox.astro';
+import { MOCK_CASOS } from '../lib/data/seed';
+---
+
+<AppLayout title="Cadena de Custodia (PRCC) — SHA256.US" activeNav="custodia">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        Cadena de Custodia de Evidencias Digitales
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Control de trazabilidad física y digital ininterrumpida conforme al <strong>MUCC-2017</strong> y <strong>COPP Art. 187</strong>.
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <a
+        id="btn-ver-prcc"
+        href={`/planillas/planilla-prcc?casoId=${MOCK_CASOS[0].id}`}
+        class="usa-button"
+        style="background-color: #D9A700; color: #112E51; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px;"
+      >
+        <span>📜</span> Generar Planilla PRCC (Folio)
+      </a>
+      <a
+        id="btn-ver-desprecintado"
+        href={`/planillas/acta-desprecintado?casoId=${MOCK_CASOS[0].id}`}
+        class="usa-button usa-button--outline"
+        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; padding: 10px 16px; border-radius: 4px;"
+      >
+        🔓 Acta de Desprecintado
+      </a>
+    </div>
+  </div>
+
+  <!-- Selector de Caso Activo -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+    <div>
+      <span style="font-size: 12px; font-weight: 700; color: #64748B; text-transform: uppercase;">Expediente en Custodia:</span>
+      <div style="font-size: 18px; font-weight: 800; color: #112E51;" id="custodia-caso-titulo">
+        {MOCK_CASOS[0].numeroCaso} — {MOCK_CASOS[0].titulo}
+      </div>
+    </div>
+    <div style="min-width: 260px;">
+      <select class="usa-select" id="select-custodia-caso" style="height: 38px;">
+        {MOCK_CASOS.map((c) => (
+          <option value={c.id}>
+            {c.numeroCaso} ({c.evidenciaMarca} {c.evidenciaModelo})
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <!-- Alerta Normativa de Nulidad Probatoria -->
+  <Alert type="warning" heading="Garantía de Intangibilidad y Blindaje Penal (COPP Art. 187)">
+    Toda ruptura en la trazabilidad del precinto, omisión de firmas en la Planilla PRCC o falta de registro en la entrega/recepción
+    acarreará la nulidad absoluta de la evidencia digital conforme al artículo 181 y 187 del Código Orgánico Procesal Penal.
+  </Alert>
+
+  <div style="margin-top: 24px;"></div>
+
+  <!-- Rejilla de Resumen de la Evidencia Custodiada -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #005EA2; border-radius: 4px; padding: 18px;">
+      <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Planilla Oficial PRCC</div>
+      <div style="font-size: 20px; font-weight: 800; color: #112E51; margin: 4px 0; font-family: 'Roboto Mono Web', monospace;" id="prcc-numero">
+        PRCC-2026-0042
+      </div>
+      <div style="font-size: 12px; color: #008837; font-weight: 600;">● Abierta y Registrada</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #D9A700; border-radius: 4px; padding: 18px;">
+      <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Precinto de Seguridad N°</div>
+      <div style="font-size: 20px; font-weight: 800; color: #112E51; margin: 4px 0; font-family: 'Roboto Mono Web', monospace;" id="precinto-numero">
+        PREC-99482-A
+      </div>
+      <div style="font-size: 12px; color: #112E51; font-weight: 600;">Etiqueta de Seguridad Intacta</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #008837; border-radius: 4px; padding: 18px;">
+      <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Aislamiento Electromagnético</div>
+      <div style="font-size: 20px; font-weight: 800; color: #008837; margin: 4px 0;" id="aislamiento-rf">
+        Bolsa Faraday Activa
+      </div>
+      <div style="font-size: 12px; color: #64748B;">Modo Avión y Blindaje RF</div>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #112E51; border-radius: 4px; padding: 18px;">
+      <div style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Ubicación Física en Bóveda</div>
+      <div style="font-size: 20px; font-weight: 800; color: #112E51; margin: 4px 0;">
+        Estante A3 · Gaveta 12
+      </div>
+      <div style="font-size: 12px; color: #64748B;">Bóveda Climatizada Controlada</div>
+    </div>
+  </div>
+
+  <!-- Resumen de Controles MUCC-2017 -->
+  <div style="margin-bottom: 24px;">
+    <SummaryBox heading="Requisitos de Custodia — Manual Único de Cadena de Custodia (MUCC-2017)">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; font-size: 13px; color: #1E293B;">
+        <div>
+          <strong>1. Modalidad de Obtención:</strong>
+          <div>Consignación formal directa por la víctima / fiscalía requirente.</div>
+        </div>
+        <div>
+          <strong>2. Tipología de Embalaje:</strong>
+          <div>Bolsa antiestática con barrera Faraday y precinto de alta seguridad.</div>
+        </div>
+        <div>
+          <strong>3. Resguardo Temporal:</strong>
+          <div>Depósito en Bóveda bajo llave del Perito Custodio Designado.</div>
+        </div>
+      </div>
+    </SummaryBox>
+  </div>
+
+  <!-- Bitácora de Traspasos y Transferencias -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+      <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0;">
+        ⛓️ Historial de Transferencias y Traspasos de Custodia
+      </h2>
+      <button
+        id="btn-nueva-transferencia"
+        class="usa-button usa-button--outline"
+        style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-color: #005EA2; color: #005EA2;"
+      >
+        ➕ Registrar Traspaso Formal
+      </button>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="usa-table usa-table--striped" style="width: 100%; font-size: 13px;">
+        <thead>
+          <tr style="background-color: #F1F5F9; color: #112E51;">
+            <th scope="col" style="font-weight: 700;">Fecha y Hora</th>
+            <th scope="col" style="font-weight: 700;">Custodio Entrega (Consignante/Perito)</th>
+            <th scope="col" style="font-weight: 700;">Custodio Recibe (Perito/Analista)</th>
+            <th scope="col" style="font-weight: 700;">Propósito / Actividad</th>
+            <th scope="col" style="font-weight: 700;">Estado del Precinto</th>
+            <th scope="col" style="font-weight: 700;">Sello Hash</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-transferencias">
+          <tr>
+            <td style="font-family: 'Roboto Mono Web', monospace;">2026-07-19 08:30</td>
+            <td>
+              <strong>Carlos Eduardo Méndez</strong>
+              <div style="font-size: 11px; color: #64748B;">C.I. V-18.452.901 (Consignante)</div>
+            </td>
+            <td>
+              <strong>Jull Joll</strong>
+              <div style="font-size: 11px; color: #64748B;">C.I. V-15.890.123 (Perito Líder)</div>
+            </td>
+            <td>Recepción y Fijación Inicial en Sitio de Suceso</td>
+            <td>
+              <span class="usa-tag" style="background-color: #008837; color: #FFFFFF; font-size: 11px;">
+                PREC-99482-A (Íntegro)
+              </span>
+            </td>
+            <td style="font-family: 'Roboto Mono Web', monospace; font-size: 11px; color: #005EA2;">
+              7f83b165...7f04
+            </td>
+          </tr>
+          <tr>
+            <td style="font-family: 'Roboto Mono Web', monospace;">2026-07-19 10:15</td>
+            <td>
+              <strong>Jull Joll</strong>
+              <div style="font-size: 11px; color: #64748B;">C.I. V-15.890.123 (Perito Líder)</div>
+            </td>
+            <td>
+              <strong>Jull Joll</strong>
+              <div style="font-size: 11px; color: #64748B;">Laboratorio Forense SHA256.US</div>
+            </td>
+            <td>Desprecintado controlado y Clonación Bit-a-Bit E01</td>
+            <td>
+              <span class="usa-tag" style="background-color: #D9A700; color: #112E51; font-weight: 700; font-size: 11px;">
+                Apertura Controlada
+              </span>
+            </td>
+            <td style="font-family: 'Roboto Mono Web', monospace; font-size: 11px; color: #005EA2;">
+              e3b0c442...9823
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AppLayout>
+
+<script>
+  import { idbGetAll } from '../lib/data/idb';
+  import { phpApi } from '../lib/data/phpApi';
+  import type { CasoCMS } from '../lib/domain/types';
+
+  const select = document.getElementById('select-custodia-caso') as HTMLSelectElement;
+  const btnPrcc = document.getElementById('btn-ver-prcc') as HTMLAnchorElement;
+  const btnDesp = document.getElementById('btn-ver-desprecintado') as HTMLAnchorElement;
+  const casoTit = document.getElementById('custodia-caso-titulo');
+
+  async function initCustodia() {
+    let casos: CasoCMS[] = [];
+    try {
+      casos = await phpApi.listarCasos();
+    } catch {
+      casos = await idbGetAll('casos');
+    }
+
+    if (!casos || casos.length === 0) return;
+
+    if (select) {
+      select.innerHTML = '';
+      casos.forEach((c) => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.numeroCaso} (${c.evidenciaMarca} ${c.evidenciaModelo})`;
+        select.appendChild(opt);
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const paramId = params.get('casoId');
+      if (paramId) select.value = paramId;
+
+      actualizarCaso(select.value, casos);
+
+      select.addEventListener('change', () => {
+        actualizarCaso(select.value, casos);
+      });
+    }
+
+    const btnNuevoTraspaso = document.getElementById('btn-nueva-transferencia');
+    if (btnNuevoTraspaso) {
+      btnNuevoTraspaso.addEventListener('click', () => {
+        const motivo = prompt('Ingrese el motivo de la transferencia de custodia:');
+        if (motivo) {
+          alert('Transferencia registrada exitosamente en la Planilla PRCC.');
+        }
+      });
+    }
+  }
+
+  function actualizarCaso(casoId: string, casos: CasoCMS[]) {
+    const c = casos.find((x) => x.id === casoId);
+    if (!c) return;
+
+    if (casoTit) casoTit.textContent = `${c.numeroCaso} — ${c.titulo}`;
+    if (btnPrcc) btnPrcc.href = `/planillas/planilla-prcc?casoId=${c.id}`;
+    if (btnDesp) btnDesp.href = `/planillas/acta-desprecintado?casoId=${c.id}`;
+  }
+
+  if (typeof window !== 'undefined') {
+    initCustodia();
+  }
+</script>

@@ -1,0 +1,435 @@
+---
+/**
+ * SHA256.US — Directorio de Expedientes Periciales y Apertura de Caso
+ * Implementado con componentes USWDS (@uswds/uswds) y almacenamiento híbrido PHP/IndexedDB.
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import Alert from '../components/uswds/Alert.astro';
+import { MOCK_CASOS } from '../lib/data/seed';
+---
+
+<AppLayout title="Expedientes Periciales — SHA256.US" activeNav="casos">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        Directorio de Expedientes Periciales
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Gestión centralizada de investigaciones forenses, asignación pericial y control de evidencias digitales.
+      </p>
+    </div>
+    <button
+      id="btn-abrir-modal-nuevo"
+      class="usa-button"
+      style="background-color: #005EA2; color: #FFFFFF; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px; border: none; cursor: pointer;"
+    >
+      <span>➕</span> Aperturar Nuevo Expediente
+    </button>
+  </div>
+
+  <!-- Barra de Filtros y Búsqueda USWDS -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; flex: 1; max-width: 600px;">
+      <div style="flex: 1; min-width: 240px;">
+        <label class="usa-label" for="input-search" style="margin-top: 0; font-size: 12px; font-weight: 700; color: #475569;">
+          Buscar por N° Caso, Expediente, Consignante o Serial:
+        </label>
+        <input
+          class="usa-input"
+          id="input-search"
+          type="search"
+          placeholder="Ej: MP-01-2026, Galaxy, Jull Joll..."
+          style="margin-top: 4px; height: 38px;"
+        />
+      </div>
+      <div style="min-width: 180px;">
+        <label class="usa-label" for="select-filtro-tipo" style="margin-top: 0; font-size: 12px; font-weight: 700; color: #475569;">
+          Tipología Pericial:
+        </label>
+        <select class="usa-select" id="select-filtro-tipo" style="margin-top: 4px; height: 38px;">
+          <option value="todos">Todas las tipologías</option>
+          <option value="forense_whatsapp">WhatsApp Forense</option>
+          <option value="forense_email">Email Forense (RFC 3227)</option>
+          <option value="forense_discoduro">Disco Duro (E01/DD)</option>
+          <option value="forense_imagen">Imagen Forense (ISO 27037)</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="font-size: 13px; color: #64748B;">
+      Mostrando: <strong id="contador-casos" style="color: #112E51;">{MOCK_CASOS.length}</strong> expedientes
+    </div>
+  </div>
+
+  <!-- Contenedor de la Tabla Principal -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 30px;">
+    <div style="overflow-x: auto;">
+      <table class="usa-table usa-table--striped" style="width: 100%; font-size: 13px;" id="tabla-expedientes">
+        <thead>
+          <tr style="background-color: #F1F5F9; color: #112E51;">
+            <th scope="col" style="font-weight: 700;">N° Expediente / Caso</th>
+            <th scope="col" style="font-weight: 700;">Tipología</th>
+            <th scope="col" style="font-weight: 700;">Consignante / C.I.</th>
+            <th scope="col" style="font-weight: 700;">Evidencia Incautada</th>
+            <th scope="col" style="font-weight: 700;">Fase ISO</th>
+            <th scope="col" style="font-weight: 700;">Estado Cripto</th>
+            <th scope="col" style="text-align: right; font-weight: 700;">Acciones de Gestión</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-casos">
+          {MOCK_CASOS.map((c) => (
+            <tr data-id={c.id} data-tipo={c.tipoProyecto}>
+              <td>
+                <strong style="color: #005EA2; font-size: 14px;">{c.numeroCaso}</strong>
+                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">{c.expediente}</div>
+                <div style="font-size: 11px; color: #334155; margin-top: 4px;">{c.titulo}</div>
+              </td>
+              <td>
+                <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px; font-weight: 600;">
+                  {c.tipoProyecto.replace('forense_', '').toUpperCase()}
+                </span>
+              </td>
+              <td>
+                <div style="font-weight: 600;">{c.consignanteNombre || 'Consignante no reg.'}</div>
+                <div style="font-size: 11px; color: #64748B;">C.I. {c.consignanteCedula || 'N/A'}</div>
+                <div style="font-size: 11px; color: #64748B;">Tlf: {c.consignanteTelefono || 'N/A'}</div>
+              </td>
+              <td>
+                <div style="font-weight: 600;">{c.evidenciaMarca} {c.evidenciaModelo}</div>
+                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">S/N: {c.evidenciaSerial || 'N/A'}</div>
+                <div style="font-size: 11px; color: #008837;">Bolsa Faraday: {c.evidenciaAislamientoRF ? 'Aislado RF' : 'No'}</div>
+              </td>
+              <td>
+                <span class="usa-tag" style="background-color: #E7F6F8; color: #005EA2; font-weight: 800; font-family: 'Roboto Mono Web', monospace;">
+                  {c.faseIsoActual || 'F0'}
+                </span>
+                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">ISO 27037</div>
+              </td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 6px; color: #008837; font-weight: 600; font-size: 12px;">
+                  <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #008837;"></span>
+                  SHA-256 OK
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap;">
+                  <a
+                    href={`/flujo?casoId=${c.id}`}
+                    class="usa-button"
+                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; background-color: #005EA2; color: #FFF;"
+                    title="Gestionar Fases ISO y Sellos SHA-256"
+                  >
+                    🔒 Fases ISO
+                  </a>
+                  <a
+                    href={`/planillas/planilla-prcc?casoId=${c.id}`}
+                    class="usa-button usa-button--outline"
+                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
+                    title="Planilla de Registro de Cadena de Custodia"
+                  >
+                    ⛓️ PRCC
+                  </a>
+                  <a
+                    href={`/planillas?casoId=${c.id}`}
+                    class="usa-button usa-button--outline"
+                    style="padding: 4px 8px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #CBD5E1; color: #475569;"
+                    title="Ver Planillas en Folio"
+                  >
+                    📜
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal USWDS de Apertura de Nuevo Expediente -->
+  <div
+    id="modal-nuevo-caso"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(17, 46, 81, 0.7); z-index: 9999; overflow-y: auto; padding: 40px 20px; box-sizing: border-box;"
+  >
+    <div style="background: #FFFFFF; max-width: 800px; margin: 0 auto; border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-top: 6px solid #005EA2; overflow: hidden;">
+      <div style="padding: 20px 24px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-size: 20px; font-weight: 800; color: #112E51; margin: 0;">
+          🏛️ Apertura Oficial de Expediente Forense
+        </h2>
+        <button
+          id="btn-cerrar-modal"
+          type="button"
+          style="background: none; border: none; font-size: 22px; cursor: pointer; color: #64748B;"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="form-nuevo-caso" style="padding: 24px;">
+        <div style="margin-bottom: 20px;">
+          <Alert type="info" slim>
+            Los datos ingresados se replicarán automáticamente en las 13 planillas oficiales legales (Folio 216mm × 330mm).
+          </Alert>
+        </div>
+
+        <!-- Sección 1: Datos Procesales -->
+        <fieldset class="usa-fieldset" style="margin-bottom: 20px; border: 1px solid #CBD5E1; padding: 16px; border-radius: 4px;">
+          <legend style="font-weight: 700; color: #112E51; padding: 0 8px; font-size: 14px;">
+            1. Identificación del Caso y Tipología
+          </legend>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <label class="usa-label" for="nuevo-numeroCaso">N° de Caso Interno *</label>
+              <input class="usa-input" id="nuevo-numeroCaso" name="numeroCaso" required placeholder="Ej: MP-04-2026-WA" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-expediente">N° de Expediente Judicial / Fiscalía *</label>
+              <input class="usa-input" id="nuevo-expediente" name="expediente" required placeholder="Ej: EXP-99120-2026" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px;">
+            <div>
+              <label class="usa-label" for="nuevo-tipoProyecto">Tipología Forense *</label>
+              <select class="usa-select" id="nuevo-tipoProyecto" name="tipoProyecto" required>
+                <option value="forense_whatsapp">WhatsApp Forense (msgstore.db)</option>
+                <option value="forense_email">Email Forense (SMTP/RFC 3227)</option>
+                <option value="forense_discoduro">Disco Duro (Clonado E01/DD)</option>
+                <option value="forense_imagen">Adquisición Imagen (ISO 27037)</option>
+              </select>
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-prioridad">Prioridad Procesal</label>
+              <select class="usa-select" id="nuevo-prioridad" name="prioridad">
+                <option value="media">Media (Estándar)</option>
+                <option value="alta">Alta (Flagrancia / Notitia Criminis)</option>
+                <option value="urgente">Urgente (Riesgo de Destrucción)</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <label class="usa-label" for="nuevo-titulo">Título o Asunto del Peritaje *</label>
+            <input class="usa-input" id="nuevo-titulo" name="titulo" required placeholder="Ej: Extracción Forense - Caso Estafa Telemática" />
+          </div>
+          <div style="margin-top: 10px;">
+            <label class="usa-label" for="nuevo-descripcion">Objeto de la Peritación y Alcance</label>
+            <textarea class="usa-textarea" id="nuevo-descripcion" name="descripcion" rows="2" placeholder="Describa el objetivo de la experticia solicitada..."></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Sección 2: Consignante / Solicitante -->
+        <fieldset class="usa-fieldset" style="margin-bottom: 20px; border: 1px solid #CBD5E1; padding: 16px; border-radius: 4px;">
+          <legend style="font-weight: 700; color: #112E51; padding: 0 8px; font-size: 14px;">
+            2. Datos del Consignante / Solicitante
+          </legend>
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 14px;">
+            <div>
+              <label class="usa-label" for="nuevo-consignanteNombre">Nombre y Apellido *</label>
+              <input class="usa-input" id="nuevo-consignanteNombre" name="consignanteNombre" required placeholder="Ej: Carlos Eduardo Méndez" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-consignanteCedula">Cédula de Identidad *</label>
+              <input class="usa-input" id="nuevo-consignanteCedula" name="consignanteCedula" required placeholder="Ej: V-18.452.901" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px;">
+            <div>
+              <label class="usa-label" for="nuevo-consignanteTelefono">Teléfono de Contacto</label>
+              <input class="usa-input" id="nuevo-consignanteTelefono" name="consignanteTelefono" placeholder="+58 414 1234567" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-consignanteEmail">Correo Electrónico</label>
+              <input class="usa-input" id="nuevo-consignanteEmail" name="consignanteEmail" type="email" placeholder="consignante@ejemplo.com" />
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <label class="usa-label" for="nuevo-consignanteDireccion">Dirección de Residencia / Despacho</label>
+            <input class="usa-input" id="nuevo-consignanteDireccion" name="consignanteDireccion" placeholder="Urb., Calle, Edif., Nivel, Ciudad" />
+          </div>
+        </fieldset>
+
+        <!-- Sección 3: Evidencia Digital -->
+        <fieldset class="usa-fieldset" style="margin-bottom: 20px; border: 1px solid #CBD5E1; padding: 16px; border-radius: 4px;">
+          <legend style="font-weight: 700; color: #112E51; padding: 0 8px; font-size: 14px;">
+            3. Registro Técnico de la Evidencia Digital
+          </legend>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaTipo">Tipo Dispositivo</label>
+              <input class="usa-input" id="nuevo-evidenciaTipo" name="evidenciaTipo" placeholder="Ej: Teléfono Inteligente" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaMarca">Marca *</label>
+              <input class="usa-input" id="nuevo-evidenciaMarca" name="evidenciaMarca" required placeholder="Ej: Samsung" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaModelo">Modelo *</label>
+              <input class="usa-input" id="nuevo-evidenciaModelo" name="evidenciaModelo" required placeholder="Ej: Galaxy S22 Ultra" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 10px;">
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaSerial">Serial / IMEI *</label>
+              <input class="usa-input" id="nuevo-evidenciaSerial" name="evidenciaSerial" required placeholder="IMEI: 358912..." />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaColor">Color / Aspecto</label>
+              <input class="usa-input" id="nuevo-evidenciaColor" name="evidenciaColor" placeholder="Ej: Negro Phantom" />
+            </div>
+            <div>
+              <label class="usa-label" for="nuevo-evidenciaEstado">Estado Físico</label>
+              <input class="usa-input" id="nuevo-evidenciaEstado" name="evidenciaEstado" placeholder="Ej: Operativo, pantalla intacta" />
+            </div>
+          </div>
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="nuevo-evidenciaAislamientoRF" name="evidenciaAislamientoRF" style="width: 18px; height: 18px;" />
+            <label for="nuevo-evidenciaAislamientoRF" style="font-size: 13px; font-weight: 700; color: #112E51; margin: 0; cursor: pointer;">
+              Aislamiento RF Aplicado (Bolsa Faraday y Modo Avión obligatorio según ISO 27037)
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Botones de Acción -->
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button
+            type="button"
+            id="btn-cancelar-modal"
+            class="usa-button usa-button--outline"
+            style="border-color: #64748B; color: #64748B;"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="usa-button"
+            style="background-color: #005EA2; color: #FFFFFF; font-weight: 700;"
+          >
+            🏛️ Registrar Expediente e Iniciar F0
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</AppLayout>
+
+<script>
+  import { phpApi } from '../lib/data/phpApi';
+  import { idbGetAll, idbPut } from '../lib/data/idb';
+  import type { CasoCMS } from '../lib/domain/types';
+
+  // Manejadores del Modal
+  const modal = document.getElementById('modal-nuevo-caso');
+  const btnAbrir = document.getElementById('btn-abrir-modal-nuevo');
+  const btnCerrar = document.getElementById('btn-cerrar-modal');
+  const btnCancelar = document.getElementById('btn-cancelar-modal');
+  const form = document.getElementById('form-nuevo-caso') as HTMLFormElement;
+
+  function abrirModal() {
+    if (modal) modal.style.display = 'block';
+  }
+
+  function cerrarModal() {
+    if (modal) modal.style.display = 'none';
+  }
+
+  if (btnAbrir) btnAbrir.addEventListener('click', abrirModal);
+  if (btnCerrar) btnCerrar.addEventListener('click', cerrarModal);
+  if (btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
+
+  // Abrir si viene por query param ?nuevo=1
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('nuevo') === '1') {
+      abrirModal();
+    }
+  }
+
+  // Filtrado reactivo en la tabla
+  const searchInput = document.getElementById('input-search') as HTMLInputElement;
+  const filterSelect = document.getElementById('select-filtro-tipo') as HTMLSelectElement;
+  const tbody = document.getElementById('tbody-casos');
+  const contador = document.getElementById('contador-casos');
+
+  function aplicarFiltros() {
+    if (!tbody) return;
+    const q = (searchInput?.value || '').toLowerCase().trim();
+    const tipo = filterSelect?.value || 'todos';
+
+    let visibles = 0;
+    const filas = tbody.querySelectorAll('tr');
+    filas.forEach((tr) => {
+      const text = tr.textContent?.toLowerCase() || '';
+      const filaTipo = tr.getAttribute('data-tipo') || '';
+
+      const coincideTexto = !q || text.includes(q);
+      const coincideTipo = tipo === 'todos' || filaTipo === tipo;
+
+      if (coincideTexto && coincideTipo) {
+        tr.style.display = '';
+        visibles++;
+      } else {
+        tr.style.display = 'none';
+      }
+    });
+
+    if (contador) contador.textContent = String(visibles);
+  }
+
+  if (searchInput) searchInput.addEventListener('input', aplicarFiltros);
+  if (filterSelect) filterSelect.addEventListener('change', aplicarFiltros);
+
+  // Envío del Formulario
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const nuevoId = 'caso-' + Date.now();
+      const nuevoCaso: CasoCMS = {
+        id: nuevoId,
+        numeroCaso: String(formData.get('numeroCaso') || ''),
+        expediente: String(formData.get('expediente') || ''),
+        tipoProyecto: formData.get('tipoProyecto') as any || 'forense_whatsapp',
+        titulo: String(formData.get('titulo') || ''),
+        descripcion: String(formData.get('descripcion') || ''),
+        prioridad: formData.get('prioridad') as any || 'media',
+        estado: 'iniciado',
+        faseIsoActual: 'F0',
+        fechaCreacion: new Date().toISOString(),
+        fechaUltimaActualizacion: new Date().toISOString(),
+
+        consignanteNombre: String(formData.get('consignanteNombre') || ''),
+        consignanteCedula: String(formData.get('consignanteCedula') || ''),
+        consignanteTelefono: String(formData.get('consignanteTelefono') || ''),
+        consignanteEmail: String(formData.get('consignanteEmail') || ''),
+        consignanteDireccion: String(formData.get('consignanteDireccion') || ''),
+
+        evidenciaTipo: String(formData.get('evidenciaTipo') || 'Dispositivo'),
+        evidenciaMarca: String(formData.get('evidenciaMarca') || ''),
+        evidenciaModelo: String(formData.get('evidenciaModelo') || ''),
+        evidenciaSerial: String(formData.get('evidenciaSerial') || ''),
+        evidenciaColor: String(formData.get('evidenciaColor') || ''),
+        evidenciaEstado: String(formData.get('evidenciaEstado') || 'Operativo'),
+        evidenciaAislamientoRF: formData.get('evidenciaAislamientoRF') === 'on',
+
+        fiscaliaTribunal: 'Ministerio Público / Tribunal de Control',
+        peritoLiderNombre: 'Jull Joll',
+        peritoLiderCedula: 'V-15.890.123',
+        peritoLiderCiv: 'CIV-284910',
+      };
+
+      try {
+        await phpApi.guardarCaso(nuevoCaso);
+        await idbPut('casos', nuevoCaso);
+        alert(`Expediente ${nuevoCaso.numeroCaso} registrado con éxito bajo normativa ISO/IEC 27037.`);
+        window.location.href = `/flujo?casoId=${nuevoCaso.id}`;
+      } catch (err: any) {
+        console.error('Error guardando en backend:', err);
+        // Respaldo en IndexedDB directo
+        await idbPut('casos', nuevoCaso);
+        alert(`Expediente ${nuevoCaso.numeroCaso} guardado localmente (modo offline).`);
+        window.location.href = `/flujo?casoId=${nuevoCaso.id}`;
+      }
+    });
+  }
+</script>

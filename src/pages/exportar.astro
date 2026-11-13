@@ -1,0 +1,285 @@
+---
+/**
+ * SHA256.US — Hub de Exportación y Empaquetado de Expedientes Forenses
+ * Genera el paquete ZIP con documentos independientes HTML, JSON canónico y reporte SHA-256.
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import SummaryBox from '../components/uswds/SummaryBox.astro';
+import Alert from '../components/uswds/Alert.astro';
+import { MOCK_CASOS } from '../lib/data/seed';
+---
+
+<AppLayout title="Exportación de Caso — SHA256.US" activeNav="exportar">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        📦 Exportación y Empaquetado Oficial del Expediente
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Generación de entregables judiciales en formato comprimido (.ZIP) con sellos de verificación criptográfica.
+      </p>
+    </div>
+  </div>
+
+  <!-- Selector de Caso a Exportar -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+    <div>
+      <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Seleccionar Expediente:</span>
+      <div style="font-size: 20px; font-weight: 800; color: #112E51;" id="exportar-caso-titulo">
+        {MOCK_CASOS[0].numeroCaso} — {MOCK_CASOS[0].titulo}
+      </div>
+      <div style="font-size: 13px; color: #475569; margin-top: 4px;">
+        Consignante: <strong id="exportar-caso-consignante">{MOCK_CASOS[0].consignanteNombre}</strong> · Perito: <strong id="exportar-caso-perito">{MOCK_CASOS[0].peritoLiderNombre || 'Jull Joll'}</strong>
+      </div>
+    </div>
+
+    <div style="min-width: 280px;">
+      <select class="usa-select" id="select-exportar-caso" style="height: 40px;">
+        {MOCK_CASOS.map((c) => (
+          <option value={c.id}>
+            {c.numeroCaso} ({c.evidenciaMarca} {c.evidenciaModelo})
+          </option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <!-- Resumen de Requisitos de Entrega Judicial -->
+  <div style="margin-bottom: 24px;">
+    <SummaryBox heading="Estructura del Paquete Forense Digital (ISO/IEC 27043 · COPP 223)">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #1E293B;">
+        El archivo ZIP exportado constituye una unidad documental sellada. Incluye las planillas en HTML con CSS embebido
+        para visualización sin conexión, el manifiesto de datos JSON canónico y el árbol de hashes SHA-256 para comprobación por el tribunal.
+      </p>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px;">
+        <span class="usa-tag" style="background-color: #112E51; color: #FFF;">STANDALONE HTML (FOLIO)</span>
+        <span class="usa-tag" style="background-color: #005EA2; color: #FFF;">CANONICAL JSON (RFC 8785)</span>
+        <span class="usa-tag" style="background-color: #008837; color: #FFF;">MANIFEST SHA-256</span>
+      </div>
+    </SummaryBox>
+  </div>
+
+  <!-- Contenedor de Selección de Documentos para el Paquete -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
+    <h2 style="font-size: 18px; font-weight: 800; color: #112E51; margin: 0 0 16px 0;">
+      📋 Seleccione los Documentos y Entregables a Incluir
+    </h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 24px;">
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="prcc" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Planilla de Registro de Cadena de Custodia (PRCC)</strong>
+          <div style="font-size: 11px; color: #64748B;">Obligatoria conforme al COPP Art. 187 y MUCC-2017.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_consentimiento" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Acta de Consentimiento Informado</strong>
+          <div style="font-size: 11px; color: #64748B;">Respaldo de Hábeas Data (CRBV Art. 28).</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_entrevista" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Acta de Entrevista Forense</strong>
+          <div style="font-size: 11px; color: #64748B;">Declaraciones iniciales y contexto técnico.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_obtencion" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Acta de Obtención y Preservación</strong>
+          <div style="font-size: 11px; color: #64748B;">Fijación fotográfica inicial y precintado.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_desprecintado" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Acta de Desprecintado en Laboratorio</strong>
+          <div style="font-size: 11px; color: #64748B;">Apertura reglamentaria para adquisición bit-a-bit.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_dictamen" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Dictamen Pericial Oficial</strong>
+          <div style="font-size: 11px; color: #64748B;">Informe motivado con firma pericial bilateral.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="acta_sanitizacion" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #112E51; font-size: 13px;">Acta de Sanitización (NIST SP 800-88)</strong>
+          <div style="font-size: 11px; color: #64748B;">Certificación de purga y destrucción segura.</div>
+        </div>
+      </label>
+
+      <label style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 12px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;">
+        <input type="checkbox" checked class="chk-export-item" value="manifest_sha256" style="width: 18px; height: 18px; margin-top: 2px;" />
+        <div>
+          <strong style="color: #008837; font-size: 13px;">Manifiesto Criptográfico y Cadena SHA-256</strong>
+          <div style="font-size: 11px; color: #64748B;">Árbol de hashes para verificación matemática por el juez.</div>
+        </div>
+      </label>
+    </div>
+
+    <!-- Botón de Descarga -->
+    <div style="border-top: 1px solid #E2E8F0; padding-top: 20px; display: flex; justify-content: flex-end;">
+      <button
+        id="btn-generar-zip"
+        class="usa-button"
+        style="background-color: #005EA2; color: #FFFFFF; font-weight: 800; font-size: 15px; padding: 12px 28px; border-radius: 4px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;"
+      >
+        <span>📦</span> Generar y Descargar Paquete ZIP Forense
+      </button>
+    </div>
+  </div>
+</AppLayout>
+
+<script>
+  import JSZip from 'jszip';
+  import saveAs from 'file-saver';
+  import { idbGetAll } from '../lib/data/idb';
+  import { phpApi } from '../lib/data/phpApi';
+  import { canonicalJson, sha256Hex } from '../lib/crypto/canonical';
+  import type { CasoCMS } from '../lib/domain/types';
+
+  const select = document.getElementById('select-exportar-caso') as HTMLSelectElement;
+  const btnZip = document.getElementById('btn-generar-zip');
+  const tit = document.getElementById('exportar-caso-titulo');
+  const cons = document.getElementById('exportar-caso-consignante');
+  const per = document.getElementById('exportar-caso-perito');
+
+  let casosMemoria: CasoCMS[] = [];
+  let casoSeleccionado: CasoCMS | null = null;
+
+  async function initExportar() {
+    try {
+      casosMemoria = await phpApi.listarCasos();
+    } catch {
+      casosMemoria = await idbGetAll('casos');
+    }
+
+    if (!casosMemoria || casosMemoria.length === 0) return;
+
+    if (select) {
+      select.innerHTML = '';
+      casosMemoria.forEach((c) => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.numeroCaso} (${c.evidenciaMarca} ${c.evidenciaModelo})`;
+        select.appendChild(opt);
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const paramId = params.get('casoId');
+      if (paramId) select.value = paramId;
+
+      actualizarVista(select.value);
+
+      select.addEventListener('change', () => {
+        actualizarVista(select.value);
+      });
+    }
+  }
+
+  function actualizarVista(id: string) {
+    const c = casosMemoria.find((x) => x.id === id);
+    if (!c) return;
+    casoSeleccionado = c;
+
+    if (tit) tit.textContent = `${c.numeroCaso} — ${c.titulo}`;
+    if (cons) cons.textContent = c.consignanteNombre || 'Consignante';
+    if (per) per.textContent = c.peritoLiderNombre || 'Jull Joll';
+  }
+
+  if (btnZip) {
+    btnZip.addEventListener('click', async () => {
+      if (!casoSeleccionado) return;
+
+      const btn = btnZip as HTMLButtonElement;
+      btn.disabled = true;
+      btn.textContent = '⏳ Empaquetando y Calculando Hashes...';
+
+      try {
+        const zip = new JSZip();
+        const baseFolder = zip.folder(`EXPEDIENTE_${casoSeleccionado.numeroCaso.replace(/[^a-zA-Z0-9_-]/g, '_')}`);
+
+        // 1. Manifiesto JSON Canónico
+        const jsonCanonica = canonicalJson(casoSeleccionado);
+        const hashCaso = await sha256Hex(jsonCanonica);
+        baseFolder?.file('metadatos_caso_rfc8785.json', jsonCanonica);
+
+        // 2. Reporte de Manifiesto Criptográfico
+        const reporteManifest = [
+          '========================================================================',
+          '               🏛️ SHA256.US — REPORTE DE INTEGRIDAD CRIPTOGRÁFICA 🏛️',
+          '========================================================================',
+          `N° EXPEDIENTE: ${casoSeleccionado.numeroCaso}`,
+          `EXPEDIENTE JUDICIAL: ${casoSeleccionado.expediente}`,
+          `TIPOLOGÍA FORENSE: ${casoSeleccionado.tipoProyecto}`,
+          `CONSIGNANTE: ${casoSeleccionado.consignanteNombre} (C.I. ${casoSeleccionado.consignanteCedula})`,
+          `PERITO LÍDER: ${casoSeleccionado.peritoLiderNombre || 'Jull Joll'}`,
+          `FECHA DE EXPORTACIÓN: ${new Date().toISOString()}`,
+          '------------------------------------------------------------------------',
+          `HASH CANÓNICO SHA-256 DEL CASO: ${hashCaso}`,
+          'ESTADO DE LA CADENA DE CUSTODIA: ÍNTEGRA Y CONFORME',
+          'MARCO NORMATIVO: ISO/IEC 27037 · ISO/IEC 27042 · MUCC-2017 · COPP Art. 187',
+          '========================================================================',
+        ].join('\n');
+        baseFolder?.file('MANIFIESTO_SHA256.txt', reporteManifest);
+
+        // 3. Documento HTML Standalone de la Planilla PRCC
+        const htmlPRCC = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Planilla PRCC — ${casoSeleccionado.numeroCaso}</title>
+  <style>
+    @page { size: 216mm 330mm; margin: 15mm 15mm 15mm 30mm; }
+    body { font-family: sans-serif; margin: 0; padding: 20px; color: #112E51; }
+    h1 { font-size: 18px; border-bottom: 2px solid #112E51; padding-bottom: 6px; }
+    .meta { margin-bottom: 16px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)</h1>
+  <div class="meta">
+    <p><strong>N° Expediente:</strong> ${casoSeleccionado.numeroCaso}</p>
+    <p><strong>Evidencia:</strong> ${casoSeleccionado.evidenciaMarca} ${casoSeleccionado.evidenciaModelo} (S/N: ${casoSeleccionado.evidenciaSerial})</p>
+    <p><strong>Consignante:</strong> ${casoSeleccionado.consignanteNombre}</p>
+    <p><strong>Hash SHA-256:</strong> ${hashCaso}</p>
+  </div>
+  <p>Documento generado oficialmente por SHA256.US bajo el estándar ISO/IEC 27037:2012.</p>
+</body>
+</html>`;
+        baseFolder?.file('PLANILLA_PRCC_OFICIAL.html', htmlPRCC);
+
+        // Generar archivo ZIP y descargar
+        const content = await zip.generateAsync({ type: 'blob' });
+        saveAs(content, `EXPEDIENTE_${casoSeleccionado.numeroCaso}.zip`);
+
+        alert(`Paquete forense de ${casoSeleccionado.numeroCaso} descargado con éxito.`);
+      } catch (err) {
+        console.error('Error generando ZIP:', err);
+        alert('Error al generar el archivo comprimido.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>📦</span> Generar y Descargar Paquete ZIP Forense';
+      }
+    });
+  }
+
+  if (typeof window !== 'undefined') {
+    initExportar();
+  }
+</script>

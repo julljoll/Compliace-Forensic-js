@@ -1,0 +1,73 @@
+# ============================================
+# COMPONENTE: FASE DE DISPOSICIÓN JUDICIAL
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Fase de Disposición Judicial"
+  tipo: "fase"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Momento en que la evidencia pasa a disposición del Poder Judicial tras admitirse
+  la acusación.
+
+actividades:
+  - id: "resguardo_judicial"
+    nombre: "Resguardo Judicial"
+    descripcion: "Almacenamiento en áreas especializadas del Poder Judicial"
+    responsables: "Tribunal / Oficina de Evidencias"
+    requisitos:
+      - "Instalaciones adecuadas"
+      - "Control de acceso"
+      - "Inventario actualizado"
+      
+  - id: "exhibicion_audiencia"
+    nombre: "Exhibición en Audiencia"
+    descripcion: "Presentación física de evidencias ante el tribunal"
+    participantes:
+      - "Juez"
+      - "Fiscal"
+      - "Defensa"
+      - "Víctima"
+      - "Perito"
+    requisitos:
+      - "Citar al custodio de la evidencia"
+      - "Verificar cadena de custodia completa"
+      - "Garantizar contradicción y defensa"
+    campos_registro:
+      - "Número de Audiencia"
+      - "Fecha de Audiencia"
+      - "Tribunal"
+      - "Juez Presentador"
+      - "Evidencias Exhibidas"
+      - "Incidencias"
+
+documento_asociado: "Acta de Exhibición de Evidencias"
+
+procedimientos_traslado:
+  - "Verificar condiciones de evidencia y embalaje"
+  - "Solicitar autorización de traslado"
+  - "Documentar en PRCC"
+  - "Seleccionar medio de transporte adecuado"
+  - "Mantener precintos de seguridad"
+
+garantias:
+  - "Contradicción"
+  - "Defensa"
+  - "Due proceso"
+  - "Integridad de la evidencia"
+
+leyes_aplicables:
+  - "COPP Art. 187-188"
+  - "Constitución Art. 49"
+  - "Regulación del tribunal"
+
+operarios: ["Jueces", "Fiscales", "Defensores", "Custodios"]
+
+documentos_asociados:
+  - "Acta de Exhibición de Evidencias"
+  - "Oficios de Traslado"
+  - "PRCC (actualizada)"

@@ -75,8 +75,9 @@ async function main() {
   }
 
   // 4. Push a GitHub
-  console.log('\n🌐 Paso 4/4: Subiendo cambios a GitHub (git push origin main)...');
-  runCmd('git push origin main');
+  const currentBranch = (runCmd('git branch --show-current', { silent: true }) || 'main').trim();
+  console.log(`\n🌐 Paso 4/4: Subiendo cambios a GitHub (git push origin ${currentBranch})...`);
+  runCmd(`git push -u origin ${currentBranch}`);
 
   console.log('─────────────────────────────────────────────────────────────────');
   console.log('🎉 ¡SINCRONIZACIÓN CON GITHUB COMPLETADA EXITOSAMENTE!');

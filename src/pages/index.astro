@@ -1,0 +1,163 @@
+---
+/**
+ * SHA256.US — Pantalla de Inicio de Sesión Oficial (USWDS)
+ * Formulario gubernamental seguro con Public Sans y tokens de seguridad.
+ */
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión — Forensic Chief Compliance Officer</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="/assets/uswds/css/uswds.min.css" />
+    <script is:inline src="/assets/uswds/js/uswds-init.min.js"></script>
+    <style>
+      body {
+        background-color: #F0F4F8;
+        font-family: 'Public Sans Web', sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .login-container {
+        max-width: 460px;
+        margin: 60px auto;
+        background: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(17, 46, 81, 0.08);
+        padding: 32px;
+      }
+      .login-header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+      .login-logo {
+        width: 54px;
+        height: 54px;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Banner de Gobierno -->
+    <div style="background-color: #1A2536; color: #E2E8F0; padding: 6px 16px; font-size: 12px; text-align: center;">
+      🔒 <strong>SISTEMA FORENSE OFICIAL:</strong> Autenticación de Peritos y Operadores de Cadena de Custodia
+    </div>
+
+    <div class="login-container">
+      <div class="login-header">
+        <img src="/logo.png" alt="SHA256.US" class="login-logo" />
+        <h1 style="font-size: 22px; font-weight: 800; color: #112E51; margin: 0;">
+          SHA256<span style="color: #D9A700;">.US</span>
+        </h1>
+        <p style="font-size: 13px; color: #475569; margin: 4px 0 0 0;">
+          Forensic Chief Compliance Officer
+        </p>
+      </div>
+
+      <!-- Alerta de Error (oculta por defecto) -->
+      <div id="login-error-alert" class="usa-alert usa-alert--error usa-alert--slim" style="display: none; margin-bottom: 16px;">
+        <div class="usa-alert__body">
+          <p class="usa-alert__text" id="login-error-msg">Credenciales inválidas</p>
+        </div>
+      </div>
+
+      <!-- Formulario USWDS -->
+      <form class="usa-form" id="login-form" style="max-width: 100%;">
+        <fieldset class="usa-fieldset">
+          <legend class="usa-legend" style="font-size: 14px; font-weight: 700; color: #112E51; margin-bottom: 16px;">
+            Acceso a Bóveda Pericial
+          </legend>
+
+          <label class="usa-label" for="email" style="font-size: 13px; font-weight: 600;">Correo Electrónico Oficial</label>
+          <input
+            class="usa-input"
+            id="email"
+            name="email"
+            type="email"
+            autocapitalize="off"
+            autocorrect="off"
+            required
+            value="julljoll@gmail.com"
+            style="margin-bottom: 14px;"
+          />
+
+          <label class="usa-label" for="password" style="font-size: 13px; font-weight: 600;">Contraseña de Seguridad</label>
+          <input
+            class="usa-input"
+            id="password"
+            name="password"
+            type="password"
+            required
+            value="admin"
+            style="margin-bottom: 20px;"
+          />
+
+          <button
+            class="usa-button"
+            type="submit"
+            id="btn-submit"
+            style="width: 100%; background-color: #005EA2; font-weight: 700; padding: 12px;"
+          >
+            Ingresar al Sistema Forense
+          </button>
+        </fieldset>
+      </form>
+
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #E2E8F0; text-align: center; font-size: 11px; color: #64748B;">
+        Ambiente de Demostración Local: <strong style="color: #112E51;">admin</strong> / <strong style="color: #112E51;">admin</strong>
+      </div>
+    </div>
+
+    <script>
+      import { phpApi } from '../lib/data/phpApi';
+      import { useAuthStore } from '../store/authStore';
+
+      const form = document.getElementById('login-form');
+      const errorAlert = document.getElementById('login-error-alert');
+      const errorMsg = document.getElementById('login-error-msg');
+      const btnSubmit = document.getElementById('btn-submit');
+
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const emailInput = document.getElementById('email') as HTMLInputElement;
+          const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+          if (btnSubmit) btnSubmit.textContent = 'Verificando credenciales...';
+
+          const email = emailInput?.value || '';
+          const pass = passwordInput?.value || '';
+
+          // 1. Intentar API PHP
+          const res = await phpApi.login(email, pass);
+
+          if (res.ok) {
+            window.location.href = '/dashboard';
+            return;
+          }
+
+          // 2. Si falló por offline o error de red, probar store local
+          const localOk = await useAuthStore.getState().login(email, pass);
+          if (localOk) {
+            window.location.href = '/dashboard';
+            return;
+          }
+
+          // Mostrar error
+          if (errorAlert && errorMsg) {
+            errorMsg.textContent = res.error || 'Credenciales no autorizadas';
+            errorAlert.style.display = 'block';
+          }
+          if (btnSubmit) btnSubmit.textContent = 'Ingresar al Sistema Forense';
+        });
+      }
+    </script>
+    <script is:inline src="/assets/uswds/js/uswds.min.js"></script>
+  </body>
+</html>

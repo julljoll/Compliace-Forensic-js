@@ -1,0 +1,111 @@
+# ============================================
+# COMPONENTE: RESGUARDO DE EVIDENCIAS
+# Proceso de Carácter Continuo
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Proceso de Resguardo"
+  tipo: "proceso_continuo"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Protección y conservación de evidencias en espacios especializados.
+  Este proceso es de carácter continuo y se cumple en cualquier fase del sistema.
+
+definicion: |
+  Conjunto de procedimientos destinados a preservar la integridad de las evidencias físicas
+  desde su ingreso hasta su egreso del área de resguardo.
+
+etapas:
+  - id: "ingreso"
+    nombre: "Ingreso"
+    descripcion: "Recepción y verificación de evidencias"
+    pasos:
+      - "Verificar PRCC"
+      - "Verificar identidad del entregante"
+      - "Inspeccionar condiciones de la evidencia"
+      - "Fotografiar evidencia ingresada"
+      - "Asignar ubicación física"
+      - "Registrar en sistema"
+    campos_formulario:
+      - "Número de Ingreso (ING-AAAA-NNNN)"
+      - "Fecha de Ingreso"
+      - "Proviene De"
+      - "Funcionario que Entrega"
+      - "Administrador que Recibe"
+      - "Estado Aparente"
+      - "Ubicación Asignada"
+      
+  - id: "deposito"
+    nombre: "Depósito"
+    descripcion: "Almacenamiento bajo condiciones óptimas"
+    requisitos:
+      - "Control de temperatura"
+      - "Control de humedad"
+      - "Seguridad 24/7"
+      - "Acceso restringido"
+      - "Inventario periódico"
+    tipos_deposito:
+      - tipo: "Evidencias Generales"
+        condiciones: "Temperatura ambiente, humedad controlada"
+      - tipo: "Evidencias Biológicas"
+        condiciones: "Refrigeración 4°C o congelación -20°C"
+      - tipo: "Sustancias Químicas"
+        condiciones: "Área ventilada, contenedores especiales"
+      - tipo: "Armas y Municiones"
+        condiciones: "Armero blindado, control estricto"
+      - tipo: "Evidencias Digitales"
+        condiciones: "Bolsas Faraday, sin campos magnéticos"
+      - tipo: "Valores y Efectivos"
+        condiciones: "Caja fuerte, doble llave"
+        
+  - id: "egreso"
+    nombre: "Egreso"
+    descripcion: "Salida controlada de evidencias"
+    tipos:
+      - "Para peritaje"
+      - "Para exhibición en audiencia"
+      - "Para devolución"
+      - "Para destrucción"
+    campos_formulario:
+      - "Número de Egreso"
+      - "Fecha de Egreso"
+      - "Motivo de Egreso"
+      - "Autoriza (Fiscal/Juez)"
+      - "Número de Oficio/Autorización"
+      - "Persona que Recibe"
+      - "Cédula de quien Recibe"
+      - "Firma de Recibido"
+      - "Fecha de Retorno Estimada"
+
+consideraciones_generales:
+  - "Solo personal autorizado"
+  - "Control de temperatura y humedad"
+  - "Cámaras de seguridad 24/7"
+  - "Inventario periódico (máximo un año)"
+  - "Verificación de precintos"
+
+areas_resguardo:
+  - id: "area_ingreso"
+    nombre: "Área de Ingreso"
+    funcion: "Recepción y verificación inicial"
+  - id: "area_deposito"
+    nombre: "Área de Depósito"
+    funcion: "Almacenamiento seguro"
+  - id: "area_egreso"
+    nombre: "Área de Egreso"
+    funcion: "Salida controlada"
+  - id: "traslado_interno"
+    nombre: "Traslado Interno"
+    funcion: "Movimiento dentro del área"
+
+operarios: ["Administrador de Resguardo", "Funcionarios de Custodia"]
+
+documentos_asociados:
+  - "Acta de Ingreso"
+  - "Acta de Egreso"
+  - "Acta de Traslado Interno"
+  - "Registro de Inventario"

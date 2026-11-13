@@ -1,0 +1,147 @@
+---
+/**
+ * SHA256.US — Acta de Apertura y Desprecintado de Evidencia
+ * MUCC-2017 Fase 2 & ISO/IEC 27037 §7.2. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Acta de Apertura y Desprecintado de Evidencia"
+    nroLabel="N° EXPEDIENTE:"
+    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
+    watermarkText="DESPRECINTADO"
+  >
+    <div class="uswds-top-header">
+      ACTA DE APERTURA Y DESPRECINTADO EN LABORATORIO — MUCC-2017 FASE 2 · ISO/IEC 27037 SEC. 7.2 · ART. 187 COPP
+    </div>
+
+    <!-- EXPEDIENTE / PRCC -->
+    <div class="section">
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">Expediente N°</div>
+            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[N° Expediente]'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">PRCC N°</div>
+            <div class="value font-mono" contenteditable="true" data-field="numero_prcc">{caso.numero_prcc || caso.numeroPRCC || '[PRCC-2026-XXXX]'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.0 IDENTIFICACIÓN DEL PAQUETE -->
+    <div class="section">
+      <div class="section-title">1.0 IDENTIFICACIÓN DEL PAQUETE Y PRECINTO DE SEGURIDAD</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">Código de Bolsa Faraday / Sobre</div>
+            <div class="value font-mono" contenteditable="true" data-field="bolsa_faraday_numero">
+              {caso.bolsa_faraday_numero || 'BF-SHA256-2026-001'}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Número de Precinto de Seguridad</div>
+            <div class="value font-mono" contenteditable="true" data-field="precinto_numero">
+              {caso.precinto_numero || 'PREC-SHA256-8842'}
+            </div>
+          </div>
+          <div class="form-group" style="grid-column: span 2;">
+            <div class="label">Estado del Precinto al Recibir</div>
+            <div class="value" contenteditable="true">
+              Intacto / Inviolado / Sello holográfico de seguridad sin signos de apertura previa
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 COMPROBACIÓN DE INTEGRIDAD -->
+    <div class="section">
+      <div class="section-title">2.0 COMPROBACIÓN DE INTEGRIDAD Y ESTACIÓN DE ADQUISICIÓN</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">Estación de Trabajo / Write-Blocker</div>
+            <div class="value" contenteditable="true" data-field="imagen_write_blocker">
+              {caso.imagen_write_blocker || 'Estación Forense N° 01 — Tableau Write-Blocker T8u'}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="label">Perito Analista Responsable</div>
+            <div class="value" contenteditable="true" data-field="peritoLider">
+              {caso.peritoLider || 'Perito Oficial'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.0 REMOCIÓN CONTROLADA -->
+    <div class="section">
+      <div class="section-title">3.0 REMOCIÓN CONTROLADA DEL PRECINTO Y EXTRACCIÓN DE EVIDENCIA</div>
+      <div style="padding: 8px 12px; background-color: #FEFCE8; border-left: 4px solid #D9A700; border-radius: 4px; font-size: 8pt; line-height: 1.5; color: #1B2A4A;">
+        Se hace constar formalmente que en la sede del Laboratorio Privado SHA256.US se procedió a la remoción controlada del precinto de la bolsa contenedora de la evidencia digital. Se verificó que el contenido corresponde exactamente con el inventario de la Planilla PRCC y no presenta signos de fuerza o alteración previa.
+      </div>
+    </div>
+
+    <!-- 4.0 VERIFICACIÓN DE HASH GENESIS -->
+    <div class="section">
+      <div class="section-title">4.0 VERIFICACIÓN DE HASH GÉNESIS Y PRESERVACIÓN BIT-A-BIT</div>
+      <div class="uswds-card">
+        <div class="form-group">
+          <div class="label">Hash SHA-256 Verificado al Desprecintar:</div>
+          <div class="value font-mono" contenteditable="true" data-field="hashSHA256">
+            {caso.hashSHA256 || '[Hash SHA-256 verificado]'}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIRMAS BILATERALES -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO DE APERTURA</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || '[Perito Líder]'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Perito Responsable</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">TESTIGO / PERITO COADYUVANTE</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante">{caso.perito_coadyuvante || 'Ing. Perito Coadyuvante'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante_cedula">{caso.perito_coadyuvante_cedula || 'V-19.888.777'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Testigo de Laboratorio</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>

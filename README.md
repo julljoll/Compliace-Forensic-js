@@ -1,162 +1,183 @@
 <div align="center">
 
-# 🛡️ SHA256.US — CMS de Cumplimiento Forense Digital
+# 🛡️ Forensic Chief Compliance Officer (FCCO) — SHA256.US
 
-### *Sistema Integral de Cadena de Custodia, Peritaje Informático y Compliance Legal*
+### *Sistema Canónico de Cadena de Custodia, Peritaje Informático y Compliance Legal*
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.2.10-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2.7-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![MUI v6](https://img.shields.io/badge/MUI_v6-DataGrid_X-007FFF?style=for-the-badge&logo=mui&logoColor=white)](https://mui.com/)
-[![License](https://img.shields.io/badge/Licencia-MIT-00FF41?style=for-the-badge)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-brightgreen?style=for-the-badge)](https://github.com/julljoll/forensic-chief-compliance-officer/releases)
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.0-informational?style=for-the-badge)](https://semver.org/)
+[![Astro](https://img.shields.io/badge/Astro-5.x-BC52EE?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
+[![USWDS](https://img.shields.io/badge/USWDS-3.14-005EA2?style=for-the-badge&logo=us-web-design-system&logoColor=white)](https://designsystem.digital.gov/)
+[![PHP](https://img.shields.io/badge/PHP_8.2+-PDO_MySQL-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net/)
+[![Apache](https://img.shields.io/badge/Apache-cPanel-D22128?style=for-the-badge&logo=apache&logoColor=white)](https://cpanel.net/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/Licencia-MIT-008837?style=for-the-badge)](LICENSE)
 
 ---
 
-**SHA256.US** es una plataforma web **Cyber-Legal** de alto nivel diseñada para peritos informáticos, auditores y Compliance Officers. Permite la administración rigurosa de evidencias digitales, el seguimiento estricto de protocolos normativos y la generación de documentos con validez legal.
+**Forensic Chief Compliance Officer (FCCO — SHA256.US)** es una plataforma web **Cyber-Legal** de alto nivel diseñada para peritos informáticos, auditores y Compliance Officers. Permite la administración rigurosa de evidencias digitales, el seguimiento estricto de protocolos normativos y la generación de documentos con validez legal bajo estándares **ISO/IEC 27037**, **ISO/IEC 27042**, **NIST SP 800-86**, **MUCC-2017** y **COPP Art. 187**.
 
 </div>
 
 ---
 
-## ⚡ ¿Qué hace esta aplicación?
+## ⚡ Capacidades Principales del Sistema
 
 <table width="100%">
   <tr>
     <td width="50%" valign="top">
-      <h3>📁 1. Gestión Integral de Casos (CRUD)</h3>
-      <p>Administra expedientes digitales completos para auditorías de WhatsApp, Correos Electrónicos, Discos Duros y Dispositivos Móviles. Incluye registro de metadatos, evidencias y partes involucradas.</p>
+      <h3>🏛️ 1. Interfaz Nativa USWDS (@uswds/uswds)</h3>
+      <p>Diseño institucional de laboratorio forense bajo los estándares del <b>Defense Cyber Crime Center (DC3)</b>. Utiliza exclusivamente componentes federales: <code>.usa-banner</code>, <code>.usa-header</code>, <code>.usa-sidenav</code>, <code>.usa-step-indicator</code>, <code>.usa-summary-box</code>, <code>.usa-alert</code> y <code>.usa-table</code>.</p>
     </td>
     <td width="50%" valign="top">
-      <h3>🔒 2. Compliance Stepper Secuencial</h3>
-      <p>Flujos forenses automatizados paso a paso con <b>bloqueo de etapas</b>. Garantiza que no se salten procedimientos requeridos por normas internacionales y leyes locales.</p>
+      <h3>🔒 2. Ciclo Pericial ISO en 6 Fases (F0 - F5)</h3>
+      <p>Control de avance determinista: ninguna etapa puede cerrarse sin cumplir los requisitos técnicos obligatorios (fijación, aislamiento Faraday, bloqueadores de escritura y verificación de hash génesis SHA-256).</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>📜 3. Planillas Oficiales Legal-Forense</h3>
-      <p>Generación e impresión directa de <b>7 planillas oficiales</b> en tamaño <b>Folio / Oficio (216mm x 330mm)</b> con márgenes reglamentarios (Actas de Obtención, PRCC, Entrevistas, Dictámenes).</p>
+      <h3>📜 3. Catálogo de 13 Planillas Oficiales en Folio</h3>
+      <p>Preservación matemática y dimensional al 100% en formato <b>Folio / Oficio (216mm × 330mm)</b> con márgenes reglamentarios (Izquierda 30mm), membrete institucional, dactiloscopía bilateral (pulgar izquierdo y derecho) y aislamiento total de estilos mediante <code>.folio-forense-aislado</code>.</p>
     </td>
     <td width="50%" valign="top">
       <h3>⛓️ 4. Auditoría Inmutable (Hash Chain SHA-256)</h3>
-      <p>Cada acción en el sistema genera un registro encadenado mediante algoritmos criptográficos <b>SHA-256</b>, garantizando la inalterabilidad ante tribunales (MUI X DataGrid).</p>
+      <p>Cada acción en el expediente queda sellada en una cadena inmutable donde cada bloque contiene el hash SHA-256 del bloque inmediatamente anterior, respaldado por triggers anti-tamper en MySQL.</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
       <h3>📚 5. Base de Conocimiento Normativo RAG</h3>
-      <p>Biblioteca integrada de <b>77 documentos normativos</b> (ISO/IEC 27037, ISO 27042, NIST SP 800-101, MUCC-2017, COPP, Ley de Mensajes de Datos y Firma Electrónica).</p>
+      <p>Compendio interactivo de <b>77 directrices y normativas</b> (ISO/IEC 27037, 27042, 27043, 27001, 37301, NIST SP 800-86, NIST SP 800-88, MUCC-2017, COPP, CRBV 28/60, RFC 3227).</p>
     </td>
     <td width="50%" valign="top">
-      <h3>⚡ 6. Offline-First & Sincronización</h3>
-      <p>Funciona al 100% sin conexión mediante <b>IndexedDB</b> en el navegador local, con soporte de sincronización opcional en la nube con <b>Neon PostgreSQL</b>.</p>
+      <h3>⚡ 6. Arquitectura Estática + cPanel (Apache + PHP)</h3>
+      <p>Compilación 100% estática en <b>Astro (<code>output: 'static'</code>)</b> con respaldo offline inmediato en <b>IndexedDB</b> y API REST ligera en <b>PHP puro con PDO</b> lista para desplegarse en cualquier hosting cPanel compartido o dedicado.</p>
     </td>
   </tr>
 </table>
 
 ---
 
-## 🔬 Flujos Forenses Especializados
+## 🔬 Ciclo Pericial Canónico ISO (6 Fases F0 a F5)
 
 ```mermaid
-graph LR
-    A[📦 Recepción & Obtención] --> B[🔒 Cadena de Custodia PRCC]
-    B --> C[⚙️ Extracción & Análisis Bit a Bit]
-    C --> D[⚖️ Auditoría & Hash SHA-256]
-    D --> E[🖨️ Dictamen & Impresión Folio]
+flowchart LR
+    F0["F0: Apertura\n(ISO 37301 / CRBV 28)"] --> F1["F1: Recolección\n(ISO 27037 / MUCC)"]
+    F1 --> F2["F2: Adquisición\n(ISO 27037 / NIST 800-86)"]
+    F2 --> F3["F3: Análisis\n(ISO 27042 / NIST 800-101)"]
+    F3 --> F4["F4: Dictamen\n(ISO 27043 / COPP 223-225)"]
+    F4 --> F5["F5: Disposición Final\n(NIST 800-88 / MUCC)"]
 ```
 
-1. **WhatsApp Forensics:** 9 pasos guiados (Recepción → ALEAPP / msgstore.db → Informe Pericial).
-2. **Email Forensics:** 7 pasos (PST/OST → Análisis de Cabeceras RFC 822 → Adjuntos).
-3. **Hard Drive Forensics:** 8 pasos (Write-Blocker → Imagen DD/E01 → Recuperación).
+1. **Fase F0 (Apertura y Legitimación):** Consentimiento informado, fijación de alcance y legitimación pericial.
+2. **Fase F1 (Identificación y Recolección):** Fijación fotográfica 360°, aislamiento electromagnético (bolsa Faraday / modo avión), embalaje numerado y apertura formal de la PRCC.
+3. **Fase F2 (Adquisición y Preservación):** Desprecintado en laboratorio, uso de bloqueadores de escritura certificados, clonación bit-a-bit (E01/DD) y cálculo de hash génesis SHA-256.
+4. **Fase F3 (Análisis e Interpretación):** Análisis científico sobre copia de trabajo con herramientas validadas (ALEAPP, Kali, IPED, Sonic Visualiser) y metodología reproducible.
+5. **Fase F4 (Informe Pericial y Dictamen):** Redacción motivada de conclusiones con cita de hashes SHA-256 y firma bilateral de dos peritos habilitados.
+6. **Fase F5 (Entrega, Disposición y Sanitización):** Entrega formal de evidencias y sanitización certificada (Zeroization / Crypto-Erase) de los discos de trabajo del laboratorio.
 
 ---
 
-## 🚀 Guía Rápida de Instalación Local
+## 📜 Catálogo Canónico de 13 Planillas Oficiales en Folio (216mm × 330mm)
 
-Sigue estos 4 sencillos pasos para tener la aplicación corriendo localmente en menos de 2 minutos:
-
-### 📋 Requisitos Previos
-
-- **Node.js:** Versión `18.x` o superior
-- **Git:** Instalado en tu equipo
-- **Navegador Web:** Chrome, Edge o Firefox
-
----
-
-### 📥 Paso 1: Clonar el Repositorio
-
-Abre tu terminal y ejecuta:
-
-```bash
-git clone https://github.com/julljoll/SHA256.git
-cd SHA256
-```
+| # | Planilla Oficial | Fase ISO | Marco Normativo | Ruta de Impresión |
+|:--|:-----------------|:---------|:----------------|:------------------|
+| 1 | **Acta de Consentimiento Informado** | F0 | CRBV Arts. 28 y 60 · Hábeas Data | `/planillas/acta-consentimiento` |
+| 2 | **Acta de Entrevista Forense al Consignante** | F0 | ISO/IEC 27043 §8.3 · MUCC-2017 | `/planillas/acta-entrevista` |
+| 3 | **Acta de Obtención y Preservación Inicial** | F1 | MUCC-2017 §4 · COPP Art. 187 | `/planillas/acta-obtencion` |
+| 4 | **Planilla de Registro de Cadena de Custodia (PRCC)** | F1/F2 | COPP Art. 187 · Gaceta N° 41.247 | `/planillas/planilla-prcc` |
+| 5 | **Acta de Desprecintado y Apertura en Laboratorio** | F2 | MUCC-2017 Fase Laboratorio · ISO 27037 | `/planillas/acta-desprecintado` |
+| 6 | **Planilla de Análisis Forense de Audio (Sonic Visualiser)** | F3 | SWGDE · FRE 702 · ISO/IEC 27042 | `/planillas/planilla-audio-sonic` |
+| 7 | **Planilla de Evaluación de Calidad UX y Servicio** | F3 | ISO 37301 §9.1 · ISO 9001 | `/planillas/planilla-evaluacion-ux` |
+| 8 | **Dictamen Pericial Oficial de Informática Forense** | F4 | COPP Arts. 223–225 · ISO/IEC 27043 | `/planillas/acta-dictamen` |
+| 9 | **Dictamen Especializado de Autenticidad de Imágenes** | F4 | ISO/IEC 27042 · Estándar Daubert | `/planillas/dictamen-imagenes` |
+| 10 | **Dictamen Especializado de Autenticidad de Audios** | F4 | ISO/IEC 27042 · SWGDE Guidelines | `/planillas/dictamen-audios` |
+| 11 | **Acta de Entrega de Resultados y Evidencias** | F5 | MUCC-2017 Disposición Final · COPP 187 | `/planillas/acta-entrega-resultados` |
+| 12 | **Acta de Sanitización de Medios del Laboratorio** | F5 | NIST SP 800-88 Rev. 1 · ISO/IEC 27001 | `/planillas/acta-sanitizacion` |
+| 13 | **Acta de Auditoría y Línea de Tiempo Inmutable** | F5 | ISO/IEC 27001 A.8.15 · SHA-256 Chain | `/planillas/acta-auditoria-timeline` |
 
 ---
 
-### 📦 Paso 2: Instalar Dependencias
+## 🚀 Guía de Despliegue en cPanel (Paso a Paso)
 
-Ejecuta el gestor de paquetes para instalar todas las librerías:
-
+### 1. Compilación Estática
+En su máquina local o entorno de CI:
 ```bash
 npm install
+npm run build
 ```
+Esto compila el tema Sass nativo de USWDS y genera el directorio `dist/` con 22 páginas HTML optimizadas, la carpeta `dist/api/` y el archivo `.htaccess`.
+
+### 2. Base de Datos MySQL / MariaDB
+1. Ingrese a su panel de control **cPanel**.
+2. Abra **Bases de datos MySQL** y cree una nueva base de datos (ej. `tuusuario_sha256us`).
+3. Cree un usuario MySQL con contraseña segura y asígnele **TODOS LOS PRIVILEGIOS** sobre la base creada.
+4. Abra **phpMyAdmin**, seleccione la base de datos recién creada e importe el archivo `database.sql` ubicado en la raíz del proyecto.
+
+### 3. Configurar Credenciales de Base de Datos
+Edite el archivo `public/api/config.php` (o `dist/api/config.php` antes de subirlo):
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'tuusuario_sha256us');
+define('DB_USER', 'tuusuario_dbuser');
+define('DB_PASS', 'TuPasswordSeguro123!');
+define('DB_CHARSET', 'utf8mb4');
+```
+
+### 4. Subir Archivos a `public_html`
+1. Abra el **Administrador de Archivos** de cPanel o conéctese vía **SFTP**.
+2. Navegue hasta la carpeta raíz web (`public_html/` o el subdirectorio de su subdominio).
+3. Suba todo el contenido generado dentro de `dist/`:
+   ```
+   public_html/
+   ├── .htaccess             <- Reglas Apache de URL limpias y seguridad
+   ├── api/                  <- API REST en PHP puro con PDO
+   │   ├── config.php
+   │   ├── casos.php
+   │   ├── avanzar-etapa.php
+   │   ├── auditoria.php
+   │   ├── auth.php
+   │   └── lib/
+   ├── assets/               <- USWDS CSS, JS, Fuentes e Iconos
+   ├── planillas/            <- 13 Planillas HTML en Folio
+   ├── dashboard.html
+   ├── casos.html
+   ├── flujo.html
+   ├── custodia.html
+   ├── normativa.html
+   ├── auditoria.html
+   ├── exportar.html
+   └── index.html            <- Página de acceso al sistema
+   ```
+4. Verifique que `.htaccess` esté presente en la raíz de `public_html`.
+
+### 5. Acceso Inicial
+- Ingrese en su navegador a `https://tu-dominio.com/`.
+- Credenciales iniciales de administrador:
+  - **Correo:** `julljoll@gmail.com`
+  - **Contraseña:** `AdminForensic2026!`
 
 ---
 
-### ⚙️ Paso 3: Configurar Variables de Entorno *(Opcional)*
+## 🧪 Pruebas Automatizadas y Calidad
 
-La aplicación funciona de forma **autónoma offline** con almacenamiento local IndexedDB. Si deseas conectarla a una base de datos en la nube (Neon PostgreSQL):
-
-> [!NOTE]
-> Copia el archivo `.env.example` como `.env.local` y configura tu conexión:
-
+El proyecto cuenta con una suite completa de pruebas unitarias y de integración en Vitest:
 ```bash
-cp .env.example .env.local
+npm test
 ```
 
-```env
-NEXT_PUBLIC_NEON_DATABASE_URL=postgresql://usuario:password@ep-xxx.us-east-2.aws.neon.tech/dbname?sslmode=require
-```
+Suite validada:
+- `tests/unit/build/distVerification.test.ts`: Valida que `dist/` contenga todas las 22 páginas HTML, `.htaccess`, `database.sql` y controladores PHP.
+- `tests/unit/planillas/paridad.test.ts`: Valida el 100% de paridad y presencia de campos legales en las 13 planillas Folio.
+- `tests/unit/crypto/canonical.test.ts`: Valida el algoritmo de serialización canónica RFC 8785 y paridad con vectores de prueba SHA-256.
+- `tests/unit/domain/gating.test.ts`: Valida las reglas de bloqueo estricto del ciclo ISO.
+- `tests/unit/crypto/hashChain.test.ts`: Valida la verificación de integridad criptográfica de la cadena.
 
 ---
 
-### 🖥️ Paso 4: Iniciar el Servidor de Desarrollo
+## 🏛️ Gobernanza y Normativa Legal
 
-Inicia la aplicación en modo local:
-
-```bash
-npm run dev
-```
-
-> [!TIP]
-> Abre tu navegador e ingresa a: **`http://localhost:3000`**
-
----
-
-### 🔑 Credenciales de Acceso Local
-
-```yaml
-Usuario: julljoll@gmail.com
-Contraseña: admin
-```
-
----
-
-## 🛠️ Comandos de Terminal
-
-| Comando | Acción |
-| :--- | :--- |
-| `npm run dev` | Inicia el servidor de desarrollo local con Turbopack |
-| `npm run build` | Compila y optimiza la aplicación para producción |
-| `npm run start` | Inicia el servidor optimizado de producción |
-| `npm run lint` | Revisa la calidad del código TypeScript / ESLint |
-
----
-
-<div align="center">
-
-**SHA256.US — Compliance Officer CMS Forense Digital**  
-*Garantizando la integridad, autenticidad y cadena de custodia de la evidencia digital.*
-
-</div>
+- **Estándares Forenses:** ISO/IEC 27037:2012 · ISO/IEC 27042:2015 · ISO/IEC 27043:2015 · ISO 37301 · ISO/IEC 27001.
+- **Estándares NIST:** NIST SP 800-86 · NIST SP 800-88 Rev. 1 · NIST SP 800-101 Rev. 1.
+- **Marco Legal Nacional:** MUCC-2017 (Gaceta Oficial N° 41.247) · COPP Arts. 187, 223–225 · CRBV Arts. 28 y 60 · LEDI (Gaceta N° 37.313) · LMDF (Gaceta N° 37.076).
+- **Manual Canónico de Desarrollo:** Consultar [.agents/AGENTS.md](file:///.agents/AGENTS.md).

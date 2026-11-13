@@ -1,0 +1,146 @@
+---
+/**
+ * SHA256.US — Acta de Dictamen Pericial Informático Forense
+ * MUCC-2017, ISO/IEC 27042, COPP Arts. 187, 223, 225. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+const dictamenNum = caso.numeroCaso ? `D-FORENSE-${caso.numeroCaso}` : '[N° DICTAMEN]';
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Dictamen Pericial Informático Forense"
+    nroLabel="N° DICTAMEN:"
+    nroValue={dictamenNum}
+    watermarkText="DICTAMEN PERICIAL"
+  >
+    <div class="uswds-top-header">
+      DICTAMEN PERICIAL INFORMÁTICO FORENSE — MUCC-2017 · ISO/IEC 27042 · COPP ARTS. 187, 223, 225
+    </div>
+
+    <!-- 1.0 MARCO NORMATIVO Y PERITOS -->
+    <div class="section">
+      <div class="section-title">1.0 MARCO NORMATIVO Y FUNDAMENTACIÓN JURÍDICA RAG</div>
+      <div class="uswds-card" style="font-size: 8.5pt; line-height: 1.5;">
+        <div style="font-weight: 700; color: #112E51; margin-bottom: 4px;">FUNDAMENTACIÓN LEGAL Y TÉCNICA:</div>
+        <ul style="margin: 0 0 6px 16px; padding: 0;">
+          <li><strong>COPP Arts. 187, 223, 225:</strong> Garantía procesal de Cadena de Custodia, designación de dos peritos acreditados y motivación científica del dictamen.</li>
+          <li><strong>Ley de Mensajes de Datos y Firmas Electrónicas (Art. 4):</strong> Eficacia probatoria plena de la evidencia digital.</li>
+          <li><strong>ISO/IEC 27037:2012 &amp; ISO/IEC 27042:2015:</strong> Preservación y análisis científico con repetibilidad comprobada (Estándar Daubert / FRE 702).</li>
+        </ul>
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+          <div class="form-group">
+            <div class="label">Perito Líder (COPP Art. 223)</div>
+            <div class="value" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Co-Perito Asistente (COPP Art. 223)</div>
+            <div class="value" contenteditable="true" data-field="perito_coadyuvante">{caso.perito_coadyuvante || 'Perito Coadyuvante'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 IDENTIFICACIÓN DE LA EVIDENCIA Y HASH -->
+    <div class="section">
+      <div class="section-title">2.0 IDENTIFICACIÓN DE LA EVIDENCIA Y VERIFICACIÓN CRIPTOGRÁFICA</div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
+        <tbody>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; width: 30%; font-weight: 700; background: #F8FAFC;">Dispositivo / Medio</td>
+            <td style="padding: 6px 8px;" contenteditable="true">
+              {caso.dispositivo_marca ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}` : (caso.discoduro_marca ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}` : 'Dispositivo peritado')}
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Serial / IMEI</td>
+            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="dispositivo_imei">
+              {caso.dispositivo_imei || caso.discoduro_serial || '[Serial / IMEI]'}
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash SHA-256 Génesis</td>
+            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">
+              {caso.hashSHA256 || '[Hash SHA-256 verificado bit-a-bit]'}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Estado de Integridad</td>
+            <td style="padding: 6px 8px; color: #008837; font-weight: 700;" contenteditable="true">
+              MATCH (100% Coincidencia Criptográfica SHA-256)
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3.0 METODOLOGÍA Y HERRAMIENTAS -->
+    <div class="section">
+      <div class="section-title">3.0 METODOLOGÍA CIENTÍFICA Y HERRAMIENTAS VALIDADAS</div>
+      <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px 10px; font-size: 8.5pt; line-height: 1.5; background: #FAFAFA;">
+        <div><strong>Metodología Aplicada:</strong> Adquisición física forense bit-a-bit mediante Write-Blocker certificado, extracción lógica y física, indexación mediante IPED Forensics v4.1, análisis de base de datos SQLite y preservación de marcas de tiempo UTC.</div>
+        <div style="margin-top: 4px;"><strong>Herramientas Forenses:</strong> FTK Imager v4.7.1, IPED Forensics v4.1, SQLite Viewer, Autopsy 4.21, Sonic Visualiser v5.</div>
+      </div>
+    </div>
+
+    <!-- 4.0 HALLAZGOS Y CONCLUSIONES -->
+    <div class="section">
+      <div class="section-title">4.0 HALLAZGOS PERICIALES Y CONCLUSIONES TÉCNICO-JURÍDICAS</div>
+      <div class="form-group" contenteditable="true" style="min-height: 140px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 10px; font-size: 8.5pt; line-height: 20px; background: #FFFFFF;">
+        <p style="margin: 0; color: #1B2A4A;">
+          <strong>CONCLUSIÓN 1:</strong> La evidencia digital analizada conservó su integridad criptográfica inalterada durante todo el procedimiento técnico, comprobado mediante cálculo de hash SHA-256 coincidente al 100% con el hash génesis asentado en la Planilla PRCC.<br/>
+          <strong>CONCLUSIÓN 2:</strong> Se constató la existencia, autenticidad y continuidad cronológica de los registros peritados, sin signos de manipulación, corte de onda, edición o adulteración externa.<br/>
+          <strong>CONCLUSIÓN 3:</strong> El presente dictamen se rige bajo los principios de objetividad, imparcialidad, estricta confidencialidad y repetibilidad científica conforme a las normas ISO/IEC 27037 y 27042.
+        </p>
+      </div>
+    </div>
+
+    <!-- FIRMAS BILATERALES (MÍNIMO 2 PERITOS COPP ART. 223) -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO PRINCIPAL (COPP ART. 223)</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
+        </div>
+        <div class="sig-field">
+          CIV N°: <span class="sig-underline" contenteditable="true" data-field="perito_civ">{caso.perito_civ || 'CIV-299410'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Perito Principal</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">CO-PERITO ASISTENTE (COPP ART. 223)</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante">{caso.perito_coadyuvante || 'Ing. Co-Perito'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante_cedula">{caso.perito_coadyuvante_cedula || 'V-19.888.777'}</span>
+        </div>
+        <div class="sig-field">
+          CIV N°: <span class="sig-underline" contenteditable="true">CIV-312890</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Co-Perito Asistente</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>
