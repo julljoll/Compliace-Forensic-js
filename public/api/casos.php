@@ -67,24 +67,34 @@ if ($method === 'GET') {
     }
 
     // Listar todos los casos
-    $stmt = $pdo->query('SELECT id, numero_caso, expediente, numero_prcc, tipo_proyecto, titulo, estado, prioridad, fase_actual, perito_lider, creado_en, version, datos_json FROM casos ORDER BY creado_en DESC');
-    $rows = $stmt->fetchAll();
-    $casos = [];
-    foreach ($rows as $r) {
-        $c = json_decode($r['datos_json'], true) ?: [];
-        $c['id'] = $r['id'];
-        $c['numeroCaso'] = $r['numero_caso'];
-        $c['tipoProyecto'] = $r['tipo_proyecto'];
-        $c['titulo'] = $r['titulo'];
-        $c['estado'] = $r['estado'];
-        $c['prioridad'] = $r['prioridad'];
-        $c['peritoLider'] = $r['perito_lider'];
-        $c['version'] = (int)$r['version'];
-        $casos[] = $c;
-    }
+    try {
+        $stmt = $pdo->query('SELECT id, numero_caso, expediente, numero_prcc, tipo_proyecto, titulo, estado, prioridad, fase_actual, perito_lider, creado_en, version, datos_json FROM casos ORDER BY creado_en DESC');
+        $rows = $stmt->fetchAll();
+        $casos = [];
+        foreach ($rows as $r) {
+            $c = json_decode($r['datos_json'], true) ?: [];
+            $c['id'] = $r['id'];
+            $c['numeroCaso'] = $r['numero_caso'];
+            $c['tipoProyecto'] = $r['tipo_proyecto'];
+            $c['titulo'] = $r['titulo'];
+            $c['estado'] = $r['estado'];
+            $c['prioridad'] = $r['prioridad'];
+            $c['peritoLider'] = $r['perito_lider'];
+            $c['version'] = (int)$r['version'];
+            $casos[] = $c;
+        }
 
-    echo json_encode(['casos' => $casos], JSON_UNESCAPED_UNICODE);
-    exit;
+        echo json_encode(['casos' => $casos], JSON_UNESCAPED_UNICODE);
+        exit;
+    } catch (\PDOException $e) {
+        http_response_code(500);
+        echo json_encode([
+            'error' => 'Error al consultar la tabla casos en MySQL',
+            'detail' => $e->getMessage(),
+            'hint' => 'Asegúrese de importar el archivo database.sql en phpMyAdmin dentro de la base de datos sirixutr_Forensic_cco'
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 }
 
 // Para mutaciones (POST, PUT, DELETE) requerimos usuario autenticado si hay sesión activa
