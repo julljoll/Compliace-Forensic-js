@@ -35,17 +35,18 @@ if ($method === 'POST') {
 
     $email = (string)($input['email'] ?? '');
     $password = (string)($input['password'] ?? '');
+    $totpCode = (string)($input['totp_code'] ?? $input['totpCode'] ?? '');
 
-    if (empty($email) || empty($password)) {
+    if (empty($email) || (empty($password) && empty($totpCode))) {
         http_response_code(400);
-        echo json_encode(['error' => 'Correo y contraseña requeridos']);
+        echo json_encode(['error' => 'Se requiere correo electrónico y contraseña o código Google Authenticator']);
         exit;
     }
 
-    $user = Session::login($email, $password);
+    $user = Session::login($email, $password, $totpCode);
     if (!$user) {
         http_response_code(401);
-        echo json_encode(['error' => 'Credenciales inválidas o usuario inactivo']);
+        echo json_encode(['error' => 'Credenciales inválidas, código 2FA erróneo o usuario inactivo']);
         exit;
     }
 

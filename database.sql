@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` VARCHAR(64) NOT NULL,
   `email` VARCHAR(191) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
+  `totp_secret` VARCHAR(64) DEFAULT NULL,
   `nombre` VARCHAR(150) NOT NULL,
   `apellido` VARCHAR(150) NOT NULL DEFAULT '',
   `ci` VARCHAR(32) NOT NULL DEFAULT '',
@@ -136,25 +137,88 @@ BEGIN
 END$$
 DELIMITER ;
 
--- 7. Usuario Inicial Administrador
--- Contraseña por defecto: admin (se debe cambiar tras el primer despliegue en producción)
--- Hash bcrypt generado para 'admin'
-INSERT INTO `usuarios` (`id`, `email`, `password_hash`, `nombre`, `apellido`, `ci`, `cargo`, `rol`, `organismo`, `despacho`, `telefono`, `civ`, `inpre`, `activo`)
+-- 7. Usuarios Oficiales del Laboratorio Forense
+-- Usuario 1: Jull Joll — Perito Analizador de Datos (Clave: Karupano | TOTP: JULLJOLLFCCO2FA1)
+INSERT INTO `usuarios` (`id`, `email`, `password_hash`, `totp_secret`, `nombre`, `apellido`, `ci`, `cargo`, `rol`, `organismo`, `despacho`, `telefono`, `civ`, `inpre`, `activo`)
 VALUES (
-  'usr-admin-01',
+  'usr-jull-01',
   'julljoll@gmail.com',
-  '$2y$10$wE9l1E44l7r92L9v0V3tEegpP1Ua6rYvP.mC7qS1JgQo9Jk5fK8zW',
+  '$2y$10$rpiUdT4xp.mZyY9ru8Bf4u0pMTGcewPNUroJ0DFs9VBZ061oRK3wm',
+  'JULLJOLLFCCO2FA1',
   'Jull',
   'Joll',
   'V-18.999.001',
-  'Perito Informático Forense Principal',
+  'Perito Analizador de Datos Forenses',
   'admin',
   'Laboratorio Privado SHA256.US',
-  'Coordinación de Cumplimiento Forense',
+  'Área de Análisis e Interpretación (F3/F4)',
   '+58 412-0000000',
   'CIV-299410',
   'INPRE-184920',
   1
-) ON DUPLICATE KEY UPDATE `activo` = 1;
+) ON DUPLICATE KEY UPDATE 
+  `password_hash` = VALUES(`password_hash`),
+  `totp_secret` = VALUES(`totp_secret`),
+  `cargo` = VALUES(`cargo`),
+  `despacho` = VALUES(`despacho`),
+  `activo` = 1;
+
+-- Usuario 2: SHA256 — Encargado de la Etapa de Adquisición (Clave: 15816003 | TOTP: SHA256USFCCO2FA2)
+INSERT INTO `usuarios` (`id`, `email`, `password_hash`, `totp_secret`, `nombre`, `apellido`, `ci`, `cargo`, `rol`, `organismo`, `despacho`, `telefono`, `civ`, `inpre`, `activo`)
+VALUES (
+  'usr-sha256-02',
+  'sha256.us@gmail.com',
+  '$2y$10$DsXjrM8atz4tFHyraR1Od.HZL7kvcaBuNSm0SLvm5rhEvQ8xnto3i',
+  'SHA256USFCCO2FA2',
+  'SHA256',
+  'Adquisición',
+  'V-15.816.003',
+  'Encargado de la Etapa de Adquisición',
+  'perito_lider',
+  'Laboratorio Privado SHA256.US',
+  'Área de Adquisición y Cadena de Custodia (F1/F2)',
+  '+58 414-0000000',
+  'CIV-310520',
+  'INPRE-201450',
+  1
+) ON DUPLICATE KEY UPDATE 
+  `password_hash` = VALUES(`password_hash`),
+  `totp_secret` = VALUES(`totp_secret`),
+  `cargo` = VALUES(`cargo`),
+  `despacho` = VALUES(`despacho`),
+  `activo` = 1;
+
+-- 8. Expediente Inicial Sincronizado en Base de Datos (ISO/IEC 27037)
+INSERT INTO `casos` (`id`, `numero_caso`, `expediente`, `numero_prcc`, `tipo_proyecto`, `titulo`, `descripcion`, `estado`, `prioridad`, `fase_actual`, `perito_lider`, `fiscal`, `solicitante_nombre`, `solicitante_cedula`, `hash_sha256`, `version`, `datos_json`)
+VALUES (
+  'caso-wa-01',
+  'MP-01-2026-WA',
+  'EXP-45920-2026',
+  'PRCC-2026-001',
+  'forense_whatsapp',
+  'Extracción Forense - Caso Extorsión Telefónica',
+  'Investigación pericial de mensajería instantánea en dispositivo móvil Android incautado conforme a ISO/IEC 27037 y MUCC-2017.',
+  'iniciado',
+  'alta',
+  'F0',
+  'Jull Joll',
+  'Dr. Alberto Silva (Fiscalía 12º del M.P. Estado Lara)',
+  'Insp. Jefe Luis Ortega',
+  'V-12.345.678',
+  'b5f2a3e8c9d1047f6a2d3e8c9b5f1e2d7a4c0f3b8e5d2a9c6b3f0e7d1a2c3b4e',
+  1,
+  '{"id":"caso-wa-01","numeroCaso":"MP-01-2026-WA","expediente":"EXP-45920-2026","tipoProyecto":"forense_whatsapp","titulo":"Extracción Forense - Caso Extorsión Telefónica","descripcion":"Investigación pericial de mensajería instantánea en dispositivo móvil Android incautado conforme a ISO/IEC 27037 y MUCC-2017.","prioridad":"alta","estado":"iniciado","faseIsoActual":"F0","fechaCreacion":"2026-07-19T08:00:00.000Z","fechaUltimaActualizacion":"2026-07-19T08:00:00.000Z","consignanteNombre":"Insp. Jefe Luis Ortega","consignanteCedula":"V-12.345.678","consignanteTelefono":"+58 412-5551234","consignanteEmail":"fiscalia12.lara@mp.gob.ve","consignanteDireccion":"Sede Central CICPC Delegación Quíbor","evidenciaTipo":"Teléfono Inteligente","evidenciaMarca":"Samsung","evidenciaModelo":"Galaxy A54","evidenciaSerial":"354928110948271","evidenciaColor":"Negro Phantom","evidenciaEstado":"Operativo, pantalla intacta","evidenciaAislamientoRF":true,"fiscaliaTribunal":"Fiscalía 12º del Ministerio Público Estado Lara","peritoLiderNombre":"Jull Joll","peritoLiderCedula":"V-18.999.001","peritoLiderCiv":"CIV-299410","version":1}'
+) ON DUPLICATE KEY UPDATE `version` = 1;
+
+-- Inicialización de fases F0..F5 para caso-wa-01
+INSERT INTO `fases_caso` (`caso_id`, `fase`, `estado`, `controles_json`, `hash_anterior`, `hash_fase`, `completada_por`, `sellada`)
+VALUES 
+  ('caso-wa-01', 'F0', 'DISPONIBLE', '{}', NULL, NULL, NULL, 0),
+  ('caso-wa-01', 'F1', 'BLOQUEADA', '{}', NULL, NULL, NULL, 0),
+  ('caso-wa-01', 'F2', 'BLOQUEADA', '{}', NULL, NULL, NULL, 0),
+  ('caso-wa-01', 'F3', 'BLOQUEADA', '{}', NULL, NULL, NULL, 0),
+  ('caso-wa-01', 'F4', 'BLOQUEADA', '{}', NULL, NULL, NULL, 0),
+  ('caso-wa-01', 'F5', 'BLOQUEADA', '{}', NULL, NULL, NULL, 0)
+ON DUPLICATE KEY UPDATE `estado` = VALUES(`estado`);
 
 SET FOREIGN_KEY_CHECKS = 1;

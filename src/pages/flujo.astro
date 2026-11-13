@@ -8,7 +8,6 @@ import StepIndicator from '../components/uswds/StepIndicator.astro';
 import SummaryBox from '../components/uswds/SummaryBox.astro';
 import Alert from '../components/uswds/Alert.astro';
 import { FASES_ISO } from '../lib/domain/gating';
-import { MOCK_CASOS } from '../lib/data/seed';
 
 // Mapeo amigable de nombres de planillas
 const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
@@ -37,15 +36,15 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
           Expediente Pericial Seleccionado
         </div>
         <h1 style="font-size: 22px; font-weight: 800; color: #112E51; margin: 4px 0;" id="caso-titulo">
-          {MOCK_CASOS[0].titulo}
+          Expediente Pericial en Sincronización...
         </h1>
         <div style="font-size: 13px; color: #475569; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-          <span>N° Caso: <strong style="color: #005EA2;" id="caso-numero">{MOCK_CASOS[0].numeroCaso}</strong></span>
+          <span>N° Caso: <strong style="color: #005EA2;" id="caso-numero">Consultando...</strong></span>
           <span>•</span>
-          <span>Expediente: <strong id="caso-expediente">{MOCK_CASOS[0].expediente}</strong></span>
+          <span>Expediente: <strong id="caso-expediente">...</strong></span>
           <span>•</span>
           <span class="usa-tag" style="background-color: #112E51; color: #FFF; font-size: 11px;" id="caso-tipo">
-            {MOCK_CASOS[0].tipoProyecto.replace('forense_', '').toUpperCase()}
+            PERITAJE
           </span>
         </div>
       </div>
@@ -55,11 +54,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
           Cambiar Expediente Activo:
         </label>
         <select class="usa-select" id="select-cambiar-caso" style="margin-top: 4px; height: 38px;">
-          {MOCK_CASOS.map((c) => (
-            <option value={c.id}>
-              {c.numeroCaso} — {c.titulo.substring(0, 30)}...
-            </option>
-          ))}
+          <option value="">Consultando base de datos MySQL...</option>
         </select>
       </div>
     </div>
@@ -69,25 +64,25 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
       <div>
         <span style="color: #64748B;">Consignante:</span>
         <div style="font-weight: 700; color: #1E293B;" id="caso-consignante">
-          {MOCK_CASOS[0].consignanteNombre} (C.I. {MOCK_CASOS[0].consignanteCedula})
+          Cargando datos...
         </div>
       </div>
       <div>
         <span style="color: #64748B;">Dispositivo / Evidencia:</span>
         <div style="font-weight: 700; color: #1E293B;" id="caso-evidencia">
-          {MOCK_CASOS[0].evidenciaMarca} {MOCK_CASOS[0].evidenciaModelo} (S/N: {MOCK_CASOS[0].evidenciaSerial})
+          Cargando evidencia...
         </div>
       </div>
       <div>
         <span style="color: #64748B;">Aislamiento Faraday:</span>
         <div style="font-weight: 700; color: #008837;" id="caso-aislamiento">
-          {MOCK_CASOS[0].evidenciaAislamientoRF ? 'Aislado RF (Modo Avión)' : 'Pendiente'}
+          Consultando estado...
         </div>
       </div>
       <div>
         <span style="color: #64748B;">Perito Líder Designado:</span>
         <div style="font-weight: 700; color: #112E51;" id="caso-perito">
-          {MOCK_CASOS[0].peritoLiderNombre || 'Jull Joll'}
+          Consultando asignación...
         </div>
       </div>
     </div>
@@ -168,7 +163,7 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
                   <div style="font-size: 11px; color: #64748B;">Formato Folio Oficial · Cierre Bilateral</div>
                 </div>
                 <a
-                  href={`/planillas/${pInfo.slug}?casoId=${MOCK_CASOS[0].id}`}
+                  href={`/planillas/${pInfo.slug}`}
                   class="usa-button usa-button--outline btn-link-planilla"
                   data-base-slug={pInfo.slug}
                   style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2; white-space: nowrap;"
@@ -272,15 +267,23 @@ const PLANILLAS_MAP: Record<string, { titulo: string; slug: string }> = {
   async function cargarCasosYSeleccionar() {
     let casos: CasoCMS[] = [];
     try {
-      casos = await phpApi.listarCasos();
+      const data = await phpApi.listarCasos();
+      casos = (data || []).filter((c) => !c.id.startsWith('caso-mock-'));
     } catch {
-      casos = await idbGetAll('casos');
+      const data = await idbGetAll('casos');
+      casos = (data || []).filter((c) => !c.id.startsWith('caso-mock-'));
     }
 
-    if (!casos || casos.length === 0) return;
+    const select = document.getElementById('select-cambiar-caso') as HTMLSelectElement;
+
+    if (!casos || casos.length === 0) {
+      const tit = document.getElementById('caso-titulo');
+      if (tit) tit.textContent = 'No hay expedientes sincronizados en MySQL';
+      if (select) select.innerHTML = '<option value="">Sin expedientes en base de datos</option>';
+      return;
+    }
 
     // Actualizar select de casos
-    const select = document.getElementById('select-cambiar-caso') as HTMLSelectElement;
     if (select) {
       select.innerHTML = '';
       casos.forEach((c) => {

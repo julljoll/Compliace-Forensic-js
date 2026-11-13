@@ -7,7 +7,6 @@
  */
 import AppLayout from '../../layouts/AppLayout.astro';
 import Alert from '../../components/uswds/Alert.astro';
-import { MOCK_CASOS } from '../../lib/data/seed';
 
 const PLANILLAS = [
   {
@@ -136,13 +135,6 @@ const PLANILLAS = [
         <option value="blanco" selected>
           Formato en Blanco (Llenado Manual con Bolígrafo)
         </option>
-        <optgroup label="Expedientes Activos en Base de Datos:">
-          {MOCK_CASOS.map((c) => (
-            <option value={c.id}>
-              {c.numeroCaso} — {c.evidenciaMarca} ({c.estado})
-            </option>
-          ))}
-        </optgroup>
       </select>
     </div>
   </div>
@@ -238,20 +230,22 @@ const PLANILLAS = [
       casos = await idbGetAll('casos');
     }
 
-    if (select) {
-      if (casos && casos.length > 0) {
-        select.innerHTML = '';
-        
-        // Opción 1: Plantilla en blanco
-        const optBlanco = document.createElement('option');
-        optBlanco.value = 'blanco';
-        optBlanco.textContent = 'Formato en Blanco (Llenado Manual con Bolígrafo)';
-        optBlanco.selected = true;
-        select.appendChild(optBlanco);
+    casos = (casos || []).filter((c) => !c.id.startsWith('caso-mock-'));
 
-        // Grupo con casos reales
+    if (select) {
+      select.innerHTML = '';
+      
+      // Opción 1: Plantilla en blanco
+      const optBlanco = document.createElement('option');
+      optBlanco.value = 'blanco';
+      optBlanco.textContent = 'Formato en Blanco (Llenado Manual con Bolígrafo)';
+      optBlanco.selected = true;
+      select.appendChild(optBlanco);
+
+      if (casos.length > 0) {
+        // Grupo con casos reales sincronizados
         const optGroup = document.createElement('optgroup');
-        optGroup.label = 'Expedientes Disponibles para Inyección:';
+        optGroup.label = 'Expedientes Sincronizados en MySQL:';
         casos.forEach((c) => {
           const opt = document.createElement('option');
           opt.value = c.id;
@@ -263,7 +257,9 @@ const PLANILLAS = [
 
       const params = new URLSearchParams(window.location.search);
       const paramId = params.get('casoId');
-      if (paramId) select.value = paramId;
+      if (paramId && (paramId === 'blanco' || casos.some((x) => x.id === paramId))) {
+        select.value = paramId;
+      }
 
       actualizarLinks(select.value);
 

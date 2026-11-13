@@ -5,7 +5,6 @@
  */
 import AppLayout from '../layouts/AppLayout.astro';
 import Alert from '../components/uswds/Alert.astro';
-import { MOCK_CASOS } from '../lib/data/seed';
 ---
 
 <AppLayout title="Expedientes Periciales — SHA256.US" activeNav="casos">
@@ -61,7 +60,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
     </div>
 
     <div style="font-size: 13px; color: #64748B;">
-      Mostrando: <strong id="contador-casos" style="color: #112E51;">{MOCK_CASOS.length}</strong> expedientes
+      Mostrando: <strong id="contador-casos" style="color: #112E51;">0</strong> expedientes
     </div>
   </div>
 
@@ -81,72 +80,11 @@ import { MOCK_CASOS } from '../lib/data/seed';
           </tr>
         </thead>
         <tbody id="tbody-casos">
-          {MOCK_CASOS.map((c) => (
-            <tr data-id={c.id} data-tipo={c.tipoProyecto}>
-              <td>
-                <strong style="color: #005EA2; font-size: 14px;">{c.numeroCaso}</strong>
-                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">{c.expediente}</div>
-                <div style="font-size: 11px; color: #334155; margin-top: 4px;">{c.titulo}</div>
-              </td>
-              <td>
-                <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px; font-weight: 600;">
-                  {c.tipoProyecto.replace('forense_', '').toUpperCase()}
-                </span>
-              </td>
-              <td>
-                <div style="font-weight: 600;">{c.consignanteNombre || 'Consignante no reg.'}</div>
-                <div style="font-size: 11px; color: #64748B;">C.I. {c.consignanteCedula || 'N/A'}</div>
-                <div style="font-size: 11px; color: #64748B;">Tlf: {c.consignanteTelefono || 'N/A'}</div>
-              </td>
-              <td>
-                <div style="font-weight: 600;">{c.evidenciaMarca} {c.evidenciaModelo}</div>
-                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">S/N: {c.evidenciaSerial || 'N/A'}</div>
-                <div style="font-size: 11px; color: #008837;">Bolsa Faraday: {c.evidenciaAislamientoRF ? 'Aislado RF' : 'No'}</div>
-              </td>
-              <td>
-                <span class="usa-tag" style="background-color: #E7F6F8; color: #005EA2; font-weight: 800; font-family: 'Roboto Mono Web', monospace;">
-                  {c.faseIsoActual || 'F0'}
-                </span>
-                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">ISO 27037</div>
-              </td>
-              <td>
-                <div style="display: flex; align-items: center; gap: 6px; color: #008837; font-weight: 600; font-size: 12px;">
-                  <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #008837;"></span>
-                  SHA-256 OK
-                </div>
-              </td>
-              <td style="text-align: right;">
-                <div style="display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap;">
-                  <a
-                    href={`/flujo?casoId=${c.id}`}
-                    class="usa-button"
-                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; background-color: #005EA2; color: #FFF;"
-                    title="Gestionar Fases ISO y Sellos SHA-256"
-                  >
-                    Fases ISO
-                  </a>
-                  <a
-                    href={`/planillas/planilla-prcc?casoId=${c.id}`}
-                    class="usa-button usa-button--outline"
-                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
-                    title="Planilla de Registro de Cadena de Custodia"
-                  >
-                    PRCC
-                  </a>
-                  <a
-                    href={`/planillas?casoId=${c.id}`}
-                    class="usa-button usa-button--outline"
-                    style="padding: 4px 8px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #CBD5E1; color: #475569; display: inline-flex; align-items: center;"
-                    title="Ver Planillas en Folio"
-                  >
-                    <svg class="usa-icon" aria-hidden="true" role="img" style="width: 14px; height: 14px; fill: #475569;">
-                      <use xlink:href="/assets/uswds/img/sprite.svg#file_present"></use>
-                    </svg>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          ))}
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 24px; color: #64748B;">
+              Consultando expedientes sincronizados en MySQL...
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -383,6 +321,120 @@ import { MOCK_CASOS } from '../lib/data/seed';
 
   if (searchInput) searchInput.addEventListener('input', aplicarFiltros);
   if (filterSelect) filterSelect.addEventListener('change', aplicarFiltros);
+
+  let casosSincronizados: CasoCMS[] = [];
+
+  function renderizarFilaCaso(c: CasoCMS): string {
+    const tipo = (c.tipoProyecto || '').replace('forense_', '').toUpperCase();
+    return `
+      <tr data-id="${c.id}" data-tipo="${c.tipoProyecto}">
+        <td>
+          <strong style="color: #005EA2; font-size: 14px;">${c.numeroCaso}</strong>
+          <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">${c.expediente || 'S/E'}</div>
+          <div style="font-size: 11px; color: #334155; margin-top: 4px;">${c.titulo}</div>
+        </td>
+        <td>
+          <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px; font-weight: 600;">
+            ${tipo}
+          </span>
+        </td>
+        <td>
+          <div style="font-weight: 600;">${c.consignanteNombre || 'Consignante no reg.'}</div>
+          <div style="font-size: 11px; color: #64748B;">C.I. ${c.consignanteCedula || 'N/A'}</div>
+          <div style="font-size: 11px; color: #64748B;">Tlf: ${c.consignanteTelefono || 'N/A'}</div>
+        </td>
+        <td>
+          <div style="font-weight: 600;">${c.evidenciaMarca || ''} ${c.evidenciaModelo || ''}</div>
+          <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">S/N: ${c.evidenciaSerial || 'N/A'}</div>
+          <div style="font-size: 11px; color: #008837;">Bolsa Faraday: ${c.evidenciaAislamientoRF ? 'Aislado RF' : 'No'}</div>
+        </td>
+        <td>
+          <span class="usa-tag" style="background-color: #E7F6F8; color: #005EA2; font-weight: 800; font-family: 'Roboto Mono Web', monospace;">
+            ${c.faseIsoActual || 'F0'}
+          </span>
+          <div style="font-size: 11px; color: #64748B; margin-top: 4px;">ISO 27037</div>
+        </td>
+        <td>
+          <div style="display: flex; align-items: center; gap: 6px; color: #008837; font-weight: 600; font-size: 12px;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #008837;"></span>
+            Sincronizado DB
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <div style="display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap;">
+            <a
+              href="/flujo?casoId=${c.id}"
+              class="usa-button"
+              style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; background-color: #005EA2; color: #FFF;"
+              title="Gestionar Fases ISO y Sellos SHA-256"
+            >
+              Fases ISO
+            </a>
+            <a
+              href="/planillas/planilla-prcc?casoId=${c.id}"
+              class="usa-button usa-button--outline"
+              style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
+              title="Planilla de Registro de Cadena de Custodia"
+            >
+              PRCC
+            </a>
+            <a
+              href="/planillas?casoId=${c.id}"
+              class="usa-button usa-button--outline"
+              style="padding: 4px 8px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #CBD5E1; color: #475569; display: inline-flex; align-items: center;"
+              title="Ver Planillas en Folio"
+            >
+              <svg class="usa-icon" aria-hidden="true" role="img" style="width: 14px; height: 14px; fill: #475569;">
+                <use xlink:href="/assets/uswds/img/sprite.svg#file_present"></use>
+              </svg>
+            </a>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  async function cargarCasosSincronizados() {
+    try {
+      const data = await phpApi.listarCasos();
+      // Filtrar únicamente los casos reales de la base de datos (sin mock)
+      casosSincronizados = (data || []).filter((c) => !c.id.startsWith('caso-mock-'));
+
+      if (!tbody) return;
+
+      if (casosSincronizados.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 36px 20px; color: #475569;">
+              <div style="font-weight: 700; color: #112E51; font-size: 15px; margin-bottom: 6px;">
+                No hay expedientes sincronizados en la base de datos MySQL
+              </div>
+              <div style="font-size: 13px; margin-bottom: 16px;">
+                Aperture un nuevo expediente pericial o importe el archivo <code>database.sql</code> en phpMyAdmin.
+              </div>
+              <button type="button" class="usa-button" id="btn-crear-primer" style="background-color: #005EA2; padding: 8px 16px; font-size: 13px;">
+                Aperturar Primer Expediente
+              </button>
+            </td>
+          </tr>
+        `;
+        const btnPrimer = document.getElementById('btn-crear-primer');
+        if (btnPrimer) btnPrimer.addEventListener('click', abrirModal);
+        if (contador) contador.textContent = '0';
+        return;
+      }
+
+      tbody.innerHTML = casosSincronizados.map(renderizarFilaCaso).join('');
+      if (contador) contador.textContent = String(casosSincronizados.length);
+      aplicarFiltros();
+    } catch (e) {
+      console.error('Error cargando casos sincronizados:', e);
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    cargarCasosSincronizados();
+  }
 
   // Envío del Formulario
   if (form) {

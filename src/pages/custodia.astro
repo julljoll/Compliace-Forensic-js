@@ -6,7 +6,6 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import Alert from '../components/uswds/Alert.astro';
 import SummaryBox from '../components/uswds/SummaryBox.astro';
-import { MOCK_CASOS } from '../lib/data/seed';
 ---
 
 <AppLayout title="Cadena de Custodia (PRCC) — SHA256.US" activeNav="custodia">
@@ -24,7 +23,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
       <a
         id="btn-ver-prcc"
-        href={`/planillas/planilla-prcc?casoId=${MOCK_CASOS[0].id}`}
+        href="/planillas/planilla-prcc"
         class="usa-button"
         style="background-color: #D9A700; color: #112E51; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px;"
       >
@@ -35,7 +34,7 @@ import { MOCK_CASOS } from '../lib/data/seed';
       </a>
       <a
         id="btn-ver-desprecintado"
-        href={`/planillas/acta-desprecintado?casoId=${MOCK_CASOS[0].id}`}
+        href="/planillas/acta-desprecintado"
         class="usa-button usa-button--outline"
         style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 4px;"
       >
@@ -52,16 +51,12 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <div>
       <span style="font-size: 12px; font-weight: 700; color: #64748B; text-transform: uppercase;">Expediente en Custodia:</span>
       <div style="font-size: 18px; font-weight: 800; color: #112E51;" id="custodia-caso-titulo">
-        {MOCK_CASOS[0].numeroCaso} — {MOCK_CASOS[0].titulo}
+        Expediente en Custodia...
       </div>
     </div>
     <div style="min-width: 260px;">
       <select class="usa-select" id="select-custodia-caso" style="height: 38px;">
-        {MOCK_CASOS.map((c) => (
-          <option value={c.id}>
-            {c.numeroCaso} ({c.evidenciaMarca} {c.evidenciaModelo})
-          </option>
-        ))}
+        <option value="">Consultando base de datos MySQL...</option>
       </select>
     </div>
   </div>
@@ -224,10 +219,16 @@ import { MOCK_CASOS } from '../lib/data/seed';
       casos = await idbGetAll('casos');
     }
 
-    if (!casos || casos.length === 0) return;
+    casos = (casos || []).filter((c) => !c.id.startsWith('caso-mock-'));
 
     if (select) {
       select.innerHTML = '';
+      if (casos.length === 0) {
+        select.innerHTML = '<option value="">Sin casos sincronizados en MySQL</option>';
+        if (casoTit) casoTit.textContent = 'Sin expedientes sincronizados';
+        return;
+      }
+
       casos.forEach((c) => {
         const opt = document.createElement('option');
         opt.value = c.id;
@@ -237,7 +238,11 @@ import { MOCK_CASOS } from '../lib/data/seed';
 
       const params = new URLSearchParams(window.location.search);
       const paramId = params.get('casoId');
-      if (paramId) select.value = paramId;
+      if (paramId && casos.some((x) => x.id === paramId)) {
+        select.value = paramId;
+      } else if (casos.length > 0) {
+        select.value = casos[0].id;
+      }
 
       actualizarCaso(select.value, casos);
 

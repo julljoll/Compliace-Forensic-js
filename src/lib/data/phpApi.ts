@@ -110,10 +110,10 @@ export const phpApi = {
   },
 
   // ── Autenticación ──
-  async login(email: string, pass: string): Promise<ApiResponse<any>> {
+  async login(email: string, pass: string = '', totpCode: string = ''): Promise<ApiResponse<any>> {
     return request('/auth.php', {
       method: 'POST',
-      body: JSON.stringify({ action: 'login', email, password: pass }),
+      body: JSON.stringify({ action: 'login', email, password: pass, totp_code: totpCode }),
     });
   },
 

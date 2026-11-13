@@ -6,7 +6,6 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import SummaryBox from '../components/uswds/SummaryBox.astro';
 import Alert from '../components/uswds/Alert.astro';
-import { MOCK_CASOS } from '../lib/data/seed';
 ---
 
 <AppLayout title="Exportación de Caso — SHA256.US" activeNav="exportar">
@@ -27,20 +26,16 @@ import { MOCK_CASOS } from '../lib/data/seed';
     <div>
       <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Seleccionar Expediente:</span>
       <div style="font-size: 20px; font-weight: 800; color: #112E51;" id="exportar-caso-titulo">
-        {MOCK_CASOS[0].numeroCaso} — {MOCK_CASOS[0].titulo}
+        Consultando base de datos MySQL...
       </div>
       <div style="font-size: 13px; color: #475569; margin-top: 4px;">
-        Consignante: <strong id="exportar-caso-consignante">{MOCK_CASOS[0].consignanteNombre}</strong> · Perito: <strong id="exportar-caso-perito">{MOCK_CASOS[0].peritoLiderNombre || 'Jull Joll'}</strong>
+        Consignante: <strong id="exportar-caso-consignante">—</strong> · Perito: <strong id="exportar-caso-perito">—</strong>
       </div>
     </div>
 
     <div style="min-width: 280px;">
       <select class="usa-select" id="select-exportar-caso" style="height: 40px;">
-        {MOCK_CASOS.map((c) => (
-          <option value={c.id}>
-            {c.numeroCaso} ({c.evidenciaMarca} {c.evidenciaModelo})
-          </option>
-        ))}
+        <option value="">Consultando base de datos MySQL...</option>
       </select>
     </div>
   </div>
@@ -170,10 +165,19 @@ import { MOCK_CASOS } from '../lib/data/seed';
       casosMemoria = await idbGetAll('casos');
     }
 
-    if (!casosMemoria || casosMemoria.length === 0) return;
+    casosMemoria = (casosMemoria || []).filter((c) => !c.id.startsWith('caso-mock-'));
 
     if (select) {
       select.innerHTML = '';
+      if (casosMemoria.length === 0) {
+        select.innerHTML = '<option value="">Sin casos sincronizados en MySQL</option>';
+        if (tit) tit.textContent = 'Sin expedientes disponibles para empaquetado';
+        if (cons) cons.textContent = '—';
+        if (per) per.textContent = '—';
+        if (btnZip) (btnZip as HTMLButtonElement).disabled = true;
+        return;
+      }
+
       casosMemoria.forEach((c) => {
         const opt = document.createElement('option');
         opt.value = c.id;
@@ -183,7 +187,11 @@ import { MOCK_CASOS } from '../lib/data/seed';
 
       const params = new URLSearchParams(window.location.search);
       const paramId = params.get('casoId');
-      if (paramId) select.value = paramId;
+      if (paramId && casosMemoria.some((x) => x.id === paramId)) {
+        select.value = paramId;
+      } else if (casosMemoria.length > 0) {
+        select.value = casosMemoria[0].id;
+      }
 
       actualizarVista(select.value);
 

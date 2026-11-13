@@ -153,20 +153,21 @@ const navItems = [
     <!-- Script de Inicialización y Autenticación en Cliente -->
     <script>
       import { phpApi } from '../lib/data/phpApi';
-      import { idbGet, idbPut, idbGetAll } from '../lib/data/idb';
-      import { MOCK_CASOS } from '../lib/data/seed';
+      import { idbGetAll, idbDelete } from '../lib/data/idb';
 
       async function initApp() {
-        // Sembrar casos iniciales en IndexedDB si está vacío (garantía offline)
+        // Limpiar expedientes mock obsoletos para mostrar exclusivamente casos sincronizados con MySQL
         try {
-          const casosLocales = await idbGetAll('casos');
-          if (!casosLocales || casosLocales.length === 0) {
-            for (const c of MOCK_CASOS) {
-              await idbPut('casos', c);
+          const locales = await idbGetAll('casos');
+          for (const c of locales) {
+            if (c.id && c.id.startsWith('caso-mock-')) {
+              await idbDelete('casos', c.id);
             }
           }
+          // Sincronizar catálogo oficial con la base de datos MySQL en cPanel
+          await phpApi.listarCasos();
         } catch (e) {
-          console.warn('Error sembrando casos locales en IndexedDB:', e);
+          console.warn('Error sincronizando casos desde base de datos:', e);
         }
 
         // Listener de logout

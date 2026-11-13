@@ -1,6 +1,9 @@
 /**
  * SHA256.US — Store de Autenticación de Peritos y Compliance Officers.
+ * Soporta autenticación por contraseña y Google Authenticator (TOTP RFC 6238).
  */
+
+import { verificarTotpCode } from '../lib/crypto/totp';
 
 export interface User {
   id: string;
@@ -13,6 +16,7 @@ export interface User {
   organismo?: string;
   despacho?: string;
   profileImage?: string;
+  totpSecret?: string;
 }
 
 interface AuthState {
@@ -21,20 +25,35 @@ interface AuthState {
   error: string | null;
   isLoading: boolean;
 
-  login: (email: string, pass: string) => Promise<boolean>;
+  login: (email: string, pass?: string, totpCode?: string) => Promise<boolean>;
   logout: () => void;
   updateProfileImage: (b64: string) => void;
 }
 
-const DEFAULT_USER: User = {
-  id: 'usr-admin-01',
+export const USER_JULL: User = {
+  id: 'usr-jull-01',
   email: 'julljoll@gmail.com',
   nombre: 'Jull Joll',
+  apellido: 'Joll',
   rol: 'admin',
-  cargo: 'Perito Informático Forense Principal',
+  cargo: 'Perito Analizador de Datos Forenses',
   ci: 'V-18.999.001',
   organismo: 'Laboratorio Privado SHA256.US',
-  despacho: 'División Pericial Digital',
+  despacho: 'Área de Análisis e Interpretación (F3/F4)',
+  totpSecret: 'JULLJOLLFCCO2FA1',
+};
+
+export const USER_SHA256: User = {
+  id: 'usr-sha256-02',
+  email: 'sha256.us@gmail.com',
+  nombre: 'SHA256 Adquisición',
+  apellido: 'Oficial',
+  rol: 'perito_lider',
+  cargo: 'Encargado de la Etapa de Adquisición',
+  ci: 'V-15.816.003',
+  organismo: 'Laboratorio Privado SHA256.US',
+  despacho: 'Área de Adquisición y Cadena de Custodia (F1/F2)',
+  totpSecret: 'SHA256USFCCO2FA2',
 };
 
 let state: AuthState = {
@@ -43,9 +62,10 @@ let state: AuthState = {
   error: null,
   isLoading: false,
 
-  login: async (email: string, pass: string) => {
-    const trimmedEmail = email ? email.trim() : '';
-    const trimmedPass = pass ? pass.trim() : '';
+  login: async (email: string, pass: string = '', totpCode: string = '') => {
+    const trimmedEmail = (email || '').trim().toLowerCase();
+    const trimmedPass = (pass || '').trim();
+    const trimmedTotp = (totpCode || '').trim();
 
     if (!trimmedEmail || !trimmedEmail.includes('@')) {
       state.error = 'Ingrese un correo electrónico válido';
@@ -55,24 +75,55 @@ let state: AuthState = {
       return false;
     }
 
-    if (!trimmedPass) {
-      state.error = 'Ingrese la contraseña';
+    if (!trimmedPass && !trimmedTotp) {
+      state.error = 'Ingrese la contraseña o el código de Google Authenticator';
       state.isAuthenticated = false;
       state.user = null;
       notify();
       return false;
     }
 
-    // Acepta credenciales por defecto o cualquier usuario válido para peritaje local
-    if (trimmedEmail === 'julljoll@gmail.com' && trimmedPass === 'admin') {
-      state.isAuthenticated = true;
-      state.user = { ...DEFAULT_USER };
-      state.error = null;
-      notify();
-      return true;
+    // 1. Perito Analizador de Datos (Jull)
+    if (trimmedEmail === 'julljoll@gmail.com') {
+      let ok = false;
+      if (trimmedPass && (trimmedPass === 'Karupano' || trimmedPass === 'admin')) {
+        ok = true;
+      }
+      if (trimmedTotp) {
+        const totpValido = await verificarTotpCode(USER_JULL.totpSecret!, trimmedTotp);
+        if (totpValido) ok = true;
+      }
+
+      if (ok) {
+        state.isAuthenticated = true;
+        state.user = { ...USER_JULL };
+        state.error = null;
+        notify();
+        return true;
+      }
     }
 
-    state.error = 'Credenciales no autorizadas';
+    // 2. Perito Encargado de Adquisición (SHA256)
+    if (trimmedEmail === 'sha256.us@gmail.com') {
+      let ok = false;
+      if (trimmedPass && trimmedPass === '15816003') {
+        ok = true;
+      }
+      if (trimmedTotp) {
+        const totpValido = await verificarTotpCode(USER_SHA256.totpSecret!, trimmedTotp);
+        if (totpValido) ok = true;
+      }
+
+      if (ok) {
+        state.isAuthenticated = true;
+        state.user = { ...USER_SHA256 };
+        state.error = null;
+        notify();
+        return true;
+      }
+    }
+
+    state.error = 'Credenciales no autorizadas o código 2FA erróneo';
     state.isAuthenticated = false;
     state.user = null;
     notify();
