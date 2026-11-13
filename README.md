@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ SHA256.US — CMS de Cumplimiento Forense Digital
+# 🛡️ Forensic Chief Compliance Officer (FCCO) — SHA256.US
 
 ### *Sistema Canónico de Cadena de Custodia, Peritaje Informático y Compliance Legal*
 
@@ -13,7 +13,7 @@
 
 ---
 
-**SHA256.US** es una plataforma web **Cyber-Legal** de alto nivel diseñada para peritos informáticos, auditores y Compliance Officers. Permite la administración rigurosa de evidencias digitales, el seguimiento estricto de protocolos normativos y la generación de documentos con validez legal bajo estándares **ISO/IEC 27037**, **ISO/IEC 27042**, **NIST SP 800-86**, **MUCC-2017** y **COPP Art. 187**.
+**Forensic Chief Compliance Officer (FCCO — SHA256.US)** es una plataforma web **Cyber-Legal** de alto nivel diseñada para peritos informáticos, auditores y Compliance Officers. Permite la administración rigurosa de evidencias digitales, el seguimiento estricto de protocolos normativos y la generación de documentos con validez legal bajo estándares **ISO/IEC 27037**, **ISO/IEC 27042**, **NIST SP 800-86**, **MUCC-2017** y **COPP Art. 187**.
 
 </div>
 

@@ -1,20 +1,20 @@
 ```
 ====================================================================================================
-               🏛️ SHA256.US — CMS DE COMPLIANCE FORENSE DIGITAL 🏛️
+         🏛️ FORENSIC CHIEF COMPLIANCE OFFICER (FCCO) — SHA256.US 🏛️
      MANUAL CANÓNICO PROFESIONAL DE INGENIERÍA & ESTÁNDARES DE DESARROLLO
 ====================================================================================================
 ```
 
-# ⚖️ SHA256.US — MANUAL CANÓNICO PROFESIONAL DE INGENIERÍA & ESTÁNDARES DE DESARROLLO
+# ⚖️ FORENSIC CHIEF COMPLIANCE OFFICER — MANUAL CANÓNICO PROFESIONAL DE INGENIERÍA
 
 > [!IMPORTANT]
 > **ESTÁNDAR CANÓNICO DE GOBERNANZA Y DESARROLLO PERICIAL:**
-> Este documento constituye el **Manual Canónico Oficial de Ingeniería y Estándares de Desarrollo** que rige obligatoriamente todo el código, arquitectura estática en Astro, API determinista en PHP/MySQL (PDO) para cPanel, interfaz gráfica nativa USWDS (`@uswds/uswds`), catálogo de 13 planillas oficiales en Folio (216mm × 330mm) e inmutabilidad criptográfica en el proyecto **SHA256.US**.
+> Este documento constituye el **Manual Canónico Oficial de Ingeniería y Estándares de Desarrollo** que rige obligatoriamente todo el código, arquitectura estática en Astro, API determinista en PHP/MySQL (PDO) para cPanel, interfaz gráfica nativa USWDS (`@uswds/uswds`), catálogo de 13 planillas oficiales en Folio (216mm × 330mm) e inmutabilidad criptográfica en el proyecto **Forensic Chief Compliance Officer (SHA256.US)**.
 
 | 📌 Parámetro de Gobernanza | ⚙️ Especificación Técnica Institucional |
 |:---------------------------|:----------------------------------------|
 | **Documento Oficial**      | **Manual Canónico Profesional de Ingeniería & Estándares de Desarrollo** |
-| **Sistema Mandante**       | SHA256.US — Compliance Forense Digital CMS |
+| **Sistema Mandante**       | Forensic Chief Compliance Officer (FCCO) — SHA256.US |
 | **Versión Canónica**       | `v4.0.0-CANONICAL` |
 | **Arquitectura de Despliegue** | **Astro Static (`output: 'static'`) + cPanel (Apache + PHP 8.2+ + MySQL PDO)** |
 | **Estado de Vigencia**     | 🟢 **OBLIGATORIO & ACTIVO (ENFORCED)** |
