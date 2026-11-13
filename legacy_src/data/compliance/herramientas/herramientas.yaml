@@ -1,0 +1,156 @@
+# ============================================
+# COMPONENTE: HERRAMIENTAS FORENSES
+# Andriller y ALEAPP
+# ============================================
+
+componente:
+  nombre: "Herramientas Forenses"
+  tipo: "herramientas"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Herramientas forenses autorizadas para extracción y análisis de evidencia digital
+  en dispositivos Android.
+
+herramientas:
+  andriller:
+    nombre: "Andriller"
+    version: "v3.6.2+"
+    tipo: "Extractor forense"
+    proposito: "Extracción lógica y física de dispositivos Android"
+    
+    caracteristicas:
+      - "Solo lectura (no destructivo)"
+      - "Forensemente sólido"
+      - "Interfaz de línea de comandos"
+      - "Soporte multi-dispositivo"
+      
+    modos_extraccion:
+      - tipo: "lógica"
+        descripcion: "Extracción de datos accesibles sin root"
+        ventajas:
+          - "No requiere root"
+          - "Método recomendado para mayoría de casos"
+          - "Recuperación de datos eliminados"
+        datos_recuperados:
+          - "Contactos"
+          - "Mensajes SMS"
+          - "Historial de llamadas"
+          - "WhatsApp (mensajes, contactos, multimedia)"
+          - "Fotos y videos"
+          - "GPS/ubicaciones"
+          - "Registros de aplicaciones"
+          
+      - tipo: "fisica"
+        descripcion: "Extracción bit-a-bit completa"
+        requerimiento: "Root o bootloader desbloqueado"
+        ventajas:
+          - "Imagen completa del dispositivo"
+          - "Mayor recuperación de datos eliminados"
+          - "Análisis de sistema de archivos"
+        consideraciones:
+          - "Requiere conocimiento técnico avanzado"
+          - "Tiempo de extracción mayor"
+          - "Requiere almacenamiento externo"
+          
+    comando_base: "andriller --output <ruta> --mode <tipo> --readonly"
+    argumentos:
+      - "--output: Directorio de salida"
+      - "--mode: Tipo de extracción (logica/fisica)"
+      - "--readonly: Modo solo lectura"
+      - "--device: ID del dispositivo (opcional)"
+      
+  aleapp:
+    nombre: "ALEAPP"
+    nombre_completo: "Android Logs Events And Protobuf Parser"
+    version: "v2.1.0+"
+    tipo: "Analizador de artefactos"
+    proposito: "Parseo y análisis de SQLite y Protobuf"
+    
+    caracteristicas:
+      - "Parser de artefactos Android"
+      - "Soporte para múltiples aplicaciones"
+      - "Generación de reportes HTML"
+      - "Exportación CSV/JSON"
+      - "Línea de tiempo de eventos"
+      
+    artefactos_analizados:
+      whatsapp:
+        nombre: "WhatsApp"
+        datos:
+          - "Mensajes enviados/recibidos"
+          - "Contactos de WhatsApp"
+          - "Llamadas VoIP"
+          - "Archivos multimedia (imágenes, videos, audios)"
+          - "Ubicaciones compartidas"
+          - "Estados/publicaciones"
+          - "Mensajes eliminados"
+          
+      sistema:
+        nombre: "Sistema"
+        datos:
+          - "Llamadas telefónicas"
+          - "Contactos del dispositivo"
+          - "Mensajes SMS/MMS"
+          - "Historial de navegación"
+          - "Ubicación GPS"
+          - "Aplicaciones instaladas"
+          - "Archivos de medios"
+          - "WiFi guardados"
+          - "Bluetooth emparejados"
+          - "Calendario"
+          - "Notas"
+          
+      otras_aplicaciones:
+        - "Telegram"
+        - "Instagram"
+        - "Facebook"
+        - "Gmail"
+        - "Chrome"
+        - "Google Maps"
+        
+    formatos_salida:
+      - tipo: "HTML"
+        descripcion: "Reporte principal interactivo"
+      - tipo: "CSV"
+        descripcion: "Datos tabulares"
+      - tipo: "JSON"
+        descripcion: "Datos estructurados"
+      - tipo: "Timeline"
+        descripcion: "Línea de tiempo"
+        
+    comando_base: "aleapp -i <imagen> -o <salida> -t fs"
+    argumentos:
+      - "-i: Ruta de imagen o directorio"
+      - "-o: Directorio de salida"
+      - "-t: Tipo de entrada (fs = filesystem)"
+      - "--filter: Filtrar módulos específicos"
+      - "--timeline: Generar línea de tiempo"
+
+integridad:
+  validacion_hash:
+    - "Calcular SHA-256 de imagen original"
+    - "Calcular SHA-256 de copia obtenida"
+    - "Comparar hashes para verificar integridad"
+    - "Documentar valores en PRCC"
+  metodos_hash:
+    - "SHA-256 (recomendado)"
+    - "MD5 (compatibilidad)"
+
+documentacion_obligatoria:
+  - "Versión exacta de cada herramienta"
+  - "Fecha y hora de ejecución"
+  - "Operador responsable"
+  - "Hashes de verificación"
+  - "Comandos utilizados"
+  - "Resultado de la ejecución"
+
+operarios: ["Peritos Informáticos", "Especialistas en Informática Forense"]
+
+documentos_asociados:
+  - "Dictamen Pericial (sección de herramientas)"
+  - "Reporte de Extracción"
+  - "Reporte de Análisis ALEAPP"
+  - "Registro de Hashes"

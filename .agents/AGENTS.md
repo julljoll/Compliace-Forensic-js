@@ -8,38 +8,38 @@
 # ⚖️ SHA256.US — MANUAL CANÓNICO PROFESIONAL DE INGENIERÍA & ESTÁNDARES DE DESARROLLO
 
 > [!IMPORTANT]
-> **ESTÁNDAR CANÓNICO DE GOBERNAZA Y DESARROLLO PERICIAL:**
-> Este documento constituye el **Manual Canónico Oficial de Ingeniería y Estándares de Desarrollo** que rige obligatoriamente todo el código, arquitectura de datos, interfaz gráfica (USWDS/Bootstrap), motor PDF e inmutabilidad criptográfica en el proyecto **SHA256.US**.
+> **ESTÁNDAR CANÓNICO DE GOBERNANZA Y DESARROLLO PERICIAL:**
+> Este documento constituye el **Manual Canónico Oficial de Ingeniería y Estándares de Desarrollo** que rige obligatoriamente todo el código, arquitectura estática en Astro, API determinista en PHP/MySQL (PDO) para cPanel, interfaz gráfica nativa USWDS (`@uswds/uswds`), catálogo de 13 planillas oficiales en Folio (216mm × 330mm) e inmutabilidad criptográfica en el proyecto **SHA256.US**.
 
 | 📌 Parámetro de Gobernanza | ⚙️ Especificación Técnica Institucional |
 |:---------------------------|:----------------------------------------|
 | **Documento Oficial**      | **Manual Canónico Profesional de Ingeniería & Estándares de Desarrollo** |
 | **Sistema Mandante**       | SHA256.US — Compliance Forense Digital CMS |
-| **Versión Canónica**       | `v3.5.0-CANONICAL` |
+| **Versión Canónica**       | `v4.0.0-CANONICAL` |
+| **Arquitectura de Despliegue** | **Astro Static (`output: 'static'`) + cPanel (Apache + PHP 8.2+ + MySQL PDO)** |
 | **Estado de Vigencia**     | 🟢 **OBLIGATORIO & ACTIVO (ENFORCED)** |
-| **Clasificación Legal**    | Estándar Forense ISO/IEC 27037 · ISO/IEC 27042 · NIST SP 800-86 · MUCC-2017 · COPP Art. 187 |
+| **Clasificación Legal**    | Estándar Forense ISO/IEC 27037 · ISO/IEC 27042 · ISO/IEC 27043 · ISO 37301 · ISO/IEC 27001 · NIST SP 800-86 · NIST SP 800-88 · MUCC-2017 · COPP Arts. 187, 223–225 |
 
 ---
 
-
 ## 1. Stack Tecnológico Exclusivo y Reglas de Arquitectura
 
-- **Framework Principal:** Next.js 16+ con App Router (`src/app/`).
-- **Sistema de UI y Estilos (ÚNICO Y EXCLUSIVO):** **Bootstrap 5.3+** + **USWDS (US Web Design System 3.0+)**.
-- **PROHIBICIÓN TOTAL DE MUI / MATERIAL-UI:** Queda estrictamente prohibido el uso de MUI (`@mui/material`, `@mui/x-data-grid`, `@mui/icons-material`, `src/lib/theme.ts`). Toda la interfaz debe construirse con componentes HTML semánticos estilizados exclusivamente con Bootstrap 5.3+ y clases USWDS `.usa-*`.
-- **PROHIBICIÓN TOTAL DE TAILWIND CSS:** Prohibido cualquier uso de utilidades o directivas de Tailwind CSS.
-- **Iconografía Oficial:** Lucide React y SVG estandarizados (`src/components/atoms/AppleIcon.tsx`).
-- **Motor de Renderizado PDF:** `@react-pdf/renderer` para la generación inmutable de documentos imprimibles.
-- **Estado Global:** Zustand (`src/store/cmsStore.ts`, `src/store/auditStore.ts`) con persistencia local IndexedDB / LocalStorage (offline-first) y sincronización backend opcional.
+- **Framework Principal:** **Astro (`output: 'static'`)**. Genera páginas HTML ultra-ligeras y pre-renderizadas en `dist/` para servir directamente desde `public_html` en Apache.
+- **Sistema de UI y Estilos (ÚNICO Y EXCLUSIVO):** **U.S. Web Design System (`@uswds/uswds` 3.14+)** compilado con Sass a `public/assets/uswds/css/uswds.min.css`.
+- **PROHIBICIÓN TOTAL DE NEXT.JS Y MATERIAL-UI (MUI):** Eliminados totalmente. Toda la interfaz usa componentes semánticos y clases oficiales USWDS (`.usa-banner`, `.usa-header`, `.usa-sidenav`, `.usa-card`, `.usa-table`, `.usa-step-indicator`, `.usa-summary-box`, `.usa-alert`, `.usa-form`).
+- **PROHIBICIÓN TOTAL DE TAILWIND CSS:** Prohibido el uso de utilidades de Tailwind CSS.
+- **Backend Determinista para cPanel:** API REST ligera en **PHP puro con PDO** (`public/api/casos.php`, `public/api/avanzar-etapa.php`, `public/api/auditoria.php`, `public/api/auth.php`) conectado a MySQL/MariaDB (`database.sql`).
+- **Persistencia Híbrida (Offline-First):** Sincronización bidireccional entre **IndexedDB** en el navegador y **MySQL** vía API PHP.
 - **Tipografía Institucional:**
-  - `Public Sans` (Google Font oficial USWDS para UI y lectura).
-  - `Fira Code` / `Courier` / `monospace` (para hashes SHA-256, hashes MD5, identificadores de expedientes, direcciones MAC/IP y datos técnicos).
+  - `Public Sans Web` (Fuente oficial USWDS para UI y lectura).
+  - `Merriweather Web` (Para títulos formales y decretos).
+  - `Roboto Mono Web` (Para hashes SHA-256, números de expediente, precintos y direcciones MAC/IP).
 
 ---
 
 ## 2. Sistema de Diseño Visual (USWDS DC3 Cyber Forensics Light Theme)
 
-La interfaz gráfica sigue el modelo de diseño oficial del **Defense Cyber Crime Center — Cyber Forensics Laboratory (DC3)** en modo claro gubernamental:
+La interfaz gráfica sigue el modelo oficial del **Defense Cyber Crime Center — Cyber Forensics Laboratory (DC3)** en modo claro gubernamental:
 
 ### 2.1 Tokens de Color Oficiales
 
@@ -48,210 +48,110 @@ La interfaz gráfica sigue el modelo de diseño oficial del **Defense Cyber Crim
 | **Fondo Principal (Canvas)** | `Cool Gray 5` | `#F0F4F8` | Canvas general de la aplicación |
 | **Tarjetas y Superficies** | `Crisp White` | `#FFFFFF` | Tarjetas, modales, tablas y contenedores (`border: #CBD5E1`) |
 | **Sidebar & Nav Superior** | `Dark Navy Ink 90v` | `#112E51` | Azul marino federal de laboratorio forense |
-| **Banner Oficial del Gobierno** | `Banner Navy` | `#1A2536` | Componente `USWDSGovBanner` |
+| **Banner Oficial del Gobierno** | `Banner Navy` | `#1A2536` | Componente `.usa-banner` institucional |
 | **Acento Primario / Interactivo** | `Vivid Blue 60v` | `#005EA2` | Botones principales, enlaces, progreso, tabs activos |
 | **Sellos y Destacados** | `Accent Gold 40v` | `#D9A700` | Insignias de la República, sellos oficiales y badges |
 | **Texto de Lectura Principal** | `Dark Ink` | `#1B2A4A` | Encabezados, títulos y texto primario |
 | **Texto Secundario / Muted** | `Slate` | `#475569` | Descripciones, labels y meta-información |
-| **Estado Éxito / Conforme** | `Green 50v` | `#008837` | Hashes verificados, estados completados |
-| **Estado Alerta / Gating** | `Gold 60v` | `#C05621` | Pasos pendientes, alertas de cumplimiento |
-| **Estado Error / Violación** | `Red 50v` | `#D9381E` | Inconsistencias de hash, errores de custodia |
-
-### 2.2 Componentes de Diseño USWDS (`.usa-*`)
-- `.usa-banner`: Banner institucional superior gubernamental.
-- `.usa-card`: Tarjetas blancas elevadas con bordes `#CBD5E1` y hover azul `#005EA2`.
-- `.usa-table`: Tablas federales limpias con encabezados en `#F1F5F9` o `#112E51`.
-- `.usa-alert`, `.usa-alert--success`, `.usa-alert--info`, `.usa-alert--error`: Bloques de alerta estructurados.
-- `.usa-tag`: Insignias tipo chip monospaciadas para normativas y tipos de caso.
-- `.usa-step-indicator`: Barra de progreso por pasos del expediente.
-- `.usa-summary-box`: Recuadros resumen con borde lateral institucional.
-
-### 2.3 Estándar de Activos Vectoriales SVG (Planillas, Pipelines y Diagramas de Flujo)
-
-Todo gráfico o recurso en formato `.svg` (planillas, actas, diagramas de flujo, pipelines forenses o arquitecturas de sistema) generado o requerido por el proyecto debe cumplir obligatoriamente con los siguientes principios:
-
-1. **Orientación y Proporción Canónica (Hoja Folio Vertical):**
-   - Todos los activos SVG deben diseñarse en **orientación vertical**, adoptando las proporciones físicas y la relación de aspecto estandarizada de **Hoja Folio / Oficio (216mm × 330mm)** (relación de aspecto `1 : 1.528`, ej. `viewBox="0 0 612 935"` o `viewBox="0 0 800 1222"`).
-
-2. **Paridad y Fidelidad Absoluta (Copia Fiel 1:1 para Planillas Existentes):**
-   - Cuando el recurso SVG sea una representación o visualización de una planilla o acta ya existente en el sistema, debe constituir una **copia fiel 1:1**.
-   - Debe replicar con exactitud milimétrica la tipografía (`Public Sans` / `Fira Code`), membretes institucionales, grillas de campos, tablas, pautas de cuaderno, recuadros dactiloscópicos y bloques de firmas bilaterales del componente original.
-
-3. **Ingeniería de UI/UX, SEO Gráfico y Estilos Institucionales (Nuevos Diagramas / Pipelines):**
-   - **Estilos Institucionales & UI/UX:** Aplicar de forma estricta los tokens de color oficiales del laboratorio forense (Canvas `#F0F4F8`, Tarjetas `#FFFFFF`, Azul Marino `#112E51`, Azul Interactivo `#005EA2`, Dorado `#D9A700`, Texto `#1B2A4A`), manteniendo jerarquía visual limpia y alto contraste (WCAG 2.1 AA).
-   - **SEO Gráfico & Semántica SVG:** Incluir etiquetas semánticas dentro del código del SVG (`<title>`, `<desc>`, atributos `role="img"` y `aria-labelledby`), optimización vectorial sin nodos o estilos redundantes inline, garantizando rendimiento, accesibilidad e indexación web.
-
-4. **Generación Simultánea Paritaria de Archivos HTML con CSS Inline (`public/html/planillas/`):**
-   - Cada vez que se cree o modifique una planilla en formato `.svg` vertical Folio (en `public/svg/planillas/`), se debe **crear simultáneamente el correspondiente archivo `.html` con CSS en línea / embebido** dentro de la carpeta `public/html/planillas/` (ubicada al mismo nivel que la carpeta `public/svg/`).
-   - El archivo HTML debe ser 100% independiente (standalone), replicando con paridad 1:1 la estructura, campos, membretes, firmas bilaterales, dactiloscopía y estilos institucionales en hoja Folio (216mm × 330mm) para previsualización e impresión web directa.
+| **Estado Éxito / Conforme** | `Green 50v` | `#008837` | Hashes verificados, sellos completados |
+| **Estado Alerta / Gating** | `Gold 60v` | `#C05621` | Requisitos pendientes, advertencias de nulidad |
+| **Estado Error / Violación** | `Red 50v` | `#D9381E` | Inconsistencias de hash, rotura de cadena |
 
 ---
 
-## 3. Marco Regulatorio y Estándares Forenses Obligatorios
+## 3. Optimización del Ciclo Pericial ISO/IEC (6 Fases Canónicas F0 a F5)
 
-Todas las planillas, actas e informes emitidos por el sistema deben cumplir con el marco regulatorio vigente:
+El sistema reemplaza los pasos fragmentados anteriores por un flujo unificado y secuencial de 6 fases reguladas por normativas internacionales:
 
-1. **ISO/IEC 27037:2012:** Guía para la identificación, recolección, adquisición y preservación de evidencia digital.
-2. **ISO/IEC 27042:2015:** Directrices para el análisis e interpretación de evidencia digital.
-3. **NIST SP 800-86:** Guide to Integrating Forensic Techniques into Incident Response.
-4. **NIST SP 800-88 Rev. 1:** Guidelines for Media Sanitization (Zeroization & Crypto-Erase).
-5. **MUCC-2017:** Manual Único de Cadena de Custodia de Evidencias Físicas (Ministerio Público / CICPC - Venezuela).
-6. **COPP Art. 187:** Garantía procesal penal de cadena de custodia.
-7. **CRBV Arts. 28 y 60:** Protección de datos personales, privacidad y Hábeas Data.
-8. **RFC 3227:** Guidelines for Evidence Collection and Archiving.
+| Fase | Nombre Canónico | Estándares Reguladores | Objetivo y Controles Clave | Planillas Requeridas |
+|:-----|:----------------|:-----------------------|:---------------------------|:---------------------|
+| **F0** | **Apertura y Legitimación** | ISO 37301 §8.1 · ISO/IEC 27043 §8 · CRBV Arts. 28/60 | Legitimar el encargo pericial, identificar al consignante, consentimiento informado Hábeas Data y delimitar el alcance. | Acta Consentimiento Informado, Acta Entrevista Forense |
+| **F1** | **Identificación y Recolección** | ISO/IEC 27037 §5.2–5.3, §7.1 · MUCC-2017 · COPP Art. 187 | Fijación fotográfica 360°, aislamiento electromagnético (Faraday/Modo Avión), precintado numerado y apertura formal de la PRCC. | Acta Obtención y Preservación, Planilla PRCC |
+| **F2** | **Adquisición y Preservación** | ISO/IEC 27037 §5.4, §7.1.3 · NIST SP 800-86 | Desprecintado en laboratorio, bloqueadores de escritura (Write-Blockers), clonado bit-a-bit (E01/DD), cálculo de Hash Génesis SHA-256 y verificación MATCH. | Acta Desprecintado, Planilla PRCC |
+| **F3** | **Análisis e Interpretación** | ISO/IEC 27042 §7–8 · NIST SP 800-101 · ACPO P1-P4 | Análisis exclusivo sobre copia de trabajo, herramientas validadas (ALEAPP, Kali, Andriller, IPED, Sonic Visualiser), reproducibilidad y bitácora de hallazgos. | Planilla Audio Sonic, Planilla Evaluación UX |
+| **F4** | **Informe Pericial y Dictamen** | ISO/IEC 27043 §9 · ISO/IEC 27042 §9 · COPP Arts. 223–225 | Redacción de dictamen científico motivado, citas de hashes génesis, conclusiones legales, revisión técnica y firma bilateral de dos peritos. | Acta Dictamen Oficial, Dictamen Imágenes, Dictamen Audios |
+| **F5** | **Entrega, Disposición y Sanitización** | MUCC-2017 Disposición Final · NIST SP 800-88 Rev. 1 · ISO/IEC 27001 | Entrega formal de evidencias y resultados, sanitización certificada (Zeroization/Crypto-Erase) de medios del laboratorio y verificación de cadena de auditoría inmutable. | Acta Entrega Resultados, Acta Sanitización, Acta Auditoría Timeline |
 
----
-
-## 4. Regla de Doble Arquitectura Sincronizada para Planillas Forenses
-
-Toda planilla o acta del sistema se mantiene **sincronizada en dos capas de presentación paritarias**:
-
-1. **Planilla Web Interactiva (`src/components/organisms/Planillas/*.tsx`):**
-   - Formulario interactivo que permite la edición y visualización en pantalla.
-   - Pre-llenado automático desde el expediente activo (`CasoCMS`).
-   - Controles de validación de campos requeridos y gating normativo.
-   - Estructura visual tipo "Hoja de Folio" (216mm × 330mm) con soporte de zoom en visor `PlanillaDocumentViewer.tsx`.
-
-2. **Documento PDF Imprimible (`src/lib/pdf/documents/*Pdf.tsx`):**
-   - Renderizado limpio mediante `@react-pdf/renderer` para exportación directa y previsualización.
-   - Pauta de cuaderno a rayas para observaciones manuscritas.
-   - Formato legal estándar (Folio / Oficio) con márgenes reglamentarios (Izquierda 3cm, Derecha 1.5cm, Superior 4cm/1.5cm, Inferior 1.5cm).
-
-> **REGLA DE ORO:** Cualquier nuevo campo, sección o modificación en una planilla DEBE aplicarse simultáneamente en la versión Web Interactiva y en el componente PDF de impresión.
+### Regla Criptográfica de Gating:
+Ninguna fase puede iniciarse si la anterior no está en estado `COMPLETADA` con su hash SHA-256 generado y verificado. El endpoint `/api/avanzar-etapa.php` ejecuta una transacción atómica `SELECT ... FOR UPDATE` en MySQL para garantizar este principio.
 
 ---
 
-## 5. Estándar de Cierre Legal: Firmas, Dactiloscopía y Consignatario
+## 4. REGLA INQUEBRANTABLE: Preservación de las 13 Planillas Oficiales (216mm × 330mm)
 
-En la parte inferior de toda planilla o acta forense debe figurar obligatoriamente la sección de cierre legal:
+Se preservan íntegramente las 13 planillas y dictámenes oficiales de informática forense:
+1. `ActaConsentimiento.astro` (F0)
+2. `ActaEntrevista.astro` (F0)
+3. `ActaObtencion.astro` (F1)
+4. `PlanillaPRCC.astro` (F1)
+5. `ActaDesprecintado.astro` (F2)
+6. `PlanillaAudioSonic.astro` (F3)
+7. `PlanillaEvaluacionUX.astro` (F3)
+8. `ActaDictamen.astro` (F4)
+9. `DictamenImagenes.astro` (F4)
+10. `DictamenAudios.astro` (F4)
+11. `ActaEntregaResultados.astro` (F5)
+12. `ActaSanitizacion.astro` (F5)
+13. `ActaAuditoriaTimeline.astro` (F5)
 
-### 5.1 Estructura de Firma Bilateral y Dactiloscopía:
-1. **Sección de Firmas:**
-   - Línea de firma con espacio adecuado para rúbrica manuscrita (`.sig-line`).
-   - Campos legibles sobre/bajo la firma:
-     - `Nombre y Apellido:`
-     - `C.I. N°:`
-     - `CIV N°:` (Colegio de Ingenieros, si aplica)
-     - `INPREABOGADO N°:` (si aplica)
-     - `Cargo / Rol:` (Consignante, Entrevistado, Perito Líder, Perito Coadyuvante)
-2. **Recuadros Dactiloscópicos (Huellas):**
-   - Dos recuadros de huella dactilar (`Pulgar Izquierdo` y `Pulgar Derecho`).
-3. **Datos de Contacto Post-Firma (Obligatorios):**
-   - `Número Telefónico:`
-   - `Dirección de Habitación / Residencia:`
-
-### 5.2 Cláusula Normativa para Adquisición de Imagen Forense (DEFR / DES):
-Para procedimientos de extracción de imagen forense (ISO 27037), se debe incluir la cláusula de responsabilidad:
-> *"Realizar el procedimiento técnico correspondiente hasta lograr la extracción exitosa de la imagen forense del dispositivo objeto de peritaje, garantizando la preservación del hash génesis SHA-256."*
-
----
-
-## 6. Automatización de Expedientes ("Crear Caso" / "Nuevo Expediente")
-
-El proceso de apertura de un caso se realiza mediante el asistente `NuevoCasoWizard.tsx` (modal Bootstrap/USWDS de 4 pasos):
-- **Paso 1:** Expediente y Tipología (`forense_whatsapp`, `forense_email`, `forense_discoduro`, `forense_imagen`).
-- **Paso 2:** Consignante / Entrevistado (Nombre, C.I., Teléfono, Email, Dirección).
-- **Paso 3:** Evidencia Digital (Marca, Modelo, Serial/IMEI, Color, Estado, Aislamiento RF).
-- **Paso 4:** Equipo Pericial y Fiscalía Ordenante.
-
-Al crear el caso, los datos se almacenan centralizadamente en `cmsStore.ts` y se pre-llenan automáticamente en todas las planillas de las 4 etapas del proceso forense.
+### Reglas Técnicas de Folio:
+- **Dimensiones Reglamentarias:** Tamaño Folio / Oficio (`216mm × 330mm`).
+- **Aislamiento Estricto:** Encapsuladas en `<div class="folio-forense-aislado">` con estilos independientes en `src/styles/folio-aislado.css`.
+- **Regla de Impresión:** `@page { size: 216mm 330mm; margin: 15mm 15mm 15mm 30mm; }`.
+- **Ocultamiento de UI:** Todo componente USWDS (`.usa-banner`, `.usa-header`, `.usa-sidenav`, `.no-print`) se oculta al imprimir o exportar a PDF vía `@media print`.
+- **Hashes SHA-256:** Siempre formateados con `overflow-wrap: break-word;` y fuente monoespaciada para evitar desbordes físicos de la hoja.
+- **Cierre Legal Obligatorio:** Firma bilateral, N° C.I., CIV, recuadros dactiloscópicos bilaterales (Pulgar Izquierdo y Pulgar Derecho), dirección de residencia y teléfono.
 
 ---
 
-## 7. Tipologías Periciales Soportadas
+## 5. Arquitectura cPanel (Apache + PHP 8.2+ + MySQL PDO)
 
-- `forense_whatsapp`: Extracción móvil Android / iOS, parseo `msgstore.db`, 9 pasos MUCC-2017.
-- `forense_email`: Cabeceras SMTP, validación SPF/DKIM/DMARC, 7 pasos RFC 3227.
-- `forense_discoduro`: Clonado bit-a-bit E01/DD, 8 pasos NIST SP 800-86.
-- `forense_imagen`: Adquisición de imagen forense digital, verificación de hash SHA-256 bit-a-bit, 8 pasos ISO/IEC 27037.
+### 5.1 Base de Datos (`database.sql`)
+- Motor InnoDB, codificación `utf8mb4_unicode_ci`.
+- Tablas: `usuarios`, `casos`, `fases_caso`, `auditoria`, `evidencias`.
+- Triggers de Inmutabilidad contra adulteraciones:
+  - `trg_auditoria_no_update`: Impide `UPDATE` en la tabla `auditoria`.
+  - `trg_auditoria_no_delete`: Impide `DELETE` en la tabla `auditoria`.
 
----
+### 5.2 Endpoints REST Deterministas (`public/api/`)
+- `casos.php`: CRUD con control de concurrencia optimista (`version`).
+- `avanzar-etapa.php`: Transacción atómica que valida hash previo + controles completados y genera el nuevo sello SHA-256.
+- `auditoria.php`: Consulta y verificación criptográfica completa de la cadena de hashes (`?verificar=1`).
+- `auth.php`: Autenticación por sesiones PHP con `password_verify()`.
 
-## 8. Guía Técnica Paso a Paso para Desarrolladores (Developer Skills)
-
-### 🚀 SKILL 1: Cómo Agregar o Modificar una Planilla Forense
-
-Para crear una nueva planilla en el sistema, siga estrictamente estos 5 pasos:
-
-1. **Paso 1 — Registrar el ID de la Planilla:**
-   - Editar `src/hooks/usePlanillaFormData.ts` y agregar el ID al tipo `PlanillaId`.
-   - Editar `src/components/organisms/Planillas/PlanillaDigitalFormModal.tsx` y agregar la meta-información a `PLANILLA_LABELS`.
-
-2. **Paso 2 — Crear el Componente Web Interactiva:**
-   - Crear `src/components/organisms/Planillas/[NombrePlanilla].tsx`.
-   - Utilizar el wrapper `PlanillaFolioTemplate`.
-   - Incorporar secciones numeradas (`PlanillaSectionTitle`), inputs editables (`PlanillaEditableValue`), casillas (`PlanillaCheckboxGroup`), y la sección de firma bilateral con `PlanillaThumbBox`.
-
-3. **Paso 3 — Crear el Componente PDF Correspondiente (`@react-pdf/renderer`):**
-   - Crear `src/lib/pdf/documents/[NombrePlanilla]Pdf.tsx`.
-   - Utilizar `PlanillaCoverPagePdf`, `PlanillaHeader`, `PlanillaFooter` y los estilos de `reactPdfStyles.ts`.
-   - Garantizar paridad 1:1 en campos y textos legales con el componente Web.
-
-4. **Paso 4 — Crear/Actualizar la Página en App Router:**
-   - Crear o actualizar `src/page-components/Planillas/[NombrePlanilla]Page.tsx`.
-   - Utilizar `PlanillaPdfViewer` pasando el documento PDF en la prop `document` y la metadata del caso.
-
-5. **Paso 5 — Verificar Compilación:**
-   - Ejecutar `npx tsc --noEmit` para confirmar que no existen errores de tipado.
+### 5.3 Configuración Apache (`.htaccess`)
+- `RewriteEngine On` para servir rutas limpias (`/dashboard`, `/casos`, `/flujo`, `/planillas/acta-consentimiento`) mapeadas a los archivos `.html` de `dist/`.
+- Protección directa para `api/` sin alterar el tráfico POST/GET hacia PHP.
+- Cabeceras de seguridad: `X-Frame-Options SAMEORIGIN`, `X-Content-Type-Options nosniff`, `Referrer-Policy strict-origin-when-cross-origin`.
 
 ---
 
-### 🛡️ SKILL 2: Gestión de Auditoría Criptográfica e Inmutabilidad (Hash Chain)
+## 6. Procedimiento de Despliegue en cPanel
 
-1. Toda acción crítica (creación de expediente, recepción de evidencia, clonado, sanitización, dictamen) debe registrarse en `auditStore.ts` invocando `addEntry()`.
-2. Cada entrada genera automáticamente:
-   - `hashActual`: SHA-256 del contenido del evento.
-   - `hashAnterior`: Enlace criptográfico al hash del evento previo (cadena inmutable).
-3. Para mostrar el historial auditado en una planilla o acta, utilizar el componente `ActaAuditoriaTimeline.tsx` y `ActaAuditoriaTimelinePdf.tsx`.
+1. **Compilación Local:**
+   ```bash
+   npm run build
+   ```
+   Genera el directorio `dist/` con 22 páginas HTML estáticas, `.htaccess` y la carpeta `api/`.
 
----
+2. **Base de Datos MySQL:**
+   - Crear una base de datos en cPanel (ej. `sha256us_forensic`).
+   - Crear un usuario MySQL con permisos completos.
+   - En phpMyAdmin, importar `database.sql`.
 
-### 📦 SKILL 3: Exportación y Empaquetado de Expedientes (`downloadPlanillaZip.ts`)
+3. **Configuración de Conexión:**
+   - Editar `public/api/config.php` (o `dist/api/config.php` en el servidor) con las credenciales de MySQL.
 
-1. El sistema permite descargar el expediente forense en un archivo comprimido ZIP que contiene:
-   - El documento en formato HTML independiente con CSS embebido.
-   - El informe/dictamen oficial en formato PDF.
-   - El documento editable en Microsoft Word (.DOCX) generado mediante `exportPlanillaToWordDocx`.
-2. Para modificar la exportación a Word o ZIP, actualizar los módulos en `src/lib/export/` y `src/page-components/Planillas/downloadPlanillaZip.ts`.
-
----
-
-## 9. Gobernanza de Código y Estructura de Directorios
-
-```
-src/
-├── app/                        # Next.js 16 App Router (Rutas de la aplicación)
-├── components/
-│   ├── atoms/                  # Componentes atómicos (AppleIcon, Badge, Button, Input, Modal, Skeleton)
-│   ├── molecules/              # Moléculas de UI (KpiCard, NormativaAccordion, PlanillaHeader, PlanillaFooter)
-│   ├── organisms/              # Organismos complejos y Formularios Web de Planillas
-│   │   ├── Casos/              # Wizard y filtros de expedientes
-│   │   ├── Compliance/         # Indicadores KPI de cumplimiento
-│   │   └── Planillas/          # Componentes web interactivos (*.tsx) y Visores
-│   └── templates/              # Templates de layout (CMSLayout, PlanillaFolioTemplate)
-├── data/                       # Tipologías y constantes forenses
-├── db/                         # Persistencia IndexedDB / LocalStorage
-├── hooks/                      # Custom hooks (usePlanillaFormData, etc.)
-├── lib/
-│   ├── export/                 # Exportadores (.DOCX Word)
-│   └── pdf/                    # Motor de PDF (@react-pdf/renderer)
-│       ├── documents/          # Componentes de renderizado PDF (*Pdf.tsx)
-│       ├── PlanillaHeaderFooter.tsx
-│       ├── PlanillaCoverPagePdf.tsx
-│       └── reactPdfStyles.ts
-├── page-components/            # Componentes de página Next.js
-│   └── Planillas/              # Páginas de planillas (*Page.tsx) y Planillas.css
-├── store/                      # Zustand Stores (cmsStore.ts, auditStore.ts)
-└── testing/                    # Utilidades para pruebas unitarias
-```
+4. **Copia de Archivos:**
+   - Subir el contenido de `dist/` a `public_html/` en el administrador de archivos de cPanel o vía SFTP.
+   - Asegurarse de que `.htaccess` esté visible en la raíz de `public_html`.
 
 ---
 
-## 10. Reglas de Calidad y Verificación de Desarrollo
+## 7. Verificación de Calidad y Pruebas
 
-1. **Nunca romper la paridad Web/PDF:** Al agregar un campo en la UI web, agregarlo de inmediato en el componente PDF correspondiente.
-2. **Sin librerías UI no autorizadas:** No instalar ni utilizar MUI, Tailwind, Ant Design o similares. Bootstrap 5.3 + USWDS 3.0 son los únicos marcos visuales permitidos.
-3. **Verificación TypeScript Obligatoria:** Ningún cambio se da por concluido sin haber verificado la compilación estática ejecutando `npx tsc --noEmit`.
-4. **Preservación de Márgenes de Folio:** La previsualización web y la impresión física deben conservar los márgenes normativos de hoja Folio (216mm × 330mm).
-5. **Cumplimiento Estricto de SVG Folio Vertical:** Todo activo SVG de planillas, diagramas de flujo o pipelines debe crearse en orientación Folio vertical (`1:1.528`), ser copia fiel 1:1 si corresponde a una planilla existente, e integrar optimización UX/SEO con los estilos institucionales (DC3 Cyber Forensics).
-6. **Sincronización Automática Obligatoria con GitHub:** Cada actualización, ajuste o creación de archivo que se complete exitosamente en el proyecto debe subirse inmediatamente a GitHub ejecutando `node scripts/sync-github.js` (o `npm run sync`).
+- Pruebas unitarias y de integración: `npm test` (Vitest).
+- Verificación estática de planillas: `tests/unit/planillas/paridad.test.ts` (14 pruebas de paridad).
+- Verificación de vector criptográfico: `tests/unit/crypto/canonical.test.ts` (100% de paridad con RFC 8785).
+- Verificación de estructura cPanel: `tests/unit/build/distVerification.test.ts` (6 pruebas de empaquetado).
+- Sincronización con GitHub: `npm run sync`.

@@ -1,0 +1,89 @@
+# ============================================
+# COMPONENTE: FASE DE DISPOSICIÓN FINAL
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Fase de Disposición Final - Cierre"
+  tipo: "fase"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Fase final que pone fin al tratamiento de las evidencias.
+
+formas_cierre:
+  - tipo: "DEVOLUCIÓN"
+    descripcion: "Restituir a quien tenga legítimo derecho"
+    aplicacion: "Bienes lícitos a propietarios legítimos"
+    requisitos:
+      - "Orden judicial"
+      - "Identificación del propietario"
+      - "Acta de entrega"
+      
+  - tipo: "ENTREGA"
+    descripcion: "Otorgar a persona jurídica autorizada"
+    aplicacion: "Organismos oficiales"
+    requisitos:
+      - "Orden judicial"
+      - "Acta de entrega"
+      - "Documentación de autoridad"
+      
+  - tipo: "DESTRUCCIÓN"
+    descripcion: "Inutilizar evidencia sin interés"
+    aplicacion: "Sustancias ilícitas, armas, objetos peligrosos"
+    requisitos:
+      - "Orden judicial"
+      - "Acta de destrucción"
+      - "Testigos"
+      - "Registro fotográfico"
+      
+  - tipo: "CONSUMIDA EN PERITAJE"
+    descripcion: "Agotada durante análisis"
+    aplicacion: "Evidencias expendidas en estudios"
+    requisitos:
+      - "Constancia en dictamen"
+      - "Documentación del consumo"
+
+procedimientos:
+  - id: "ejecucion_disposicion"
+    nombre: "Ejecución de Disposición"
+    descripcion: "Materializar devolución, entrega o destrucción"
+    responsable: "Funcionario Autorizado"
+    campos_formulario:
+      - "Tipo de Disposición"
+      - "Número de Orden Judicial"
+      - "Fecha de Ejecución"
+      - "Funcionario Ejecutor"
+      - "Testigos Presenciales"
+      - "Número de Acta"
+      
+  - id: "cierre_prcc"
+    nombre: "Cierre de PRCC"
+    descripcion: "Finalización documental del proceso"
+    responsable: "Funcionario de Custodia"
+    campos_formulario:
+      - "Fecha de Cierre"
+      - "Motivo de Cierre"
+      - "Responsable del Cierre"
+      - "Firma de Cierre"
+      - "Ubicación del Archivo"
+
+motivos_cierre:
+  - "Sentencia Firme"
+  - "Sobreseimiento"
+  - "Prescripción"
+  - "Devolución Completa"
+  - "Destrucción Completada"
+  - "Consumo Total en Peritaje"
+
+documento_asociado: "Acta de Disposición Final de Evidencias"
+
+operarios: ["Jueces", "Fiscales", "Funcionarios de Custodia", "Custodios"]
+
+documentos_asociados:
+  - "Acta de Disposición Final de Evidencias"
+  - "Acta de Destrucción"
+  - "Acta de Devolución"
+  - "PRCC (cerrada)"

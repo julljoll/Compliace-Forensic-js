@@ -1,0 +1,162 @@
+# ============================================
+# COMPONENTE: FASE INICIAL - OBTENCIÓN
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Fase Inicial - Obtención"
+  tipo: "fase"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Fase génesis del sistema, integradora de la evidencia física a la cadena de custodia,
+  que comprende el proceso de obtención con sus diversas formas.
+
+proceso_obtencion:
+  definicion: |
+    Es el momento en el cual los operarios del manual pueden iniciar la cadena de
+    custodia de las evidencias; está constituido por cuatro formas.
+
+formas_obtencion:
+  - tipo: "OBTENCIÓN TÉCNICA"
+    prioridad: 1
+    definicion: |
+      Cuando el personal especializado acudir al sitio del suicidio o lugar de
+      ubicación de la evidencia mediante trabajo de campo planificado.
+    escenarios:
+      - "Sitio del suicidio o lugar del hallazgo"
+      - "Personas asociadas al hecho"
+      - "Vehículos"
+      - "Cadáveres"
+
+    procedimientos:
+      - id: "proteccion"
+        nombre: "Protección Técnica"
+        descripcion: "Aislamiento y preservación del lugar"
+        actividades:
+          - Delimitación: Evaluar y demarcar el área
+          - Preservación: Evitar modificaciones al lugar
+        materiales:
+          - "Cintas o cuerdas (Acordonamiento)"
+          - "Conos, vehículos oficiales, bardas móviles"
+          - "Toldos, sombrillas, carpas (Superposición)"
+        responsables: ["Criminalistas", "Forenses", "Policías", "Investigadores Penales"]
+        
+      - id: "observacion"
+        nombre: "Observación Preliminar"
+        descripcion: "Recabar información para planificación del abordaje"
+        lineamientos:
+          - "Verificar idoneidad del procedimiento de protección"
+          - "Identificar condiciones inseguras"
+          - "Evaluar características físicas del sitio"
+          - "Definir ruta de ingreso y egreso"
+          - "Establecer patrones de búsqueda"
+        responsables: ["Perito Criminalista", "Investigador"]
+        
+      - id: "fijacion"
+        nombre: "Fijación"
+        descripcion: "Dejar constancia del estado del lugar y evidencias"
+        tipos:
+          - tipo: "Fijación Fotográfica"
+            obligatoriedad: true
+          - tipo: "Fijación Escrita"
+            obligatoriedad: true
+          - tipo: "Fijación Planimétrica"
+            obligatoriedad: true
+          - tipo: "Fijación Videográfica"
+            obligatoriedad: false
+            
+      - id: "coleccion"
+        nombre: "Colección"
+        descripcion: "Levantamiento de la evidencia"
+        tecnicas:
+          - "Levantamiento directo"
+          - "Estarcimiento"
+          - "Aspirado / Barrido"
+          - "Macerado"
+          - "Raspado"
+          - "Reproducción Fotográfica"
+          - "Reproducción por Moldeado"
+          - "Reproducción Digital"
+        responsables: ["Perito Coleccionista", "Técnico Forense"]
+        
+      - id: "embalaje"
+        nombre: "Embalaje y Rotulación"
+        descripcion: "Acondicionamiento seguro"
+        principios:
+          - "Una evidencia = Un embalaje"
+          - "Evitar contaminación cruzada"
+          - "Sello inviolable"
+        responsables: ["Criminalista", "Técnico"]
+        
+      - id: "registro_prcc"
+        nombre: "Registro en PRCC"
+        descripcion: "Planilla de Registro de Cadena de Custodia"
+        es_documento_legal: true
+
+  - tipo: "OBTENCIÓN POR ASEGURAMIENTO"
+    prioridad: 2
+    definicion: "Cuando se requiere asegurar evidencias mediante procedimientos legales"
+    escenarios:
+      - "Allanamientos"
+      - "Decomisos"
+      - "Presentaciones personales"
+    procedimientos:
+      - id: "busqueda"
+        nombre: "Búsqueda"
+        metodos: ["En espiral", "En cuadrícula", "Por zonas", "Lineal"]
+      - id: "posesion"
+        nombre: "Posesión"
+        requisitos_legales: ["Orden judicial", "Flagrancia", "Consentimiento"]
+
+  - tipo: "OBTENCIÓN POR CONSIGNACIÓN"
+    prioridad: 3
+    definicion: "Cuando el propietario entrega voluntariamente la evidencia"
+    escenarios:
+      - "Entrega voluntaria del dispositivo móvil"
+      - "Consignación de evidencia digital"
+    procedimientos:
+      - id: "recepcion"
+        nombre: "Recepción"
+        pasos:
+          - "Verificar identidad de quien consigna"
+          - "Documentar motivo de la consignación"
+          - "Registrar datos del dispositivo"
+          - "Verificar estado físico"
+      - id: "fijacion_consignacion"
+        nombre: "Fijación"
+        datos_requeridos:
+          - "Marca y modelo"
+          - "IMEI y IMEI2"
+          - "Número de teléfono"
+          - "Estado de la batería"
+          - "Estado de la pantalla"
+
+  - tipo: "OBTENCIÓN POR DERIVACIÓN"
+    prioridad: 4
+    definicion: "Cuando del análisis de una evidencia se obtiene otra"
+    escenarios:
+      - "Por Separación"
+      - "Por Segmentación"
+      - "Por Selección"
+
+campos_prcc:
+  - "Número de Actuación/NRO de Caso"
+  - "Fecha y hora de inicio"
+  - "Lugar de los hechos"
+  - "Naturaleza del hecho"
+  - "Organismo remitente"
+  - "Funcionario actuante"
+  - "Tabla de evidencias"
+  - "Firmas"
+
+operarios: ["Criminalistas", "Forenses", "Policías", "Investigadores Penales", "Militares"]
+
+documentos_asociados:
+  - "Acta de Obtención Técnica"
+  - "Acta de Obtención por Aseguramiento"
+  - "Acta de Obtención por Consignación"
+  - "Acta de Obtención por Derivación"
+  - "Planilla de Registro de Cadena de Custodia (PRCC)"

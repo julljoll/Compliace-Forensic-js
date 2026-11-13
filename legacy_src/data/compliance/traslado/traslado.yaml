@@ -1,0 +1,106 @@
+# ============================================
+# COMPONENTE: TRASLADO DE EVIDENCIAS
+# Procedimiento de Carácter Continuo
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Procedimiento de Traslado"
+  tipo: "proceso_continuo"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Procedimiento para el transporte seguro de evidencias entre ubicaciones,
+  manteniendo la integridad de la cadena de custodia.
+
+lineamientos:
+  - "Verificar condiciones de evidencia y embalaje"
+  - "Seleccionar medio que minimice riesgos"
+  - "Asentar datos en PRCC"
+  - "Mantener precintos de seguridad"
+  - "Documentar incidentes"
+
+tipos_traslado:
+  - tipo: "TRASLADO EXTERNO"
+    descripcion: "Entre diferentes instituciones/ubicaciones"
+    ejemplos:
+      - "De escena a laboratorio"
+      - "De laboratorio a tribunal"
+      - "Entre organismos"
+    requisitos:
+      - "Vehículo oficial acondicionado"
+      - "Funcionario armado (si aplica)"
+      - "Evidencias aseguradas contra movimiento"
+      - "Ruta registrada"
+      
+  - tipo: "TRASLADO INTERNO"
+    descripcion: "Dentro de la misma institución"
+    ejemplos:
+      - "De área de ingreso a depósito"
+      - "De depósito a laboratorio"
+      - "Entre áreas de resguardo"
+    requisitos:
+      - "Personal autorizado"
+      - "Documentación de movimiento"
+      - "Verificación de precintos"
+
+procedimiento:
+  antes_traslado:
+    - "Verificar integridad de precintos"
+    - "Confirmar estado del embalaje"
+    - "Verificar documentación de custodia"
+    - "Obtener autorización requerida"
+    - "Preparar medio de transporte"
+    
+  durante_traslado:
+    - "Mantener evidencias aseguradas"
+    - "Evitar exposición a condiciones adversas"
+    - "Monitorear estado de precintos"
+    - "Registrar incidentes si los hay"
+    
+  despues_traslado:
+    - "Verificar precintos al llegar"
+    - "Confirmar correspondencia con PRCC"
+    - "Registrar llegada en sistema"
+    - "Entregar a responsable de área"
+    - "Actualizar PRCC"
+
+campos_registro:
+  - "Fecha y Hora de Salida"
+  - "Lugar de Origen"
+  - "Lugar de Destino"
+  - "Funcionario Responsable del Traslado"
+  - "Vehículo/Placa"
+  - "Kilometraje"
+  - "Ruta Utilizada"
+  - "Incidentes en el Trayecto"
+  - "Fecha y Hora de Llegada"
+  - "Recibido Por"
+
+consideraciones:
+  - "Temperatura controlada para muestras biológicas"
+  - "Bolsa Faraday para evidencias digitales"
+  - "Contenedores especiales para sustancias"
+  - "Armero para armas y municiones"
+
+operarios: ["Funcionarios de Custodia", "Conductores Autorizados"]
+
+actividad_transferencia:
+  definicion: "Transferencia de custodio a otro responsable"
+  lineamientos:
+    - "Verificar condiciones físicas y precintos"
+    - "Verificar PRCC con rotulado"
+    - "Asentar datos de quien entrega y recibe"
+  campos:
+    - "Entrega: Nombre, Cédula, Cargo, Organismo"
+    - "Recibe: Nombre, Cédula, Cargo, Organismo"
+    - "Fecha y Hora"
+    - "Firmas"
+
+documentos_asociados:
+  - "PRCC (actualizada)"
+  - "Acta de Traslado"
+  - "Acta de Transferencia"
+  - "Oficio de Autorización"

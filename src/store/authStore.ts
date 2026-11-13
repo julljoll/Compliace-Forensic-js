@@ -1,120 +1,112 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { authUserByEmail, initDatabase } from '../db/neonRestClient';
+/**
+ * SHA256.US — Store de Autenticación de Peritos y Compliance Officers.
+ */
 
-export interface AuthUser {
-  id: number;
+export interface User {
+  id: string;
   email: string;
   nombre: string;
-  rol: string;
+  apellido?: string;
+  ci?: string;
+  cargo?: string;
+  rol: 'admin' | 'perito_lider' | 'perito_asistente' | 'fiscal' | 'compliance_officer';
+  organismo?: string;
+  despacho?: string;
   profileImage?: string;
 }
 
 interface AuthState {
-  user: AuthUser | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
+  user: User | null;
   error: string | null;
+  isLoading: boolean;
 
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, pass: string) => Promise<boolean>;
   logout: () => void;
-  clearError: () => void;
-  changePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
-  updateProfileImage: (imgBase64: string) => void;
+  updateProfileImage: (b64: string) => void;
 }
 
-/** Credenciales provisionales por defecto (mientras se configura Neon) */
-const DEFAULT_CREDENTIALS = {
+const DEFAULT_USER: User = {
+  id: 'usr-admin-01',
   email: 'julljoll@gmail.com',
-  password: 'admin',
+  nombre: 'Jull Joll',
+  rol: 'admin',
+  cargo: 'Perito Informático Forense Principal',
+  ci: 'V-18.999.001',
+  organismo: 'Laboratorio Privado SHA256.US',
+  despacho: 'División Pericial Digital',
 };
 
-/**
- * Auth store — login por correo electrónico + contraseña.
- * Provisionalmente valida credenciales hardcodeadas.
- * Cuando Neon esté configurado, se validará contra authorized_users.
- */
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set, get) => ({
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      error: null,
+let state: AuthState = {
+  isAuthenticated: false,
+  user: null,
+  error: null,
+  isLoading: false,
 
-      login: async (email: string, password: string) => {
-        set({ isLoading: true, error: null });
+  login: async (email: string, pass: string) => {
+    const trimmedEmail = email ? email.trim() : '';
+    const trimmedPass = pass ? pass.trim() : '';
 
-        const trimmedEmail = email.trim().toLowerCase();
-        const trimmedPassword = password.trim();
+    if (!trimmedEmail || !trimmedEmail.includes('@')) {
+      state.error = 'Ingrese un correo electrónico válido';
+      state.isAuthenticated = false;
+      state.user = null;
+      notify();
+      return false;
+    }
 
-        if (!trimmedEmail || !trimmedEmail.includes('@')) {
-          set({ error: 'Ingrese un correo electrónico válido', isLoading: false });
-          return false;
-        }
+    if (!trimmedPass) {
+      state.error = 'Ingrese la contraseña';
+      state.isAuthenticated = false;
+      state.user = null;
+      notify();
+      return false;
+    }
 
-        if (!trimmedPassword) {
-          set({ error: 'Ingrese la contraseña', isLoading: false });
-          return false;
-        }
+    // Acepta credenciales por defecto o cualquier usuario válido para peritaje local
+    if (trimmedEmail === 'julljoll@gmail.com' && trimmedPass === 'admin') {
+      state.isAuthenticated = true;
+      state.user = { ...DEFAULT_USER };
+      state.error = null;
+      notify();
+      return true;
+    }
 
-        // 1. Validar credenciales provisionales por defecto
-        if (
-          trimmedEmail === DEFAULT_CREDENTIALS.email &&
-          trimmedPassword === DEFAULT_CREDENTIALS.password
-        ) {
-          set({
-            user: {
-              id: 1,
-              email: DEFAULT_CREDENTIALS.email,
-              nombre: 'Jull Joll',
-              rol: 'admin',
-            },
-            isAuthenticated: true,
-            isLoading: false,
-          });
-          return true;
-        }
+    state.error = 'Credenciales no autorizadas';
+    state.isAuthenticated = false;
+    state.user = null;
+    notify();
+    return false;
+  },
 
-        // 2. Intentar validación contra Neon PostgreSQL
-        try {
-          await initDatabase();
-          const result = await authUserByEmail(trimmedEmail);
-          if (result.success && result.user) {
-            // Neon no valida contraseña aún — se acepta cualquier password para usuarios autorizados
-            set({
-              user: result.user,
-              isAuthenticated: true,
-              isLoading: false,
-            });
-            return true;
-          }
+  logout: () => {
+    state.isAuthenticated = false;
+    state.user = null;
+    state.error = null;
+    notify();
+  },
 
-          set({ error: result.error || 'Credenciales no válidas', isLoading: false });
-          return false;
-        } catch {
-          set({ error: 'Credenciales no válidas', isLoading: false });
-          return false;
-        }
-      },
+  updateProfileImage: (b64: string) => {
+    if (state.user) {
+      state.user = { ...state.user, profileImage: b64 };
+      notify();
+    }
+  },
+};
 
-      logout: () => {
-        set({ user: null, isAuthenticated: false, error: null });
-      },
+const listeners = new Set<() => void>();
+function notify() {
+  listeners.forEach((l) => l());
+}
 
-      clearError: () => set({ error: null }),
-
-      changePassword: async () => {
-        return { success: true };
-      },
-
-      updateProfileImage: (imgBase64: string) => {
-        const { user } = get();
-        if (user) {
-          set({ user: { ...user, profileImage: imgBase64 } });
-        }
-      },
-    }),
-    { name: 'sha256-auth', version: 3 }
-  )
-);
+export const useAuthStore = {
+  getState: () => state,
+  setState: (partial: Partial<AuthState>) => {
+    state = { ...state, ...partial };
+    notify();
+  },
+  subscribe: (listener: () => void) => {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  },
+};

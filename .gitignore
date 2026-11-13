@@ -16,3 +16,7 @@ Rubbish/
 .next/  
 dev-dist/
 .kilo/
+
+# Activos USWDS generados (scripts/build-uswds.mjs)
+public/assets/uswds/
+.astro/

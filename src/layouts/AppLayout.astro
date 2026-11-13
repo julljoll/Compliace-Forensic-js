@@ -1,0 +1,185 @@
+---
+/**
+ * SHA256.US — Layout Principal con USWDS (@uswds/uswds)
+ * Incluye .usa-banner, .usa-header, .usa-sidenav y tokens de diseño DC3 Cyber Forensics.
+ */
+interface Props {
+  title?: string;
+  activeNav?: string;
+}
+
+const { title = 'SHA256.US — CMS de Cumplimiento Forense Digital', activeNav = '' } = Astro.props;
+
+const navItems = [
+  { href: '/dashboard', label: '📊 Panel General', key: 'dashboard' },
+  { href: '/casos', label: '📁 Expedientes Periciales', key: 'casos' },
+  { href: '/flujo', label: '🔒 Ciclo Pericial ISO', key: 'flujo' },
+  { href: '/custodia', label: '⛓️ Cadena de Custodia (PRCC)', key: 'custodia' },
+  { href: '/planillas', label: '📜 Planillas Oficiales (Folio)', key: 'planillas' },
+  { href: '/normativa', label: '📚 Base Normativa RAG', key: 'normativa' },
+  { href: '/auditoria', label: '🛡️ Auditoría Inmutable (SHA-256)', key: 'auditoria' },
+  { href: '/exportar', label: '📦 Exportación de Caso', key: 'exportar' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- USWDS Compilado Nativo -->
+    <link rel="stylesheet" href="/assets/uswds/css/uswds.min.css" />
+    <script is:inline src="/assets/uswds/js/uswds-init.min.js"></script>
+    <style is:global>
+      body {
+        background-color: #F0F4F8;
+        color: #1B2A4A;
+        font-family: 'Public Sans Web', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .font-mono {
+        font-family: 'Roboto Mono Web', Menlo, Monaco, Consolas, monospace !important;
+      }
+      .usa-header--extended {
+        background: #112E51;
+        border-bottom: 3px solid #D9A700;
+      }
+      .app-layout-grid {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        min-height: calc(100vh - 120px);
+      }
+      @media (max-width: 900px) {
+        .app-layout-grid {
+          grid-template-columns: 1fr;
+        }
+        .app-sidebar-col {
+          display: none;
+        }
+      }
+      .app-sidebar-col {
+        background: #FFFFFF;
+        border-right: 1px solid #CBD5E1;
+        padding: 20px 0;
+      }
+      .app-main-col {
+        padding: 24px 32px;
+        max-width: 1300px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. USWDS Gov Banner Institucional -->
+    <section class="usa-banner" aria-label="Aviso oficial del laboratorio forense">
+      <div class="usa-accordion">
+        <header class="usa-banner__header">
+          <div class="usa-banner__inner" style="background-color: #1A2536; color: #E2E8F0; padding: 6px 16px; font-size: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #008837;"></span>
+              <strong>SISTEMA FORENSE OFICIAL:</strong> Entorno Seguro de Cadena de Custodia · ISO/IEC 27037 · SHA-256 Inmutable
+            </div>
+            <div style="font-family: 'Roboto Mono Web', monospace; font-size: 11px; color: #D9A700;">
+              cPanel · MySQL PDO
+            </div>
+          </div>
+        </header>
+      </div>
+    </section>
+
+    <!-- 2. USWDS Header Principal -->
+    <header class="usa-header usa-header--extended" role="banner">
+      <div class="usa-navbar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; max-width: 100%;">
+        <div class="usa-logo" id="extended-logo" style="margin: 0;">
+          <em class="usa-logo__text" style="font-size: 20px; font-weight: 800; letter-spacing: -0.01em;">
+            <a href="/dashboard" title="Inicio SHA256.US" style="color: #FFFFFF; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+              <img src="/logo.png" alt="Logo" style="height: 34px; width: 34px;" />
+              <span>SHA256<span style="color: #D9A700;">.US</span></span>
+              <span style="font-size: 12px; font-weight: 400; color: #94A3B8; margin-left: 8px; border-left: 1px solid #334155; padding-left: 10px;">
+                Compliance Forense Digital
+              </span>
+            </a>
+          </em>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px; color: #FFFFFF; font-size: 13px;">
+          <div style="text-align: right;" id="user-display">
+            <div style="font-weight: 700; color: #F1F5F9;" id="user-name">Jull Joll</div>
+            <div style="font-size: 11px; color: #94A3B8;" id="user-role">Perito Informático Principal</div>
+          </div>
+          <button
+            class="usa-button usa-button--unstyled"
+            id="btn-logout"
+            style="color: #D9A700; font-size: 12px; text-decoration: underline; cursor: pointer;"
+          >
+            Cerrar Sesión
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 3. Contenedor de Grid: Sidebar USWDS + Contenido -->
+    <div class="app-layout-grid">
+      <aside class="app-sidebar-col no-print" aria-label="Navegación de Laboratorio">
+        <nav aria-label="Menú principal de compliance">
+          <ul class="usa-sidenav" style="border: none;">
+            {navItems.map((item) => (
+              <li class="usa-sidenav__item">
+                <a
+                  href={item.href}
+                  class={activeNav === item.key ? 'usa-current' : ''}
+                  style={activeNav === item.key ? 'border-left: 4px solid #005EA2; background-color: #E7F6F8; color: #005EA2; font-weight: 700;' : ''}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="app-main-col" id="main-content">
+        <slot />
+      </main>
+    </div>
+
+    <!-- Script de Inicialización y Autenticación en Cliente -->
+    <script>
+      import { phpApi } from '../lib/data/phpApi';
+      import { idbGet, idbPut, idbGetAll } from '../lib/data/idb';
+      import { MOCK_CASOS } from '../lib/data/seed';
+
+      async function initApp() {
+        // Sembrar casos iniciales en IndexedDB si está vacío (garantía offline)
+        try {
+          const casosLocales = await idbGetAll('casos');
+          if (!casosLocales || casosLocales.length === 0) {
+            for (const c of MOCK_CASOS) {
+              await idbPut('casos', c);
+            }
+          }
+        } catch (e) {
+          console.warn('Error sembrando casos locales en IndexedDB:', e);
+        }
+
+        // Listener de logout
+        const btnLogout = document.getElementById('btn-logout');
+        if (btnLogout) {
+          btnLogout.addEventListener('click', async () => {
+            await phpApi.logout();
+            window.location.href = '/';
+          });
+        }
+      }
+
+      if (typeof window !== 'undefined') {
+        initApp();
+      }
+    </script>
+    <script is:inline src="/assets/uswds/js/uswds.min.js"></script>
+  </body>
+</html>

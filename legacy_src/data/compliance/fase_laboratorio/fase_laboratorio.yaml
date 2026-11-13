@@ -1,0 +1,117 @@
+# ============================================
+# COMPONENTE: FASE DE LABORATORIO
+# Manual Único de Cadena de Custodia
+# ============================================
+
+componente:
+  nombre: "Fase de Laboratorio - Peritación"
+  tipo: "fase"
+  padre: "sistema_cadena_custodia"
+  version: "1.0.0"
+  referencia: "manual_unico_unificado.yaml"
+
+descripcion: |
+  Fase intermedia destinada a la peritación de evidencias previamente obtenidas,
+  mediante la aplicación de métodos y técnicas técnico-científicas.
+
+proceso_peritacion:
+  definicion: |
+    Conjunto de procedimientos mediante los cuales se examina y analiza la evidencia
+    para determinar sus características y relación con el hecho investigado.
+
+procedimientos:
+  - id: "recepcion_laboratorio"
+    nombre: "Recepción en Laboratorio"
+    descripcion: "Verificación de condiciones de llegada"
+    pasos:
+      - "Verificar precintos de seguridad"
+      - "Recalcular Hash para confirmar integridad"
+      - "Cotejar PRCC con el embalaje"
+      - "Verificar correspondencia con oficio de remisión"
+    iso: "ISO/IEC 27042:2015"
+    responsable: "Jefe de Laboratorio / Recepcionista"
+    
+  - id: "designacion"
+    nombre: "Designación de Perito"
+    descripcion: "Asignación de especialista según tipo de evidencia"
+    pasos:
+      - "Registrar en sistema"
+      - "Asignar perito responsable según especialidad"
+      - "Firmar controles y PRCC"
+    responsable: "Director de Laboratorio"
+    especialidades:
+      - "Balística"
+      - "Biología Forense"
+      - "Química Forense"
+      - "Documentoscopía"
+      - "Informática Forense"
+      - "Dactiloscopia"
+      - "Fotografía Forense"
+      - "Toxicología"
+      - "Genética"
+      
+  - id: "peritaje"
+    nombre: "Peritaje"
+    descripcion: "Análisis técnico-científico de la evidencia"
+    responsable: "Perito Especialista"
+    etapas:
+      - "Valoración: apreciar contexto y planificar técnicas"
+      - "Descripción: detallar características de la evidencia"
+      - "Análisis: aplicar métodos y técnicas"
+      - "Interpretación: evaluar datos resultantes"
+      - "Conclusión: juicio de valor técnico-científico"
+    productos:
+      - "Dictamen Pericial"
+      - "Anexos fotográficos"
+      - "Gráficos y planos"
+      - "Certificados de análisis"
+    campos_formulario:
+      - "Metodología Aplicada"
+      - "Equipos Utilizados"
+      - "Resultados Obtenidos"
+      - "Conclusiones"
+      - "Fecha de Elaboración"
+      - "Firma del Perito"
+      
+  - id: "remision"
+    nombre: "Remisión de Resultados"
+    descripcion: "Envío del informe pericial al solicitante"
+    pasos:
+      - "Entregar dictamen pericial"
+      - "Remitir evidencias y PRCC al despacho solicitante"
+      - "Acotar en PRCC la remisión"
+    responsable: "Jefe de Laboratorio"
+    destinos: ["Fiscalía", "Tribunal", "Organismo Investigador"]
+    campos:
+      - "Número de Oficio"
+      - "Fecha de Remisión"
+      - "Dirigido A"
+      - "Cargo del Destinatario"
+      - "Organismo Destino"
+      - "Medio de Envío"
+
+herramientas_utilizadas:
+  - "Andriller v3.6.2+"
+  - "ALEAPP v2.1.0+"
+  - "Equipos especializados según especialidad"
+
+productos_entregables:
+  - nombre: "Dictamen Pericial"
+    estructura:
+      - "1. Motivo"
+      - "2. Descripción de la Evidencia"
+      - "3. Exámenes Practicados"
+      - "4. Resultados"
+      - "5. Conclusiones"
+      - "6. Fundamentación Legal"
+      - "7. Consumo de Evidencia"
+  - nombre: "Anexos fotográficos"
+  - nombre: "Gráficos y planos"
+  - nombre: "Certificados de análisis"
+
+operarios: ["Peritos", "Jefe de Laboratorio", "Director de Laboratorio"]
+
+documentos_asociados:
+  - "Acta Pericial"
+  - "Dictamen Pericial"
+  - "Memorandos y Oficios"

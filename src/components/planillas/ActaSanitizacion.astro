@@ -1,0 +1,124 @@
+---
+/**
+ * SHA256.US — Acta de Sanitización Criptográfica y Borrado Seguro
+ * NIST SP 800-88 Rev. 1 & ISO/IEC 27001. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Acta de Sanitización y Borrado Seguro"
+    nroLabel="N° EXPEDIENTE:"
+    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
+    watermarkText="SANITIZACIÓN"
+  >
+    <div class="uswds-top-header">
+      ACTA DE SANITIZACIÓN CRIPTOGRÁFICA Y BORRADO SEGURO DE SERVIDOR — NIST SP 800-88 REV. 1 · ISO/IEC 27001
+    </div>
+
+    <!-- BLOQUE EXPEDIENTE / PRCC -->
+    <div class="section">
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">Expediente N°</div>
+            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[N° Expediente]'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">PRCC N°</div>
+            <div class="value font-mono" contenteditable="true" data-field="numero_prcc">{caso.numero_prcc || caso.numeroPRCC || '[PRCC-2026-XXXX]'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.0 MEDIOS DIGITALES A SANITIZAR -->
+    <div class="section">
+      <div class="section-title">1.0 EVIDENCIA Y MEDIOS DIGITALES A SANITIZAR</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">Cliente / Entidad Solicitante</div>
+            <div class="value" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Cliente / Solicitante]'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Servidor / Storage de Proceso</div>
+            <div class="value" contenteditable="true">Nodo Storage SHA256 / Vol. Encriptado ZFS-POOL-02</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 METODOLOGÍA NIST 800-88 -->
+    <div class="section">
+      <div class="section-title">2.0 METODOLOGÍA DE BORRADO SEGURO (OVERWRITE / CRYPTO-ERASE)</div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
+        <tbody>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; width: 35%; font-weight: 700; background: #F8FAFC;">Estándar Aplicado</td>
+            <td style="padding: 6px 8px;" contenteditable="true">NIST SP 800-88 Rev. 1 Purge (Overwrite Pseudorandom 3-Pass + Crypto-Erase)</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Herramienta Utilizada</td>
+            <td style="padding: 6px 8px;" contenteditable="true">Nwipe v0.34 (DoD 5220.22-M) / hdparm Enhanced Secure Erase</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash SHA-256 Previo</td>
+            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">{caso.hashSHA256 || '[Hash antes del borrado]'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3.0 DECLARACIÓN DE NO RETENCIÓN -->
+    <div class="section">
+      <div class="section-title">3.0 CERTIFICACIÓN DE NO RETENCIÓN Y DESTRUCCIÓN DE COPIAS</div>
+      <div style="padding: 8px 12px; background-color: #F0FDF4; border-left: 4px solid #008837; border-radius: 4px; font-size: 8pt; line-height: 1.5; color: #1B2A4A;">
+        El perito responsable certifica bajo fe de juramento que todas las copias forenses de trabajo, imágenes bit-a-bit intermedias, particiones temporales y archivos recuperados en los servidores del laboratorio han sido sanitizados y sobrescritos irreversiblemente conforme a la norma NIST SP 800-88 Rev. 1, no conservándose datos confidenciales en la infraestructura del laboratorio.
+      </div>
+    </div>
+
+    <!-- FIRMAS BILATERALES -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO RESPONSABLE DE SANITIZACIÓN</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Perito Responsable</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">AUDITOR / OFICIAL DE COMPLIANCE</div>
+        <div class="sig-field" style="margin-top: 8px;">
+          Nombre: <span class="sig-underline" contenteditable="true">Compliance Officer SHA256.US</span>
+        </div>
+        <div class="sig-field">
+          C.I. N°: <span class="sig-underline" contenteditable="true">V-20.111.222</span>
+        </div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma de Certificación de Cumplimiento</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>

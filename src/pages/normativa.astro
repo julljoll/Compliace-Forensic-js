@@ -1,0 +1,165 @@
+---
+/**
+ * SHA256.US — Base Normativa Forense RAG (77 Normas y Estándares)
+ * Compendio de directrices ISO/IEC, NIST, MUCC-2017 y legislación procesal penal.
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import SummaryBox from '../components/uswds/SummaryBox.astro';
+import Alert from '../components/uswds/Alert.astro';
+import { NORMATIVAS_INICIALES } from '../lib/data/seed';
+---
+
+<AppLayout title="Base Normativa RAG — SHA256.US" activeNav="normativa">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        📚 Base de Conocimiento Normativo RAG
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Compendio legal y técnico internacional que fundamenta los dictámenes y garantiza la licitud probatoria.
+      </p>
+    </div>
+  </div>
+
+  <!-- Resumen de Jerarquía Normativa -->
+  <div style="margin-bottom: 24px;">
+    <SummaryBox heading="Pirámide de Aplicación y Supletoriedad (COPP Art. 225)">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #1E293B;">
+        En materia de informática forense, el Código Orgánico Procesal Penal faculta al perito a fundar su metodología
+        en las reglas de su ciencia, arte o técnica. La validez probatoria descansa en la aplicación armónica de:
+      </p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px;">
+        <span class="usa-tag" style="background-color: #112E51; color: #FFF;">1. CRBV Arts. 28 y 60 (Hábeas Data)</span>
+        <span class="usa-tag" style="background-color: #112E51; color: #FFF;">2. COPP Arts. 187, 223–225</span>
+        <span class="usa-tag" style="background-color: #005EA2; color: #FFF;">3. MUCC-2017 (Gaceta N° 41.247)</span>
+        <span class="usa-tag" style="background-color: #D9A700; color: #112E51; font-weight: 700;">4. ISO/IEC 27037 / 27042 / 27043</span>
+        <span class="usa-tag" style="background-color: #008837; color: #FFF;">5. NIST SP 800-86 / 800-88</span>
+      </div>
+    </SummaryBox>
+  </div>
+
+  <!-- Barra de Búsqueda y Filtros de Normas -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 16px 20px; margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+    <div style="flex: 1; min-width: 260px;">
+      <input
+        class="usa-input"
+        id="input-search-normas"
+        type="search"
+        placeholder="Buscar por código, nombre o descripción (ej: 27037, MUCC, Hash, Adquisición)..."
+        style="height: 40px; margin: 0;"
+      />
+    </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="filtros-tipo-norma">
+      <button class="btn-filtro-norma active" data-tipo="todos" style="padding: 6px 14px; border-radius: 4px; border: 1px solid #005EA2; background: #005EA2; color: #FFF; font-weight: 700; font-size: 12px; cursor: pointer;">
+        Todas ({NORMATIVAS_INICIALES.length})
+      </button>
+      <button class="btn-filtro-norma" data-tipo="ISO" style="padding: 6px 14px; border-radius: 4px; border: 1px solid #CBD5E1; background: #FFF; color: #112E51; font-weight: 600; font-size: 12px; cursor: pointer;">
+        ISO/IEC
+      </button>
+      <button class="btn-filtro-norma" data-tipo="NIST" style="padding: 6px 14px; border-radius: 4px; border: 1px solid #CBD5E1; background: #FFF; color: #112E51; font-weight: 600; font-size: 12px; cursor: pointer;">
+        NIST
+      </button>
+      <button class="btn-filtro-norma" data-tipo="LEY" style="padding: 6px 14px; border-radius: 4px; border: 1px solid #CBD5E1; background: #FFF; color: #112E51; font-weight: 600; font-size: 12px; cursor: pointer;">
+        Leyes Nacionales
+      </button>
+      <button class="btn-filtro-norma" data-tipo="MANUAL" style="padding: 6px 14px; border-radius: 4px; border: 1px solid #CBD5E1; background: #FFF; color: #112E51; font-weight: 600; font-size: 12px; cursor: pointer;">
+        Manuales y Guías
+      </button>
+    </div>
+  </div>
+
+  <!-- Rejilla de Normativas RAG -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;" id="contenedor-normas">
+    {NORMATIVAS_INICIALES.map((norma) => (
+      <div class="card-norma" data-tipo={norma.tipo} style="background: #FFFFFF; border: 1px solid #CBD5E1; border-top: 4px solid #112E51; border-radius: 4px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-weight: 800; font-size: 11px;">
+              {norma.tipo}
+            </span>
+            <span style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">
+              Vigencia: {norma.version}
+            </span>
+          </div>
+
+          <h3 style="font-size: 16px; font-weight: 800; color: #005EA2; margin: 0 0 6px 0;">
+            {norma.codigo}
+          </h3>
+
+          <div style="font-weight: 700; color: #112E51; font-size: 13px; margin-bottom: 10px;">
+            {norma.nombre}
+          </div>
+
+          <p style="font-size: 13px; color: #475569; margin: 0 0 14px 0; line-height: 1.6;">
+            {norma.descripcion}
+          </p>
+
+          {norma.articulos && norma.articulos.length > 0 && (
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 10px 12px; margin-bottom: 12px;">
+              <div style="font-size: 11px; font-weight: 700; color: #112E51; margin-bottom: 4px; text-transform: uppercase;">
+                Artículos y Módulos Clave:
+              </div>
+              <ul style="margin: 0; padding-left: 16px; font-size: 12px; color: #334155; line-height: 1.5;">
+                {norma.articulos.map((art) => (
+                  <li>{art}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div style="border-top: 1px solid #E2E8F0; padding-top: 10px; font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">
+          Referencia: {norma.urlReferencia}
+        </div>
+      </div>
+    ))}
+  </div>
+</AppLayout>
+
+<script>
+  const searchInput = document.getElementById('input-search-normas') as HTMLInputElement;
+  const botonesFiltro = document.querySelectorAll('.btn-filtro-norma');
+  const cards = document.querySelectorAll('.card-norma');
+
+  let tipoActivo = 'todos';
+
+  function filtrarNormas() {
+    const q = (searchInput?.value || '').toLowerCase().trim();
+
+    cards.forEach((card) => {
+      const tipo = card.getAttribute('data-tipo') || '';
+      const text = card.textContent?.toLowerCase() || '';
+
+      const matchTipo = tipoActivo === 'todos' || tipo === tipoActivo;
+      const matchText = !q || text.includes(q);
+
+      if (matchTipo && matchText) {
+        (card as HTMLElement).style.display = 'flex';
+      } else {
+        (card as HTMLElement).style.display = 'none';
+      }
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', filtrarNormas);
+  }
+
+  botonesFiltro.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      botonesFiltro.forEach((b) => {
+        (b as HTMLElement).style.background = '#FFF';
+        (b as HTMLElement).style.color = '#112E51';
+        (b as HTMLElement).style.borderColor = '#CBD5E1';
+      });
+
+      (btn as HTMLElement).style.background = '#005EA2';
+      (btn as HTMLElement).style.color = '#FFF';
+      (btn as HTMLElement).style.borderColor = '#005EA2';
+
+      tipoActivo = btn.getAttribute('data-tipo') || 'todos';
+      filtrarNormas();
+    });
+  });
+</script>

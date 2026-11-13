@@ -1,0 +1,38 @@
+[
+  {
+    "desc": "Objeto simple con claves desordenadas",
+    "input": {
+      "z": 1,
+      "a": "texto",
+      "m": true
+    },
+    "expectedCanonical": "{\"a\":\"texto\",\"m\":true,\"z\":1}",
+    "expectedSha256": "8356ac69d28eea6eeb1537a95127cda66a961a60b7acf9c9ebe19e9fce009663"
+  },
+  {
+    "desc": "Estructura anidada con acentos UTF-8",
+    "input": {
+      "expediente": "EXP-2026-001",
+      "perito": {
+        "nombre": "Dr. Ramón Peña",
+        "id": 42
+      },
+      "evidencias": [
+        "disco",
+        "móvil"
+      ]
+    },
+    "expectedCanonical": "{\"evidencias\":[\"disco\",\"móvil\"],\"expediente\":\"EXP-2026-001\",\"perito\":{\"id\":42,\"nombre\":\"Dr. Ramón Peña\"}}",
+    "expectedSha256": "26ec88bc9ca390dfaacf452495eb843ea548fece950df414749b0a7feea12b14"
+  },
+  {
+    "desc": "Valores nulos y booleanos",
+    "input": {
+      "nulo": null,
+      "activo": false,
+      "vacio": []
+    },
+    "expectedCanonical": "{\"activo\":false,\"nulo\":null,\"vacio\":[]}",
+    "expectedSha256": "46a918c4ed0b54337292351de0996deeab94f24cc7eacf80aa9900d7cc9bc418"
+  }
+]

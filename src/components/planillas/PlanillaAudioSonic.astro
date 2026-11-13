@@ -1,0 +1,127 @@
+---
+/**
+ * SHA256.US — Planilla de Informe Forense de Audio (Sonic Visualiser)
+ * SWGDE, Daubert / FRE 702, Opus 48kHz, Formantes & Pitch F0. Tamaño Folio (216mm x 330mm).
+ */
+import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import type { CasoCMS } from '../../lib/domain/types';
+
+interface Props {
+  caso?: Partial<CasoCMS>;
+}
+
+const { caso = {} } = Astro.props;
+const dictamenAudio = caso.numeroCaso ? `INF-AUD-SONIC-${caso.numeroCaso}` : 'INF-AUD-SONIC-2026-0091';
+---
+
+<div class="folio-forense-aislado">
+  <PlanillaFolioWrapper
+    title="Informe Forense de Audio (Sonic Visualiser)"
+    nroLabel="N° INFORME AUDIO:"
+    nroValue={dictamenAudio}
+    watermarkText="SONIC VISUALISER"
+  >
+    <div class="uswds-top-header">
+      INFORME FORENSE DE AUDIO DIGITAL (SONIC VISUALISER) — ESTÁNDAR DAUBERT / FRE 702 / SWGDE
+    </div>
+
+    <!-- 1.0 ENCABEZADO Y CADENA DE CUSTODIA -->
+    <div class="section">
+      <div class="section-title">1.0 ENCABEZADO DEL CASO &amp; CADENA DE CUSTODIA (SHA-256 GÉNESIS)</div>
+      <div class="uswds-card">
+        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="form-group">
+            <div class="label">N° de Expediente / Causa</div>
+            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[EXP-2026-SHA-XXXX]'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Tribunal / Despacho</div>
+            <div class="value" contenteditable="true">{caso.despachoFiscal || caso.organismoOrdenante || 'Tribunal de Control / Fiscalía'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Perito en Acústica Forense</div>
+            <div class="value" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Ing. Perito Acústica Forense'}</div>
+          </div>
+          <div class="form-group">
+            <div class="label">Dispositivo de Origen</div>
+            <div class="value" contenteditable="true">
+              {caso.dispositivo_marca ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}` : 'Dispositivo móvil'} (IMEI: <span class="font-mono" data-field="dispositivo_imei">{caso.dispositivo_imei || 'N/A'}</span>)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.0 ESPECIFICACIÓN TÉCNICA DEL AUDIO -->
+    <div class="section">
+      <div class="section-title">2.0 IDENTIFICACIÓN TÉCNICA DEL ARCHIVO DE AUDIO Y HASH SHA-256</div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
+        <tbody>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; width: 35%; font-weight: 700; background: #F8FAFC;">Nombre del Archivo</td>
+            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true">AUD-20260719-WA0042.opus</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Códec &amp; Muestreo</td>
+            <td style="padding: 6px 8px;" contenteditable="true">Opus Interactive Audio Codec (RFC 6716) @ 48,000 Hz, 1 Canal Mono</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #CBD5E1;">
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash SHA-256 del Audio</td>
+            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">
+              {caso.hashSHA256 || '9a4f2c81d3b5e7a90f23456789abcdef0123456789abcdef0123456789abcdef'}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Entorno de Análisis</td>
+            <td style="padding: 6px 8px;" contenteditable="true">Sonic Visualiser v5.0.1 (64-bit Linux / Vamp Plugins: Yin FFT Pitch Tracker)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3.0 ESPECTROGRAMA Y FORMANTES -->
+    <div class="section">
+      <div class="section-title">3.0 ANÁLISIS DE ESPECTROGRAMA FFT, PITCH F0 Y DETECCIÓN ANTI-DEEPFAKE</div>
+      <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 10px; font-size: 8.5pt; line-height: 1.5; background: #FAFAFA;">
+        <div><strong>Continuidad Acústica:</strong> Sin saltos de fase ni artefactos de concatenación en la envolvente espectral (0 - 24,000 Hz).</div>
+        <div><strong>Trayectoria de Pitch F0:</strong> Oscilación biológica natural correspondiente a voz humana no sintetizada (algoritmo Yin).</div>
+        <div><strong>Evaluación Anti-Deepfake:</strong> Ausencia de discontinuidades generativas por modelos TTS/Vocoder neuronales.</div>
+      </div>
+    </div>
+
+    <!-- 4.0 CONCLUSIONES ACÚSTICAS -->
+    <div class="section">
+      <div class="section-title">4.0 CONCLUSIÓN TÉCNICO-PERICIAL ACÚSTICA</div>
+      <div class="form-group" contenteditable="true" style="min-height: 100px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px 10px; font-size: 8.5pt; line-height: 20px; background: #FFFFFF;">
+        El análisis espectrográfico y acústico realizado con Sonic Visualiser v5 confirma la autenticidad, continuidad e integridad de la nota de voz peritada. No se detectaron cortes de onda, edición posterior ni patrones de generación sintética (Deepfake). El hash SHA-256 se mantuvo inalterado desde su extracción en msgstore.db.
+      </div>
+    </div>
+
+    <!-- FIRMAS -->
+    <div class="signature-section" style="padding-top: 10px;">
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">PERITO EN ACÚSTICA FORENSE</div>
+        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Acústico'}</span></div>
+        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span></div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma del Especialista</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+
+      <div class="sig-detail-card">
+        <div class="sig-detail-label">CO-PERITO REVISOR</div>
+        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante">{caso.perito_coadyuvante || 'Co-Perito Informático'}</span></div>
+        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante_cedula">{caso.perito_coadyuvante_cedula || 'V-19.888.777'}</span></div>
+        <div class="sig-line"></div>
+        <div class="sig-line-label">Firma de Validación Pericial</div>
+        <div class="fingerprint-row">
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
+          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+        </div>
+      </div>
+    </div>
+  </PlanillaFolioWrapper>
+</div>

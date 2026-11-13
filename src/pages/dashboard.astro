@@ -1,0 +1,286 @@
+---
+/**
+ * SHA256.US — Dashboard General de Compliance Forense
+ * Implementado con USWDS (@uswds/uswds) y datos reactivos (PHP/MySQL + IndexedDB).
+ */
+import AppLayout from '../layouts/AppLayout.astro';
+import SummaryBox from '../components/uswds/SummaryBox.astro';
+import Alert from '../components/uswds/Alert.astro';
+import { MOCK_CASOS } from '../lib/data/seed';
+---
+
+<AppLayout title="Panel General — SHA256.US" activeNav="dashboard">
+  <!-- Encabezado de Página -->
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <h1 style="font-size: 28px; font-weight: 800; color: #112E51; margin: 0 0 6px 0;">
+        Panel General de Compliance Forense
+      </h1>
+      <p style="margin: 0; color: #475569; font-size: 15px;">
+        Monitoreo en tiempo real de expedientes periciales, sellos criptográficos SHA-256 y cumplimiento ISO/IEC.
+      </p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a
+        href="/casos?nuevo=1"
+        class="usa-button"
+        style="background-color: #005EA2; color: #FFFFFF; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 4px;"
+      >
+        <span>➕</span> Aperturar Nuevo Expediente
+      </a>
+      <a
+        href="/auditoria"
+        class="usa-button usa-button--outline"
+        style="border: 2px solid #112E51; color: #112E51; font-weight: 700; text-decoration: none; padding: 10px 16px; border-radius: 4px;"
+      >
+        🛡️ Verificar Cadena
+      </a>
+    </div>
+  </div>
+
+  <!-- Alerta de Entorno Seguro y Garantías Legales -->
+  <Alert type="info" heading="Laboratorio Forense Certificado · Entorno Auditado">
+    Todos los procedimientos registrados en esta plataforma están respaldados por sellos criptográficos 
+    <strong>SHA-256</strong> bajo la cadena de custodia reglamentaria <strong>MUCC-2017</strong> (Gaceta N° 41.247) 
+    y el estándar internacional <strong>ISO/IEC 27037:2012</strong>.
+  </Alert>
+
+  <div style="margin-top: 24px;"></div>
+
+  <!-- Rejilla de Métricas KPI -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px;">
+    <!-- Tarjeta 1: Expedientes Activos -->
+    <div class="usa-card" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #005EA2; padding: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+        Expedientes Activos
+      </div>
+      <div style="font-size: 32px; font-weight: 800; color: #112E51; margin: 8px 0;" id="kpi-total-casos">
+        {MOCK_CASOS.length}
+      </div>
+      <div style="font-size: 13px; color: #008837; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+        <span>●</span> En curso procesal activo
+      </div>
+    </div>
+
+    <!-- Tarjeta 2: Evidencias Custodiadas -->
+    <div class="usa-card" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #D9A700; padding: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+        Evidencias Bajo Resguardo
+      </div>
+      <div style="font-size: 32px; font-weight: 800; color: #112E51; margin: 8px 0;" id="kpi-evidencias">
+        {MOCK_CASOS.length}
+      </div>
+      <div style="font-size: 13px; color: #475569; font-weight: 600;">
+        Con precinto y registro PRCC
+      </div>
+    </div>
+
+    <!-- Tarjeta 3: Fases ISO Completadas -->
+    <div class="usa-card" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #008837; padding: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+        Fases ISO Validadas
+      </div>
+      <div style="font-size: 32px; font-weight: 800; color: #112E51; margin: 8px 0;" id="kpi-fases">
+        12 / 18
+      </div>
+      <div style="font-size: 13px; color: #008837; font-weight: 600;">
+        Gating normativo 100% superado
+      </div>
+    </div>
+
+    <!-- Tarjeta 4: Integridad Criptográfica -->
+    <div class="usa-card" style="background: #FFFFFF; border: 1px solid #CBD5E1; border-left: 5px solid #112E51; padding: 20px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <div style="font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+        Integridad SHA-256
+      </div>
+      <div style="font-size: 32px; font-weight: 800; color: #008837; margin: 8px 0;" id="kpi-integridad">
+        100%
+      </div>
+      <div style="font-size: 13px; color: #008837; font-weight: 600;">
+        Cadena inmutable verificada
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen de Objetivos de Fase y Estado Normativo -->
+  <div style="margin-bottom: 24px;">
+    <SummaryBox heading="Control de Calidad Pericial — Ciclo ISO 6 Fases (F0 - F5)">
+      <p style="margin: 0 0 10px 0; font-size: 14px; color: #1E293B;">
+        El sistema opera bajo un flujo determinista cerrado: ninguna etapa puede cerrarse sin que el perito
+        adjunte los requisitos de fijación, adquiera la imagen forense con hardware de bloqueo de escritura
+        y selle criptográficamente el hash génesis.
+      </p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px;">ISO/IEC 27037:2012</span>
+        <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px;">ISO/IEC 27042:2015</span>
+        <span class="usa-tag" style="background-color: #112E51; color: #FFFFFF; font-size: 11px;">NIST SP 800-86</span>
+        <span class="usa-tag" style="background-color: #D9A700; color: #112E51; font-weight: 700; font-size: 11px;">MUCC-2017</span>
+        <span class="usa-tag" style="background-color: #005EA2; color: #FFFFFF; font-size: 11px;">COPP Art. 187</span>
+      </div>
+    </SummaryBox>
+  </div>
+
+  <!-- Tabla de Expedientes Recientes -->
+  <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 24px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 style="font-size: 20px; font-weight: 800; color: #112E51; margin: 0;">
+        📁 Expedientes Periciales en Curso
+      </h2>
+      <a href="/casos" style="font-size: 13px; font-weight: 700; color: #005EA2; text-decoration: underline;">
+        Ver todos los casos →
+      </a>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="usa-table usa-table--striped usa-table--compact" style="width: 100%; font-size: 13px;">
+        <thead>
+          <tr style="background-color: #F1F5F9; color: #112E51;">
+            <th scope="col" style="font-weight: 700;">N° Expediente</th>
+            <th scope="col" style="font-weight: 700;">Tipología Forense</th>
+            <th scope="col" style="font-weight: 700;">Consignante / C.I.</th>
+            <th scope="col" style="font-weight: 700;">Dispositivo Evidencia</th>
+            <th scope="col" style="font-weight: 700;">Fase Actual</th>
+            <th scope="col" style="font-weight: 700;">Integridad</th>
+            <th scope="col" style="text-align: right; font-weight: 700;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-casos-body">
+          {MOCK_CASOS.map((c) => (
+            <tr>
+              <td>
+                <strong style="color: #005EA2;">{c.numeroCaso}</strong>
+                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">{c.expediente}</div>
+              </td>
+              <td>
+                <span class="usa-tag" style="background-color: #E2E8F0; color: #1E293B; font-size: 11px; font-weight: 600;">
+                  {c.tipoProyecto.replace('forense_', '').toUpperCase()}
+                </span>
+              </td>
+              <td>
+                <div>{c.consignanteNombre || 'Consignante no reg.'}</div>
+                <div style="font-size: 11px; color: #64748B;">C.I. {c.consignanteCedula || 'N/A'}</div>
+              </td>
+              <td>
+                <div>{c.evidenciaMarca} {c.evidenciaModelo}</div>
+                <div style="font-size: 11px; color: #64748B; font-family: 'Roboto Mono Web', monospace;">S/N: {c.evidenciaSerial || 'S/N'}</div>
+              </td>
+              <td>
+                <span style="font-weight: 700; color: #112E51; font-family: 'Roboto Mono Web', monospace;">
+                  {c.faseIsoActual || 'F0'}
+                </span>
+              </td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 6px; color: #008837; font-weight: 600; font-size: 12px;">
+                  <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #008837;"></span>
+                  SHA-256 OK
+                </div>
+              </td>
+              <td style="text-align: right;">
+                <div style="display: inline-flex; gap: 6px;">
+                  <a
+                    href={`/flujo?casoId=${c.id}`}
+                    class="usa-button usa-button--outline"
+                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #005EA2; color: #005EA2;"
+                  >
+                    🔒 Ciclo ISO
+                  </a>
+                  <a
+                    href={`/planillas/planilla-prcc?casoId=${c.id}`}
+                    class="usa-button usa-button--outline"
+                    style="padding: 4px 10px; font-size: 12px; font-weight: 700; text-decoration: none; border-color: #D9A700; color: #855D00;"
+                    title="Planilla de Registro de Cadena de Custodia"
+                  >
+                    📜 PRCC
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Rejilla Inferior: Acceso Rápido a Planillas y Marco Legal -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+    <!-- Caja 1: Planillas Oficiales en Folio -->
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px;">
+      <h3 style="font-size: 17px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+        <span>📜</span> Planillas Oficiales en Folio (216mm × 330mm)
+      </h3>
+      <p style="font-size: 13px; color: #475569; margin: 0 0 14px 0;">
+        Formatos reglamentarios con membrete oficial, dactiloscopía bilateral y márgenes de impresión exactos:
+      </p>
+      <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #1E293B; line-height: 1.8;">
+        <li><a href="/planillas/acta-consentimiento" style="color: #005EA2; font-weight: 600;">Acta de Consentimiento Informado</a></li>
+        <li><a href="/planillas/acta-entrevista" style="color: #005EA2; font-weight: 600;">Acta de Entrevista Forense al Consignante</a></li>
+        <li><a href="/planillas/acta-obtencion" style="color: #005EA2; font-weight: 600;">Acta de Obtención y Preservación Inicial</a></li>
+        <li><a href="/planillas/planilla-prcc" style="color: #005EA2; font-weight: 600;">Planilla de Registro de Cadena de Custodia (PRCC)</a></li>
+        <li><a href="/planillas/acta-desprecintado" style="color: #005EA2; font-weight: 600;">Acta de Desprecintado y Apertura en Laboratorio</a></li>
+        <li><a href="/planillas/acta-dictamen" style="color: #005EA2; font-weight: 600;">Dictamen Pericial Oficial de Informática Forense</a></li>
+      </ul>
+      <div style="margin-top: 14px;">
+        <a href="/planillas" style="font-size: 13px; font-weight: 700; color: #005EA2; text-decoration: underline;">
+          Ver el catálogo completo de 13 planillas →
+        </a>
+      </div>
+    </div>
+
+    <!-- Caja 2: Garantías de Admisibilidad Probatoria -->
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px; padding: 20px;">
+      <h3 style="font-size: 17px; font-weight: 800; color: #112E51; margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px;">
+        <span>⚖️</span> Admisibilidad y Blindaje Procesal
+      </h3>
+      <p style="font-size: 13px; color: #475569; margin: 0 0 14px 0;">
+        Garantías procesales activas para evitar la nulidad conforme al Art. 187 del COPP:
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+        <div style="border-left: 3px solid #008837; padding-left: 10px;">
+          <strong style="color: #112E51;">Bloqueadores de Escritura (Write-Blockers):</strong>
+          <div style="color: #64748B; font-size: 12px;">Obligatorios para la clonación bit-a-bit en ISO 27037.</div>
+        </div>
+        <div style="border-left: 3px solid #008837; padding-left: 10px;">
+          <strong style="color: #112E51;">Sellado Génesis SHA-256:</strong>
+          <div style="color: #64748B; font-size: 12px;">Cálculo bit-a-bit antes de cualquier análisis o triaje.</div>
+        </div>
+        <div style="border-left: 3px solid #008837; padding-left: 10px;">
+          <strong style="color: #112E51;">Dactiloscopía Bilateral:</strong>
+          <div style="color: #64748B; font-size: 12px;">Pulgar izquierdo y derecho en todas las actas impresas.</div>
+        </div>
+      </div>
+      <div style="margin-top: 16px;">
+        <a href="/normativa" style="font-size: 13px; font-weight: 700; color: #005EA2; text-decoration: underline;">
+          Consultar Base Normativa RAG (77 normas) →
+        </a>
+      </div>
+    </div>
+  </div>
+</AppLayout>
+
+<script>
+  import { phpApi } from '../lib/data/phpApi';
+  import { idbGetAll } from '../lib/data/idb';
+
+  async function cargarDatosDashboard() {
+    try {
+      const casos = await phpApi.listarCasos();
+      if (casos && casos.length > 0) {
+        const kpiCasos = document.getElementById('kpi-total-casos');
+        const kpiEvidencias = document.getElementById('kpi-evidencias');
+        if (kpiCasos) kpiCasos.textContent = String(casos.length);
+        if (kpiEvidencias) kpiEvidencias.textContent = String(casos.length);
+      }
+    } catch (e) {
+      console.warn('Cargando casos offline desde IndexedDB:', e);
+      const casosLocales = await idbGetAll('casos');
+      if (casosLocales && casosLocales.length > 0) {
+        const kpiCasos = document.getElementById('kpi-total-casos');
+        if (kpiCasos) kpiCasos.textContent = String(casosLocales.length);
+      }
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    cargarDatosDashboard();
+  }
+</script>

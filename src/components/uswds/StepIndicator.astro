@@ -1,0 +1,49 @@
+---
+/**
+ * SHA256.US — USWDS Step Indicator para el Ciclo Pericial ISO
+ * Muestra el progreso secuencial de las 6 fases (F0..F5).
+ */
+import { FASES_ISO, type FaseIsoId } from '../../lib/domain/gating';
+
+interface Props {
+  faseActual: FaseIsoId;
+  fasesCompletadas?: Record<string, boolean>;
+}
+
+const { faseActual, fasesCompletadas = {} } = Astro.props;
+const currentIdx = FASES_ISO.findIndex(f => f.id === faseActual);
+---
+
+<div class="usa-step-indicator" aria-label="Progreso del Ciclo Pericial ISO">
+  <ol class="usa-step-indicator__segments">
+    {FASES_ISO.map((fase, idx) => {
+      const isComplete = fasesCompletadas[fase.id] === true || idx < currentIdx;
+      const isCurrent = idx === currentIdx;
+      let statusClass = 'usa-step-indicator__segment';
+      if (isComplete) statusClass += ' usa-step-indicator__segment--complete';
+      if (isCurrent) statusClass += ' usa-step-indicator__segment--current';
+
+      return (
+        <li class={statusClass}>
+          <span class="usa-step-indicator__segment-label">
+            {fase.id}: {fase.corto}
+            {isComplete && <span class="usa-sr-only">completada</span>}
+            {isCurrent && <span class="usa-sr-only">fase activa</span>}
+          </span>
+        </li>
+      );
+    })}
+  </ol>
+  <div class="usa-step-indicator__header">
+    <h4 class="usa-step-indicator__heading">
+      <span class="usa-step-indicator__heading-counter">
+        <span class="usa-sr-only">Fase</span>
+        <span class="usa-step-indicator__current-step">{currentIdx + 1}</span>
+        <span class="usa-step-indicator__total-steps"> de 6</span>:
+      </span>
+      <span class="usa-step-indicator__heading-text">
+        {FASES_ISO[currentIdx]?.nombre || 'Ciclo Pericial'}
+      </span>
+    </h4>
+  </div>
+</div>

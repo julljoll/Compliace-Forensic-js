@@ -1,0 +1,72 @@
+---
+/**
+ * SHA256.US — Wrapper de Hoja Folio Oficial (216mm x 330mm) en Astro.
+ * Incluye membrete con logo, títulos oficiales, slots para contenido y cierre legal.
+ */
+interface Props {
+  title: string;
+  nroLabel?: string;
+  nroValue?: string;
+  fechaLabel?: string;
+  fechaValue?: string;
+  watermarkText?: string;
+  footerRightText?: string;
+}
+
+const {
+  title,
+  nroLabel = 'N° EXP:',
+  nroValue = '[N° EXPEDIENTE]',
+  fechaLabel = 'FECHA:',
+  fechaValue = new Date().toLocaleDateString('es-VE'),
+  watermarkText = 'CONSIGNACIÓN',
+  footerRightText,
+} = Astro.props;
+
+const defaultRight = footerRightText || `Sello Inmutable SHA-256 · Impreso el ${new Date().toLocaleDateString('es-VE')}`;
+---
+
+<div class="page">
+  <div class="watermark">{watermarkText}</div>
+
+  <header class="planilla-header-root">
+    <div class="header-top-row">
+      <div class="header-logo-brand">
+        <img src="/logo.png" alt="SHA256.US" class="logo-img" />
+        <div style="display: flex; flex-direction: column;">
+          <span class="logo-text">SHA256.US</span>
+          <span class="logo-subtext">Lab. Informática Forense</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-title-row">
+      <h1 class="acta-title">{title}</h1>
+      <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <div style="font-size: 10pt; font-weight: 700; font-family: 'Roboto Mono Web', monospace;">
+          {nroLabel} <span data-field="numeroCaso" style="min-width: 140px; display: inline-block; border-bottom: 1.5px solid #000; padding: 0 6px; text-align: center;">{nroValue}</span>
+        </div>
+        <div style="font-size: 10pt; font-weight: 700; font-family: 'Roboto Mono Web', monospace;">
+          {fechaLabel} <span style="min-width: 140px; display: inline-block; border-bottom: 1.5px solid #000; padding: 0 6px; text-align: center;">{fechaValue}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="planilla-content">
+    <slot />
+  </div>
+
+  <footer class="planilla-official-footer" style="display: flex; flex-direction: column; gap: 4px; border-top: 1px solid #CBD5E1; padding-top: 6px; margin-top: 16px; font-size: 8pt; color: #475569;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; font-weight: 600; color: #1E293B;">
+      <span style="font-size: 7.5pt; color: #334155;">
+        SHA256.US — Laboratorio de Informática Forense | Consignación Privada y Cumplimiento Normativo (MUCC-2017 &amp; ISO 27037)
+      </span>
+      <span style="font-size: 7.5pt; font-family: 'Roboto Mono Web', monospace; font-weight: 700; color: #0F172A;">
+        {defaultRight}
+      </span>
+    </div>
+    <address style="font-style: normal; font-size: 7pt; text-align: center; color: #475569; margin-top: 2px;">
+      Avenida 6, con calle 7, Edificio Mercantil La Ceiba, primer piso, oficina N° 8, Quíbor, Municipio Jiménez del Estado Lara, Venezuela.
+    </address>
+  </footer>
+</div>
