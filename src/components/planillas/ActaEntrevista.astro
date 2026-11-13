@@ -36,39 +36,37 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 DATOS DE IDENTIFICACIÓN -->
       <div class="section-block">
-        <div class="section-heading">1.0 IDENTIFICACIÓN DEL CONSIGNANTE Y NOTIFICACIÓN DE DERECHOS CONSTITUCIONALES</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Apellidos y Nombres:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Cédula de Identidad / RIF:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Teléfono de Contacto:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Dirección de Habitación:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
-            </div>
-          </div>
-          <div class="field-row" style="grid-column: span 2;">
-            <span class="field-label">Notificación Constitucional (CRBV Art. 49.5):</span>
-            <div class="field-value" style="font-size: 6.8pt; line-height: 1.25;">
-              Se notifica al compareciente de su derecho constitucional a no autoincriminarse ni declarar contra sus parientes cercanos, actuando en este acto de manera estrictamente voluntaria bajo juramento de ley.
-            </div>
-          </div>
-        </div>
+        <div class="section-heading">1.0 IDENTIFICACIÓN DEL CONSIGNANTE Y NOTIFICACIÓN CONSTITUCIONAL</div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 22%;">Apellidos y Nombres:</td>
+              <td class="forense-cell-value" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 22%;">Cédula de Identidad / RIF:</td>
+              <td class="forense-cell-value font-mono" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Teléfono de Contacto:</td>
+              <td class="forense-cell-value font-mono">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
+              </td>
+              <td class="forense-cell-label">Dirección de Habitación:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Garantía Constitucional:</td>
+              <td class="forense-cell-value" colspan="3" style="font-size: 6.8pt; line-height: 1.25;">
+                Notificación expresa de la garantía contra la autoincriminación (CRBV Art. 49 ord. 5°). El consignante declara libre y voluntariamente bajo juramento de ley.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 2.0 CUESTIONARIO FORENSE ESTRUCTURADO -->
@@ -78,35 +76,68 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           <thead>
             <tr>
               <th style="width: 5%;">N°</th>
-              <th style="width: 48%;">Pregunta Técnica Formulada</th>
-              <th style="width: 47%;">Declaración / Respuesta del Consignante</th>
+              <th style="width: 45%;">Pregunta Técnica Formulada</th>
+              <th style="width: 50%;">Declaración / Respuesta del Consignante</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td style="text-align: center; font-weight: 700;">1</td>
               <td>¿Cuál es el objeto pericial y qué chats, audios o números son de interés?</td>
-              <td><span class="linea-manual">{isBlanco ? '' : (caso.descripcion || '')}</span></td>
+              <td>
+                {isBlanco ? (
+                  <div class="lineas-pautadas-2">
+                    <span class="renglon-manual"></span>
+                    <span class="renglon-manual"></span>
+                  </div>
+                ) : (
+                  <span>{caso.descripcion || 'Extracción y validación de autenticidad de chats y audios WhatsApp'}</span>
+                )}
+              </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">2</td>
               <td>¿Suministra voluntariamente el PIN, patrón o contraseña de desbloqueo?</td>
-              <td><span class="linea-manual"></span></td>
+              <td>
+                {isBlanco ? (
+                  <span>[&nbsp;&nbsp;] SÍ &nbsp;&nbsp; [&nbsp;&nbsp;] NO &nbsp;&nbsp; Credencial: <span class="linea-manual" style="display:inline-block; width:45%; min-height:16px;"></span></span>
+                ) : (
+                  <span>[ X ] Suministrado voluntariamente en sobre lacrado</span>
+                )}
+              </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">3</td>
               <td>¿Cuál es el rango de fechas y horas aproximadas de las comunicaciones?</td>
-              <td><span class="linea-manual"></span></td>
+              <td>
+                {isBlanco ? (
+                  <span class="linea-manual"></span>
+                ) : (
+                  <span>Rango activo delimitado en el encargo pericial</span>
+                )}
+              </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">4</td>
               <td>¿El dispositivo o la app sufrieron desinstalaciones, caídas o manipulación?</td>
-              <td><span class="linea-manual"></span></td>
+              <td>
+                {isBlanco ? (
+                  <span>[&nbsp;&nbsp;] NO &nbsp;&nbsp; [&nbsp;&nbsp;] SÍ &nbsp;&nbsp; Observación: <span class="linea-manual" style="display:inline-block; width:42%; min-height:16px;"></span></span>
+                ) : (
+                  <span>[ X ] Negativo; sistema operativo y base de datos íntegros</span>
+                )}
+              </td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">5</td>
               <td>¿Autoriza la preservación lógica y generación de copia forense de los chats?</td>
-              <td><span class="linea-manual"></span></td>
+              <td>
+                {isBlanco ? (
+                  <span>[&nbsp;&nbsp;] SÍ AUTORIZO &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] NO AUTORIZO</span>
+                ) : (
+                  <span>[ X ] SÍ AUTORIZA (Extracción Lógica NIST Nivel 2)</span>
+                )}
+              </td>
             </tr>
           </tbody>
         </table>

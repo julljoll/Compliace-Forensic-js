@@ -46,17 +46,23 @@ const DEFAULT_LOGS = [
       <!-- 1.0 IDENTIFICACIÓN Y ESTADO DE LA CADENA -->
       <div class="section-block">
         <div class="section-heading">1.0 ESTADO DE INTEGRIDAD DE LA CADENA DE BLOQUES FORENSE (LMDFE ART. 7)</div>
-        <table class="forense-table">
+        <table class="forense-cell-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Expediente Asignado:</th>
-              <td style="width: 35%;" class="font-mono">{isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}</td>
-              <th style="width: 20%;">Total de Fases:</th>
-              <td style="width: 20%;">{isBlanco ? <span class="linea-manual"></span> : <span>6 Fases (F0 - F5)</span>}</td>
+              <td class="forense-cell-label" style="width: 25%;">Expediente Asignado:</td>
+              <td class="forense-cell-value font-mono" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">Total de Fases:</td>
+              <td class="forense-cell-value" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>6 Fases (F0 - F5)</span>}
+              </td>
             </tr>
             <tr>
-              <th>Verificación Hash-Chain:</th>
-              <td colspan="3">{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] 100% CONFORME · CADENA CRIPTOGRÁFICA ÍNTEGRA Y SIN ALTERACIONES</span>}</td>
+              <td class="forense-cell-label">Verificación Hash-Chain:</td>
+              <td class="forense-cell-value" colspan="3" style="font-weight: 700;">
+                {isBlanco ? <span>[&nbsp;&nbsp;] 100% CONFORME (CADENA ÍNTEGRA) &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] DISCREPANCIA (ALERTA)</span> : <span>[ X ] 100% CONFORME · CADENA CRIPTOGRÁFICA ÍNTEGRA Y SIN ALTERACIONES</span>}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -78,7 +84,7 @@ const DEFAULT_LOGS = [
           <tbody>
             {isBlanco ? (
               [1, 2, 3, 4, 5, 6].map((num) => (
-                <tr style="height: 18px;">
+                <tr style="height: 20px;">
                   <td style="text-align: center; font-weight: bold;">{num}</td>
                   <td><span class="linea-manual"></span></td>
                   <td><span class="linea-manual"></span></td>
@@ -104,11 +110,11 @@ const DEFAULT_LOGS = [
       <!-- 3.0 CERTIFICACIÓN DE INMUTABILIDAD -->
       <div class="section-block">
         <div class="section-heading">3.0 CERTIFICACIÓN DE NO REPUDIO Y CONTINUIDAD CRIPTOGRÁFICA (LMDFE ART. 16)</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-2">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>Se certifica de manera fehaciente que cada transacción registrada en este expediente generó un sello SHA-256 matemáticamente dependiente del evento anterior conforme a RFC 8785 (JSON Canonicalization Scheme). Esta arquitectura garantiza la imposibilidad material de alterar, suprimir o intercalar evidencias en la línea temporal pericial sin quebrar la cadena de integridad, satisfaciendo el Art. 7 de la LMDFE.</span>

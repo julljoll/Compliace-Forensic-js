@@ -100,11 +100,11 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 3.0 METODOLOGÍA CIENTÍFICA APLICADA -->
       <div class="section-block">
         <div class="section-heading">3.0 METODOLOGÍA FORENSE Y PROCEDIMIENTO TÉCNICO APLICADO</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 44px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-2">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>Se ejecutó Adquisición Lógica Forense (NIST SP 800-101 Nivel 2 · ISO/IEC 27037 §5.4.3) preservando el dispositivo en medio electromagnéticamente aislado. Se extrajo la base de datos msgstore.db y archivos adjuntos mediante herramientas validadas por NIST y CENIF (ALEAPP v3.1.8 / Autopsy Forensic Browser). El análisis se practicó exclusivamente sobre copia lógica de trabajo certificada, asegurando la repetibilidad total (Estándar Daubert / FRE 702).</span>
@@ -140,12 +140,12 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 4.0 HALLAZGOS PERICIALES -->
       <div class="section-block">
         <div class="section-heading">4.0 HALLAZGOS PERICIALES, CHATS Y COMUNICACIONES EXTRAÍDAS</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 58px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-3">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>Se extrajeron y decodificaron las conversaciones de interés contenidas en la base de datos msgstore.db, constatando los números de teléfono JID de los interlocutores, el contenido íntegro de los mensajes de texto, las notas de voz asociadas en formato Opus 48 kHz y sus marcas temporales UTC nativas, no evidenciándose indicios de forjamiento, alteración de registros SQLite ni empalme artificial de datos.</span>
@@ -154,11 +154,8 @@ const dispositivoDesc = caso.dispositivo_marca
       </div>
 
       <!-- 5.0 CONCLUSIONES Y DICTAMEN MOTIVADO -->
-      <div class="section-block">
-        <div class="section-heading">5.0 CONCLUSIONES TÉCNICO-CIENTÍFICAS Y DICTAMEN MOTIVADO</div>
-        <div class="legal-clause" style="margin-bottom: 2px;">
-          <strong>DICTAMEN MOTIVADO (COPP ART. 225 · LMDFE ART. 7):</strong> Concluimos de manera unánime, objetiva e indubitada, fundamentados en el método científico, que los mensajes de datos y notas de voz analizados son <strong>AUTÉNTICOS, ÍNTEGROS Y ORIGINALES</strong>. La cadena de custodia por consignación se mantuvo ininterrumpida (Art. 187 COPP y MUCC-2017), gozando el presente dictamen de plena validez y eficacia probatoria judicial conforme al Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas.
-        </div>
+      <div class="legal-clause">
+        <strong>5.0 DICTAMEN MOTIVADO (COPP ART. 225 · LMDFE ART. 7):</strong> Concluimos de manera unánime, objetiva e indubitada, fundamentados en el método científico, que los mensajes de datos y notas de voz analizados son <strong>AUTÉNTICOS, ÍNTEGROS Y ORIGINALES</strong>. La cadena de custodia por consignación se mantuvo ininterrumpida (Art. 187 COPP y MUCC-2017), gozando el presente dictamen de plena validez y eficacia probatoria judicial conforme al Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas.
       </div>
 
       <!-- 6.0 JURAMENTO DE LEY -->

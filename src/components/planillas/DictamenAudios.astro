@@ -70,22 +70,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           <tbody>
             <tr>
               <td>Formantes Vocálicos (F1, F2, F3)</td>
-              <td class="font-mono">{isBlanco ? '' : 'F1: 520 Hz · F2: 1740 Hz · F3: 2600 Hz'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : 'F1: 520 Hz · F2: 1740 Hz · F3: 2600 Hz'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Continuidad armónica sin cortes abruptos ni empalmes.</span>}</td>
             </tr>
             <tr>
               <td>Piso de Ruido Acústico (Noise Floor)</td>
-              <td class="font-mono">{isBlanco ? '' : '-54 dBFS a -48 dBFS (Constante)'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : '-54 dBFS a -48 dBFS (Constante)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de inserciones o empalmes de tomas ajenas.</span>}</td>
             </tr>
             <tr>
               <td>Traza de Red Eléctrica (ENF 60 Hz)</td>
-              <td class="font-mono">{isBlanco ? '' : 'Frecuencia continua 59.98 Hz ± 0.02 Hz'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : 'Frecuencia continua 59.98 Hz ± 0.02 Hz'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Continuidad temporal ininterrumpida comprobada.</span>}</td>
             </tr>
             <tr>
               <td>Biometría Vocal Anti-Deepfake</td>
-              <td class="font-mono">{isBlanco ? '' : 'Algoritmo YIN (Pitch F0 biológico)'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : 'Algoritmo YIN (Pitch F0 biológico)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Voz humana auténtica; sin síntesis por IA generativa.</span>}</td>
             </tr>
           </tbody>
@@ -95,11 +95,11 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 3.0 CONCLUSIONES ACÚSTICAS -->
       <div class="section-block">
         <div class="section-heading">3.0 EVALUACIÓN DE INTEGRIDAD Y REPRODUCIBILIDAD CIENTÍFICA (CENIF / DAUBERT)</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-2">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>El cotejo espectrográfico realizado mediante FFT (Fast Fourier Transform, ventana Hanning 2048 pts) demuestra la plena coherencia acústica de la señal. Los formantes vocálicos presentan micro-temblores y fluctuaciones de jitter/shimmer propios de la emisión laríngea humana biológica no reproducible mediante modelos sintéticos TTS o clonación neuronal de voz.</span>

@@ -43,20 +43,20 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 1.0 CONDICIONES DE APERTURA -->
       <div class="section-block">
         <div class="section-heading">1.0 DATOS DE APERTURA Y MEDIO CONTROLADO DE LABORATORIO</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Lugar de Apertura:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Área Pericial Aislada — Laboratorio Forense SHA256.US</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Fecha y Hora de Ruptura de Precinto:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 11:30 VET</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 25%;">Lugar de Apertura:</td>
+              <td class="forense-cell-value" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>Área Pericial Aislada — Laboratorio SHA256.US</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">Fecha y Hora:</td>
+              <td class="forense-cell-value font-mono" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 11:30 VET</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 2.0 VERIFICACIÓN PREVIA DEL PRECINTO Y NUEVO PRECINTO -->

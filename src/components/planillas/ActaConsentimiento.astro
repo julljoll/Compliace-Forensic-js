@@ -44,57 +44,55 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 1.0 DECLARACIÓN DE LEGITIMACIÓN Y CALIDAD DE INTERLOCUTOR -->
       <div class="section-block">
         <div class="section-heading">1.0 DECLARACIÓN DE LEGITIMACIÓN, TITULARIDAD Y CALIDAD DE INTERLOCUTOR</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Apellidos y Nombres:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Cédula de Identidad / RIF:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Carácter Jurídico del Consignante:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Titular Legítimo del Dispositivo / Interlocutor Directo en Comunicaciones</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Línea Telefónica / Cuenta de Usuario:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono || 'Cuenta WhatsApp Asociada'}</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 22%;">Apellidos y Nombres:</td>
+              <td class="forense-cell-value" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 22%;">Cédula de Identidad / RIF:</td>
+              <td class="forense-cell-value font-mono" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Carácter Jurídico:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span class="linea-manual"></span> : <span>Titular Legítimo / Interlocutor Directo</span>}
+              </td>
+              <td class="forense-cell-label">Línea Móvil / WhatsApp:</td>
+              <td class="forense-cell-value font-mono">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono || 'Cuenta WhatsApp Asociada'}</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 2.0 AUTORIZACIÓN EXPRESA DE ADQUISICIÓN LÓGICA -->
       <div class="section-block">
         <div class="section-heading">2.0 AUTORIZACIÓN EXPRESA DE ADQUISICIÓN LÓGICA FORENSE (NIST SP 800-101)</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Dispositivo Consignado (Marca/Modelo):</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone consignado voluntariamente'}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Serial Físico / Código IMEI:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}
-            </div>
-          </div>
-          <div class="field-row" style="grid-column: span 2;">
-            <span class="field-label">Alcance Técnico Autorizado:</span>
-            <div class="field-value" style="font-size: 7.2pt; line-height: 1.3;">
-              Adquisición lógica forense (NIST SP 800-101 Nivel 2 · ISO/IEC 27037 §5.4.3) del sistema de archivos y bases de datos SQLite de mensajería (WhatsApp/Telegram: msgstore.db, wa.db), notas de voz, adjuntos multimedia y metadatos cronológicos UTC, con cálculo inmutable de Hash SHA-256.
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 22%;">Dispositivo Consignado:</td>
+              <td class="forense-cell-value" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone consignado voluntariamente'}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 22%;">Serial Físico / IMEI:</td>
+              <td class="forense-cell-value font-mono" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Alcance Técnico:</td>
+              <td class="forense-cell-value" colspan="3" style="font-size: 7pt; line-height: 1.25;">
+                Adquisición lógica forense (NIST SP 800-101 Nivel 2 · ISO/IEC 27037 §5.4.3) del sistema de archivos y bases de datos SQLite de mensajería (WhatsApp/Telegram: msgstore.db, wa.db), notas de voz, adjuntos multimedia y metadatos cronológicos UTC, con cálculo inmutable de Hash SHA-256.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 3.0 EXCLUSIÓN DE ANTIJURIDICIDAD Y PRIVACIDAD -->

@@ -37,19 +37,23 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 1.0 DATOS DEL ACTO DE DISPOSICIÓN FINAL -->
       <div class="section-block">
         <div class="section-heading">1.0 DATOS DEL ACTO DE DISPOSICIÓN FINAL Y CIERRE (MUCC-2017)</div>
-        <table class="forense-table">
+        <table class="forense-cell-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Lugar del Acto:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}</td>
+              <td class="forense-cell-label" style="width: 25%;">Lugar del Acto:</td>
+              <td class="forense-cell-value" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">Fecha y Hora:</td>
+              <td class="forense-cell-value font-mono" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 12:00 VET</span>}
+              </td>
             </tr>
             <tr>
-              <th>Fecha y Hora:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 12:00 VET</span>}</td>
-            </tr>
-            <tr>
-              <th>Modalidad de Disposición:</th>
-              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] Devolución al Titular &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] Entrega Judicial</span> : <span>[&nbsp;X&nbsp;] DEVOLUCIÓN AL CONSIGNANTE TITULAR (CIERRE FORMAL DE CUSTODIA)</span>}</td>
+              <td class="forense-cell-label">Modalidad:</td>
+              <td class="forense-cell-value" colspan="3" style="font-weight: 700;">
+                {isBlanco ? <span>[&nbsp;&nbsp;] DEVOLUCIÓN AL TITULAR CONSIGNANTE &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] ENTREGA A AUTORIDAD JUDICIAL</span> : <span>[&nbsp;X&nbsp;] DEVOLUCIÓN AL CONSIGNANTE TITULAR (CIERRE FORMAL DE CUSTODIA)</span>}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -58,19 +62,23 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 2.0 IDENTIFICACIÓN DEL RECEPTOR -->
       <div class="section-block">
         <div class="section-heading">2.0 IDENTIFICACIÓN DEL CONSIGNANTE RECEPTOR DE EVIDENCIAS</div>
-        <table class="forense-table">
+        <table class="forense-cell-table">
           <tbody>
             <tr>
-              <th style="width: 28%;">Nombre y Apellido:</th>
-              <td style="width: 72%;">{isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre || caso.receptor_nombre}</span>}</td>
+              <td class="forense-cell-label" style="width: 25%;">Nombre y Apellido:</td>
+              <td class="forense-cell-value" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre || caso.receptor_nombre}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">C.I. / RIF:</td>
+              <td class="forense-cell-value font-mono" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula || caso.receptor_cedula}</span>}
+              </td>
             </tr>
             <tr>
-              <th>Cédula de Identidad / RIF:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula || caso.receptor_cedula}</span>}</td>
-            </tr>
-            <tr>
-              <th>Calidad del Receptor:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Titular Consignante Original &nbsp;&nbsp; [ &nbsp; ] Apoderado Legal</span>}</td>
+              <td class="forense-cell-label">Carácter del Receptor:</td>
+              <td class="forense-cell-value" colspan="3">
+                {isBlanco ? <span>[&nbsp;&nbsp;] Titular Consignante Original &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] Apoderado Legal con Poder</span> : <span>[ X ] Titular Consignante Original</span>}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -82,8 +90,8 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
         <table class="forense-table">
           <thead>
             <tr>
-              <th style="width: 10%; text-align: center;">Item</th>
-              <th style="width: 60%;">Descripción del Elemento / Documento Entregado</th>
+              <th style="width: 8%; text-align: center;">Item</th>
+              <th style="width: 62%;">Descripción del Elemento / Documento Entregado</th>
               <th style="width: 30%;">Estado / Verificación</th>
             </tr>
           </thead>
@@ -91,17 +99,17 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             <tr>
               <td style="text-align: center; font-weight: bold;">01</td>
               <td>Dictamen Pericial Oficial Impreso en Papel Folio (Original Colegiado)</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Rubricado y Sellado</span>}</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] RECIBIDO SELLADO</span> : <span>[ X ] Rubricado y Sellado</span>}</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">02</td>
               <td>Copia Forense Digital Inmutable (Soporte Digital con Extracción Lógica)</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Hash Validado</span>}</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] HASH VERIFICADO</span> : <span>[ X ] Hash Validado</span>}</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">03</td>
               <td>Dispositivo Smartphone Peritado (Devolución en su embalaje de seguridad)</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Precinto de Resguardo Intacto</span>}</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] PRECINTO ÍNTEGRO</span> : <span>[ X ] Precinto de Resguardo Intacto</span>}</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">04</td>

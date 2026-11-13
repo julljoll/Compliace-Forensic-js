@@ -37,20 +37,20 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 1.0 SISTEMA EVALUADO -->
       <div class="section-block">
         <div class="section-heading">1.0 APLICACIÓN EVALUADA Y ENTORNO DE EJECUCIÓN (WHATSAPP / SO MÓVIL)</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Nombre del Software / Plataforma:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp Messenger / Meta Platforms Inc.</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Versión de Compilación y Sistema:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp v2.24.x · Android OS / iOS nativo</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 25%;">Software / Plataforma:</td>
+              <td class="forense-cell-value" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp Messenger / Meta Platforms Inc.</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">Versión / Sistema:</td>
+              <td class="forense-cell-value font-mono" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp v2.24.x · OS nativo</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 2.0 MATRIZ HEURÍSTICA FORENSE -->
@@ -59,35 +59,35 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
         <table class="forense-table">
           <thead>
             <tr>
-              <th style="width: 30%;">Criterio de Evaluación</th>
+              <th style="width: 35%;">Criterio de Evaluación</th>
               <th style="width: 25%;">Resultado</th>
-              <th style="width: 45%;">Comprobación Pericial</th>
+              <th style="width: 40%;">Comprobación Pericial</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Sincronía de Sellos Temporales (Timestamps)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (100% MATCH)'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH &nbsp; [&nbsp;&nbsp;] DISCREP.</span> : 'CONFORME (100% MATCH)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Hora visual coincide con época UNIX en msgstore.db.</span>}</td>
             </tr>
             <tr>
               <td>Estados de Envío (Ticks / Checks)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (AUTÉNTICO)'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH &nbsp; [&nbsp;&nbsp;] DISCREP.</span> : 'CONFORME (AUTÉNTICO)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Estados de entrega/lectura corroborados en status flag.</span>}</td>
             </tr>
             <tr>
               <td>Identificación de Remitente (JID)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (VERIFICADO)'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH &nbsp; [&nbsp;&nbsp;] DISCREP.</span> : 'CONFORME (VERIFICADO)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Número de abonado internacional fijado en key_remote_jid.</span>}</td>
             </tr>
             <tr>
               <td>Detección de Falsificaciones de Pantalla</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'DESCARTE NEGATIVO'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] NEGATIVO &nbsp; [&nbsp;&nbsp;] SIMULACIÓN</span> : 'DESCARTE NEGATIVO'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de generadores de chat falso (WhatsFake / clonados).</span>}</td>
             </tr>
             <tr>
               <td>No Repudio de Contenido</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (PLENA EFICACIA)'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] PLENO &nbsp; [&nbsp;&nbsp;] INCONSIST.</span> : 'CONFORME (PLENA EFICACIA)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Correspondencia entre el texto en pantalla y registro en base.</span>}</td>
             </tr>
           </tbody>

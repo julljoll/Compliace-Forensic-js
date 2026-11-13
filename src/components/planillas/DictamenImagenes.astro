@@ -69,22 +69,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           <tbody>
             <tr>
               <td>Marca y Modelo de Captura</td>
-              <td class="font-mono">{isBlanco ? '' : 'Sensor Nativo del Dispositivo Consignado'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : 'Sensor Nativo del Dispositivo Consignado'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coincide con el teléfono peritado.</span>}</td>
             </tr>
             <tr>
               <td>Fecha/Hora Original (DateTimeOriginal)</td>
-              <td class="font-mono">{isBlanco ? '' : '2026:11:10 14:22:15 UTC'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : '2026:11:10 14:22:15 UTC'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marca temporal coherente con el chat.</span>}</td>
             </tr>
             <tr>
               <td>Geolocalización GPS</td>
-              <td class="font-mono">{isBlanco ? '' : '09°55\'41.2"N 69°37\'12.5"W'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : '09°55\'41.2"N 69°37\'12.5"W'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coordenadas fijadas en el metadato.</span>}</td>
             </tr>
             <tr>
               <td>Software de Edición (Software Tag)</td>
-              <td class="font-mono">{isBlanco ? '' : 'None (Firmware de Cámara Original)'}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : 'None (Firmware de Cámara Original)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de software de retoque o edición.</span>}</td>
             </tr>
           </tbody>
@@ -94,11 +94,11 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 3.0 ANÁLISIS ELA -->
       <div class="section-block">
         <div class="section-heading">3.0 ANÁLISIS DE NIVEL DE ERROR DE COMPRESIÓN (ELA) Y PÍXELES</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-2">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>El análisis ELA demuestra niveles de tasa de compresión uniformes en toda la superficie de la imagen. No se observan discrepancias cromáticas, artefactos de clonado de píxeles ni inconsistencias lumínicas que sugieran fotomontaje o alteración digital.</span>

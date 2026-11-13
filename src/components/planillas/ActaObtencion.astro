@@ -44,51 +44,49 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 1.0 DATOS DEL ACTO DE CONSIGNACIÓN -->
       <div class="section-block">
         <div class="section-heading">1.0 DATOS DEL ACTO DE CONSIGNACIÓN DIRECTA (MUCC-2017 MODELO 3)</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Lugar de Recepción / Despacho:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Fecha y Hora de Consignación:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 10:00 VET</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 25%;">Lugar de Recepción:</td>
+              <td class="forense-cell-value" style="width: 35%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 20%;">Fecha y Hora:</td>
+              <td class="forense-cell-value font-mono" style="width: 20%;">
+                {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 10:00 VET</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 2.0 IDENTIFICACIÓN DEL CONSIGNANTE -->
       <div class="section-block">
         <div class="section-heading">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE (TITULAR / INTERLOCUTOR)</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Apellidos y Nombres:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Cédula de Identidad / RIF:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Línea Móvil / WhatsApp:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Dirección de Habitación:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 22%;">Apellidos y Nombres:</td>
+              <td class="forense-cell-value" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 22%;">Cédula de Identidad / RIF:</td>
+              <td class="forense-cell-value font-mono" style="width: 28%;">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Línea Móvil / WhatsApp:</td>
+              <td class="forense-cell-value font-mono">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
+              </td>
+              <td class="forense-cell-label">Dirección de Habitación:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 3.0 IDENTIFICACIÓN TÉCNICA DE LA EVIDENCIA DIGITAL -->
@@ -123,11 +121,12 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 4.0 OBJETO DEL ENCARGO PERICIAL -->
       <div class="section-block">
         <div class="section-heading">4.0 OBJETO DEL ENCARGO: ADQUISICIÓN LÓGICA DE MENSAJERÍA (COPP ART. 223)</div>
-        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 44px;">
+        <div style="font-size: 7.2pt; line-height: 1.35; padding: 2px;">
           {isBlanco ? (
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <span class="linea-manual"></span>
-              <span class="linea-manual"></span>
+            <div class="lineas-pautadas-3">
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
+              <span class="renglon-manual"></span>
             </div>
           ) : (
             <span>{caso.descripcion || 'Adquisición lógica forense (NIST SP 800-101 Nivel 2) de bases de datos de mensajería WhatsApp (msgstore.db), verificación de autenticidad de chats y notas de voz, sellado criptográfico SHA-256 e informe pericial colegiado para fines probatorios judiciales.'}</span>
@@ -163,32 +162,77 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- 5.0 EMBALAJE, AISLAMIENTO Y FIJACIÓN FOTOGRÁFICA -->
       <div class="section-block">
         <div class="section-heading">5.0 MEDIDAS DE PRESERVACIÓN, EMBALAJE Y FIJACIÓN TÉCNICA (MUCC-2017)</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">Bolsa Faraday N° (Aislamiento RF):</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="bolsa_faraday_numero"></span> : <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-2026-001'}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Precinto Inicial de Seguridad N°:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-2026-991'}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Aislamiento de Redes:</span>
-            <div class="field-value">
-              {isBlanco ? <span>[&nbsp;&nbsp;] Modo Avión &nbsp;&nbsp; [&nbsp;&nbsp;] Faraday &nbsp;&nbsp; [&nbsp;&nbsp;] Apagado</span> : <span>[&nbsp;X&nbsp;] Modo Avión Activo + Bolsa Faraday Blindada</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Fijación Fotográfica 360°:</span>
-            <div class="field-value">
-              {isBlanco ? <span>[&nbsp;&nbsp;] Conforme &nbsp;&nbsp; [&nbsp;&nbsp;] Pendiente</span> : <span>[&nbsp;X&nbsp;] Conforme (6 tomas macro de pantalla, serial y precinto)</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 25%;">Bolsa Faraday N° (RF):</td>
+              <td class="forense-cell-value font-mono" style="width: 25%;">
+                {isBlanco ? <span class="linea-manual" data-field="bolsa_faraday_numero"></span> : <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-2026-001'}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 25%;">Precinto Inicial N°:</td>
+              <td class="forense-cell-value font-mono" style="width: 25%;">
+                {isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-2026-991'}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Aislamiento de Redes:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span>[&nbsp;&nbsp;] Modo Avión &nbsp;&nbsp; [&nbsp;&nbsp;] Apagado</span> : <span>[&nbsp;X&nbsp;] Modo Avión + Faraday Blindada</span>}
+              </td>
+              <td class="forense-cell-label">Fijación Fotográfica 360°:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span>[&nbsp;&nbsp;] Conforme &nbsp;&nbsp; [&nbsp;&nbsp;] Pendiente</span> : <span>[&nbsp;X&nbsp;] Conforme (6 tomas macro)</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5.1 INVENTARIO DE ELEMENTOS Y ACCESORIOS CONSIGNADOS -->
+      <div class="section-block">
+        <div class="section-heading">5.1 INVENTARIO DE ELEMENTOS Y ACCESORIOS RECIBIDOS (MUCC-2017)</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 8%;">Item</th>
+              <th style="width: 42%;">Elemento o Accesorio Acompañante</th>
+              <th style="width: 25%;">Estado de Recepción</th>
+              <th style="width: 25%;">Observaciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">01</td>
+              <td>Teléfono Móvil Inteligente</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] CONFORME</span> : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Encendido, pantalla íntegra</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">02</td>
+              <td>Cable USB de Carga y Sincronización</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] SÍ &nbsp;&nbsp; [&nbsp;&nbsp;] NO</span> : <span>[ X ] Consignado original</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Tipo C a USB-A</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">03</td>
+              <td>Tarjeta SIM / Chip Telefónico</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] PRESENTE &nbsp; [&nbsp;&nbsp;] SIN SIM</span> : <span>[ X ] Instalada bandeja 1</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Línea activa con WhatsApp</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">04</td>
+              <td>Tarjeta de Memoria MicroSD Externa</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] PRESENTE &nbsp; [&nbsp;&nbsp;] NO POSEE</span> : <span>[&nbsp;&nbsp;] No posee ranura externa</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Almacenamiento interno</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">05</td>
+              <td>Funda, Forro o Estuche Protector</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] SÍ &nbsp;&nbsp; [&nbsp;&nbsp;] NO</span> : <span>[ X ] Consignado protector</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Silicón transparente</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 6.0 DECLARACIÓN JURADA DE CONSIGNACIÓN -->

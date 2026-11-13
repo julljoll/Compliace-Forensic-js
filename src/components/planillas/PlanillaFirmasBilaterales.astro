@@ -43,17 +43,21 @@ const isBlanco = modo === 'blanco';
   <!-- Columna Izquierda: Consignante / Declarante -->
   <div class="sig-box">
     <div class="sig-box-title">{consignanteTitulo}</div>
-    <div class="sig-data-row">
-      <strong>NOMBRE:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{solicitanteNombre || '__________________________________'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">NOMBRE:</strong>
+      <span style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="solicitante_nombre">{isBlanco ? '' : solicitanteNombre}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>C.I. / RIF:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{solicitanteCedula || '__________________________________'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">C.I. / RIF:</strong>
+      <span class="font-mono" style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="solicitante_cedula">{isBlanco ? '' : solicitanteCedula}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>TELÉFONO:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{solicitanteTelefono || '__________________________________'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">TELÉFONO:</strong>
+      <span class="font-mono" style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="solicitante_telefono">{isBlanco ? '' : solicitanteTelefono}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>DIRECCIÓN:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{solicitanteDireccion || '__________________________________'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">DIRECCIÓN:</strong>
+      <span style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="solicitante_direccion">{isBlanco ? '' : solicitanteDireccion}</span>
     </div>
 
     <div class="sig-line-solid sig-line"></div>
@@ -74,17 +78,21 @@ const isBlanco = modo === 'blanco';
   <!-- Columna Derecha: Perito Oficial SHA256.US -->
   <div class="sig-box">
     <div class="sig-box-title">{peritoTitulo}</div>
-    <div class="sig-data-row">
-      <strong>PERITO LÍDER:</strong> {isBlanco ? <span class="linea-manual" data-field="peritoLider"></span> : <span data-field="peritoLider">{peritoNombre || 'Jull Joll (Perito Principal)'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">PERITO LÍDER:</strong>
+      <span style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="peritoLider">{isBlanco ? '' : (peritoNombre || 'Jull Joll (Perito Principal)')}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>C.I. N°:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_cedula"></span> : <span data-field="perito_cedula">{peritoCedula || 'V-18.999.001'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">C.I. N°:</strong>
+      <span class="font-mono" style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="perito_cedula">{isBlanco ? '' : (peritoCedula || 'V-18.999.001')}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>CIV / INPRE:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_civ"></span> : <span data-field="perito_civ">CIV: {peritoCiv || '299410'} · INPRE: {peritoInpre || '184920'}</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">CIV / INPRE:</strong>
+      <span class="font-mono" style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="perito_civ">{isBlanco ? '' : `CIV: ${peritoCiv || '299410'} · INPRE: ${peritoInpre || '184920'}`}</span>
     </div>
-    <div class="sig-data-row">
-      <strong>CARGO / ROL:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_cargo"></span> : <span data-field="perito_cargo">{peritoCargo || 'Perito Informático Forense'} ({rolIso})</span>}
+    <div class="sig-data-row" style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+      <strong style="white-space: nowrap; margin-right: 4px;">CARGO / ROL:</strong>
+      <span style="flex: 1; border-bottom: 1px solid #000; min-height: 14px; padding-left: 2px;" data-field="perito_cargo">{isBlanco ? '' : `${peritoCargo || 'Perito Informático Forense'} (${rolIso})`}</span>
     </div>
 
     <div class="sig-line-solid sig-line"></div>

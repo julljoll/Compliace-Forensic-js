@@ -58,32 +58,26 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
       <!-- 2.0 PARÁMETROS TÉCNICOS ACÚSTICOS -->
       <div class="section-block">
         <div class="section-heading">2.0 ESPECIFICACIONES TÉCNICAS ACÚSTICAS Y METADATOS DE TRANSMISIÓN</div>
-        <div class="form-grid-3">
-          <div class="field-row">
-            <span class="field-label">Frecuencia Muestreo:</span>
-            <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>48.000 Hz (48 kHz)</span>}</div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Canales de Audio:</span>
-            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>1 Canal (Mono)</span>}</div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Profundidad de Bits:</span>
-            <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>16 bits / VBR</span>}</div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Duración Exacta:</span>
-            <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>00:01:42.850 ms</span>}</div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Formato / Códec:</span>
-            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Opus (IETF RFC 6716)</span>}</div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Contenedor:</span>
-            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Ogg Container (.opus)</span>}</div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 17%;">Frecuencia:</td>
+              <td class="forense-cell-value font-mono" style="width: 16%;">{isBlanco ? <span class="linea-manual"></span> : <span>48.000 Hz</span>}</td>
+              <td class="forense-cell-label" style="width: 17%;">Canales:</td>
+              <td class="forense-cell-value" style="width: 16%;">{isBlanco ? <span class="linea-manual"></span> : <span>1 Canal (Mono)</span>}</td>
+              <td class="forense-cell-label" style="width: 17%;">Profundidad:</td>
+              <td class="forense-cell-value font-mono" style="width: 17%;">{isBlanco ? <span class="linea-manual"></span> : <span>16 bits / VBR</span>}</td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Duración:</td>
+              <td class="forense-cell-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>00:01:42.850</span>}</td>
+              <td class="forense-cell-label">Formato / Códec:</td>
+              <td class="forense-cell-value">{isBlanco ? <span class="linea-manual"></span> : <span>Opus (RFC 6716)</span>}</td>
+              <td class="forense-cell-label">Contenedor:</td>
+              <td class="forense-cell-value">{isBlanco ? <span class="linea-manual"></span> : <span>Ogg (.opus)</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- 3.0 ANÁLISIS ESPECTROGRÁFICO -->
@@ -100,22 +94,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           <tbody>
             <tr>
               <td>Continuidad de Ruido de Fondo (Noise Floor)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONTINUO (SIN CORTES)'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] CONTINUO &nbsp; [&nbsp;&nbsp;] DISCONT.</span> : 'CONTINUO (SIN CORTES)'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Piso de ruido acústico homogéneo a -54 dBFS sin saltos.</span>}</td>
             </tr>
             <tr>
               <td>Formantes Vocálicos Laríngeos (F1-F4)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'VOZ BIOLÓGICA AUTÉNTICA'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] HUMANO &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] SINTÉTICO</span> : 'VOZ BIOLÓGICA AUTÉNTICA'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Micro-temblores y jitter propios de emisión humana natural.</span>}</td>
             </tr>
             <tr>
               <td>Detección de Edición o Manipulación</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'SIN VESTIGIOS DE EDICIÓN'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] SIN EDICIÓN &nbsp; [&nbsp;&nbsp;] EDITADO</span> : 'SIN VESTIGIOS DE EDICIÓN'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de cortes, empalmes o transcodificaciones anómalas.</span>}</td>
             </tr>
             <tr>
               <td>Frecuencia Eléctrica de Red (ENF 60 Hz)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'TRAZA DE 60 Hz DETECTADA'}</td>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] TRAZA 60 Hz &nbsp; [&nbsp;&nbsp;] NO DETECT.</span> : 'TRAZA DE 60 Hz DETECTADA'}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coherente con el suministro eléctrico nacional venezolano.</span>}</td>
             </tr>
           </tbody>

@@ -45,38 +45,36 @@ const dispositivoDesc = caso.dispositivo_marca
       <!-- I. DATOS GENERALES -->
       <div class="section-block">
         <div class="section-heading">I. DATOS GENERALES DE LA CAUSA Y DESPACHO INSTRUCTOR</div>
-        <div class="form-grid-2">
-          <div class="field-row">
-            <span class="field-label">N° Expediente / Causa:</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">N° Registro de Cadena (PRCC):</span>
-            <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual" data-field="numero_prcc"></span> : <span data-field="numero_prcc">{prccNum}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Despacho / Asunto de la Causa:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="despachoFiscal"></span> : <span data-field="despachoFiscal">{caso.despachoFiscal || 'Consignación de Parte / Causa Judicial'}</span>}
-            </div>
-          </div>
-          <div class="field-row">
-            <span class="field-label">Organismo que Apertura Custodia:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="organismoOrdenante"></span> : <span data-field="organismoOrdenante">Laboratorio Forense SHA256.US (División Pericial)</span>}
-            </div>
-          </div>
-          <div class="field-row" style="grid-column: span 2;">
-            <span class="field-label">Dirección de Obtención / Sede:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">Edificio Mercantil La Ceiba, Piso 1, Ofic. 8, Quíbor, Estado Lara</span>}
-            </div>
-          </div>
-        </div>
+        <table class="forense-cell-table">
+          <tbody>
+            <tr>
+              <td class="forense-cell-label" style="width: 25%;">N° Expediente / Causa:</td>
+              <td class="forense-cell-value font-mono" style="width: 25%;">
+                {isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}
+              </td>
+              <td class="forense-cell-label" style="width: 25%;">N° Registro PRCC:</td>
+              <td class="forense-cell-value font-mono" style="width: 25%;">
+                {isBlanco ? <span class="linea-manual" data-field="numero_prcc"></span> : <span data-field="numero_prcc">{prccNum}</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Despacho / Asunto:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span class="linea-manual" data-field="despachoFiscal"></span> : <span data-field="despachoFiscal">{caso.despachoFiscal || 'Consignación de Parte / Causa'}</span>}
+              </td>
+              <td class="forense-cell-label">Organismo que Apertura:</td>
+              <td class="forense-cell-value">
+                {isBlanco ? <span class="linea-manual" data-field="organismoOrdenante"></span> : <span data-field="organismoOrdenante">Laboratorio SHA256.US (División Pericial)</span>}
+              </td>
+            </tr>
+            <tr>
+              <td class="forense-cell-label">Sede de Obtención:</td>
+              <td class="forense-cell-value" colspan="3">
+                {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">Edificio Mercantil La Ceiba, Piso 1, Ofic. 8, Quíbor, Estado Lara</span>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- II. FORMAS DE OBTENCIÓN SEGÚN MUCC-2017 -->
