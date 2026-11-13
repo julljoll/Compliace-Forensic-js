@@ -1,181 +1,274 @@
 ---
 /**
  * SHA256.US — Planilla de Registro de Cadena de Custodia (PRCC)
- * MUCC-2017 & COPP Art. 187. Tamaño Folio (216mm x 330mm).
+ * Fundamentación: MUCC-2017 & COPP Art. 187 · ISO/IEC 27037.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 2 Hojas Físicas (Anverso y Reverso) · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
-const prccNum = caso.numero_prcc || caso.numeroPRCC || '[PRCC-2026-XXXX]';
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
+
+const prccNum = caso.numero_prcc || caso.numeroPRCC || '';
+const dispositivoDesc = caso.dispositivo_marca
+  ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}`
+  : caso.discoduro_marca
+    ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}`
+    : '';
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC)"
-    nroLabel="N° PRCC:"
-    nroValue={prccNum}
-    watermarkText="CADENA CUSTODIA"
-  >
-    <div class="uswds-top-header">
-      PLANILLA DE REGISTRO DE CADENA DE CUSTODIA (PRCC) — MUCC-2017 · COPP ART. 187
-    </div>
+  <!-- ==================== HOJA 1 DE 2 (ANVERSO) ==================== -->
+  <div class="page">
+    <div class="watermark">CADENA CUSTODIA</div>
 
-    <!-- I. DATOS GENERALES -->
-    <div class="section">
-      <div class="section-title">I. DATOS GENERALES</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">N° Expediente / Causa</div>
-            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">
-              {caso.numeroCaso || '[N° Expediente / Causa]'}
+    <PlanillaHeader
+      title="Planilla de Registro de Cadena de Custodia (PRCC)"
+      norma="MANUAL ÚNICO DE CADENA DE CUSTODIA (MUCC-2017) · COPP ART. 187"
+      codigoDoc="FO-PRCC-01"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={prccNum}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={2}
+    />
+
+    <div class="planilla-body">
+      <!-- I. DATOS GENERALES -->
+      <div class="section-block">
+        <div class="section-heading">I. DATOS GENERALES DE LA INVESTIGACIÓN Y CAUSA</div>
+        <div class="form-grid-2">
+          <div class="field-row">
+            <span class="field-label">N° Expediente / Causa Judicial:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">N° PRCC</div>
-            <div class="value font-mono" contenteditable="true" data-field="numero_prcc">
-              {prccNum}
+          <div class="field-row">
+            <span class="field-label">N° Registro de Cadena (PRCC):</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="numero_prcc"></span> : <span data-field="numero_prcc">{prccNum}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Despacho que instruye</div>
-            <div class="value" contenteditable="true" data-field="despachoFiscal">
-              {caso.despachoFiscal || 'Fiscalía 12º del Ministerio Público'}
+          <div class="field-row">
+            <span class="field-label">Despacho Fiscal / Órgano Jurisdiccional:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual" data-field="despachoFiscal"></span> : <span data-field="despachoFiscal">{caso.despachoFiscal || 'Ministerio Público / Tribunal de la Causa'}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Organismo que instruye</div>
-            <div class="value" contenteditable="true" data-field="organismoOrdenante">
-              {caso.organismoOrdenante || 'CICPC Delegación Quíbor'}
+          <div class="field-row">
+            <span class="field-label">Organismo Actuante / Solicitante:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual" data-field="organismoOrdenante"></span> : <span data-field="organismoOrdenante">{caso.organismoOrdenante || 'Consignación Privada / Defensa'}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Despacho que inicia la custodia</div>
-            <div class="value" contenteditable="true">
-              Laboratorio Forense Digital SHA256.US
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="label">Organismo que inicia la custodia</div>
-            <div class="value" contenteditable="true">
-              Servicio de Consultoría Pericial SHA256.US
-            </div>
-          </div>
-          <div class="form-group" style="grid-column: span 2;">
-            <div class="label">Dirección de Obtención</div>
-            <div class="value" contenteditable="true" data-field="solicitante_direccion">
-              {caso.solicitante_direccion || 'Edificio Mercantil La Ceiba, Ofic. 8, Quíbor, Edo. Lara'}
-            </div>
-          </div>
-          <div class="form-group" style="grid-column: span 2;">
-            <div class="label">Fecha y Hora de Inicio</div>
-            <div class="value font-mono" contenteditable="true">
-              {new Date().toLocaleDateString('es-VE')} - {new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' })}
+          <div class="field-row" style="grid-column: span 2;">
+            <span class="field-label">Lugar y Dirección de Obtención / Recepción:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion || 'Edificio Mercantil La Ceiba, Piso 1, Ofic. 8, Quíbor, Estado Lara'}</span>}
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- II. FORMAS DE OBTENCIÓN -->
-    <div class="section">
-      <div class="section-title">II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017)</div>
-      <div class="uswds-card" style="padding: 6px 12px;">
-        <div style="display: flex; justify-content: space-around; font-size: 8.5pt;">
-          <span>[&nbsp;&nbsp;] 1. Técnica</span>
-          <span>[&nbsp;&nbsp;] 2. Aseguramiento</span>
-          <span style="font-weight: 700; color: #005EA2;">[&nbsp;X&nbsp;] 3. Consignación Directa</span>
-          <span>[&nbsp;&nbsp;] 4. Derivación</span>
+      <!-- II. FORMAS DE OBTENCIÓN -->
+      <div class="section-block">
+        <div class="section-heading">II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA DIGITAL (MUCC-2017)</div>
+        <div style="display: flex; justify-content: space-around; font-size: 7.5pt; padding: 3px 0;">
+          <span>[&nbsp;&nbsp;] 1. Inspección Técnica</span>
+          <span>[&nbsp;&nbsp;] 2. Aseguramiento Preventivo</span>
+          <span>{isBlanco ? '[   ] 3. Consignación Directa' : '[ X ] 3. Consignación Directa'}</span>
+          <span>[&nbsp;&nbsp;] 4. Derivación Procesal</span>
         </div>
       </div>
-    </div>
 
-    <!-- III. FUNCIONARIOS QUE OBTIENEN -->
-    <div class="section">
-      <div class="section-title">III. FUNCIONARIOS QUE OBTIENEN LA EVIDENCIA</div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="uswds-card">
-          <div style="font-weight: 700; font-size: 8pt; color: #112E51; border-bottom: 1px solid #CBD5E1; padding-bottom: 3px; margin-bottom: 4px;">
-            A. FIJACIÓN FOTOGRÁFICA
+      <!-- III. FUNCIONARIOS QUE INTERVIENEN -->
+      <div class="section-block">
+        <div class="section-heading">III. FUNCIONARIOS / PERSONAS QUE INTERVIENEN EN LA OBTENCIÓN</div>
+        <div class="form-grid-2">
+          <!-- A. Fijación -->
+          <div style="border: 1px solid #000; padding: 4px;">
+            <div style="font-weight: 800; font-size: 7pt; border-bottom: 1px solid #000; margin-bottom: 3px; background: #F0F0F0; padding: 1px 3px;">
+              A. FIJACIÓN FOTOGRÁFICA Y DIGITAL
+            </div>
+            <div class="field-row">
+              <span class="field-label">Nombres y Apellidos:</span>
+              <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.peritoLider || 'Perito Oficial'}</span>}</div>
+            </div>
+            <div class="field-row">
+              <span class="field-label">C.I. / Credencial N°:</span>
+              <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.perito_cedula || 'V-18.999.001'}</span>}</div>
+            </div>
+            <div class="sig-line-solid sig-line" style="margin-top: 10px;"></div>
+            <div style="font-size: 6pt; text-align: center; font-weight: 700;">Firma de Fijación</div>
           </div>
-          <div class="form-group">
-            <div class="label">Nombres y Apellidos</div>
-            <div class="value" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Oficial'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">C.I. o Credencial</div>
-            <div class="value font-mono" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</div>
-          </div>
-          <div style="display: flex; gap: 6px; margin-top: 8px;">
-            <div class="sig-line" style="flex: 2; margin-top: 18px;"></div>
-            <div class="thumb-box" style="width: 16mm; height: 22mm;"></div>
-            <div class="thumb-box" style="width: 16mm; height: 22mm;"></div>
-          </div>
-        </div>
 
-        <div class="uswds-card">
-          <div style="font-weight: 700; font-size: 8pt; color: #112E51; border-bottom: 1px solid #CBD5E1; padding-bottom: 3px; margin-bottom: 4px;">
-            B. COLECCIÓN Y RESGUARDO
-          </div>
-          <div class="form-group">
-            <div class="label">Nombres y Apellidos</div>
-            <div class="value" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Oficial'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">C.I. o Credencial</div>
-            <div class="value font-mono" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</div>
-          </div>
-          <div style="display: flex; gap: 6px; margin-top: 8px;">
-            <div class="sig-line" style="flex: 2; margin-top: 18px;"></div>
-            <div class="thumb-box" style="width: 16mm; height: 22mm;"></div>
-            <div class="thumb-box" style="width: 16mm; height: 22mm;"></div>
+          <!-- B. Colección -->
+          <div style="border: 1px solid #000; padding: 4px;">
+            <div style="font-weight: 800; font-size: 7pt; border-bottom: 1px solid #000; margin-bottom: 3px; background: #F0F0F0; padding: 1px 3px;">
+              B. COLECCIÓN, ROTULADO Y EMBALAJE
+            </div>
+            <div class="field-row">
+              <span class="field-label">Nombres y Apellidos:</span>
+              <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.peritoLider || 'Perito Oficial'}</span>}</div>
+            </div>
+            <div class="field-row">
+              <span class="field-label">C.I. / Credencial N°:</span>
+              <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.perito_cedula || 'V-18.999.001'}</span>}</div>
+            </div>
+            <div class="sig-line-solid sig-line" style="margin-top: 10px;"></div>
+            <div style="font-size: 6pt; text-align: center; font-weight: 700;">Firma de Colección</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- IV. DESCRIPCIÓN DE LA EVIDENCIA -->
-    <div class="section">
-      <div class="section-title">IV. DESCRIPCIÓN DE LA EVIDENCIA DIGITAL Y SELLOS</div>
-      <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px; font-size: 8.5pt; line-height: 22px; background: #FAFAFA;">
-        <div><strong>Dispositivo:</strong> <span contenteditable="true">{caso.dispositivo_marca ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}` : (caso.discoduro_marca ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}` : 'Evidencia digital')}</span></div>
-        <div><strong>Serial / IMEI:</strong> <span class="font-mono" contenteditable="true" data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial || '[Serial / IMEI]'}</span></div>
-        <div><strong>Hash Génesis SHA-256:</strong> <span class="font-mono" contenteditable="true" data-field="hashSHA256">{caso.hashSHA256 || '[Hash SHA-256 verificado]'}</span></div>
-        <div><strong>Precinto y Embalaje:</strong> Precinto N° <span class="font-mono" contenteditable="true" data-field="precinto_numero">{caso.precinto_numero || '[PRECINTO]'}</span> en Bolsa Faraday N° <span class="font-mono" contenteditable="true" data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || '[FARADAY]'}</span>.</div>
+      <!-- IV. DESCRIPCIÓN DE LA EVIDENCIA DIGITAL -->
+      <div class="section-block">
+        <div class="section-heading">IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL Y PRECINTOS</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 25%;">Dispositivo / Medio:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Evidencia Digital'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Serial / Código IMEI:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}</td>
+            </tr>
+            <tr>
+              <th>Bolsa Faraday N° / Precinto:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span>Bolsa: <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-01'}</span> · Precinto: <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-991'}</span></span>}</td>
+            </tr>
+            <tr>
+              <th>Hash Génesis SHA-256:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo en adquisición F2'}</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- V. TRANSFERENCIA DE CUSTODIA -->
-    <div class="section">
-      <div class="section-title">V. TRANSFERENCIA FORMAL DE CUSTODIA (MUCC-2017)</div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-        <div class="sig-detail-card">
-          <div class="sig-detail-label">ENTREGA (CUSTODIO ANTERIOR)</div>
-          <div class="sig-field">Nombre: <span class="sig-underline" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Consignante]'}</span></div>
-          <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="solicitante_cedula">{caso.solicitante_cedula || '[C.I.]'}</span></div>
-          <div class="sig-line"></div>
-          <div class="fingerprint-row">
-            <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-            <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-          </div>
-        </div>
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={2}
+      modo={modo}
+    />
+  </div>
 
-        <div class="sig-detail-card">
-          <div class="sig-detail-label">RECIBE (CUSTODIO RECEPTOR)</div>
-          <div class="sig-field">Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || '[Perito Receptor]'}</span></div>
-          <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span></div>
-          <div class="sig-line"></div>
-          <div class="fingerprint-row">
-            <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-            <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-          </div>
-        </div>
+  <!-- ==================== HOJA 2 DE 2 (REVERSO) ==================== -->
+  <div class="page">
+    <div class="watermark">TRAZABILIDAD</div>
+
+    <PlanillaHeader
+      title="PRCC — Trazabilidad y Transferencias Cronológicas"
+      norma="MANUAL ÚNICO DE CADENA DE CUSTODIA (MUCC-2017) · COPP ART. 187"
+      codigoDoc="FO-PRCC-01-REV"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={prccNum}
+      modo={modo}
+      hojaActual={2}
+      totalHojas={2}
+    />
+
+    <div class="planilla-body">
+      <!-- V. REGISTRO CRONOLÓGICO DE TRANSFERENCIAS -->
+      <div class="section-block">
+        <div class="section-heading">V. REGISTRO CRONOLÓGICO DE TRANSFERENCIAS DE CUSTODIA (MUCC-2017)</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 4%;">N°</th>
+              <th style="width: 14%;">Fecha y Hora</th>
+              <th style="width: 25%;">Entrega (Nombres, C.I., Firma)</th>
+              <th style="width: 25%;">Recibe (Nombres, C.I., Firma)</th>
+              <th style="width: 20%;">Propósito del Traslado</th>
+              <th style="width: 12%;">Precinto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">1</td>
+              <td class="font-mono">{isBlanco ? '' : new Date().toLocaleDateString('es-VE')}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.solicitante_nombre || 'Consignante'} (C.I. {caso.solicitante_cedula || ''})</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.peritoLider || 'Perito SHA256.US'} (C.I. {caso.perito_cedula || ''})</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Consignación formal y apertura PRCC</span>}</td>
+              <td>{isBlanco ? '' : 'Intacto'}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">2</td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">3</td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">4</td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 700;">5</td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td><span class="linea-manual"></span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- VI. OBSERVACIONES Y DISPOSICIÓN FINAL -->
+      <div class="legal-clause">
+        <strong>VI. DISPOSICIÓN FINAL Y CONDICIÓN DE RESGUARDO (MUCC-2017 §DISPOSICIÓN FINAL):</strong> La evidencia digital descrita queda resguardada en la bóveda de seguridad física del Laboratorio Forense SHA256.US, en condiciones controladas de temperatura, humedad y protección contra campos electromagnéticos, hasta su devolución formal o presentación en juicio. Toda rotura o reemplazo de precinto debe asentarse de inmediato en la tabla de transferencias supra.
       </div>
     </div>
-  </PlanillaFolioWrapper>
+
+    <!-- VII. CIERRE LEGAL Y FIRMAS -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="QUIEN ENTREGA CUSTODIA"
+      peritoTitulo="QUIEN RECIBE CUSTODIA (SHA256.US)"
+      solicitanteNombre={caso.solicitante_nombre}
+      solicitanteCedula={caso.solicitante_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion={caso.solicitante_direccion}
+      peritoNombre={caso.peritoLider}
+      peritoCedula={caso.perito_cedula}
+      peritoCiv={caso.perito_civ}
+      peritoInpre={caso.perito_inpre}
+      peritoCargo={caso.perito_cargo}
+      rolIso="DEFR · Custodio Responsable"
+      modo={modo}
+    />
+
+    <div class="sig-line" style="display: none;"></div>
+
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={2}
+      totalHojas={2}
+      modo={modo}
+    />
+  </div>
 </div>

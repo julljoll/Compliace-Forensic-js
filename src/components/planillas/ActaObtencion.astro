@@ -1,262 +1,226 @@
 ---
 /**
- * SHA256.US — Acta de Obtención por Consignación Directa
- * MUCC-2017 & ISO/IEC 27037. Tamaño Folio (216mm x 330mm).
+ * SHA256.US — Acta de Obtención por Consignación Directa y Preservación Inicial
+ * Fundamentación: MUCC-2017 & ISO/IEC 27037 · COPP Art. 187.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 2 Hojas Físicas · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
-const isMovil = caso.tipoProyecto !== 'forense_discoduro';
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
+
+const dispositivoDesc = caso.dispositivo_marca
+  ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}`
+  : caso.discoduro_marca
+    ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}`
+    : '';
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="Acta de Obtención por Consignación"
-    nroLabel="N° EXPEDIENTE:"
-    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
-    watermarkText="CONSIGNACIÓN"
-  >
-    <div class="uswds-top-header">
-      ACTA DE OBTENCIÓN POR CONSIGNACIÓN DIRECTA PRIVADA — MUCC-2017 &amp; ISO/IEC 27037
-    </div>
+  <!-- ==================== HOJA 1 DE 2 ==================== -->
+  <div class="page">
+    <div class="watermark">OBTENCIÓN</div>
 
-    <!-- 1.0 DATOS DE LA ACTUACIÓN -->
-    <div class="section">
-      <div class="section-title">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div class="form-group">
-            <div class="label">Lugar de Actuación / Sede</div>
-            <div class="value" contenteditable="true">
-              Lara, Venezuela — Laboratorio Forense SHA256.US
+    <PlanillaHeader
+      title="Acta de Obtención y Preservación Inicial de Evidencia"
+      norma="MUCC-2017 · ISO/IEC 27037 §5.2–5.3 · COPP ART. 187"
+      codigoDoc="FO-FOR-03"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={2}
+    />
+
+    <div class="planilla-body">
+      <!-- 1.0 DATOS DE LA ACTUACIÓN -->
+      <div class="section-block">
+        <div class="section-heading">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</div>
+        <div class="form-grid-2">
+          <div class="field-row">
+            <span class="field-label">Lugar de Recepción / Sede:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual"></span> : <span>Lara, Venezuela — Sede Central Laboratorio Forense SHA256.US</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Fecha y Hora de la Consignación</div>
-            <div class="value font-mono" contenteditable="true">
-              {new Date().toLocaleDateString('es-VE')} - {new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit' })}
+          <div class="field-row">
+            <span class="field-label">Fecha y Hora de Consignación:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} - 10:00 AM</span>}
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 2.0 IDENTIFICACIÓN DEL CONSIGNANTE -->
-    <div class="section">
-      <div class="section-title">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div class="form-group">
-            <div class="label">Apellidos y Nombres</div>
-            <div class="value" contenteditable="true" data-field="solicitante_nombre">
-              {caso.solicitante_nombre || '[Apellidos y Nombres del Consignante]'}
+      <!-- 2.0 IDENTIFICACIÓN DEL CONSIGNANTE -->
+      <div class="section-block">
+        <div class="section-heading">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</div>
+        <div class="form-grid-2">
+          <div class="field-row">
+            <span class="field-label">Apellidos y Nombres:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Cédula de Identidad / Pasaporte</div>
-            <div class="value" contenteditable="true" data-field="solicitante_cedula">
-              {caso.solicitante_cedula || '[Cédula de Identidad]'}
+          <div class="field-row">
+            <span class="field-label">Cédula de Identidad / RIF:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Teléfono de Contacto</div>
-            <div class="value" contenteditable="true" data-field="dispositivo_numero_tel">
-              {caso.dispositivo_numero_tel || caso.solicitante_telefono || '[Teléfono de Contacto]'}
+          <div class="field-row">
+            <span class="field-label">Teléfono de Contacto:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
             </div>
           </div>
-          <div class="form-group">
-            <div class="label">Dirección de Habitación / Sede</div>
-            <div class="value" contenteditable="true" data-field="solicitante_direccion">
-              {caso.solicitante_direccion || '[Dirección del Consignante]'}
+          <div class="field-row">
+            <span class="field-label">Dirección de Habitación / Sede:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 3.0 ESPECIFICACIÓN TÉCNICA RIGUROSA -->
-    <div class="section">
-      <div class="section-title">3.0 ESPECIFICACIÓN TÉCNICA RIGUROSA DEL DISPOSITIVO</div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
-        <tbody>
-          {isMovil ? (
-            <>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; width: 30%; font-weight: 700; background: #F8FAFC;">Marca / Modelo</td>
-                <td style="padding: 6px 8px;" contenteditable="true">
-                  {caso.dispositivo_marca ? `${caso.dispositivo_marca} ${caso.dispositivo_modelo || ''}`.trim() : '[Marca / Modelo del Dispositivo]'}
-                </td>
-              </tr>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">IMEI 1 / Serial</td>
-                <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="dispositivo_imei">
-                  {caso.dispositivo_imei || '[IMEI / Serial Principal]'}
-                </td>
-              </tr>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">IMEI 2 (Opcional)</td>
-                <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="dispositivo_imei2">
-                  {caso.dispositivo_imei2 || '[Segundo IMEI]'}
-                </td>
-              </tr>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Nro. Línea / SIM</td>
-                <td style="padding: 6px 8px;" contenteditable="true">
-                  {caso.dispositivo_numero_tel || caso.dispositivo_sim_card ? `${caso.dispositivo_numero_tel || ''} (SIM: ${caso.dispositivo_sim_card || ''})` : '[Nro. Línea / SIM]'}
-                </td>
-              </tr>
-            </>
+      <!-- 3.0 IDENTIFICACIÓN TÉCNICA DETALLADA DE LA EVIDENCIA DIGITAL -->
+      <div class="section-block">
+        <div class="section-heading">3.0 IDENTIFICACIÓN TÉCNICA DE LA EVIDENCIA DIGITAL (ISO/IEC 27037 §5.3)</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 25%;">Dispositivo / Medio:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Dispositivo Electrónico Digital'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Marca y Modelo:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'N/A'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Serial Físico / IMEI:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}</td>
+            </tr>
+            <tr>
+              <th>Capacidad / Almacenamiento:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.discoduro_capacidad || 'N/A'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Estado Físico al Recibir:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sin fracturas externas visibles, pantalla íntegra, encendido operativo.</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4.0 OBJETO DEL ENCARGO PERICIAL -->
+      <div class="section-block">
+        <div class="section-heading">4.0 OBJETO Y ALCANCE DEL ENCARGO PERICIAL (COPP ART. 223)</div>
+        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 48px;">
+          {isBlanco ? (
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="linea-manual"></span>
+              <span class="linea-manual"></span>
+            </div>
           ) : (
-            <>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; width: 30%; font-weight: 700; background: #F8FAFC;">Disco Duro (Marca / Modelo)</td>
-                <td style="padding: 6px 8px;" contenteditable="true">
-                  {caso.discoduro_marca ? `${caso.discoduro_marca} ${caso.discoduro_modelo || ''}`.trim() : '[Marca / Modelo del Disco]'}
-                </td>
-              </tr>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Capacidad del Disco</td>
-                <td style="padding: 6px 8px;" contenteditable="true" data-field="discoduro_capacidad">
-                  {caso.discoduro_capacidad || '[Capacidad ej. 512 GB]'}
-                </td>
-              </tr>
-              <tr style="border-bottom: 1px solid #CBD5E1;">
-                <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Serial del Disco (S/N)</td>
-                <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="discoduro_serial">
-                  {caso.discoduro_serial || '[Serial del Disco Duro]'}
-                </td>
-              </tr>
-            </>
+            <span>{caso.descripcion || 'Extracción pericial, preservación de cadena de custodia, clonado bit-a-bit y análisis forense de evidencia digital pertinente conforme a la normativa vigente.'}</span>
           )}
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Precinto de Seguridad N°</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="precinto_numero">
-              {caso.precinto_numero || '[PRECINTO-2026-XXXX]'}
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Bolsa Faraday N°</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="bolsa_faraday_numero">
-              {caso.bolsa_faraday_numero || '[FARADAY-2026-XXXX]'}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 4.0 ESTADO FÍSICO Y OBSERVACIONES VISUALES -->
-    <div class="section">
-      <div class="section-title">4.0 ESTADO FÍSICO, OBSERVACIONES VISUALES Y FIJACIÓN FOTOGRÁFICA</div>
-      <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 10px; background: #FAFAFA;">
-        <div class="label" style="margin-bottom: 4px;">Descripción Detallada del Estado Físico:</div>
-        <div class="value" contenteditable="true" data-field="dispositivo_estado_fisico" style="min-height: 48px;">
-          {caso.dispositivo_estado_fisico || 'Dispositivo íntegro, pantalla intacta sin fisuras visibles, puerto de carga operativo, sin signos de manipulación de fábrica.'}
         </div>
       </div>
     </div>
 
-    <!-- 5.0 ALCANCE Y AUTORIZACIÓN EXPRESA -->
-    <div class="section">
-      <div class="section-title">5.0 ALCANCE Y AUTORIZACIÓN EXPRESA DEL EXAMEN PERICIAL</div>
-      <div style="font-size: 8pt; line-height: 1.5; color: #1B2A4A; text-align: justify; padding: 6px 8px; background-color: #FEFCE8; border-left: 3px solid #D9A700;">
-        Yo, el consignante arriba identificado, en pleno uso de mis facultades mentales y en representación legal debidamente acreditada, hago entrega material voluntaria (Obtención por Consignación Directa Privada) de la evidencia descrita conforme al MUCC-2017 y Arts. 187 y 225 del COPP. Autorizo voluntariamente al laboratorio SHA256.US a realizar la duplicación pericial, clonado bit-a-bit y análisis forense dentro del alcance acordado.
-      </div>
-    </div>
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={2}
+      modo={modo}
+    />
+  </div>
 
-    <!-- 6.0 CUSTODIA INICIAL Y HASH SHA-256 -->
-    <div class="section">
-      <div class="section-title">6.0 CUSTODIA INICIAL, HASH SHA-256 Y APANTALLAMIENTO RF</div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
-        <tbody>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; width: 35%; font-weight: 700; background: #F8FAFC;">Hash SHA-256 Génesis</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">
-              {caso.hashSHA256 || '[64 caracteres hex del hash inicial]'}
-            </td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash Auxiliar MD5</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashMD5">
-              {caso.hashMD5 || '[32 caracteres hex del hash MD5]'}
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Aislamiento RF</td>
-            <td style="padding: 6px 8px;" contenteditable="true" data-field="dispositivo_modo_aislamiento">
-              {caso.dispositivo_modo_aislamiento || 'Modo Avión Activado + Bolsa Faraday Sellada'}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- ==================== HOJA 2 DE 2 ==================== -->
+  <div class="page">
+    <div class="watermark">PRESERVACIÓN</div>
 
-    <!-- 7.0 MOTIVO Y ANTECEDENTES -->
-    <div class="section">
-      <div class="section-title">7.0 ANTECEDENTES, MOTIVO DE LA CONSIGNACIÓN Y FIRMAS</div>
-      <div class="form-group" contenteditable="true" data-field="descripcion" style="min-height: 70px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px; font-size: 8.5pt; line-height: 20px; background: #FAFAFA;">
-        {caso.descripcion || '[Describa detalladamente el motivo, antecedentes y hechos que motivan la consignación pericial de la evidencia]'}
-      </div>
-    </div>
+    <PlanillaHeader
+      title="Acta de Obtención y Preservación (Continuación)"
+      norma="MUCC-2017 · ISO/IEC 27037 §5.3–5.4 · COPP ART. 187"
+      codigoDoc="FO-FOR-03"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={2}
+      totalHojas={2}
+    />
 
-    <!-- FIRMAS BILATERALES -->
-    <div class="signature-section" style="padding-top: 10px;">
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">EL CONSIGNANTE PRIVADO</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Nombre del Consignante]'}</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="solicitante_cedula">{caso.solicitante_cedula || '[Cédula de Identidad]'}</span>
-        </div>
-        <div class="sig-field">
-          Teléfono: <span class="sig-underline" contenteditable="true" data-field="dispositivo_numero_tel">{caso.dispositivo_numero_tel || caso.solicitante_telefono || '[Teléfono]'}</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Consignante Privado</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper">
-            <div class="thumb-box"></div>
-            <span class="thumb-label">PULGAR DER.</span>
+    <div class="planilla-body">
+      <!-- 5.0 EMBALAJE Y CONDICIÓN DE SEGURIDAD -->
+      <div class="section-block">
+        <div class="section-heading">5.0 MEDIDAS DE PRESERVACIÓN, AISLAMIENTO Y EMBALAJE (MUCC-2017)</div>
+        <div class="form-grid-2">
+          <div class="field-row">
+            <span class="field-label">Bolsa Faraday N° (Aislamiento RF):</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="bolsa_faraday_numero"></span> : <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-2026-001'}</span>}
+            </div>
           </div>
-          <div class="thumb-wrapper">
-            <div class="thumb-box"></div>
-            <span class="thumb-label">PULGAR IZQ.</span>
+          <div class="field-row">
+            <span class="field-label">Precinto de Seguridad Inicial N°:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-2026-991'}</span>}
+            </div>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Aislamiento Electromagnético:</span>
+            <div class="field-value">
+              {isBlanco ? <span>[&nbsp;&nbsp;] Modo Avión &nbsp;&nbsp; [&nbsp;&nbsp;] Faraday &nbsp;&nbsp; [&nbsp;&nbsp;] Apagado</span> : <span>[&nbsp;X&nbsp;] Bolsa Faraday Certificada &nbsp;&nbsp; [&nbsp;X&nbsp;] Modo Avión</span>}
+            </div>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Protección Contra Escritura:</span>
+            <div class="field-value">
+              {isBlanco ? <span>[&nbsp;&nbsp;] Bloqueador Hardware &nbsp;&nbsp; [&nbsp;&nbsp;] Software Read-Only</span> : <span>[&nbsp;X&nbsp;] Bloqueador de Escritura por Hardware (Tableau/WiebeTech)</span>}
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">PERITO RECEPTOR</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || '[Nombre del Perito]'}</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
-        </div>
-        <div class="sig-field">
-          CIV N°: <span class="sig-underline" contenteditable="true" data-field="perito_civ">{caso.perito_civ || 'CIV-299410'}</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Perito Receptor</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper">
-            <div class="thumb-box"></div>
-            <span class="thumb-label">PULGAR DER.</span>
-          </div>
-          <div class="thumb-wrapper">
-            <div class="thumb-box"></div>
-            <span class="thumb-label">PULGAR IZQ.</span>
-          </div>
-        </div>
-        <div style="font-size: 8px; text-align: center; margin-top: 6px; color: #0F172A; font-weight: bold;">
-          Rol ISO/IEC 27037: [&nbsp;X&nbsp;] DEFR (Adquisición &amp; Imagen Forense) &nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] DES
-        </div>
+      <!-- 6.0 DECLARACIÓN JURADA -->
+      <div class="legal-clause">
+        <strong>6.0 DECLARACIÓN JURADA DE CONSIGNACIÓN Y CADENA DE CUSTODIA (COPP ART. 187):</strong> En este acto se hace entrega formal de la evidencia digital precedentemente individualizada al personal pericial del Laboratorio SHA256.US. El perito receptor verifica los números de serial, condición de embalaje e integridad de los precintos numerados, abriendo formalmente el Registro de Cadena de Custodia (PRCC) bajo apercibimiento de las sanciones de ley previstas en los Arts. 187 y 225 del Código Orgánico Procesal Penal.
       </div>
     </div>
-  </PlanillaFolioWrapper>
+
+    <!-- 7.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="QUIEN ENTREGA / CONSIGNANTE"
+      peritoTitulo="QUIEN RECIBE / PERITO RECEPTOR SHA256.US"
+      solicitanteNombre={caso.solicitante_nombre}
+      solicitanteCedula={caso.solicitante_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion={caso.solicitante_direccion}
+      peritoNombre={caso.peritoLider}
+      peritoCedula={caso.perito_cedula}
+      peritoCiv={caso.perito_civ}
+      peritoInpre={caso.perito_inpre}
+      peritoCargo={caso.perito_cargo}
+      rolIso="DEFR · ISO/IEC 27037"
+      modo={modo}
+    />
+
+    <div class="sig-line" style="display: none;"></div>
+
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={2}
+      totalHojas={2}
+      modo={modo}
+    />
+  </div>
 </div>

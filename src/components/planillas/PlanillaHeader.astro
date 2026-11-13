@@ -1,0 +1,97 @@
+---
+/**
+ * SHA256.US — Encabezado Oficial Canónico Monocromático (Folio 216mm x 330mm)
+ * Presente idénticamente en todas las 13 planillas y hojas periciales.
+ */
+interface Props {
+  title: string;
+  norma: string;
+  codigoDoc?: string;
+  numeroCaso?: string;
+  numeroPRCC?: string;
+  fecha?: string;
+  hora?: string;
+  modo?: 'blanco' | 'datos';
+  hojaActual?: number;
+  totalHojas?: number;
+}
+
+const {
+  title,
+  norma,
+  codigoDoc = 'FOR-SHA256',
+  numeroCaso = '',
+  numeroPRCC = '',
+  fecha = '',
+  hora = '',
+  modo = 'blanco',
+  hojaActual = 1,
+  totalHojas = 1,
+} = Astro.props;
+
+const isBlanco = modo === 'blanco' || (!numeroCaso && !numeroPRCC);
+---
+
+<header class="canonical-header">
+  <div class="header-institution-row">
+    <div class="header-logo-group">
+      <img src="/logo.png" alt="SHA256.US" class="header-logo" />
+      <div class="header-rep-text">
+        <span class="header-rep-country">REPÚBLICA BOLIVARIANA DE VENEZUELA</span>
+        <span class="header-rep-lab">LABORATORIO DE INFORMÁTICA FORENSE SHA256.US</span>
+        <span class="header-rep-sub">DIVISIÓN PERICIAL DE EVIDENCIA DIGITAL &amp; CUMPLIMIENTO LEGAL</span>
+      </div>
+    </div>
+    <div class="header-badge-legal">
+      <div>CÓDIGO: {codigoDoc}</div>
+      <div>VALIDEZ: COPP ART. 187</div>
+      <div>HOJA {hojaActual} DE {totalHojas}</div>
+    </div>
+  </div>
+
+  <div class="header-title-box">
+    <h1 class="canonical-doc-title">{title}</h1>
+    <div class="canonical-doc-norm">{norma}</div>
+  </div>
+
+  <table class="header-meta-table">
+    <tbody>
+      <tr>
+        <td class="header-meta-label">EXPEDIENTE N°:</td>
+        <td class="header-meta-val">
+          {isBlanco ? (
+            <span class="linea-manual" data-field="numeroCaso"></span>
+          ) : (
+            <span data-field="numeroCaso">{numeroCaso || '_________________________'}</span>
+          )}
+        </td>
+        <td class="header-meta-label">FECHA:</td>
+        <td class="header-meta-val">
+          {isBlanco ? (
+            <span class="linea-manual" data-field="fecha"></span>
+          ) : (
+            <span data-field="fecha">{fecha || new Date().toLocaleDateString('es-VE')}</span>
+          )}
+        </td>
+      </tr>
+      <tr>
+        <td class="header-meta-label">REGISTRO PRCC:</td>
+        <td class="header-meta-val">
+          {isBlanco ? (
+            <span class="linea-manual" data-field="numero_prcc"></span>
+          ) : (
+            <span data-field="numero_prcc">{numeroPRCC || '_________________________'}</span>
+          )}
+        </td>
+        <td class="header-meta-label">HORA / SEDE:</td>
+        <td class="header-meta-val">
+          {isBlanco ? (
+            <span class="linea-manual"></span>
+          ) : (
+            <span>{hora || '10:00 AM · SEDE CENTRAL'}</span>
+          )}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</header>

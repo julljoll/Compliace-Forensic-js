@@ -1,115 +1,147 @@
 ---
 /**
- * SHA256.US — Acta de Entrega de Resultados y Devolución de Evidencias
- * MUCC-2017 Fase 4 & COPP Art. 187. Tamaño Folio (216mm x 330mm).
+ * SHA256.US — Acta de Entrega de Resultados Periciales y Devolución de Evidencias
+ * Fundamentación: MUCC-2017 Fase 4 · COPP Art. 187 · Cadena de Custodia.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="Acta de Entrega de Resultados y Devolución"
-    nroLabel="N° EXPEDIENTE:"
-    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
-    watermarkText="ENTREGA RESULTADOS"
-  >
-    <div class="uswds-top-header">
-      ACTA DE ENTREGA FORMAL DE RESULTADOS PERICIALES Y DEVOLUCIÓN — MUCC-2017 FASE 4 · COPP ART. 187
-    </div>
+  <div class="page">
+    <div class="watermark">ENTREGA</div>
 
-    <!-- DATOS GENERALES -->
-    <div class="section">
-      <div class="section-title">1.0 DATOS GENERALES DEL ACTO DE ENTREGA</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">N° Expediente</div>
-            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[N° Expediente]'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">N° PRCC Asociado</div>
-            <div class="value font-mono" contenteditable="true" data-field="numero_prcc">{caso.numero_prcc || caso.numeroPRCC || '[N° PRCC]'}</div>
-          </div>
-          <div class="form-group" style="grid-column: span 2;">
-            <div class="label">Lugar de Entrega</div>
-            <div class="value" contenteditable="true">Sede del Laboratorio Forense SHA256.US, Quíbor, Estado Lara</div>
-          </div>
-        </div>
+    <PlanillaHeader
+      title="Acta de Entrega de Resultados Periciales y Devolución"
+      norma="MUCC-2017 FASE 4 · COPP ART. 187 · CADENA DE CUSTODIA"
+      codigoDoc="ACT-ENT-01"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={1}
+    />
+
+    <div class="planilla-body">
+      <!-- 1.0 DATOS DEL ACTO DE ENTREGA -->
+      <div class="section-block">
+        <div class="section-heading">1.0 DATOS GENERALES DEL ACTO DE ENTREGA Y RECEPCIÓN</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 22%;">Lugar del Acto:</th>
+              <td style="width: 78%;">{isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Municipio Jiménez, Estado Lara</span>}</td>
+            </tr>
+            <tr>
+              <th>Fecha y Hora:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.fecha_apertura ? `${caso.fecha_apertura} · 11:30 VET` : '2026-11-13 · 11:30 VET'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Expediente / PRCC:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso} · PRCC: {caso.numero_prcc || caso.numeroPRCC || 'PRCC-2026-0091'}</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2.0 IDENTIFICACIÓN DEL RECEPTOR -->
+      <div class="section-block">
+        <div class="section-heading">2.0 IDENTIFICACIÓN DEL SOLICITANTE / RECEPTOR DE EVIDENCIAS</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 28%;">Nombre y Apellido:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre || caso.receptor_nombre}</span>}</td>
+            </tr>
+            <tr>
+              <th>Cédula / Pasaporte:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula || caso.receptor_cedula}</span>}</td>
+            </tr>
+            <tr>
+              <th>Calidad del Receptor:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Consignante Original &nbsp;&nbsp; [ &nbsp; ] Apoderado Legal &nbsp;&nbsp; [ &nbsp; ] Funcionario Actuante</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3.0 RELACIÓN DE DOCUMENTOS Y DISPOSITIVOS ENTREGADOS -->
+      <div class="section-block">
+        <div class="section-heading">3.0 RELACIÓN DE ENTREGABLES Y MATERIAL DEVOLUTIVO</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 10%; text-align: center;">Item</th>
+              <th style="width: 60%;">Descripción del Elemento / Documento Entregado</th>
+              <th style="width: 30%;">Estado / Verificación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">01</td>
+              <td>Dictamen Pericial Oficial Impreso en Papel Folio (Original Colegiado)</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Rubricado y Sellado</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">02</td>
+              <td>Copia Forense Digital Inmutable (Medio Óptico M-DISC / USB Protegido)</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Hash Validado</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">03</td>
+              <td>Dispositivo Físico Peritado (Devolución en Bolsa de Evidencia Original)</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Precinto Intacto</span>}</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: bold;">04</td>
+              <td>Hash SHA-256 de Cierre de Custodia:</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente'}</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4.0 CLÁUSULA DE CONFORMIDAD -->
+      <div class="legal-clause">
+        <strong>4.0 DECLARACIÓN DE RECEPCIÓN Y CONFORMIDAD:</strong> El solicitante/receptor declara haber recibido los elementos supra descritos a su entera satisfacción, certificando la indemnidad del dispositivo, el precinto de custodia y los recaudos documentales periciales emitidos por el laboratorio, conforme al Art. 187 del Código Orgánico Procesal Penal.
       </div>
     </div>
 
-    <!-- 2.0 IDENTIFICACIÓN DEL RECEPTOR -->
-    <div class="section">
-      <div class="section-title">2.0 IDENTIFICACIÓN DEL RECEPTOR / SOLICITANTE</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">Nombres y Apellidos del Receptor</div>
-            <div class="value" contenteditable="true" data-field="receptor_nombre">
-              {caso.receptor_nombre || caso.solicitante_nombre || '[Nombre del Receptor]'}
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="label">C.I. / RIF del Receptor</div>
-            <div class="value" contenteditable="true" data-field="receptor_cedula">
-              {caso.receptor_cedula || caso.solicitante_cedula || '[Cédula de Identidad]'}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- 5.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="RECIBE CONFORME (SOLICITANTE / RECEPTOR)"
+      peritoTitulo="ENTREGA CONFORME (PERITO FORENSE)"
+      solicitanteNombre={caso.solicitante_nombre || caso.receptor_nombre}
+      solicitanteCedula={caso.solicitante_cedula || caso.receptor_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion={caso.solicitante_direccion}
+      peritoNombre={caso.peritoLider}
+      peritoCedula={caso.perito_cedula}
+      peritoCiv="CIV-289410"
+      peritoInpre="INPRE-179420"
+      peritoCargo="Jefe de Laboratorio Forense"
+      rolIso="DEC (Digital Evidence Custodian) · MUCC-2017"
+      modo={modo}
+    />
 
-    <!-- 3.0 ELEMENTOS ENTREGADOS -->
-    <div class="section">
-      <div class="section-title">3.0 RELACIÓN DE DOCUMENTOS Y DISPOSITIVOS ENTREGADOS</div>
-      <div style="border: 1px solid #CBD5E1; border-radius: 4px; padding: 8px 10px; font-size: 8.5pt; line-height: 1.6; background: #FAFAFA;">
-        <div>[&nbsp;X&nbsp;] <strong>Dictamen Pericial Oficial Impreso:</strong> En formato Folio debidamente rubricado por dos peritos.</div>
-        <div>[&nbsp;X&nbsp;] <strong>Copia Digital Inmutable (CD/DVD/USB):</strong> Conteniendo reporte técnico forense y hashes de verificación.</div>
-        <div>[&nbsp;X&nbsp;] <strong>Dispositivo Original Objeto de Peritaje:</strong> Entregado en su embalaje de seguridad correspondiente.</div>
-        <div style="margin-top: 4px;"><strong>Hash SHA-256 de Entrega:</strong> <span class="font-mono" contenteditable="true" data-field="hashSHA256">{caso.hashSHA256 || '[Hash SHA-256 verificado al entregar]'}</span></div>
-      </div>
-    </div>
+    <div class="sig-line" style="display: none;"></div>
 
-    <!-- FIRMAS BILATERALES -->
-    <div class="signature-section" style="padding-top: 10px;">
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">ENTREGA (PERITO RESPONSABLE)</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Perito Emisor</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
-      </div>
-
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">RECIBE CONFORME (SOLICITANTE)</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true" data-field="receptor_nombre">{caso.receptor_nombre || caso.solicitante_nombre || '[Receptor]'}</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="receptor_cedula">{caso.receptor_cedula || caso.solicitante_cedula || '[C.I.]'}</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma de Recepción Conforme</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
-      </div>
-    </div>
-  </PlanillaFolioWrapper>
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={1}
+      modo={modo}
+    />
+  </div>
 </div>

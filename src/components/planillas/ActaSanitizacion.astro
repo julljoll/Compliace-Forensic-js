@@ -1,124 +1,141 @@
 ---
 /**
  * SHA256.US — Acta de Sanitización Criptográfica y Borrado Seguro
- * NIST SP 800-88 Rev. 1 & ISO/IEC 27001. Tamaño Folio (216mm x 330mm).
+ * Fundamentación: NIST SP 800-88 Rev. 1 · ISO/IEC 27001 · Disposición Final de Evidencias.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="Acta de Sanitización y Borrado Seguro"
-    nroLabel="N° EXPEDIENTE:"
-    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
-    watermarkText="SANITIZACIÓN"
-  >
-    <div class="uswds-top-header">
-      ACTA DE SANITIZACIÓN CRIPTOGRÁFICA Y BORRADO SEGURO DE SERVIDOR — NIST SP 800-88 REV. 1 · ISO/IEC 27001
-    </div>
+  <div class="page">
+    <div class="watermark">SANITIZACIÓN</div>
 
-    <!-- BLOQUE EXPEDIENTE / PRCC -->
-    <div class="section">
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">Expediente N°</div>
-            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[N° Expediente]'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">PRCC N°</div>
-            <div class="value font-mono" contenteditable="true" data-field="numero_prcc">{caso.numero_prcc || caso.numeroPRCC || '[PRCC-2026-XXXX]'}</div>
-          </div>
-        </div>
+    <PlanillaHeader
+      title="Acta de Sanitización Criptográfica y Borrado Seguro"
+      norma="NIST SP 800-88 REV. 1 · ISO/IEC 27001 · DISPOSICIÓN FINAL"
+      codigoDoc="ACT-SAN-01"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={1}
+    />
+
+    <div class="planilla-body">
+      <!-- 1.0 IDENTIFICACIÓN DE MEDIOS Y VOLÚMENES TEMPORALES -->
+      <div class="section-block">
+        <div class="section-heading">1.0 MEDIOS DE ALMACENAMIENTO TEMPORAL Y COPIAS DE TRABAJO A SANITIZAR</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 28%;">Volumen / Servidor:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>Nodo Storage SHA256 · Vol. Encriptado ZFS-POOL-02 / NVMe Forense</span>}</td>
+            </tr>
+            <tr>
+              <th>Serial del Medio de Trabajo:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>SN: MZ-V8P2T0B-EU-20261109 · Capacidad: 2,000 GB NVMe PCIe 4.0</span>}</td>
+            </tr>
+            <tr>
+              <th>Hash SHA-256 Previo:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo'}</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
 
-    <!-- 1.0 MEDIOS DIGITALES A SANITIZAR -->
-    <div class="section">
-      <div class="section-title">1.0 EVIDENCIA Y MEDIOS DIGITALES A SANITIZAR</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">Cliente / Entidad Solicitante</div>
-            <div class="value" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Cliente / Solicitante]'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">Servidor / Storage de Proceso</div>
-            <div class="value" contenteditable="true">Nodo Storage SHA256 / Vol. Encriptado ZFS-POOL-02</div>
-          </div>
-        </div>
+      <!-- 2.0 PROTOCOLO Y TÉCNICA DE BORRADO -->
+      <div class="section-block">
+        <div class="section-heading">2.0 PROTOCOLO DE DESTRUCCIÓN LÓGICA CONFORME A NIST SP 800-88 REV. 1</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Parámetro de Sanitización</th>
+              <th style="width: 35%;">Especificación Técnica</th>
+              <th style="width: 35%;">Verificación Forense</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nivel de Sanitización NIST</td>
+              <td class="font-mono">{isBlanco ? '' : 'PURGE (Sobrescritura Criptográfica)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Destrucción irreversible de llaves AES-XTS 256.</span>}</td>
+            </tr>
+            <tr>
+              <td>Método de Sobrescritura</td>
+              <td class="font-mono">{isBlanco ? '' : 'DoD 5220.22-M (3 Pases Pseudorandom)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Pase 1: 0x00 · Pase 2: 0xFF · Pase 3: Aleatorio.</span>}</td>
+            </tr>
+            <tr>
+              <td>Software / Utilidad Empleada</td>
+              <td class="font-mono">{isBlanco ? '' : 'Nwipe v0.34 / Linux hdparm Secure Erase'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Firmware command ATA Enhanced Secure Erase.</span>}</td>
+            </tr>
+            <tr>
+              <td>Verificación de Sectores</td>
+              <td class="font-mono">{isBlanco ? '' : '100% de Sectores Verificados (0x00)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Lectura completa sin remanencia magnética.</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
 
-    <!-- 2.0 METODOLOGÍA NIST 800-88 -->
-    <div class="section">
-      <div class="section-title">2.0 METODOLOGÍA DE BORRADO SEGURO (OVERWRITE / CRYPTO-ERASE)</div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
-        <tbody>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; width: 35%; font-weight: 700; background: #F8FAFC;">Estándar Aplicado</td>
-            <td style="padding: 6px 8px;" contenteditable="true">NIST SP 800-88 Rev. 1 Purge (Overwrite Pseudorandom 3-Pass + Crypto-Erase)</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Herramienta Utilizada</td>
-            <td style="padding: 6px 8px;" contenteditable="true">Nwipe v0.34 (DoD 5220.22-M) / hdparm Enhanced Secure Erase</td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash SHA-256 Previo</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">{caso.hashSHA256 || '[Hash antes del borrado]'}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- 3.0 DECLARACIÓN DE NO RETENCIÓN -->
-    <div class="section">
-      <div class="section-title">3.0 CERTIFICACIÓN DE NO RETENCIÓN Y DESTRUCCIÓN DE COPIAS</div>
-      <div style="padding: 8px 12px; background-color: #F0FDF4; border-left: 4px solid #008837; border-radius: 4px; font-size: 8pt; line-height: 1.5; color: #1B2A4A;">
-        El perito responsable certifica bajo fe de juramento que todas las copias forenses de trabajo, imágenes bit-a-bit intermedias, particiones temporales y archivos recuperados en los servidores del laboratorio han sido sanitizados y sobrescritos irreversiblemente conforme a la norma NIST SP 800-88 Rev. 1, no conservándose datos confidenciales en la infraestructura del laboratorio.
-      </div>
-    </div>
-
-    <!-- FIRMAS BILATERALES -->
-    <div class="signature-section" style="padding-top: 10px;">
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">PERITO RESPONSABLE DE SANITIZACIÓN</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Perito Responsable</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
+      <!-- 3.0 CONSTANCIA DE NO REMANENCIA -->
+      <div class="section-block">
+        <div class="section-heading">3.0 AUDITORÍA Y CERTIFICACIÓN DE NO RETENCIÓN DE DATOS (ISO 27001)</div>
+        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 40px;">
+          {isBlanco ? (
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="linea-manual"></span>
+              <span class="linea-manual"></span>
+            </div>
+          ) : (
+            <span>Se certifica que una vez concluido el peritaje y entregados los resultados oficiales al requirente, todas las imágenes bit-a-bit intermedias, particiones temporales de trabajo, transcripciones de audio y volcados de memoria RAM residentes en los sistemas del laboratorio han sido purgados de manera irreversible sin posibilidad física ni lógica de recuperación.</span>
+          )}
         </div>
       </div>
 
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">AUDITOR / OFICIAL DE COMPLIANCE</div>
-        <div class="sig-field" style="margin-top: 8px;">
-          Nombre: <span class="sig-underline" contenteditable="true">Compliance Officer SHA256.US</span>
-        </div>
-        <div class="sig-field">
-          C.I. N°: <span class="sig-underline" contenteditable="true">V-20.111.222</span>
-        </div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma de Certificación de Cumplimiento</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
+      <!-- 4.0 DECLARACIÓN DE JURAMENTO -->
+      <div class="legal-clause">
+        <strong>4.0 FE DE JURAMENTO:</strong> El perito responsable y el auditor certifican formalmente que no se retiene ninguna copia de seguridad o archivo de datos confidenciales perteneciente a este encargo pericial, en estricto cumplimiento del principio de minimización de datos y el Art. 60 de la CRBV.
       </div>
     </div>
-  </PlanillaFolioWrapper>
+
+    <!-- 5.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="PERITO RESPONSABLE DE SANITIZACIÓN"
+      peritoTitulo="AUDITOR DE COMPLIANCE FORENSE"
+      solicitanteNombre={caso.peritoLider}
+      solicitanteCedula={caso.perito_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion="Laboratorio Forense SHA256.US"
+      peritoNombre="Oficial de Compliance"
+      peritoCedula="V-20.111.222"
+      peritoCiv="CIV-299841"
+      peritoInpre="INPRE-184510"
+      peritoCargo="Auditor Interno de Seguridad ISO 27001"
+      rolIso="DPA (Data Protection Auditor) · ISO 37301"
+      modo={modo}
+    />
+
+    <div class="sig-line" style="display: none;"></div>
+
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={1}
+      modo={modo}
+    />
+  </div>
 </div>

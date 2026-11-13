@@ -1,11 +1,11 @@
 ---
 /**
- * SHA256.US — Catálogo Canónico de las 13 Planillas Oficiales en Folio
- * Formato físico reglamentario: 216mm × 330mm (Oficio) con aislamiento estricto.
+ * SHA256.US — Catálogo Canónico de las 13 Planillas Oficiales en Folio (216mm × 330mm)
+ * Formato físico reglamentario para documentos legales en Venezuela (Oficio).
+ * Monocromático B&W puro · Encabezado y pie unificados · Modo Plantilla en Blanco para llenado manual.
  */
 import AppLayout from '../../layouts/AppLayout.astro';
 import Alert from '../../components/uswds/Alert.astro';
-import SummaryBox from '../../components/uswds/SummaryBox.astro';
 import { MOCK_CASOS } from '../../lib/data/seed';
 
 const PLANILLAS = [
@@ -15,7 +15,7 @@ const PLANILLAS = [
     titulo: 'Acta de Consentimiento Informado',
     norma: 'CRBV Arts. 28 y 60 · Hábeas Data',
     descripcion: 'Autorización legal expresa y voluntaria del titular para el análisis forense de sus dispositivos o datos digitales.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-entrevista',
@@ -23,15 +23,15 @@ const PLANILLAS = [
     titulo: 'Acta de Entrevista Forense al Consignante',
     norma: 'ISO/IEC 27043 §8.3 · MUCC-2017',
     descripcion: 'Fijación formal de las declaraciones, credenciales de acceso, números de interés y contexto técnico inicial.',
-    hojas: '2 Folios',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-obtencion',
     fase: 'F1',
     titulo: 'Acta de Obtención y Preservación Inicial',
     norma: 'MUCC-2017 §4 · COPP Art. 187',
-    descripcion: 'Recepción física y técnica de la evidencia en el sitio de suceso o despacho pericial, con fijación fotográfica.',
-    hojas: '1 Folio',
+    descripcion: 'Recepción física y técnica de la evidencia con fijación fotográfica 360°, Faraday y precintado numerado.',
+    hojas: '2 Hojas Folio',
   },
   {
     slug: 'planilla-prcc',
@@ -39,7 +39,7 @@ const PLANILLAS = [
     titulo: 'Planilla de Registro de Cadena de Custodia (PRCC)',
     norma: 'COPP Art. 187 · Gaceta N° 41.247',
     descripcion: 'Instrumento matriz de trazabilidad ininterrumpida de evidencias físicas y digitales con registro de precintos.',
-    hojas: '1 Folio',
+    hojas: '2 Hojas Folio',
   },
   {
     slug: 'acta-desprecintado',
@@ -47,15 +47,15 @@ const PLANILLAS = [
     titulo: 'Acta de Desprecintado y Apertura en Laboratorio',
     norma: 'MUCC-2017 Fase Laboratorio · ISO 27037',
     descripcion: 'Constancia pericial de la apertura del precinto original en laboratorio para la extracción de la imagen bit-a-bit.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'planilla-audio-sonic',
     fase: 'F3',
     titulo: 'Planilla de Análisis Forense de Audio (Sonic Visualiser)',
     norma: 'SWGDE · FRE 702 · ISO/IEC 27042',
-    descripcion: 'Espectrograma, análisis de frecuencias, relación señal/ruido y cotejo de notas de voz WhatsApp u .opus.',
-    hojas: '1 Folio',
+    descripcion: 'Espectrograma FFT, análisis de frecuencias, relación señal/ruido y cotejo de notas de voz WhatsApp u .opus.',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'planilla-evaluacion-ux',
@@ -63,7 +63,7 @@ const PLANILLAS = [
     titulo: 'Planilla de Evaluación de Calidad y Servicio Pericial',
     norma: 'ISO 37301 §9.1 · ISO 9001',
     descripcion: 'Métricas de calidad, exactitud del encargo pericial y conformidad metodológica institucional.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-dictamen',
@@ -71,7 +71,7 @@ const PLANILLAS = [
     titulo: 'Dictamen Pericial Oficial de Informática Forense',
     norma: 'COPP Arts. 223–225 · ISO/IEC 27043 §9',
     descripcion: 'Informe científico motivado con metodología, herramientas, correlación de evidencias y conclusiones legales.',
-    hojas: '2 Folios',
+    hojas: '2 Hojas Folio',
   },
   {
     slug: 'dictamen-imagenes',
@@ -79,7 +79,7 @@ const PLANILLAS = [
     titulo: 'Dictamen Especializado de Autenticidad de Imágenes',
     norma: 'ISO/IEC 27042 · Estándar Daubert',
     descripcion: 'Análisis de metadatos EXIF, ELA (Error Level Analysis), compresión JPEG y detección de manipulación gráfica.',
-    hojas: '2 Folios',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'dictamen-audios',
@@ -87,7 +87,7 @@ const PLANILLAS = [
     titulo: 'Dictamen Especializado de Autenticidad de Audios',
     norma: 'ISO/IEC 27042 · SWGDE Audio Guidelines',
     descripcion: 'Cotejo biométrico acústico, continuidad de onda, filtrado y detección de cortes o manipulación por IA.',
-    hojas: '2 Folios',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-entrega-resultados',
@@ -95,7 +95,7 @@ const PLANILLAS = [
     titulo: 'Acta de Entrega de Resultados y Evidencias',
     norma: 'MUCC-2017 Disposición Final · COPP 187',
     descripcion: 'Constancia formal de remisión del dictamen pericial y devolución o remisión de la evidencia física.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-sanitizacion',
@@ -103,7 +103,7 @@ const PLANILLAS = [
     titulo: 'Acta de Sanitización de Medios del Laboratorio',
     norma: 'NIST SP 800-88 Rev. 1 · ISO/IEC 27001',
     descripcion: 'Certificación de purga, destrucción segura y sobreescritura (Zeroization) de las copias forenses temporales.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-auditoria-timeline',
@@ -111,7 +111,7 @@ const PLANILLAS = [
     titulo: 'Acta de Auditoría y Línea de Tiempo Inmutable',
     norma: 'ISO/IEC 27001 A.8.15 · SHA-256 Chain',
     descripcion: 'Historial criptográfico completo de todas las acciones con sus hashes anterior y actual concatenados.',
-    hojas: '1 Folio',
+    hojas: '1 Hoja Folio',
   },
 ];
 ---
@@ -124,28 +124,31 @@ const PLANILLAS = [
         📜 Catálogo de Planillas Oficiales en Folio (216mm × 330mm)
       </h1>
       <p style="margin: 0; color: #475569; font-size: 15px;">
-        13 documentos forenses legalmente vinculantes con paridad 1:1, membrete institucional, dactiloscopía bilateral y cierre reglamentario.
+        13 instrumentos periciales de informática forense con estándar canónico B&W, membrete unificado de la República, dactiloscopía bilateral y cierre formal.
       </p>
     </div>
 
-    <!-- Selector de Caso para Inyección de Datos -->
-    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 8px 16px; border-radius: 4px; display: flex; align-items: center; gap: 10px;">
-      <span style="font-size: 12px; font-weight: 700; color: #64748B;">Expediente:</span>
-      <select class="usa-select" id="select-caso-planillas" style="height: 34px; margin: 0; font-size: 13px;">
-        {MOCK_CASOS.map((c) => (
-          <option value={c.id}>
-            {c.numeroCaso} ({c.evidenciaMarca})
-          </option>
-        ))}
+    <!-- Selector de Modo / Expediente -->
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 10px 16px; border-radius: 6px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <span style="font-size: 13px; font-weight: 700; color: #1E293B;">Modo de Emisión:</span>
+      <select class="usa-select" id="select-caso-planillas" style="height: 38px; margin: 0; font-size: 13px; font-weight: 600; min-width: 320px;">
+        <option value="blanco" selected>
+          📄 Formato en Blanco (Llenado Manual con Bolígrafo)
+        </option>
+        <optgroup label="Expedientes Activos en Base de Datos:">
+          {MOCK_CASOS.map((c) => (
+            <option value={c.id}>
+              {c.numeroCaso} — {c.evidenciaMarca} ({c.estado})
+            </option>
+          ))}
+        </optgroup>
       </select>
     </div>
   </div>
 
   <!-- Alerta de Especificaciones de Impresión Folio -->
-  <Alert type="info" heading="Aislamiento Total de Impresión y Medidas Legales">
-    Todas las planillas están estrictamente configuradas bajo la regla canónica 
-    <code>@page &#123; size: 216mm 330mm; margin: 15mm 15mm 15mm 30mm; &#125;</code> (Folio / Oficio).
-    Al imprimir o guardar en PDF, el menú USWDS se oculta automáticamente dejando el documento listo para su rúbrica y estampado dactilar.
+  <Alert type="info" heading="Estándar Oficial de Impresión Judicial Folio (216mm × 330mm)">
+    Por defecto, las planillas se emiten en <strong>Modo Plantilla en Blanco</strong>, listas para imprimir en hojas tamaño Folio (Oficio venezolano) con líneas para llenado manual a bolígrafo en inspecciones judiciales o sedes periciales. El diseño es <strong>100% monocromático (Blanco y Negro)</strong> con margen de encuadernación de 25mm, cabecera de la República y casillas dactilares bilaterales (Pulgar Izquierdo y Pulgar Derecho).
   </Alert>
 
   <div style="margin-top: 24px;"></div>
@@ -159,7 +162,7 @@ const PLANILLAS = [
             <span class="usa-tag" style="background-color: #005EA2; color: #FFFFFF; font-weight: 800; font-size: 11px;">
               FASE {p.fase}
             </span>
-            <span class="usa-tag" style="background-color: #F1F5F9; color: #1E293B; font-weight: 600; font-size: 11px;">
+            <span class="usa-tag" style="background-color: #F1F5F9; color: #1E293B; font-weight: 700; font-size: 11px;">
               📏 {p.hojas} (216×330mm)
             </span>
           </div>
@@ -172,29 +175,29 @@ const PLANILLAS = [
             ⚖️ {p.norma}
           </div>
 
-          <p style="font-size: 13px; color: #475569; margin: 0 0 16px 0; min-height: 54px;">
+          <p style="font-size: 13px; color: #475569; margin: 0 0 16px 0; min-height: 54px; line-height: 1.45;">
             {p.descripcion}
           </p>
         </div>
 
         <div style="display: flex; gap: 8px; border-top: 1px solid #E2E8F0; padding-top: 14px;">
           <a
-            href={`/planillas/${p.slug}?casoId=${MOCK_CASOS[0].id}`}
+            href={`/planillas/${p.slug}?modo=blanco`}
             class="usa-button usa-button--outline link-abrir-planilla"
             data-slug={p.slug}
             style="flex: 1; text-align: center; font-size: 12px; font-weight: 700; padding: 8px; border-color: #005EA2; color: #005EA2; text-decoration: none;"
           >
-            Abrir Folio ↗
+            Ver Formato ↗
           </a>
           <a
-            href={`/planillas/${p.slug}?casoId=${MOCK_CASOS[0].id}&imprimir=1`}
+            href={`/planillas/${p.slug}?modo=blanco&imprimir=1`}
             target="_blank"
             class="usa-button link-imprimir-planilla"
             data-slug={p.slug}
-            style="background-color: #112E51; color: #FFFFFF; font-size: 12px; font-weight: 700; padding: 8px 12px; text-decoration: none;"
-            title="Imprimir directamente en Folio"
+            style="background-color: #112E51; color: #FFFFFF; font-size: 12px; font-weight: 700; padding: 8px 14px; text-decoration: none; white-space: nowrap;"
+            title="Imprimir directamente en Folio en blanco"
           >
-            🖨️ PDF
+            🖨️ Imprimir Folio
           </a>
         </div>
       </div>
@@ -217,16 +220,28 @@ const PLANILLAS = [
       casos = await idbGetAll('casos');
     }
 
-    if (!casos || casos.length === 0) return;
-
     if (select) {
-      select.innerHTML = '';
-      casos.forEach((c) => {
-        const opt = document.createElement('option');
-        opt.value = c.id;
-        opt.textContent = `${c.numeroCaso} (${c.evidenciaMarca})`;
-        select.appendChild(opt);
-      });
+      if (casos && casos.length > 0) {
+        select.innerHTML = '';
+        
+        // Opción 1: Plantilla en blanco
+        const optBlanco = document.createElement('option');
+        optBlanco.value = 'blanco';
+        optBlanco.textContent = '📄 Formato en Blanco (Llenado Manual con Bolígrafo)';
+        optBlanco.selected = true;
+        select.appendChild(optBlanco);
+
+        // Grupo con casos reales
+        const optGroup = document.createElement('optgroup');
+        optGroup.label = 'Expedientes Disponibles para Inyección:';
+        casos.forEach((c) => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = `${c.numeroCaso} — ${c.evidenciaMarca} (${c.estado})`;
+          optGroup.appendChild(opt);
+        });
+        select.appendChild(optGroup);
+      }
 
       const params = new URLSearchParams(window.location.search);
       const paramId = params.get('casoId');
@@ -240,15 +255,31 @@ const PLANILLAS = [
     }
   }
 
-  function actualizarLinks(casoId: string) {
+  function actualizarLinks(valor: string) {
+    const isBlanco = valor === 'blanco';
+
     document.querySelectorAll('.link-abrir-planilla').forEach((a) => {
       const slug = a.getAttribute('data-slug');
-      (a as HTMLAnchorElement).href = `/planillas/${slug}?casoId=${casoId}`;
+      const anchor = a as HTMLAnchorElement;
+      if (isBlanco) {
+        anchor.href = `/planillas/${slug}?modo=blanco`;
+        anchor.textContent = 'Ver Formato ↗';
+      } else {
+        anchor.href = `/planillas/${slug}?casoId=${valor}&modo=datos`;
+        anchor.textContent = 'Ver con Datos ↗';
+      }
     });
 
     document.querySelectorAll('.link-imprimir-planilla').forEach((a) => {
       const slug = a.getAttribute('data-slug');
-      (a as HTMLAnchorElement).href = `/planillas/${slug}?casoId=${casoId}&imprimir=1`;
+      const anchor = a as HTMLAnchorElement;
+      if (isBlanco) {
+        anchor.href = `/planillas/${slug}?modo=blanco&imprimir=1`;
+        anchor.textContent = '🖨️ Imprimir en Blanco';
+      } else {
+        anchor.href = `/planillas/${slug}?casoId=${valor}&modo=datos&imprimir=1`;
+        anchor.textContent = '🖨️ Imprimir con Datos';
+      }
     });
   }
 

@@ -1,8 +1,7 @@
 /**
  * SHA256.US — Data Binder para Planillas Oficiales en Astro.
- * Lee el caso desde IndexedDB / API según el query param `?casoId=xxx` o el caso activo,
- * rellena los campos marcados con `data-field="nombreCampo"`,
- * y sincroniza ediciones en tiempo real con guardado automático.
+ * Gestiona el modo 'blanco' (para impresión limpia y llenado manual a bolígrafo)
+ * y el modo 'datos' (rellena con los datos reales del expediente pericial).
  */
 
 import { phpApi } from './phpApi';
@@ -13,30 +12,37 @@ export async function bindPlanilla(planillaId: string): Promise<CasoCMS | undefi
 
   const urlParams = new URLSearchParams(window.location.search);
   const casoId = urlParams.get('casoId') || urlParams.get('id');
+  const modo = urlParams.get('modo') || (casoId ? 'datos' : 'blanco');
 
-  let caso: CasoCMS | undefined;
-  if (casoId) {
-    caso = await phpApi.obtenerCaso(casoId);
-  } else {
-    // Si no se pasó ID, tomar el primer caso disponible en caché
-    const todos = await phpApi.listarCasos();
-    caso = todos[0];
+  // Modo Blanco: No cargar datos ficticios, asegurar campos limpios para escritura a mano
+  if (modo === 'blanco' || !casoId) {
+    const elements = document.querySelectorAll<HTMLElement>('[data-field]');
+    elements.forEach((el) => {
+      const current = el.textContent?.trim() || '';
+      // Limpiar texto de placeholder entre corchetes
+      if (current.startsWith('[') && current.endsWith(']')) {
+        el.textContent = '';
+      }
+    });
+    return undefined;
   }
 
+  // Modo Datos: Cargar el caso solicitado desde MySQL / IndexedDB
+  const caso = await phpApi.obtenerCaso(casoId);
   if (!caso) return undefined;
 
   // Llenar campos con data-field
   const elements = document.querySelectorAll<HTMLElement>('[data-field]');
   elements.forEach((el) => {
     const field = el.getAttribute('data-field') as keyof CasoCMS;
-    if (field && caso && caso[field] !== undefined) {
+    if (field && caso && caso[field] !== undefined && caso[field] !== null) {
       const val = caso[field];
       if (typeof val === 'string' || typeof val === 'number') {
         el.textContent = String(val);
       }
     }
 
-    // Manejar ediciones contentEditable
+    // Manejar ediciones contentEditable en pantalla
     if (el.isContentEditable) {
       el.addEventListener('blur', async () => {
         const nuevoTexto = el.textContent?.trim() || '';

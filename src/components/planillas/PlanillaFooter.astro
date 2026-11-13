@@ -1,0 +1,42 @@
+---
+/**
+ * SHA256.US — Pie de Página Oficial Canónico Monocromático (Folio 216mm x 330mm)
+ * Presente idénticamente al pie de cada hoja física de las 13 planillas oficiales.
+ */
+interface Props {
+  hashSha256?: string;
+  hojaActual?: number;
+  totalHojas?: number;
+  modo?: 'blanco' | 'datos';
+}
+
+const {
+  hashSha256 = '',
+  hojaActual = 1,
+  totalHojas = 1,
+  modo = 'blanco',
+} = Astro.props;
+
+const isBlanco = modo === 'blanco' || !hashSha256;
+const displayHash = isBlanco
+  ? '________________________________________________________________'
+  : hashSha256;
+---
+
+<footer class="canonical-footer">
+  <div class="footer-top-line">
+    <span>
+      DOCUMENTO JUDICIAL PERICIAL · VALIDEZ LEGAL COPP ART. 187 · ISO/IEC 27037 &amp; ISO/IEC 27042
+    </span>
+    <span class="font-mono">
+      HOJA {hojaActual} DE {totalHojas}
+    </span>
+  </div>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1px; font-family: 'Roboto Mono Web', monospace; font-size: 6pt;">
+    <span>VERIFICACIÓN CRIPTOGRÁFICA SHA-256:</span>
+    <span style="letter-spacing: -0.02em;">{displayHash}</span>
+  </div>
+  <address class="footer-address-line">
+    Avenida 6 con calle 7, Edificio Mercantil La Ceiba, Piso 1, Ofic. N° 8, Quíbor, Municipio Jiménez, Estado Lara, República Bolivariana de Venezuela.
+  </address>
+</footer>

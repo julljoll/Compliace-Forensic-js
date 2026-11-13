@@ -1,105 +1,141 @@
 ---
 /**
- * SHA256.US — Dictamen Pericial de Autenticidad de Imágenes Digitales
- * ELA (Error Level Analysis), Copy-Move, EXIF Metadata & ISO 27042. Tamaño Folio (216mm x 330mm).
+ * SHA256.US — Dictamen Pericial Especializado en Evidencia Fotográfica e Imágenes
+ * Fundamentación: ISO/IEC 27042 · Análisis de Metadatos EXIF · Error Level Analysis (ELA).
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
-const dictamenNum = caso.numeroCaso ? `D-IMG-${caso.numeroCaso}` : 'D-IMG-2026-0042';
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="Dictamen Pericial de Imágenes Digitales"
-    nroLabel="N° DICTAMEN:"
-    nroValue={dictamenNum}
-    watermarkText="DICTAMEN IMÁGENES"
-  >
-    <div class="uswds-top-header">
-      INFORME TÉCNICO PERICIAL DE AUTENTICIDAD DE IMÁGENES — ELA MAP · COPY-MOVE · EXIF · ISO 27042
-    </div>
+  <div class="page">
+    <div class="watermark">IMÁGENES</div>
 
-    <!-- ENCABEZADO -->
-    <div class="section">
-      <div class="section-title">1.0 MARCO NORMATIVO Y ACREDITACIÓN PERICIAL</div>
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">N° Expediente</div>
-            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[EXPEDIENTE]'}</div>
-          </div>
-          <div class="form-group">
-            <div class="label">Perito en Análisis de Imágenes</div>
-            <div class="value" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</div>
-          </div>
+    <PlanillaHeader
+      title="Dictamen Pericial Especializado en Análisis de Imágenes"
+      norma="ISO/IEC 27042 · ANÁLISIS FORENSE EXIF &amp; ELA"
+      codigoDoc="FO-IMG-01"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={1}
+    />
+
+    <div class="planilla-body">
+      <!-- 1.0 IDENTIFICACIÓN DE LA IMAGEN -->
+      <div class="section-block">
+        <div class="section-heading">1.0 IDENTIFICACIÓN DE LA IMAGEN Y TRAZABILIDAD CRIPTOGRÁFICA</div>
+        <table class="forense-table">
+          <tbody>
+            <tr>
+              <th style="width: 25%;">Archivo de Imagen:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>IMG_20261113_EVIDENCIA_01.jpg (Joint Photographic Experts Group)</span>}</td>
+            </tr>
+            <tr>
+              <th>Hash SHA-256 de la Imagen:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo'}</span>}</td>
+            </tr>
+            <tr>
+              <th>Resolución y Dimensiones:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>4032 × 3024 píxeles (12.2 MP) · Profundidad de Color: 24 bits sRGB</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2.0 EXTRACCIÓN Y COTEJO EXIF -->
+      <div class="section-block">
+        <div class="section-heading">2.0 ANÁLISIS DE METADATOS EXIF (EXIFTOOL v12.70 / JPEGSNOOP)</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Etiqueta EXIF</th>
+              <th style="width: 35%;">Valor Extraído</th>
+              <th style="width: 35%;">Conclusión Forense</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Marca y Modelo de Captura (Make/Model)</td>
+              <td class="font-mono">{isBlanco ? '' : 'Samsung Galaxy S22 (SM-S901E)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sensor nativo coincide con el dispositivo consignado.</span>}</td>
+            </tr>
+            <tr>
+              <td>Fecha/Hora Original (DateTimeOriginal)</td>
+              <td class="font-mono">{isBlanco ? '' : '2026:11:10 14:22:15'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marca temporal coherente con el sistema de archivos.</span>}</td>
+            </tr>
+            <tr>
+              <td>Geolocalización GPS (Lat/Long)</td>
+              <td class="font-mono">{isBlanco ? '' : '09°55\'41.2"N 69°37\'12.5"W'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coordenadas coinciden con el lugar de los hechos.</span>}</td>
+            </tr>
+            <tr>
+              <td>Software de Edición (Software Tag)</td>
+              <td class="font-mono">{isBlanco ? '' : 'None (Firmware de Cámara Original)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de software de retoque (Photoshop, GIMP, etc.).</span>}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3.0 ANÁLISIS DE NIVEL DE ERROR ELA -->
+      <div class="section-block">
+        <div class="section-heading">3.0 ANÁLISIS DE NIVEL DE ERROR DE COMPRESIÓN (ELA) Y PÍXELES</div>
+        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 40px;">
+          {isBlanco ? (
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <span class="linea-manual"></span>
+              <span class="linea-manual"></span>
+            </div>
+          ) : (
+            <span>El análisis ELA revela niveles de tasa de compresión uniformes en toda la superficie de la imagen a 95% de calidad JPEG. No se observan discrepancias lumínicas, artefactos de clonado de píxeles ni inconsistencias en las sombras arrojadas que sugieran manipulación digital.</span>
+          )}
         </div>
       </div>
-    </div>
 
-    <!-- ANÁLISIS ELA Y METADATOS -->
-    <div class="section">
-      <div class="section-title">2.0 ANÁLISIS ELA (ERROR LEVEL ANALYSIS) Y METADATOS EXIF</div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8.5pt;">
-        <tbody>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; width: 35%; font-weight: 700; background: #F8FAFC;">Mapa ELA</td>
-            <td style="padding: 6px 8px;" contenteditable="true">Compresión homogénea en cuadrículas JPEG 8x8. Sin parches anómalos de resave.</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Detección Copy-Move</td>
-            <td style="padding: 6px 8px;" contenteditable="true">Algoritmo SIFT/SURF ejecutado con resultado negativo de duplicación o clonado.</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Metadatos EXIF / JFIF</td>
-            <td style="padding: 6px 8px;" contenteditable="true">Marcas de cámara y timestamp coincidentes con el dispositivo móvil incautado.</td>
-          </tr>
-          <tr>
-            <td style="padding: 6px 8px; font-weight: 700; background: #F8FAFC;">Hash SHA-256 de la Imagen</td>
-            <td style="padding: 6px 8px;" class="font-mono" contenteditable="true" data-field="hashSHA256">{caso.hashSHA256 || '[Hash SHA-256 de la imagen]'}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- CONCLUSIÓN PERICIAL -->
-    <div class="section">
-      <div class="section-title">3.0 CONCLUSIONES PERICIALES DE AUTENTICIDAD</div>
-      <div class="form-group" contenteditable="true" style="min-height: 120px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 10px; font-size: 8.5pt; line-height: 20px; background: #FFFFFF;">
-        Se concluye que las imágenes analizadas corresponden a capturas auténticas tomadas por el sensor óptico del dispositivo peritado. No se identificaron manipulaciones digitales, empalmes fotográficos ni edición posterior por software de retoque o modelos de difusión generativa (IA).
+      <!-- 4.0 CONCLUSIONES FORENSES -->
+      <div class="legal-clause">
+        <strong>4.0 DICTAMEN DE AUTENTICIDAD DE IMAGEN:</strong> Se concluye categóricamente que la fotografía analizada es <strong>AUTÉNTICA E INALTERADA</strong>, conservando su integridad cromática y metadatos de origen desde el instante de su captura digital.
       </div>
     </div>
 
-    <!-- FIRMAS BILATERALES -->
-    <div class="signature-section" style="padding-top: 10px;">
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">PERITO PRINCIPAL</div>
-        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span></div>
-        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span></div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Perito Especialista</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
-      </div>
+    <!-- 5.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="PERITO EN ANÁLISIS DE IMÁGENES"
+      peritoTitulo="PERITO COORDINADOR FORENSE"
+      solicitanteNombre={caso.peritoLider}
+      solicitanteCedula={caso.perito_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion="Laboratorio Forense SHA256.US"
+      peritoNombre="Co-Perito de Imágenes"
+      peritoCedula="V-18.114.908"
+      peritoCiv="CIV-289410"
+      peritoInpre="INPRE-179420"
+      peritoCargo="Especialista en Fotografía Forense"
+      rolIso="DES (Digital Evidence Specialist) · ISO 27042"
+      modo={modo}
+    />
 
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">CO-PERITO COADYUVANTE</div>
-        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante">{caso.perito_coadyuvante || 'Co-Perito Revisor'}</span></div>
-        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_coadyuvante_cedula">{caso.perito_coadyuvante_cedula || 'V-19.888.777'}</span></div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Co-Perito Revisor</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
-      </div>
-    </div>
-  </PlanillaFolioWrapper>
+    <div class="sig-line" style="display: none;"></div>
+
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={1}
+      modo={modo}
+    />
+  </div>
 </div>

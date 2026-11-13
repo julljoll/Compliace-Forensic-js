@@ -1,109 +1,129 @@
 ---
 /**
- * SHA256.US — Planilla de Evaluación y Auditoría de UX/UI Forense (ISO 9241)
- * Escala Likert 1-5, evaluación pericial. Tamaño Folio (216mm x 330mm).
+ * SHA256.US — Planilla de Evaluación de Calidad de Software e Interfaz UX
+ * Fundamentación: ISO/IEC 25010 · Evaluación Heurística y Calidad de Evidencia en Pantalla.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
-import PlanillaFolioWrapper from './PlanillaFolioWrapper.astro';
+import PlanillaHeader from './PlanillaHeader.astro';
+import PlanillaFooter from './PlanillaFooter.astro';
+import PlanillaFirmasBilaterales from './PlanillaFirmasBilaterales.astro';
 import type { CasoCMS } from '../../lib/domain/types';
 
 interface Props {
   caso?: Partial<CasoCMS>;
+  modo?: 'blanco' | 'datos';
 }
 
-const { caso = {} } = Astro.props;
+const { caso = {}, modo = 'blanco' } = Astro.props;
+const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 ---
 
 <div class="folio-forense-aislado">
-  <PlanillaFolioWrapper
-    title="Evaluación de Experiencia de Usuario UX/UI Forense"
-    nroLabel="N° EXPEDIENTE:"
-    nroValue={caso.numeroCaso || '[EXPEDIENTE]'}
-    watermarkText="EVALUACIÓN UX/UI"
-  >
-    <div class="uswds-top-header">
-      SHA256.US · PLANILLA DE EVALUACIÓN Y AUDITORÍA DE EXPERIENCIA DE USUARIO (UX/UI FORENSE) — ISO 9241
-    </div>
+  <div class="page">
+    <div class="watermark">EVALUACIÓN UX</div>
 
-    <!-- EXPEDIENTE Y EVALUADOR -->
-    <div class="section">
-      <div class="uswds-card">
-        <div class="grid-container" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="form-group">
-            <div class="label">N° Expediente de Referencia</div>
-            <div class="value font-mono" contenteditable="true" data-field="numeroCaso">{caso.numeroCaso || '[EXP-2026-SHA-XXXX]'}</div>
+    <PlanillaHeader
+      title="Planilla de Evaluación de Calidad de Software y UX"
+      norma="ISO/IEC 25010 · HEURÍSTICA FORENSE DE INTERFAZ"
+      codigoDoc="FO-UX-01"
+      numeroCaso={caso.numeroCaso}
+      numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
+      modo={modo}
+      hojaActual={1}
+      totalHojas={1}
+    />
+
+    <div class="planilla-body">
+      <!-- 1.0 SISTEMA EVALUADO -->
+      <div class="section-block">
+        <div class="section-heading">1.0 APLICACIÓN / SISTEMA EVALUADO Y ENTORNO DE EJECUCIÓN</div>
+        <div class="form-grid-2">
+          <div class="field-row">
+            <span class="field-label">Nombre del Software / Plataforma:</span>
+            <div class="field-value">
+              {isBlanco ? <span class="linea-manual"></span> : <span>{caso.tipoProyecto === 'forense_whatsapp' ? 'WhatsApp Messenger (Meta Inc.)' : (caso.tipoProyecto === 'forense_email' ? 'Cliente de Correo Electrónico (Thunderbird/Outlook)' : 'Sistema de Archivos y Almacenamiento')}</span>}
+            </div>
           </div>
-          <div class="form-group">
-            <div class="label">Evaluador</div>
-            <div class="value" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || 'Perito / Abogado Litigante'}</div>
+          <div class="field-row">
+            <span class="field-label">Versión de Compilación / Build:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual"></span> : <span>v2.24.12.78 (Android OS 14)</span>}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 1.0 MATRIZ DE EVALUACIÓN LIKERT -->
-    <div class="section">
-      <div class="section-title">1.0 MATRIZ DE EVALUACIÓN HEURÍSTICA Y USABILIDAD (LIKERT 1-5)</div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1; font-size: 8pt;">
-        <thead>
-          <tr style="background: #112E51; color: #FFFFFF;">
-            <th style="padding: 6px; text-align: left;">Criterio Heurístico (ISO 9241)</th>
-            <th style="padding: 6px; width: 12%; text-align: center;">1 (Deficiente)</th>
-            <th style="padding: 6px; width: 12%; text-align: center;">2 (Regular)</th>
-            <th style="padding: 6px; width: 12%; text-align: center;">3 (Aceptable)</th>
-            <th style="padding: 6px; width: 12%; text-align: center;">4 (Bueno)</th>
-            <th style="padding: 6px; width: 12%; text-align: center;">5 (Excelente)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px;">1. Claridad de la información y membrete institucional</td>
-            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px;">2. Facilidad de llenado y validación de campos requeridos</td>
-            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px;">3. Visibilidad inmediata del estado de hash SHA-256</td>
-            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #CBD5E1;">
-            <td style="padding: 6px;">4. Fidelidad de impresión física en tamaño Folio (216mm x 330mm)</td>
-            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
-          </tr>
-          <tr>
-            <td style="padding: 6px;">5. Espacio reglamentario para firmas y huellas dactilares</td>
-            <td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center;">[&nbsp;&nbsp;]</td><td style="text-align: center; font-weight: bold; color: #008837;">[&nbsp;X&nbsp;]</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- FIRMAS -->
-    <div class="signature-section" style="padding-top: 10px;">
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">EVALUADOR TÉCNICO</div>
-        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="solicitante_nombre">{caso.solicitante_nombre || '[Evaluador]'}</span></div>
-        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="solicitante_cedula">{caso.solicitante_cedula || '[C.I.]'}</span></div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma del Evaluador</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
+      <!-- 2.0 MATRIZ HEURÍSTICA ISO 25010 -->
+      <div class="section-block">
+        <div class="section-heading">2.0 MATRIZ DE EVALUACIÓN HEURÍSTICA Y CONFORMIDAD FORENSE (ISO 25010)</div>
+        <table class="forense-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Criterio de Calidad</th>
+              <th style="width: 25%;">Evaluación</th>
+              <th style="width: 45%;">Comprobación Pericial</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Legibilidad de Sellos de Tiempo (Timestamps)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marcas temporales UTC y locales sincronizadas con precisión.</span>}</td>
+            </tr>
+            <tr>
+              <td>Integridad de Mensajería y Estados de Envío</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Iconografía de doble check gris/azul persistida en base de datos.</span>}</td>
+            </tr>
+            <tr>
+              <td>Trazabilidad de Metadatos y Adjuntos</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Nombres de archivo, tamaños de byte y hashes reproducibles.</span>}</td>
+            </tr>
+            <tr>
+              <td>Prevención de Manipulación Involuntaria</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Mecanismos de verificación biométrica y bloqueo de interfaz activos.</span>}</td>
+            </tr>
+            <tr>
+              <td>Consistencia Visual y No Repudio</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coincidencia 100% entre pantalla renderizada y registros brutos SQLite.</span>}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="sig-detail-card">
-        <div class="sig-detail-label">PERITO LÍDER</div>
-        <div class="sig-field" style="margin-top: 8px;">Nombre: <span class="sig-underline" contenteditable="true" data-field="peritoLider">{caso.peritoLider || 'Perito Principal'}</span></div>
-        <div class="sig-field">C.I. N°: <span class="sig-underline" contenteditable="true" data-field="perito_cedula">{caso.perito_cedula || 'V-18.999.001'}</span></div>
-        <div class="sig-line"></div>
-        <div class="sig-line-label">Firma de Recepción de Auditoría</div>
-        <div class="fingerprint-row">
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR DER.</span></div>
-          <div class="thumb-wrapper"><div class="thumb-box"></div><span class="thumb-label">PULGAR IZQ.</span></div>
-        </div>
+      <!-- 3.0 DICTAMEN DE CONFORMIDAD -->
+      <div class="legal-clause">
+        <strong>3.0 DICTAMEN DE CONFORMIDAD DE SOFTWARE:</strong> Concluye la evaluación heurística determinando que la interfaz de usuario bajo análisis no presenta distorsiones, emulaciones fraudulentas ni artefactos visuales artificiales, correspondiendo fehacientemente con el comportamiento estándar del software legítimo certificado.
       </div>
     </div>
-  </PlanillaFolioWrapper>
+
+    <!-- 4.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
+    <PlanillaFirmasBilaterales
+      consignanteTitulo="PERITO EVALUADOR DE SOFTWARE"
+      peritoTitulo="PERITO COORDINADOR DE CALIDAD"
+      solicitanteNombre={caso.peritoLider}
+      solicitanteCedula={caso.perito_cedula}
+      solicitanteTelefono={caso.solicitante_telefono}
+      solicitanteDireccion="Laboratorio Forense SHA256.US"
+      peritoNombre="Co-Perito de Calidad"
+      peritoCedula="V-16.904.312"
+      peritoCiv="CIV-274190"
+      peritoInpre="INPRE-165219"
+      peritoCargo="Especialista en Evaluación de Software"
+      rolIso="DES · ISO/IEC 25010"
+      modo={modo}
+    />
+
+    <div class="sig-line" style="display: none;"></div>
+
+    <PlanillaFooter
+      hashSha256={caso.hashSHA256}
+      hojaActual={1}
+      totalHojas={1}
+      modo={modo}
+    />
+  </div>
 </div>

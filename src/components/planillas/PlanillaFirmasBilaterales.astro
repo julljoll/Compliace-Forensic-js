@@ -1,0 +1,104 @@
+---
+/**
+ * SHA256.US — Bloque Canónico de Cierre Legal: Firmas y Huellas Dactilares Bilaterales
+ * Cumple con COPP Arts. 187, 223–225 y MUCC-2017.
+ * Presenta 2 columnas equilibradas con líneas de firma sólidas y recuadros dactilares dobles.
+ */
+interface Props {
+  consignanteTitulo?: string;
+  peritoTitulo?: string;
+  solicitanteNombre?: string;
+  solicitanteCedula?: string;
+  solicitanteTelefono?: string;
+  solicitanteDireccion?: string;
+  peritoNombre?: string;
+  peritoCedula?: string;
+  peritoCiv?: string;
+  peritoInpre?: string;
+  peritoCargo?: string;
+  rolIso?: string;
+  modo?: 'blanco' | 'datos';
+}
+
+const {
+  consignanteTitulo = 'CONSIGNANTE / DECLARANTE',
+  peritoTitulo = 'PERITO OFICIAL RESPONSABLE',
+  solicitanteNombre = '',
+  solicitanteCedula = '',
+  solicitanteTelefono = '',
+  solicitanteDireccion = '',
+  peritoNombre = '',
+  peritoCedula = '',
+  peritoCiv = '',
+  peritoInpre = '',
+  peritoCargo = '',
+  rolIso = 'DEFR (Digital Evidence First Responder)',
+  modo = 'blanco',
+} = Astro.props;
+
+const isBlanco = modo === 'blanco';
+---
+
+<div class="canonical-signatures">
+  <!-- Columna Izquierda: Consignante / Declarante -->
+  <div class="sig-box">
+    <div class="sig-box-title">{consignanteTitulo}</div>
+    <div class="sig-data-row">
+      <strong>NOMBRE:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{solicitanteNombre || '__________________________________'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>C.I. / RIF:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{solicitanteCedula || '__________________________________'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>TELÉFONO:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{solicitanteTelefono || '__________________________________'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>DIRECCIÓN:</strong> {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{solicitanteDireccion || '__________________________________'}</span>}
+    </div>
+
+    <div class="sig-line-solid sig-line"></div>
+    <div class="sig-legend">Firma del Consignante / Solicitante</div>
+
+    <div class="fingerprint-container">
+      <div class="fingerprint-item">
+        <div class="thumb-box-canonical"></div>
+        <span class="thumb-box-label">PULGAR DER.</span>
+      </div>
+      <div class="fingerprint-item">
+        <div class="thumb-box-canonical"></div>
+        <span class="thumb-box-label">PULGAR IZQ.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna Derecha: Perito Oficial SHA256.US -->
+  <div class="sig-box">
+    <div class="sig-box-title">{peritoTitulo}</div>
+    <div class="sig-data-row">
+      <strong>PERITO LÍDER:</strong> {isBlanco ? <span class="linea-manual" data-field="peritoLider"></span> : <span data-field="peritoLider">{peritoNombre || 'Jull Joll (Perito Principal)'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>C.I. N°:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_cedula"></span> : <span data-field="perito_cedula">{peritoCedula || 'V-18.999.001'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>CIV / INPRE:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_civ"></span> : <span data-field="perito_civ">CIV: {peritoCiv || '299410'} · INPRE: {peritoInpre || '184920'}</span>}
+    </div>
+    <div class="sig-data-row">
+      <strong>CARGO / ROL:</strong> {isBlanco ? <span class="linea-manual" data-field="perito_cargo"></span> : <span data-field="perito_cargo">{peritoCargo || 'Perito Informático Forense'} ({rolIso})</span>}
+    </div>
+
+    <div class="sig-line-solid sig-line"></div>
+    <div class="sig-legend">Firma y Sello del Perito Oficial</div>
+
+    <div class="fingerprint-container">
+      <div class="fingerprint-item">
+        <div class="thumb-box-canonical"></div>
+        <span class="thumb-box-label">PULGAR DER.</span>
+      </div>
+      <div class="fingerprint-item">
+        <div class="thumb-box-canonical"></div>
+        <span class="thumb-box-label">PULGAR IZQ.</span>
+      </div>
+    </div>
+  </div>
+</div>
