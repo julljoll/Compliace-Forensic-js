@@ -1,7 +1,7 @@
 ---
 /**
- * SHA256.US — Acta de Desprecintado y Apertura en Laboratorio
- * Fundamentación: ISO/IEC 27037 §5.4 · NIST SP 800-86 · COPP Art. 187.
+ * SHA256.US — Acta de Desprecintado, Apertura y Adquisición Lógica en Laboratorio
+ * Fundamentación: ISO/IEC 27037 §5.4.3 · NIST SP 800-101 Nivel 2 · COPP Art. 187 · LMDFE Art. 7.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -29,8 +29,8 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="watermark">DESPRECINTADO</div>
 
     <PlanillaHeader
-      title="Acta de Desprecintado y Apertura en Laboratorio"
-      norma="ISO/IEC 27037 §5.4 · NIST SP 800-86 · COPP ART. 187"
+      title="Acta de Desprecintado y Adquisición Lógica en Laboratorio"
+      norma="ISO/IEC 27037 §5.4.3 · NIST SP 800-101 NIVEL 2 · COPP ART. 187"
       codigoDoc="FO-FOR-04"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -47,75 +47,75 @@ const dispositivoDesc = caso.dispositivo_marca
           <div class="field-row">
             <span class="field-label">Lugar de Apertura:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Área Pericial Limpia — Laboratorio Forense SHA256.US</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>Área Pericial Aislada — Laboratorio Forense SHA256.US</span>}
             </div>
           </div>
           <div class="field-row">
             <span class="field-label">Fecha y Hora de Ruptura de Precinto:</span>
             <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} - 11:30 AM</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 11:30 VET</span>}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2.0 VERIFICACIÓN PREVIA DEL PRECINTO -->
+      <!-- 2.0 VERIFICACIÓN PREVIA DEL PRECINTO Y NUEVO PRECINTO -->
       <div class="section-block">
-        <div class="section-heading">2.0 INSPECCIÓN Y VERIFICACIÓN PREVIA DE INTEGRIDAD FÍSICA (COPP ART. 187)</div>
+        <div class="section-heading">2.0 TRAZABILIDAD DE PRECINTOS: INICIAL Y REEMBALAJE (MUCC-2017)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Dispositivo a Desprecintar:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Dispositivo peritado'} (S/N: {caso.dispositivo_imei || caso.discoduro_serial || 'N/A'})</span>}</td>
+              <th style="width: 28%;">Dispositivo Móvil:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone'} (S/N o IMEI: {caso.dispositivo_imei || caso.discoduro_serial || 'N/A'})</span>}</td>
             </tr>
             <tr>
-              <th>Precinto Inicial N°:</th>
+              <th>Precinto Inicial Roto N°:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-2026-991'}</span>}</td>
             </tr>
             <tr>
               <th>Estado Físico del Precinto:</th>
-              <td>{isBlanco ? <span>[&nbsp;&nbsp;] Íntegro sin signos de apertura previa &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] Dañado / Adulterado</span> : <span>[&nbsp;X&nbsp;] ÍNTEGRO, SIN SIGNOS DE APERTURA PREVIA NI ADULTERACIÓN</span>}</td>
+              <td>{isBlanco ? <span>[&nbsp;&nbsp;] Íntegro sin apertura previa &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] Dañado / Violado</span> : <span>[&nbsp;X&nbsp;] ÍNTEGRO, SIN SIGNOS DE APERTURA PREVIA NI ADULTERACIÓN</span>}</td>
             </tr>
             <tr>
-              <th>Bolsa Faraday Receptora:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="bolsa_faraday_numero"></span> : <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-2026-001'}</span>}</td>
+              <th>Nuevo Precinto de Reembalaje N°:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>PREC-REEMB-2026-992 (Asignado tras extracción)</span>}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 3.0 PROCEDIMIENTO DE ADQUISICIÓN Y HASH MATCH -->
+      <!-- 3.0 PROCEDIMIENTO DE ADQUISICIÓN LÓGICA Y HASH -->
       <div class="section-block">
-        <div class="section-heading">3.0 ADQUISICIÓN BIT-A-BIT Y CÁLCULO DE HASH GÉNESIS (NIST SP 800-86)</div>
+        <div class="section-heading">3.0 ADQUISICIÓN LÓGICA FORENSE Y CÁLCULO DE HASH (NIST SP 800-101)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 30%;">Bloqueador de Escritura:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Tableau Forensic T8u USB 3.0 Bridge (Hardware Write-Blocker Certificado)</span>}</td>
+              <th style="width: 32%;">Modalidad de Adquisición:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Extracción Lógica de Contenedor y Bases de Datos SQLite (NIST Nivel 2)</span>}</td>
             </tr>
             <tr>
-              <th>Herramienta de Clonación:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>FTK Imager CLI / dc3dd v7.2 (Modo Forense E01 con compresión gzip)</span>}</td>
+              <th>Herramienta Forense Empleada:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>ALEAPP CLI / Andriller / Protocolo de Respaldo Lógico Auditado</span>}</td>
             </tr>
             <tr>
-              <th>Hash Génesis SHA-256 (Origen):</th>
+              <th>Base de Datos Extraída:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>msgstore.db / wa.db (Comunicaciones de WhatsApp)</span>}</td>
+            </tr>
+            <tr>
+              <th>Hash SHA-256 de la Base de Datos:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo'}</span>}</td>
             </tr>
             <tr>
-              <th>Hash Imagen Forense (Destino):</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.hashSHA256 || 'Pendiente por verificación'}</span>}</td>
-            </tr>
-            <tr>
-              <th>Resultado de Verificación:</th>
-              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH (100% IDÉNTICO) &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] MISMATCH (ALERTA)</span> : <span>[&nbsp;X&nbsp;] MATCH (100% IDÉNTICO — INTEGRIDAD BIT-A-BIT CERTIFICADA)</span>}</td>
+              <th>Verificación de Integridad:</th>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH (100% ÍNTEGRO) &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] MISMATCH (ALERTA)</span> : <span>[&nbsp;X&nbsp;] MATCH (100% ÍNTEGRO — VALIDEZ DE ORIGINAL ART. 7 LMDFE)</span>}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 4.0 DECLARACIÓN DE RESGUARDO -->
+      <!-- 4.0 REEMBALAJE Y RESGUARDO -->
       <div class="legal-clause">
-        <strong>4.0 DECLARACIÓN DE INTEGRIDAD FORENSE:</strong> Constatada la correspondencia matemática unívoca entre el Hash Génesis del medio físico y la Imagen Forense adquirida, se procede a reembalar el medio original, aplicándole nuevo precinto de seguridad, para trabajar exclusivamente sobre copia de trabajo pericial certificada, garantizando la inmutabilidad procesal de la prueba.
+        <strong>4.0 CONSTANCIA DE REEMBALAJE Y RESGUARDO (MUCC-2017):</strong> Culminada con éxito la extracción lógica forense de la base de datos de mensajería y calculado su Hash SHA-256, se reembaló el teléfono celular original en bolsa Faraday y se le aplicó el Nuevo Precinto de Seguridad supra registrado, garantizando su indemnidad para posterior cotejo o devolución formal.
       </div>
     </div>
 
@@ -131,7 +131,7 @@ const dispositivoDesc = caso.dispositivo_marca
       peritoCedula="V-19.882.110"
       peritoCiv="CIV-301290"
       peritoInpre="INPRE-192014"
-      peritoCargo="Especialista en Adquisición Digital"
+      peritoCargo="Especialista en Adquisición Lógica"
       rolIso="DEFR / DES · ISO/IEC 27037"
       modo={modo}
     />

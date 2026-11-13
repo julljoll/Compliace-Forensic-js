@@ -1,7 +1,8 @@
 ---
 /**
  * SHA256.US — Dictamen Pericial Especializado en Autenticidad de Audios Digitales
- * Fundamentación: ISO/IEC 27042 · Decodificación Opus · Espectrograma FFT · SWGDE & Daubert.
+ * Fundamentación: COPP Arts. 223–225 · LMDFE Arts. 4 y 7 · CENIF (G.O. 39.847 Art. 2.1)
+ * Decodificación Opus (RFC 6716) · Espectrograma FFT · SWGDE & Daubert FRE 702.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -24,7 +25,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
     <PlanillaHeader
       title="Dictamen Pericial de Autenticidad de Audios Digitales"
-      norma="ISO/IEC 27042 · OPUS RFC 6716 · ESPECTROGRAMA FFT · SWGDE"
+      norma="COPP ARTS. 223–225 · LMDFE ARTS. 4 Y 7 · SWGDE AUDIO"
       codigoDoc="FO-AUD-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -36,12 +37,12 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 IDENTIFICACIÓN TÉCNICA DEL AUDIO -->
       <div class="section-block">
-        <div class="section-heading">1.0 ESPECIFICACIÓN TÉCNICA DEL ARCHIVO Y HASH SHA-256</div>
+        <div class="section-heading">1.0 ESPECIFICACIÓN TÉCNICA DE LA NOTA DE VOZ DE WHATSAPP (LMDFE ART. 7)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 28%;">Nombre del Archivo:</th>
-              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>AUD_20261113_EVIDENCIA_01.opus (Contenedor Ogg)</span>}</td>
+              <th style="width: 28%;">Archivo de Audio / Nota:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>AUD_WHATSAPP_NOTA_VOZ.opus (Flujo nativo extraído de msgstore.db)</span>}</td>
             </tr>
             <tr>
               <th>Hash SHA-256 del Audio:</th>
@@ -93,8 +94,8 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 3.0 CONCLUSIONES ACÚSTICAS -->
       <div class="section-block">
-        <div class="section-heading">3.0 EVALUACIÓN DE INTEGRIDAD Y REPRODUCIBILIDAD DAUBERT (FRE 702)</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 40px;">
+        <div class="section-heading">3.0 EVALUACIÓN DE INTEGRIDAD Y REPRODUCIBILIDAD CIENTÍFICA (CENIF / DAUBERT)</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
@@ -108,7 +109,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 4.0 DICTAMEN MOTIVADO -->
       <div class="legal-clause">
-        <strong>4.0 DICTAMEN DE AUTENTICIDAD DE AUDIO:</strong> Se dictamina categóricamente que el archivo de audio peritado es <strong>AUTÉNTICO, ÍNTEGRO Y NO EDITADO</strong>, no existiendo evidencias de manipulación, inserción, eliminación o alteración artificial en su secuencia sonora original.
+        <strong>4.0 DICTAMEN DE AUTENTICIDAD DE AUDIO (COPP ART. 225):</strong> Se dictamina categóricamente que la nota de voz peritada es <strong>AUTÉNTICA, ÍNTEGRA Y NO MANIPULADA</strong>, satisfaciendo el estándar de original de los Arts. 4 y 7 de la LMDFE y habiendo sido aportada por el interlocutor legítimo sin violar la privacidad de terceros (Art. 21 LEDCI).
       </div>
     </div>
 

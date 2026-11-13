@@ -1,7 +1,7 @@
 ---
 /**
- * SHA256.US — Acta de Entrega de Resultados Periciales y Devolución de Evidencias
- * Fundamentación: MUCC-2017 Fase 4 · COPP Art. 187 · Cadena de Custodia.
+ * SHA256.US — Acta de Disposición Final y Devolución de Evidencias
+ * Fundamentación: MUCC-2017 Disposición Final (Gaceta Oficial N° 41.247) · COPP Art. 187 · Cierre de Custodia.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -20,11 +20,11 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
 <div class="folio-forense-aislado">
   <div class="page">
-    <div class="watermark">ENTREGA</div>
+    <div class="watermark">DISPOSICIÓN FINAL</div>
 
     <PlanillaHeader
-      title="Acta de Entrega de Resultados Periciales y Devolución"
-      norma="MUCC-2017 FASE 4 · COPP ART. 187 · CADENA DE CUSTODIA"
+      title="Acta de Disposición Final y Devolución de Evidencias"
+      norma="MUCC-2017 DISPOSICIÓN FINAL (G.O. 41.247) · COPP ART. 187"
       codigoDoc="ACT-ENT-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -34,22 +34,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     />
 
     <div class="planilla-body">
-      <!-- 1.0 DATOS DEL ACTO DE ENTREGA -->
+      <!-- 1.0 DATOS DEL ACTO DE DISPOSICIÓN FINAL -->
       <div class="section-block">
-        <div class="section-heading">1.0 DATOS GENERALES DEL ACTO DE ENTREGA Y RECEPCIÓN</div>
+        <div class="section-heading">1.0 DATOS DEL ACTO DE DISPOSICIÓN FINAL Y CIERRE (MUCC-2017)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 22%;">Lugar del Acto:</th>
-              <td style="width: 78%;">{isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Municipio Jiménez, Estado Lara</span>}</td>
+              <th style="width: 25%;">Lugar del Acto:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}</td>
             </tr>
             <tr>
               <th>Fecha y Hora:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.fecha_apertura ? `${caso.fecha_apertura} · 11:30 VET` : '2026-11-13 · 11:30 VET'}</span>}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 12:00 VET</span>}</td>
             </tr>
             <tr>
-              <th>Expediente / PRCC:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso} · PRCC: {caso.numero_prcc || caso.numeroPRCC || 'PRCC-2026-0091'}</span>}</td>
+              <th>Modalidad de Disposición:</th>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] Devolución al Titular &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] Entrega Judicial</span> : <span>[&nbsp;X&nbsp;] DEVOLUCIÓN AL CONSIGNANTE TITULAR (CIERRE FORMAL DE CUSTODIA)</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -57,7 +57,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 2.0 IDENTIFICACIÓN DEL RECEPTOR -->
       <div class="section-block">
-        <div class="section-heading">2.0 IDENTIFICACIÓN DEL SOLICITANTE / RECEPTOR DE EVIDENCIAS</div>
+        <div class="section-heading">2.0 IDENTIFICACIÓN DEL CONSIGNANTE RECEPTOR DE EVIDENCIAS</div>
         <table class="forense-table">
           <tbody>
             <tr>
@@ -65,20 +65,20 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
               <td style="width: 72%;">{isBlanco ? <span class="linea-manual" data-field="solicitante_nombre"></span> : <span data-field="solicitante_nombre">{caso.solicitante_nombre || caso.receptor_nombre}</span>}</td>
             </tr>
             <tr>
-              <th>Cédula / Pasaporte:</th>
+              <th>Cédula de Identidad / RIF:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="solicitante_cedula"></span> : <span data-field="solicitante_cedula">{caso.solicitante_cedula || caso.receptor_cedula}</span>}</td>
             </tr>
             <tr>
               <th>Calidad del Receptor:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Consignante Original &nbsp;&nbsp; [ &nbsp; ] Apoderado Legal &nbsp;&nbsp; [ &nbsp; ] Funcionario Actuante</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Titular Consignante Original &nbsp;&nbsp; [ &nbsp; ] Apoderado Legal</span>}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 3.0 RELACIÓN DE DOCUMENTOS Y DISPOSITIVOS ENTREGADOS -->
+      <!-- 3.0 RELACIÓN DE ENTREGABLES -->
       <div class="section-block">
-        <div class="section-heading">3.0 RELACIÓN DE ENTREGABLES Y MATERIAL DEVOLUTIVO</div>
+        <div class="section-heading">3.0 RELACIÓN DE DOCUMENTOS, DISPOSITIVOS Y COPIAS MASTER ENTREGADAS</div>
         <table class="forense-table">
           <thead>
             <tr>
@@ -95,13 +95,13 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">02</td>
-              <td>Copia Forense Digital Inmutable (Medio Óptico M-DISC / USB Protegido)</td>
+              <td>Copia Forense Digital Inmutable (Soporte Digital con Extracción Lógica)</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Hash Validado</span>}</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">03</td>
-              <td>Dispositivo Físico Peritado (Devolución en Bolsa de Evidencia Original)</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Precinto Intacto</span>}</td>
+              <td>Dispositivo Smartphone Peritado (Devolución en su embalaje de seguridad)</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Precinto de Resguardo Intacto</span>}</td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: bold;">04</td>
@@ -114,14 +114,14 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 4.0 CLÁUSULA DE CONFORMIDAD -->
       <div class="legal-clause">
-        <strong>4.0 DECLARACIÓN DE RECEPCIÓN Y CONFORMIDAD:</strong> El solicitante/receptor declara haber recibido los elementos supra descritos a su entera satisfacción, certificando la indemnidad del dispositivo, el precinto de custodia y los recaudos documentales periciales emitidos por el laboratorio, conforme al Art. 187 del Código Orgánico Procesal Penal.
+        <strong>4.0 DECLARACIÓN DE RECEPCIÓN Y CONFORMIDAD (MUCC-2017 · COPP ART. 187):</strong> El consignante titular declara recibir los elementos supra descritos a su entera satisfacción, certificando la indemnidad del teléfono celular devuelto, la integridad del precinto de resguardo y los recaudos periciales emitidos por el laboratorio, dándose por concluido el proceso de custodia conforme al ordenamiento jurídico venezolano.
       </div>
     </div>
 
     <!-- 5.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
     <PlanillaFirmasBilaterales
-      consignanteTitulo="RECIBE CONFORME (SOLICITANTE / RECEPTOR)"
-      peritoTitulo="ENTREGA CONFORME (PERITO FORENSE)"
+      consignanteTitulo="RECIBE CONFORME (TITULAR CONSIGNANTE)"
+      peritoTitulo="ENTREGA CONFORME (PERITO FORENSE RESPONSABLE)"
       solicitanteNombre={caso.solicitante_nombre || caso.receptor_nombre}
       solicitanteCedula={caso.solicitante_cedula || caso.receptor_cedula}
       solicitanteTelefono={caso.solicitante_telefono}

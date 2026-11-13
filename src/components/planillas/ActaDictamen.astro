@@ -1,7 +1,8 @@
 ---
 /**
  * SHA256.US — Dictamen Pericial Oficial de Informática Forense
- * Fundamentación: COPP Arts. 187, 223–225 · ISO/IEC 27042 · LMDFE Art. 4.
+ * Fundamentación: COPP Arts. 187, 223–225 · LMDFE Arts. 4 y 7 · G.O. N° 39.847 (CENIF Art. 2.1)
+ * NIST SP 800-101 Nivel 2 (Extracción Lógica) · ISO/IEC 27037 §5.4.3 & ISO/IEC 27042.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 2 Hojas Físicas · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -32,7 +33,7 @@ const dispositivoDesc = caso.dispositivo_marca
 
     <PlanillaHeader
       title="Dictamen Pericial Oficial de Informática Forense"
-      norma="COPP ARTS. 187, 223–225 · ISO/IEC 27042 · LMDFE ART. 4"
+      norma="COPP ARTS. 187, 223–225 · LMDFE ARTS. 4 Y 7 · CENIF (G.O. 39.847)"
       codigoDoc={dictamenNum || 'FO-DIC-01'}
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -44,20 +45,24 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="planilla-body">
       <!-- 1.0 MARCO NORMATIVO Y FUNDAMENTACIÓN JURÍDICA -->
       <div class="section-block">
-        <div class="section-heading">1.0 MARCO NORMATIVO Y FUNDAMENTACIÓN JURÍDICA (COPP ARTS. 187, 223–225)</div>
+        <div class="section-heading">1.0 MARCO NORMATIVO Y FUNDAMENTACIÓN JURÍDICA VENEZOLANA</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">COPP Arts. 187, 223, 225:</th>
-              <td style="width: 75%;">Garantía de Cadena de Custodia, nombramiento de dos peritos juramentados y motivación científica obligatoria.</td>
+              <th style="width: 28%;">COPP Arts. 187, 223, 225:</th>
+              <td style="width: 72%;">Cadena de custodia, designación y juramento de dos peritos y dictamen científico motivado.</td>
             </tr>
             <tr>
-              <th>LMDFE Art. 4:</th>
-              <td>Plena eficacia y fuerza probatoria de los mensajes de datos, firmas electrónicas y evidencia digital.</td>
+              <th>LMDFE Arts. 4 y 7:</th>
+              <td>Plena eficacia probatoria de mensajes de datos y valor de documento original por integridad demostrada con Hash SHA-256.</td>
             </tr>
             <tr>
-              <th>ISO/IEC 27037 &amp; 27042:</th>
-              <td>Estándares periciales de repetibilidad científica, reproducibilidad y preservación de copias de trabajo bit-a-bit.</td>
+              <th>CENIF / SUSCERTE (G.O. 39.847):</th>
+              <td>Uso obligatorio de mecanismos, técnicas y herramientas forenses ampliamente conocidas, probadas y aceptadas (Art. 2.1).</td>
+            </tr>
+            <tr>
+              <th>NIST SP 800-101 &amp; ISO 27037 §5.4.3:</th>
+              <td>Estándar internacional para la adquisición lógica forense de mensajería (WhatsApp SQLite msgstore.db) y repetibilidad científica.</td>
             </tr>
           </tbody>
         </table>
@@ -65,28 +70,28 @@ const dispositivoDesc = caso.dispositivo_marca
 
       <!-- 2.0 IDENTIFICACIÓN DE LA EVIDENCIA Y VERIFICACIÓN HASH -->
       <div class="section-block">
-        <div class="section-heading">2.0 INDIVIDUALIZACIÓN DE LA EVIDENCIA Y VERIFICACIÓN CRIPTOGRÁFICA</div>
+        <div class="section-heading">2.0 INDIVIDUALIZACIÓN DE LA EVIDENCIA CONSIGNADA Y HASH SHA-256</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Dispositivo / Medio Peritado:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Dispositivo peritado'}</span>}</td>
+              <th style="width: 28%;">Dispositivo Peritado:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone'} · IMEI/Serial: <span class="font-mono">{caso.dispositivo_imei || caso.discoduro_serial || 'N/A'}</span></span>}</td>
             </tr>
             <tr>
-              <th>Serial Físico / IMEI:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}</td>
-            </tr>
-            <tr>
-              <th>PRCC y Precinto de Origen:</th>
+              <th>PRCC y Precinto de Consignación:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="numero_prcc"></span> : <span>PRCC: <span data-field="numero_prcc">{caso.numero_prcc || caso.numeroPRCC}</span> · Precinto: <span data-field="precinto_numero">{caso.precinto_numero}</span></span>}</td>
             </tr>
             <tr>
-              <th>Hash Génesis SHA-256 (Original):</th>
+              <th>Base de Datos WhatsApp Extraída:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>msgstore.db (Contenedor SQLite con esquema nativo)</span>}</td>
+            </tr>
+            <tr>
+              <th>Hash SHA-256 de Extracción Lógica:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo'}</span>}</td>
             </tr>
             <tr>
-              <th>Verificación de Integridad:</th>
-              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH VERIFICADO &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] MISMATCH</span> : <span>[&nbsp;X&nbsp;] MATCH VERIFICADO — 100% CORRESPONDENCIA BIT-A-BIT</span>}</td>
+              <th>Certificación de Integridad:</th>
+              <td style="font-weight: 700;">{isBlanco ? <span>[&nbsp;&nbsp;] MATCH VERIFICADO &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;] MISMATCH</span> : <span>[&nbsp;X&nbsp;] MATCH VERIFICADO — 100% INALTERADO (ART. 7 LMDFE)</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -94,15 +99,15 @@ const dispositivoDesc = caso.dispositivo_marca
 
       <!-- 3.0 METODOLOGÍA CIENTÍFICA APLICADA -->
       <div class="section-block">
-        <div class="section-heading">3.0 METODOLOGÍA FORENSE Y HERRAMIENTAS HOMOLOGADAS (ISO/IEC 27042)</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 44px;">
+        <div class="section-heading">3.0 METODOLOGÍA FORENSE Y PROCEDIMIENTO TÉCNICO APLICADO</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 44px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>Se aplicó clonado bit-a-bit con hardware write-blocker Tableau. El análisis se ejecutó exclusivamente sobre copia forense E01 mediante herramientas validadas por NIST: ALEAPP v3.1.8, Autopsy Forensic Browser v4.21, y entorno Kali Linux aislado de red, asegurando la reproducibilidad total del procedimiento (Estándar Daubert / FRE 702).</span>
+            <span>Se ejecutó Adquisición Lógica Forense (NIST SP 800-101 Nivel 2 · ISO/IEC 27037 §5.4.3) preservando el dispositivo en medio electromagnéticamente aislado. Se extrajo la base de datos msgstore.db y archivos adjuntos mediante herramientas validadas por NIST y CENIF (ALEAPP v3.1.8 / Autopsy Forensic Browser). El análisis se practicó exclusivamente sobre copia lógica de trabajo certificada, asegurando la repetibilidad total (Estándar Daubert / FRE 702).</span>
           )}
         </div>
       </div>
@@ -122,7 +127,7 @@ const dispositivoDesc = caso.dispositivo_marca
 
     <PlanillaHeader
       title="Dictamen Pericial Oficial — Conclusiones y Firmas"
-      norma="COPP ARTS. 187, 223–225 · ISO/IEC 27042 · LMDFE ART. 4"
+      norma="COPP ARTS. 187, 223–225 · LMDFE ARTS. 4 Y 7 · CENIF (G.O. 39.847)"
       codigoDoc={dictamenNum || 'FO-DIC-01'}
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -134,8 +139,8 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="planilla-body">
       <!-- 4.0 HALLAZGOS PERICIALES -->
       <div class="section-block">
-        <div class="section-heading">4.0 HALLAZGOS PERICIALES Y EVIDENCIA DIGITAL RECUPERADA</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 60px;">
+        <div class="section-heading">4.0 HALLAZGOS PERICIALES, CHATS Y COMUNICACIONES EXTRAÍDAS</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 58px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 10px;">
               <span class="linea-manual"></span>
@@ -143,7 +148,7 @@ const dispositivoDesc = caso.dispositivo_marca
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>Se constata la existencia de comunicaciones pertinentes en la base de datos msgstore.db, con marcas temporales UTC coherentes, firmas SHA-256 de archivos adjuntos consistentes y sin vestigios de sobreescritura, empalme de bases de datos externas ni adulteración maliciosa en el sistema de archivos peritado.</span>
+            <span>Se extrajeron y decodificaron las conversaciones de interés contenidas en la base de datos msgstore.db, constatando los números de teléfono JID de los interlocutores, el contenido íntegro de los mensajes de texto, las notas de voz asociadas en formato Opus 48 kHz y sus marcas temporales UTC nativas, no evidenciándose indicios de forjamiento, alteración de registros SQLite ni empalme artificial de datos.</span>
           )}
         </div>
       </div>
@@ -152,29 +157,29 @@ const dispositivoDesc = caso.dispositivo_marca
       <div class="section-block">
         <div class="section-heading">5.0 CONCLUSIONES TÉCNICO-CIENTÍFICAS Y DICTAMEN MOTIVADO</div>
         <div class="legal-clause" style="margin-bottom: 2px;">
-          <strong>DICTAMEN MOTIVADO (COPP ART. 225):</strong> Concluimos de manera unánime, objetiva y fundada en el método científico, que la evidencia digital sometida a peritaje es <strong>AUTÉNTICA, ÍNTEGRA Y FIABLE</strong>. La trazabilidad de su Cadena de Custodia no ha sido vulnerada, cumpliendo a cabalidad con los extremos del Art. 187 del COPP y los estándares periciales ISO/IEC 27037 y 27042.
+          <strong>DICTAMEN MOTIVADO (COPP ART. 225 · LMDFE ART. 7):</strong> Concluimos de manera unánime, objetiva e indubitada, fundamentados en el método científico, que los mensajes de datos y notas de voz analizados son <strong>AUTÉNTICOS, ÍNTEGROS Y ORIGINALES</strong>. La cadena de custodia por consignación se mantuvo ininterrumpida (Art. 187 COPP y MUCC-2017), gozando el presente dictamen de plena validez y eficacia probatoria judicial conforme al Artículo 4 de la Ley sobre Mensajes de Datos y Firmas Electrónicas.
         </div>
       </div>
 
       <!-- 6.0 JURAMENTO DE LEY -->
       <div class="legal-clause">
-        <strong>6.0 JURAMENTO DE LEY (COPP ART. 223):</strong> Los peritos suscritos juran haber desempeñado su encargo con estricta lealtad a la verdad científica, con independencia de criterio y en sujeción a las normas éticas y legales que rigen el ejercicio de la prueba pericial en la República Bolivariana de Venezuela.
+        <strong>6.0 JURAMENTO DE LEY (COPP ARTS. 223 Y 224):</strong> Los dos peritos que suscriben certifican bajo fe de juramento haber desempeñado su encargo con estricta sujeción a la verdad científica, con independencia de criterio y conforme a las leyes y reglamentos de la República Bolivariana de Venezuela.
       </div>
     </div>
 
     <!-- 7.0 CIERRE LEGAL: FIRMAS BILATERALES DE DOS PERITOS -->
     <PlanillaFirmasBilaterales
       consignanteTitulo="PERITO INFORMÁTICO FORENSE PRINCIPAL"
-      peritoTitulo="CO-PERITO ASISTENTE COADYUVANTE"
+      peritoTitulo="CO-PERITO EN INFORMÁTICA FORENSE"
       solicitanteNombre={caso.peritoLider || 'Jull Joll (Perito Líder)'}
       solicitanteCedula={caso.perito_cedula || 'V-18.999.001'}
       solicitanteTelefono={caso.solicitante_telefono || '+58 412-0000000'}
       solicitanteDireccion="Laboratorio Forense SHA256.US"
-      peritoNombre={caso.perito_coadyuvante || 'Co-Perito Acreditado'}
+      peritoNombre={caso.perito_coadyuvante || 'Co-Perito Colegiado'}
       peritoCedula="V-19.882.110"
       peritoCiv="CIV-301290"
       peritoInpre="INPRE-192014"
-      peritoCargo="Perito Coadyuvante en Informática Forense"
+      peritoCargo="Perito en Informática Forense"
       rolIso="DES (Digital Evidence Specialist) · COPP Art. 223"
       modo={modo}
     />

@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Dictamen Pericial Especializado en Evidencia Fotográfica e Imágenes
- * Fundamentación: ISO/IEC 27042 · Análisis de Metadatos EXIF · Error Level Analysis (ELA).
+ * Fundamentación: COPP Arts. 223–225 · LMDFE Arts. 4 y 7 · ISO/IEC 27042 · EXIF & ELA.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -24,7 +24,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
     <PlanillaHeader
       title="Dictamen Pericial Especializado en Análisis de Imágenes"
-      norma="ISO/IEC 27042 · ANÁLISIS FORENSE EXIF &amp; ELA"
+      norma="COPP ARTS. 223–225 · LMDFE ARTS. 4 Y 7 · ISO/IEC 27042"
       codigoDoc="FO-IMG-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -36,12 +36,12 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 IDENTIFICACIÓN DE LA IMAGEN -->
       <div class="section-block">
-        <div class="section-heading">1.0 IDENTIFICACIÓN DE LA IMAGEN Y TRAZABILIDAD CRIPTOGRÁFICA</div>
+        <div class="section-heading">1.0 IDENTIFICACIÓN DE LA IMAGEN EXTRAÍDA Y HASH SHA-256 (LMDFE ART. 7)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Archivo de Imagen:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>IMG_20261113_EVIDENCIA_01.jpg (Joint Photographic Experts Group)</span>}</td>
+              <th style="width: 28%;">Archivo de Imagen:</th>
+              <td style="width: 72%;">{isBlanco ? <span class="linea-manual"></span> : <span>IMG_EVIDENCIA_WHATSAPP_01.jpg (Mensaje de Datos Adjunto)</span>}</td>
             </tr>
             <tr>
               <th>Hash SHA-256 de la Imagen:</th>
@@ -68,47 +68,47 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           </thead>
           <tbody>
             <tr>
-              <td>Marca y Modelo de Captura (Make/Model)</td>
-              <td class="font-mono">{isBlanco ? '' : 'Samsung Galaxy S22 (SM-S901E)'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sensor nativo coincide con el dispositivo consignado.</span>}</td>
+              <td>Marca y Modelo de Captura</td>
+              <td class="font-mono">{isBlanco ? '' : 'Sensor Nativo del Dispositivo Consignado'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coincide con el teléfono peritado.</span>}</td>
             </tr>
             <tr>
               <td>Fecha/Hora Original (DateTimeOriginal)</td>
-              <td class="font-mono">{isBlanco ? '' : '2026:11:10 14:22:15'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marca temporal coherente con el sistema de archivos.</span>}</td>
+              <td class="font-mono">{isBlanco ? '' : '2026:11:10 14:22:15 UTC'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marca temporal coherente con el chat.</span>}</td>
             </tr>
             <tr>
-              <td>Geolocalización GPS (Lat/Long)</td>
+              <td>Geolocalización GPS</td>
               <td class="font-mono">{isBlanco ? '' : '09°55\'41.2"N 69°37\'12.5"W'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coordenadas coinciden con el lugar de los hechos.</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coordenadas fijadas en el metadato.</span>}</td>
             </tr>
             <tr>
               <td>Software de Edición (Software Tag)</td>
               <td class="font-mono">{isBlanco ? '' : 'None (Firmware de Cámara Original)'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de software de retoque (Photoshop, GIMP, etc.).</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de software de retoque o edición.</span>}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- 3.0 ANÁLISIS DE NIVEL DE ERROR ELA -->
+      <!-- 3.0 ANÁLISIS ELA -->
       <div class="section-block">
         <div class="section-heading">3.0 ANÁLISIS DE NIVEL DE ERROR DE COMPRESIÓN (ELA) Y PÍXELES</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 40px;">
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>El análisis ELA revela niveles de tasa de compresión uniformes en toda la superficie de la imagen a 95% de calidad JPEG. No se observan discrepancias lumínicas, artefactos de clonado de píxeles ni inconsistencias en las sombras arrojadas que sugieran manipulación digital.</span>
+            <span>El análisis ELA demuestra niveles de tasa de compresión uniformes en toda la superficie de la imagen. No se observan discrepancias cromáticas, artefactos de clonado de píxeles ni inconsistencias lumínicas que sugieran fotomontaje o alteración digital.</span>
           )}
         </div>
       </div>
 
       <!-- 4.0 CONCLUSIONES FORENSES -->
       <div class="legal-clause">
-        <strong>4.0 DICTAMEN DE AUTENTICIDAD DE IMAGEN:</strong> Se concluye categóricamente que la fotografía analizada es <strong>AUTÉNTICA E INALTERADA</strong>, conservando su integridad cromática y metadatos de origen desde el instante de su captura digital.
+        <strong>4.0 DICTAMEN DE AUTENTICIDAD DE IMAGEN:</strong> Se concluye categóricamente que la fotografía analizada es <strong>AUTÉNTICA E INALTERADA</strong>, conservando su integridad de origen como mensaje de datos original conforme al Art. 7 de la Ley sobre Mensajes de Datos y Firmas Electrónicas y Arts. 223 al 225 del COPP.
       </div>
     </div>
 

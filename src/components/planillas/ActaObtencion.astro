@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Acta de Obtención por Consignación Directa y Preservación Inicial
- * Fundamentación: MUCC-2017 & ISO/IEC 27037 · COPP Art. 187.
+ * Fundamentación: MUCC-2017 Modelo 3 (Gaceta Oficial N° 41.247) · COPP Art. 187 · ISO/IEC 27037 §5.3.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 2 Hojas Físicas · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -30,8 +30,8 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="watermark">OBTENCIÓN</div>
 
     <PlanillaHeader
-      title="Acta de Obtención y Preservación Inicial de Evidencia"
-      norma="MUCC-2017 · ISO/IEC 27037 §5.2–5.3 · COPP ART. 187"
+      title="Acta de Obtención por Consignación y Preservación"
+      norma="MUCC-2017 MODELO 3 (G.O. 41.247) · COPP ART. 187 · ISO/IEC 27037"
       codigoDoc="FO-FOR-03"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -41,20 +41,20 @@ const dispositivoDesc = caso.dispositivo_marca
     />
 
     <div class="planilla-body">
-      <!-- 1.0 DATOS DE LA ACTUACIÓN -->
+      <!-- 1.0 DATOS DEL ACTO DE CONSIGNACIÓN -->
       <div class="section-block">
-        <div class="section-heading">1.0 DATOS DE LA ACTUACIÓN FORENSE PRIVADA</div>
+        <div class="section-heading">1.0 DATOS DEL ACTO DE CONSIGNACIÓN DIRECTA (MUCC-2017 MODELO 3)</div>
         <div class="form-grid-2">
           <div class="field-row">
-            <span class="field-label">Lugar de Recepción / Sede:</span>
+            <span class="field-label">Lugar de Recepción / Despacho:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Lara, Venezuela — Sede Central Laboratorio Forense SHA256.US</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>Sede Laboratorio Forense SHA256.US · Quíbor, Estado Lara</span>}
             </div>
           </div>
           <div class="field-row">
             <span class="field-label">Fecha y Hora de Consignación:</span>
             <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} - 10:00 AM</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>{new Date().toLocaleDateString('es-VE')} · 10:00 VET</span>}
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@ const dispositivoDesc = caso.dispositivo_marca
 
       <!-- 2.0 IDENTIFICACIÓN DEL CONSIGNANTE -->
       <div class="section-block">
-        <div class="section-heading">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE PRIVADO</div>
+        <div class="section-heading">2.0 IDENTIFICACIÓN COMPLETA DEL CONSIGNANTE (TITULAR / INTERLOCUTOR)</div>
         <div class="form-grid-2">
           <div class="field-row">
             <span class="field-label">Apellidos y Nombres:</span>
@@ -77,13 +77,13 @@ const dispositivoDesc = caso.dispositivo_marca
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Teléfono de Contacto:</span>
+            <span class="field-label">Línea Móvil / WhatsApp:</span>
             <div class="field-value font-mono">
               {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono}</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Dirección de Habitación / Sede:</span>
+            <span class="field-label">Dirección de Habitación:</span>
             <div class="field-value">
               {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
             </div>
@@ -91,30 +91,30 @@ const dispositivoDesc = caso.dispositivo_marca
         </div>
       </div>
 
-      <!-- 3.0 IDENTIFICACIÓN TÉCNICA DETALLADA DE LA EVIDENCIA DIGITAL -->
+      <!-- 3.0 IDENTIFICACIÓN TÉCNICA DE LA EVIDENCIA DIGITAL -->
       <div class="section-block">
-        <div class="section-heading">3.0 IDENTIFICACIÓN TÉCNICA DE LA EVIDENCIA DIGITAL (ISO/IEC 27037 §5.3)</div>
+        <div class="section-heading">3.0 IDENTIFICACIÓN TÉCNICA DEL DISPOSITIVO MÓVIL (ISO/IEC 27037 §5.3)</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Dispositivo / Medio:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Dispositivo Electrónico Digital'}</span>}</td>
+              <th style="width: 25%;">Dispositivo Consignado:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Teléfono Inteligente (Smartphone)'}</span>}</td>
             </tr>
             <tr>
-              <th>Marca y Modelo:</th>
+              <th>Marca, Modelo y Color:</th>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'N/A'}</span>}</td>
             </tr>
             <tr>
-              <th>Serial Físico / IMEI:</th>
+              <th>Código IMEI / Serial Físico:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}</td>
             </tr>
             <tr>
-              <th>Capacidad / Almacenamiento:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.discoduro_capacidad || 'N/A'}</span>}</td>
+              <th>Operadora / Tarjeta SIM:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Línea activa con cuenta de WhatsApp configurada</span>}</td>
             </tr>
             <tr>
-              <th>Estado Físico al Recibir:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sin fracturas externas visibles, pantalla íntegra, encendido operativo.</span>}</td>
+              <th>Estado Físico al Consignar:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Pantalla y carcasa íntegras, encendido operativo, sin daño físico aparente.</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -122,15 +122,15 @@ const dispositivoDesc = caso.dispositivo_marca
 
       <!-- 4.0 OBJETO DEL ENCARGO PERICIAL -->
       <div class="section-block">
-        <div class="section-heading">4.0 OBJETO Y ALCANCE DEL ENCARGO PERICIAL (COPP ART. 223)</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 48px;">
+        <div class="section-heading">4.0 OBJETO DEL ENCARGO: ADQUISICIÓN LÓGICA DE MENSAJERÍA (COPP ART. 223)</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 44px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>{caso.descripcion || 'Extracción pericial, preservación de cadena de custodia, clonado bit-a-bit y análisis forense de evidencia digital pertinente conforme a la normativa vigente.'}</span>
+            <span>{caso.descripcion || 'Adquisición lógica forense (NIST SP 800-101 Nivel 2) de bases de datos de mensajería WhatsApp (msgstore.db), verificación de autenticidad de chats y notas de voz, sellado criptográfico SHA-256 e informe pericial colegiado para fines probatorios judiciales.'}</span>
           )}
         </div>
       </div>
@@ -149,8 +149,8 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="watermark">PRESERVACIÓN</div>
 
     <PlanillaHeader
-      title="Acta de Obtención y Preservación (Continuación)"
-      norma="MUCC-2017 · ISO/IEC 27037 §5.3–5.4 · COPP ART. 187"
+      title="Acta de Obtención por Consignación (Continuación)"
+      norma="MUCC-2017 MODELO 3 (G.O. 41.247) · COPP ART. 187 · ISO/IEC 27037"
       codigoDoc="FO-FOR-03"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -160,9 +160,9 @@ const dispositivoDesc = caso.dispositivo_marca
     />
 
     <div class="planilla-body">
-      <!-- 5.0 EMBALAJE Y CONDICIÓN DE SEGURIDAD -->
+      <!-- 5.0 EMBALAJE, AISLAMIENTO Y FIJACIÓN FOTOGRÁFICA -->
       <div class="section-block">
-        <div class="section-heading">5.0 MEDIDAS DE PRESERVACIÓN, AISLAMIENTO Y EMBALAJE (MUCC-2017)</div>
+        <div class="section-heading">5.0 MEDIDAS DE PRESERVACIÓN, EMBALAJE Y FIJACIÓN TÉCNICA (MUCC-2017)</div>
         <div class="form-grid-2">
           <div class="field-row">
             <span class="field-label">Bolsa Faraday N° (Aislamiento RF):</span>
@@ -171,36 +171,36 @@ const dispositivoDesc = caso.dispositivo_marca
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Precinto de Seguridad Inicial N°:</span>
+            <span class="field-label">Precinto Inicial de Seguridad N°:</span>
             <div class="field-value font-mono">
               {isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-2026-991'}</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Aislamiento Electromagnético:</span>
+            <span class="field-label">Aislamiento de Redes:</span>
             <div class="field-value">
-              {isBlanco ? <span>[&nbsp;&nbsp;] Modo Avión &nbsp;&nbsp; [&nbsp;&nbsp;] Faraday &nbsp;&nbsp; [&nbsp;&nbsp;] Apagado</span> : <span>[&nbsp;X&nbsp;] Bolsa Faraday Certificada &nbsp;&nbsp; [&nbsp;X&nbsp;] Modo Avión</span>}
+              {isBlanco ? <span>[&nbsp;&nbsp;] Modo Avión &nbsp;&nbsp; [&nbsp;&nbsp;] Faraday &nbsp;&nbsp; [&nbsp;&nbsp;] Apagado</span> : <span>[&nbsp;X&nbsp;] Modo Avión Activo + Bolsa Faraday Blindada</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Protección Contra Escritura:</span>
+            <span class="field-label">Fijación Fotográfica 360°:</span>
             <div class="field-value">
-              {isBlanco ? <span>[&nbsp;&nbsp;] Bloqueador Hardware &nbsp;&nbsp; [&nbsp;&nbsp;] Software Read-Only</span> : <span>[&nbsp;X&nbsp;] Bloqueador de Escritura por Hardware (Tableau/WiebeTech)</span>}
+              {isBlanco ? <span>[&nbsp;&nbsp;] Conforme &nbsp;&nbsp; [&nbsp;&nbsp;] Pendiente</span> : <span>[&nbsp;X&nbsp;] Conforme (6 tomas macro de pantalla, serial y precinto)</span>}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 6.0 DECLARACIÓN JURADA -->
+      <!-- 6.0 DECLARACIÓN JURADA DE CONSIGNACIÓN -->
       <div class="legal-clause">
-        <strong>6.0 DECLARACIÓN JURADA DE CONSIGNACIÓN Y CADENA DE CUSTODIA (COPP ART. 187):</strong> En este acto se hace entrega formal de la evidencia digital precedentemente individualizada al personal pericial del Laboratorio SHA256.US. El perito receptor verifica los números de serial, condición de embalaje e integridad de los precintos numerados, abriendo formalmente el Registro de Cadena de Custodia (PRCC) bajo apercibimiento de las sanciones de ley previstas en los Arts. 187 y 225 del Código Orgánico Procesal Penal.
+        <strong>6.0 DECLARACIÓN JURADA DE CONSIGNACIÓN Y APERTURA DE CADENA (COPP ART. 187 · MUCC-2017):</strong> El consignante hace entrega física formal y voluntaria del teléfono inteligente supra descrito al perito receptor del Laboratorio SHA256.US. Se certifica el estado del equipo, la fijación fotográfica y el sellado en bolsa Faraday bajo precinto numerado, procediendo a abrir formalmente la Planilla de Registro de Cadena de Custodia (PRCC) bajo responsabilidad legal de los actuantes.
       </div>
     </div>
 
     <!-- 7.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
     <PlanillaFirmasBilaterales
-      consignanteTitulo="QUIEN ENTREGA / CONSIGNANTE"
-      peritoTitulo="QUIEN RECIBE / PERITO RECEPTOR SHA256.US"
+      consignanteTitulo="QUIEN ENTREGA / CONSIGNANTE VOLUNTARIO"
+      peritoTitulo="QUIEN RECIBE / PERITO OFICIAL RECEPTOR"
       solicitanteNombre={caso.solicitante_nombre}
       solicitanteCedula={caso.solicitante_cedula}
       solicitanteTelefono={caso.solicitante_telefono}

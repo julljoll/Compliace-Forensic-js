@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Acta de Sanitización Criptográfica y Borrado Seguro
- * Fundamentación: NIST SP 800-88 Rev. 1 · ISO/IEC 27001 · Disposición Final de Evidencias.
+ * Fundamentación: NIST SP 800-88 Rev. 1 · ISO/IEC 27001 · CRBV Art. 60 · LEDCI Arts. 20 y 22.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -24,7 +24,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
     <PlanillaHeader
       title="Acta de Sanitización Criptográfica y Borrado Seguro"
-      norma="NIST SP 800-88 REV. 1 · ISO/IEC 27001 · DISPOSICIÓN FINAL"
+      norma="NIST SP 800-88 REV. 1 · ISO/IEC 27001 · LEDCI ARTS. 20 Y 22"
       codigoDoc="ACT-SAN-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -34,9 +34,9 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     />
 
     <div class="planilla-body">
-      <!-- 1.0 IDENTIFICACIÓN DE MEDIOS Y VOLÚMENES TEMPORALES -->
+      <!-- 1.0 IDENTIFICACIÓN DE MEDIOS TEMPORALES -->
       <div class="section-block">
-        <div class="section-heading">1.0 MEDIOS DE ALMACENAMIENTO TEMPORAL Y COPIAS DE TRABAJO A SANITIZAR</div>
+        <div class="section-heading">1.0 VOLÚMENES TEMPORALES Y COPIAS LÓGICAS DE TRABAJO A SANITIZAR</div>
         <table class="forense-table">
           <tbody>
             <tr>
@@ -45,7 +45,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             </tr>
             <tr>
               <th>Serial del Medio de Trabajo:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>SN: MZ-V8P2T0B-EU-20261109 · Capacidad: 2,000 GB NVMe PCIe 4.0</span>}</td>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>SN: MZ-V8P2T0B-EU-20261109 · Partición Volátil de Análisis</span>}</td>
             </tr>
             <tr>
               <th>Hash SHA-256 Previo:</th>
@@ -69,8 +69,8 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           <tbody>
             <tr>
               <td>Nivel de Sanitización NIST</td>
-              <td class="font-mono">{isBlanco ? '' : 'PURGE (Sobrescritura Criptográfica)'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Destrucción irreversible de llaves AES-XTS 256.</span>}</td>
+              <td class="font-mono">{isBlanco ? '' : 'PURGE (Crypto-Erase)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Destrucción irreversible de llaves criptográficas.</span>}</td>
             </tr>
             <tr>
               <td>Método de Sobrescritura</td>
@@ -79,13 +79,13 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             </tr>
             <tr>
               <td>Software / Utilidad Empleada</td>
-              <td class="font-mono">{isBlanco ? '' : 'Nwipe v0.34 / Linux hdparm Secure Erase'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Firmware command ATA Enhanced Secure Erase.</span>}</td>
+              <td class="font-mono">{isBlanco ? '' : 'Nwipe v0.34 / Linux shred / ZFS destroy'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Comprobación de eliminación de sectores lógicos.</span>}</td>
             </tr>
             <tr>
-              <td>Verificación de Sectores</td>
+              <td>Verificación de No Remanencia</td>
               <td class="font-mono">{isBlanco ? '' : '100% de Sectores Verificados (0x00)'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Lectura completa sin remanencia magnética.</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Lectura completa sin datos remanentes.</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -93,22 +93,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 3.0 CONSTANCIA DE NO REMANENCIA -->
       <div class="section-block">
-        <div class="section-heading">3.0 AUDITORÍA Y CERTIFICACIÓN DE NO RETENCIÓN DE DATOS (ISO 27001)</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 40px;">
+        <div class="section-heading">3.0 AUDITORÍA DE NO RETENCIÓN Y DEBER DE CONFIDENCIALIDAD (LEDCI ART. 22)</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>Se certifica que una vez concluido el peritaje y entregados los resultados oficiales al requirente, todas las imágenes bit-a-bit intermedias, particiones temporales de trabajo, transcripciones de audio y volcados de memoria RAM residentes en los sistemas del laboratorio han sido purgados de manera irreversible sin posibilidad física ni lógica de recuperación.</span>
+            <span>Se certifica formalmente que una vez entregado el dictamen pericial al cliente y devuelto el teléfono consignado, todas las copias lógicas de trabajo, volcados de SQLite msgstore.db, transcripciones de notas de voz y archivos temporales en los servidores del laboratorio fueron purgados y sobrescritos de forma irreversible, cumpliendo el deber de no retención de data personal ajena previsto en los Arts. 20 y 22 de la LEDCI y Art. 60 de la CRBV.</span>
           )}
         </div>
       </div>
 
       <!-- 4.0 DECLARACIÓN DE JURAMENTO -->
       <div class="legal-clause">
-        <strong>4.0 FE DE JURAMENTO:</strong> El perito responsable y el auditor certifican formalmente que no se retiene ninguna copia de seguridad o archivo de datos confidenciales perteneciente a este encargo pericial, en estricto cumplimiento del principio de minimización de datos y el Art. 60 de la CRBV.
+        <strong>4.0 FE DE JURAMENTO:</strong> El perito responsable y el oficial de cumplimiento certifican bajo juramento que no se conserva en los sistemas del laboratorio ninguna copia de las comunicaciones privadas del consignante, salvaguardando plenamente el secreto y privacidad de la información.
       </div>
     </div>
 

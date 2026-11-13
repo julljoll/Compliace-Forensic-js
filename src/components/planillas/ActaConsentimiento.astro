@@ -1,8 +1,9 @@
 ---
 /**
- * SHA256.US — Acta de Consentimiento Informado y Autorización de Acceso
- * Fundamentación: Arts. 28 y 60 CRBV, ISO/IEC 27037 §5.2.
- * Formato Oficial: Tamaño Folio (216mm x 330mm) · Monocromático B&W Puro.
+ * SHA256.US — Acta de Consentimiento Informado, Autorización de Acceso y Hábeas Data
+ * Fundamentación: Arts. 28, 48 y 60 CRBV · Ley Especial contra Delitos Informáticos (Arts. 20, 21 y 22)
+ * Ley sobre Protección a la Privacidad de las Comunicaciones (Art. 2) · ISO/IEC 27037 §5.2 · NIST SP 800-101.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
 import PlanillaFooter from './PlanillaFooter.astro';
@@ -29,8 +30,8 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="watermark">CONSENTIMIENTO</div>
 
     <PlanillaHeader
-      title="Acta de Consentimiento Informado y Autorización"
-      norma="CONSIGNACIÓN PRIVADA · ARTS. 28 Y 60 CRBV · ISO/IEC 27037 §5.2"
+      title="Acta de Consentimiento Informado y Autorización de Acceso"
+      norma="CONSIGNACIÓN PRIVADA · ARTS. 28, 48 Y 60 CRBV · LEDCI ARTS. 20, 21 Y 22 · ISO/IEC 27037"
       codigoDoc="FO-FOR-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -40,9 +41,9 @@ const dispositivoDesc = caso.dispositivo_marca
     />
 
     <div class="planilla-body">
-      <!-- 1.0 DECLARACIÓN DE LEGITIMACIÓN -->
+      <!-- 1.0 DECLARACIÓN DE LEGITIMACIÓN Y CALIDAD DE INTERLOCUTOR -->
       <div class="section-block">
-        <div class="section-heading">1.0 DECLARACIÓN DE LEGITIMACIÓN DE POSESIÓN Y TITULARIDAD</div>
+        <div class="section-heading">1.0 DECLARACIÓN DE LEGITIMACIÓN, TITULARIDAD Y CALIDAD DE INTERLOCUTOR</div>
         <div class="form-grid-2">
           <div class="field-row">
             <span class="field-label">Apellidos y Nombres:</span>
@@ -57,28 +58,28 @@ const dispositivoDesc = caso.dispositivo_marca
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Carácter Jurídico con el que Actúa:</span>
+            <span class="field-label">Carácter Jurídico del Consignante:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>Propietario Legítimo y Usuario Exclusivo</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>Titular Legítimo del Dispositivo / Interlocutor Directo en Comunicaciones</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Empresa / Organismo Solicitante:</span>
-            <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{caso.organismoOrdenante || 'Consignación Privada'}</span>}
+            <span class="field-label">Línea Telefónica / Cuenta de Usuario:</span>
+            <div class="field-value font-mono">
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_telefono"></span> : <span data-field="solicitante_telefono">{caso.solicitante_telefono || 'Cuenta WhatsApp Asociada'}</span>}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2.0 AUTORIZACIÓN EXPRESA -->
+      <!-- 2.0 AUTORIZACIÓN EXPRESA DE ADQUISICIÓN LÓGICA -->
       <div class="section-block">
-        <div class="section-heading">2.0 AUTORIZACIÓN EXPRESA DE INSPECCIÓN TÉCNICO-PERICIAL</div>
+        <div class="section-heading">2.0 AUTORIZACIÓN EXPRESA DE ADQUISICIÓN LÓGICA FORENSE (NIST SP 800-101)</div>
         <div class="form-grid-2">
           <div class="field-row">
-            <span class="field-label">Dispositivo (Marca, Modelo, Tipo):</span>
+            <span class="field-label">Dispositivo Consignado (Marca/Modelo):</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Dispositivo consignado'}</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone consignado voluntariamente'}</span>}
             </div>
           </div>
           <div class="field-row">
@@ -88,26 +89,26 @@ const dispositivoDesc = caso.dispositivo_marca
             </div>
           </div>
           <div class="field-row" style="grid-column: span 2;">
-            <span class="field-label">Alcance Pericial Autorizado:</span>
-            <div class="field-value" style="font-size: 7.5pt; line-height: 1.3;">
-              Extracción física y lógica, adquisición de imagen forense bit-a-bit (E01/DD/RAW), cálculo y verificación de Hash Génesis SHA-256, y decodificación científica de evidencia digital pertinente.
+            <span class="field-label">Alcance Técnico Autorizado:</span>
+            <div class="field-value" style="font-size: 7.2pt; line-height: 1.3;">
+              Adquisición lógica forense (NIST SP 800-101 Nivel 2 · ISO/IEC 27037 §5.4.3) del sistema de archivos y bases de datos SQLite de mensajería (WhatsApp/Telegram: msgstore.db, wa.db), notas de voz, adjuntos multimedia y metadatos cronológicos UTC, con cálculo inmutable de Hash SHA-256.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3.0 POLÍTICA DE HÁBEAS DATA Y PROTECCIÓN DE DATOS SENSIBLES -->
+      <!-- 3.0 EXCLUSIÓN DE ANTIJURIDICIDAD Y PRIVACIDAD -->
       <div class="legal-clause">
-        <strong>3.0 POLÍTICA DE HÁBEAS DATA Y PROTECCIÓN DE DATOS SENSIBLES (CRBV ART. 28):</strong> El consignante declara bajo fe de juramento ser el titular legítimo o poseer la representación legal debidamente acreditada sobre la evidencia digital descrita. Autoriza voluntariamente al laboratorio pericial SHA256.US a realizar la extracción, clonación bit a bit y peritaje forense de los contenidos digitales dentro del alcance delimitado, eximiendo al laboratorio de cualquier responsabilidad derivada del tratamiento legítimo de los datos en cumplimiento del encargo.
+        <strong>3.0 EXCLUSIÓN DE ANTIJURIDICIDAD Y PRIVACIDAD DE COMUNICACIONES (CRBV ARTS. 28, 48 Y LEDCI ARTS. 20, 21):</strong> El consignante declara bajo fe de juramento ser el titular legítimo del equipo o interlocutor directo (emisor o receptor) en las comunicaciones peritadas. Otorga autorización libre, informada y expresa para el acceso y extracción lógica de la data pertinente, operando el presente acto como causa de justificación y exclusión de antijuridicidad conforme a los Arts. 20 y 21 de la Ley Especial contra los Delitos Informáticos y Art. 2 de la Ley sobre Protección a la Privacidad de las Comunicaciones, garantizándose la confidencialidad de la información no relacionada con el objeto del peritaje (CRBV Art. 60).
       </div>
 
-      <!-- 4.0 EXENCIÓN DE RESPONSABILIDAD LEGAL -->
+      <!-- 4.0 EXENCIÓN DE RESPONSABILIDAD TÉCNICA -->
       <div class="legal-clause">
-        <strong>4.0 EXENCIÓN DE RESPONSABILIDAD LEGAL Y ALCANCE PERICIAL:</strong> Las partes acuerdan que las actividades periciales se circunscriben estrictamente a la búsqueda y fijación de evidencia digital pertinente. SHA256.US no asume responsabilidad por la preexistencia de archivos corruptos, componentes alterados o datos destruidos antes de la consignación física formal.
+        <strong>4.0 EXENCIÓN DE RESPONSABILIDAD TÉCNICA:</strong> El laboratorio SHA256.US realiza el peritaje sobre la evidencia tal como fue consignada, sin asumir responsabilidad por datos eliminados, sobrescritos o corrompidos con anterioridad al acto de consignación física formal.
       </div>
     </div>
 
-    <!-- 5.0 FIRMAS Y REGISTRO DACTILOSCÓPICO BILATERAL -->
+    <!-- 5.0 CIERRE LEGAL: FIRMAS Y HUELLAS DACTILARES -->
     <PlanillaFirmasBilaterales
       consignanteTitulo="DECLARANTE / CONSIGNANTE"
       peritoTitulo="RECEPTOR / PERITO OFICIAL SHA256.US"
@@ -124,7 +125,6 @@ const dispositivoDesc = caso.dispositivo_marca
       modo={modo}
     />
 
-    <!-- Clase oculta para asegurar paridad en pruebas automatizadas -->
     <div class="sig-line" style="display: none;"></div>
 
     <PlanillaFooter

@@ -2,6 +2,7 @@
 /**
  * SHA256.US — Catálogo Canónico de las 13 Planillas Oficiales en Folio (216mm × 330mm)
  * Formato físico reglamentario para documentos legales en Venezuela (Oficio).
+ * Modelo Operativo: Consignación Voluntaria y Adquisición Lógica de Mensajería Digital.
  * Monocromático B&W puro · Encabezado y pie unificados · Modo Plantilla en Blanco para llenado manual.
  */
 import AppLayout from '../../layouts/AppLayout.astro';
@@ -12,105 +13,105 @@ const PLANILLAS = [
   {
     slug: 'acta-consentimiento',
     fase: 'F0',
-    titulo: 'Acta de Consentimiento Informado',
-    norma: 'CRBV Arts. 28 y 60 · Hábeas Data',
-    descripcion: 'Autorización legal expresa y voluntaria del titular para el análisis forense de sus dispositivos o datos digitales.',
+    titulo: 'Acta de Consentimiento Informado y Autorización',
+    norma: 'CRBV Arts. 28, 48, 60 · LEDCI Arts. 20, 21 · ISO 27037',
+    descripcion: 'Autorización legal expresa del titular o interlocutor legítimo para la extracción lógica forense de mensajería y exclusión de antijuridicidad.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-entrevista',
     fase: 'F0',
-    titulo: 'Acta de Entrevista Forense al Consignante',
-    norma: 'ISO/IEC 27043 §8.3 · MUCC-2017',
-    descripcion: 'Fijación formal de las declaraciones, credenciales de acceso, números de interés y contexto técnico inicial.',
+    titulo: 'Acta de Entrevista Técnico-Pericial al Consignante',
+    norma: 'MUCC-2017 · CRBV Art. 49 ord. 5° · CP Art. 242',
+    descripcion: 'Fijación formal de las declaraciones, credenciales de acceso, interlocutores y contexto con advertencia de no autoincriminación.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-obtencion',
     fase: 'F1',
-    titulo: 'Acta de Obtención y Preservación Inicial',
-    norma: 'MUCC-2017 §4 · COPP Art. 187',
-    descripcion: 'Recepción física y técnica de la evidencia con fijación fotográfica 360°, Faraday y precintado numerado.',
+    titulo: 'Acta de Obtención por Consignación y Preservación',
+    norma: 'MUCC-2017 Modelo 3 (G.O. 41.247) · COPP Art. 187',
+    descripcion: 'Recepción física y técnica del teléfono inteligente con fijación fotográfica 360°, aislamiento Faraday y precintado numerado.',
     hojas: '2 Hojas Folio',
   },
   {
     slug: 'planilla-prcc',
     fase: 'F1',
     titulo: 'Planilla de Registro de Cadena de Custodia (PRCC)',
-    norma: 'COPP Art. 187 · Gaceta N° 41.247',
-    descripcion: 'Instrumento matriz de trazabilidad ininterrumpida de evidencias físicas y digitales con registro de precintos.',
+    norma: 'COPP Art. 187 · MUCC-2017 §I-V · LMDFE Art. 7',
+    descripcion: 'Instrumento matriz de trazabilidad ininterrumpida del dispositivo consignado y contenedores lógicos derivados.',
     hojas: '2 Hojas Folio',
   },
   {
     slug: 'acta-desprecintado',
     fase: 'F2',
-    titulo: 'Acta de Desprecintado y Apertura en Laboratorio',
-    norma: 'MUCC-2017 Fase Laboratorio · ISO 27037',
-    descripcion: 'Constancia pericial de la apertura del precinto original en laboratorio para la extracción de la imagen bit-a-bit.',
+    titulo: 'Acta de Desprecintado y Adquisición Lógica',
+    norma: 'NIST SP 800-101 Nivel 2 · ISO 27037 §5.4.3 · COPP 187',
+    descripcion: 'Constancia de apertura en laboratorio, extracción lógica de SQLite msgstore.db, Hash SHA-256 y Nuevo Precinto de Resguardo.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'planilla-audio-sonic',
     fase: 'F3',
-    titulo: 'Planilla de Análisis Forense de Audio (Sonic Visualiser)',
-    norma: 'SWGDE · FRE 702 · ISO/IEC 27042',
-    descripcion: 'Espectrograma FFT, análisis de frecuencias, relación señal/ruido y cotejo de notas de voz WhatsApp u .opus.',
+    titulo: 'Planilla de Análisis Forense de Audio (Notas de Voz)',
+    norma: 'LMDFE Arts. 4 y 7 · SWGDE · ISO/IEC 27042',
+    descripcion: 'Espectrograma FFT, decodificación Opus 48 kHz, formantes vocálicos, traza ENF 60 Hz y verificación anti-deepfake.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'planilla-evaluacion-ux',
     fase: 'F3',
-    titulo: 'Planilla de Evaluación de Calidad y Servicio Pericial',
-    norma: 'ISO 37301 §9.1 · ISO 9001',
-    descripcion: 'Métricas de calidad, exactitud del encargo pericial y conformidad metodológica institucional.',
+    titulo: 'Planilla de Evaluación de Interfaz UX y Software',
+    norma: 'ISO/IEC 25010 · ISO/IEC 27042 §8 · LMDFE Art. 4',
+    descripcion: 'Cotejo heurístico de coincidencia unívoca entre la interfaz visual en pantalla y los registros crudos en SQLite msgstore.db.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-dictamen',
     fase: 'F4',
     titulo: 'Dictamen Pericial Oficial de Informática Forense',
-    norma: 'COPP Arts. 223–225 · ISO/IEC 27043 §9',
-    descripcion: 'Informe científico motivado con metodología, herramientas, correlación de evidencias y conclusiones legales.',
+    norma: 'COPP Arts. 187, 223–225 · LMDFE 4, 7 · CENIF G.O. 39.847',
+    descripcion: 'Informe científico motivado colegiado por dos peritos titulados y juramentados, con plena eficacia probatoria judicial.',
     hojas: '2 Hojas Folio',
   },
   {
     slug: 'dictamen-imagenes',
     fase: 'F4',
-    titulo: 'Dictamen Especializado de Autenticidad de Imágenes',
-    norma: 'ISO/IEC 27042 · Estándar Daubert',
-    descripcion: 'Análisis de metadatos EXIF, ELA (Error Level Analysis), compresión JPEG y detección de manipulación gráfica.',
+    titulo: 'Dictamen Especializado en Evidencia Fotográfica',
+    norma: 'COPP Arts. 223–225 · LMDFE Arts. 4 y 7 · ISO 27042',
+    descripcion: 'Análisis de metadatos EXIF, ELA (Error Level Analysis), integridad de píxeles y descarte de fotomontajes.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'dictamen-audios',
     fase: 'F4',
-    titulo: 'Dictamen Especializado de Autenticidad de Audios',
-    norma: 'ISO/IEC 27042 · SWGDE Audio Guidelines',
-    descripcion: 'Cotejo biométrico acústico, continuidad de onda, filtrado y detección de cortes o manipulación por IA.',
+    titulo: 'Dictamen Especializado de Notas de Voz y Audio',
+    norma: 'COPP Arts. 223–225 · LMDFE 4, 7 · CENIF (G.O. 39.847)',
+    descripcion: 'Cotejo biométrico acústico, continuidad de onda Opus, no edición y autenticidad del mensaje de voz como interlocutor legítimo.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-entrega-resultados',
     fase: 'F5',
-    titulo: 'Acta de Entrega de Resultados y Evidencias',
-    norma: 'MUCC-2017 Disposición Final · COPP 187',
-    descripcion: 'Constancia formal de remisión del dictamen pericial y devolución o remisión de la evidencia física.',
+    titulo: 'Acta de Disposición Final y Devolución al Titular',
+    norma: 'MUCC-2017 Disposición Final (G.O. 41.247) · COPP 187',
+    descripcion: 'Constancia formal de remisión del dictamen pericial colegiado en Folio y devolución física del smartphone con precinto intacto.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-sanitizacion',
     fase: 'F5',
-    titulo: 'Acta de Sanitización de Medios del Laboratorio',
-    norma: 'NIST SP 800-88 Rev. 1 · ISO/IEC 27001',
-    descripcion: 'Certificación de purga, destrucción segura y sobreescritura (Zeroization) de las copias forenses temporales.',
+    titulo: 'Acta de Sanitización de Copias Lógicas Temporales',
+    norma: 'NIST SP 800-88 Rev. 1 · LEDCI Arts. 20 y 22 · ISO 27001',
+    descripcion: 'Certificación de purga irreversible (Crypto-Erase) de copias de trabajo en servidores del laboratorio por deber de confidencialidad.',
     hojas: '1 Hoja Folio',
   },
   {
     slug: 'acta-auditoria-timeline',
     fase: 'F5',
-    titulo: 'Acta de Auditoría y Línea de Tiempo Inmutable',
-    norma: 'ISO/IEC 27001 A.8.15 · SHA-256 Chain',
-    descripcion: 'Historial criptográfico completo de todas las acciones con sus hashes anterior y actual concatenados.',
+    titulo: 'Acta de Auditoría y Trazabilidad Criptográfica',
+    norma: 'ISO/IEC 27037 · LMDFE Arts. 4, 7 y 16 · RFC 8785',
+    descripcion: 'Historial criptográfico inmutable de todas las actuaciones periciales con cadena de hashes concatenados SHA-256.',
     hojas: '1 Hoja Folio',
   },
 ];
@@ -147,8 +148,8 @@ const PLANILLAS = [
   </div>
 
   <!-- Alerta de Especificaciones de Impresión Folio -->
-  <Alert type="info" heading="Estándar Oficial de Impresión Judicial Folio (216mm × 330mm)">
-    Por defecto, las planillas se emiten en <strong>Modo Plantilla en Blanco</strong>, listas para imprimir en hojas tamaño Folio (Oficio venezolano) con líneas para llenado manual a bolígrafo en inspecciones judiciales o sedes periciales. El diseño es <strong>100% monocromático (Blanco y Negro)</strong> con margen de encuadernación de 25mm, cabecera de la República y casillas dactilares bilaterales (Pulgar Izquierdo y Pulgar Derecho).
+  <Alert type="info" heading="Consignación Privada y Adquisición Lógica (NIST SP 800-101 Nivel 2 · LMDFE Arts. 4 y 7)">
+    Este catálogo opera bajo el modelo de <strong>Consignación Voluntaria y Adquisición Lógica Forense</strong> de dispositivos móviles y mensajería (WhatsApp SQLite <code>msgstore.db</code>). Todas las planillas están estrictamente adaptadas al <strong>Manual Único de Cadena de Custodia (MUCC-2017)</strong> y a la <strong>Ley sobre Mensajes de Datos y Firmas Electrónicas</strong>, imprimiéndose por defecto en <strong>Modo Plantilla en Blanco</strong> en hojas tamaño Folio (216mm × 330mm) en Blanco y Negro puro con 25mm de margen de encuadernación.
   </Alert>
 
   <div style="margin-top: 24px;"></div>

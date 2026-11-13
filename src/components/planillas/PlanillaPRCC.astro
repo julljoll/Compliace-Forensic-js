@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Planilla de Registro de Cadena de Custodia (PRCC)
- * Fundamentación: MUCC-2017 & COPP Art. 187 · ISO/IEC 27037.
+ * Fundamentación: MUCC-2017 & COPP Art. 187 · LMDFE Art. 7 · ISO/IEC 27037.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 2 Hojas Físicas (Anverso y Reverso) · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -44,10 +44,10 @@ const dispositivoDesc = caso.dispositivo_marca
     <div class="planilla-body">
       <!-- I. DATOS GENERALES -->
       <div class="section-block">
-        <div class="section-heading">I. DATOS GENERALES DE LA INVESTIGACIÓN Y CAUSA</div>
+        <div class="section-heading">I. DATOS GENERALES DE LA CAUSA Y DESPACHO INSTRUCTOR</div>
         <div class="form-grid-2">
           <div class="field-row">
-            <span class="field-label">N° Expediente / Causa Judicial:</span>
+            <span class="field-label">N° Expediente / Causa:</span>
             <div class="field-value font-mono">
               {isBlanco ? <span class="linea-manual" data-field="numeroCaso"></span> : <span data-field="numeroCaso">{caso.numeroCaso}</span>}
             </div>
@@ -59,45 +59,45 @@ const dispositivoDesc = caso.dispositivo_marca
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Despacho Fiscal / Órgano Jurisdiccional:</span>
+            <span class="field-label">Despacho / Asunto de la Causa:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="despachoFiscal"></span> : <span data-field="despachoFiscal">{caso.despachoFiscal || 'Ministerio Público / Tribunal de la Causa'}</span>}
+              {isBlanco ? <span class="linea-manual" data-field="despachoFiscal"></span> : <span data-field="despachoFiscal">{caso.despachoFiscal || 'Consignación de Parte / Causa Judicial'}</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Organismo Actuante / Solicitante:</span>
+            <span class="field-label">Organismo que Apertura Custodia:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="organismoOrdenante"></span> : <span data-field="organismoOrdenante">{caso.organismoOrdenante || 'Consignación Privada / Defensa'}</span>}
+              {isBlanco ? <span class="linea-manual" data-field="organismoOrdenante"></span> : <span data-field="organismoOrdenante">Laboratorio Forense SHA256.US (División Pericial)</span>}
             </div>
           </div>
           <div class="field-row" style="grid-column: span 2;">
-            <span class="field-label">Lugar y Dirección de Obtención / Recepción:</span>
+            <span class="field-label">Dirección de Obtención / Sede:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion || 'Edificio Mercantil La Ceiba, Piso 1, Ofic. 8, Quíbor, Estado Lara'}</span>}
+              {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">Edificio Mercantil La Ceiba, Piso 1, Ofic. 8, Quíbor, Estado Lara</span>}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- II. FORMAS DE OBTENCIÓN -->
+      <!-- II. FORMAS DE OBTENCIÓN SEGÚN MUCC-2017 -->
       <div class="section-block">
-        <div class="section-heading">II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA DIGITAL (MUCC-2017)</div>
-        <div style="display: flex; justify-content: space-around; font-size: 7.5pt; padding: 3px 0;">
-          <span>[&nbsp;&nbsp;] 1. Inspección Técnica</span>
-          <span>[&nbsp;&nbsp;] 2. Aseguramiento Preventivo</span>
-          <span>{isBlanco ? '[   ] 3. Consignación Directa' : '[ X ] 3. Consignación Directa'}</span>
-          <span>[&nbsp;&nbsp;] 4. Derivación Procesal</span>
+        <div class="section-heading">II. FORMAS DE OBTENCIÓN DE LA EVIDENCIA (MUCC-2017 §II)</div>
+        <div style="display: flex; justify-content: space-around; font-size: 7.5pt; padding: 3px 0; font-weight: 700;">
+          <span>[&nbsp;&nbsp;] 1. Técnica</span>
+          <span>[&nbsp;&nbsp;] 2. Aseguramiento</span>
+          <span>{isBlanco ? '[   ] 3. Consignación' : '[ X ] 3. Consignación'}</span>
+          <span>[&nbsp;&nbsp;] 4. Derivación</span>
         </div>
       </div>
 
-      <!-- III. FUNCIONARIOS QUE INTERVIENEN -->
+      <!-- III. OPERARIOS QUE OBTIENEN LA EVIDENCIA -->
       <div class="section-block">
-        <div class="section-heading">III. FUNCIONARIOS / PERSONAS QUE INTERVIENEN EN LA OBTENCIÓN</div>
+        <div class="section-heading">III. OPERARIOS ACTUANTES EN LA OBTENCIÓN Y PRESERVACIÓN</div>
         <div class="form-grid-2">
           <!-- A. Fijación -->
           <div style="border: 1px solid #000; padding: 4px;">
             <div style="font-weight: 800; font-size: 7pt; border-bottom: 1px solid #000; margin-bottom: 3px; background: #F0F0F0; padding: 1px 3px;">
-              A. FIJACIÓN FOTOGRÁFICA Y DIGITAL
+              A. FIJACIÓN FOTOGRÁFICA 360°
             </div>
             <div class="field-row">
               <span class="field-label">Nombres y Apellidos:</span>
@@ -111,10 +111,10 @@ const dispositivoDesc = caso.dispositivo_marca
             <div style="font-size: 6pt; text-align: center; font-weight: 700;">Firma de Fijación</div>
           </div>
 
-          <!-- B. Colección -->
+          <!-- B. Colección / Recepción -->
           <div style="border: 1px solid #000; padding: 4px;">
             <div style="font-weight: 800; font-size: 7pt; border-bottom: 1px solid #000; margin-bottom: 3px; background: #F0F0F0; padding: 1px 3px;">
-              B. COLECCIÓN, ROTULADO Y EMBALAJE
+              B. RECEPCIÓN Y EMBALAJE FARADAY
             </div>
             <div class="field-row">
               <span class="field-label">Nombres y Apellidos:</span>
@@ -125,31 +125,31 @@ const dispositivoDesc = caso.dispositivo_marca
               <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>{caso.perito_cedula || 'V-18.999.001'}</span>}</div>
             </div>
             <div class="sig-line-solid sig-line" style="margin-top: 10px;"></div>
-            <div style="font-size: 6pt; text-align: center; font-weight: 700;">Firma de Colección</div>
+            <div style="font-size: 6pt; text-align: center; font-weight: 700;">Firma de Recepción</div>
           </div>
         </div>
       </div>
 
-      <!-- IV. DESCRIPCIÓN DE LA EVIDENCIA DIGITAL -->
+      <!-- IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA -->
       <div class="section-block">
-        <div class="section-heading">IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA DIGITAL Y PRECINTOS</div>
+        <div class="section-heading">IV. DESCRIPCIÓN DETALLADA DE LA EVIDENCIA Y HASH DEL CONTENEDOR LÓGICO</div>
         <table class="forense-table">
           <tbody>
             <tr>
-              <th style="width: 25%;">Dispositivo / Medio:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Evidencia Digital'}</span>}</td>
+              <th style="width: 25%;">Dispositivo Consignado:</th>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>{dispositivoDesc || 'Smartphone'} · IMEI: <span class="font-mono">{caso.dispositivo_imei || caso.discoduro_serial || 'N/A'}</span></span>}</td>
             </tr>
             <tr>
-              <th>Serial / Código IMEI:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="dispositivo_imei"></span> : <span data-field="dispositivo_imei">{caso.dispositivo_imei || caso.discoduro_serial}</span>}</td>
+              <th>Tipo de Evidencia:</th>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] Evidencia Física Principal (Teléfono) &nbsp;&nbsp;&nbsp; [ X ] Evidencia Lógica Derivada (SQLite msgstore.db)</span>}</td>
             </tr>
             <tr>
-              <th>Bolsa Faraday N° / Precinto:</th>
+              <th>Bolsa Faraday y Precinto:</th>
               <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="precinto_numero"></span> : <span>Bolsa: <span data-field="bolsa_faraday_numero">{caso.bolsa_faraday_numero || 'FARADAY-01'}</span> · Precinto: <span data-field="precinto_numero">{caso.precinto_numero || 'PREC-991'}</span></span>}</td>
             </tr>
             <tr>
-              <th>Hash Génesis SHA-256:</th>
-              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo en adquisición F2'}</span>}</td>
+              <th>Hash SHA-256 de Extracción Lógica:</th>
+              <td class="font-mono">{isBlanco ? <span class="linea-manual" data-field="hashSHA256"></span> : <span data-field="hashSHA256">{caso.hashSHA256 || 'Pendiente por cálculo en extracción F2'}</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -190,7 +190,7 @@ const dispositivoDesc = caso.dispositivo_marca
               <th style="width: 14%;">Fecha y Hora</th>
               <th style="width: 25%;">Entrega (Nombres, C.I., Firma)</th>
               <th style="width: 25%;">Recibe (Nombres, C.I., Firma)</th>
-              <th style="width: 20%;">Propósito del Traslado</th>
+              <th style="width: 20%;">Motivo de Transferencia</th>
               <th style="width: 12%;">Precinto</th>
             </tr>
           </thead>
@@ -200,7 +200,7 @@ const dispositivoDesc = caso.dispositivo_marca
               <td class="font-mono">{isBlanco ? '' : new Date().toLocaleDateString('es-VE')}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.solicitante_nombre || 'Consignante'} (C.I. {caso.solicitante_cedula || ''})</span>}</td>
               <td>{isBlanco ? <span class="linea-manual"></span> : <span>{caso.peritoLider || 'Perito SHA256.US'} (C.I. {caso.perito_cedula || ''})</span>}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Consignación formal y apertura PRCC</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Consignación e inicio de peritaje</span>}</td>
               <td>{isBlanco ? '' : 'Intacto'}</td>
             </tr>
             <tr>
@@ -241,7 +241,7 @@ const dispositivoDesc = caso.dispositivo_marca
 
       <!-- VI. OBSERVACIONES Y DISPOSICIÓN FINAL -->
       <div class="legal-clause">
-        <strong>VI. DISPOSICIÓN FINAL Y CONDICIÓN DE RESGUARDO (MUCC-2017 §DISPOSICIÓN FINAL):</strong> La evidencia digital descrita queda resguardada en la bóveda de seguridad física del Laboratorio Forense SHA256.US, en condiciones controladas de temperatura, humedad y protección contra campos electromagnéticos, hasta su devolución formal o presentación en juicio. Toda rotura o reemplazo de precinto debe asentarse de inmediato en la tabla de transferencias supra.
+        <strong>VI. DISPOSICIÓN FINAL Y CONDICIÓN DE RESGUARDO (MUCC-2017 §DISPOSICIÓN FINAL):</strong> El teléfono inteligente y los contenedores lógicos extraídos quedan preservados en condiciones controladas de laboratorio. Todo cambio de precinto por desprecintado pericial o reembalaje debe registrarse en la tabla supra para garantizar la trazabilidad ininterrumpida exigida por el Art. 187 del COPP.
       </div>
     </div>
 

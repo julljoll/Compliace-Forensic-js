@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Planilla de Evaluación de Calidad de Software e Interfaz UX
- * Fundamentación: ISO/IEC 25010 · Evaluación Heurística y Calidad de Evidencia en Pantalla.
+ * Fundamentación: ISO/IEC 25010 · ISO/IEC 27042 §8 · LMDFE Art. 4 · Cotejo de Interfaz vs SQLite.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -23,8 +23,8 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="watermark">EVALUACIÓN UX</div>
 
     <PlanillaHeader
-      title="Planilla de Evaluación de Calidad de Software y UX"
-      norma="ISO/IEC 25010 · HEURÍSTICA FORENSE DE INTERFAZ"
+      title="Planilla de Evaluación de Interfaz UX y Calidad de Software"
+      norma="ISO/IEC 25010 · ISO/IEC 27042 §8 · LMDFE ART. 4"
       codigoDoc="FO-UX-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -36,59 +36,59 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 SISTEMA EVALUADO -->
       <div class="section-block">
-        <div class="section-heading">1.0 APLICACIÓN / SISTEMA EVALUADO Y ENTORNO DE EJECUCIÓN</div>
+        <div class="section-heading">1.0 APLICACIÓN EVALUADA Y ENTORNO DE EJECUCIÓN (WHATSAPP / SO MÓVIL)</div>
         <div class="form-grid-2">
           <div class="field-row">
             <span class="field-label">Nombre del Software / Plataforma:</span>
             <div class="field-value">
-              {isBlanco ? <span class="linea-manual"></span> : <span>{caso.tipoProyecto === 'forense_whatsapp' ? 'WhatsApp Messenger (Meta Inc.)' : (caso.tipoProyecto === 'forense_email' ? 'Cliente de Correo Electrónico (Thunderbird/Outlook)' : 'Sistema de Archivos y Almacenamiento')}</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp Messenger / Meta Platforms Inc.</span>}
             </div>
           </div>
           <div class="field-row">
-            <span class="field-label">Versión de Compilación / Build:</span>
+            <span class="field-label">Versión de Compilación y Sistema:</span>
             <div class="field-value font-mono">
-              {isBlanco ? <span class="linea-manual"></span> : <span>v2.24.12.78 (Android OS 14)</span>}
+              {isBlanco ? <span class="linea-manual"></span> : <span>WhatsApp v2.24.x · Android OS / iOS nativo</span>}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2.0 MATRIZ HEURÍSTICA ISO 25010 -->
+      <!-- 2.0 MATRIZ HEURÍSTICA FORENSE -->
       <div class="section-block">
-        <div class="section-heading">2.0 MATRIZ DE EVALUACIÓN HEURÍSTICA Y CONFORMIDAD FORENSE (ISO 25010)</div>
+        <div class="section-heading">2.0 MATRIZ DE COTEJO FORENSE: INTERFAZ EN PANTALLA VS REGISTROS SQLITE</div>
         <table class="forense-table">
           <thead>
             <tr>
-              <th style="width: 30%;">Criterio de Calidad</th>
-              <th style="width: 25%;">Evaluación</th>
+              <th style="width: 30%;">Criterio de Evaluación</th>
+              <th style="width: 25%;">Resultado</th>
               <th style="width: 45%;">Comprobación Pericial</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Legibilidad de Sellos de Tiempo (Timestamps)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Marcas temporales UTC y locales sincronizadas con precisión.</span>}</td>
+              <td>Sincronía de Sellos Temporales (Timestamps)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (100% MATCH)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Hora visual coincide con época UNIX en msgstore.db.</span>}</td>
             </tr>
             <tr>
-              <td>Integridad de Mensajería y Estados de Envío</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Iconografía de doble check gris/azul persistida en base de datos.</span>}</td>
+              <td>Estados de Envío (Ticks / Checks)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (AUTÉNTICO)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Estados de entrega/lectura corroborados en status flag.</span>}</td>
             </tr>
             <tr>
-              <td>Trazabilidad de Metadatos y Adjuntos</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Nombres de archivo, tamaños de byte y hashes reproducibles.</span>}</td>
+              <td>Identificación de Remitente (JID)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (VERIFICADO)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Número de abonado internacional fijado en key_remote_jid.</span>}</td>
             </tr>
             <tr>
-              <td>Prevención de Manipulación Involuntaria</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Mecanismos de verificación biométrica y bloqueo de interfaz activos.</span>}</td>
+              <td>Detección de Falsificaciones de Pantalla</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'DESCARTE NEGATIVO'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de generadores de chat falso (WhatsFake / clonados).</span>}</td>
             </tr>
             <tr>
-              <td>Consistencia Visual y No Repudio</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coincidencia 100% entre pantalla renderizada y registros brutos SQLite.</span>}</td>
+              <td>No Repudio de Contenido</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'CONFORME (PLENA EFICACIA)'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Correspondencia entre el texto en pantalla y registro en base.</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -96,7 +96,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 3.0 DICTAMEN DE CONFORMIDAD -->
       <div class="legal-clause">
-        <strong>3.0 DICTAMEN DE CONFORMIDAD DE SOFTWARE:</strong> Concluye la evaluación heurística determinando que la interfaz de usuario bajo análisis no presenta distorsiones, emulaciones fraudulentas ni artefactos visuales artificiales, correspondiendo fehacientemente con el comportamiento estándar del software legítimo certificado.
+        <strong>3.0 DICTAMEN DE CONFORMIDAD DE SOFTWARE:</strong> Se concluye que la visualización gráfica de los chats en pantalla corresponde de forma fidedigna y unívoca con los registros crudos extraídos de la base de datos nativa SQLite, sin que existan indicios de simulación, emulación maliciosa ni captura editada, gozando de plena eficacia técnica conforme al Art. 4 de la LMDFE.
       </div>
     </div>
 

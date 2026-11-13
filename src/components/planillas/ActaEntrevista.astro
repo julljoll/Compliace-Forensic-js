@@ -1,8 +1,8 @@
 ---
 /**
  * SHA256.US — Acta de Entrevista Forense al Consignante
- * Fundamentación: MUCC-2017 & ISO/IEC 27042.
- * Formato Oficial: Tamaño Folio (216mm x 330mm) · Monocromático B&W Puro.
+ * Fundamentación: MUCC-2017 & ISO/IEC 27042 · CRBV Art. 49 ord. 5° · Código Penal Art. 242.
+ * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
 import PlanillaFooter from './PlanillaFooter.astro';
@@ -24,7 +24,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
     <PlanillaHeader
       title="Acta de Entrevista Técnico-Pericial al Consignante"
-      norma="MUCC-2017 · ISO/IEC 27042 · COPP ARTS. 187 Y 223"
+      norma="MUCC-2017 · CRBV ART. 49 ORD. 5° · CP ART. 242 · ISO/IEC 27042"
       codigoDoc="FO-FOR-02"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -36,7 +36,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 DATOS DE IDENTIFICACIÓN -->
       <div class="section-block">
-        <div class="section-heading">1.0 IDENTIFICACIÓN DEL ENTREVISTADO Y CALIDAD JURÍDICA</div>
+        <div class="section-heading">1.0 IDENTIFICACIÓN DEL CONSIGNANTE Y NOTIFICACIÓN DE DERECHOS CONSTITUCIONALES</div>
         <div class="form-grid-2">
           <div class="field-row">
             <span class="field-label">Apellidos y Nombres:</span>
@@ -62,44 +62,50 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
               {isBlanco ? <span class="linea-manual" data-field="solicitante_direccion"></span> : <span data-field="solicitante_direccion">{caso.solicitante_direccion}</span>}
             </div>
           </div>
+          <div class="field-row" style="grid-column: span 2;">
+            <span class="field-label">Notificación Constitucional (CRBV Art. 49.5):</span>
+            <div class="field-value" style="font-size: 6.8pt; line-height: 1.25;">
+              Se notifica al compareciente de su derecho constitucional a no autoincriminarse ni declarar contra sus parientes cercanos, actuando en este acto de manera estrictamente voluntaria bajo juramento de ley.
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- 2.0 CUESTIONARIO FORENSE ESTRUCTURADO -->
       <div class="section-block">
-        <div class="section-heading">2.0 CUESTIONARIO PERICIAL ESTRUCTURADO (ISO/IEC 27042)</div>
+        <div class="section-heading">2.0 CUESTIONARIO TÉCNICO DIRIGIDO A LA EXTRACCIÓN LÓGICA (ISO/IEC 27042)</div>
         <table class="forense-table">
           <thead>
             <tr>
               <th style="width: 5%;">N°</th>
-              <th style="width: 45%;">Pregunta Técnica Formulada</th>
-              <th style="width: 50%;">Declaración / Respuesta del Consignante</th>
+              <th style="width: 48%;">Pregunta Técnica Formulada</th>
+              <th style="width: 47%;">Declaración / Respuesta del Consignante</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td style="text-align: center; font-weight: 700;">1</td>
-              <td>¿Cuál es el origen y motivo de consignación de la evidencia digital?</td>
+              <td>¿Cuál es el objeto pericial y qué chats, audios o números son de interés?</td>
               <td><span class="linea-manual">{isBlanco ? '' : (caso.descripcion || '')}</span></td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">2</td>
-              <td>¿Posee contraseñas, PIN, patrón de desbloqueo o cifrado de disco?</td>
+              <td>¿Suministra voluntariamente el PIN, patrón o contraseña de desbloqueo?</td>
               <td><span class="linea-manual"></span></td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">3</td>
-              <td>¿Fecha u hora aproximada de los hechos o comunicaciones de interés?</td>
+              <td>¿Cuál es el rango de fechas y horas aproximadas de las comunicaciones?</td>
               <td><span class="linea-manual"></span></td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">4</td>
-              <td>¿Qué personas tuvieron acceso físico o remoto al dispositivo?</td>
+              <td>¿El dispositivo o la app sufrieron desinstalaciones, caídas o manipulación?</td>
               <td><span class="linea-manual"></span></td>
             </tr>
             <tr>
               <td style="text-align: center; font-weight: 700;">5</td>
-              <td>¿El dispositivo sufrió caídas, contacto con líquidos o manipulaciones previas?</td>
+              <td>¿Autoriza la preservación lógica y generación de copia forense de los chats?</td>
               <td><span class="linea-manual"></span></td>
             </tr>
           </tbody>
@@ -108,7 +114,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 3.0 DECLARACIÓN DE VERACIDAD -->
       <div class="legal-clause">
-        <strong>3.0 DECLARACIÓN DE VERACIDAD Y CONFORMIDAD LEGAL:</strong> El entrevistado manifiesta bajo fe de juramento que las respuestas emitidas en este acto son fidedignas, exactas y corresponden a la realidad de los hechos investigados, autorizando la incorporación de esta acta al expediente técnico-pericial y su cotejo con los hallazgos de la evidencia digital en sede judicial.
+        <strong>3.0 DECLARACIÓN DE VERACIDAD Y CONFORMIDAD LEGAL:</strong> El entrevistado manifiesta bajo fe de juramento que los datos y credenciales aportados son fidedignos, con pleno conocimiento de las sanciones legales por falso testimonio previstas en el Art. 242 del Código Penal Venezolano, autorizando la incorporación de esta acta al expediente técnico para sustentar la licitud de la prueba digital.
       </div>
     </div>
 

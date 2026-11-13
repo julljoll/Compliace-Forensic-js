@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Acta de Trazabilidad y Registro de Auditoría Criptográfica
- * Fundamentación: ISO/IEC 27037 · Cadena inmutable SHA-256 (RFC 8785) · ISO 27001.
+ * Fundamentación: ISO/IEC 27037 · LMDFE Arts. 4, 7 y 16 · Cadena inmutable SHA-256 (RFC 8785).
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -18,12 +18,12 @@ const { caso = {}, modo = 'blanco' } = Astro.props;
 const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
 const DEFAULT_LOGS = [
-  { seq: 1, ts: '13/11/2026 09:30', fase: 'F0 · APERTURA_CASO', usuario: caso.peritoLider || 'Ing. Perito', hash: caso.hashSHA256 || '8356ac69d28eea6eeb1537a95127cda66a961a60b7acf9c9ebe19e9fce009663' },
-  { seq: 2, ts: '13/11/2026 09:45', fase: 'F1 · OBTENCION_PRCC', usuario: caso.peritoLider || 'Ing. Perito', hash: '26ec88bc9ca390dfaacf452495eb843ea548fece950df414749b0a7feea12b14' },
-  { seq: 3, ts: '13/11/2026 10:15', fase: 'F2 · ADQUISICION_E01', usuario: caso.peritoLider || 'Ing. Perito', hash: '46a918c4ed0b54337292351de0996deeab94f24cc7eacf80aa9900d7cc9bc418' },
-  { seq: 4, ts: '13/11/2026 11:00', fase: 'F3 · ANALISIS_FORENSE', usuario: caso.peritoLider || 'Ing. Perito', hash: 'd102849182491204912049120491204912049120491204912049120491204912' },
-  { seq: 5, ts: '13/11/2026 11:45', fase: 'F4 · EMISION_DICTAMEN', usuario: caso.peritoLider || 'Ing. Perito', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' },
-  { seq: 6, ts: '13/11/2026 12:15', fase: 'F5 · CIERRE_Y_ENTREGA', usuario: caso.peritoLider || 'Ing. Perito', hash: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08' },
+  { seq: 1, ts: '13/11/2026 09:30', fase: 'F0 · CONSIGNACIÓN_CONSENTIMIENTO', usuario: caso.peritoLider || 'Ing. Perito', hash: caso.hashSHA256 || '8356ac69d28eea6eeb1537a95127cda66a961a60b7acf9c9ebe19e9fce009663' },
+  { seq: 2, ts: '13/11/2026 09:45', fase: 'F1 · RECEPCIÓN_EMBALAJE_FARADAY', usuario: caso.peritoLider || 'Ing. Perito', hash: '26ec88bc9ca390dfaacf452495eb843ea548fece950df414749b0a7feea12b14' },
+  { seq: 3, ts: '13/11/2026 10:15', fase: 'F2 · EXTRACCIÓN_LÓGICA_SQLITE', usuario: caso.peritoLider || 'Ing. Perito', hash: '46a918c4ed0b54337292351de0996deeab94f24cc7eacf80aa9900d7cc9bc418' },
+  { seq: 4, ts: '13/11/2026 11:00', fase: 'F3 · ANÁLISIS_CHATS_Y_AUDIOS', usuario: caso.peritoLider || 'Ing. Perito', hash: 'd102849182491204912049120491204912049120491204912049120491204912' },
+  { seq: 5, ts: '13/11/2026 11:45', fase: 'F4 · DICTAMEN_OFICIAL_COLEGIADO', usuario: caso.peritoLider || 'Ing. Perito', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' },
+  { seq: 6, ts: '13/11/2026 12:15', fase: 'F5 · DEVOLUCIÓN_Y_SANITIZACIÓN', usuario: caso.peritoLider || 'Ing. Perito', hash: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08' },
 ];
 ---
 
@@ -33,7 +33,7 @@ const DEFAULT_LOGS = [
 
     <PlanillaHeader
       title="Acta de Auditoría y Trazabilidad Criptográfica"
-      norma="ISO/IEC 27037 · CADENA INMUTABLE SHA-256 · RFC 8785"
+      norma="ISO/IEC 27037 · LMDFE ARTS. 4, 7 Y 16 · CADENA SHA-256"
       codigoDoc="ACT-AUD-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -45,7 +45,7 @@ const DEFAULT_LOGS = [
     <div class="planilla-body">
       <!-- 1.0 IDENTIFICACIÓN Y ESTADO DE LA CADENA -->
       <div class="section-block">
-        <div class="section-heading">1.0 ESTADO DE INTEGRIDAD DE LA CADENA DE BLOQUES FORENSE</div>
+        <div class="section-heading">1.0 ESTADO DE INTEGRIDAD DE LA CADENA DE BLOQUES FORENSE (LMDFE ART. 7)</div>
         <table class="forense-table">
           <tbody>
             <tr>
@@ -56,7 +56,7 @@ const DEFAULT_LOGS = [
             </tr>
             <tr>
               <th>Verificación Hash-Chain:</th>
-              <td colspan="3">{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] 100% CONFORME · CADENA ÍNTEGRA Y SIN ALTERACIONES MATEMÁTICAS</span>}</td>
+              <td colspan="3">{isBlanco ? <span class="linea-manual"></span> : <span>[ X ] 100% CONFORME · CADENA CRIPTOGRÁFICA ÍNTEGRA Y SIN ALTERACIONES</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -70,8 +70,8 @@ const DEFAULT_LOGS = [
             <tr>
               <th style="width: 6%; text-align: center;">SEQ</th>
               <th style="width: 14%;">Fecha / Hora</th>
-              <th style="width: 24%;">Fase / Acción Pericial</th>
-              <th style="width: 18%;">Perito Actuante</th>
+              <th style="width: 25%;">Fase / Actuación Pericial</th>
+              <th style="width: 17%;">Perito Actuante</th>
               <th style="width: 38%;">Hash SHA-256 Sellado</th>
             </tr>
           </thead>
@@ -103,15 +103,15 @@ const DEFAULT_LOGS = [
 
       <!-- 3.0 CERTIFICACIÓN DE INMUTABILIDAD -->
       <div class="section-block">
-        <div class="section-heading">3.0 CERTIFICACIÓN DE NO REPUDIO Y CONTINUIDAD CRIPTOGRÁFICA</div>
-        <div class="field-value" style="font-size: 7.5pt; line-height: 1.35; min-height: 38px;">
+        <div class="section-heading">3.0 CERTIFICACIÓN DE NO REPUDIO Y CONTINUIDAD CRIPTOGRÁFICA (LMDFE ART. 16)</div>
+        <div class="field-value" style="font-size: 7.2pt; line-height: 1.35; min-height: 38px;">
           {isBlanco ? (
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <span class="linea-manual"></span>
               <span class="linea-manual"></span>
             </div>
           ) : (
-            <span>Se certifica de manera fehaciente que cada transacción registrada en este expediente generó un sello SHA-256 matemáticamente dependiente del evento anterior conforme a RFC 8785 (JSON Canonicalization Scheme). Esta arquitectura garantiza la imposibilidad material de alterar, suprimir o intercalar evidencias en la línea temporal pericial sin quebrar la cadena de integridad.</span>
+            <span>Se certifica de manera fehaciente que cada transacción registrada en este expediente generó un sello SHA-256 matemáticamente dependiente del evento anterior conforme a RFC 8785 (JSON Canonicalization Scheme). Esta arquitectura garantiza la imposibilidad material de alterar, suprimir o intercalar evidencias en la línea temporal pericial sin quebrar la cadena de integridad, satisfaciendo el Art. 7 de la LMDFE.</span>
           )}
         </div>
       </div>

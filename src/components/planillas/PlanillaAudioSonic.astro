@@ -1,7 +1,7 @@
 ---
 /**
  * SHA256.US — Planilla de Análisis Forense de Audio y Espectrograma
- * Fundamentación: ISO/IEC 27042 §7–8 · Sonic Visualiser & Análisis Biométrico de Voz.
+ * Fundamentación: LMDFE Arts. 4 y 7 · Ley Protección a la Privacidad de Comunicaciones Art. 2 · ISO/IEC 27042 §7–8.
  * Formato Oficial: Tamaño Folio (216mm x 330mm) · 1 Hoja Física · Monocromático B&W Puro.
  */
 import PlanillaHeader from './PlanillaHeader.astro';
@@ -24,7 +24,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
     <PlanillaHeader
       title="Planilla de Análisis Forense de Audio y Espectrograma"
-      norma="ISO/IEC 27042 §7–8 · REPETIBILIDAD CIENTÍFICA DAUBERT"
+      norma="LMDFE ARTS. 4 Y 7 · ISO/IEC 27042 §7–8 · SWGDE AUDIO"
       codigoDoc="FO-AUD-01"
       numeroCaso={caso.numeroCaso}
       numeroPRCC={caso.numero_prcc || caso.numeroPRCC}
@@ -36,12 +36,12 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
     <div class="planilla-body">
       <!-- 1.0 IDENTIFICACIÓN DEL ARCHIVO -->
       <div class="section-block">
-        <div class="section-heading">1.0 IDENTIFICACIÓN DEL ARCHIVO DE AUDIO Y TRAZABILIDAD HASH</div>
+        <div class="section-heading">1.0 IDENTIFICACIÓN DE LA NOTA DE VOZ DE WHATSAPP Y HASH SHA-256</div>
         <table class="forense-table">
           <tbody>
             <tr>
               <th style="width: 25%;">Nombre de Archivo:</th>
-              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>EVIDENCIA_AUDIO_NOTA_VOZ.opus (Contenedor Ogg)</span>}</td>
+              <td style="width: 75%;">{isBlanco ? <span class="linea-manual"></span> : <span>AUD_WHATSAPP_NOTA_VOZ.opus (Flujo Nativo Opus en Ogg)</span>}</td>
             </tr>
             <tr>
               <th>Hash SHA-256 del Audio:</th>
@@ -49,7 +49,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             </tr>
             <tr>
               <th>Herramienta Utilizada:</th>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sonic Visualiser v5.0.1 / Praat Phonetics v6.3.14 (Plugins FFT Vamp)</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sonic Visualiser v5.0.1 / Praat Phonetics (Algoritmos FFT &amp; YIN de Pitch)</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -57,10 +57,10 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 2.0 PARÁMETROS TÉCNICOS ACÚSTICOS -->
       <div class="section-block">
-        <div class="section-heading">2.0 PARÁMETROS TÉCNICOS ACÚSTICOS Y METADATOS DE CONTENEDOR</div>
+        <div class="section-heading">2.0 ESPECIFICACIONES TÉCNICAS ACÚSTICAS Y METADATOS DE TRANSMISIÓN</div>
         <div class="form-grid-3">
           <div class="field-row">
-            <span class="field-label">Frecuencia de Muestreo:</span>
+            <span class="field-label">Frecuencia Muestreo:</span>
             <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>48.000 Hz (48 kHz)</span>}</div>
           </div>
           <div class="field-row">
@@ -69,7 +69,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           </div>
           <div class="field-row">
             <span class="field-label">Profundidad de Bits:</span>
-            <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>16 bits / Variable Bitrate</span>}</div>
+            <div class="field-value font-mono">{isBlanco ? <span class="linea-manual"></span> : <span>16 bits / VBR</span>}</div>
           </div>
           <div class="field-row">
             <span class="field-label">Duración Exacta:</span>
@@ -77,18 +77,18 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
           </div>
           <div class="field-row">
             <span class="field-label">Formato / Códec:</span>
-            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Opus Audio Codec (IETF RFC 6716)</span>}</div>
+            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Opus (IETF RFC 6716)</span>}</div>
           </div>
           <div class="field-row">
             <span class="field-label">Contenedor:</span>
-            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Ogg Container (.ogg / .opus)</span>}</div>
+            <div class="field-value">{isBlanco ? <span class="linea-manual"></span> : <span>Ogg Container (.opus)</span>}</div>
           </div>
         </div>
       </div>
 
       <!-- 3.0 ANÁLISIS ESPECTROGRÁFICO -->
       <div class="section-block">
-        <div class="section-heading">3.0 RESULTADOS DEL ANÁLISIS ESPECTROGRÁFICO Y CONTINUIDAD</div>
+        <div class="section-heading">3.0 COTEJO ESPECTROGRÁFICO, CONTINUIDAD Y DETECCIÓN ANTI-DEEPFAKE</div>
         <table class="forense-table">
           <thead>
             <tr>
@@ -101,22 +101,22 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
             <tr>
               <td>Continuidad de Ruido de Fondo (Noise Floor)</td>
               <td style="font-weight: 700;">{isBlanco ? '' : 'CONTINUO (SIN CORTES)'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Nivel de piso de ruido ambiente homogéneo a -54 dBFS.</span>}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Piso de ruido acústico homogéneo a -54 dBFS sin saltos.</span>}</td>
             </tr>
             <tr>
-              <td>Análisis de Frecuencias Formantes (F1-F4)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'COMPATIBLE CON VOZ HUMANA'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Resonancias de tracto vocal consistentes, sin modulación artificial.</span>}</td>
+              <td>Formantes Vocálicos Laríngeos (F1-F4)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'VOZ BIOLÓGICA AUTÉNTICA'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Micro-temblores y jitter propios de emisión humana natural.</span>}</td>
             </tr>
             <tr>
-              <td>Detección de Edición o Inserciones</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'NO SE DETECTAN EDICIONES'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Sin saltos de fase ni anomalías espectrales en transiciones.</span>}</td>
+              <td>Detección de Edición o Manipulación</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'SIN VESTIGIOS DE EDICIÓN'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Ausencia de cortes, empalmes o transcodificaciones anómalas.</span>}</td>
             </tr>
             <tr>
-              <td>Análisis de ENF (Frecuencia de Red Eléctrica)</td>
-              <td style="font-weight: 700;">{isBlanco ? '' : 'TRAZA DE 60 Hz PRESENTE'}</td>
-              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Firma eléctrica de red de 60 Hz típica del sistema venezolano.</span>}</td>
+              <td>Frecuencia Eléctrica de Red (ENF 60 Hz)</td>
+              <td style="font-weight: 700;">{isBlanco ? '' : 'TRAZA DE 60 Hz DETECTADA'}</td>
+              <td>{isBlanco ? <span class="linea-manual"></span> : <span>Coherente con el suministro eléctrico nacional venezolano.</span>}</td>
             </tr>
           </tbody>
         </table>
@@ -124,7 +124,7 @@ const isBlanco = modo === 'blanco' || !caso.numeroCaso;
 
       <!-- 4.0 CONCLUSIONES ACÚSTICAS -->
       <div class="legal-clause">
-        <strong>4.0 CONCLUSIONES DEL PERITAJE DE AUDIO:</strong> La pista analizada presenta integridad acústica plena y continuidad ininterrumpida de sus frecuencias espectrales. No se aprecian artefactos de empalme, sobregrabación, clonación de voz por IA ni manipulación digital que altere su valor convictivo legal.
+        <strong>4.0 CONCLUSIONES DEL PERITAJE DE AUDIO:</strong> La nota de voz peritada es <strong>AUTÉNTICA E ÍNTEGRA</strong>. Cumple con los requisitos de mensaje de datos original conforme al Art. 7 de la LMDFE, habiendo sido aportada por el interlocutor legítimo sin vulnerar la privacidad de terceros (Art. 2 Ley sobre Protección a la Privacidad de las Comunicaciones).
       </div>
     </div>
 
